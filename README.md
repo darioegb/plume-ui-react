@@ -421,6 +421,7 @@ Thanks goes to these wonderful people
     </tr>
   </tbody>
 </table>
+
 ## License
 
 This library is open-source and available under the [MIT License](./LICENSE) made by [Dario Gonzalez](https://github.com/darioegb) 🎸. You are free to use and modify it in your projects.
