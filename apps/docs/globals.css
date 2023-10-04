@@ -1,0 +1,14 @@
+@import './reset.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+div.sbdocs-wrapper {
+  justify-content: flex-start;
+  gap: 5rem;
+}
+
+div.container {
+  margin-left: 2rem;
+}

@@ -5,6 +5,7 @@ node_modules
 .next
 dist
 dist-ssr
+coverage
 *.local
 .env
 .cache

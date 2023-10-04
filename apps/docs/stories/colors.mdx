@@ -1,0 +1,89 @@
+{/* Colors.mdx */}
+
+import { Meta, ColorPalette, ColorItem, Source } from '@storybook/blocks'
+
+<Meta title="Theme/Colors" />
+
+# Colors
+
+## Color palette
+
+<ColorPalette>
+  <ColorItem
+    title="colors.primary"
+    subtitle="Purple"
+    colors={{ primary: 'rgb(99, 102, 241)' }}
+  />
+  <ColorItem
+    title="colors.secondary"
+    subtitle="Grey"
+    colors={{ secondary: 'rgb(107, 114, 128)' }}
+  />
+  <ColorItem
+    title="colors.info"
+    subtitle="Blue"
+    colors={{ info: 'rgb(59, 130, 246)' }}
+  />
+  <ColorItem
+    title="colors.warning"
+    subtitle="Yellow"
+    colors={{ warning: 'rgb(234, 179, 8)' }}
+  />
+  <ColorItem
+    title="colors.error"
+    subtitle="Red"
+    colors={{ error: 'rgb(239, 68, 68)' }}
+  />
+  <ColorItem
+    title="colors.success"
+    subtitle="Green"
+    colors={{ success: 'rgb(34, 197, 94)' }}
+  />
+  <ColorItem
+    title="colors.dark"
+    subtitle="Black"
+    colors={{ dark: 'rgb(31, 41, 55)' }}
+  />
+  <ColorItem
+    title="colors.light"
+    subtitle="White"
+    colors={{ light: 'rgb(250, 250, 250)' }}
+  />
+</ColorPalette>
+
+## Customization
+
+> To customize the color palette, either modify the base colors or create new colors, we do the following:
+
+1 - Create a file plume-ui.config.(js|ts) in your root folder and add the following code:
+
+<Source code={`// plume-ui.config.js
+import { setUserConfig } from '@plume-ui-react/core'
+
+/** @type {import('@plume-ui-react/core').PlumeUIConfig}  */
+const userConfig = {
+  colors: {
+    primary: 'rgb(0, 0, 255)', // overwrite primaryColor
+    pink: 'rgb(228, 35, 235)',
+    salmon: 'rgb(250 128 114)',
+  },
+}
+
+setUserConfig(userConfig)`} />
+In this example we are modifying the primary color and creating two new colors.
+
+2 - If you use typescript and have created new colors,
+you should also do the next step so that those colors are inferred.
+In the example we are using typescript's <strong>Module Augmentation</strong> to make this possible.
+This code can be placed in a new definition file or if you already have a global definition file add the code there.
+
+<Source code={`// typings.d.ts  
+import { CustomColorPalette } from '@plume-ui-react/core'
+
+declare module '@plume-ui-react/core' {
+  interface CustomColorPalette {
+    pink: true
+    salmon: true
+  }
+}
+`} />

@@ -1,0 +1,35 @@
+{
+  "name": "next-pages",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@plume-ui-react/core": "workspace:*",
+    "@plume-ui-react/lib": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.6.0",
+    "@types/react": "18.2.21",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.15",
+    "eslint": "8.49.0",
+    "eslint-config-custom": "workspace:*",
+    "eslint-config-next": "13.4.19",
+    "next": "13.4.19",
+    "postcss": "8.4.29",
+    "prettier-config": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwind-config": "workspace:*",
+    "tailwindcss": "3.3.3",
+    "tsconfig": "workspace:*",
+    "typescript": "5.2.2"
+  }
+}

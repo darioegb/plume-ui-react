@@ -1,0 +1,75 @@
+/* spinner.module.css */
+@value default-spinner-border-width: 3px;
+@value default-spinner-border-style: solid;
+@value default-spinner-width: 2rem;
+@value default-spinner-height: 2rem;
+@value primary-border-color: currentColor;
+@value default-border-color: transparent;
+
+.spinner {
+  animation: spin var(--animation-duration) linear infinite;
+  border-color: primary-border-color;
+  border-radius: 50%;
+  border-top-color: var(--transparent-area, default-border-color);
+  border-width: var(--border-width, default-spinner-border-width);
+  color: var(--color, currentColor);
+  display: inline-block;
+  margin-left: 0.25rem;
+  width: default-spinner-width;
+  height: default-spinner-height;
+}
+
+.sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.lg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.solid {
+  composes: spinner;
+  border-style: solid;
+}
+
+.dashed {
+  composes: spinner;
+  border-style: dashed;
+}
+
+.dotted {
+  composes: spinner;
+  border-style: dotted;
+}
+
+.double {
+  composes: spinner;
+  border-style: double;
+}
+
+.borderTopColor {
+  border-top-color: var(--border-top-color, primary-border-color);
+}
+
+.borderRightColor {
+  border-right-color: var(--border-right-color, primary-border-color);
+}
+
+.borderBottomColor {
+  border-bottom-color: var(--border-bottom-color, primary-border-color);
+}
+
+.borderLeftColor {
+  border-left-color: var(--border-left-color, primary-border-color);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

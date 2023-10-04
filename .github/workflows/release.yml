@@ -37,3 +37,15 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         # You can do something when a publish happens.
         run: my-slack-bot send-notification --message "A new version of ${GITHUB_REPOSITORY} was published!"
+      
+      - name: Publish Storybook to Chromatic
+        if: steps.changesets.outputs.published == 'true'
+        uses: chromaui/action@v1
+        # Chromatic GitHub Action options
+        with:
+          # Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: 'storybook-static'
+          workingDir: 'apps/docs'
+          zip: true
+          exitOnceUploaded: true  

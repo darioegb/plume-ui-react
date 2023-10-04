@@ -1,0 +1,53 @@
+{
+  "name": "@plume-ui-react/core",
+  "version": "0.0.0",
+  "description": "Core stuff for Plume UI lib",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
+    "lint": "eslint src/",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "lib",
+    "ui",
+    "uikit",
+    "plume-ui",
+    "plume-ui-react"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "dependencies": {
+    "@plume-ui-react/merge-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "eslint-config-custom": "workspace:*",
+    "prettier-config": "workspace:*",
+    "react": "^18.1.0",
+    "tsconfig": "workspace:*",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": ">=16.11.0",
+    "react-dom": ">=16.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

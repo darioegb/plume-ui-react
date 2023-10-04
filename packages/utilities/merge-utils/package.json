@@ -1,6 +1,7 @@
 {
-  "name": "ui",
+  "name": "@plume-ui-react/merge-utils",
   "version": "0.0.0",
+  "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -10,18 +11,27 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
-    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "lint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "utils",
+    "typescript",
+    "plume-ui",
+    "plume-ui-react"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "dependencies": {},
   "devDependencies": {
-    "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.4",
     "eslint-config-custom": "workspace:*",
-    "react": "^18.1.0",
     "tsconfig": "workspace:*",
-    "tsup": "^5.10.1",
+    "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
