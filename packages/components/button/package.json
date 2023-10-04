@@ -52,7 +52,6 @@
     "prettier-config": "workspace:*",
     "react": "^18.1.0",
     "tsconfig": "workspace:*",
-    "@types/plume-ui-react": "workspace:*",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },

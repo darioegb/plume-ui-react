@@ -1,6 +1,0 @@
-{
-  "name": "@types/plume-ui-react",
-  "version": "0.0.0",
-  "main": "./src/index.d.ts",
-  "types": "./src/index.d.ts"
-}
