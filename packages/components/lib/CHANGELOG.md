@@ -1,5 +1,11 @@
 # @plume-ui-react/lib
 
+## 0.0.2
+
+### Patch Changes
+
+- 8ec5f46: Update docs
+
 ## 0.0.1
 
 ### Patch Changes
