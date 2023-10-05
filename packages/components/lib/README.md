@@ -23,7 +23,7 @@ To use this library in your React project, follow these steps:
 3. Import the components you need in your JavaScript or TypeScript files:
 
    ```javascript
-   import { Button, ... } from '@plume-ui-react/lib';
+   import { Button, ... } from '@plume-ui-react/lib'
    ```
 
 4. Start using the components in your application:
@@ -39,6 +39,6 @@ Contributions to this library are welcome! If you have a new component to add or
 
 ## About
 
-This library is maintained by [Your Name or Organization]. If you have any questions or need assistance, please reach out to us at [darioegb@gmail.com].
+This library is maintained by Darío Gonzalez. If you have any questions or need assistance, please reach out to us at darioegb@gmail.com.
 
-Thank you for using the My React Components Library. Happy coding!
+Thank you for using the Plume UI React Library. Happy coding!

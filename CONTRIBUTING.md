@@ -64,19 +64,19 @@ We use a branching model to structure branches in our repository. Here's a sugge
 
 - **develop**: The primary development branch where features are integrated and continuous testing occurs.
 
-- **feature/xxx**: Individual branches for new features or functionalities. These branches are created from `develop` and merged back into `develop` once they are ready.
+- **feature/xxx**: Individual branches for new features or functionalities. 
 
   Example: `feature/user-authentication`
 
-- **fix/xxx**: Branches for specific bug fixes. They are created from `develop` and merged back into `develop` after fixing the issues.
+- **fix/xxx**: Branches for specific bug fixes.
 
   Example: `fix/navigation-menu`
 
-- **docs/xxx**: Branches for documentation updates. These are also created from `develop` and merged back into `develop`.
+- **docs/xxx**: Branches for documentation updates.
 
   Example: `docs/update-installation-guide`
 
-- **perf/xxx**: Branches for performance improvements. Like the others, they are created from `develop` and merged back into `develop`.
+- **perf/xxx**: Branches for performance improvements.
 
   Example: `perf/image-loading-optimization`
 

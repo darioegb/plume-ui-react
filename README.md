@@ -6,7 +6,9 @@
 
 <h1 align="center">A Lightweight Design System for React</h1>
 
-![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/@plume-ui-react)
+![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/%40plume-ui-react%2Flib)
+![npm](https://img.shields.io/npm/dm/%40plume-ui-react%2Flib)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/darioegb/plume-ui-react)
 ![NPM](https://img.shields.io/npm/l/%40plume-ui-react%2Flib)
 
 
@@ -25,7 +27,7 @@
 
 ## Documentation
 
-Not deployed yet❕
+It's the [url](https://main--651ae00a0bf7aa70ffd0f34c.chromatic.com) website for the latest version of Plume UI.
 
 ## Installation
 

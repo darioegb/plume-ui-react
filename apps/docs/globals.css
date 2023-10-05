@@ -12,3 +12,10 @@ div.sbdocs-wrapper {
 div.container {
   margin-left: 2rem;
 }
+
+h1.sbdocs-title {
+  text-decoration-color: #34d399;
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: .5rem;
+}
