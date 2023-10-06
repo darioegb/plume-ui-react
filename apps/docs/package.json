@@ -29,6 +29,7 @@
     "autoprefixer": "^10.4.14",
     "bootstrap": "^5.3.1",
     "eslint-config-custom": "workspace:*",
+    "chromatic": "^7.2.3",
     "postcss": "^8.4.27",
     "prettier-config": "workspace:*",
     "serve": "^13.0.4",

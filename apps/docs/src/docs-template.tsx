@@ -52,7 +52,7 @@ function ButtonGroup({
   const componentNameLowerCase = componentName.toLowerCase()
 
   return (
-    <div className="flex gap-1" style={{ marginBlockEnd: '2rem' }}>
+    <div className="flex gap-2" style={{ marginBlockEnd: '2rem' }}>
       <IconLinkButton
         href={`${GITHUB_URL}${componentNameLowerCase}`}
         icon={
