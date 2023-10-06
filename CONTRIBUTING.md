@@ -28,8 +28,8 @@ We follow a clear commit strategy to maintain an organized record of changes in 
 - **fix**: Used for bug fixes.
    - Example: `fix: Resolve text overflow issue in the login button`.
 
-- **feature**: For new features or functionalities.
-   - Example: `feature: Add image carousel component`.
+- **feat**: For new features or functionalities.
+   - Example: `feat: Add image carousel component`.
 
 - **docs**: Changes related to documentation.
    - Example: `docs: Update installation guide`.

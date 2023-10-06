@@ -128,7 +128,7 @@ function DocsTemplate(): JSX.Element {
         <Controls />
         <hr />
         <h2>Additional variations</h2>
-        <p>Listed below are additional variations of the component.</p>
+        <p>Listed below are additional variations of the {componentName}.</p>
         <Stories includePrimary={false} title="" />
       </div>
       <Footer />
