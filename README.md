@@ -419,7 +419,7 @@ Thanks goes to these wonderful people
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/darioegb"><img src="https://avatars2.githubusercontent.com/u/1558318?v=4?s=64" width="64px;" alt="Darío Gonzalez"/><br /><sub><b>Darío Gonzalez</b></sub></a><br /><a href="https://github.com/plume-ui-react/plume-ui-react/commits?author=darioegb" title="Code">💻</a> <a href="#maintenance-darioegb" title="Maintenance">🚧</a> <a href="https://github.com/plume-ui-react/commits?author=darioegb" title="Documentation">📖</a> <a href="#example-darioegb" title="Examples">💡</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/darioegb"><img src="https://avatars2.githubusercontent.com/u/1558318?v=4?s=64" width="64px;" alt="Darío Gonzalez"/><br /><sub><b>Darío Gonzalez</b></sub></a><br /><a href="https://github.com/darioegb/plume-ui-react/commits?author=darioegb" title="Code">💻</a> <a href="#maintenance-darioegb" title="Maintenance">🚧</a> <a href="https://github.com/darioegb/plume-ui-react/commits?author=darioegb" title="Documentation">📖</a> <a href="#example-darioegb" title="Examples">💡</a></td>
     </tr>
   </tbody>
 </table>
