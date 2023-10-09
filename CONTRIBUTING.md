@@ -62,11 +62,9 @@ We use a branching model to structure branches in our repository. Here's a sugge
 
 - **main (or master)**: The main branch containing stable, production-ready code.
 
-- **develop**: The primary development branch where features are integrated and continuous testing occurs.
+- **feat/xxx**: Individual branches for new features or functionalities. 
 
-- **feature/xxx**: Individual branches for new features or functionalities. 
-
-  Example: `feature/user-authentication`
+  Example: `feat/user-authentication`
 
 - **fix/xxx**: Branches for specific bug fixes.
 
