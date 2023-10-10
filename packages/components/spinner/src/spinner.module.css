@@ -8,11 +8,10 @@
 
 .spinner {
   animation: spin var(--animation-duration) linear infinite;
-  border-color: primary-border-color;
+  border-color: var(--color, primary-border-color);
   border-radius: 50%;
   border-top-color: var(--transparent-area, default-border-color);
   border-width: var(--border-width, default-spinner-border-width);
-  color: var(--color, currentColor);
   display: inline-block;
   margin-left: 0.25rem;
   width: default-spinner-width;
