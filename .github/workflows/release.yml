@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 18
 
-      - name: ⚡ Turbo cache
+      - name: Turbo cache
         id: turbo-cache
         uses: actions/cache@v3
         with:
@@ -43,6 +43,11 @@ jobs:
       - name: Build
         id: run-build
         run: pnpm run build
+      
+      - name: Generate docs
+        id: run-build-docs
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm build:docs
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -54,6 +59,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Update changelog
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          pnpm changelog
+          pnpm changelog:commit
       
       - name: Publish Storybook to Chromatic
         if: steps.changesets.outputs.published == 'true'

@@ -1,13 +1,17 @@
+import { RestEndpointMethodTypes } from '@octokit/rest'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join, resolve } from 'path'
 import fetch from 'node-fetch'
 
 const monorepoPath = resolve(__dirname, '..')
 
-interface PrInfo {
+type PullRequests = RestEndpointMethodTypes['pulls']['list']['response']['data']
+type PullRequest = PullRequests[number]
+
+type PrInfo = {
   url: string
   date: string
-  body: string
+  version: string
 }
 
 async function getLatestMergedPrInfo(
@@ -28,23 +32,26 @@ async function getLatestMergedPrInfo(
     const response = await fetch(apiUrl, options)
     if (response.ok) {
       const pullRequests = await response.json()
-      const pr = pullRequests?.pop()
-      if (
-        pr.user.login === 'github-actions[bot]' &&
-        pr.merged_at !== null &&
-        pr.title === 'Version Packages'
-      ) {
-        const prMergeDate = new Date(pr.merged_at)
-        const prUrl = pr.html_url
-        return {
-          body: pr.body,
-          url: prUrl,
-          date: prMergeDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }),
-        }
+      const pr = pullRequests
+        ?.filter(
+          (pr: PullRequest) =>
+            pr.merged_at !== null && pr.title === 'Version Packages',
+        )
+        ?.pop()
+      const prMergeDate = new Date(pr.merged_at)
+      const prUrl = pr.html_url
+      const versionMatch = pr.body.match(
+        /## @plume-ui-react\/lib@(\d+\.\d+\.\d+)/,
+      )
+      const version = versionMatch ? versionMatch[1] : '1.0.0'
+      return {
+        version,
+        url: prUrl,
+        date: prMergeDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
       }
     } else {
       console.error(
@@ -61,20 +68,13 @@ async function getLatestMergedPrInfo(
 }
 
 async function generateChangelog() {
-  const packageJsonPath = join(monorepoPath, 'package.json')
-  let version = '1.0.0'
-  if (existsSync(packageJsonPath)) {
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
-    version = packageJson.version || version
-  }
-
   let changelogEntries: Array<string> = []
-  let releaseHeader = `# Version ${version}\nExplore the changelog for Plume UI React version ${version}. Learn about the latest features, bug fixes, and improvements.\n\n`
+  let releaseHeader = ''
   const mergedPrInfo = await getLatestMergedPrInfo('darioegb', 'plume-ui-react')
   if (mergedPrInfo) {
-    releaseHeader += `[${mergedPrInfo.url}] - ${mergedPrInfo.date}\n\n${mergedPrInfo.body}`
+    releaseHeader = `# Version ${mergedPrInfo.version}\nExplore the changelog for Plume UI React version ${mergedPrInfo.version}. Learn about the latest features, bug fixes, and improvements.\n\n[${mergedPrInfo.url}] - ${mergedPrInfo.date}\n\n`
   } else {
-    releaseHeader += 'URL_NOT_FOUND\n\n'
+    releaseHeader = 'URL_NOT_FOUND\n\n'
   }
 
   const combinedChangelog = changelogEntries.join('\n\n')
