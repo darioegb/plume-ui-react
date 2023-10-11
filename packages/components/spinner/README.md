@@ -69,13 +69,13 @@ Here are some examples of how you can use this spinner component in your project
 <Spinner size={2} borderColor="#FF5733" />
 ```
 
-### Individual Variant Spinner
+### Spinner with empty area
 
 ```javascript
 <Spinner borderColor="#f6eeee" borderTopColor="red" />
 ```
 
-### Spinner with empty area
+### Spinner with multiple border colors
 
 ```javascript
 <Spinner

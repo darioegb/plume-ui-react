@@ -10,7 +10,7 @@
   "version": "0.0.2",
   "scripts": {
     "build": "turbo run build --filter=docs^...",
-    "build:docs": "turbo run build  --filter=docs...",
+    "build:docs": "turbo run build  --filter=./apps/*",
     "build:examples": "turbo run build  --filter=./examples/*",
     "dev": "turbo run dev --no-cache --continue --filter=./apps/*",
     "lint": "turbo run lint --filter=docs^...",
