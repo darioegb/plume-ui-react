@@ -1,5 +1,11 @@
 # @plume-ui-react/spinner
 
+## 0.0.3
+
+### Patch Changes
+
+- [`a340fc2`](https://github.com/darioegb/plume-ui-react/commit/a340fc2db02a0c5346a298dcd09f1f9bc2bc7259) Thanks [@darioegb](https://github.com/darioegb)! - Update readme docs titles
+
 ## 0.0.2
 
 ### Patch Changes
