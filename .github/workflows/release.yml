@@ -65,7 +65,6 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         run: |
           git checkout -b changelog/main
-          git pull
           pnpm changelog
           pnpm changelog:commit
           pr_url=$(gh pr create --base main --head bot-branch --title "Update Root Changelog" --json url --jq '.url')
