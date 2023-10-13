@@ -50,7 +50,7 @@ This component accepts several properties to customize the appearance and behavi
 | `shape`         | The shape of the button, which can be "pill" or "rounded".                                       |
 | `size`          | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
 | `type`          | The button type, default is "button".                                                            |
-| `variant`       | The button variant, which can be "solid", "outline", "link", or "icon".                          |
+| `variant`       | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".                          |
 
 ## Usage Examples
 

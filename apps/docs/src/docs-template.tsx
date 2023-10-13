@@ -23,8 +23,8 @@ interface IconLinkButtonProps {
 
 function extractWordBeforeDocsFromURL(): string {
   const url = window.location.href
-  const match = /(?<temp2>\w+)(?<temp1>--docs)/.exec(url)
-  const wordBeforeDocs = match ? match[1] : ''
+  const match = /(?<word>\w+)--docs/.exec(url)
+  const wordBeforeDocs = match?.groups?.word ?? ''
   const capitalizedWord =
     wordBeforeDocs.charAt(0).toUpperCase() + wordBeforeDocs.slice(1)
   return capitalizedWord
@@ -34,9 +34,9 @@ function IconLinkButton({
   icon,
   href,
   text,
-}: IconLinkButtonProps): JSX.Element {
+}: Readonly<IconLinkButtonProps>): JSX.Element {
   return (
-    <a className='flex' href={href} rel="noopener" target="_blank">
+    <a className="flex" href={href} rel="noopener" target="_blank">
       <Button iconLeft={icon} size="sm" variant="outline">
         <p style={{ color: COLOR_GRAY, margin: 0 }}>{text}</p>
       </Button>
@@ -46,9 +46,9 @@ function IconLinkButton({
 
 function ButtonGroup({
   componentName,
-}: {
+}: Readonly<{
   componentName: string
-}): JSX.Element {
+}>): JSX.Element {
   const componentNameLowerCase = componentName.toLowerCase()
 
   return (

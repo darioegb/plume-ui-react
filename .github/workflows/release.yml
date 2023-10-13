@@ -13,37 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # 👈 Required to retrieve git history
-      
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
+          fetch-depth: 0
 
-      - name: Setup Node.js 18.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
+      - name: Install
+        uses: ./.github/composite-actions/common
 
-      - name: Turbo cache
-        id: turbo-cache
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}-${{ github.ref_name }}
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Build
-        id: run-build
-        run: pnpm run build
-      
       - name: Generate docs
         id: run-build-docs
         if: steps.changesets.outputs.published == 'true'
@@ -54,13 +30,12 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm run version-packages
-          commit: "ci(changesets): version packages"
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
+          commit: 'ci(changesets): version packages'
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Update changelog
         if: steps.changesets.outputs.published == 'true'
         run: |
@@ -70,15 +45,13 @@ jobs:
           pr_url=$(gh pr create --base main --head bot-branch --title "Update Root Changelog" --json url --jq '.url')
           pr_number=$(basename $pr_url)
           gh pr review create $pr_number --approve
-      
+
       - name: Publish Storybook to Chromatic
         if: steps.changesets.outputs.published == 'true'
         uses: chromaui/action@v1
-        # Chromatic GitHub Action options
         with:
-          # Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: 'storybook-static'
           workingDir: 'apps/docs'
           zip: true
-          exitOnceUploaded: true  
+          exitOnceUploaded: true

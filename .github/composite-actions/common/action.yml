@@ -1,0 +1,38 @@
+name: 'Common Action'
+description: 'Custom action with common steps'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+        run_install: false
+
+    - name: Setup Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Turbo cache
+      id: turbo-cache
+      uses: actions/cache@v3
+      with:
+        path: .turbo
+        key: turbo-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+        restore-keys: |
+          turbo-${{ runner.os }}-${{ github.ref_name }}
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install
+
+    - name: Build
+      shell: bash
+      id: run-build
+      run: pnpm run build

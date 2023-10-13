@@ -57,11 +57,7 @@ export default {
     },
     customClasses: {
       control: 'text',
-      description: `Custom CSS class for the spinner. 
-        Take into account if these custom classes are applied, 
-        the classes of the spinner within the library are not applied. 
-        So attributes like borderColor, borderBottomColor, borderLeftColor, borderRightColor, size, variant have no effect.`,
-      if: { arg: 'variant', truthy: false },
+      description: `Custom CSS class for the spinner.`,
       table: {
         type: { summary: 'string' },
       },
@@ -76,7 +72,6 @@ export default {
     size: {
       control: 'radio',
       description: 'The size of the spinner.',
-      if: { arg: 'customClasses', truthy: false },
       options: ['sm', 'md', 'lg'],
       table: {
         type: { summary: `"sm" | "md" | "lg"` },
@@ -99,10 +94,9 @@ export default {
     variant: {
       control: 'select',
       description: 'The border variant of the spinner.',
-      if: { arg: 'customClasses', truthy: false },
-      options: ['solid', 'dashed', 'dotted', 'double'],
+      options: ['solid', 'dashed', 'dotted', 'double', 'unstyled'],
       table: {
-        type: { summary: `"solid" | "dashed" | "dotted" | "double"` },
+        type: { summary: `"solid" | "dashed" | "dotted" | "double" | "unstyled"` },
       },
     },
   },
@@ -132,8 +126,8 @@ export const Sizes: Story = {
   },
   render: () => (
     <>
-      <Spinner size="sm" />
-      <Spinner />
+      <Spinner customStyles={{marginRight: '.5rem'}} size="sm" />
+      <Spinner customStyles={{marginRight: '.5rem'}} />
       <Spinner size="lg" />
     </>
   ),
@@ -157,9 +151,9 @@ export const DifferentVariant: Story = {
   },
   render: () => (
     <>
-      <Spinner variant="dashed" />
-      <Spinner variant="dotted" />
-      <Spinner variant="double" />
+      <Spinner customStyles={{marginRight: '.5rem'}} variant="dashed" />
+      <Spinner customStyles={{marginRight: '.5rem'}} variant="dotted" />
+      <Spinner customStyles={{marginRight: '.5rem'}} variant="double" />
       <Spinner />
     </>
   ),
@@ -232,18 +226,18 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white" />
-<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" />
-<Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" />
+        code: `<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white" variant="unstyled" />
+<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
+<Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2" />
-      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2" />
-      <Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" />
+      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2" variant="unstyled" />
+      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2" variant="unstyled" />
+      <Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
     </>
   ),
 }
@@ -255,20 +249,20 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner customClasses="spinner-border" />
-<Spinner customClasses="spinner-border text-primary" />
-<Spinner customClasses="spinner-grow" />
-<Spinner customClasses="spinner-border spinner-border-sm" />
+        code: `<Spinner customClasses="spinner-border" variant="unstyled" />
+<Spinner customClasses="spinner-border text-primary" variant="unstyled" />
+<Spinner customClasses="spinner-grow" variant="unstyled" />
+<Spinner customClasses="spinner-border spinner-border-sm" variant="unstyled" />
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner customClasses="spinner-border mr-2" />
-      <Spinner customClasses="spinner-border text-primary mr-2" />
-      <Spinner customClasses="spinner-grow mr-2" />
-      <Spinner customClasses="spinner-border spinner-border-sm" />
+      <Spinner customClasses="spinner-border mr-2" variant="unstyled" />
+      <Spinner customClasses="spinner-border text-primary mr-2" variant="unstyled" />
+      <Spinner customClasses="spinner-grow mr-2" variant="unstyled" />
+      <Spinner customClasses="spinner-border spinner-border-sm" variant="unstyled" />
     </>
   ),
 }

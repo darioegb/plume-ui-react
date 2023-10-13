@@ -28,7 +28,7 @@ export interface ButtonOwnProps {
   variant?: ButtonVariant
 }
 
-type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon'
+type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'unstyled'
 type ButtonShape = 'pill' | 'rounded'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -66,8 +66,10 @@ const renderContent = (
 ): JSX.Element => (
   <>
     {iconLeft ? <span style={MARGIN_STYLE}>{iconLeft}</span> : null}
-    {Boolean(label) || busy ? (
-      <span style={MARGIN_STYLE}>{busy ? busyText : label}</span>
+    {Boolean(label) || busyText ? (
+      <span style={busy && !busyText ? { display: 'none' } : MARGIN_STYLE}>
+        {busy ? busyText : label}
+      </span>
     ) : null}
     {iconRight ? <span style={MARGIN_STYLE}>{iconRight}</span> : null}
   </>
@@ -76,16 +78,16 @@ const renderContent = (
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      customClasses,
       children,
       label,
       iconLeft,
       iconRight,
       customStyles,
       colorScheme,
-      disabled = false,
       busy = false,
       busyText = '',
+      customClasses = '',
+      disabled = false,
       shape = 'rounded',
       size = 'md',
       type = 'button',
@@ -97,15 +99,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const color =
       (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
     const contrastColor = getContrastColor(color)
-
-    const buttonClassNames = `
-      ${
-        customClasses ??
-        `${size !== 'md' ? styles[`${size}`] : ''} ${
-          shape !== 'rounded' ? styles[`${shape}`] : ''
-        } ${styles[`${variant}`]}`
-      }
-    `.trim()
+    const sizeClass =
+      size !== 'md' || variant === 'unstyled' ? styles[size] : ''
+    const shapeClass =
+      shape !== 'rounded' || variant === 'unstyled' ? styles[shape] : ''
+    const variantClass = variant !== 'unstyled' ? styles[variant] : ''
+    const buttonClassNames =
+      `${sizeClass} ${shapeClass} ${variantClass} ${customClasses}`.trim()
 
     return (
       <button
@@ -118,7 +118,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {renderContent(busy, busyText, iconLeft, label, iconRight)}
         {children}
-        {busy ? <Spinner borderColor={contrastColor} size="sm" /> : null}
+        {busy ? (
+          <Spinner
+            borderColor={contrastColor}
+            customStyles={{ marginLeft: '0.25rem' }}
+            size="sm"
+          />
+        ) : null}
       </button>
     )
   },
