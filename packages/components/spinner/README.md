@@ -36,22 +36,22 @@ To use this component in your React project, follow these steps:
 
 This component accepts several properties to customize the appearance and behavior of the spinner. Here are the available properties sorted alphabetically:
 
-| Property            | Description                                                                                  |
-| ------------------- | -------------------------------------------------------------------------------------------- |
-| `borderColor`       | The color of the spinner's border. Default is "currentColor".                                |
-| `borderBottomColor` | The color of the spinner's bottom border. Default is "currentColor".                         |
-| `borderLeftColor`   | The color of the spinner's left border. Default is "currentColor".                           |
-| `borderRightColor`  | The color of the spinner's right border. Default is "currentColor".                          |
-| `borderTopColor`    | The color of the spinner's top border. Default is "transparent".                             |
-| `customClasses`     | Additional CSS classes for the spinner.                                                      |
-| `customStyles`      | Custom styles for the spinner.                                                               |
-| `hidden`            | Indicates whether the spinner should be hidden.                                              |
-| `id`                | The unique identifier for the spinner element.                                               |
-| `size`              | The size of the spinner. Default is 1.                                                       |
-| `speed`             | The animation speed of the spinner. Default is "1s".                                         |
-| `tabIndex`          | The tab index of the spinner for keyboard navigation.                                        |
-| `thickness`         | The thickness of the spinner's border. Default is 3.                                         |
-| `variant`           | The spinner variant, which can be "solid", "dashed", "dotted", "double". Default is "solid". |
+| Property            | Description                                                                                                 |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `borderColor`       | The color of the spinner's border. Default is "currentColor".                                               |
+| `borderBottomColor` | The color of the spinner's bottom border. Default is "currentColor".                                        |
+| `borderLeftColor`   | The color of the spinner's left border. Default is "currentColor".                                          |
+| `borderRightColor`  | The color of the spinner's right border. Default is "currentColor".                                         |
+| `borderTopColor`    | The color of the spinner's top border. Default is "transparent".                                            |
+| `customClasses`     | Additional CSS classes for the spinner.                                                                     |
+| `customStyles`      | Custom styles for the spinner.                                                                              |
+| `hidden`            | Indicates whether the spinner should be hidden.                                                             |
+| `id`                | The unique identifier for the spinner element.                                                              |
+| `size`              | The size of the spinner. Default is 1.                                                                      |
+| `speed`             | The animation speed of the spinner. Default is "1s".                                                        |
+| `tabIndex`          | The tab index of the spinner for keyboard navigation.                                                       |
+| `thickness`         | The thickness of the spinner's border. Default is 3.                                                        |
+| `variant`           | The spinner variant, which can be "solid", "dashed", "dotted", "double", or "unstyled". Default is "solid". |
 
 ## Usage Examples
 

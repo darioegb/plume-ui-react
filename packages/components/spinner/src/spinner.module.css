@@ -13,7 +13,6 @@
   border-top-color: var(--transparent-area, default-border-color);
   border-width: var(--border-width, default-spinner-border-width);
   display: inline-block;
-  margin-left: 0.25rem;
   width: default-spinner-width;
   height: default-spinner-height;
 }

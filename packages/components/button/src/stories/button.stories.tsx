@@ -30,11 +30,7 @@ export default {
     },
     customClasses: {
       control: 'text',
-      description: `Custom CSS class for the button. 
-        Take into account if these custom classes are applied, 
-        the classes of the button within the library are not applied. 
-        So attributes like colorScheme, shape, size, variant have no effect.`,
-      if: { arg: 'variant', truthy: false },
+      description: `Custom CSS class for the button.`,
       table: {
         type: { summary: 'string' },
       },
@@ -70,7 +66,6 @@ export default {
     colorScheme: {
       control: 'select',
       description: 'Custom color scheme for the button.',
-      if: { arg: 'customClasses', truthy: false },
       options: [
         'primary',
         'secondary',
@@ -127,7 +122,6 @@ export default {
     shape: {
       control: 'inline-radio',
       description: 'Shape style of the button.',
-      if: { arg: 'customClasses', truthy: false },
       options: ['pill', 'rounded'],
       table: {
         type: { summary: `"pill" | "rounded"` },
@@ -136,7 +130,6 @@ export default {
     size: {
       control: 'radio',
       description: 'Size of the button.',
-      if: { arg: 'customClasses', truthy: false },
       options: ['sm', 'md', 'lg'],
       table: {
         type: { summary: `"sm" | "md" | "lg"` },
@@ -145,10 +138,9 @@ export default {
     variant: {
       control: 'select',
       description: 'Visual style variant of the button.',
-      if: { arg: 'customClasses', truthy: false },
-      options: ['solid', 'outline', 'link', 'icon'],
+      options: ['solid', 'outline', 'link', 'icon', 'unstyled'],
       table: {
-        type: { summary: `"solid" | "outline" | "link" | "icon"` },
+        type: { summary: `"solid" | "outline" | "link" | "icon" | "unstyled"` },
       },
     },
   },
@@ -207,7 +199,7 @@ export const Sizes: Story = {
 
 /**
  * This is a list o button with different variants.
- * Just adding the **variant** in one of these values **solid**, **outline**, **link**, **icon**. For works with icons also we can use other variants not only **icon**, this variant allows us to show the icon alone without borders or background. Icons can be added using props **iconLeft**, **iconRight** and also with **children**
+ * Just adding the **variant** in one of these values **solid**, **outline**, **link**, **icon** and **unstyled**. For works with icons also we can use other variants not only **icon**, this variant allows us to show the icon alone without borders or background. Icons can be added using props **iconLeft**, **iconRight** and also with **children**
  */
 export const Variants: Story = {
   parameters: {
@@ -227,13 +219,16 @@ export const Variants: Story = {
   label="Link Button" 
   variant="link"
 />
+<Button 
+  label="Unstyled Button"
+  variant="unstyled" 
+/>
 <Button variant="icon">🚀</Button>
 <Button
   colorScheme="info"
   iconLeft={<span>👈</span>}
   iconRight={<span>👉</span>}
 />
-<Button variant="outline">💡</Button>
           `,
       },
     },
@@ -243,13 +238,13 @@ export const Variants: Story = {
       <Button colorScheme="primary" label="Solid Button" />
       <Button colorScheme="success" label="Outline Button" variant="outline" />
       <Button colorScheme="error" label="Link Button" variant="link" />
+      <Button label="Unstyled Button" variant="unstyled" />
       <Button variant="icon">🚀</Button>
       <Button
         colorScheme="info"
         iconLeft={<span>👈</span>}
         iconRight={<span>👉</span>}
       />
-      <Button variant="outline">💡</Button>
     </div>
   ),
 }
@@ -438,22 +433,27 @@ export const Tailwind: Story = {
         code: `<Button
     label="Primary Button"
     className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+    variant="unstyled"
   />
 <Button
   label="Soft Button"
   className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
+  variant="unstyled"
 />
 <Button
   label="Outline Button"
   className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
+  variant="unstyled"
 />
 <Button
   label="Ghost Button"
   className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
+  variant="unstyled"
 />
 <Button
   label="Pilled Button"
   className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
+  variant="unstyled"
 />
 <Button
   label="With icon right"
@@ -475,6 +475,7 @@ export const Tailwind: Story = {
       />
     </svg>
   }
+  variant="unstyled"
 />
           `,
       },
@@ -483,27 +484,32 @@ export const Tailwind: Story = {
   render: () => (
     <div className="grid gap-4 grid-cols-3 grid-rows-2">
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
         label="Primary Button"
+        variant="unstyled"
       />
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
         label="Soft Button"
+        variant="unstyled"
       />
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
         label="Outline Button"
+        variant="unstyled"
       />
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
         label="Ghost Button"
+        variant="unstyled"
       />
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
         label="Pilled Button"
+        variant="unstyled"
       />
       <Button
-        customClasses="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
+        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
         iconRight={
           <svg
             className="w-2.5 h-auto"
@@ -522,6 +528,7 @@ export const Tailwind: Story = {
           </svg>
         }
         label="With icon right"
+        variant="unstyled"
       />
     </div>
   ),
@@ -537,22 +544,27 @@ export const Bootstrap: Story = {
         code: `<Button
   label="Primary Button"
   className="btn btn-primary"
+  variant="unstyled"
 />
 <Button
   label="Soft Button"
   className="btn btn-light"
+  variant="unstyled"
 />
 <Button
   label="Outline Button"
   className="btn btn-outline-primary"
+  variant="unstyled"
 />
 <Button
   label="Link Button"
   className="btn btn-link"
+  variant="unstyled"
 />
 <Button
   label="Pill Button"
   className="btn btn-primary rounded-pill"
+  variant="unstyled"
 />
 <Button
   label="With icon right"
@@ -574,6 +586,7 @@ export const Bootstrap: Story = {
       />
     </svg>
   }
+  variant="unstyled"
 />
         `,
       },
@@ -584,16 +597,29 @@ export const Bootstrap: Story = {
       <Button
         customClasses="btn btn-primary bg-blue-600"
         label="Primary Button"
+        variant="unstyled"
       />
-      <Button customClasses="btn btn-light" label="Soft Button" />
-      <Button customClasses="btn btn-outline-primary" label="Outline Button" />
-      <Button customClasses="btn btn-link" label="Link Button" />
+      <Button
+        customClasses="btn btn-light"
+        label="Soft Button"
+        variant="unstyled"
+      />
+      <Button
+        customClasses="btn btn-outline-primary"
+        label="Outline Button"
+        variant="unstyled"
+      />
+      <Button
+        customClasses="btn btn-link"
+        label="Link Button"
+        variant="unstyled"
+      />
       <Button
         customClasses="btn btn-primary rounded-pill bg-blue-600"
         label="Pill Button"
+        variant="unstyled"
       />
       <Button
-        // colorScheme=
         customClasses="btn btn-primary d-inline-flex justify-content-center align-items-center bg-blue-600"
         iconRight={
           <svg
@@ -613,6 +639,7 @@ export const Bootstrap: Story = {
           </svg>
         }
         label="With icon right"
+        variant="unstyled"
       />
     </div>
   ),

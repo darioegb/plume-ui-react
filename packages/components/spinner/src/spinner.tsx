@@ -1,4 +1,4 @@
-import type { CSSProperties, HtmlHTMLAttributes } from 'react'
+import type { HtmlHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ComponentProps, Size } from '@plume-ui-react/core'
 import styles from './spinner.module.css'
@@ -15,25 +15,27 @@ export interface SpinnerOwnProps {
   variant?: SpinnerVariant
 }
 
-type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double'
+type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
 type SpinnerRootAttributes = Pick<
   HtmlHTMLAttributes<HTMLSpanElement>,
   'hidden' | 'id' | 'tabIndex'
 >
+type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
+  Pick<ComponentProps, 'customStyles'>
 export type SpinnerProps = ComponentProps &
   SpinnerRootAttributes &
   SpinnerOwnProps
 
-const createSpinnerStyles = (
-  thickness: number,
-  borderColor: string,
-  speed: string,
-  borderTopColor?: string,
-  borderRightColor?: string,
-  borderBottomColor?: string,
-  borderLeftColor?: string,
-  style?: CSSProperties,
-): Record<string, unknown> => ({
+const createSpinnerStyles = ({
+  borderColor,
+  borderTopColor,
+  borderRightColor,
+  borderBottomColor,
+  borderLeftColor,
+  customStyles: style,
+  speed,
+  thickness,
+}: SpinnerStylesOptions): Record<string, unknown> => ({
   ...(thickness && { '--border-width': `${thickness}px` }),
   ...(borderColor && { '--color': borderColor }),
   ...(borderTopColor && {
@@ -49,7 +51,7 @@ const createSpinnerStyles = (
     '--border-left-color': borderLeftColor,
   }),
   '--animation-duration': speed,
-  ...(style || {}),
+  ...(style ?? {}),
 })
 
 export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
@@ -59,9 +61,9 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
       borderRightColor,
       borderBottomColor,
       borderLeftColor,
-      customClasses,
       customStyles,
       borderColor = 'currentColor',
+      customClasses = '',
       size = 'md',
       speed = '1s',
       thickness = 3,
@@ -70,29 +72,33 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     }: SpinnerProps,
     ref,
   ) => {
-    const spinnerStyles = createSpinnerStyles(
-      thickness,
+    const spinnerStyles = createSpinnerStyles({
       borderColor,
-      speed,
       borderTopColor,
       borderRightColor,
       borderBottomColor,
       borderLeftColor,
       customStyles,
-    )
+      speed,
+      thickness,
+    })
+
+    const sizeClass = size !== 'md' ? styles[size] : ''
+    const borderTopClass = borderTopColor ? styles.borderTopColor : ''
+    const borderRightClass = borderRightColor ? styles.borderRightColor : ''
+    const borderBottomClass = borderBottomColor ? styles.borderBottomColor : ''
+    const borderLeftClass = borderLeftColor ? styles.borderLeftColor : ''
+    const variantClass = variant !== 'unstyled' ? styles[variant] : ''
 
     const spinnerClass = `
-    ${
-      customClasses ??
-      `
-    ${size !== 'md' ? styles[`${size}`] : ''}
-    ${styles[`${variant}`]}
-    ${borderTopColor ? styles.borderTopColor : ''}
-    ${borderRightColor ? styles.borderRightColor : ''}
-    ${borderBottomColor ? styles.borderBottomColor : ''}
-    ${borderLeftColor ? styles.borderLeftColor : ''}`
-    }
-  `.trim()
+      ${sizeClass} 
+      ${variantClass} 
+      ${borderTopClass} 
+      ${borderRightClass}
+      ${borderBottomClass}
+      ${borderLeftClass}
+      ${customClasses}
+    `.trim()
 
     return (
       <span
