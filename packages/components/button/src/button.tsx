@@ -54,7 +54,7 @@ const createButtonStyles = (
 ): Record<string, unknown> => ({
   '--button-scheme': color,
   '--button-text-color': contrastColor,
-  ...(style || {}),
+  ...(style ?? {}),
 })
 
 const renderContent = (

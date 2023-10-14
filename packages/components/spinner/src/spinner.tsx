@@ -51,7 +51,7 @@ const createSpinnerStyles = ({
     '--border-left-color': borderLeftColor,
   }),
   '--animation-duration': speed,
-  ...(style || {}),
+  ...(style ?? {}),
 })
 
 export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
