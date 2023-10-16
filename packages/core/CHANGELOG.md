@@ -1,5 +1,12 @@
 # @plume-ui-react/core
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`746c53e`](https://github.com/darioegb/plume-ui-react/commit/746c53ec024dd732c78b732bca51b759a5b9eb0b)]:
+  - @plume-ui-react/merge-utils@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

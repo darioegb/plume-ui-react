@@ -1,5 +1,18 @@
 # @plume-ui-react/button
 
+## 0.0.5
+
+### Patch Changes
+
+- [`746c53e`](https://github.com/darioegb/plume-ui-react/commit/746c53ec024dd732c78b732bca51b759a5b9eb0b) Thanks [@darioegb](https://github.com/darioegb)! - Update prettier printWidth
+  Update global readme
+  Update global changelog
+  Fix sonar test scope
+- Updated dependencies [[`746c53e`](https://github.com/darioegb/plume-ui-react/commit/746c53ec024dd732c78b732bca51b759a5b9eb0b)]:
+  - @plume-ui-react/spinner@0.0.5
+  - @plume-ui-react/color-utils@0.0.3
+  - @plume-ui-react/core@0.0.3
+
 ## 0.0.4
 
 ### Patch Changes
