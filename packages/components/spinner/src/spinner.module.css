@@ -22,6 +22,11 @@
   height: 1rem;
 }
 
+.md {
+  width: default-spinner-width;
+  height: default-spinner-height;
+}
+
 .lg {
   width: 3rem;
   height: 3rem;

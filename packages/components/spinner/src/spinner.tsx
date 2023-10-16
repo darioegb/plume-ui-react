@@ -16,15 +16,10 @@ export interface SpinnerOwnProps {
 }
 
 type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
-type SpinnerRootAttributes = Pick<
-  HtmlHTMLAttributes<HTMLSpanElement>,
-  'hidden' | 'id' | 'tabIndex'
->
+type SpinnerRootAttributes = Pick<HtmlHTMLAttributes<HTMLSpanElement>, 'hidden' | 'id' | 'tabIndex'>
 type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
   Pick<ComponentProps, 'customStyles'>
-export type SpinnerProps = ComponentProps &
-  SpinnerRootAttributes &
-  SpinnerOwnProps
+export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps
 
 const createSpinnerStyles = ({
   borderColor,
@@ -83,7 +78,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
       thickness,
     })
 
-    const sizeClass = size !== 'md' ? styles[size] : ''
+    const sizeClass = size !== 'md' || variant === 'unstyled' ? styles[size] : ''
     const borderTopClass = borderTopColor ? styles.borderTopColor : ''
     const borderRightClass = borderRightColor ? styles.borderRightColor : ''
     const borderBottomClass = borderBottomColor ? styles.borderBottomColor : ''

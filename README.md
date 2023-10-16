@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/chakra-ui/chakra-ui">
-    <img src="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg" alt="Chakra logo" width="300" />
+  <a href="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg">
+    <img src="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg" alt="Plume UI logo" width="300" />
   </a>
 </p>
 
@@ -305,7 +305,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      page: () => DocsTemplate('Button'), // don't forget adding this to new component documentation
+      // don't forget adding this to new component documentation
       toc: {
         title: 'On this page',
         disable: false,

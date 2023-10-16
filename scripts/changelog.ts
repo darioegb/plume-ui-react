@@ -14,10 +14,7 @@ type PrInfo = {
   version: string
 }
 
-async function getLatestMergedPrInfo(
-  repoOwner: string,
-  repoName: string,
-): Promise<PrInfo | null> {
+async function getLatestMergedPrInfo(repoOwner: string, repoName: string): Promise<PrInfo | null> {
   const branchName = 'changeset-release/main'
   const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=closed&sort=updated&head=${branchName}`
   const options = {
@@ -33,16 +30,11 @@ async function getLatestMergedPrInfo(
     if (response.ok) {
       const pullRequests = await response.json()
       const pr = pullRequests
-        ?.filter(
-          (pr: PullRequest) =>
-            pr.merged_at !== null && pr.title === 'Version Packages',
-        )
+        ?.filter((pr: PullRequest) => pr.merged_at !== null && pr.title === 'Version Packages')
         ?.pop()
       const prMergeDate = new Date(pr.merged_at)
       const prUrl = pr.html_url
-      const versionMatch = pr.body.match(
-        /## @plume-ui-react\/lib@(\d+\.\d+\.\d+)/,
-      )
+      const versionMatch = pr.body.match(/## @plume-ui-react\/lib@(\d+\.\d+\.\d+)/)
       const version = versionMatch ? versionMatch[1] : '1.0.0'
       return {
         version,
@@ -59,9 +51,7 @@ async function getLatestMergedPrInfo(
       )
     }
   } catch (error) {
-    console.error(
-      `Failed to fetch merged PRs for ${repoOwner}/${repoName}: ${error}`,
-    )
+    console.error(`Failed to fetch merged PRs for ${repoOwner}/${repoName}: ${error}`)
   }
 
   return null

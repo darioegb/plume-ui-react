@@ -1,9 +1,4 @@
-import type {
-  ButtonHTMLAttributes,
-  CSSProperties,
-  ForwardedRef,
-  ReactNode,
-} from 'react'
+import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import type {
   DefaultColorPalette,
@@ -32,15 +27,7 @@ type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'unstyled'
 type ButtonShape = 'pill' | 'rounded'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
-  | 'children'
-  | 'disabled'
-  | 'hidden'
-  | 'id'
-  | 'onBlur'
-  | 'onClick'
-  | 'onFocus'
-  | 'tabIndex'
-  | 'type'
+  'children' | 'disabled' | 'hidden' | 'id' | 'onBlur' | 'onClick' | 'onFocus' | 'tabIndex' | 'type'
 >
 
 export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
@@ -96,16 +83,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const color =
-      (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
+    const color = (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
     const contrastColor = getContrastColor(color)
-    const sizeClass =
-      size !== 'md' || variant === 'unstyled' ? styles[size] : ''
-    const shapeClass =
-      shape !== 'rounded' || variant === 'unstyled' ? styles[shape] : ''
+    const sizeClass = size !== 'md' || variant === 'unstyled' ? styles[size] : ''
+    const shapeClass = shape !== 'rounded' || variant === 'unstyled' ? styles[shape] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-    const buttonClassNames =
-      `${sizeClass} ${shapeClass} ${variantClass} ${customClasses}`.trim()
+    const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} ${customClasses}`.trim()
 
     return (
       <button
@@ -119,11 +102,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {renderContent(busy, busyText, iconLeft, label, iconRight)}
         {children}
         {busy ? (
-          <Spinner
-            borderColor={contrastColor}
-            customStyles={{ marginLeft: '0.25rem' }}
-            size="sm"
-          />
+          <Spinner borderColor={contrastColor} customStyles={{ marginLeft: '0.25rem' }} size="sm" />
         ) : null}
       </button>
     )

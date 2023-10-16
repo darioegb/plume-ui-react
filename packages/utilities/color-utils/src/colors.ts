@@ -1,8 +1,6 @@
 export function getContrastColor(colorSchema: string): string {
-  const hexMatch =
-    /^#?(?<red>[a-f\d]{2})(?<green>[a-f\d]{2})(?<blue>[a-f\d]{2})$/i.exec(
-      colorSchema,
-    )
+  const regexpHex = /^#?(?<red>[a-f\d]{2})(?<green>[a-f\d]{2})(?<blue>[a-f\d]{2})$/i
+  const hexMatch = regexpHex.exec(colorSchema)
   const rgbMatch = colorSchema.match(/\d+/g)
 
   if (!rgbMatch) return '#000000'

@@ -2,10 +2,7 @@ export interface DeepMergeOptions {
   clone?: boolean
 }
 
-export function deepMerge<T>(
-  target: T,
-  ...sources: (Partial<T> | undefined)[]
-): T {
+export function deepMerge<T>(target: T, ...sources: (Partial<T> | undefined)[]): T {
   const options: DeepMergeOptions = { clone: false }
 
   function isObject(item: unknown): item is Record<string, unknown> {
@@ -16,9 +13,7 @@ export function deepMerge<T>(
     targetObj: Record<string, unknown>,
     sourceObj: Record<string, unknown>,
   ): Record<string, unknown> {
-    const merged: Record<string, unknown> = options.clone
-      ? { ...targetObj }
-      : targetObj
+    const merged: Record<string, unknown> = options.clone ? { ...targetObj } : targetObj
 
     for (const key of Object.keys(sourceObj)) {
       if (isObject(sourceObj[key])) {

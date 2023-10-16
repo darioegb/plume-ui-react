@@ -90,8 +90,8 @@ Here are some examples of how you can use this spinner component in your project
 
 ```javascript
 <Spinner
-  style={{ background: 'gray', borderRadius: '50%' }}
-  className="my-custom-spinner"
+  customStyles={{ background: 'gray', borderRadius: '50%' }}
+  customClasses="my-custom-spinner"
 />
 ```
 

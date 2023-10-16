@@ -18,7 +18,7 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changelog": "tsx scripts/changelog.ts",
-    "changelog:commit": "git add . && git commit -am 'docs: add changelog' && git push",
+    "changelog:commit": "git add . && git commit -am 'docs: add changelog' && git push --set-upstream origin changelog/main",
     "changeset": "changeset",
     "test": "turbo run test --filter=docs^...",
     "test:coverage": "turbo run test:coverage --filter=docs^...",
