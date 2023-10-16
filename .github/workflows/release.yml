@@ -12,6 +12,11 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Install
         uses: ./.github/composite-actions/common
 
@@ -37,9 +42,7 @@ jobs:
           git checkout -b changelog/main
           pnpm changelog
           pnpm changelog:commit
-          pr_url=$(gh pr create --base main --head bot-branch --title "Update Root Changelog")
-          pr_number=$(basename $pr_url)
-          gh pr review create $pr_number --approve
+          gh pr create --base main --head bot-branch --title "Update Root Changelog"
 
       - name: Publish Storybook to Chromatic
         if: steps.changesets.outputs.published == 'true'
