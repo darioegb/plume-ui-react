@@ -10,6 +10,7 @@
 ![npm](https://img.shields.io/npm/dm/%40plume-ui-react%2Flib)
 ![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/darioegb/plume-ui-react)
 ![NPM](https://img.shields.io/npm/l/%40plume-ui-react%2Flib)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=darioegb_plume-ui-react&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=darioegb_plume-ui-react)
 
 
 ## Table of Contents
