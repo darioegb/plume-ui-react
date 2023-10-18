@@ -10,9 +10,12 @@ export default function ButtonList() {
 
   return (
     <>
-      <button onClick={() => setIsDisabled((state) => !state)}>
-        Toggle disabled
-      </button>
+      <Button
+        onClick={() => setIsDisabled((state) => !state)}
+        label="Toggle disabled"
+        variant="unstyled"
+        customClasses="mb-3"
+      />
       <Button
         onClick={handleClick}
         label="Add to cart"
@@ -29,10 +32,12 @@ export default function ButtonList() {
             <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z" />
           </svg>
         }
+        variant="unstyled"
       />
       <Button
         onClick={handleClick}
         customClasses="py-3 px-4 text-lime-500 hover:text-lime-700"
+        variant="unstyled"
       >
         <svg
           className="w-3.5 h-3.5"

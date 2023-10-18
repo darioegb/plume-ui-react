@@ -92,3 +92,15 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.iconMargin {
+  margin: 0 .25rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.spinnerMargin {
+  margin-left: .25rem;
+}

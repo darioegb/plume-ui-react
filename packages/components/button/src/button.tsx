@@ -32,8 +32,6 @@ type ButtonRootAttributes = Pick<
 
 export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
 
-const MARGIN_STYLE = { margin: '0 .25rem' }
-
 const createButtonStyles = (
   color: string,
   contrastColor: string,
@@ -52,13 +50,13 @@ const renderContent = (
   iconRight?: ReactNode,
 ): JSX.Element => (
   <>
-    {iconLeft ? <span style={MARGIN_STYLE}>{iconLeft}</span> : null}
+    {iconLeft ? <span className={styles.iconMargin}>{iconLeft}</span> : null}
     {Boolean(label) || busyText ? (
-      <span style={busy && !busyText ? { display: 'none' } : MARGIN_STYLE}>
+      <span className={busy && !busyText ? styles.hidden : styles.iconMargin}>
         {busy ? busyText : label}
       </span>
     ) : null}
-    {iconRight ? <span style={MARGIN_STYLE}>{iconRight}</span> : null}
+    {iconRight ? <span className={styles.iconMargin}>{iconRight}</span> : null}
   </>
 )
 
@@ -102,7 +100,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {renderContent(busy, busyText, iconLeft, label, iconRight)}
         {children}
         {busy ? (
-          <Spinner borderColor={contrastColor} customStyles={{ marginLeft: '0.25rem' }} size="sm" />
+          <Spinner borderColor={contrastColor} customClasses={styles.spinnerMargin} size="sm" />
         ) : null}
       </button>
     )
