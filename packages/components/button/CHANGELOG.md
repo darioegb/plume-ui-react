@@ -1,5 +1,11 @@
 # @plume-ui-react/button
 
+## 0.0.6
+
+### Patch Changes
+
+- [`3c32eed`](https://github.com/darioegb/plume-ui-react/commit/3c32eedde61cc15403042c4b897888bc6d866702) Thanks [@darioegb](https://github.com/darioegb)! - Remove inline style on button children
+
 ## 0.0.5
 
 ### Patch Changes
