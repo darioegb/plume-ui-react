@@ -20,11 +20,6 @@ jobs:
       - name: Install
         uses: ./.github/composite-actions/common
 
-      - name: Generate docs
-        id: run-build-docs
-        if: steps.changesets.outputs.published == 'true'
-        run: pnpm build:docs
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
@@ -40,9 +35,15 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         run: |
           git checkout -b changelog/main
+          git pull
           pnpm changelog
           pnpm changelog:commit
           gh pr create --base main --head bot-branch --title "Update Root Changelog"
+
+      - name: Generate docs
+        id: run-build-docs
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm build:docs
 
       - name: Publish Storybook to Chromatic
         if: steps.changesets.outputs.published == 'true'
