@@ -9,7 +9,7 @@ import type {
 import { getMergedConfig } from '@plume-ui-react/core'
 import { Spinner } from '@plume-ui-react/spinner'
 import { getContrastColor } from '@plume-ui-react/color-utils'
-import styles from './button.module.css'
+ import styles from './button.module.css'
 
 export interface ButtonOwnProps {
   busy?: boolean
@@ -53,7 +53,7 @@ const renderContent = (
     {iconLeft ? <span className={styles.iconMargin}>{iconLeft}</span> : null}
     {Boolean(label) || busyText ? (
       <span className={busy && !busyText ? styles.hidden : styles.iconMargin}>
-        {busy ? busyText : label}
+        {busyText || label}
       </span>
     ) : null}
     {iconRight ? <span className={styles.iconMargin}>{iconRight}</span> : null}
@@ -100,7 +100,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {renderContent(busy, busyText, iconLeft, label, iconRight)}
         {children}
         {busy ? (
-          <Spinner borderColor={contrastColor} customClasses={styles.spinnerMargin} size="sm" />
+          <Spinner
+            borderColor={contrastColor}
+            {...(busyText && { customClasses: styles.spinnerMargin })}
+            size="sm"
+          />
         ) : null}
       </button>
     )

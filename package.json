@@ -25,6 +25,7 @@
     "test:watch": "turbo run test:watch --filter=docs^...",
     "version-packages": "changeset version",
     "release": "changeset publish",
+    "postbuild": "find . -type f -name '*.mts' -exec rm {} +",
     "prepare": "husky install"
   },
   "devDependencies": {
