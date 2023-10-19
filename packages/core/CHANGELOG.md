@@ -1,5 +1,12 @@
 # @plume-ui-react/core
 
+## 0.0.4
+
+### Patch Changes
+
+- [`d08ff1d`](https://github.com/darioegb/plume-ui-react/commit/d08ff1dfc0950545ab825be925cb156658f19da4) Thanks [@darioegb](https://github.com/darioegb)! - Fix some minor visual issues button
+  Perform build size al packages removing mts files
+
 ## 0.0.3
 
 ### Patch Changes

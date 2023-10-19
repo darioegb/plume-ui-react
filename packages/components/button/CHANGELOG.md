@@ -1,5 +1,15 @@
 # @plume-ui-react/button
 
+## 0.0.7
+
+### Patch Changes
+
+- [`d08ff1d`](https://github.com/darioegb/plume-ui-react/commit/d08ff1dfc0950545ab825be925cb156658f19da4) Thanks [@darioegb](https://github.com/darioegb)! - Fix some minor visual issues button
+  Perform build size al packages removing mts files
+- Updated dependencies [[`d08ff1d`](https://github.com/darioegb/plume-ui-react/commit/d08ff1dfc0950545ab825be925cb156658f19da4)]:
+  - @plume-ui-react/spinner@0.0.6
+  - @plume-ui-react/core@0.0.4
+
 ## 0.0.6
 
 ### Patch Changes
