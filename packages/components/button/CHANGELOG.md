@@ -1,5 +1,16 @@
 # @plume-ui-react/button
 
+## 0.0.8
+
+### Patch Changes
+
+- [`69cadd9`](https://github.com/darioegb/plume-ui-react/commit/69cadd948e3438fc7e85de225a96e76e15d53b31) Thanks [@darioegb](https://github.com/darioegb)! - Update some dependencies
+
+- Updated dependencies [[`69cadd9`](https://github.com/darioegb/plume-ui-react/commit/69cadd948e3438fc7e85de225a96e76e15d53b31)]:
+  - @plume-ui-react/color-utils@0.0.4
+  - @plume-ui-react/spinner@0.0.7
+  - @plume-ui-react/core@0.0.5
+
 ## 0.0.7
 
 ### Patch Changes
