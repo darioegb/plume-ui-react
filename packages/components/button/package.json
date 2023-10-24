@@ -45,15 +45,10 @@
     "@plume-ui-react/spinner": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.4",
     "eslint-config-custom": "workspace:*",
     "jest-preset": "workspace:*",
     "prettier-config": "workspace:*",
-    "react": "^18.1.0",
-    "tsconfig": "workspace:*",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+    "tsconfig": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=16.11.0",

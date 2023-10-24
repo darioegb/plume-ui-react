@@ -35,16 +35,23 @@
     "@commitlint/config-conventional": "^17.7.0",
     "@octokit/rest": "^20.0.2",
     "@types/css-modules": "^1.0.3",
+    "@types/node": "^20.6.0",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "esbuild-css-modules": "workspace:*",
     "eslint": "^8.48.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "postcss": "^8.4.29",
     "postcss-modules": "^6.0.0",
     "prettier": "^3.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tsconfig": "workspace:*",
     "tsup": "^7.2.0",
     "tsx": "^3.13.0",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^5.2.2"
   },
   "packageManager": "pnpm@8.6.10"
 }

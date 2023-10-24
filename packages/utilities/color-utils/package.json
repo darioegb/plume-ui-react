@@ -29,9 +29,7 @@
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+    "tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -11,9 +11,7 @@
     "lint:fix": "eslint src/ --ext .tsx,.ts"
   },
   "dependencies": {
-    "@plume-ui-react/lib": "workspace:*",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@plume-ui-react/lib": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^7.4.0",
@@ -31,14 +29,11 @@
     "bootstrap": "^5.3.1",
     "eslint-config-custom": "workspace:*",
     "chromatic": "^7.2.3",
-    "postcss": "^8.4.27",
     "prettier-config": "workspace:*",
     "serve": "^13.0.4",
     "storybook": "^7.4.0",
     "tailwind-config": "workspace:*",
-    "tailwindcss": "^3.3.3",
     "tsconfig": "workspace:*",
-    "typescript": "^5.2.2",
     "vite": "^4.4.9"
   }
 }

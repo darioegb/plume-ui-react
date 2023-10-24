@@ -35,7 +35,7 @@ jobs:
         if: steps.changesets.outputs.published == 'true'
         run: |
           git checkout -b changelog/main
-          git pull
+          git pull origin changelog/main
           pnpm changelog
           pnpm changelog:commit
           gh pr create --base main --head bot-branch --title "Update Root Changelog"
