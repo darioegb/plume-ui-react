@@ -35,9 +35,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.7
         version: 18.2.14
-      esbuild-css-modules:
-        specifier: workspace:*
-        version: link:packages/esbuild-css-modules
       eslint:
         specifier: ^8.48.0
         version: 8.52.0
@@ -302,8 +299,6 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
-
-  packages/esbuild-css-modules: {}
 
   packages/eslint-config-custom:
     devDependencies:
