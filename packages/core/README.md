@@ -1,6 +1,3 @@
-Claro, aquí tienes un ejemplo de un README para el core de una librería de componentes React con TypeScript:
-
-```markdown
 # Plume UI React Core
 
 The Plume UI Core is the foundational module for the Plume UI library of React components. It provides configuration options and basic types used throughout the library.
