@@ -1,5 +1,12 @@
 # @plume-ui-react/spinner
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`e674ad6`](https://github.com/darioegb/plume-ui-react/commit/e674ad6ea1b8975ec15dc3c2dd67c79976cb62f9)]:
+  - @plume-ui-react/core@0.0.6
+
 ## 0.0.7
 
 ### Patch Changes

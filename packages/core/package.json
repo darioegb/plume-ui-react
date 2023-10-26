@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Core stuff for Plume UI lib",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
