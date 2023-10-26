@@ -1,5 +1,11 @@
 # @plume-ui-react/core
 
+## 0.0.6
+
+### Patch Changes
+
+- [`4de8748`](https://github.com/darioegb/plume-ui-react/commit/4de8748a446de36ad69f350acb3a47386359d73e) Thanks [@darioegb](https://github.com/darioegb)! - Add readme to Core
+
 ## 0.0.5
 
 ### Patch Changes
