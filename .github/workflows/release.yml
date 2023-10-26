@@ -27,6 +27,7 @@ jobs:
           version: pnpm run version-packages
           commit: 'ci(changesets): version packages'
           publish: pnpm release
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -34,11 +35,8 @@ jobs:
       - name: Update changelog
         if: steps.changesets.outputs.published == 'true'
         run: |
-          git checkout -b changelog/main
-          git pull origin changelog/main
           pnpm changelog
           pnpm changelog:commit
-          gh pr create --base main --head bot-branch --title "Update Root Changelog"
 
       - name: Generate docs
         id: run-build-docs
