@@ -34,11 +34,13 @@ jobs:
       - name: Update changelog
         if: steps.changesets.outputs.published == 'true'
         run: |
-          git checkout -b changelog/main
-          git pull origin changelog/main
+          git checkout changelog/main
+          git pull origin main
           pnpm changelog
           pnpm changelog:commit
           gh pr create --base main --head bot-branch --title "Update Root Changelog"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate docs
         id: run-build-docs
