@@ -27,16 +27,26 @@ jobs:
           version: pnpm run version-packages
           commit: 'ci(changesets): version packages'
           publish: pnpm release
-          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Update changelog
         if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if ! git ls-remote --exit-code --h origin changelog/main; then
+            git checkout main
+            git checkout -b changelog/main
+            git push origin changelog/main
+          else
+            git checkout changelog/main 
+            git pull origin main
+          fi
           pnpm changelog
           pnpm changelog:commit
+          gh pr create --base main --head changelog/main --title "Update Root Changelog" --body "This pull request updates the Main Changelog of the monorepo."
 
       - name: Generate docs
         id: run-build-docs
