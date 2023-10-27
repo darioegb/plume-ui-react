@@ -23,12 +23,6 @@ runs:
         restore-keys: |
           turbo-${{ runner.os }}-${{ github.ref_name }}
 
-    - name: Setup Git User
-      shell: bash
-      run: |
-        git config --global user.email "darioegb@gmail.com"
-        git config --global user.name "Dario Gonzalez"
-
     - name: Install Dependencies
       shell: bash
       run: pnpm install
