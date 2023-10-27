@@ -1,3 +1,10 @@
+# Version 0.0.11
+Explore the changelog for Plume UI React version 0.0.11. Learn about the latest features, bug fixes, and improvements.
+
+[https://github.com/darioegb/plume-ui-react/pull/14] - October 26, 2023
+
+
+
 # Version 0.0.5
 Explore the changelog for Plume UI React version 0.0.5. Learn about the latest features, bug fixes, and improvements.
 
