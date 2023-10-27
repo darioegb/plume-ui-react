@@ -1,5 +1,13 @@
 # @plume-ui-react/lib
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`f23a136`](https://github.com/darioegb/plume-ui-react/commit/f23a1366455f170489e47b5979a964392476cda1)]:
+  - @plume-ui-react/spinner@0.0.10
+  - @plume-ui-react/button@0.0.11
+
 ## 0.0.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @plume-ui-react/spinner
 
+## 0.0.10
+
+### Patch Changes
+
+- [`f23a136`](https://github.com/darioegb/plume-ui-react/commit/f23a1366455f170489e47b5979a964392476cda1) Thanks [@darioegb](https://github.com/darioegb)! - Remove unnecesary styles on unstyled button & spinner
+
 ## 0.0.9
 
 ### Patch Changes
