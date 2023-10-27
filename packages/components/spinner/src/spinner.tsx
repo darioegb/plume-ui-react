@@ -59,7 +59,6 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
       customStyles,
       borderColor = 'currentColor',
       customClasses = '',
-      size = 'md',
       speed = '1s',
       thickness = 3,
       variant = 'solid',
@@ -67,6 +66,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     }: SpinnerProps,
     ref,
   ) => {
+    const { size = variant !== 'unstyled' && 'md' } = props
     const spinnerStyles = createSpinnerStyles({
       borderColor,
       borderTopColor,
@@ -78,7 +78,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
       thickness,
     })
 
-    const sizeClass = size !== 'md' || variant === 'unstyled' ? styles[size] : ''
+    const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const borderTopClass = borderTopColor ? styles.borderTopColor : ''
     const borderRightClass = borderRightColor ? styles.borderRightColor : ''
     const borderBottomClass = borderBottomColor ? styles.borderBottomColor : ''

@@ -9,7 +9,7 @@ import type {
 import { getMergedConfig } from '@plume-ui-react/core'
 import { Spinner } from '@plume-ui-react/spinner'
 import { getContrastColor } from '@plume-ui-react/color-utils'
- import styles from './button.module.css'
+import styles from './button.module.css'
 
 export interface ButtonOwnProps {
   busy?: boolean
@@ -73,18 +73,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       busyText = '',
       customClasses = '',
       disabled = false,
-      shape = 'rounded',
-      size = 'md',
       type = 'button',
       variant = 'solid',
-      ...restProps
+      ...props
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
+    const {
+      size = variant !== 'unstyled' && 'md',
+      shape = variant !== 'unstyled' && 'rounded',
+    } = props
     const color = (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
     const contrastColor = getContrastColor(color)
-    const sizeClass = size !== 'md' || variant === 'unstyled' ? styles[size] : ''
-    const shapeClass = shape !== 'rounded' || variant === 'unstyled' ? styles[shape] : ''
+    const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
+    const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
     const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} ${customClasses}`.trim()
 
@@ -95,7 +97,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         style={createButtonStyles(color, contrastColor, customStyles)}
         type={type}
-        {...restProps}
+        {...props}
       >
         {renderContent(busy, busyText, iconLeft, label, iconRight)}
         {children}
