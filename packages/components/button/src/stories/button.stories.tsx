@@ -568,7 +568,7 @@ export const Bootstrap: Story = {
 />
 <Button
   label="With icon right"
-  className="btn btn-primary d-inline-flex justify-content-center align-items-center"
+  className="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600"
   iconRight={
     <svg
       className="w-25 h-auto"
@@ -620,7 +620,7 @@ export const Bootstrap: Story = {
         variant="unstyled"
       />
       <Button
-        customClasses="btn btn-primary d-inline-flex justify-content-center align-items-center bg-blue-600"
+        customClasses="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600"
         iconRight={
           <svg
             className="w-3 h-auto"

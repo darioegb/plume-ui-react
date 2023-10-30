@@ -48,17 +48,21 @@ const renderContent = (
   iconLeft?: ReactNode,
   label?: string,
   iconRight?: ReactNode,
-): JSX.Element => (
-  <>
-    {iconLeft ? <span className={styles.iconMargin}>{iconLeft}</span> : null}
-    {Boolean(label) || busyText ? (
-      <span className={busy && !busyText ? styles.hidden : styles.iconMargin}>
-        {busyText || label}
-      </span>
-    ) : null}
-    {iconRight ? <span className={styles.iconMargin}>{iconRight}</span> : null}
-  </>
-)
+  isUnstyled?: boolean,
+): JSX.Element => {
+  const iconMarginClass = isUnstyled ? styles.iconMarginNone : ''
+  const contentClass = busy && !busyText ? styles.hidden : iconMarginClass
+
+  return (
+    <>
+      {iconLeft ? <span className={iconMarginClass}>{iconLeft}</span> : null}
+      {Boolean(label) || busyText ? (
+        <span className={contentClass}>{busyText || label}</span>
+      ) : null}
+      {iconRight ? <span className={iconMarginClass}>{iconRight}</span> : null}
+    </>
+  )
+}
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -79,10 +83,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const {
-      size = variant !== 'unstyled' && 'md',
-      shape = variant !== 'unstyled' && 'rounded',
-    } = props
+    const { size = variant !== 'unstyled' && 'md', shape = variant !== 'unstyled' && 'rounded' } =
+      props
     const color = (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
     const contrastColor = getContrastColor(color)
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
@@ -99,7 +101,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         {...props}
       >
-        {renderContent(busy, busyText, iconLeft, label, iconRight)}
+        {renderContent(busy, busyText, iconLeft, label, iconRight, variant === 'unstyled')}
         {children}
         {busy ? (
           <Spinner
