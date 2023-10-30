@@ -1,5 +1,11 @@
 # @plume-ui-react/button
 
+## 0.0.12
+
+### Patch Changes
+
+- [`eadca38`](https://github.com/darioegb/plume-ui-react/commit/eadca38f6715d94f92a56924d55ad31254bbe273) Thanks [@darioegb](https://github.com/darioegb)! - Remove margin styles on button when is unstyled
+
 ## 0.0.11
 
 ### Patch Changes
