@@ -1,5 +1,12 @@
 # @plume-ui-react/lib
 
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`eadca38`](https://github.com/darioegb/plume-ui-react/commit/eadca38f6715d94f92a56924d55ad31254bbe273)]:
+  - @plume-ui-react/button@0.0.12
+
 ## 0.0.12
 
 ### Patch Changes
