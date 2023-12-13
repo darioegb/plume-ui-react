@@ -102,7 +102,7 @@ export default {
         type: { summary: 'ReactNode' },
       },
     },
-    busy: {
+    isBusy: {
       control: 'boolean',
       description: 'Whether the button is in a busy/loading state.',
       if: { arg: 'disabled', truthy: false },
@@ -146,7 +146,7 @@ export default {
   },
   args: {
     disabled: false,
-    busy: false,
+    isBusy: false,
   },
 } satisfies Meta<typeof Button>
 
@@ -199,7 +199,7 @@ export const Sizes: Story = {
 
 /**
  * This is a list o button with different variants.
- * Just adding the **variant** in one of these values **solid**, **outline**, **link**, **icon** and **unstyled**. For works with icons also we can use other variants not only **icon**, this variant allows us to show the icon alone without borders or background. Icons can be added using props **iconLeft**, **iconRight** and also with **children**
+ * Just adding the **variant** prop in one of these values **solid**, **outline**, **link**, **icon** and **unstyled**. For works with icons also we can use other variants not only **icon**, this variant allows us to show the icon alone without borders or background. Icons can be added using props **iconLeft**, **iconRight** and also with **children**
  */
 export const Variants: Story = {
   parameters: {
@@ -378,7 +378,7 @@ export const Disabled: Story = {
  */
 export const Busy: Story = {
   args: {
-    busy: true,
+    isBusy: true,
     busyText: 'Loading...',
     label: 'Busy Button',
   },
@@ -386,22 +386,22 @@ export const Busy: Story = {
     docs: {
       source: {
         code: `<Button 
-    busy 
-    label="Busy Default Button" 
-  />
+  isBusy 
+  label="Busy Default Button" 
+/>
 <Button 
-  busy 
   busyText="Loading..." 
+  isBusy 
   label="Busy Button" 
 />
-          `,
+        `,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-2">
-      <Button busy label="Busy Default Button" />
-      <Button busy busyText="Loading..." label="Busy Button" />
+      <Button isBusy label="Busy Default Button" />
+      <Button busyText="Loading..." isBusy label="Busy Button" />
     </div>
   ),
 }

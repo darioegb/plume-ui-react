@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react'
 import { Button } from '..'
 
-describe('Test button component', () => {
+describe('Button component', () => {
   const handleClick = jest.fn();
   it('renders button correctly', () => {
     const { getByText } = render(<Button onClick={handleClick}>Click Me</Button>)
@@ -88,7 +88,7 @@ describe('Test button component', () => {
 
   it('renders busy button', () => {
     const { getByText, getByLabelText } = render(
-      <Button busy busyText="Loading">
+      <Button busyText="Loading" isBusy>
         Busy Button
       </Button>,
     )

@@ -12,11 +12,11 @@ import { getContrastColor } from '@plume-ui-react/color-utils'
 import styles from './button.module.css'
 
 export interface ButtonOwnProps {
-  busy?: boolean
   busyText?: string
   colorScheme?: DefaultColorPalette | keyof CustomColorPalette
   iconLeft?: ReactNode
   iconRight?: ReactNode
+  isBusy?: boolean
   label?: string
   shape?: ButtonShape
   size?: Size
@@ -27,7 +27,16 @@ type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'unstyled'
 type ButtonShape = 'pill' | 'rounded'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
-  'children' | 'disabled' | 'hidden' | 'id' | 'onBlur' | 'onClick' | 'onFocus' | 'tabIndex' | 'type'
+  | 'children'
+  | 'disabled'
+  | 'hidden'
+  | 'id'
+  | 'onBlur'
+  | 'onClick'
+  | 'onFocus'
+  | 'tabIndex'
+  | 'type'
+  | 'role'
 >
 
 export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
@@ -43,15 +52,15 @@ const createButtonStyles = (
 })
 
 const renderContent = (
-  busy: boolean,
+  isBusy: boolean,
   busyText: string,
   iconLeft?: ReactNode,
   label?: string,
   iconRight?: ReactNode,
   isUnstyled?: boolean,
 ): JSX.Element => {
-  const iconMarginClass = isUnstyled ? styles.iconMarginNone : ''
-  const contentClass = busy && !busyText ? styles.hidden : iconMarginClass
+  const iconMarginClass = isUnstyled ? styles.iconMarginNone : styles.iconMargin
+  const contentClass = isBusy && !busyText ? styles.hidden : iconMarginClass
 
   return (
     <>
@@ -73,39 +82,41 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       iconRight,
       customStyles,
       colorScheme,
-      busy = false,
       busyText = '',
       customClasses = '',
       disabled = false,
+      isBusy = false,
       type = 'button',
       variant = 'solid',
-      ...props
+      ...rest
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
     const { size = variant !== 'unstyled' && 'md', shape = variant !== 'unstyled' && 'rounded' } =
-      props
-    const color = (colorScheme && getMergedConfig().colors[`${colorScheme}`]) || '#d3d3d3'
+      rest
+    const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
     const contrastColor = getContrastColor(color)
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-    const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} ${customClasses}`.trim()
+    const disabledClass = disabled || isBusy ? styles.disabled : ''
+    const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} 
+    ${disabledClass} ${customClasses}`.trim()
 
     return (
       <button
         className={buttonClassNames}
-        disabled={disabled || busy}
+        disabled={disabled || isBusy}
         ref={ref}
         style={createButtonStyles(color, contrastColor, customStyles)}
         type={type}
-        {...props}
+        {...rest}
       >
-        {renderContent(busy, busyText, iconLeft, label, iconRight, variant === 'unstyled')}
+        {renderContent(isBusy, busyText, iconLeft, label, iconRight, variant === 'unstyled')}
         {children}
-        {busy ? (
+        {isBusy ? (
           <Spinner
-            borderColor={contrastColor}
+            colorScheme={contrastColor !== '#ffffff' ? 'dark' : 'light'}
             {...(busyText && { customClasses: styles.spinnerMargin })}
             size="sm"
           />

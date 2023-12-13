@@ -100,7 +100,7 @@ function Footer(): JSX.Element {
     <footer className="p-4">
       <div className="container mx-auto text-center">
         <p>
-          &copy; {new Date().getFullYear()} Plume UI is created in 🇦🇷 by Dario E
+          &copy; Plume UI is created in 🇦🇷 by Dario E
           Gonzalez B
         </p>
       </div>

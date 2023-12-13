@@ -88,7 +88,7 @@
   outline-offset: default-outline-width;
 }
 
-button:disabled {
+button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

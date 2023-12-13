@@ -19,3 +19,16 @@ h1.sbdocs-title {
   text-decoration-style: wavy;
   text-underline-offset: .5rem;
 }
+
+/* Tailwind custom tabs underline */
+.underline-tabs div[role="tablist"] {
+  @apply border-b border-gray-200 dark:border-gray-700 flex gap-x-4;
+}
+
+.underline-tabs button[aria-selected="true"] {
+  @apply py-2 border-b-2 border-solid border-blue-500 text-blue-500;
+}
+
+.underline-tabs div[role="tabpanel"] {
+  @apply mt-3;
+}

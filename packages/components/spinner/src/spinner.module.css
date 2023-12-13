@@ -7,11 +7,11 @@
 @value default-border-color: transparent;
 
 .spinner {
-  animation: spin var(--animation-duration) linear infinite;
-  border-color: var(--color, primary-border-color);
+  animation: spin var(--spinner-animation-duration) linear infinite;
+  border-color: var(--spinner-scheme, primary-border-color);
   border-radius: 50%;
-  border-top-color: var(--transparent-area, default-border-color);
-  border-width: var(--border-width, default-spinner-border-width);
+  border-top-color: default-border-color;
+  border-width: var(--spinner-border-width, default-spinner-border-width);
   display: inline-block;
   width: default-spinner-width;
   height: default-spinner-height;
@@ -50,22 +50,6 @@
 .double {
   composes: spinner;
   border-style: double;
-}
-
-.borderTopColor {
-  border-top-color: var(--border-top-color, primary-border-color);
-}
-
-.borderRightColor {
-  border-right-color: var(--border-right-color, primary-border-color);
-}
-
-.borderBottomColor {
-  border-bottom-color: var(--border-bottom-color, primary-border-color);
-}
-
-.borderLeftColor {
-  border-left-color: var(--border-left-color, primary-border-color);
 }
 
 @keyframes spin {

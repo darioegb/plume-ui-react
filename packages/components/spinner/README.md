@@ -39,10 +39,6 @@ This component accepts several properties to customize the appearance and behavi
 | Property            | Description                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `borderColor`       | The color of the spinner's border. Default is "currentColor".                                               |
-| `borderBottomColor` | The color of the spinner's bottom border. Default is "currentColor".                                        |
-| `borderLeftColor`   | The color of the spinner's left border. Default is "currentColor".                                          |
-| `borderRightColor`  | The color of the spinner's right border. Default is "currentColor".                                         |
-| `borderTopColor`    | The color of the spinner's top border. Default is "transparent".                                            |
 | `customClasses`     | Additional CSS classes for the spinner.                                                                     |
 | `customStyles`      | Custom styles for the spinner.                                                                              |
 | `hidden`            | Indicates whether the spinner should be hidden.                                                             |
@@ -72,18 +68,12 @@ Here are some examples of how you can use this spinner component in your project
 ### Spinner with empty area
 
 ```javascript
-<Spinner borderColor="#f6eeee" borderTopColor="red" />
-```
-
-### Spinner with multiple border colors
-
-```javascript
 <Spinner
-  borderTopColor="red"
-  borderRightColor="green"
-  borderBottomColor="blue"
-  borderLeftColor="yellow"
-/>
+  customStyles={{
+    borderColor: '#f6eeee',
+    borderTopColor: 'red'
+  }}
+ />
 ```
 
 ### Custom Styles and Classes
