@@ -36,7 +36,8 @@
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "dependencies": {
     "@plume-ui-react/button": "workspace:*",
-    "@plume-ui-react/spinner": "workspace:*"
+    "@plume-ui-react/spinner": "workspace:*",
+    "@plume-ui-react/tabs": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

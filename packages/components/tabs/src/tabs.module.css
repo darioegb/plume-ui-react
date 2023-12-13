@@ -1,0 +1,138 @@
+/* tabs.module.css */
+@value tabsPadding: .5rem .75rem;
+@value tabsBorderWidth: 2px;
+@value tabsBorderRadius: .5rem;
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal {
+  flex-direction: column;
+}
+
+.vertical {
+  flex-direction: row;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.center {
+  justify-content: center;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.sm {
+  padding: 0.25rem 0.5rem;
+  font-size: small;
+}
+
+.md {
+  padding: tabsPadding;
+}
+
+.lg {
+  padding: 0.75rem 1rem;
+  font-size: large;
+}
+
+.vertical .underline {
+  flex-direction: column;
+  border-inline-end: solid 1px lightgray;
+  border-block-end: none;
+}
+
+.underline {
+  gap: 1rem;
+  border-block-end: solid 1px lightgray;
+}
+
+.tablist {
+  width: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tab {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vertical .underline .tab {
+  border-inline-end: tabsBorderWidth solid transparent;
+  border-block-end: none;
+  transition: border-inline-end 0.2s;
+}
+
+.underline .tab {
+  border-block-end: tabsBorderWidth solid transparent;
+  transition: border-block-end 0.2s;
+}
+
+.vertical .underline .tab.active {
+  border-inline-end: tabsBorderWidth solid var(--tabs-scheme);
+  border-block-end: none;
+}
+
+.underline .tab.active {
+  border-block-end: tabsBorderWidth solid var(--tabs-scheme);
+  color: var(--tabs-scheme);
+  transition: color 0.2s;
+}
+
+.rounded .tab.active {
+  background-color: var(--tabs-scheme);
+  color: var(--tabs-text-color);
+  border-radius: tabsBorderRadius;
+  transition: color 0.2s;
+}
+
+.enclosed {
+  border-block-end: 1px solid var(--tabs-scheme);
+}
+
+.enclosed .tab.active {
+  border: 1px solid var(--tabs-scheme);
+  border-radius: tabsBorderRadius;
+  background: white;
+  border-block-end: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: var(--tabs-scheme);
+  margin-block-end: -1px;
+  transition: color 0.2s;
+}
+
+.segment {
+  background-color: var(--tabs-scheme);
+  color: white;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s;
+  border-radius: tabsBorderRadius;
+}
+
+.segment .tab.active {
+  background-color: var(--tabs-background-color);
+  color: var(--tabs-text-color);
+  border-radius: tabsBorderRadius;
+  transition: color 0.2s;
+}
+
+.tab:not(.active, :disabled):hover {
+  color: color-mix(in hsl, var(--tabs-scheme), black 10%);
+}
+
+.panel {
+  padding: 1rem 0.5rem;
+  border: none;
+}

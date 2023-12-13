@@ -17,37 +17,19 @@ describe('Spinner component', () => {
   it('renders spinner with custom thickness', () => {
     const { container } = render(<Spinner thickness={5} />)
     const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle('--border-width: 5px')
+    expect(spinnerElement).toHaveStyle('--spinner-border-width: 5px')
   })
 
   it('renders spinner with custom color', () => {
-    const { container } = render(<Spinner borderColor="blue" />)
+    const { container } = render(<Spinner colorScheme="primary" />)
     const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle('--color: blue;')
-  })
-
-  it('renders spinner with individual border colors', () => {
-    const { container } = render(
-      <Spinner
-        borderBottomColor="blue"
-        borderLeftColor="purple"
-        borderRightColor="green"
-        borderTopColor="red"
-      />,
-    )
-    const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle(`
-      --border-top-color: red;
-      --border-right-color: green;
-      --border-bottom-color: blue;
-      --border-left-color: purple;
-    `)
+    expect(spinnerElement).toHaveStyle('--spinner-scheme: rgb(99, 102, 241);')
   })
 
   it('renders spinner with custom speed', () => {
     const { container } = render(<Spinner speed="0.5s" />)
     const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle('--animation-duration: 0.5s;')
+    expect(spinnerElement).toHaveStyle('--spinner-animation-duration: 0.5s;')
   })
 
   it('renders spinner with custom styles', () => {

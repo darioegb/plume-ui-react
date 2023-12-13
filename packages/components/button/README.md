@@ -38,7 +38,7 @@ This component accepts several properties to customize the appearance and behavi
 
 | Property        | Description                                                                                      |
 | --------------- | ------------------------------------------------------------------------------------------------ |
-| `busy`          | Indicates whether the button is in "busy" or loading mode.                                       |
+| `isBusy`        | Indicates whether the button is in "busy" or loading mode.                                       |
 | `busyText`      | The text displayed on the button when it's in a busy (loading) state. By default, it shows "..." |
 | `children`      | The content of the button, typically the text displayed on the button.                           |
 | `customClasses` | Additional CSS classes for the button.                                                           |
@@ -46,11 +46,11 @@ This component accepts several properties to customize the appearance and behavi
 | `disabled`      | Indicates whether the button is disabled or not.                                                 |
 | `iconLeft`      | An icon or component to be displayed to the left of the button text.                             |
 | `iconRight`     | An icon or component to be displayed to the right of the button text.                            |
-| `label`         | An alternative for `children`. You can use `label` instead of `children` for strings content.                  |
+| `label`         | An alternative for `children`. You can use `label` instead of `children` for strings content.    |
 | `shape`         | The shape of the button, which can be "pill" or "rounded".                                       |
 | `size`          | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
 | `type`          | The button type, default is "button".                                                            |
-| `variant`       | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".                          |
+| `variant`       | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".               |
 
 ## Usage Examples
 
@@ -71,7 +71,7 @@ Here are some examples of how you can use this button component in your project:
 ### Busy (Loading) Button
 
 ```javascript
-<Button busy>Saving...</Button>
+<Button isBusy>Saving...</Button>
 ```
 
 ### Outline Button with Custom Color Scheme
@@ -99,10 +99,7 @@ Here are some examples of how you can use this button component in your project:
 ### Button with Custom Styles and Classes
 
 ```javascript
-<Button
-  customStyles={{ background: 'purple', color: 'white' }}
-  customClasses="my-custom-button"
->
+<Button customStyles={{ background: 'purple', color: 'white' }} customClasses="my-custom-button">
   Custom Button
 </Button>
 ```

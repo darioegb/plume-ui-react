@@ -20,37 +20,10 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    borderColor: {
-      control: 'color',
-      description: 'The color of the spinner border.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    borderTopColor: {
-      control: 'color',
-      description: 'The color of the spinner top border.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    borderBottomColor: {
-      control: 'color',
-      description: 'The color of the spinner bottom border.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    borderLeftColor: {
-      control: 'color',
-      description: 'The color of the spinner left border.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    borderRightColor: {
-      control: 'color',
-      description: 'The color of the spinner right border.',
+    colorScheme: {
+      control: 'select',
+      description: 'Custom color scheme for the button.',
+      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
       table: {
         type: { summary: 'string' },
       },
@@ -74,6 +47,7 @@ export default {
       description: 'The size of the spinner.',
       options: ['sm', 'md', 'lg'],
       table: {
+        defaultValue: { summary: 'md' },
         type: { summary: `"sm" | "md" | "lg"` },
       },
     },
@@ -81,6 +55,7 @@ export default {
       control: 'text',
       description: 'The animation speed of the spinner.',
       table: {
+        defaultValue: { summary: '1s' },
         type: { summary: 'string' },
       },
     },
@@ -88,6 +63,7 @@ export default {
       control: 'number',
       description: 'The border thickness of the spinner.',
       table: {
+        defaultValue: { summary: 3 },
         type: { summary: 'number' },
       },
     },
@@ -96,6 +72,7 @@ export default {
       description: 'The border variant of the spinner.',
       options: ['solid', 'dashed', 'dotted', 'double', 'unstyled'],
       table: {
+        defaultValue: { summary: 'solid' },
         type: { summary: `"solid" | "dashed" | "dotted" | "double" | "unstyled"` },
       },
     },
@@ -117,18 +94,24 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner size="sm" />
-<Spinner />
-<Spinner size="lg" />
-            `,
+        code: `<Spinner 
+  colorScheme="primary"
+  size="sm" 
+/>
+<Spinner colorScheme="primary" />
+<Spinner 
+  colorScheme="primary" 
+  size="lg" 
+/>
+        `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner customStyles={{marginRight: '.5rem'}} size="sm" />
-      <Spinner customStyles={{marginRight: '.5rem'}} />
-      <Spinner size="lg" />
+      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} size="sm" />
+      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} />
+      <Spinner colorScheme="primary" size="lg" />
     </>
   ),
 }
@@ -137,25 +120,70 @@ export const Sizes: Story = {
  * This is a list of spinners with different border variant.
  * Just adding **variant** prop with dashed, dotted, double or solid.
  */
-export const DifferentVariant: Story = {
+export const Variants: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner variant='dashed' />
-<Spinner variant='dotted' />
-<Spinner variant='double' />
-<Spinner />
+        code: `<Spinner 
+  colorScheme="primary" 
+  variant='dashed' 
+/>
+<Spinner 
+  colorScheme="primary" 
+  variant='dotted' 
+/>
+<Spinner 
+  colorScheme="primary" 
+  variant='double' 
+/>
+<Spinner colorScheme="primary" />
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner customStyles={{marginRight: '.5rem'}} variant="dashed" />
-      <Spinner customStyles={{marginRight: '.5rem'}} variant="dotted" />
-      <Spinner customStyles={{marginRight: '.5rem'}} variant="double" />
-      <Spinner />
+      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="dashed" />
+      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="dotted" />
+      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="double" />
+      <Spinner colorScheme="primary" />
     </>
+  ),
+}
+
+/**
+ * This is a list o spinner with different colors.
+ * Just adding the **colorScheme** prop.
+ */
+export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Spinner />
+<Spinner colorScheme="primary" />
+<Spinner colorScheme="secondary" />
+<Spinner colorScheme="info" />
+<Spinner colorScheme="warning" />
+<Spinner colorScheme="error" />
+<Spinner colorScheme="success" />
+<Spinner colorScheme="dark" />
+<Spinner colorScheme="light" />
+        `,
+      },
+    },
+  },
+  render: () => (
+    <div className="grid gap-4 grid-cols-3">
+      <Spinner />
+      <Spinner colorScheme="primary" />
+      <Spinner colorScheme="secondary" />
+      <Spinner colorScheme="info" />
+      <Spinner colorScheme="warning" />
+      <Spinner colorScheme="error" />
+      <Spinner colorScheme="success" />
+      <Spinner colorScheme="dark" />
+      <Spinner colorScheme="light" />
+    </div>
   ),
 }
 
@@ -165,30 +193,8 @@ export const DifferentVariant: Story = {
  */
 export const CustomThickness: Story = {
   args: {
+    colorScheme: 'primary',
     thickness: 5,
-  },
-}
-
-/**
- * This is a spinner with custom color.
- * Just adding **borderColor** prop with color value.
- */
-export const CustomColor: Story = {
-  args: {
-    borderColor: 'blue',
-  },
-}
-
-/**
- * This is a spinner with individual border colors for each side.
- * Using **borderTopColor, borderRightColor, borderBottomColor and borderLeftColor** props with color value.
- */
-export const IndividualBorderColors: Story = {
-  args: {
-    borderTopColor: 'red',
-    borderRightColor: 'green',
-    borderBottomColor: 'blue',
-    borderLeftColor: 'purple',
   },
 }
 
@@ -199,6 +205,7 @@ export const IndividualBorderColors: Story = {
  */
 export const CustomSpeed: Story = {
   args: {
+    colorScheme: 'primary',
     speed: '0.5s',
   },
 }
@@ -220,6 +227,19 @@ export const CustomStyles: Story = {
 }
 
 /**
+ * This is a empty area spinner with custom inline styles.
+ * Using **customStyles** prop setting **borderColor** & **borderTopColor**.
+ */
+export const EmptyArea: Story = {
+  args: {
+    customStyles: {
+      borderColor: '#f6eeee',
+      borderTopColor: 'red',
+    },
+  },
+}
+
+/**
  * Some examples of spinner with custom classes from tailwind
  */
 export const Tailwind: Story = {
@@ -235,9 +255,18 @@ export const Tailwind: Story = {
   },
   render: () => (
     <>
-      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2" variant="unstyled" />
-      <Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2" variant="unstyled" />
-      <Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
+      <Spinner
+        customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2"
+        variant="unstyled"
+      />
+      <Spinner
+        customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2"
+        variant="unstyled"
+      />
+      <Spinner
+        customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+        variant="unstyled"
+      />
     </>
   ),
 }

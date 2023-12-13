@@ -221,6 +221,9 @@ importers:
       '@plume-ui-react/spinner':
         specifier: workspace:*
         version: link:../spinner
+      '@plume-ui-react/tabs':
+        specifier: workspace:*
+        version: link:../tabs
       react-dom:
         specifier: '>=16.11.0'
         version: 18.2.0(react@18.2.0)
@@ -277,6 +280,43 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
+
+  packages/components/tabs:
+    dependencies:
+      '@plume-ui-react/button':
+        specifier: workspace:*
+        version: link:../button
+      '@plume-ui-react/color-utils':
+        specifier: workspace:*
+        version: link:../../utilities/color-utils
+      '@plume-ui-react/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@plume-ui-react/lazy-utils':
+        specifier: workspace:*
+        version: link:../../utilities/lazy-utils
+      '@plume-ui-react/spinner':
+        specifier: workspace:*
+        version: link:../spinner
+      react:
+        specifier: '>=16.11.0'
+        version: 18.2.0
+      react-dom:
+        specifier: '>=16.11.0'
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../eslint-config-custom
+      jest-preset:
+        specifier: workspace:*
+        version: link:../../jest-preset
+      prettier-config:
+        specifier: workspace:*
+        version: link:../../prettier-config
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tsconfig
 
   packages/core:
     dependencies:
@@ -345,8 +385,6 @@ importers:
         specifier: ^3.0.1
         version: 3.0.3
 
-  packages/shared-css: {}
-
   packages/tailwind-config:
     devDependencies:
       tailwindcss:
@@ -356,6 +394,15 @@ importers:
   packages/tsconfig: {}
 
   packages/utilities/color-utils:
+    devDependencies:
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../eslint-config-custom
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tsconfig
+
+  packages/utilities/lazy-utils:
     devDependencies:
       eslint-config-custom:
         specifier: workspace:*
