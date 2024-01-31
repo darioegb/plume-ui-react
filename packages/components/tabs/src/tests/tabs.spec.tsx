@@ -1,71 +1,99 @@
 import { render, fireEvent, waitFor } from '@testing-library/react'
-import { Tabs } from '..'
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '..'
+import { tabsReducer } from '../tabs-reducer'
 
 describe('Tabs Component', () => {
-  it('should call onTabChange with the correct index when a tab is clicked', () => {
-    const onTabChangeMock = jest.fn()
+  it('should call onChange with the correct index when a tab is clicked', () => {
+    const onChangeMock = jest.fn()
     const { getByText } = render(
-      <Tabs
-        onTabChange={onTabChangeMock}
-        panelList={[
-          { content: <div>Panel 1 Content</div> },
-          { content: <div>Panel 2 Content</div> },
-        ]}
-        tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-      />,
+      <Tabs onChange={onChangeMock}>
+        <TabList>
+          <Tab>Tab 1</Tab>
+          <Tab>Tab 2</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+          <TabPanel>Panel 2 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     fireEvent.click(getByText('Tab 2'))
 
-    expect(onTabChangeMock).toHaveBeenCalledWith(1)
+    expect(onChangeMock).toHaveBeenCalledWith(1)
   })
 
   it('should handle disabled tabs correctly', () => {
-    const onTabChangeMock = jest.fn()
+    const onChangeMock = jest.fn()
     const { getByText } = render(
-      <Tabs
-        onTabChange={onTabChangeMock}
-        panelList={[
-          { content: <div>Panel 1 Content</div> },
-          { content: <div>Panel 2 Content</div> },
-          { content: <div>Panel 3 Content</div> },
-        ]}
-        tabList={[{ label: 'Tab 1' }, { label: 'Tab 2', disabled: true }, { label: 'Tab 3' }]}
-      />,
+      <Tabs onChange={onChangeMock}>
+        <TabList>
+          <Tab>Tab 1</Tab>
+          <Tab disabled>Tab 2</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+          <TabPanel>Panel 2 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     fireEvent.click(getByText('Tab 2'))
 
-    expect(onTabChangeMock).not.toHaveBeenCalled()
+    expect(onChangeMock).not.toHaveBeenCalled()
   })
 
-  it('should switch to the correct panel when a tab is clicked', async () => {
+  it('should switch to the correct panel when a tab is clicked', () => {
     const { getByText, getByLabelText } = render(
-      <Tabs
-        panelList={[
-          { content: <div>Panel 1 Content</div> },
-          { content: <div>Panel 2 Content</div> },
-        ]}
-        tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-      />,
+      <Tabs>
+        <TabList>
+          <Tab>Tab 1</Tab>
+          <Tab>Tab 2</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+          <TabPanel>Panel 2 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     fireEvent.click(getByText('Tab 2'))
 
-    // Wait for the panel to be visible
+    expect(getByLabelText('Tab Panel')).toHaveTextContent('Panel 2 Content')
+  })
+
+  it('should load to the correct panel when a tab is clicked on lazy mode', async () => {
+    const { getByText, getByLabelText } = render(
+      <Tabs isLazy>
+        <TabList>
+          <Tab>Tab 1</Tab>
+          <Tab>Tab 2</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+          <TabPanel>Panel 2 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
+    )
+
+    fireEvent.click(getByText('Tab 2'))
+
     await waitFor(() => {
       expect(getByLabelText('Tab Panel')).toHaveTextContent('Panel 2 Content')
     })
   })
 
   it('should apply custom styles correctly', () => {
-    const customStyles = { backgroundColor: 'red', color: 'white' }
+    const style = { backgroundColor: 'red', color: 'white' }
     const { container } = render(
-      <Tabs
-        customStyles={customStyles}
-        panelList={[{ content: <div>Panel 1 Content</div> }]}
-        tabList={[{ label: 'Tab 1' }]}
-      />,
+      <Tabs style={style}>
+        <TabList>
+          <Tab label="Tab 1" />
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     const tabsContainer = container.firstChild as HTMLDivElement
@@ -75,11 +103,14 @@ describe('Tabs Component', () => {
 
   it('should apply the specified colorScheme', () => {
     const { container } = render(
-      <Tabs
-        colorScheme="primary"
-        panelList={[{ content: <div>Panel 1 Content</div> }]}
-        tabList={[{ label: 'Tab 1', disabled: false }]}
-      />,
+      <Tabs colorScheme="primary">
+        <TabList>
+          <Tab label="Tab 1" />
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     const tabsContainer = container.firstChild as HTMLDivElement
@@ -91,19 +122,32 @@ describe('Tabs Component', () => {
 
   it('should not apply styles in unstyled mode', () => {
     const { container } = render(
-      <Tabs
-        panelList={[{ content: <div>Panel 1 Content</div> }]}
-        tabList={[{ label: 'Tab 1', disabled: false }]}
-        variant="unstyled"
-      />,
+      <Tabs variant="unstyled">
+        <TabList>
+          <Tab label="Tab 1" />
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+        </TabPanels>
+      </Tabs>,
     )
 
     const tabsContainer = container.firstChild as HTMLDivElement
 
-    // Verifica que no haya clases de estilo aplicadas
     expect(tabsContainer.className).toBe('')
+  })
 
-    // Verifica que no haya estilos inline aplicados
-    // expect(tabsContainer.style.length).toBe(0)
+  it('Unknown action does not modify state', () => {
+    const initialState = {
+      index: 0,
+      alignment: 'left',
+      isLazy: false,
+      isStyled: true,
+      size: 'md',
+      variant: 'underline',
+    } as never
+    const action = { type: 'UNKNOWN_ACTION', payload: {} } as never
+    const newState = tabsReducer(initialState, action)
+    expect(newState).toEqual(initialState)
   })
 })

@@ -14,12 +14,12 @@ export default function ButtonList() {
         onClick={() => setIsDisabled((state) => !state)}
         label="Toggle disabled"
         variant="unstyled"
-        customClasses="mb-3"
+        className="mb-3"
       />
       <Button
         onClick={handleClick}
         label="Add to cart"
-        customClasses="py-3 px-4 inline-flex justify-center items-center rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
+        className="py-3 px-4 inline-flex justify-center items-center rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
         iconRight={
           <svg
             className="w-3.5 h-3.5"
@@ -36,7 +36,7 @@ export default function ButtonList() {
       />
       <Button
         onClick={handleClick}
-        customClasses="py-3 px-4 text-lime-500 hover:text-lime-700"
+        className="py-3 px-4 text-lime-500 hover:text-lime-700"
         variant="unstyled"
       >
         <svg
@@ -54,7 +54,7 @@ export default function ButtonList() {
         onClick={handleClick}
         label="Large"
         size="lg"
-        busy={isDisabled}
+        isBusy={isDisabled}
         busyText="Loading"
         shape="pill"
       />

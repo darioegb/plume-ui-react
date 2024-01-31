@@ -41,7 +41,7 @@ describe('Button component', () => {
 
   it('applies custom styles', () => {
     const { getByText } = render(
-      <Button customStyles={{ backgroundColor: 'blue' }} onClick={handleClick}>
+      <Button onClick={handleClick} style={{ backgroundColor: 'blue' }}>
         Click Me
       </Button>,
     )
@@ -51,7 +51,7 @@ describe('Button component', () => {
 
   it('applies className', () => {
     const { getByText } = render(
-      <Button customClasses="custom-button" onClick={handleClick}>
+      <Button className="custom-button" onClick={handleClick}>
         Click Me
       </Button>,
     )

@@ -36,18 +36,18 @@ To use this component in your React project, follow these steps:
 
 This component accepts several properties to customize the appearance and behavior of the spinner. Here are the available properties sorted alphabetically:
 
-| Property            | Description                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `borderColor`       | The color of the spinner's border. Default is "currentColor".                                               |
-| `customClasses`     | Additional CSS classes for the spinner.                                                                     |
-| `customStyles`      | Custom styles for the spinner.                                                                              |
-| `hidden`            | Indicates whether the spinner should be hidden.                                                             |
-| `id`                | The unique identifier for the spinner element.                                                              |
-| `size`              | The size of the spinner. Default is 1.                                                                      |
-| `speed`             | The animation speed of the spinner. Default is "1s".                                                        |
-| `tabIndex`          | The tab index of the spinner for keyboard navigation.                                                       |
-| `thickness`         | The thickness of the spinner's border. Default is 3.                                                        |
-| `variant`           | The spinner variant, which can be "solid", "dashed", "dotted", "double", or "unstyled". Default is "solid". |
+| Property      | Description                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| `borderColor` | The color of the spinner's border. Default is "currentColor".                                               |
+| `className`   | Additional CSS classes for the spinner.                                                                     |
+| `hidden`      | Indicates whether the spinner should be hidden.                                                             |
+| `id`          | The unique identifier for the spinner element.                                                              |
+| `size`        | The size of the spinner. Default is 1.                                                                      |
+| `style`       | Custom styles for the spinner.                                                                              |
+| `speed`       | The animation speed of the spinner. Default is "1s".                                                        |
+| `tabIndex`    | The tab index of the spinner for keyboard navigation.                                                       |
+| `thickness`   | The thickness of the spinner's border. Default is 3.                                                        |
+| `variant`     | The spinner variant, which can be "solid", "dashed", "dotted", "double", or "unstyled". Default is "solid". |
 
 ## Usage Examples
 
@@ -69,20 +69,17 @@ Here are some examples of how you can use this spinner component in your project
 
 ```javascript
 <Spinner
-  customStyles={{
+  style={{
     borderColor: '#f6eeee',
-    borderTopColor: 'red'
+    borderTopColor: 'red',
   }}
- />
+/>
 ```
 
 ### Custom Styles and Classes
 
 ```javascript
-<Spinner
-  customStyles={{ background: 'gray', borderRadius: '50%' }}
-  customClasses="my-custom-spinner"
-/>
+<Spinner style={{ background: 'gray', borderRadius: '50%' }} className="my-custom-spinner" />
 ```
 
 > This is a versatile spinner component that allows you to create spinners with different styles and behaviors to suit the needs of your React web application. Use it to indicate loading or processing in a visually appealing way.

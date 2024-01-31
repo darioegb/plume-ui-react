@@ -43,7 +43,6 @@
 }
 
 .vertical .underline {
-  flex-direction: column;
   border-inline-end: solid 1px lightgray;
   border-block-end: none;
 }
@@ -51,6 +50,11 @@
 .underline {
   gap: 1rem;
   border-block-end: solid 1px lightgray;
+}
+
+.vertical .tablist {
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .tablist {
@@ -96,8 +100,23 @@
   transition: color 0.2s;
 }
 
+.vertical .enclosed {
+  border-inline-end: 1px solid var(--tabs-scheme);
+  border-block-end: none;
+}
+
 .enclosed {
   border-block-end: 1px solid var(--tabs-scheme);
+}
+
+.vertical .enclosed .tab.active {
+  border: 1px solid var(--tabs-scheme);
+  border-radius: tabsBorderRadius;
+  border-inline-end: none;
+  border-end-end-radius: 0;
+  border-start-end-radius: 0;
+  margin-inline-end: -1px;
+  transition: color 0.2s;
 }
 
 .enclosed .tab.active {
@@ -130,6 +149,10 @@
 
 .tab:not(.active, :disabled):hover {
   color: color-mix(in hsl, var(--tabs-scheme), black 10%);
+}
+
+.vertical .panel {
+  padding: 0.5rem 1rem;
 }
 
 .panel {

@@ -35,7 +35,7 @@ describe('Spinner component', () => {
   it('renders spinner with custom styles', () => {
     const { container } = render(
       <Spinner
-        customStyles={{ backgroundColor: 'lightgray', color: 'black' }}
+        style={{ backgroundColor: 'lightgray', color: 'black' }}
       />,
     )
     const spinnerElement = container.querySelector('.solid')

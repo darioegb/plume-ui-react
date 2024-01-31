@@ -41,18 +41,20 @@ To use this component in your React project, follow these steps:
 
 This component accepts various properties to customize its appearance and behavior. Here are the available properties:
 
-| Property       | Description                                                                                                                                                                       |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activeTab`    | The index of the initially active tab. Defaults to `0`.                                                                                                                             |
-| `alignment`    | The alignment of the tabs, can be 'left', 'center', or 'right'. Defaults to 'left'.                                                                                                |
-| `colorScheme`  | The color scheme to be applied to the tabs. This can be a color from the default palette or a custom color palette key. Defaults to '#d3d3d3'.                                   |
-| `isLazy`       | Determines whether the tab panels are lazily loaded. Defaults to `false`.                                                                                                         |
-| `onTabChange`  | A callback function triggered when a tab is clicked. It receives the index of the clicked tab as an argument.                                                                     |
-| `orientation`  | The orientation of the tabs, can be 'horizontal' or 'vertical'. Defaults to 'horizontal'.                                                                                        |
-| `panelList`    | An array of objects representing the content of each tab panel. Each object should have a `content` property containing the ReactNode to be displayed in the corresponding tab panel. |
-| `size`         | The size of the tabs, can be 'sm', 'md', or 'lg'. Defaults to 'md'.                                                                                                               |
-| `tabList`      | An array of objects representing each tab. Each object should have a `label` property containing the text to be displayed on the tab.                                           |
-| `variant`      | The visual style variant of the tabs, can be 'underline', 'rounded', 'enclosed', 'segment', or 'unstyled'. Defaults to 'underline'.                                              |
+| Property      | Description                                                                                                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `activeTab`   | The index of the initially active tab. Defaults to `0`.                                                                                                                               |
+| `alignment`   | The alignment of the tabs, can be 'left', 'center', or 'right'. Defaults to 'left'.                                                                                                   |
+| `className`   | Additional CSS classes for the tabs.                                                                                                                                                  |
+| `colorScheme` | The color scheme to be applied to the tabs. This can be a color from the default palette or a custom color palette key. Defaults to '#d3d3d3'.                                        |
+| `isLazy`      | Determines whether the tab panels are lazily loaded. Defaults to `false`.                                                                                                             |
+| `onChange`    | A callback function triggered when a tab is clicked. It receives the index of the clicked tab as an argument.                                                                         |
+| `orientation` | The orientation of the tabs, can be 'horizontal' or 'vertical'. Defaults to 'horizontal'.                                                                                             |
+| `panelList`   | An array of objects representing the content of each tab panel. Each object should have a `content` property containing the ReactNode to be displayed in the corresponding tab panel. |
+| `size`        | The size of the tabs, can be 'sm', 'md', or 'lg'. Defaults to 'md'.                                                                                                                   |
+| `style`       | Custom styles for the tabs.                                                                                                                                                           |
+| `tabList`     | An array of objects representing each tab. Each object should have a `label` property containing the text to be displayed on the tab.                                                 |
+| `variant`     | The visual style variant of the tabs, can be 'underline', 'rounded', 'enclosed', 'segment', or 'unstyled'. Defaults to 'underline'.                                                   |
 
 ## Usage Examples
 
@@ -62,14 +64,8 @@ Here are some examples of how you can use this Tabs component in your project:
 
 ```javascript
 <Tabs
-  tabList={[
-    { label: 'Tab 1' },
-    { label: 'Tab 2' },
-  ]}
-  panelList={[
-    { content: <div>Content for Tab 1</div> },
-    { content: <div>Content for Tab 2</div> },
-  ]}
+  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
+  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
 />
 ```
 
@@ -78,14 +74,8 @@ Here are some examples of how you can use this Tabs component in your project:
 ```javascript
 <Tabs
   orientation="vertical"
-  tabList={[
-    { label: 'Tab 1' },
-    { label: 'Tab 2' },
-  ]}
-  panelList={[
-    { content: <div>Content for Tab 1</div> },
-    { content: <div>Content for Tab 2</div> },
-  ]}
+  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
+  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
 />
 ```
 
@@ -94,14 +84,8 @@ Here are some examples of how you can use this Tabs component in your project:
 ```javascript
 <Tabs
   variant="enclosed"
-  tabList={[
-    { label: 'Tab 1' },
-    { label: 'Tab 2' },
-  ]}
-  panelList={[
-    { content: <div>Content for Tab 1</div> },
-    { content: <div>Content for Tab 2</div> },
-  ]}
+  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
+  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
 />
 ```
 
@@ -110,10 +94,7 @@ Here are some examples of how you can use this Tabs component in your project:
 ```javascript
 <Tabs
   isLazy
-  tabList={[
-    { label: 'Tab 1' },
-    { label: 'Tab 2' },
-  ]}
+  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
   panelList={[
     { content: () => import('./Tab1Content') },
     { content: () => import('./Tab2Content') },

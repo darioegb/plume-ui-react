@@ -36,21 +36,21 @@ To use this component in your React project, follow these steps:
 
 This component accepts several properties to customize the appearance and behavior of the button. Here are the available properties sorted alphabetically:
 
-| Property        | Description                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------ |
-| `isBusy`        | Indicates whether the button is in "busy" or loading mode.                                       |
-| `busyText`      | The text displayed on the button when it's in a busy (loading) state. By default, it shows "..." |
-| `children`      | The content of the button, typically the text displayed on the button.                           |
-| `customClasses` | Additional CSS classes for the button.                                                           |
-| `customStyles`  | Custom styles for the button.                                                                    |
-| `disabled`      | Indicates whether the button is disabled or not.                                                 |
-| `iconLeft`      | An icon or component to be displayed to the left of the button text.                             |
-| `iconRight`     | An icon or component to be displayed to the right of the button text.                            |
-| `label`         | An alternative for `children`. You can use `label` instead of `children` for strings content.    |
-| `shape`         | The shape of the button, which can be "pill" or "rounded".                                       |
-| `size`          | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
-| `type`          | The button type, default is "button".                                                            |
-| `variant`       | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".               |
+| Property    | Description                                                                                      |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| `isBusy`    | Indicates whether the button is in "busy" or loading mode.                                       |
+| `busyText`  | The text displayed on the button when it's in a busy (loading) state. By default, it shows "..." |
+| `children`  | The content of the button, typically the text displayed on the button.                           |
+| `className` | Additional CSS classes for the button.                                                           |
+| `disabled`  | Indicates whether the button is disabled or not.                                                 |
+| `iconLeft`  | An icon or component to be displayed to the left of the button text.                             |
+| `iconRight` | An icon or component to be displayed to the right of the button text.                            |
+| `label`     | An alternative for `children`. You can use `label` instead of `children` for strings content.    |
+| `shape`     | The shape of the button, which can be "pill" or "rounded".                                       |
+| `size`      | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
+| `style`     | Custom styles for the button.                                                                    |
+| `type`      | The button type, default is "button".                                                            |
+| `variant`   | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".               |
 
 ## Usage Examples
 
@@ -99,7 +99,7 @@ Here are some examples of how you can use this button component in your project:
 ### Button with Custom Styles and Classes
 
 ```javascript
-<Button customStyles={{ background: 'purple', color: 'white' }} customClasses="my-custom-button">
+<Button style={{ background: 'purple', color: 'white' }} className="my-custom-button">
   Custom Button
 </Button>
 ```

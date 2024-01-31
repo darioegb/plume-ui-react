@@ -28,14 +28,14 @@ export default {
         type: { summary: 'ReactNode' },
       },
     },
-    customClasses: {
+    className: {
       control: 'text',
       description: `Custom CSS class for the button.`,
       table: {
         type: { summary: 'string' },
       },
     },
-    customStyles: {
+    style: {
       description: 'Array of additional CSS styles for the button.',
       control: 'object',
       table: {
@@ -66,16 +66,7 @@ export default {
     colorScheme: {
       control: 'select',
       description: 'Custom color scheme for the button.',
-      options: [
-        'primary',
-        'secondary',
-        'info',
-        'warning',
-        'error',
-        'success',
-        'dark',
-        'light',
-      ],
+      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
       table: {
         type: { summary: 'string' },
       },
@@ -113,8 +104,7 @@ export default {
     },
     busyText: {
       control: 'text',
-      description:
-        'Text to display when the button is in a busy/loading state.',
+      description: 'Text to display when the button is in a busy/loading state.',
       table: {
         type: { summary: 'string' },
       },
@@ -240,11 +230,7 @@ export const Variants: Story = {
       <Button colorScheme="error" label="Link Button" variant="link" />
       <Button label="Unstyled Button" variant="unstyled" />
       <Button variant="icon">🚀</Button>
-      <Button
-        colorScheme="info"
-        iconLeft={<span>👈</span>}
-        iconRight={<span>👉</span>}
-      />
+      <Button colorScheme="info" iconLeft={<span>👈</span>} iconRight={<span>👉</span>} />
     </div>
   ),
 }
@@ -346,7 +332,7 @@ export const Block: Story = {
     ...Default.args,
     label: 'Block Button',
     colorScheme: 'primary',
-    customStyles: { width: '100%' },
+    style: { width: '100%' },
   },
   decorators: [
     (Story) => (
@@ -408,12 +394,12 @@ export const Busy: Story = {
 
 /**
  * This is a button with custom inline styles.
- * Using **customStyles** prop setting different attributes.
+ * Using **style** prop setting different attributes.
  */
 export const CustomStyle: Story = {
   args: {
     children: 'Custom Style Button',
-    customStyles: {
+    style: {
       backgroundColor: '#800080',
       color: 'white',
       border: 'none',
@@ -484,32 +470,32 @@ export const Tailwind: Story = {
   render: () => (
     <div className="grid gap-4 grid-cols-3 grid-rows-2">
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
         label="Primary Button"
         variant="unstyled"
       />
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
         label="Soft Button"
         variant="unstyled"
       />
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
         label="Outline Button"
         variant="unstyled"
       />
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
         label="Ghost Button"
         variant="unstyled"
       />
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
         label="Pilled Button"
         variant="unstyled"
       />
       <Button
-        customClasses="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
+        className="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
         iconRight={
           <svg
             className="w-2.5 h-auto"
@@ -594,33 +580,17 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className="grid gap-4 grid-cols-3 grid-rows-2">
+      <Button className="btn btn-primary bg-blue-600" label="Primary Button" variant="unstyled" />
+      <Button className="btn btn-light" label="Soft Button" variant="unstyled" />
+      <Button className="btn btn-outline-primary" label="Outline Button" variant="unstyled" />
+      <Button className="btn btn-link" label="Link Button" variant="unstyled" />
       <Button
-        customClasses="btn btn-primary bg-blue-600"
-        label="Primary Button"
-        variant="unstyled"
-      />
-      <Button
-        customClasses="btn btn-light"
-        label="Soft Button"
-        variant="unstyled"
-      />
-      <Button
-        customClasses="btn btn-outline-primary"
-        label="Outline Button"
-        variant="unstyled"
-      />
-      <Button
-        customClasses="btn btn-link"
-        label="Link Button"
-        variant="unstyled"
-      />
-      <Button
-        customClasses="btn btn-primary rounded-pill bg-blue-600"
+        className="btn btn-primary rounded-pill bg-blue-600"
         label="Pill Button"
         variant="unstyled"
       />
       <Button
-        customClasses="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600"
+        className="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600"
         iconRight={
           <svg
             className="w-3 h-auto"

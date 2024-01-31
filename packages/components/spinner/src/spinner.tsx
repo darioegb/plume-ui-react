@@ -20,12 +20,12 @@ export interface SpinnerOwnProps {
 type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
 type SpinnerRootAttributes = Pick<HtmlHTMLAttributes<HTMLSpanElement>, 'hidden' | 'id' | 'tabIndex'>
 type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant' | 'colorScheme'> &
-  Pick<ComponentProps, 'customStyles'> & { color: string }
+  Pick<ComponentProps, 'style'> & { color: string }
 export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps
 
 const createSpinnerStyles = ({
   color,
-  customStyles: style,
+  style,
   speed,
   thickness,
 }: SpinnerStylesOptions): Record<string, unknown> => ({
@@ -38,10 +38,10 @@ const createSpinnerStyles = ({
 export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
   (
     {
-      customStyles,
+      style,
       colorScheme,
       speed,
-      customClasses = '',
+      className = '',
       thickness = 3,
       variant = 'solid',
       ...rest
@@ -52,7 +52,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
     const spinnerStyles = createSpinnerStyles({
       color,
-      customStyles,
+      style,
       speed,
       thickness,
     })
@@ -63,7 +63,7 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     const spinnerClass = `
       ${sizeClass} 
       ${variantClass} 
-      ${customClasses}
+      ${className}
     `.trim()
 
     return (

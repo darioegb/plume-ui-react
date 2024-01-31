@@ -80,10 +80,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       label,
       iconLeft,
       iconRight,
-      customStyles,
+      style,
       colorScheme,
       busyText = '',
-      customClasses = '',
+      className = '',
       disabled = false,
       isBusy = false,
       type = 'button',
@@ -101,14 +101,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
     const disabledClass = disabled || isBusy ? styles.disabled : ''
     const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} 
-    ${disabledClass} ${customClasses}`.trim()
+    ${disabledClass} ${className}`.trim()
 
     return (
       <button
         className={buttonClassNames}
         disabled={disabled || isBusy}
         ref={ref}
-        style={createButtonStyles(color, contrastColor, customStyles)}
+        style={createButtonStyles(color, contrastColor, style)}
         type={type}
         {...rest}
       >
@@ -117,7 +117,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isBusy ? (
           <Spinner
             colorScheme={contrastColor !== '#ffffff' ? 'dark' : 'light'}
-            {...(busyText && { customClasses: styles.spinnerMargin })}
+            {...(busyText && { className: styles.spinnerMargin })}
             size="sm"
           />
         ) : null}
