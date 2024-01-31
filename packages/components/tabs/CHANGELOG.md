@@ -1,5 +1,16 @@
 # @plume-ui-react/tabs
 
+## 0.0.2
+
+### Patch Changes
+
+- [#23](https://github.com/darioegb/plume-ui-react/pull/23) [`0746448`](https://github.com/darioegb/plume-ui-react/commit/07464483f3f562d4fb5b0c1b74168cf23792a7ac) Thanks [@darioegb](https://github.com/darioegb)! - Change customClasses to className and customStyles to style, also add index to ComponentProps
+  The composition pattern was applied to the tab component to make it more customizable
+- Updated dependencies [[`0746448`](https://github.com/darioegb/plume-ui-react/commit/07464483f3f562d4fb5b0c1b74168cf23792a7ac)]:
+  - @plume-ui-react/spinner@0.0.12
+  - @plume-ui-react/button@0.0.14
+  - @plume-ui-react/core@0.0.8
+
 ## 0.0.1
 
 ### Patch Changes
