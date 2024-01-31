@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 export interface ComponentProps {
-  customClasses?: string
-  customStyles?: CSSProperties
+  className?: string
+  style?: CSSProperties
+  index?: number
 }

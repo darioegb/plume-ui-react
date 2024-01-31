@@ -1,15 +1,31 @@
 import type { StoryObj, Meta } from '@storybook/react'
-import type { TabsProps } from '..'
+import { useState } from 'react'
 import { Tabs } from '..'
+import { TabList } from '../tab-list'
+import { Tab } from '../tab'
+import { TabPanels } from '../tab-panels'
+import { TabPanel } from '../tab-panel'
 
-const commonTabs: TabsProps = {
-  tabList: [{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3' }],
-  panelList: [
-    { content: <div>Panel 1 Content</div> },
-    { content: <div>Panel 2 Content</div> },
-    { content: <div>Panel 3 Content</div> },
-  ],
-}
+const commonTabs = (
+  <>
+    <TabList>
+      <Tab label="One" />
+      <Tab label="Two" />
+      <Tab label="Three" />
+    </TabList>
+    <TabPanels>
+      <TabPanel>
+        <p>one!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>two!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>three!</p>
+      </TabPanel>
+    </TabPanels>
+  </>
+)
 
 /**
  * Enhance user interactions with the Button component,
@@ -32,21 +48,7 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    tabList: {
-      control: 'array',
-      description: 'An array of tab objects with labels and optional extra content.',
-      table: {
-        type: { summary: 'Tab[]' },
-      },
-    },
-    panelList: {
-      control: 'array',
-      description: 'An array of tab panel objects with content for each tab.',
-      table: {
-        type: { summary: 'TabPanel[]' },
-      },
-    },
-    activeTab: {
+    index: {
       control: 'number',
       description: 'Index of the initially active tab.',
       table: {
@@ -80,7 +82,7 @@ export default {
         type: { summary: 'boolean' },
       },
     },
-    onTabChange: {
+    onChange: {
       action: 'tabChanged',
       description: 'Function triggered when a tab is changed.',
     },
@@ -118,7 +120,34 @@ type Story = StoryObj<typeof Tabs>
 
 // This is the default tabs
 export const Default: Story = {
-  args: { ...commonTabs },
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs>
+  <TabList>
+    <Tab label="One" />
+    <Tab label="Two" />
+    <Tab label="Three" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+        `,
+      },
+    },
+  },
+  args: {
+    children: commonTabs,
+  },
 }
 
 /**
@@ -129,33 +158,39 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs 
+        code: `<Tabs
   colorScheme="primary"
-  panelList={panelList} 
-  size="sm" 
-  tabList={tabList} 
-/>
+  size="sm"
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  size="md" 
-  tabList={tabList} 
-/>
+  colorScheme="primary"
+  size="md"
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  size="lg" 
-  tabList={tabList} 
-/>
+  colorScheme="primary"
+  size="lg"
+>
+  {commonTabs}
+</Tabs>
           `,
       },
     },
   },
   render: () => (
     <div className="flex gap-4 items-center">
-      <Tabs colorScheme="primary" size="sm" {...commonTabs} />
-      <Tabs colorScheme="primary" size="md" {...commonTabs} />
-      <Tabs colorScheme="primary" size="lg" {...commonTabs} />
+      <Tabs colorScheme="primary" size="sm">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" size="md">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" size="lg">
+        {commonTabs}
+      </Tabs>
     </div>
   ),
 }
@@ -168,33 +203,39 @@ export const Alignments: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs 
+        code: `<Tabs
   alignment="left"
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
+  colorScheme="primary"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
   alignment="center"
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
+  colorScheme="primary"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
   alignment="right"
   colorScheme="primary"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
+>
+  {commonTabs}
+</Tabs>
           `,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-rows-3">
-      <Tabs alignment="left" colorScheme="primary" {...commonTabs} />
-      <Tabs alignment="center" colorScheme="primary" {...commonTabs} />
-      <Tabs alignment="right" colorScheme="primary" {...commonTabs} />
+      <Tabs alignment="left" colorScheme="primary">
+        {commonTabs}
+      </Tabs>
+      <Tabs alignment="center" colorScheme="primary">
+        {commonTabs}
+      </Tabs>
+      <Tabs alignment="right" colorScheme="primary">
+        {commonTabs}
+      </Tabs>
     </div>
   ),
 }
@@ -208,25 +249,29 @@ export const Orientations: Story = {
     docs: {
       source: {
         code: `<Tabs
-  colorScheme="primary" 
-  orientation="horizontal" 
-  panelList={panelList} 
-  tabList={tabList} 
-/>
+  colorScheme="primary"
+  orientation="horizontal"
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  orientation="vertical" 
-  panelList={panelList} 
-  tabList={tabList} 
-/>
+  colorScheme="primary"
+  orientation="vertical"
+>
+  {commonTabs}
+</Tabs>
           `,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-2">
-      <Tabs colorScheme="primary" orientation="horizontal" {...commonTabs} />
-      <Tabs colorScheme="primary" orientation="vertical" {...commonTabs} />
+      <Tabs colorScheme="primary" orientation="horizontal">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" orientation="vertical">
+        {commonTabs}
+      </Tabs>
     </div>
   ),
 }
@@ -240,45 +285,53 @@ export const Variants: Story = {
     docs: {
       source: {
         code: `<Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
-  variant="underline" 
-/>
+  colorScheme="primary"
+  variant="underline"
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
-  variant="rounded" 
-/>
+  colorScheme="primary"
+  variant="rounded"
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
+  colorScheme="primary"
   variant="enclosed"
-/>
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  colorScheme="primary" 
-  panelList={panelList} 
-  tabList={tabList} 
+  colorScheme="primary"
   variant="segment"
-/>
+>
+  {commonTabs}
+</Tabs>
 <Tabs
-  panelList={panelList} 
-  tabList={tabList} 
   variant="unstyled"
-/>
+>
+  {commonTabs}
+</Tabs>
           `,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-3">
-      <Tabs colorScheme="primary" {...commonTabs} variant="underline" />
-      <Tabs colorScheme="primary" {...commonTabs} variant="rounded" />
-      <Tabs colorScheme="primary" {...commonTabs} variant="enclosed" />
-      <Tabs colorScheme="primary" {...commonTabs} variant="segment" />
-      <Tabs {...commonTabs} variant="unstyled" />
+      <Tabs colorScheme="primary" variant="underline">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="rounded">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="enclosed">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="segment">
+        {commonTabs}
+      </Tabs>
+      <Tabs variant="unstyled">{commonTabs}</Tabs>
     </div>
   ),
 }
@@ -291,56 +344,44 @@ export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs panelList={panelList} tabList={tabList} />
-<Tabs 
-  colorScheme="primary"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="secondary"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="info"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="warning"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="error"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="success"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-<Tabs 
-  colorScheme="dark"
-  panelList={panelList} 
-  tabList={tabList} 
-/>
-          `,
+        code: `<Tabs>
+  {commonTabs}
+</Tabs>
+<Tabs colorScheme="primary">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="secondary">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="info">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="warning">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="error">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="success">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="dark">
+  {commonTabs}
+</Tabs>
+  `,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-3">
-      <Tabs {...commonTabs} />
-      <Tabs colorScheme="primary" {...commonTabs} />
-      <Tabs colorScheme="secondary" {...commonTabs} />
-      <Tabs colorScheme="info" {...commonTabs} />
-      <Tabs colorScheme="warning" {...commonTabs} />
-      <Tabs colorScheme="error" {...commonTabs} />
-      <Tabs colorScheme="success" {...commonTabs} />
-      <Tabs colorScheme="dark" {...commonTabs} />
+      <Tabs>{commonTabs}</Tabs>
+      <Tabs colorScheme="primary">{commonTabs}</Tabs>
+      <Tabs colorScheme="secondary">{commonTabs}</Tabs>
+      <Tabs colorScheme="info">{commonTabs}</Tabs>
+      <Tabs colorScheme="warning">{commonTabs}</Tabs>
+      <Tabs colorScheme="error">{commonTabs}</Tabs>
+      <Tabs colorScheme="success">{commonTabs}</Tabs>
+      <Tabs colorScheme="dark">{commonTabs}</Tabs>
     </div>
   ),
 }
@@ -353,13 +394,52 @@ export const Colors: Story = {
  */
 export const Disabled: Story = {
   args: {
-    ...commonTabs,
     colorScheme: 'primary',
-    tabList: [
-      { label: 'Tab 1', disabled: false },
-      { label: 'Tab 2', disabled: true },
-      { label: 'Tab 3', disabled: false },
-    ],
+    children: (
+      <>
+        <TabList>
+          <Tab label="One" />
+          <Tab disabled label="Two" />
+          <Tab label="Three" />
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <p>one!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+        </TabPanels>
+      </>
+    ),
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs>
+  <TabList>
+    <Tab label="One" />
+    <Tab disabled label="Two" />
+    <Tab label="Three" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+        `,
+      },
+    },
   },
 }
 
@@ -369,13 +449,9 @@ export const Disabled: Story = {
  */
 export const LazyTabs: Story = {
   args: {
-    ...commonTabs,
     colorScheme: 'primary',
     isLazy: true,
-    panelList: commonTabs.panelList.map((panel) => ({
-      ...panel,
-      content: <>{panel.content}</>,
-    })),
+    children: commonTabs,
   },
 }
 
@@ -386,69 +462,164 @@ export const LazyTabs: Story = {
  */
 export const ExtraContent: Story = {
   args: {
-    ...commonTabs,
     colorScheme: 'primary',
-    tabList: [
-      {
-        label: 'Tab 1',
-        extraContent: (
-          <svg
-            fill="none"
-            height="1rem"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            width="1rem"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-        ),
+    children: (
+      <>
+        <TabList>
+          <Tab
+            extraContent={
+              <svg
+                fill="none"
+                height="1rem"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="1rem"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            }
+            label="One"
+          />
+          <Tab
+            extraContent={
+              <svg
+                fill="none"
+                height="1rem"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="1rem"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="10" r="3" />
+                <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+              </svg>
+            }
+            label="Two"
+          />
+          <Tab
+            extraContent={
+              <svg
+                fill="none"
+                height="1rem"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="1rem"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            }
+            isExtraContentRight
+            label="Three"
+          />
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <p>one!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+        </TabPanels>
+      </>
+    ),
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs>
+  <TabList>
+    <Tab 
+      extraContent={
+        <svg
+          fill="none"
+          height="1rem"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="1rem"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      } 
+      label="One" 
+    />
+    <Tab
+      extraContent={
+        <svg
+          fill="none"
+          height="1rem"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="1rem"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="10" r="3" />
+          <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+        </svg>
+      } 
+      label="Two" 
+    />
+    <Tab
+      extraContent={
+        <svg
+          fill="none"
+          height="1rem"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="1rem"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      }
+      isExtraContentRight 
+      label="Three" 
+    />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+        `,
       },
-      {
-        label: 'Tab 2',
-        extraContent: (
-          <svg
-            fill="none"
-            height="1rem"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            width="1rem"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <circle cx="12" cy="10" r="3" />
-            <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
-          </svg>
-        ),
-      },
-      {
-        label: 'Tab 3',
-        extraContent: (
-          <svg
-            fill="none"
-            height="1rem"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            width="1rem"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        ),
-        isExtraContentRight: true,
-      },
-    ],
+    },
   },
 }
 
@@ -457,17 +628,118 @@ export const ExtraContent: Story = {
  */
 export const Tailwind: Story = {
   args: {
-    customClasses: 'underline-tabs',
-    panelList: [
-      { content: <div>Panel 1 Content</div> }, // Clases de Tailwind
-      { content: <div>Panel 2 Content</div> }, // Clases de Tailwind
-      { content: <div>Panel 3 Content</div> }, // Clases de Tailwind
-    ],
-    tabList: [
-      { label: 'Tab 1', disabled: false },
-      { label: 'Tab 2', disabled: false },
-      { label: 'Tab 3', disabled: false },
-    ],
+    children: commonTabs,
+    className: 'underline-tabs',
     variant: 'unstyled',
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `// global.css
+/* Tailwind custom tabs underline styles */
+.underline-tabs div[role="tablist"] {
+  @apply border-b border-gray-200 dark:border-gray-700 flex gap-x-4;
+}
+
+.underline-tabs button[aria-selected="true"] {
+  @apply py-2 border-b-2 border-solid border-blue-500 text-blue-500;
+}
+
+.underline-tabs div[role="tabpanel"] {
+  @apply mt-3;
+}
+// custom-tab.tsx
+<Tabs>
+  <TabList className="underline-tabs">
+    <Tab label="One" />
+    <Tab label="Two" />
+    <Tab label="Three" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+        `,
+      },
+    },
+  },
+}
+
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `const [activeIndex, setActiveIndex] = useState(0)
+const handleOnChange = (i: number): void => { setActiveIndex(i); }
+return (
+  <Tabs onChange={handleOnChange} variant="unstyled">
+    <TabList className="nav nav-underline">
+      <Tab className="nav-item">
+        <span className={\`nav-link \${activeIndex === 0 && 'active'}\`}>One</span>
+      </Tab>
+      <Tab className="nav-item">
+        <span className={\`nav-link \${activeIndex === 1 && 'active'}\`}>Two</span>
+      </Tab>
+      <Tab className="nav-item">
+        <span className={\`nav-link \${activeIndex === 2 && 'active'}\`}>Three</span>
+      </Tab>
+    </TabList>
+    <TabPanels className="mt-3">
+      <TabPanel>
+        <p>one!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>two!</p>
+      </TabPanel>
+      <TabPanel>
+        <p>three!</p>
+      </TabPanel>
+    </TabPanels>
+  </Tabs>
+)
+          `,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [activeIndex, setActiveIndex] = useState(0)
+    const handleOnChange = (i: number): void => {
+      setActiveIndex(i)
+    }
+    return (
+      <Tabs onChange={handleOnChange} variant="unstyled">
+        <TabList className="nav nav-underline">
+          <Tab className="nav-item">
+            <span className={`nav-link ${activeIndex === 0 && 'active'}`}>One</span>
+          </Tab>
+          <Tab className="nav-item">
+            <span className={`nav-link ${activeIndex === 1 && 'active'}`}>Two</span>
+          </Tab>
+          <Tab className="nav-item">
+            <span className={`nav-link ${activeIndex === 2 && 'active'}`}>Three</span>
+          </Tab>
+        </TabList>
+        <TabPanels className="mt-3">
+          <TabPanel>
+            <p>one!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    )
   },
 }

@@ -28,14 +28,14 @@ export default {
         type: { summary: 'string' },
       },
     },
-    customClasses: {
+    className: {
       control: 'text',
       description: `Custom CSS class for the spinner.`,
       table: {
         type: { summary: 'string' },
       },
     },
-    customStyles: {
+    style: {
       description: 'Array of additional CSS styles for the spinner.',
       control: 'object',
       table: {
@@ -109,8 +109,8 @@ export const Sizes: Story = {
   },
   render: () => (
     <>
-      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} size="sm" />
-      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} />
+      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} size="sm" />
+      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} />
       <Spinner colorScheme="primary" size="lg" />
     </>
   ),
@@ -143,9 +143,9 @@ export const Variants: Story = {
   },
   render: () => (
     <>
-      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="dashed" />
-      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="dotted" />
-      <Spinner colorScheme="primary" customStyles={{ marginRight: '.5rem' }} variant="double" />
+      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="dashed" />
+      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="dotted" />
+      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="double" />
       <Spinner colorScheme="primary" />
     </>
   ),
@@ -212,11 +212,11 @@ export const CustomSpeed: Story = {
 
 /**
  * This is a spinner with custom inline styles.
- * Using **customStyles** prop setting different attributes.
+ * Using **style** prop setting different attributes.
  */
-export const CustomStyles: Story = {
+export const style: Story = {
   args: {
-    customStyles: {
+    style: {
       borderWidth: '5px',
       backgroundImage: 'linear-gradient(to right, #fff300, #00ff9b)',
       animationDuration: '2s',
@@ -228,11 +228,11 @@ export const CustomStyles: Story = {
 
 /**
  * This is a empty area spinner with custom inline styles.
- * Using **customStyles** prop setting **borderColor** & **borderTopColor**.
+ * Using **style** prop setting **borderColor** & **borderTopColor**.
  */
 export const EmptyArea: Story = {
   args: {
-    customStyles: {
+    style: {
       borderColor: '#f6eeee',
       borderTopColor: 'red',
     },
@@ -246,9 +246,9 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white" variant="unstyled" />
-<Spinner customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
-<Spinner customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
+        code: `<Spinner className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white" variant="unstyled" />
+<Spinner className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
+<Spinner className="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" variant="unstyled" />
             `,
       },
     },
@@ -256,15 +256,15 @@ export const Tailwind: Story = {
   render: () => (
     <>
       <Spinner
-        customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2"
+        className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2"
         variant="unstyled"
       />
       <Spinner
-        customClasses="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2"
+        className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2"
         variant="unstyled"
       />
       <Spinner
-        customClasses="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+        className="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
         variant="unstyled"
       />
     </>
@@ -278,20 +278,20 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner customClasses="spinner-border" variant="unstyled" />
-<Spinner customClasses="spinner-border text-primary" variant="unstyled" />
-<Spinner customClasses="spinner-grow" variant="unstyled" />
-<Spinner customClasses="spinner-border spinner-border-sm" variant="unstyled" />
+        code: `<Spinner className="spinner-border" variant="unstyled" />
+<Spinner className="spinner-border text-primary" variant="unstyled" />
+<Spinner className="spinner-grow" variant="unstyled" />
+<Spinner className="spinner-border spinner-border-sm" variant="unstyled" />
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner customClasses="spinner-border mr-2" variant="unstyled" />
-      <Spinner customClasses="spinner-border text-primary mr-2" variant="unstyled" />
-      <Spinner customClasses="spinner-grow mr-2" variant="unstyled" />
-      <Spinner customClasses="spinner-border spinner-border-sm" variant="unstyled" />
+      <Spinner className="spinner-border mr-2" variant="unstyled" />
+      <Spinner className="spinner-border text-primary mr-2" variant="unstyled" />
+      <Spinner className="spinner-grow mr-2" variant="unstyled" />
+      <Spinner className="spinner-border spinner-border-sm" variant="unstyled" />
     </>
   ),
 }
