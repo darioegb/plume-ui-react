@@ -28,29 +28,29 @@ To use this component in your React project, follow these steps:
 
 4. Use the component in your application:
 
-   ```javascript
+   ```html
    <Button>Button Text</Button>
    ```
 
 ## Properties
 
-This component accepts several properties to customize the appearance and behavior of the button. Here are the available properties sorted alphabetically:
+This component accepts several properties to customize the appearance and behavior. Here are the available properties:
 
-| Property    | Description                                                                                      |
-| ----------- | ------------------------------------------------------------------------------------------------ |
-| `isBusy`    | Indicates whether the button is in "busy" or loading mode.                                       |
-| `busyText`  | The text displayed on the button when it's in a busy (loading) state. By default, it shows "..." |
-| `children`  | The content of the button, typically the text displayed on the button.                           |
-| `className` | Additional CSS classes for the button.                                                           |
-| `disabled`  | Indicates whether the button is disabled or not.                                                 |
-| `iconLeft`  | An icon or component to be displayed to the left of the button text.                             |
-| `iconRight` | An icon or component to be displayed to the right of the button text.                            |
-| `label`     | An alternative for `children`. You can use `label` instead of `children` for strings content.    |
-| `shape`     | The shape of the button, which can be "pill" or "rounded".                                       |
-| `size`      | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
-| `style`     | Custom styles for the button.                                                                    |
-| `type`      | The button type, default is "button".                                                            |
-| `variant`   | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".               |
+| Property    | Type                                                     | Description                                                                                      |
+| ----------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `busyText`  | `string`                                                 | The text displayed on the button when it's in a busy (loading) state. By default, it shows "..." |
+| `children`  | `ReactNode`                                              | The content of the button, typically the text displayed on the button.                           |
+| `className` | `string`                                                 | Additional CSS classes for the button.                                                           |
+| `disabled`  | `boolean`                                                | Indicates whether the button is disabled or not.                                                 |
+| `iconLeft`  | `ReactNode`                                              | An icon or component to be displayed to the left of the button text.                             |
+| `iconRight` | `ReactNode`                                              | An icon or component to be displayed to the right of the button text.                            |
+| `isBusy`    | `boolean`                                                | Indicates whether the button is in "busy" or loading mode.                                       |
+| `label`     | `string`                                                 | An alternative for `children`. You can use `label` instead of `children` for strings content.    |
+| `shape`     | `'pill' \| 'rounded'`                                    | The shape of the button, which can be "pill" or "rounded".                                       |
+| `size`      | `'sm' \| 'md' \| 'lg'`                                   | The size of the button, which can be "sm" (small), "md" (medium), or "lg" (large).               |
+| `style`     | `CSSProperties`                                          | Custom styles for the button.                                                                    |
+| `type`      | `'button' \| 'submit' \| 'reset'`                        | The button type, default is "button".                                                            |
+| `variant`   | `'solid' \| 'outline' \| 'link' \| 'icon' \| 'unstyled'` | The button variant, which can be "solid", "outline", "link", "icon" or "unstyled".               |
 
 ## Usage Examples
 
@@ -58,25 +58,25 @@ Here are some examples of how you can use this button component in your project:
 
 ### Basic Button
 
-```javascript
+```html
 <Button label="Click Me!" />
 ```
 
 ### Button with Icon on the Right
 
-```javascript
+```html
 <Button iconRight={<RightIcon />}>Save</Button>
 ```
 
 ### Busy (Loading) Button
 
-```javascript
+```html
 <Button isBusy>Saving...</Button>
 ```
 
 ### Outline Button with Custom Color Scheme
 
-```javascript
+```html
 <Button variant="outline" colorScheme="#FF5733">
   Cancel
 </Button>
@@ -84,7 +84,7 @@ Here are some examples of how you can use this button component in your project:
 
 ### Large Pill-shaped Button
 
-```javascript
+```html
 <Button size="lg" shape="pill">
   Learn More
 </Button>
@@ -92,13 +92,13 @@ Here are some examples of how you can use this button component in your project:
 
 ### Disabled Button
 
-```javascript
+```html
 <Button disabled>Disabled</Button>
 ```
 
 ### Button with Custom Styles and Classes
 
-```javascript
+```html
 <Button style={{ background: 'purple', color: 'white' }} className="my-custom-button">
   Custom Button
 </Button>

@@ -28,7 +28,7 @@ To use this component in your React project, follow these steps:
 
 4. Use the component in your application:
 
-   ```javascript
+   ```html
    <Spinner />
    ```
 
@@ -36,18 +36,17 @@ To use this component in your React project, follow these steps:
 
 This component accepts several properties to customize the appearance and behavior of the spinner. Here are the available properties sorted alphabetically:
 
-| Property      | Description                                                                                                 |
-| ------------- | ----------------------------------------------------------------------------------------------------------- |
-| `borderColor` | The color of the spinner's border. Default is "currentColor".                                               |
-| `className`   | Additional CSS classes for the spinner.                                                                     |
-| `hidden`      | Indicates whether the spinner should be hidden.                                                             |
-| `id`          | The unique identifier for the spinner element.                                                              |
-| `size`        | The size of the spinner. Default is 1.                                                                      |
-| `style`       | Custom styles for the spinner.                                                                              |
-| `speed`       | The animation speed of the spinner. Default is "1s".                                                        |
-| `tabIndex`    | The tab index of the spinner for keyboard navigation.                                                       |
-| `thickness`   | The thickness of the spinner's border. Default is 3.                                                        |
-| `variant`     | The spinner variant, which can be "solid", "dashed", "dotted", "double", or "unstyled". Default is "solid". |
+| Property      | Type                                                        | Description                                                                             |
+| ------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `className`   | `string`                                                    | Additional CSS classes for the spinner.                                                 |
+| `colorScheme` | `DefaultColorPalette \| keyof CustomColorPalette`           | The color scheme to be applied to the spinner.                                          |
+| `hidden`      | `boolean`                                                   | Indicates whether the spinner should be hidden.                                         |
+| `id`          | `string`                                                    | The unique identifier for the spinner element.                                          |
+| `size`        | `Size`                                                      | The size of the spinner.                                                                |
+| `speed`       | `string`                                                    | The animation speed of the spinner.                                                     |
+| `style`       | `CSSProperties`                                             | Custom styles for the spinner.                                                          |
+| `thickness`   | `number`                                                    | The thickness of the spinner's border.                                                  |
+| `variant`     | `'solid' \| 'dashed' \| 'dotted' \| 'double' \| 'unstyled'` | The spinner variant, which can be "solid", "dashed", "dotted", "double", or "unstyled". |
 
 ## Usage Examples
 
@@ -55,19 +54,19 @@ Here are some examples of how you can use this spinner component in your project
 
 ### Default Spinner
 
-```javascript
+```html
 <Spinner />
 ```
 
 ### Large Spinner with Custom Border Color
 
-```javascript
+```html
 <Spinner size={2} borderColor="#FF5733" />
 ```
 
 ### Spinner with empty area
 
-```javascript
+```html
 <Spinner
   style={{
     borderColor: '#f6eeee',
@@ -78,7 +77,7 @@ Here are some examples of how you can use this spinner component in your project
 
 ### Custom Styles and Classes
 
-```javascript
+```html
 <Spinner style={{ background: 'gray', borderRadius: '50%' }} className="my-custom-spinner" />
 ```
 

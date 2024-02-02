@@ -457,8 +457,7 @@ export const LazyTabs: Story = {
 
 /**
  * This is a tabs with extra content.
- * Just adding the **extraContent** prop in tab object.
- * Also we can add the flag **isExtraContentRight** to set alignment on right.
+ * Just adding the **extraContentLeft** & **extraContentRight** prop in tab object.
  */
 export const ExtraContent: Story = {
   args: {
@@ -467,7 +466,7 @@ export const ExtraContent: Story = {
       <>
         <TabList>
           <Tab
-            extraContent={
+            extraContentLeft={
               <svg
                 fill="none"
                 height="1rem"
@@ -486,7 +485,7 @@ export const ExtraContent: Story = {
             label="One"
           />
           <Tab
-            extraContent={
+            extraContentLeft={
               <svg
                 fill="none"
                 height="1rem"
@@ -506,7 +505,7 @@ export const ExtraContent: Story = {
             label="Two"
           />
           <Tab
-            extraContent={
+            extraContentRight={
               <svg
                 fill="none"
                 height="1rem"
@@ -522,7 +521,6 @@ export const ExtraContent: Story = {
                 <circle cx="12" cy="12" r="3" />
               </svg>
             }
-            isExtraContentRight
             label="Three"
           />
         </TabList>

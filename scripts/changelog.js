@@ -1,20 +1,10 @@
-import { RestEndpointMethodTypes } from '@octokit/rest'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { join, resolve } from 'path'
-import fetch from 'node-fetch'
+const { readFileSync, writeFileSync, existsSync } = require('fs')
+const { join, resolve } = require('path')
+const fetch = require('node-fetch')
 
 const monorepoPath = resolve(__dirname, '..')
 
-type PullRequests = RestEndpointMethodTypes['pulls']['list']['response']['data']
-type PullRequest = PullRequests[number]
-
-type PrInfo = {
-  url: string
-  date: string
-  version: string
-}
-
-async function getLatestMergedPrInfo(repoOwner: string, repoName: string): Promise<PrInfo | null> {
+async function getLatestMergedPrInfo(repoOwner, repoName) {
   const branchName = 'changeset-release/main'
   const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/pulls?state=closed&sort=updated&head=${branchName}`
   const options = {
@@ -30,7 +20,7 @@ async function getLatestMergedPrInfo(repoOwner: string, repoName: string): Promi
     if (response.ok) {
       const pullRequests = await response.json()
       const pr = pullRequests
-        ?.filter((pr: PullRequest) => pr.merged_at !== null && pr.title === 'Version Packages')
+        ?.filter((pr) => pr.merged_at !== null && pr.title === 'Version Packages')
         ?.pop()
       const prMergeDate = new Date(pr.merged_at)
       const prUrl = pr.html_url
@@ -58,7 +48,7 @@ async function getLatestMergedPrInfo(repoOwner: string, repoName: string): Promi
 }
 
 async function generateChangelog() {
-  let changelogEntries: Array<string> = []
+  let changelogEntries = []
   let releaseHeader = ''
   const mergedPrInfo = await getLatestMergedPrInfo('darioegb', 'plume-ui-react')
   if (mergedPrInfo) {

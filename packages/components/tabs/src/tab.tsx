@@ -1,21 +1,21 @@
 import { forwardRef } from 'react'
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { Button } from '@plume-ui-react/button'
+import type { ComponentProps } from '@plume-ui-react/core'
 import styles from './tabs.module.css'
 import { useTabs } from './use-tabs'
 
 export interface TabOwnProps {
   label?: string
-  index?: number
   isActive?: boolean
   disabled?: boolean
-  isExtraContentRight?: boolean
-  extraContent?: ReactNode
+  extraContentLeft?: ReactNode
+  extraContentRight?: ReactNode
 }
 
-type TabRootAttributes = Pick<HTMLAttributes<HTMLButtonElement>, 'id' | 'children' | 'className'>
+type TabRootAttributes = Pick<HTMLAttributes<HTMLButtonElement>, 'id' | 'children'>
 
-export type TabProps = TabRootAttributes & TabOwnProps
+export type TabProps = ComponentProps & TabRootAttributes & TabOwnProps
 
 export const Tab = forwardRef<HTMLButtonElement, TabProps>(
   (
@@ -23,8 +23,8 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
       label,
       isActive,
       disabled,
-      isExtraContentRight,
-      extraContent,
+      extraContentLeft,
+      extraContentRight,
       index,
       children,
       className = '',
@@ -34,7 +34,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
     const { alignmentClass, isStyled, sizeClass, setActiveTabIndex, onChange } = useTabs()
 
     const handleClick = (): void => {
-      const tabIndex = index || 0
+      const tabIndex = index ?? 0
       if (onChange) {
         onChange(tabIndex)
       }
@@ -48,8 +48,8 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
           isActive && isStyled ? styles.active : ''
         } ${className}`.trim()}
         disabled={disabled}
-        iconLeft={!isExtraContentRight ? extraContent : null}
-        iconRight={isExtraContentRight ? extraContent : null}
+        iconLeft={extraContentLeft}
+        iconRight={extraContentRight}
         index={index}
         key={label}
         label={label ?? ''}
@@ -58,7 +58,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
         role="tab"
         variant="unstyled"
       >
-        {children ?? null}
+        {children}
       </Button>
     )
   },

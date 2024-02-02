@@ -22,39 +22,51 @@ To use this component in your React project, follow these steps:
 
 3. Use the component in your application:
 
-   ```javascript
-   <Tabs
-     tabList={[
-       { label: 'Tab 1' },
-       { label: 'Tab 2' },
-       // Add more tabs as needed
-     ]}
-     panelList={[
-       { content: <div>Tab 1 Content</div> },
-       { content: <div>Tab 2 Content</div> },
-       // Add more tab panels corresponding to the tabs
-     ]}
-   />
+   ```html
+   <Tabs>
+     <TabList>
+       <Tab label="Tab 1" />
+       <Tab label="Tab 2" />
+       <!-- Add more tabs as needed -->
+     </TabList>
+     <TabPanels>
+       <TabPanel>Content for Tab 1</TabPanel>
+       <TabPanel>Content for Tab 2</TabPanel>
+       <!-- Add more tab panels corresponding to the tabs -->
+     </TabPanels>
+   </Tabs>
    ```
 
 ## Properties
 
-This component accepts various properties to customize its appearance and behavior. Here are the available properties:
+### Tabs
 
-| Property      | Description                                                                                                                                                                           |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `activeTab`   | The index of the initially active tab. Defaults to `0`.                                                                                                                               |
-| `alignment`   | The alignment of the tabs, can be 'left', 'center', or 'right'. Defaults to 'left'.                                                                                                   |
-| `className`   | Additional CSS classes for the tabs.                                                                                                                                                  |
-| `colorScheme` | The color scheme to be applied to the tabs. This can be a color from the default palette or a custom color palette key. Defaults to '#d3d3d3'.                                        |
-| `isLazy`      | Determines whether the tab panels are lazily loaded. Defaults to `false`.                                                                                                             |
-| `onChange`    | A callback function triggered when a tab is clicked. It receives the index of the clicked tab as an argument.                                                                         |
-| `orientation` | The orientation of the tabs, can be 'horizontal' or 'vertical'. Defaults to 'horizontal'.                                                                                             |
-| `panelList`   | An array of objects representing the content of each tab panel. Each object should have a `content` property containing the ReactNode to be displayed in the corresponding tab panel. |
-| `size`        | The size of the tabs, can be 'sm', 'md', or 'lg'. Defaults to 'md'.                                                                                                                   |
-| `style`       | Custom styles for the tabs.                                                                                                                                                           |
-| `tabList`     | An array of objects representing each tab. Each object should have a `label` property containing the text to be displayed on the tab.                                                 |
-| `variant`     | The visual style variant of the tabs, can be 'underline', 'rounded', 'enclosed', 'segment', or 'unstyled'. Defaults to 'underline'.                                                   |
+This component accepts various properties to customize its appearance and behavior. Here are the available properties of the parent component:
+
+| Property      | Type                                                                | Description                                                                                                                                    |
+| ------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `alignment`   | `TabsAlignment`                                                     | The alignment of the tabs, can be 'left', 'center', or 'right'. Defaults to 'left'.                                                            |
+| `className`   | `string`                                                            | Additional CSS classes for the tabs.                                                                                                           |
+| `colorScheme` | `DefaultColorPalette \| keyof CustomColorPalette`                   | The color scheme to be applied to the tabs. This can be a color from the default palette or a custom color palette key. Defaults to '#d3d3d3'. |
+| `index`       | `number`                                                            | The index of the initially active tab. Defaults to `0`.                                                                                        |
+| `isLazy`      | `boolean`                                                           | Determines whether the tab panels are lazily loaded. Defaults to `false`.                                                                      |
+| `onChange`    | `(index: number) => void`                                           | A callback function triggered when a tab is clicked. It receives the index of the clicked tab as an argument.                                  |
+| `orientation` | `TabsOrientation`                                                   | The orientation of the tabs, can be 'horizontal' or 'vertical'. Defaults to 'horizontal'.                                                      |
+| `size`        | `Size`                                                              | The size of the tabs, can be 'sm', 'md', or 'lg'. Defaults to 'md'.                                                                            |
+| `style`       | `CSSProperties`                                                     | Custom styles for the tabs.                                                                                                                    |
+| `variant`     | `'underline' \| 'rounded' \| 'enclosed' \| 'segment' \| 'unstyled'` | The visual style variant of the tabs, can be 'underline', 'rounded', 'enclosed', 'segment', or 'unstyled'. Defaults to 'underline'.            |
+
+### Tab
+
+| Property            | Type        | Description                                |
+| ------------------- | ----------- | ------------------------------------------ |
+| `className`         | `string`    | Additional CSS classes for custom styling. |
+| `disabled`          | `boolean`   | Indicates if the tab is disabled.          |
+| `extraContentLeft`  | `ReactNode` | Additional left content of the tab.        |
+| `extraContentRight` | `ReactNode` | Additional right content of the tab.       |
+| `index`             | `number`    | Index of the tab in the set of tabs.       |
+| `isActive`          | `boolean`   | Indicates if the tab is active.            |
+| `label`             | `string`    | Text of the tab label.                     |
 
 ## Usage Examples
 
@@ -62,42 +74,66 @@ Here are some examples of how you can use this Tabs component in your project:
 
 ### Basic Horizontal Tabs
 
-```javascript
-<Tabs
-  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
-/>
+```html
+<Tabs>
+  <TabList>
+    <Tab label="Tab 1" />
+    <Tab label="Tab 2" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>Content for Tab 1</TabPanel>
+    <TabPanel>Content for Tab 2</TabPanel>
+  </TabPanels>
+</Tabs>
 ```
 
 ### Vertical Tabs
 
-```javascript
-<Tabs
-  orientation="vertical"
-  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
-/>
+```html
+<Tabs orientation="vertical">
+  <TabList>
+    <Tab label="Tab 1" />
+    <Tab label="Tab 2" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>Content for Tab 1</TabPanel>
+    <TabPanel>Content for Tab 2</TabPanel>
+  </TabPanels>
+</Tabs>
 ```
 
 ### Enclosed Style Tabs
 
-```javascript
-<Tabs
-  variant="enclosed"
-  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-  panelList={[{ content: <div>Content for Tab 1</div> }, { content: <div>Content for Tab 2</div> }]}
-/>
+```html
+<Tabs variant="enclosed">
+  <TabList>
+    <Tab label="Tab 1" />
+    <Tab label="Tab 2" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>Content for Tab 1</TabPanel>
+    <TabPanel>Content for Tab 2</TabPanel>
+  </TabPanels>
+</Tabs>
 ```
 
 ### Lazy Loading Tabs
 
-```javascript
-<Tabs
-  isLazy
-  tabList={[{ label: 'Tab 1' }, { label: 'Tab 2' }]}
-  panelList={[
-    { content: () => import('./Tab1Content') },
-    { content: () => import('./Tab2Content') },
-  ]}
-/>
+```html
+<Tabs isLazy>
+  <TabList>
+    <Tab label="Tab 1" />
+    <Tab label="Tab 2" />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <LazyLoadedContent1 />
+    </TabPanel>
+    <TabPanel>
+      <LazyLoadedContent2 />
+    </TabPanel>
+  </TabPanels>
+</Tabs>
 ```
+
+> The Tabs component is a versatile solution for creating tabbed interfaces in React applications. It provides a flexible and customizable way to organize and present content in tabbed format, enhancing user experience and navigation.

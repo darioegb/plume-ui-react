@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { createContext, useContext, useEffect, useReducer } from 'react'
+import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import type { TabsState } from './tabs-reducer'
 import { tabsReducer } from './tabs-reducer'
 import styles from './tabs.module.css'
@@ -18,14 +18,13 @@ interface TabProviderProps {
   config: TabsState
 }
 
-export function TabsProvider({ config, children }: TabProviderProps): JSX.Element {
+export function TabsProvider({ config, children }: Readonly<TabProviderProps>): JSX.Element {
   const [state, dispatch] = useReducer(tabsReducer, config)
 
-  
   const alignmentClass = state.alignment !== 'left' || state.isStyled ? styles[state.alignment] : ''
   const sizeClass = state.isStyled ? styles[state.size] : ''
   const variantClass = state.isStyled ? styles[state.variant] : ''
-  
+
   useEffect(() => {
     dispatch({
       type: 'SET_CONFIG',
@@ -47,13 +46,16 @@ export function TabsProvider({ config, children }: TabProviderProps): JSX.Elemen
 
   return (
     <TabContext.Provider
-      value={{
-        ...state,
-        alignmentClass,
-        sizeClass,
-        variantClass,
-        setActiveTabIndex,
-      }}
+      value={useMemo(
+        () => ({
+          ...state,
+          alignmentClass,
+          sizeClass,
+          variantClass,
+          setActiveTabIndex,
+        }),
+        [alignmentClass, sizeClass, state, variantClass],
+      )}
     >
       {children}
     </TabContext.Provider>

@@ -12,7 +12,6 @@ import { TabsProvider } from './use-tabs'
 import styles from './tabs.module.css'
 
 export interface TabsOwnProps {
-  index?: number
   alignment?: TabsAlignment
   colorScheme?: DefaultColorPalette | keyof CustomColorPalette
   isLazy?: boolean
