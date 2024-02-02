@@ -1,5 +1,15 @@
 # @plume-ui-react/button
 
+## 0.0.15
+
+### Patch Changes
+
+- [`1863389`](https://github.com/darioegb/plume-ui-react/commit/1863389b8949444b81e17bf0aa257c1da8b52c00) Thanks [@darioegb](https://github.com/darioegb)! - Update Readme & update changelog script
+
+- Updated dependencies [[`1863389`](https://github.com/darioegb/plume-ui-react/commit/1863389b8949444b81e17bf0aa257c1da8b52c00)]:
+  - @plume-ui-react/spinner@0.0.13
+  - @plume-ui-react/core@0.0.9
+
 ## 0.0.14
 
 ### Patch Changes
