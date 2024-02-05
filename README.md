@@ -234,7 +234,7 @@ export default defineConfig((options) => ({
 
 `tsup` compiles `src/index.tsx`, which exports all of the components in the design system, into both ES Modules and CommonJS formats as well as their TypeScript types. The `package.json` for `any package, e.g button` then instructs the consumer to select the correct format:
 
-```json:button/package.json
+```json
 {
   "name": "@plume-ui-react/button",
   "version": "0.0.0",
