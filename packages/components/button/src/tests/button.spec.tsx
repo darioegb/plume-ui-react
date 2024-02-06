@@ -2,7 +2,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { Button } from '..'
 
 describe('Button component', () => {
-  const handleClick = jest.fn();
+  const handleClick = jest.fn()
   it('renders button correctly', () => {
     const { getByText } = render(<Button onClick={handleClick}>Click Me</Button>)
     const button = getByText('Click Me')
@@ -20,9 +20,7 @@ describe('Button component', () => {
   })
 
   it('handles click event', () => {
-    const { getByText } = render(
-      <Button onClick={handleClick}>Click Me</Button>,
-    )
+    const { getByText } = render(<Button onClick={handleClick}>Click Me</Button>)
     const button = getByText('Click Me')
 
     fireEvent.click(button)
@@ -77,9 +75,7 @@ describe('Button component', () => {
   })
 
   it('renders button with icons', () => {
-    const { getByText } = render(
-      <Button iconLeft={<span>👈</span>} iconRight={<span>👉</span>} />,
-    )
+    const { getByText } = render(<Button iconLeft={<span>👈</span>} iconRight={<span>👉</span>} />)
     const iconLeft = getByText('👈')
     const iconRight = getByText('👉')
     expect(iconLeft).toBeInTheDocument()
@@ -98,6 +94,26 @@ describe('Button component', () => {
     expect(busyIcon).toBeInTheDocument()
   })
 
+  it('renders busy button without busy text', () => {
+    const { getByText } = render(<Button colorScheme="dark" isBusy label="Busy Button" />)
+    const buttonElement = getByText('Busy Button')
+    expect(buttonElement).toBeInTheDocument()
+    expect(buttonElement).toHaveClass('hidden')
+  })
+
+  it('renders busy dark button', () => {
+    const { getByText } = render(
+      <Button colorScheme="dark" isBusy>
+        Busy Button
+      </Button>,
+    )
+    const buttonElement = getByText('Busy Button')
+    expect(buttonElement).toBeInTheDocument()
+    expect(buttonElement.querySelector('output')).toHaveStyle(
+      '--spinner-scheme: rgb(250, 250, 250)',
+    )
+  })
+
   it('renders solid button', () => {
     const { getByText } = render(<Button variant="solid">Solid Button</Button>)
     const buttonElement = getByText('Solid Button')
@@ -105,11 +121,19 @@ describe('Button component', () => {
   })
 
   it('renders outline button', () => {
-    const { getByText } = render(
-      <Button variant="outline">Outline Button</Button>,
-    )
+    const { getByText } = render(<Button variant="outline">Outline Button</Button>)
     const buttonElement = getByText('Outline Button')
     expect(buttonElement).toHaveClass('outline')
+  })
+
+  it('renders unstyled button', () => {
+    const { getByText } = render(<Button label="Click me" variant="unstyled" />)
+    const button = getByText('Click me')
+
+    expect(button).toBeInTheDocument()
+    expect(button).not.toHaveClass('rounded')
+    expect(button).not.toHaveClass('solid')
+    expect(button).not.toHaveClass('disabled')
   })
 
   it('renders link button', () => {
@@ -149,9 +173,7 @@ describe('Button component', () => {
   })
 
   it('renders button with color scheme', () => {
-    const { getByText } = render(
-      <Button colorScheme="dark">Dark Color Scheme</Button>,
-    )
+    const { getByText } = render(<Button colorScheme="dark">Dark Color Scheme</Button>)
     const buttonElement = getByText('Dark Color Scheme')
     expect(buttonElement).toBeInTheDocument()
     expect(buttonElement).toHaveStyle('--button-scheme: rgb(31, 41, 55)')

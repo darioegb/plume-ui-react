@@ -60,7 +60,7 @@ const renderContent = (
   isUnstyled?: boolean,
 ): JSX.Element => {
   const iconMarginClass = isUnstyled ? styles.iconMarginNone : styles.iconMargin
-  const contentClass = isBusy && !busyText ? styles.hidden : iconMarginClass
+  const contentClass = isBusy && busyText.length < 1 ? styles.hidden : iconMarginClass
 
   return (
     <>
@@ -71,6 +71,27 @@ const renderContent = (
       {iconRight ? <span className={iconMarginClass}>{iconRight}</span> : null}
     </>
   )
+}
+
+const generateButtonAttributes = (
+  variant: string,
+  className: string,
+  disabled: boolean,
+  isBusy: boolean,
+  colorScheme?: DefaultColorPalette | keyof CustomColorPalette,
+  size?: Size,
+  shape?: ButtonShape,
+): Record<string, string> => {
+  const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
+  const contrastColor = getContrastColor(color)
+  const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
+  const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
+  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
+  const disabledClass = disabled || isBusy ? styles.disabled : ''
+  const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} 
+    ${disabledClass} ${className}`.trim()
+
+  return { color, contrastColor, buttonClassNames }
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -92,16 +113,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const { size = variant !== 'unstyled' && 'md', shape = variant !== 'unstyled' && 'rounded' } =
-      rest
-    const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
-    const contrastColor = getContrastColor(color)
-    const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
-    const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
-    const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-    const disabledClass = disabled || isBusy ? styles.disabled : ''
-    const buttonClassNames = `${sizeClass} ${shapeClass} ${variantClass} 
-    ${disabledClass} ${className}`.trim()
+    const {
+      size = variant !== 'unstyled' ? 'md' : undefined,
+      shape = variant !== 'unstyled' ? 'rounded' : undefined,
+    } = rest
+    const { color, contrastColor, buttonClassNames } = generateButtonAttributes(
+      variant,
+      className,
+      disabled,
+      isBusy,
+      colorScheme,
+      size,
+      shape as ButtonShape | undefined,
+    )
 
     return (
       <button

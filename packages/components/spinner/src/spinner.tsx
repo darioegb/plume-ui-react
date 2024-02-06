@@ -35,7 +35,7 @@ const createSpinnerStyles = ({
   ...(style ?? {}),
 })
 
-export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
+export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
       style,
@@ -67,11 +67,10 @@ export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
     `.trim()
 
     return (
-      <span
+      <output
         aria-label="loading"
         className={spinnerClass}
         ref={ref}
-        role="status"
         style={spinnerStyles}
         {...rest}
       />
