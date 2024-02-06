@@ -1,5 +1,14 @@
 # @plume-ui-react/button
 
+## 0.0.16
+
+### Patch Changes
+
+- [`26d4591`](https://github.com/darioegb/plume-ui-react/commit/26d4591ff891c85e9cf22f16c392d88a83267875) Thanks [@darioegb](https://github.com/darioegb)! - Refactor some components
+
+- Updated dependencies [[`26d4591`](https://github.com/darioegb/plume-ui-react/commit/26d4591ff891c85e9cf22f16c392d88a83267875)]:
+  - @plume-ui-react/spinner@0.0.14
+
 ## 0.0.15
 
 ### Patch Changes

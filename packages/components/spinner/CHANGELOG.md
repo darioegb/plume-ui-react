@@ -1,5 +1,11 @@
 # @plume-ui-react/spinner
 
+## 0.0.14
+
+### Patch Changes
+
+- [`26d4591`](https://github.com/darioegb/plume-ui-react/commit/26d4591ff891c85e9cf22f16c392d88a83267875) Thanks [@darioegb](https://github.com/darioegb)! - Refactor some components
+
 ## 0.0.13
 
 ### Patch Changes
