@@ -22,7 +22,7 @@ export default {
   argTypes: {
     colorScheme: {
       control: 'select',
-      description: 'Custom color scheme for the button.',
+      description: 'Custom color scheme for the Spinner.',
       options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
       table: {
         type: { summary: 'string' },
@@ -30,13 +30,13 @@ export default {
     },
     className: {
       control: 'text',
-      description: `Custom CSS class for the spinner.`,
+      description: `Custom CSS class for the Spinner.`,
       table: {
         type: { summary: 'string' },
       },
     },
     style: {
-      description: 'Array of additional CSS styles for the spinner.',
+      description: 'Array of additional CSS styles for the Spinner.',
       control: 'object',
       table: {
         type: { summary: 'CSSProperties' },
@@ -44,7 +44,7 @@ export default {
     },
     size: {
       control: 'radio',
-      description: 'The size of the spinner.',
+      description: 'The size of the Spinner.',
       options: ['sm', 'md', 'lg'],
       table: {
         defaultValue: { summary: 'md' },
@@ -53,7 +53,7 @@ export default {
     },
     speed: {
       control: 'text',
-      description: 'The animation speed of the spinner.',
+      description: 'The animation speed of the Spinner.',
       table: {
         defaultValue: { summary: '1s' },
         type: { summary: 'string' },
@@ -61,7 +61,7 @@ export default {
     },
     thickness: {
       control: 'number',
-      description: 'The border thickness of the spinner.',
+      description: 'The border thickness of the Spinner.',
       table: {
         defaultValue: { summary: 3 },
         type: { summary: 'number' },
@@ -69,7 +69,7 @@ export default {
     },
     variant: {
       control: 'select',
-      description: 'The border variant of the spinner.',
+      description: 'The border variant of the Spinner.',
       options: ['solid', 'dashed', 'dotted', 'double', 'unstyled'],
       table: {
         defaultValue: { summary: 'solid' },
@@ -82,12 +82,12 @@ export default {
 type Story = StoryObj<typeof Spinner>
 
 /**
- * This is the default spinner.
+ * This is the default Spinner.
  */
 export const Default: Story = {}
 
 /**
- * This is a list of spinner with different sizes.
+ * This is a list of Spinner with different sizes.
  * Just adding the **size** prop with lg, md or sm.
  */
 export const Sizes: Story = {
@@ -152,7 +152,7 @@ export const Variants: Story = {
 }
 
 /**
- * This is a list o spinner with different colors.
+ * This is a list o Spinner with different colors.
  * Just adding the **colorScheme** prop.
  */
 export const Colors: Story = {
@@ -188,7 +188,7 @@ export const Colors: Story = {
 }
 
 /**
- * This is a spinner with custom thickness.
+ * This is a Spinner with custom thickness.
  * Just adding **thickness** prop with number value.
  */
 export const CustomThickness: Story = {
@@ -199,7 +199,7 @@ export const CustomThickness: Story = {
 }
 
 /**
- * This is a spinner with custom animation speed.
+ * This is a Spinner with custom animation speed.
  * Just adding **speed** prop with string value in seconds,
  *  for example: **.2s**.
  */
@@ -211,7 +211,7 @@ export const CustomSpeed: Story = {
 }
 
 /**
- * This is a spinner with custom inline styles.
+ * This is a Spinner with custom inline styles.
  * Using **style** prop setting different attributes.
  */
 export const style: Story = {
@@ -227,7 +227,7 @@ export const style: Story = {
 }
 
 /**
- * This is a empty area spinner with custom inline styles.
+ * This is a empty area Spinner with custom inline styles.
  * Using **style** prop setting **borderColor** & **borderTopColor**.
  */
 export const EmptyArea: Story = {
@@ -240,7 +240,7 @@ export const EmptyArea: Story = {
 }
 
 /**
- * Some examples of spinner with custom classes from tailwind
+ * Some examples of Spinner with custom classes from tailwind
  */
 export const Tailwind: Story = {
   parameters: {
@@ -272,7 +272,7 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of spinner with custom classes from bootstrap
+ * Some examples of Spinner with custom classes from bootstrap
  */
 export const Bootstrap: Story = {
   parameters: {

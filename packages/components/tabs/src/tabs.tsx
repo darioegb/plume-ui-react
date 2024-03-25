@@ -1,11 +1,6 @@
 import { forwardRef } from 'react'
 import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
-import type {
-  DefaultColorPalette,
-  CustomColorPalette,
-  ComponentProps,
-  Size,
-} from '@plume-ui-react/core'
+import type { ColorPalette, ComponentProps, Size } from '@plume-ui-react/core'
 import { getMergedConfig } from '@plume-ui-react/core'
 import { getContrastColor, getLightenColor } from '@plume-ui-react/color-utils'
 import { TabsProvider } from './use-tabs'
@@ -13,7 +8,7 @@ import styles from './tabs.module.css'
 
 export interface TabsOwnProps {
   alignment?: TabsAlignment
-  colorScheme?: DefaultColorPalette | keyof CustomColorPalette
+  colorScheme?: keyof ColorPalette
   isLazy?: boolean
   onChange?: (index: number) => void
   orientation?: TabsOrientation
@@ -62,7 +57,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
+    const color = (colorScheme && (getMergedConfig().colors[colorScheme] )) || '#d3d3d3'
     const lightenColor = getLightenColor(color, 20)
     const contrastColor = getContrastColor(color)
     const isStyled = variant !== 'unstyled'

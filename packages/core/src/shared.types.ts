@@ -5,3 +5,6 @@ export interface ComponentProps {
   style?: CSSProperties
   index?: number
 }
+
+export type Size = 'sm' | 'md' | 'lg'
+export type Shape = 'pill' | 'rounded'

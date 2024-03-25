@@ -8,6 +8,9 @@ div.sbdocs-wrapper {
   justify-content: flex-start;
   gap: 5rem;
 }
+div.sbdocs-content {
+  max-width: 80vw;
+}
 
 div.container {
   margin-left: 2rem;

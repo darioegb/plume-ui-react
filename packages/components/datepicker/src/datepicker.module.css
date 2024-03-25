@@ -1,0 +1,284 @@
+/* datepicker.module.css */
+
+@value date-picker-padding: 1rem;
+@value date-picker-border-radius: 0.5rem;
+@value date-picker-color: #9ca3af;
+@value date-picker-border-color: #d3d3d3;
+
+
+.datePicker {
+  position: relative;
+  width: 100%;
+}
+
+.datePickerInputText {
+  border: none;
+  border-radius: date-picker-border-radius;
+  min-width: 18rem;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 date-picker-padding;
+  position: relative;
+  display: block;
+  outline: none;
+  color: date-picker-color;
+  background: none;
+}
+
+.inputButton {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 date-picker-padding;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.inputButtonIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: date-picker-color;
+}
+
+.sm {
+  height: 2rem;
+  padding: 0 0.5rem;
+}
+
+.md {
+  height: 2.5rem;
+  padding: 0 date-picker-padding;
+}
+
+.lg {
+  height: 3rem;
+  padding: 0 1.5rem;
+}
+
+.rounded {
+  border-radius: date-picker-border-radius;
+}
+
+:is(.outline).pill {
+  border-radius: 9999px;
+}
+
+.outline {
+  composes: datePickerInputText;
+  border: 1px solid date-picker-border-color;
+}
+
+.filled {
+  composes: datePickerInputText;
+  background-color: #F3F4F6;
+  border-block-end: 1px solid date-picker-border-color;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.underline {
+  composes: datePickerInputText;
+  border-radius: 0;
+  outline: none;
+  border-block-end: 1px solid date-picker-border-color;
+}
+
+:is(.outline, .filled, .underline):enabled:hover {
+  border-color: color-mix(in hsl, date-picker-border-color, black 10%);
+}
+
+.filled:enabled:hover {
+  background-color: color-mix(in hsl, #F3F4F6, black 2%);
+}
+
+.outline:enabled:focus {
+  border-color: var(--datepicker-scheme);
+  outline: 2px solid var(--datepicker-range-item-color);
+  outline-offset: 2px;
+}
+
+:is(.filled, .underline):enabled:focus {
+  border-block-end-color: var(--datepicker-scheme);
+  border-block-end-width: 2px;
+}
+
+.datePickerModal {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid date-picker-border-color;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10;
+}
+
+.calendarContainer {
+  display: flex;
+  width: 21rem;
+}
+
+.calendarContainerDouble {
+  display: flex;
+  width: 42rem;
+}
+
+.calendar {
+  width: 21rem;
+  padding: 0.75rem;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.monthYearSelectors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.25rem;
+}
+
+.monthYearSelectors button:not([class*='icon']) {
+  padding: 0.5rem 1rem;
+  border-radius: date-picker-border-radius;
+}
+
+.monthYearSelectors button[class*='icon'] {
+  padding: 0.5rem;
+  border-radius: 9999px;
+}
+
+.monthYearSelectors button:hover {
+  background-color: var(--datepicker-hover-color);
+}
+
+.monthSelector,
+.yearSelector {
+  font-weight: bold;
+}
+
+.yearSelectorGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.year,
+.month {
+  display: inline-flex;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: date-picker-border-radius;
+}
+
+.year:not(.selected):hover,
+.month:not(.selected):hover {
+  background-color: var(--datepicker-hover-color);
+}
+
+.year:hover,
+.month:hover {
+  background-color: var(--datepicker-selected-hover-color);
+}
+
+.monthSelectorGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.daysOfWeek {
+  display: flex;
+  justify-content: center;
+  column-gap: 0.25rem;
+  padding-bottom: 0.375rem;
+}
+
+.dayOfWeek {
+  margin: 1px;
+  width: 2.5rem;
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+.day {
+  margin-left: 1px;
+  margin-right: 1px;
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+}
+
+.today {
+  color: var(--datepicker-scheme);
+}
+
+.rangeItem {
+  background-color: var(--datepicker-range-item-color);
+  color: white;
+}
+
+.selected {
+  background-color: var(--datepicker-scheme);
+  color: white;
+}
+
+.selectedHover {
+  background-color: var(--datepicker-selected-hover-color);
+}
+
+.hovered {
+  background-color: var(--datepicker-hover-color);
+}
+
+.disabledDay {
+  color: date-picker-color;
+  cursor: not-allowed;
+}
+
+.outOfRangeDay {
+  text-decoration-line: line-through;
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  border-top: 1px solid date-picker-border-color;
+}
+
+button.footerButton {
+  color: black;
+}
+
+button.footerButtonApply {
+  color: white;
+  margin-left: 0.5rem;
+}
+
+.disabled,
+.disabled + .inputButton {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

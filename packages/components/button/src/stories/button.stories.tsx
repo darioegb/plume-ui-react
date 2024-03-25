@@ -23,20 +23,20 @@ export default {
   argTypes: {
     children: {
       control: 'object',
-      description: 'Content of the button (text, HTML elements, etc.).',
+      description: 'Content of the Button (text, HTML elements, etc.).',
       table: {
         type: { summary: 'ReactNode' },
       },
     },
     className: {
       control: 'text',
-      description: `Custom CSS class for the button.`,
+      description: `Custom CSS class for the Button.`,
       table: {
         type: { summary: 'string' },
       },
     },
     style: {
-      description: 'Array of additional CSS styles for the button.',
+      description: 'Array of additional CSS styles for the Button.',
       control: 'object',
       table: {
         type: { summary: 'CSSProperties' },
@@ -44,7 +44,7 @@ export default {
     },
     disabled: {
       control: 'boolean',
-      description: 'Indicates whether the button is disabled.',
+      description: 'Indicates whether the Button is disabled.',
       if: { arg: 'busy', truthy: false },
       table: {
         defaultValue: { summary: false },
@@ -53,11 +53,11 @@ export default {
     },
     onClick: {
       action: 'clicked',
-      description: 'Function triggered when the button is clicked.',
+      description: 'Function triggered when the Button is clicked.',
     },
     type: {
       control: 'radio',
-      description: 'Type of the button (e.g., "button" or "submit").',
+      description: 'Type of the Button (e.g., "button" or "submit").',
       options: ['button', 'submit', 'reset'],
       table: {
         type: { summary: `"button" | "submit" | "reset"` },
@@ -65,7 +65,7 @@ export default {
     },
     colorScheme: {
       control: 'select',
-      description: 'Custom color scheme for the button.',
+      description: 'Custom color scheme for the Button.',
       options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
       table: {
         type: { summary: 'string' },
@@ -73,21 +73,21 @@ export default {
     },
     label: {
       control: 'text',
-      description: 'Label for the button. If set, it will override children.',
+      description: 'Label for the Button. If set, it will override children.',
       table: {
         type: { summary: 'string' },
       },
     },
     iconLeft: {
       control: 'object',
-      description: 'Icon to be displayed on the left side of the button.',
+      description: 'Icon to be displayed on the left side of the Button.',
       table: {
         type: { summary: 'ReactNode' },
       },
     },
     iconRight: {
       control: 'object',
-      description: 'Icon to be displayed on the right side of the button.',
+      description: 'Icon to be displayed on the right side of the Button.',
       if: { arg: 'children', truthy: false },
       table: {
         type: { summary: 'ReactNode' },
@@ -95,7 +95,7 @@ export default {
     },
     isBusy: {
       control: 'boolean',
-      description: 'Whether the button is in a busy/loading state.',
+      description: 'Whether the Button is in a busy/loading state.',
       if: { arg: 'disabled', truthy: false },
       table: {
         defaultValue: { summary: false },
@@ -104,14 +104,14 @@ export default {
     },
     busyText: {
       control: 'text',
-      description: 'Text to display when the button is in a busy/loading state.',
+      description: 'Text to display when the Button is in a busy/loading state.',
       table: {
         type: { summary: 'string' },
       },
     },
     shape: {
       control: 'inline-radio',
-      description: 'Shape style of the button.',
+      description: 'Shape style of the Button.',
       options: ['pill', 'rounded'],
       table: {
         type: { summary: `"pill" | "rounded"` },
@@ -119,7 +119,7 @@ export default {
     },
     size: {
       control: 'radio',
-      description: 'Size of the button.',
+      description: 'Size of the Button.',
       options: ['sm', 'md', 'lg'],
       table: {
         type: { summary: `"sm" | "md" | "lg"` },
@@ -127,10 +127,10 @@ export default {
     },
     variant: {
       control: 'select',
-      description: 'Visual style variant of the button.',
-      options: ['solid', 'outline', 'link', 'icon', 'unstyled'],
+      description: 'Visual style variant of the Button.',
+      options: ['solid', 'outline', 'link', 'icon', 'ghost', 'unstyled'],
       table: {
-        type: { summary: `"solid" | "outline" | "link" | "icon" | "unstyled"` },
+        type: { summary: `"solid" | "outline" | "link" | "icon" | "ghost" | "unstyled"` },
       },
     },
   },
@@ -143,7 +143,7 @@ export default {
 type Story = StoryObj<typeof Button>
 
 /**
- * This is the default button with only setting a **label** prop.
+ * This is the default Button with only setting a **label** prop.
  */
 export const Default: Story = {
   args: {
@@ -152,7 +152,7 @@ export const Default: Story = {
 }
 
 /**
- * This is a list o button with different sizes.
+ * This is a list o Button with different sizes.
  * Just adding the **size** prop.
  */
 export const Sizes: Story = {
@@ -188,7 +188,7 @@ export const Sizes: Story = {
 }
 
 /**
- * This is a list o button with different variants.
+ * This is a list o Button with different variants.
  * Just adding the **variant** prop in one of these values **solid**, **outline**, **link**, **icon** and **unstyled**. For works with icons also we can use other variants not only **icon**, this variant allows us to show the icon alone without borders or background. Icons can be added using props **iconLeft**, **iconRight** and also with **children**
  */
 export const Variants: Story = {
@@ -213,12 +213,23 @@ export const Variants: Story = {
   label="Unstyled Button"
   variant="unstyled" 
 />
-<Button variant="icon">🚀</Button>
-<Button
-  colorScheme="info"
-  iconLeft={<span>👈</span>}
-  iconRight={<span>👉</span>}
+<Button 
+  label="Ghost Button" 
+  variant="ghost" 
 />
+<Button 
+  variant="icon"
+>
+  <svg
+    fill="#000000"
+    height="32"
+    viewBox="0 0 256 256"
+    width="32"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M152,224a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,224ZM128,112a12,12,0,1,0-12-12A12,12,0,0,0,128,112Zm95.62,43.83-12.36,55.63a16,16,0,0,1-25.51,9.11L158.51,200h-61L70.25,220.57a16,16,0,0,1-25.51-9.11L32.38,155.83a16.09,16.09,0,0,1,3.32-13.71l28.56-34.26a123.07,123.07,0,0,1,8.57-36.67c12.9-32.34,36-52.63,45.37-59.85a16,16,0,0,1,19.6,0c9.34,7.22,32.47,27.51,45.37,59.85a123.07,123.07,0,0,1,8.57,36.67l28.56,34.26A16.09,16.09,0,0,1,223.62,155.83ZM99.43,184h57.14c21.12-37.54,25.07-73.48,11.74-106.88C156.55,47.64,134.49,29,128,24c-6.51,5-28.57,23.64-40.33,53.12C74.36,110.52,78.31,146.46,99.43,184Zm-15,5.85Q68.28,160.5,64.83,132.16L48,152.36,60.36,208l.18-.13ZM208,152.36l-16.83-20.2q-3.42,28.28-19.56,57.69l23.85,18,.18.13Z" />
+  </svg>
+</Button>
           `,
       },
     },
@@ -229,14 +240,24 @@ export const Variants: Story = {
       <Button colorScheme="success" label="Outline Button" variant="outline" />
       <Button colorScheme="error" label="Link Button" variant="link" />
       <Button label="Unstyled Button" variant="unstyled" />
-      <Button variant="icon">🚀</Button>
-      <Button colorScheme="info" iconLeft={<span>👈</span>} iconRight={<span>👉</span>} />
+      <Button label="Ghost Button" variant="ghost" />
+      <Button colorScheme="primary" variant="icon">
+        <svg
+          fill="currentColor"
+          height="32"
+          viewBox="0 0 256 256"
+          width="32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M152,224a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,224ZM128,112a12,12,0,1,0-12-12A12,12,0,0,0,128,112Zm95.62,43.83-12.36,55.63a16,16,0,0,1-25.51,9.11L158.51,200h-61L70.25,220.57a16,16,0,0,1-25.51-9.11L32.38,155.83a16.09,16.09,0,0,1,3.32-13.71l28.56-34.26a123.07,123.07,0,0,1,8.57-36.67c12.9-32.34,36-52.63,45.37-59.85a16,16,0,0,1,19.6,0c9.34,7.22,32.47,27.51,45.37,59.85a123.07,123.07,0,0,1,8.57,36.67l28.56,34.26A16.09,16.09,0,0,1,223.62,155.83ZM99.43,184h57.14c21.12-37.54,25.07-73.48,11.74-106.88C156.55,47.64,134.49,29,128,24c-6.51,5-28.57,23.64-40.33,53.12C74.36,110.52,78.31,146.46,99.43,184Zm-15,5.85Q68.28,160.5,64.83,132.16L48,152.36,60.36,208l.18-.13ZM208,152.36l-16.83-20.2q-3.42,28.28-19.56,57.69l23.85,18,.18.13Z" />
+        </svg>
+      </Button>
     </div>
   ),
 }
 
 /**
- * This is a list o button with different colors.
+ * This is a list o Button with different colors.
  * Just adding the **colorScheme** prop.
  */
 export const Colors: Story = {
@@ -296,7 +317,38 @@ export const Colors: Story = {
 }
 
 /**
- * This is a button with children.
+ * This is a Button with icon left & right.
+ */
+export const WithIcons: Story = {
+  args: {
+    colorScheme: 'primary',
+    iconLeft: (
+      <svg
+        fill="currentColor"
+        height="32"
+        viewBox="0 0 256 256"
+        width="32"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z" />
+      </svg>
+    ),
+    iconRight: (
+      <svg
+        fill="currentColor"
+        height="32"
+        viewBox="0 0 256 256"
+        width="32"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z" />
+      </svg>
+    ),
+  },
+}
+
+/**
+ * This is a Button with children.
  * for customize the button body.
  */
 export const WithChildren: Story = {
@@ -312,7 +364,7 @@ export const WithChildren: Story = {
 }
 
 /**
- * This is a pill button. A pill is full rounded.
+ * This is a Button Pill. A pill is full rounded.
  * Using **shape** prop in **pill** by default is rounded.
  */
 export const Pill: Story = {
@@ -324,7 +376,7 @@ export const Pill: Story = {
 }
 
 /**
- * This is a block button.
+ * This is Button Block.
  * Full-width setting width on **style** prop.
  */
 export const Block: Story = {
@@ -344,7 +396,7 @@ export const Block: Story = {
 }
 
 /**
- * This is a disabled button.
+ * This is a Button with disabled state.
  * Just adding the **disabled** prop in true.
  * The disabled state add **.disabled** class,
  * that contain **opacity: .5** and **cursor: not-allowed**.
@@ -358,7 +410,7 @@ export const Disabled: Story = {
 }
 
 /**
- * This is a busy button.
+ * This is a Button with busy state.
  * Using **busy** and **busyText** props,
  * for customize the button during the busy stage.
  */

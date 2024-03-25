@@ -1,20 +1,20 @@
 /* spinner.module.css */
-@value default-spinner-border-width: 3px;
-@value default-spinner-border-style: solid;
-@value default-spinner-width: 2rem;
-@value default-spinner-height: 2rem;
+@value spinner-border-width: 3px;
+@value spinner-border-style: solid;
+@value spinner-width: 2rem;
+@value spinner-height: 2rem;
 @value primary-border-color: currentColor;
-@value default-border-color: transparent;
+@value border-color: transparent;
 
 .spinner {
   animation: spin var(--spinner-animation-duration) linear infinite;
   border-color: var(--spinner-scheme, primary-border-color);
   border-radius: 50%;
-  border-top-color: default-border-color;
-  border-width: var(--spinner-border-width, default-spinner-border-width);
+  border-top-color: border-color;
+  border-width: var(--spinner-border-width, spinner-border-width);
   display: inline-block;
-  width: default-spinner-width;
-  height: default-spinner-height;
+  width: spinner-width;
+  height: spinner-height;
 }
 
 .sm {
@@ -23,8 +23,8 @@
 }
 
 .md {
-  width: default-spinner-width;
-  height: default-spinner-height;
+  width: spinner-width;
+  height: spinner-height;
 }
 
 .lg {

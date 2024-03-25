@@ -34,3 +34,15 @@ export function getLightenColor(inputColor: string, lightness = 10): string {
   )
   return `rgb(${adjustedRgb.join(', ')})`
 }
+
+export function getDarkenColor(inputColor: string, darkness = 10): string {
+  const originalRgb = getRgbFromColor(inputColor)
+
+  if (originalRgb.length < 3) return inputColor
+
+  const adjustedRgb = originalRgb.map((channel) =>
+    Math.max(0, channel - (channel * darkness) / 100),
+  )
+
+  return `rgb(${adjustedRgb.join(', ')})`
+}

@@ -1,25 +1,21 @@
 /* button.module.css */
-@value default-button-padding: 0.5rem 1rem;
-@value default-button-border-radius: 0.5rem;
-@value default-button-border: none;
-@value default-outline-width: 2px;
+@value button-padding: 0.5rem 1rem;
+@value button-border-radius: 0.5rem;
+@value button-border: none;
+@value outline-width: 2px;
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: default-button-border;
+  border: button-border;
   outline: none;
-  user-select: none;
-  cursor: pointer;
-  opacity: 1;
-  font-size: 1rem;
   font-weight: 600;
   transition:
     color 0.3s,
     background-color 0.3s;
-  padding: default-button-padding;
-  border-radius: default-button-border-radius;
+  padding: button-padding;
+  border-radius: button-border-radius;
   background-color: transparent;
 }
 
@@ -28,7 +24,7 @@
 }
 
 .md {
-  padding: default-button-padding;
+  padding: button-padding;
 }
 
 .lg {
@@ -36,7 +32,7 @@
 }
 
 .rounded {
-  border-radius: default-button-border-radius;
+  border-radius: button-border-radius;
 }
 
 .pill {
@@ -51,41 +47,69 @@
 
 .outline {
   composes: button;
-  border: 0.2rem solid var(--button-scheme);
+  border: 1px solid var(--button-scheme);
+  color: var(--button-scheme);
+}
+
+.ghost {
+  composes: button;
   color: var(--button-scheme);
 }
 
 .link {
   composes: button;
   color: var(--button-scheme);
-  text-decoration: underline;
+  text-decoration-line: underline;
+  text-underline-offset: 0.5rem;
 }
 
 .icon {
   composes: button;
   color: var(--button-scheme);
+  padding: 0.25rem;
 }
 
-:is(.icon, .link):not(:disabled):hover {
-  color: color-mix(in hsl, var(--button-scheme), black 10%);
+:is(.icon, .link):enabled:hover {
+  color: var(--button-hover-color);
 }
 
-.solid:not(:disabled):hover {
-  background-color: color-mix(in hsl, var(--button-scheme), black 10%);
+:is(.outline, .ghost):enabled:hover {
+  background-color: var(--button-hover-alt-color);
 }
 
-.outline:not(:disabled):hover {
-  background-color: var(--button-scheme);
-  color: white;
+.solid:enabled:hover {
+  background-color: var(--button-hover-color);
 }
 
-.link:not(:disabled):hover {
-  text-decoration: none;
+.outline:enabled:hover {
+  border-color: var(--button-hover-color);
 }
 
-:is(.solid, .outline):not(:disabled):focus {
-  outline: default-outline-width solid var(--button-scheme);
-  outline-offset: default-outline-width;
+.link:enabled:hover {
+  text-decoration-color: var(--button-hover-color);
+  text-decoration-thickness: 2px;
+}
+
+.button:enabled:focus {
+  outline: outline-width solid var(--button-focus-alt-color);
+  outline-offset: outline-width;
+}
+
+:is(.outline, .ghost):enabled:active {
+  background-color: var(--button-focus-alt-color);
+}
+
+:is(.icon, .link):enabled:active {
+  color: var(--button-focus-color);
+}
+
+.solid:enabled:active {
+  background-color: var(--button-focus-color);
+}
+
+.link:enabled:active {
+  text-decoration-color: var(--button-focus-color);
+  text-decoration-thickness: 2px;
 }
 
 button.disabled {
@@ -94,7 +118,7 @@ button.disabled {
 }
 
 .iconMargin {
-  margin: 0 .25rem;
+  margin: 0 0.25rem;
 }
 
 .hidden {
@@ -102,5 +126,5 @@ button.disabled {
 }
 
 .spinnerMargin {
-  margin-left: .25rem;
+  margin-left: 0.25rem;
 }

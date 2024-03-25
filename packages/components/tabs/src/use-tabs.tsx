@@ -18,7 +18,7 @@ interface TabProviderProps {
   config: TabsState
 }
 
-export function TabsProvider({ config, children }: Readonly<TabProviderProps>): JSX.Element {
+export function TabsProvider({ config, children }: Readonly<TabProviderProps>): ReactNode {
   const [state, dispatch] = useReducer(tabsReducer, config)
 
   const alignmentClass = state.alignment !== 'left' || state.isStyled ? styles[state.alignment] : ''

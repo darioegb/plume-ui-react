@@ -1,13 +1,10 @@
-export type DefaultColorPalette =
-  | 'primary'
-  | 'secondary'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'success'
-  | 'dark'
-  | 'light'
-
-export type Size = 'sm' | 'md' | 'lg'
-// eslint-disable-next-line @typescript-eslint/no-empty-interface -- It's populated by augmentation
-export interface CustomColorPalette {}
+export interface ColorPalette {
+  primary: string
+  secondary: string
+  info: string
+  warning: string
+  error: string
+  success: string
+  dark: string
+  light: string
+}

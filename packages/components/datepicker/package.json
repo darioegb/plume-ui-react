@@ -1,0 +1,62 @@
+{
+  "name": "@plume-ui-react/datepicker",
+  "version": "0.0.1",
+  "description": "A React component that is a datepicker.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.module.css"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/ --ext .tsx,.ts",
+    "lint:fix": "eslint src/ --ext .tsx,.ts",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "datepicker",
+    "calendar",
+    "react",
+    "plume-ui",
+    "plume-ui-react",
+    "component",
+    "clickable",
+    "tabbable"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "jest": {
+    "preset": "jest-preset"
+  },
+  "dependencies": {
+    "@plume-ui-react/color-utils": "workspace:*",
+    "@plume-ui-react/date-utils": "workspace:*",
+    "@plume-ui-react/core": "workspace:*",
+    "@plume-ui-react/button": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "jest-preset": "workspace:*",
+    "prettier-config": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.11.0",
+    "react-dom": ">=16.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -59,7 +59,7 @@ export default {
     alignment: {
       control: 'radio',
       options: ['left', 'center', 'right'],
-      description: 'Alignment of the tabs within the container.',
+      description: 'Alignment of the Tabs within the container.',
       table: {
         defaultValue: { summary: 'left' },
         type: { summary: '"left" | "center" | "right"' },
@@ -68,7 +68,7 @@ export default {
     colorScheme: {
       control: 'select',
       options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
-      description: 'Custom color scheme for the tabs.',
+      description: 'Custom color scheme for the Tabs.',
       table: {
         type: { summary: 'string' },
       },
@@ -89,7 +89,7 @@ export default {
     orientation: {
       control: 'radio',
       options: ['horizontal', 'vertical'],
-      description: 'Orientation of the tab list.',
+      description: 'Orientation of the Tabs.',
       table: {
         defaultValue: { summary: 'horizontal' },
         type: { summary: '"horizontal" | "vertical"' },
@@ -98,7 +98,7 @@ export default {
     size: {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
-      description: 'Size of the tabs.',
+      description: 'Size of the Tabs.',
       table: {
         defaultValue: { summary: 'md' },
         type: { summary: '"sm" | "md" | "lg"' },
@@ -107,7 +107,7 @@ export default {
     variant: {
       control: 'select',
       options: ['underline', 'rounded', 'enclosed', 'segment', 'unstyled'],
-      description: 'Variant of the tabs.',
+      description: 'Variant of the Tabs.',
       table: {
         defaultValue: { summary: 'underline' },
         type: { summary: '"underline" | "rounded" | "enclosed" | "segment" | "unstyled"' },
@@ -118,7 +118,7 @@ export default {
 
 type Story = StoryObj<typeof Tabs>
 
-// This is the default tabs
+// This is the default Tabs
 export const Default: Story = {
   parameters: {
     docs: {
@@ -151,7 +151,7 @@ export const Default: Story = {
 }
 
 /**
- * This is a list o tabs with different sizes.
+ * This is a list o Tabs with different sizes.
  * Just adding the **size** prop. We support 3 sizes **sm**, **md**, **lg**.
  */
 export const Sizes: Story = {
@@ -196,7 +196,7 @@ export const Sizes: Story = {
 }
 
 /**
- * This is a list o tabs with different alignments.
+ * This is a list o Tabs with different alignments.
  * Just adding the **alignment** prop. We support 3 alignments **left**, **center**, **right**.
  */
 export const Alignments: Story = {
@@ -241,7 +241,7 @@ export const Alignments: Story = {
 }
 
 /**
- * This is a list o tabs with different orientations.
+ * This is a list o Tabs with different orientations.
  * Just adding the **orientation** prop. We support 2 orientations **horizontal**, **vertical**.
  */
 export const Orientations: Story = {
@@ -277,7 +277,7 @@ export const Orientations: Story = {
 }
 
 /**
- * This is a list o tabs with different variants.
+ * This is a list o Tabs with different variants.
  * Just adding the **variant** prop in one of these values **underline**, **rounded**, **enclosed**, **segment** and **unstyled**.
  */
 export const Variants: Story = {
@@ -337,7 +337,7 @@ export const Variants: Story = {
 }
 
 /**
- * This is a list o tabs with different colors.
+ * This is a list o Tabs with different colors.
  * Just adding the **colorScheme** prop.
  */
 export const Colors: Story = {
@@ -387,7 +387,7 @@ export const Colors: Story = {
 }
 
 /**
- * This is a disabled tab.
+ * This is a disabled Tabs.
  * Just adding the **disabled** prop in true.
  * The disabled state add **.disabled** class,
  * that contain **opacity: .5** and **cursor: not-allowed**.
@@ -456,7 +456,7 @@ export const LazyTabs: Story = {
 }
 
 /**
- * This is a tabs with extra content.
+ * This is a Tabs with extra content.
  * Just adding the **extraContentLeft** & **extraContentRight** prop in tab object.
  */
 export const ExtraContent: Story = {
@@ -622,7 +622,7 @@ export const ExtraContent: Story = {
 }
 
 /**
- * Example of tabs with custom classes from tailwind
+ * Example of Tabs with custom classes from tailwind
  */
 export const Tailwind: Story = {
   args: {
@@ -671,6 +671,9 @@ export const Tailwind: Story = {
   },
 }
 
+/**
+ * Example of Tabs with custom classes from bootstrap
+ */
 export const Bootstrap: Story = {
   parameters: {
     docs: {

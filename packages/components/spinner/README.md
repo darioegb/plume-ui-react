@@ -39,7 +39,7 @@ This component accepts several properties to customize the appearance and behavi
 | Property      | Type                                                        | Description                                                                             |
 | ------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `className`   | `string`                                                    | Additional CSS classes for the spinner.                                                 |
-| `colorScheme` | `DefaultColorPalette \| keyof CustomColorPalette`           | The color scheme to be applied to the spinner.                                          |
+| `colorScheme` | `ColorPalette \| keyof CustomColorPalette`           | The color scheme to be applied to the spinner.                                          |
 | `hidden`      | `boolean`                                                   | Indicates whether the spinner should be hidden.                                         |
 | `id`          | `string`                                                    | The unique identifier for the spinner element.                                          |
 | `size`        | `Size`                                                      | The size of the spinner.                                                                |

@@ -1,7 +1,7 @@
 /* tabs.module.css */
-@value tabsPadding: .5rem .75rem;
-@value tabsBorderWidth: 2px;
-@value tabsBorderRadius: .5rem;
+@value tabs-padding: 0.5rem 0.75rem;
+@value tabs-border-width: 2px;
+@value tabs-border-radius: 0.5rem;
 
 .tabs {
   display: flex;
@@ -34,7 +34,7 @@
 }
 
 .md {
-  padding: tabsPadding;
+  padding: tabs-padding;
 }
 
 .lg {
@@ -72,23 +72,23 @@
 }
 
 .vertical .underline .tab {
-  border-inline-end: tabsBorderWidth solid transparent;
+  border-inline-end: tabs-border-width solid transparent;
   border-block-end: none;
   transition: border-inline-end 0.2s;
 }
 
 .underline .tab {
-  border-block-end: tabsBorderWidth solid transparent;
+  border-block-end: tabs-border-width solid transparent;
   transition: border-block-end 0.2s;
 }
 
 .vertical .underline .tab.active {
-  border-inline-end: tabsBorderWidth solid var(--tabs-scheme);
+  border-inline-end: tabs-border-width solid var(--tabs-scheme);
   border-block-end: none;
 }
 
 .underline .tab.active {
-  border-block-end: tabsBorderWidth solid var(--tabs-scheme);
+  border-block-end: tabs-border-width solid var(--tabs-scheme);
   color: var(--tabs-scheme);
   transition: color 0.2s;
 }
@@ -96,7 +96,7 @@
 .rounded .tab.active {
   background-color: var(--tabs-scheme);
   color: var(--tabs-text-color);
-  border-radius: tabsBorderRadius;
+  border-radius: tabs-border-radius;
   transition: color 0.2s;
 }
 
@@ -111,7 +111,7 @@
 
 .vertical .enclosed .tab.active {
   border: 1px solid var(--tabs-scheme);
-  border-radius: tabsBorderRadius;
+  border-radius: tabs-border-radius;
   border-inline-end: none;
   border-end-end-radius: 0;
   border-start-end-radius: 0;
@@ -121,7 +121,7 @@
 
 .enclosed .tab.active {
   border: 1px solid var(--tabs-scheme);
-  border-radius: tabsBorderRadius;
+  border-radius: tabs-border-radius;
   background: white;
   border-block-end: none;
   border-bottom-left-radius: 0;
@@ -137,13 +137,13 @@
   gap: 0.25rem;
   padding: 0.75rem 1rem;
   transition: background-color 0.2s;
-  border-radius: tabsBorderRadius;
+  border-radius: tabs-border-radius;
 }
 
 .segment .tab.active {
   background-color: var(--tabs-background-color);
   color: var(--tabs-text-color);
-  border-radius: tabsBorderRadius;
+  border-radius: tabs-border-radius;
   transition: color 0.2s;
 }
 
