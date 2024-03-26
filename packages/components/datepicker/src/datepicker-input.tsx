@@ -5,14 +5,14 @@ import { Button } from '@plume-ui-react/button'
 import { getDateStringByLanguage } from '@plume-ui-react/date-utils'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
-import type { DatePickerRootAttributes } from './datepicker'
+import type { DatePickerRootAttributes, DateRange } from './datepicker'
 
 interface DatePickerInputOwnProps {
   onClick: () => void
   isRange: boolean
   language: string
   displayFormat?: string
-  onBlur?: (value?: { startDate?: Date; endDate?: Date }) => void
+  onBlur?: (value?: DateRange) => void
 }
 
 type DatePickerInputProps = ComponentProps & DatePickerRootAttributes & DatePickerInputOwnProps
@@ -27,7 +27,9 @@ export function DatePickerInput({
   ...rest
 }: DatePickerInputProps): ReactNode {
   const {
-    state: { startDate, endDate },
+    state: {
+      value: { startDate, endDate },
+    },
   } = useDatePicker()
 
   const ref = useRef<HTMLInputElement>(null)
@@ -49,11 +51,7 @@ export function DatePickerInput({
         })}
         disabled={disabled}
         onBlur={() => {
-          onBlur &&
-            onBlur({
-              ...(startDate && { startDate }),
-              ...(endDate && { endDate }),
-            })
+          onBlur && onBlur({ startDate, endDate })
         }}
         onClick={onClick}
         readOnly
@@ -65,7 +63,7 @@ export function DatePickerInput({
         className={styles.inputButton}
         disabled={disabled}
         onClick={handleButtonClick}
-        variant="icon"
+        variant="unstyled"
       >
         <svg
           className={`${styles.inputButtonIcon}`}

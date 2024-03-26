@@ -6,36 +6,40 @@ import { getMergedConfig } from '@plume-ui-react/core'
 import { getDateFormatByLanguage } from '@plume-ui-react/date-utils'
 import { Button } from '@plume-ui-react/button'
 import { DatePickerContext } from './use-datepicker'
-import { datePickerReducer } from './datepicker-reducer'
+import { DEFAULT_DATE_PICKER_VALUE, datePickerReducer } from './datepicker-reducer'
 import { Calendar } from './calendar'
 import { DatePickerInput } from './datepicker-input'
 import styles from './datepicker.module.css'
 
 export interface DatePickerOwnProps {
-  startDate?: Date
-  endDate?: Date
-  isRange?: boolean
   colorScheme?: keyof ColorPalette
+  config?: DatePickerConfig
   displayFormat?: string
+  isRange?: boolean
   maxDate?: Date
   minDate?: Date
-  showFooter?: boolean
-  config?: DatePickerConfig
+  onBlur?: (value?: DateRange) => void
+  onChange: (value: DateRange) => void
   shape?: Shape
+  showFooter?: boolean
   size?: Size
+  value?: DateRange
   variant?: DatePickerVariant
-  onChange?: (value: { startDate: Date; endDate?: Date }) => void
-  onBlur?: (value?: { startDate?: Date; endDate?: Date }) => void
+}
+
+export interface DateRange {
+  endDate: Date | null
+  startDate: Date | null
 }
 
 interface DatePickerConfig {
-  language: string
   footer: FooterLabels
+  language: string
 }
 
 interface FooterLabels {
-  cancel: string
   apply: string
+  cancel: string
 }
 
 interface FooterActionsProps {
@@ -48,24 +52,24 @@ interface FooterActionsProps {
 export type DatePickerVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export type DatePickerRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
-  'disabled' | 'id' | 'required' | 'placeholder'
+  'disabled' | 'readOnly' | 'id' | 'required' | 'placeholder'
 >
 
 export type DatePickerProps = ComponentProps & DatePickerRootAttributes & DatePickerOwnProps
 
 const createDatePickerStyles = (
   color: string,
-  rangeItemColor: string,
   hoverColor: string,
+  rangeItemColor: string,
   selectedHoverColor: string,
   style?: CSSProperties,
-): Record<string, unknown> => ({
+): CSSProperties => ({
   '--datepicker-scheme': color,
   '--datepicker-range-item-color': rangeItemColor,
   '--datepicker-hover-color': hoverColor,
   '--datepicker-selected-hover-color': selectedHoverColor,
   ...(style ?? {}),
-})
+} as CSSProperties)
 
 function FooterActions({
   colorScheme,
@@ -87,12 +91,12 @@ function FooterActions({
 }
 
 const generateDatePickerAttributes = (
-  variant: string,
   className: string,
   disabled: boolean,
+  variant: string,
   colorScheme?: keyof ColorPalette,
-  size?: Size,
   shape?: Shape,
+  size?: Size,
 ): Record<string, string> => {
   const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
   const hoverColor = getLightenColor(color, 80)
@@ -121,11 +125,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       minDate,
       maxDate,
       placeholder,
+      value,
       disabled = false,
       className = '',
       variant = 'outline',
-      startDate: initialStartDate,
-      endDate: initialEndDate,
       config = {
         language: 'en',
         footer: {
@@ -140,8 +143,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   ) => {
     const { language, footer: footerLabels } = config
     const [state, dispatch] = useReducer(datePickerReducer, {
-      startDate: initialStartDate ?? null,
-      endDate: initialEndDate ?? null,
+      value: value ?? DEFAULT_DATE_PICKER_VALUE,
+      tempValue: value ?? DEFAULT_DATE_PICKER_VALUE,
       modalOpen: false,
       year: new Date().getFullYear(),
       secondYear: new Date().getFullYear(),
@@ -157,7 +160,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       shape = variant !== 'unstyled' ? 'rounded' : undefined,
     } = rest
     const { color, hoverColor, rangeItemColor, selectedHoverColor, datePickerInputClasses } =
-      generateDatePickerAttributes(variant, className, disabled, colorScheme, size, shape)
+      generateDatePickerAttributes(className, disabled, variant, colorScheme, shape, size)
 
     useEffect(() => {
       const handleOutsideClick = (event: MouseEvent): void => {
@@ -177,10 +180,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
     useEffect(() => {
       if (!state.modalOpen) return
-      if (isRange && state.startDate && state.endDate) {
+      if (isRange && state.tempValue.startDate && state.tempValue.endDate) {
         const daysInRange = []
-        const currentDate = new Date(state.startDate)
-        while (currentDate <= state.endDate) {
+        const currentDate = new Date(state.tempValue.startDate)
+        while (currentDate <= state.tempValue.endDate) {
           daysInRange.push(new Date(currentDate))
           currentDate.setDate(currentDate.getDate() + 1)
         }
@@ -188,21 +191,19 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       } else {
         dispatch({ type: 'SET_RANGE_DAYS', payload: [] })
       }
-    }, [isRange, state.startDate, state.endDate, state.modalOpen])
+    }, [isRange, state.tempValue, state.modalOpen])
 
     useEffect(() => {
       if (isFirstRender.current) {
         isFirstRender.current = false
         return
       }
-      const startDate = initialStartDate ?? null
-      const endDate = initialEndDate ?? null
-      if (onChange && startDate && endDate) {
-        onChange({ startDate, endDate })
+      if (value?.startDate && value.endDate) {
+        onChange(value)
       }
-      dispatch({ type: 'SET_START_DATE', payload: startDate })
-      dispatch({ type: 'SET_END_DATE', payload: endDate })
-    }, [initialStartDate, initialEndDate, isRange, language, onChange])
+      dispatch({ type: 'SET_VALUE', payload: value ?? value ?? DEFAULT_DATE_PICKER_VALUE })
+      dispatch({ type: 'SET_TEMP_VALUE', payload: value ?? value ?? DEFAULT_DATE_PICKER_VALUE })
+    }, [value, isRange, language, onChange])
 
     const handleToggleModal = (): void => {
       dispatch({ type: 'TOGGLE_MODAL' })
@@ -261,16 +262,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     }
 
     const handleApply = (): void => {
-      if (onChange && state.startDate) {
-        onChange({ startDate: state.startDate, ...state.endDate })
+      dispatch({ type: 'SET_VALUE', payload: state.tempValue })
+      if (state.value.startDate) {
+        onChange({ startDate: state.value.startDate, endDate: state.value.endDate })
       }
       handleToggleModal()
-    }
-
-    const resetCalendarStyles = (): void => {
-      document.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`).forEach((item) => {
-        item.classList.remove(`${styles.rangeItem}`)
-      })
     }
 
     const handleDateSelection = (day: number, isSecondCalendar?: boolean): void => {
@@ -280,26 +276,30 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         day,
       )
 
-      if (!isRange) {
-        dispatch({ type: 'SET_START_DATE', payload: selectedDate })
-        if (!showFooter) {
-          if (onChange) {
-            onChange({ startDate: selectedDate })
-          }
-          handleToggleModal()
-        }
-      } else if (!state.startDate || state.endDate) {
-        dispatch({ type: 'SET_START_DATE', payload: selectedDate })
-        dispatch({ type: 'SET_END_DATE', payload: null })
-        resetCalendarStyles()
-      } else if (selectedDate < state.startDate) {
-        dispatch({ type: 'SET_START_DATE', payload: selectedDate })
+      const newValue: DateRange = { ...state.tempValue }
+
+      if (showFooter || !isRange || !newValue.startDate || newValue.endDate) {
+        newValue.startDate = selectedDate
+        newValue.endDate = null
+      } else if (selectedDate < newValue.startDate) {
+        newValue.startDate = selectedDate
       } else {
-        dispatch({ type: 'SET_END_DATE', payload: selectedDate })
-        if (!showFooter) {
-          if (onChange) {
-            onChange({ startDate: state.startDate, endDate: selectedDate })
-          }
+        newValue.endDate = selectedDate
+      }
+
+      dispatch({ type: 'SET_TEMP_VALUE', payload: newValue })
+
+      if (showFooter) {
+        return
+      }
+
+      if (!isRange || newValue.endDate) {
+        onChange({ startDate: newValue.startDate, endDate: newValue.endDate })
+        if (!isRange) {
+          dispatch({ type: 'SET_VALUE', payload: newValue })
+          handleToggleModal()
+        } else {
+          dispatch({ type: 'SET_VALUE', payload: newValue })
           handleToggleModal()
         }
       }

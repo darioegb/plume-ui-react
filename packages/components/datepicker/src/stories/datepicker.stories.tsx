@@ -1,5 +1,9 @@
 import type { StoryObj, Meta } from '@storybook/react'
+import { useState } from 'react'
 import { DatePicker } from '..'
+import type { DateRange } from '../datepicker'
+
+const defaultDateRangeValue = { startDate: null, endDate: null }
 
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
@@ -20,18 +24,11 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    startDate: {
-      control: 'date',
-      description: 'The start date of the selected range.',
+    value: {
+      control: 'object',
+      description: 'The DatePicker value.',
       table: {
-        type: { summary: 'Date' },
-      },
-    },
-    endDate: {
-      control: 'date',
-      description: 'The end date of the selected range.',
-      table: {
-        type: { summary: 'Date' },
+        type: { summary: 'DateRange' },
       },
     },
     isRange: {
@@ -131,7 +128,25 @@ type Story = StoryObj<typeof DatePicker>
 /**
  * This is the default DatePicker.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  args: {
+    value: defaultDateRangeValue,
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  colorScheme="primary"
+  onChange={() => {}}
+  value={{
+    endDate: null,
+    startDate: null
+  }}
+/>`,
+      },
+    },
+  },
+}
 
 /**
  * This is a list of DatePicker with different colors.
@@ -144,53 +159,120 @@ export const Colors: Story = {
         code: `<DatePicker placeholder="Default DatePicker" />
 <DatePicker 
   colorScheme="primary"
-  placeholder="Primary DatePicker" 
+  placeholder="Primary DatePicker"
+  value={value}
+  onChange={handleValueChange} 
 />
 <DatePicker 
   colorScheme="secondary"
   placeholder="Secondary DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="info"
   placeholder="Info DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="warning"
   placeholder="Warning DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="error"
   placeholder="Error DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="success"
   placeholder="Success DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="dark"
   placeholder="Dark DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
 <DatePicker 
   colorScheme="light"
   placeholder="Light DatePicker"
+  value={value}
+  onChange={handleValueChange}
 />
           `,
       },
     },
   },
-  render: () => (
-    <div className="grid gap-4 grid-cols-2">
-      <DatePicker placeholder="Default DatePicker" />
-      <DatePicker colorScheme="primary" placeholder="Primary DatePicker" />
-      <DatePicker colorScheme="secondary" placeholder="Secondary DatePicker" />
-      <DatePicker colorScheme="info" placeholder="Info DatePicker" />
-      <DatePicker colorScheme="warning" placeholder="Warning DatePicker" />
-      <DatePicker colorScheme="error" placeholder="Error DatePicker" />
-      <DatePicker colorScheme="success" placeholder="Success DatePicker" />
-      <DatePicker colorScheme="dark" placeholder="Dark DatePicker" />
-      <DatePicker colorScheme="light" placeholder="Light DatePicker" />
-    </div>
-  ),
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <div className="grid gap-4 grid-cols-2">
+        <DatePicker onChange={handleValueChange} placeholder="Default DatePicker" value={value} />
+        <DatePicker
+          colorScheme="primary"
+          onChange={handleValueChange}
+          placeholder="Primary DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="secondary"
+          onChange={handleValueChange}
+          placeholder="Secondary DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="info"
+          onChange={handleValueChange}
+          placeholder="Info DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="warning"
+          onChange={handleValueChange}
+          placeholder="Warning DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="error"
+          onChange={handleValueChange}
+          placeholder="Error DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="success"
+          onChange={handleValueChange}
+          placeholder="Success DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="dark"
+          onChange={handleValueChange}
+          placeholder="Dark DatePicker"
+          value={value}
+        />
+        <DatePicker
+          colorScheme="light"
+          onChange={handleValueChange}
+          placeholder="Light DatePicker"
+          value={value}
+        />
+      </div>
+    )
+  },
 }
 
 /**
@@ -198,6 +280,7 @@ export const Colors: Story = {
  */
 export const RangeSelection: Story = {
   args: {
+    ...Default.args,
     isRange: true,
   },
 }
@@ -207,6 +290,7 @@ export const RangeSelection: Story = {
  */
 export const WithMinMaxDates: Story = {
   args: {
+    ...Default.args,
     minDate: new Date(),
     maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15),
   },
@@ -219,6 +303,7 @@ export const WithMinMaxDates: Story = {
  */
 export const Disabled: Story = {
   args: {
+    ...Default.args,
     disabled: true,
   },
 }
@@ -228,6 +313,7 @@ export const Disabled: Story = {
  */
 export const WithFooterActions: Story = {
   args: {
+    ...Default.args,
     showFooter: true,
   },
   decorators: [(Story) => <div className="pb-[10rem]">{Story()}</div>],
@@ -238,6 +324,7 @@ export const WithFooterActions: Story = {
  */
 export const CustomConfiguration: Story = {
   args: {
+    ...Default.args,
     config: {
       language: 'es',
       footer: {

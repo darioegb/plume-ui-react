@@ -1,17 +1,21 @@
+import type { DateRange } from './datepicker'
+
+export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
+
 export interface DatePickerState {
-  startDate: Date | null
-  endDate: Date | null
+  value: DateRange
   modalOpen: boolean
   year: number
   secondYear: number
   month: number
   secondMonth: number
   rangeDays: Date[]
+  tempValue: DateRange
 }
 
 export type DatePickerAction =
-  | { type: 'SET_START_DATE'; payload: Date | null }
-  | { type: 'SET_END_DATE'; payload: Date | null }
+  | { type: 'SET_VALUE'; payload: DateRange }
+  | { type: 'SET_TEMP_VALUE'; payload: DateRange }
   | { type: 'TOGGLE_MODAL' }
   | { type: 'SET_YEAR'; payload: number }
   | { type: 'SET_SECOND_YEAR'; payload: number }
@@ -24,10 +28,10 @@ export const datePickerReducer = (
   action: DatePickerAction,
 ): DatePickerState => {
   switch (action.type) {
-    case 'SET_START_DATE':
-      return { ...state, startDate: action.payload }
-    case 'SET_END_DATE':
-      return { ...state, endDate: action.payload }
+    case 'SET_VALUE':
+      return { ...state, value: action.payload }
+      case 'SET_TEMP_VALUE':
+      return { ...state, tempValue: action.payload }
     case 'TOGGLE_MODAL':
       return { ...state, modalOpen: !state.modalOpen }
     case 'SET_YEAR':

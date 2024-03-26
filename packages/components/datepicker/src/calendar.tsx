@@ -108,7 +108,7 @@ export function Calendar({
     )
     const hoveredIndex = Array.from(buttons).findIndex((button) => button.id === id)
 
-    if (isRange && state.startDate && !state.endDate && selectedButtons[0]) {
+    if (isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButtons[0]) {
       const selectedIndex = Array.from(buttons).indexOf(selectedButtons[0])
       buttons.forEach((button, index) => {
         if (index > selectedIndex && index < hoveredIndex) {
@@ -246,9 +246,9 @@ export function Calendar({
 
     return allDays.map(({ day, date, isCurrentMonth, isDisabled, isToday }) => {
       const isStartDate =
-        state.startDate && isCurrentMonth && date.toDateString() === state.startDate.toDateString()
+        state.tempValue.startDate && isCurrentMonth && date.toDateString() === state.tempValue.startDate.toDateString()
       const isEndDate =
-        state.endDate && isCurrentMonth && date.toDateString() === state.endDate.toDateString()
+        state.tempValue.endDate && isCurrentMonth && date.toDateString() === state.tempValue.endDate.toDateString()
       const isInRange = state.rangeDays.some(
         (rangeDate) => date.toDateString() === rangeDate.toDateString(),
       )
