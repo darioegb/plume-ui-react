@@ -5,7 +5,7 @@ import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
 function DayOfWeek({ day }: { day: string }): ReactNode {
-  return <span className={`${styles.dayOfWeek}`}>{day}</span>
+  return <span className={styles.dayOfWeek}>{day}</span>
 }
 
 interface MonthSelectorProps {
@@ -244,9 +244,9 @@ export function Calendar({
       return (
         <Button
           className={`${styles.day} ${!isCurrentMonth ? styles.disabledDay : ''} ${
-            isStartDate || isEndDate ? `${styles.selected}` : ''
+            isStartDate || isEndDate ? styles.selected : ''
           } ${
-            isInRange && !isStartDate && !isEndDate && isCurrentMonth ? `${styles.rangeItem}` : ''
+            isInRange && !isStartDate && !isEndDate && isCurrentMonth ? styles.rangeItem : ''
           } ${isCurrentMonth && isDisabled ? styles.outOfRangeDay : ''} ${
             isToday ? styles.today : ''
           }`}

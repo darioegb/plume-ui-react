@@ -5,7 +5,7 @@ export interface UseClickOutsideProps {
   callback: () => void
 }
 
-export function useClickOutside({ callback }: UseClickOutsideProps): RefObject<HTMLDivElement> {
+export function useClickOutside({ callback }: UseClickOutsideProps): RefObject<HTMLDivElement | null> {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

@@ -130,7 +130,7 @@ export function DatePickerInput({
         variant='icon'
       >
         <svg
-          className={`${styles.inputButtonIcon}`}
+          className={styles.inputButtonIcon}
           viewBox='0 -960 960 960'
           xmlns='http://www.w3.org/2000/svg'
         >
