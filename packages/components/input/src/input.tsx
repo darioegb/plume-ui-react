@@ -1,8 +1,6 @@
-import type { InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
-import { createStyles, getColorFromTheme } from '@plume-ui-react/core'
-import { getLightenColor } from '@plume-ui-react/color-utils'
 import styles from './input.module.css'
 
 export interface InputOwnProps {
@@ -41,26 +39,28 @@ type InputRootAttributes = Pick<
 export type InputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export type InputProps = ComponentProps & InputRootAttributes & InputOwnProps
 
-const generateInputAttributes = (
+const generateInputClasses = (
   className: string,
   disabled: boolean,
   isStyled: boolean,
   shape: Shape,
   size: Size,
   variant: string,
-  colorScheme: ColorScheme,
-): Record<string, string> => {
-  const color = getColorFromTheme(colorScheme)
-  const hoverColor = getLightenColor(color, 70)
+): string => {
   const disabledClass = disabled ? styles.disabled : ''
   const shapeClass = isStyled ? styles[shape] : ''
   const sizeClass = isStyled ? styles[size] : ''
   const variantClass = isStyled ? styles[variant] : ''
-  const inputClasses = `${sizeClass} ${shapeClass} ${variantClass} 
+  return `${sizeClass} ${shapeClass} ${variantClass} 
       ${disabledClass} ${className}`.trim()
-
-  return { color, hoverColor, inputClasses }
 }
+
+// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
+const inputColorVars = (colorScheme: ColorScheme): CSSProperties =>
+  ({
+    '--input-color': `var(--plume-color-${colorScheme}-500)`,
+    '--input-hover-color': `var(--plume-color-${colorScheme}-200)`,
+  }) as CSSProperties
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -83,15 +83,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const { color, hoverColor, inputClasses } = generateInputAttributes(
-      className,
-      disabled,
-      isStyled,
-      shape,
-      size,
-      variant,
-      colorScheme,
-    )
+    const inputClasses = generateInputClasses(className, disabled, isStyled, shape, size, variant)
+    const inputStyle = { ...inputColorVars(colorScheme), ...style }
     const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter
 
     if (!hasInputGroup) {
@@ -101,7 +94,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           disabled={disabled}
           readOnly={readOnly}
           ref={ref}
-          style={createStyles({ color, hoverColor, prefix: 'input', style })}
+          style={inputStyle}
           type={type}
           {...rest}
         />
@@ -111,7 +104,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={isStyled ? styles.inputGroup : ''}
-        style={createStyles({ color, hoverColor, prefix: 'input', style })}
+        style={inputStyle}
       >
         {addonBefore ? <span className={isStyled ? styles.addOn : ''}>{addonBefore}</span> : null}
         {elementBefore ? (
