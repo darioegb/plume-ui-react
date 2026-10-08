@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react'
+import type { Preview } from '@storybook/react-vite'
 import '@plume-ui-react/lib/dist/index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -7,7 +7,6 @@ import DocsTemplate from '../src/docs-template'
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

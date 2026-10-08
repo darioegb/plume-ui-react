@@ -6,7 +6,7 @@ const config: Config = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     // For storybook
     './stories/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/components/**/stories/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/components/*/src/stories/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {

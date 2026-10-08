@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/blocks'
+import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/addon-docs/blocks'
 import { Button } from '@plume-ui-react/lib'
 
 const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/packages/components/'

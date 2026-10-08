@@ -1,4 +1,4 @@
-import type { StoryObj, Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { ColorScheme } from '@plume-ui-react/core'
 import { getMergedTheme } from '@plume-ui-react/core'
 import { Spinner } from '..'

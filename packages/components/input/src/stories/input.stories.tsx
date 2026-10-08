@@ -1,5 +1,5 @@
 // Input.stories.tsx
-import type { StoryObj, Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { Input } from '..'
 

@@ -3,33 +3,19 @@ import type { StorybookConfig } from '@storybook/react-vite'
 const config: StorybookConfig = {
   stories: [
     '../stories/**/*.mdx',
-    '../../../packages/**/stories/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
+    '../../../packages/components/*/src/stories/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
   ],
   staticDirs: ['../public'],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    '@storybook/addon-styling',
-    {
-      name: '@storybook/preset-scss',
-      options: {
-        cssLoaderOptions: {
-          modules: true,
-          localIdentName: '[name]__[local]--[hash:base64:5]',
-        },
-      },
-    },
+    '@storybook/addon-docs',
+    '@storybook/addon-themes',
   ],
-  docs: {
-    autodocs: 'tag',
-  },
   framework: {
     name: '@storybook/react-vite',
     options: {},
   },
-  core: {},
   async viteFinal(config) {
     return {
       ...config,

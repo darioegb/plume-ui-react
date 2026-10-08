@@ -1,4 +1,4 @@
-import type { StoryObj, Meta } from '@storybook/react'
+import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { DatePicker } from '..'
 import type { DateRange } from '../datepicker'
