@@ -1,4 +1,3 @@
-import { deepMerge } from '@plume-ui-react/merge-utils'
 import type { Theme } from './theme.types'
 
 export const defaultTheme: Theme = {
@@ -258,14 +257,4 @@ export const defaultTheme: Theme = {
     xl: '1280px',
     '2xl': '1536px',
   },
-}
-
-let userTheme = {} as Theme
-
-export function setUserTheme(theme: Theme): void {
-  userTheme = theme
-}
-
-export function getMergedTheme(): Theme {
-  return deepMerge<Theme>(defaultTheme, userTheme)
 }

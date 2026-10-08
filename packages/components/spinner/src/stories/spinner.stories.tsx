@@ -1,9 +1,9 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { ColorScheme } from '@plume-ui-react/core'
-import { getMergedTheme } from '@plume-ui-react/core'
+import { defaultTheme } from '@plume-ui-react/core'
 import { Spinner } from '..'
 
-const colors = getMergedTheme().colors
+const colors = defaultTheme.colors
 const allKeys: string[] = Object.keys(colors).flatMap((colorScheme) => [
   colorScheme,
   ...Object.keys(colors[colorScheme as ColorScheme]).map((shade) => `${colorScheme}.${shade}`),

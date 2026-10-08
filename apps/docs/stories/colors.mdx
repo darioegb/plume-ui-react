@@ -202,10 +202,9 @@ import { Meta, ColorPalette, ColorItem, Source } from '@storybook/addon-docs/blo
 
 > To customize the color palette, either modify the base colors or create new colors, we do the following:
 
-1 - Create a file plume-ui.config.(js|ts) in your root folder and add the following code:
+1 - Wrap your app in `<ThemeProvider>` and pass your theme overrides:
 
-<Source code={`// plume-ui.config.js
-import { setUserTheme } from '@plume-ui-react/core'
+<Source code={`import { ThemeProvider } from '@plume-ui-react/core'
 
 /** @type {import('@plume-ui-react/core').Theme}  */
 const userTheme = {
@@ -239,7 +238,9 @@ const userTheme = {
   },
 }
 
-setUserTheme(userTheme)`} />
+export function App({ children }) {
+  return <ThemeProvider theme={userTheme}>{children}</ThemeProvider>
+}`} />
 In this example we are modifying the primary color and creating new color.
 
 2 - If you use typescript and have created new colors,
