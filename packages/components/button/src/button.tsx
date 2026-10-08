@@ -1,14 +1,14 @@
-import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import type { ColorPalette, ComponentProps, Shape, Size } from '@plume-ui-react/core'
-import { getMergedConfig } from '@plume-ui-react/core'
+import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
+import { createStyles, getColorFromTheme, getColorWithShadeFromTheme } from '@plume-ui-react/core'
 import { Spinner } from '@plume-ui-react/spinner'
-import { getContrastColor, getDarkenColor, getLightenColor } from '@plume-ui-react/color-utils'
+import { getContrastColor } from '@plume-ui-react/color-utils'
 import styles from './button.module.css'
 
 export interface ButtonOwnProps {
   busyText?: string
-  colorScheme?: keyof ColorPalette
+  colorScheme?: ColorScheme
   iconLeft?: ReactNode
   iconRight?: ReactNode
   isBusy?: boolean
@@ -29,38 +29,20 @@ type ButtonRootAttributes = Pick<
   | 'onClick'
   | 'onFocus'
   | 'onMouseEnter'
+  | 'role'
   | 'tabIndex'
   | 'type'
-  | 'role'
 >
 
 export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
 
-const createButtonStyles = (
-  color: string,
-  contrastColor: string,
-  hoverColor: string,
-  focusColor: string,
-  hoverAltColor: string,
-  focusAltColor: string,
-  style?: CSSProperties,
-): Record<string, unknown> => ({
-  '--button-scheme': color,
-  '--button-text-color': contrastColor,
-  '--button-hover-color': hoverColor,
-  '--button-focus-color': focusColor,
-  '--button-hover-alt-color': hoverAltColor,
-  '--button-focus-alt-color': focusAltColor,
-  ...(style ?? {}),
-})
-
 const renderContent = (
-  isBusy: boolean,
   busyText: string,
+  isBusy: boolean,
   iconLeft?: ReactNode,
-  label?: string,
   iconRight?: ReactNode,
   isUnstyled?: boolean,
+  label?: string,
 ): ReactNode => {
   const iconMarginClass = isUnstyled ? styles.iconMarginNone : styles.iconMargin
   const contentClass = isBusy && busyText.length < 1 ? styles.hidden : iconMarginClass
@@ -79,22 +61,22 @@ const renderContent = (
 const generateButtonAttributes = (
   variant: string,
   className: string,
+  colorScheme: ColorScheme,
   disabled: boolean,
   isBusy: boolean,
-  colorScheme?: keyof ColorPalette,
-  size?: Size,
-  shape?: Shape,
+  size: Size,
+  shape: Shape,
 ): Record<string, string> => {
-  const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
+  const color = getColorFromTheme(colorScheme)
   const contrastColor = getContrastColor(color)
-  const hoverColor = getDarkenColor(color)
-  const focusColor = getDarkenColor(color, 30)
-  const hoverAltColor = getLightenColor(color, 80)
-  const focusAltColor = getLightenColor(color, 70)
-  const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
-  const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
-  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
+  const hoverColor = getColorWithShadeFromTheme(colorScheme, 600)
+  const focusColor = getColorWithShadeFromTheme(colorScheme, 700)
+  const hoverAltColor = getColorWithShadeFromTheme(colorScheme, 100)
+  const focusAltColor = getColorWithShadeFromTheme(colorScheme, 200)
   const disabledClass = disabled || isBusy ? styles.disabled : ''
+  const shapeClass = variant !== 'unstyled' ? styles[shape] : ''
+  const sizeClass = variant !== 'unstyled' ? styles[size] : ''
+  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
   const buttonClasses = `${sizeClass} ${shapeClass} ${variantClass} 
     ${disabledClass} ${className}`.trim()
 
@@ -113,25 +95,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       children,
-      label,
       iconLeft,
       iconRight,
+      label,
       style,
-      colorScheme,
       busyText = '',
       className = '',
+      colorScheme ='secondary',
       disabled = false,
       isBusy = false,
+      shape = 'rounded',
+      size = 'md',
       type = 'button',
       variant = 'solid',
       ...rest
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const {
-      size = variant !== 'unstyled' ? 'md' : undefined,
-      shape = variant !== 'unstyled' ? 'rounded' : undefined,
-    } = rest
     const {
       color,
       contrastColor,
@@ -140,14 +120,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       hoverAltColor,
       focusAltColor,
       buttonClasses,
-    } = generateButtonAttributes(variant, className, disabled, isBusy, colorScheme, size, shape)
+    } = generateButtonAttributes(variant, className, colorScheme, disabled, isBusy, size, shape)
 
     return (
       <button
         className={buttonClasses}
         disabled={disabled || isBusy}
         ref={ref}
-        style={createButtonStyles(
+        style={createStyles({
           color,
           contrastColor,
           hoverColor,
@@ -155,17 +135,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           hoverAltColor,
           focusAltColor,
           style,
-        )}
+          prefix: 'button',
+        })}
         type={type}
         {...rest}
       >
-        {renderContent(isBusy, busyText, iconLeft, label, iconRight, variant === 'unstyled')}
+        {renderContent(busyText, isBusy, iconLeft, iconRight, variant === 'unstyled', label)}
         {children}
         {isBusy ? (
           <Spinner
-            colorScheme={contrastColor !== '#ffffff' ? 'dark' : 'light'}
+            color={contrastColor !== '#ffffff' ? `${colorScheme}.900` : `${colorScheme}.50`}
             {...(busyText && { className: styles.spinnerMargin })}
-            size="sm"
+            size='sm'
           />
         ) : null}
       </button>

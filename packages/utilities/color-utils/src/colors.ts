@@ -21,7 +21,7 @@ export function getContrastColor(inputColor: string): string {
   const [r, g, b] = originalRgb
   const brightness = (r * 299 + g * 587 + b * 114) / 1000
 
-  return brightness > 128 ? '#000000' : '#ffffff'
+  return brightness > 140 ? '#000000' : '#ffffff'
 }
 
 export function getLightenColor(inputColor: string, lightness = 10): string {

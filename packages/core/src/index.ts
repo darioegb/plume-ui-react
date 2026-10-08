@@ -1,4 +1,4 @@
 export * from './config'
-export * from './config.types'
 export * from './shared.types'
+export * from './shared.utils'
 export * from './theme.types'

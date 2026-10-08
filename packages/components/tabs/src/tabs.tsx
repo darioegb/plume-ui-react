@@ -1,14 +1,14 @@
 import { forwardRef } from 'react'
 import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
-import type { ColorPalette, ComponentProps, Size } from '@plume-ui-react/core'
-import { getMergedConfig } from '@plume-ui-react/core'
+import type { ColorScheme, ComponentProps, Size } from '@plume-ui-react/core'
+import { getColorFromTheme } from '@plume-ui-react/core'
 import { getContrastColor, getLightenColor } from '@plume-ui-react/color-utils'
 import { TabsProvider } from './use-tabs'
 import styles from './tabs.module.css'
 
 export interface TabsOwnProps {
   alignment?: TabsAlignment
-  colorScheme?: keyof ColorPalette
+  colorScheme?: ColorScheme
   isLazy?: boolean
   onChange?: (index: number) => void
   orientation?: TabsOrientation
@@ -43,12 +43,12 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
       children,
-      colorScheme,
       style,
       onChange,
       index = 0,
       alignment = 'left',
       className = '',
+      colorScheme = 'secondary',
       orientation = 'horizontal',
       size = 'md',
       variant = 'underline',
@@ -57,7 +57,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const color = (colorScheme && (getMergedConfig().colors[colorScheme] )) || '#d3d3d3'
+    const color = getColorFromTheme(colorScheme)
     const lightenColor = getLightenColor(color, 20)
     const contrastColor = getContrastColor(color)
     const isStyled = variant !== 'unstyled'

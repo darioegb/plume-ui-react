@@ -1,20 +1,26 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useEffect, useRef, useReducer } from 'react'
 import { getDarkenColor, getLightenColor } from '@plume-ui-react/color-utils'
-import type { ColorPalette, ComponentProps, Shape, Size } from '@plume-ui-react/core'
-import { getMergedConfig } from '@plume-ui-react/core'
+import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
+import { getColorFromTheme } from '@plume-ui-react/core'
 import { getDateFormatByLanguage } from '@plume-ui-react/date-utils'
 import { Button } from '@plume-ui-react/button'
+import { useClickOutside } from '@plume-ui-react/use-click-outside'
 import { DatePickerContext } from './use-datepicker'
-import { DEFAULT_DATE_PICKER_VALUE, datePickerReducer } from './datepicker-reducer'
+import {
+  DEFAULT_DATE_PICKER_VALUE,
+  DATE_PICKER_INITIAL_STATE,
+  datePickerReducer,
+} from './datepicker-reducer'
 import { Calendar } from './calendar'
 import { DatePickerInput } from './datepicker-input'
 import styles from './datepicker.module.css'
 
 export interface DatePickerOwnProps {
-  colorScheme?: keyof ColorPalette
+  colorScheme?: ColorScheme
   config?: DatePickerConfig
   displayFormat?: string
+  isCalendar?: boolean
   isRange?: boolean
   maxDate?: Date
   minDate?: Date
@@ -46,7 +52,7 @@ interface FooterActionsProps {
   labels: FooterLabels
   onApply: () => void
   onCancel: () => void
-  colorScheme?: keyof ColorPalette
+  colorScheme?: ColorScheme
 }
 
 export type DatePickerVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
@@ -63,13 +69,14 @@ const createDatePickerStyles = (
   rangeItemColor: string,
   selectedHoverColor: string,
   style?: CSSProperties,
-): CSSProperties => ({
-  '--datepicker-scheme': color,
-  '--datepicker-range-item-color': rangeItemColor,
-  '--datepicker-hover-color': hoverColor,
-  '--datepicker-selected-hover-color': selectedHoverColor,
-  ...(style ?? {}),
-} as CSSProperties)
+): CSSProperties =>
+  ({
+    '--datepicker-scheme': color,
+    '--datepicker-range-item-color': rangeItemColor,
+    '--datepicker-hover-color': hoverColor,
+    '--datepicker-selected-hover-color': selectedHoverColor,
+    ...(style ?? {}),
+  }) as CSSProperties
 
 function FooterActions({
   colorScheme,
@@ -79,7 +86,7 @@ function FooterActions({
 }: FooterActionsProps): ReactNode {
   return (
     <div className={styles.footerActions}>
-      <Button className={styles.footerButton} label={cancel} onClick={onCancel} variant="ghost" />
+      <Button className={styles.footerButton} label={cancel} onClick={onCancel} variant='ghost' />
       <Button
         className={styles.footerButtonApply}
         colorScheme={colorScheme}
@@ -94,11 +101,11 @@ const generateDatePickerAttributes = (
   className: string,
   disabled: boolean,
   variant: string,
-  colorScheme?: keyof ColorPalette,
+  colorScheme: ColorScheme,
   shape?: Shape,
   size?: Size,
 ): Record<string, string> => {
-  const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
+  const color = getColorFromTheme(colorScheme)
   const hoverColor = getLightenColor(color, 80)
   const rangeItemColor = getLightenColor(color, 70)
   const selectedHoverColor = getDarkenColor(color)
@@ -106,8 +113,7 @@ const generateDatePickerAttributes = (
   const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
   const variantClass = variant !== 'unstyled' ? styles[variant] : ''
   const disabledClass = disabled ? styles.disabled : ''
-  const datePickerInputClasses =
-    `${styles.datePickerInputText} ${sizeClass} ${shapeClass} ${variantClass} 
+  const datePickerInputClasses = `${sizeClass} ${shapeClass} ${variantClass} 
     ${disabledClass} ${className}`.trim()
 
   return { color, hoverColor, rangeItemColor, selectedHoverColor, datePickerInputClasses }
@@ -119,7 +125,6 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       onChange,
       onBlur,
       displayFormat,
-      colorScheme,
       style,
       showFooter,
       minDate,
@@ -128,6 +133,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       value,
       disabled = false,
       className = '',
+      colorScheme = 'secondary',
       variant = 'outline',
       config = {
         language: 'en',
@@ -136,6 +142,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           apply: 'Apply',
         },
       },
+      isCalendar = false,
       isRange = false,
       ...rest
     }: DatePickerProps,
@@ -143,17 +150,15 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   ) => {
     const { language, footer: footerLabels } = config
     const [state, dispatch] = useReducer(datePickerReducer, {
-      value: value ?? DEFAULT_DATE_PICKER_VALUE,
-      tempValue: value ?? DEFAULT_DATE_PICKER_VALUE,
-      modalOpen: false,
-      year: new Date().getFullYear(),
-      secondYear: new Date().getFullYear(),
-      month: new Date().getMonth(),
-      secondMonth: new Date().getMonth() + 1,
-      rangeDays: [],
+      ...DATE_PICKER_INITIAL_STATE,
+      ...(value && { value, tempValue: value }),
     })
-    const datePickerRef = useRef<HTMLDivElement>(null)
     const isFirstRender = useRef(true)
+    const datePickerRef = useClickOutside({
+      callback: (): void => {
+        dispatch({ type: 'TOGGLE_MODAL' })
+      },
+    })
 
     const {
       size = variant !== 'unstyled' ? 'md' : undefined,
@@ -161,22 +166,6 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     } = rest
     const { color, hoverColor, rangeItemColor, selectedHoverColor, datePickerInputClasses } =
       generateDatePickerAttributes(className, disabled, variant, colorScheme, shape, size)
-
-    useEffect(() => {
-      const handleOutsideClick = (event: MouseEvent): void => {
-        if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-          dispatch({ type: 'TOGGLE_MODAL' })
-        }
-      }
-
-      if (state.modalOpen) {
-        document.addEventListener('mousedown', handleOutsideClick)
-      }
-
-      return () => {
-        document.removeEventListener('mousedown', handleOutsideClick)
-      }
-    }, [state.modalOpen])
 
     useEffect(() => {
       if (!state.modalOpen) return
@@ -282,6 +271,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         newValue.startDate = selectedDate
         newValue.endDate = null
       } else if (selectedDate < newValue.startDate) {
+        newValue.endDate = newValue.startDate
         newValue.startDate = selectedDate
       } else {
         newValue.endDate = selectedDate
@@ -317,25 +307,27 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           ref={ref}
           style={createDatePickerStyles(
             color,
-            rangeItemColor,
             hoverColor,
+            rangeItemColor,
             selectedHoverColor,
             style,
           )}
         >
-          <DatePickerInput
-            className={datePickerInputClasses}
-            disabled={disabled}
-            displayFormat={displayFormat}
-            isRange={isRange}
-            language={language}
-            onBlur={onBlur}
-            onClick={handleToggleModal}
-            placeholder={placeholder ?? getDefaultPlaceholder()}
-            {...rest}
-          />
-          {state.modalOpen ? (
-            <div className={styles.datePickerModal} ref={datePickerRef} role="dialog">
+          {!isCalendar && (
+            <DatePickerInput
+              className={datePickerInputClasses}
+              disabled={disabled}
+              displayFormat={displayFormat}
+              isRange={isRange}
+              language={language}
+              onBlur={onBlur}
+              onClick={handleToggleModal}
+              placeholder={placeholder ?? getDefaultPlaceholder()}
+              {...rest}
+            />
+          )}
+          {isCalendar || state.modalOpen ? (
+            <div className={styles.datePickerModal} ref={datePickerRef} role='dialog'>
               <div className={isRange ? styles.calendarContainerDouble : styles.calendarContainer}>
                 <Calendar
                   isRange={isRange}

@@ -1,5 +1,13 @@
 import type { StoryObj, Meta } from '@storybook/react'
+import type { ColorScheme } from '@plume-ui-react/core'
+import { getMergedTheme } from '@plume-ui-react/core'
 import { Spinner } from '..'
+
+const colors = getMergedTheme().colors
+const allKeys: string[] = Object.keys(colors).flatMap((colorScheme) => [
+  colorScheme,
+  ...Object.keys(colors[colorScheme as ColorScheme]).map((shade) => `${colorScheme}.${shade}`),
+])
 
 /**
  * The Spinner component is a visual representation of loading that is commonly used to indicate that an action is being processed
@@ -20,10 +28,10 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    colorScheme: {
+    color: {
       control: 'select',
       description: 'Custom color scheme for the Spinner.',
-      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
+      options: allKeys,
       table: {
         type: { summary: 'string' },
       },
@@ -95,12 +103,12 @@ export const Sizes: Story = {
     docs: {
       source: {
         code: `<Spinner 
-  colorScheme="primary"
+  color="primary"
   size="sm" 
 />
-<Spinner colorScheme="primary" />
+<Spinner color="primary" />
 <Spinner 
-  colorScheme="primary" 
+  color="primary" 
   size="lg" 
 />
         `,
@@ -109,9 +117,9 @@ export const Sizes: Story = {
   },
   render: () => (
     <>
-      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} size="sm" />
-      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} />
-      <Spinner colorScheme="primary" size="lg" />
+      <Spinner color='primary' size='sm' style={{ marginRight: '.5rem' }} />
+      <Spinner color='primary' style={{ marginRight: '.5rem' }} />
+      <Spinner color='primary' size='lg' />
     </>
   ),
 }
@@ -125,64 +133,60 @@ export const Variants: Story = {
     docs: {
       source: {
         code: `<Spinner 
-  colorScheme="primary" 
+  color="primary" 
   variant='dashed' 
 />
 <Spinner 
-  colorScheme="primary" 
+  color="primary" 
   variant='dotted' 
 />
 <Spinner 
-  colorScheme="primary" 
+  color="primary" 
   variant='double' 
 />
-<Spinner colorScheme="primary" />
+<Spinner color="primary" />
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="dashed" />
-      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="dotted" />
-      <Spinner colorScheme="primary" style={{ marginRight: '.5rem' }} variant="double" />
-      <Spinner colorScheme="primary" />
+      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='dashed' />
+      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='dotted' />
+      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='double' />
+      <Spinner color='primary' />
     </>
   ),
 }
 
 /**
  * This is a list o Spinner with different colors.
- * Just adding the **colorScheme** prop.
+ * Just adding the **color** prop.
  */
 export const Colors: Story = {
   parameters: {
     docs: {
       source: {
         code: `<Spinner />
-<Spinner colorScheme="primary" />
-<Spinner colorScheme="secondary" />
-<Spinner colorScheme="info" />
-<Spinner colorScheme="warning" />
-<Spinner colorScheme="error" />
-<Spinner colorScheme="success" />
-<Spinner colorScheme="dark" />
-<Spinner colorScheme="light" />
+<Spinner color="primary" />
+<Spinner color="secondary" />
+<Spinner color="info" />
+<Spinner color="warning" />
+<Spinner color="error" />
+<Spinner color="success" />
         `,
       },
     },
   },
   render: () => (
-    <div className="grid gap-4 grid-cols-3">
+    <div className='grid gap-4 grid-cols-3'>
       <Spinner />
-      <Spinner colorScheme="primary" />
-      <Spinner colorScheme="secondary" />
-      <Spinner colorScheme="info" />
-      <Spinner colorScheme="warning" />
-      <Spinner colorScheme="error" />
-      <Spinner colorScheme="success" />
-      <Spinner colorScheme="dark" />
-      <Spinner colorScheme="light" />
+      <Spinner color='primary' />
+      <Spinner color='secondary' />
+      <Spinner color='info' />
+      <Spinner color='warning' />
+      <Spinner color='error' />
+      <Spinner color='success' />
     </div>
   ),
 }
@@ -193,7 +197,7 @@ export const Colors: Story = {
  */
 export const CustomThickness: Story = {
   args: {
-    colorScheme: 'primary',
+    color: 'primary',
     thickness: 5,
   },
 }
@@ -205,7 +209,7 @@ export const CustomThickness: Story = {
  */
 export const CustomSpeed: Story = {
   args: {
-    colorScheme: 'primary',
+    color: 'primary',
     speed: '0.5s',
   },
 }
@@ -256,16 +260,16 @@ export const Tailwind: Story = {
   render: () => (
     <>
       <Spinner
-        className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2"
-        variant="unstyled"
+        className='animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-800 rounded-full dark:text-white mr-2'
+        variant='unstyled'
       />
       <Spinner
-        className="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2"
-        variant="unstyled"
+        className='animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full mr-2'
+        variant='unstyled'
       />
       <Spinner
-        className="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
-        variant="unstyled"
+        className='animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-blue-600 rounded-full'
+        variant='unstyled'
       />
     </>
   ),
@@ -288,10 +292,10 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <>
-      <Spinner className="spinner-border mr-2" variant="unstyled" />
-      <Spinner className="spinner-border text-primary mr-2" variant="unstyled" />
-      <Spinner className="spinner-grow mr-2" variant="unstyled" />
-      <Spinner className="spinner-border spinner-border-sm" variant="unstyled" />
+      <Spinner className='spinner-border mr-2' variant='unstyled' />
+      <Spinner className='spinner-border text-primary mr-2' variant='unstyled' />
+      <Spinner className='spinner-grow mr-2' variant='unstyled' />
+      <Spinner className='spinner-border spinner-border-sm' variant='unstyled' />
     </>
   ),
 }

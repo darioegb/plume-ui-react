@@ -1,6 +1,17 @@
 import type { DateRange } from './datepicker'
 
-export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
+ export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
+
+export const DATE_PICKER_INITIAL_STATE = {
+  value: DEFAULT_DATE_PICKER_VALUE,
+  tempValue: DEFAULT_DATE_PICKER_VALUE,
+  modalOpen: false,
+  year: new Date().getFullYear(),
+  secondYear: new Date().getFullYear(),
+  month: new Date().getMonth(),
+  secondMonth: new Date().getMonth() + 1,
+  rangeDays: [],
+}
 
 export interface DatePickerState {
   value: DateRange
@@ -28,23 +39,37 @@ export const datePickerReducer = (
   action: DatePickerAction,
 ): DatePickerState => {
   switch (action.type) {
-    case 'SET_VALUE':
-      return { ...state, value: action.payload }
-      case 'SET_TEMP_VALUE':
-      return { ...state, tempValue: action.payload }
+    case 'SET_VALUE': {
+      const { startDate, endDate } = action.payload
+      const year = startDate?.getFullYear() ?? state.year
+      const month = startDate?.getMonth() ?? state.month
+      const secondYear = endDate?.getFullYear() ?? state.secondYear
+      const secondMonth =
+        endDate &&
+        (endDate.getMonth() > state.secondMonth || (startDate && startDate.getMonth() === 11))
+          ? endDate.getMonth()
+          : state.secondMonth
+
+      return {
+        ...state,
+        value: action.payload,
+        tempValue: action.payload,
+        year,
+        month,
+        secondYear,
+        secondMonth,
+      }
+    }
     case 'TOGGLE_MODAL':
       return { ...state, modalOpen: !state.modalOpen }
     case 'SET_YEAR':
-      return { ...state, year: action.payload }
     case 'SET_SECOND_YEAR':
-      return { ...state, secondYear: action.payload }
     case 'SET_MONTH':
-      return { ...state, month: action.payload }
     case 'SET_SECOND_MONTH':
-      return { ...state, secondMonth: action.payload }
     case 'SET_RANGE_DAYS':
-      return { ...state, rangeDays: action.payload }
+      return { ...state, [action.type.toLowerCase().slice(4)]: action.payload }
+    case 'SET_TEMP_VALUE':
     default:
-      return state
+      return { ...state, tempValue: action.payload }
   }
 }

@@ -1,0 +1,189 @@
+/* input.module.css */
+
+@value input-padding: 1rem;
+@value input-border-radius: 0.5rem;
+@value input-color: #9ca3af;
+@value input-border-color: #d3d3d3;
+@value input-background-color: #f3f4f6;
+
+/* reset browser styles */
+input {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.input {
+  border-radius: input-border-radius;
+  color: input-color;
+  display: block;
+  height: 2.5rem;
+  min-width: 18rem;
+  padding-inline: input-padding;
+  position: relative;
+  width: 100%;
+}
+
+.sm {
+  font-size: 0.75rem;
+  height: 2rem;
+  padding-inline: 0.5rem;
+}
+
+.md {
+  height: 2.5rem;
+  padding-inline: input-padding;
+}
+
+.lg {
+  font-size: 1.125rem;
+  height: 3rem;
+  padding-inline: 1.5rem;
+}
+
+.rounded {
+  border-radius: input-border-radius;
+}
+
+:is(.outline).pill {
+  border-radius: 9999px;
+}
+
+.outline {
+  composes: input;
+  border: 1px solid input-border-color;
+}
+
+.filled {
+  composes: input;
+  background-color: input-background-color;
+  border-block-end: 1px solid input-border-color;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.underline {
+  composes: input;
+  border-radius: 0;
+  outline: none;
+  border-block-end: 1px solid input-border-color;
+}
+
+:is(.outline, .filled, .underline):enabled:hover {
+  border-color: color-mix(in hsl, input-border-color, black 10%);
+}
+
+.filled:enabled:hover {
+  background-color: color-mix(in hsl, input-background-color, black 2%);
+}
+
+:not(.inputGroup) > .outline:enabled:focus,
+.inputGroup:has(.outline:enabled):focus-within {
+  border-color: var(--input-color);
+  outline: 2px solid var(--input-hover-color);
+  outline-offset: 2px;
+}
+
+:is(.filled, .underline):enabled:focus {
+  border-block-end-color: var(--input-color);
+  border-block-end-width: 2px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/*  ###################### */
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  border-radius: input-border-radius;
+}
+
+.inputGroup:has(.outline, .filled) > .addOn {
+  background-color: input-background-color;
+}
+
+.inputGroup:has(.outline) > .addOn {
+  border: 1px solid input-border-color;
+}
+
+.inputGroup:has(.filled) > .addOn {
+  border-block-end: 1px solid input-border-color;
+}
+
+.inputGroup:has(.outline, .filled) > .addOn:first-child {
+  border-top-left-radius: input-border-radius;
+}
+
+.inputGroup:has(.outline) > .addOn:first-child {
+  border-bottom-left-radius: input-border-radius;
+}
+
+.inputGroup:has(.outline, .filled) > .addOn:first-child + .input {
+  border-top-left-radius: 0;
+  border-top-right-radius: input-border-radius;
+}
+
+.inputGroup:has(.outline) > .addOn:first-child + .input {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: input-border-radius;
+}
+
+.inputGroup:has(.addOn) > .input:is(.outline, .filled) {
+  border-top-right-radius: 0;
+}
+
+.inputGroup:has(.addOn) > .input:is(.outline) {
+  border-bottom-right-radius: 0;
+}
+
+.inputGroup:has(.outline, .filled) > .addOn:last-child {
+  border-top-right-radius: input-border-radius;
+  border-inline-start: 0;
+}
+
+.inputGroup:has(.outline) > .addOn:last-child {
+  border-bottom-right-radius: input-border-radius;
+}
+
+.inputGroup:has(.underline) > .addOn {
+  border-block-end: 1px solid input-border-color;
+}
+
+.inputGroup:has(.element:first-child) > .input {
+  padding-inline-start: 2.5rem;
+}
+
+.inputGroup:has(.element:last-child) > .input {
+  padding-inline-end: 2.5rem;
+}
+
+.element,
+.addOn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.element:first-child {
+  left: 0;
+}
+
+.element:last-child {
+  right: 0;
+}
+
+.element {
+  position: absolute;
+  top: 0;
+  height: 2.5rem;
+  width: 2.5rem;
+  z-index: 2;
+}
+
+.addOn {
+  padding: 0 0.75rem;
+}

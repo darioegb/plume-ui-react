@@ -365,9 +365,6 @@ export const Colors: Story = {
 <Tabs rScheme="success">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="dark">
-  {commonTabs}
-</Tabs>
   `,
       },
     },
@@ -381,7 +378,6 @@ export const Colors: Story = {
       <Tabs colorScheme="warning">{commonTabs}</Tabs>
       <Tabs colorScheme="error">{commonTabs}</Tabs>
       <Tabs colorScheme="success">{commonTabs}</Tabs>
-      <Tabs colorScheme="dark">{commonTabs}</Tabs>
     </div>
   ),
 }

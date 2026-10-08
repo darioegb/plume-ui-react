@@ -103,40 +103,28 @@ export function Calendar({
 
   const handleHoverEffect = (id: string): void => {
     const buttons = document.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`)
-    const selectedButtons = Array.from(buttons).filter((button) =>
-      button.classList.contains(styles.selected),
-    )
     const hoveredIndex = Array.from(buttons).findIndex((button) => button.id === id)
+    const selectedButton = document.querySelector<HTMLButtonElement>(`.${styles.selected}`)
+    const isRangeAndStartSelected = isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButton
 
-    if (isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButtons[0]) {
-      const selectedIndex = Array.from(buttons).indexOf(selectedButtons[0])
-      buttons.forEach((button, index) => {
-        if (index > selectedIndex && index < hoveredIndex) {
-          button.classList.contains(styles.selected) && button.classList.remove(styles.selected)
-          button.classList.add(styles.rangeItem)
-        } else if (index === hoveredIndex) {
-          button.classList.add(styles.selected)
-        } else {
-          index !== selectedIndex && button.classList.remove(styles.rangeItem, styles.selected)
-        }
-      })
-    } else {
-      const selectedIndex = Array.from(buttons).indexOf(selectedButtons[0])
-      const selectedIndexSecond = Array.from(buttons).indexOf(selectedButtons[1])
-      buttons.forEach((button, index) => {
-        if (
-          selectedButtons.length > 0 &&
-          (selectedIndex === hoveredIndex || selectedIndexSecond === hoveredIndex) &&
-          index === hoveredIndex
-        ) {
-          button.classList.add(styles.selectedHover)
-        } else if (index === hoveredIndex) {
-          button.classList.add(styles.hovered)
-        } else {
-          button.classList.remove(styles.hovered, styles.selectedHover)
-        }
-      })
-    }
+    buttons.forEach((button, index) => {
+      const isSelected = button.classList.contains(styles.selected)
+      const isHovered = index === hoveredIndex
+
+      if (isRangeAndStartSelected) {
+        const selectedIndex = Array.from(buttons).indexOf(selectedButton)
+        const [start, end] = [
+          Math.min(selectedIndex, hoveredIndex),
+          Math.max(selectedIndex, hoveredIndex),
+        ]
+
+        button.classList.toggle(styles.rangeItem, index >= start && index <= end)
+        button.classList.toggle(styles.selectedHover, isHovered)
+      } else {
+        button.classList.toggle(styles.selectedHover, isSelected && isHovered)
+        button.classList.toggle(styles.hovered, !isSelected && isHovered)
+      }
+    })
   }
 
   const getSelector = (): ReactNode => {

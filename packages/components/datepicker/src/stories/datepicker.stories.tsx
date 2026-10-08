@@ -13,7 +13,7 @@ export default {
   title: 'Components/Form/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className="pb-[22rem]">{Story()}</div>],
+  decorators: [(Story) => <div className='pb-[22rem]'>{Story()}</div>],
   parameters: {
     docs: {
       toc: {
@@ -29,6 +29,13 @@ export default {
       description: 'The DatePicker value.',
       table: {
         type: { summary: 'DateRange' },
+      },
+    },
+    isCalendar: {
+      control: 'boolean',
+      description: "Indicates whether the DatePicker it's just a  static calendar.",
+      table: {
+        type: { summary: 'boolean' },
       },
     },
     isRange: {
@@ -86,6 +93,14 @@ export default {
         type: { summary: 'DatePickerConfig' },
       },
     },
+    readOnly: {
+      control: 'boolean',
+      description: 'Indicates whether the DatePicker is readOnly.',
+      table: {
+        defaultValue: { summary: false },
+        type: { summary: 'boolean' },
+      },
+    },
     shape: {
       control: 'inline-radio',
       description: 'Shape style of the DatePicker.',
@@ -119,6 +134,7 @@ export default {
   args: {
     disabled: false,
     isRange: false,
+    readOnly: false,
     showFooter: false,
   },
 } as Meta<typeof DatePicker>
@@ -193,18 +209,6 @@ export const Colors: Story = {
   value={value}
   onChange={handleValueChange}
 />
-<DatePicker 
-  colorScheme="dark"
-  placeholder="Dark DatePicker"
-  value={value}
-  onChange={handleValueChange}
-/>
-<DatePicker 
-  colorScheme="light"
-  placeholder="Light DatePicker"
-  value={value}
-  onChange={handleValueChange}
-/>
           `,
       },
     },
@@ -220,54 +224,42 @@ export const Colors: Story = {
       setValue(newValue)
     }
     return (
-      <div className="grid gap-4 grid-cols-2">
-        <DatePicker onChange={handleValueChange} placeholder="Default DatePicker" value={value} />
+      <div className='grid gap-4 grid-cols-2'>
+        <DatePicker onChange={handleValueChange} placeholder='Default DatePicker' value={value} />
         <DatePicker
-          colorScheme="primary"
+          colorScheme='primary'
           onChange={handleValueChange}
-          placeholder="Primary DatePicker"
+          placeholder='Primary DatePicker'
           value={value}
         />
         <DatePicker
-          colorScheme="secondary"
+          colorScheme='secondary'
           onChange={handleValueChange}
-          placeholder="Secondary DatePicker"
+          placeholder='Secondary DatePicker'
           value={value}
         />
         <DatePicker
-          colorScheme="info"
+          colorScheme='info'
           onChange={handleValueChange}
-          placeholder="Info DatePicker"
+          placeholder='Info DatePicker'
           value={value}
         />
         <DatePicker
-          colorScheme="warning"
+          colorScheme='warning'
           onChange={handleValueChange}
-          placeholder="Warning DatePicker"
+          placeholder='Warning DatePicker'
           value={value}
         />
         <DatePicker
-          colorScheme="error"
+          colorScheme='error'
           onChange={handleValueChange}
-          placeholder="Error DatePicker"
+          placeholder='Error DatePicker'
           value={value}
         />
         <DatePicker
-          colorScheme="success"
+          colorScheme='success'
           onChange={handleValueChange}
-          placeholder="Success DatePicker"
-          value={value}
-        />
-        <DatePicker
-          colorScheme="dark"
-          onChange={handleValueChange}
-          placeholder="Dark DatePicker"
-          value={value}
-        />
-        <DatePicker
-          colorScheme="light"
-          onChange={handleValueChange}
-          placeholder="Light DatePicker"
+          placeholder='Success DatePicker'
           value={value}
         />
       </div>
@@ -316,7 +308,7 @@ export const WithFooterActions: Story = {
     ...Default.args,
     showFooter: true,
   },
-  decorators: [(Story) => <div className="pb-[10rem]">{Story()}</div>],
+  decorators: [(Story) => <div className='pb-[10rem]'>{Story()}</div>],
 }
 
 /**

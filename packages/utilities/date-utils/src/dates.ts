@@ -7,6 +7,18 @@ function getLocale(language?: string): string {
   return language
 }
 
+function formatDateRegex(displayFormat: string): RegExp {
+  const formatMap: Record<string, string> = {
+    dd: '\\d{2}',
+    mm: '\\d{2}',
+    yyyy: '\\d{4}',
+  }
+
+  const regexFormat = displayFormat.replace(/dd|mm|yyyy/g, (match) => formatMap[match])
+
+  return new RegExp(`^${regexFormat}$`)
+}
+
 export function getDateFormatByLanguage(language?: string): string {
   const locale = getLocale(language)
   const formatter = new Intl.DateTimeFormat(locale, {
@@ -76,14 +88,10 @@ export function getDateStringByLanguage({
   }
   if (displayFormat) {
     if (isRange && startDate && endDate) {
-      return `${formatDate(startDate, displayFormat, language)} - ${formatDate(
-        endDate,
-        displayFormat,
-        language,
-      )}`
+      return `${formatDate(startDate, displayFormat)} - ${formatDate(endDate, displayFormat)}`
     }
 
-    return startDate ? formatDate(startDate, displayFormat, language) : ''
+    return startDate ? formatDate(startDate, displayFormat) : ''
   }
   const locale = getLocale(language)
   if (isRange && startDate && endDate) {
@@ -95,19 +103,26 @@ export function getDateStringByLanguage({
   return startDate ? new Intl.DateTimeFormat(locale, config).format(startDate) : ''
 }
 
-export function formatDate(date: Date, displayFormat: string, language?: string): string {
-  const monthNames: string[] = getMonthsByLanguage(language)
-
+export function formatDate(date: Date, displayFormat: string): string {
   const map: Record<string, string> = {
     YYYY: String(date.getFullYear()),
-    YY: String(date.getFullYear()).slice(-2),
-    MMMM: monthNames[date.getMonth()],
-    MMM: monthNames[date.getMonth()].slice(0, 3),
     MM: String(date.getMonth() + 1).padStart(2, '0'),
-    M: String(date.getMonth() + 1),
     DD: String(date.getDate()).padStart(2, '0'),
-    D: String(date.getDate()),
   }
 
-  return displayFormat.replace(/YYYY|YY|MMMM|MMM|MM|M|DD|D/g, (match) => map[match])
+  return displayFormat.replace(/YYYY|MM|DD/g, (match) => map[match])
+}
+
+export function validateFormatDate(
+  dateString: string,
+  language: string,
+  displayFormat?: string,
+): boolean {
+  const regex = formatDateRegex(displayFormat ?? getDateFormatByLanguage(language))
+  return regex.test(dateString)
+}
+
+export function getDateFromDateString(dateString: string): Date {
+  const [month, day, year] = dateString.split(/[/-]/)
+  return new Date(Number(year), Number(month) - 1, Number(day))
 }

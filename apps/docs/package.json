@@ -30,6 +30,7 @@
     "eslint-config-custom": "workspace:*",
     "chromatic": "^7.2.3",
     "prettier-config": "workspace:*",
+    "react-docgen": "^7.0.3",
     "serve": "^13.0.4",
     "storybook": "^7.4.0",
     "tailwind-config": "workspace:*",

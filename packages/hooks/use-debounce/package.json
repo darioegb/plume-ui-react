@@ -1,0 +1,47 @@
+{
+  "name": "@plume-ui-react/use-debounce",
+  "version": "0.0.1",
+  "description": "Debounce hook for Plume UI lib",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "lint": "eslint src/",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "lib",
+    "hooks",
+    "debounce",
+    "use-debounce",
+    "plume-ui",
+    "plume-ui-react"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "jest-preset": "workspace:*",
+    "prettier-config": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.11.0",
+    "react-dom": ">=16.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

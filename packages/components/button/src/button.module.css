@@ -1,34 +1,39 @@
 /* button.module.css */
-@value button-padding: 0.5rem 1rem;
+@value button-padding: 1rem;
 @value button-border-radius: 0.5rem;
 @value button-border: none;
-@value outline-width: 2px;
+@value outline-width: 0.125rem;
 
 .button {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border: button-border;
-  outline: none;
-  font-weight: 600;
-  transition:
-    color 0.3s,
-    background-color 0.3s;
-  padding: button-padding;
-  border-radius: button-border-radius;
   background-color: transparent;
+  border: button-border;
+  border-radius: button-border-radius;
+  display: inline-flex;
+  font-weight: 600;
+  justify-content: center;
+  padding-inline: button-padding;
+  transition:
+  color 0.3s,
+  background-color 0.3s;
+  user-select: none;
 }
 
 .sm {
-  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  height: 2rem;
+  padding-inline: 0.5rem;
 }
 
 .md {
-  padding: button-padding;
+  height: 2.5rem;
+  padding-inline: button-padding;
 }
 
 .lg {
-  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  height: 3rem;
+  padding-inline: 1.5rem;
 }
 
 .rounded {
@@ -41,40 +46,41 @@
 
 .solid {
   composes: button;
-  background-color: var(--button-scheme);
-  color: var(--button-text-color);
+  background-color: var(--button-color);
+  color: var(--button-contrast-color);
 }
 
 .outline {
   composes: button;
-  border: 1px solid var(--button-scheme);
-  color: var(--button-scheme);
+  border: 1px solid var(--button-color);
+  color: var(--button-color);
 }
 
 .ghost {
   composes: button;
-  color: var(--button-scheme);
+  color: var(--button-color);
 }
 
 .link {
   composes: button;
-  color: var(--button-scheme);
+  color: var(--button-color);
   text-decoration-line: underline;
   text-underline-offset: 0.5rem;
 }
 
 .icon {
   composes: button;
-  color: var(--button-scheme);
-  padding: 0.25rem;
+  color: var(--button-color);
+  padding: 0.5rem;
 }
 
-:is(.icon, .link):enabled:hover {
-  color: var(--button-hover-color);
-}
-
-:is(.outline, .ghost):enabled:hover {
+:is(.outline, .ghost, .icon):enabled:hover {
   background-color: var(--button-hover-alt-color);
+}
+
+.link:enabled:hover {
+  color: var(--button-hover-color);
+  text-decoration-color: var(--button-hover-color);
 }
 
 .solid:enabled:hover {
@@ -85,14 +91,13 @@
   border-color: var(--button-hover-color);
 }
 
-.link:enabled:hover {
-  text-decoration-color: var(--button-hover-color);
-  text-decoration-thickness: 2px;
-}
-
-.button:enabled:focus {
+.button:not(.link, :active):enabled:focus {
   outline: outline-width solid var(--button-focus-alt-color);
   outline-offset: outline-width;
+}
+
+.link:not(:active):enabled:focus {
+  text-decoration-thickness: 2px;
 }
 
 :is(.outline, .ghost):enabled:active {
@@ -109,7 +114,6 @@
 
 .link:enabled:active {
   text-decoration-color: var(--button-focus-color);
-  text-decoration-thickness: 2px;
 }
 
 button.disabled {

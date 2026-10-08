@@ -69,6 +69,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  outline: none;
 }
 
 .vertical .underline .tab {
@@ -149,6 +150,11 @@
 
 .tab:not(.active, :disabled):hover {
   color: color-mix(in hsl, var(--tabs-scheme), black 10%);
+}
+
+.tab:focus > span {
+  outline: 0.25rem solid color-mix(in hsl, var(--tabs-scheme), black 10%);
+  outline-offset: 0.125rem;
 }
 
 .vertical .panel {
