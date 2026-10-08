@@ -40,7 +40,6 @@
     "preset": "jest-preset"
   },
   "dependencies": {
-    "@plume-ui-react/color-utils": "workspace:*",
     "@plume-ui-react/lazy-utils": "workspace:*",
     "@plume-ui-react/core": "workspace:*",
     "@plume-ui-react/button": "workspace:*",

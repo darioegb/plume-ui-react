@@ -1,8 +1,6 @@
 import { forwardRef } from 'react'
 import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '@plume-ui-react/core'
-import { getColorFromTheme } from '@plume-ui-react/core'
-import { getContrastColor, getLightenColor } from '@plume-ui-react/color-utils'
 import { TabsProvider } from './use-tabs'
 import styles from './tabs.module.css'
 
@@ -26,18 +24,14 @@ type TabsRootAttributes = Pick<
 
 export type TabsProps = ComponentProps & TabsRootAttributes & TabsOwnProps
 
-const createTabsStyles = (
-  color: string,
-  contrastColor: string,
-  lightenColor: string,
-  style?: CSSProperties,
-): Record<string, unknown> => ({
-  '--tabs-scheme': color,
-  '--tabs-background-color': lightenColor,
-  '--tabs-text-color': contrastColor,
-
-  ...(style ?? {}),
-})
+// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
+const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
+  ({
+    '--tabs-scheme': `var(--plume-color-${colorScheme}-500)`,
+    '--tabs-background-color': `var(--plume-color-${colorScheme}-400)`,
+    '--tabs-text-color': `var(--plume-color-${colorScheme}-contrast)`,
+    ...(style ?? {}),
+  }) as CSSProperties
 
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
@@ -57,9 +51,6 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const color = getColorFromTheme(colorScheme)
-    const lightenColor = getLightenColor(color, 20)
-    const contrastColor = getContrastColor(color)
     const isStyled = variant !== 'unstyled'
     const tabsClassNames = `${
       orientation !== 'horizontal' || isStyled ? styles[orientation] : ''
@@ -81,7 +72,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         <div
           className={tabsClassNames}
           ref={ref}
-          style={createTabsStyles(color, contrastColor, lightenColor, style)}
+          style={tabsColorVars(colorScheme, style)}
           {...rest}
         >
           {children}
