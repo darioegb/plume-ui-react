@@ -41,7 +41,6 @@
     "preset": "jest-preset"
   },
   "dependencies": {
-    "@plume-ui-react/color-utils": "workspace:*",
     "@plume-ui-react/date-utils": "workspace:*",
     "@plume-ui-react/use-debounce": "workspace:*",
     "@plume-ui-react/use-click-outside": "workspace:*",

@@ -1,8 +1,6 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useEffect, useRef, useReducer } from 'react'
-import { getDarkenColor, getLightenColor } from '@plume-ui-react/color-utils'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
-import { getColorFromTheme } from '@plume-ui-react/core'
 import { getDateFormatByLanguage } from '@plume-ui-react/date-utils'
 import { Button } from '@plume-ui-react/button'
 import { useClickOutside } from '@plume-ui-react/use-click-outside'
@@ -63,18 +61,13 @@ export type DatePickerRootAttributes = Pick<
 
 export type DatePickerProps = ComponentProps & DatePickerRootAttributes & DatePickerOwnProps
 
-const createDatePickerStyles = (
-  color: string,
-  hoverColor: string,
-  rangeItemColor: string,
-  selectedHoverColor: string,
-  style?: CSSProperties,
-): CSSProperties =>
+// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
+const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
-    '--datepicker-scheme': color,
-    '--datepicker-range-item-color': rangeItemColor,
-    '--datepicker-hover-color': hoverColor,
-    '--datepicker-selected-hover-color': selectedHoverColor,
+    '--datepicker-scheme': `var(--plume-color-${colorScheme}-500)`,
+    '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-200)`,
+    '--datepicker-hover-color': `var(--plume-color-${colorScheme}-100)`,
+    '--datepicker-selected-hover-color': `var(--plume-color-${colorScheme}-600)`,
     ...(style ?? {}),
   }) as CSSProperties
 
@@ -97,26 +90,19 @@ function FooterActions({
   )
 }
 
-const generateDatePickerAttributes = (
+const generateDatePickerInputClasses = (
   className: string,
   disabled: boolean,
   variant: string,
-  colorScheme: ColorScheme,
   shape?: Shape,
   size?: Size,
-): Record<string, string> => {
-  const color = getColorFromTheme(colorScheme)
-  const hoverColor = getLightenColor(color, 80)
-  const rangeItemColor = getLightenColor(color, 70)
-  const selectedHoverColor = getDarkenColor(color)
+): string => {
   const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
   const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
   const variantClass = variant !== 'unstyled' ? styles[variant] : ''
   const disabledClass = disabled ? styles.disabled : ''
-  const datePickerInputClasses = `${sizeClass} ${shapeClass} ${variantClass} 
+  return `${sizeClass} ${shapeClass} ${variantClass} 
     ${disabledClass} ${className}`.trim()
-
-  return { color, hoverColor, rangeItemColor, selectedHoverColor, datePickerInputClasses }
 }
 
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
@@ -164,8 +150,13 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       size = variant !== 'unstyled' ? 'md' : undefined,
       shape = variant !== 'unstyled' ? 'rounded' : undefined,
     } = rest
-    const { color, hoverColor, rangeItemColor, selectedHoverColor, datePickerInputClasses } =
-      generateDatePickerAttributes(className, disabled, variant, colorScheme, shape, size)
+    const datePickerInputClasses = generateDatePickerInputClasses(
+      className,
+      disabled,
+      variant,
+      shape,
+      size,
+    )
 
     useEffect(() => {
       if (!state.modalOpen) return
@@ -305,13 +296,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         <div
           className={styles.datePicker}
           ref={ref}
-          style={createDatePickerStyles(
-            color,
-            hoverColor,
-            rangeItemColor,
-            selectedHoverColor,
-            style,
-          )}
+          style={datePickerColorVars(colorScheme, style)}
         >
           {!isCalendar && (
             <DatePickerInput

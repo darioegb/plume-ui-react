@@ -358,9 +358,6 @@ importers:
       '@plume-ui-react/button':
         specifier: workspace:*
         version: link:../button
-      '@plume-ui-react/color-utils':
-        specifier: workspace:*
-        version: link:../../utilities/color-utils
       '@plume-ui-react/core':
         specifier: workspace:*
         version: link:../../core
