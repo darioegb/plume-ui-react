@@ -31,6 +31,8 @@ export interface ThemeProviderProps {
   theme?: DeepPartial<Theme>
   darkTheme?: DeepPartial<Theme>
   defaultColorMode?: ColorModeSetting
+  /** Theme document.body and set data-plume-color-mode on <html> for full-page theming. Default true; set false for nested providers. */
+  applyToBody?: boolean
   className?: string
   style?: CSSProperties
 }
@@ -40,6 +42,7 @@ export function ThemeProvider({
   theme,
   darkTheme,
   defaultColorMode = 'light',
+  applyToBody = true,
   className = '',
   style,
 }: ThemeProviderProps): ReactNode {
@@ -76,6 +79,24 @@ export function ThemeProvider({
 
   const activeTheme = colorMode === 'dark' ? resolvedDarkTheme : lightTheme
   const cssVars = useMemo(() => themeToCssVars(activeTheme), [activeTheme])
+
+  // Baseline: theme document.body + <html> so the whole page follows the theme.
+  useEffect(() => {
+    if (!applyToBody || typeof document === 'undefined') return
+    const { documentElement: html, body } = document
+    const prevMode = html.getAttribute('data-plume-color-mode')
+    const prevBackground = body.style.backgroundColor
+    const prevColor = body.style.color
+    html.setAttribute('data-plume-color-mode', colorMode)
+    body.style.backgroundColor = activeTheme.semantic.background
+    body.style.color = activeTheme.semantic.foreground
+    return () => {
+      if (prevMode === null) html.removeAttribute('data-plume-color-mode')
+      else html.setAttribute('data-plume-color-mode', prevMode)
+      body.style.backgroundColor = prevBackground
+      body.style.color = prevColor
+    }
+  }, [applyToBody, colorMode, activeTheme])
 
   const value = useMemo<ThemeContextValue>(
     () => ({ theme: activeTheme, colorMode, setColorMode: setSetting }),
