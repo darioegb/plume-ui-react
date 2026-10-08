@@ -1,7 +1,7 @@
 import { deepMerge } from '@plume-ui-react/merge-utils'
 import type { Theme } from './theme.types'
 
-const defaultTheme: Theme = {
+export const defaultTheme: Theme = {
   colors: {
     primary: {
       50: '#ecf2ff',
