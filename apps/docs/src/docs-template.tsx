@@ -1,3 +1,4 @@
+import React from 'react'
 import type { ReactNode } from 'react'
 import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/addon-docs/blocks'
 import { Button } from '@plume-ui-react/lib'
