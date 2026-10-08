@@ -2,9 +2,9 @@
 
 @value input-padding: var(--plume-space-4);
 @value input-border-radius: var(--plume-radius-4);
-@value input-color: #9ca3af;
-@value input-border-color: #d3d3d3;
-@value input-background-color: #f3f4f6;
+@value input-color: var(--plume-muted);
+@value input-border-color: var(--plume-border);
+@value input-background-color: var(--plume-surface-muted);
 
 /* reset browser styles */
 input {

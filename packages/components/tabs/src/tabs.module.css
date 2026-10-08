@@ -43,13 +43,13 @@
 }
 
 .vertical .underline {
-  border-inline-end: solid 1px lightgray;
+  border-inline-end: solid 1px var(--plume-border);
   border-block-end: none;
 }
 
 .underline {
   gap: var(--plume-space-4);
-  border-block-end: solid 1px lightgray;
+  border-block-end: solid 1px var(--plume-border);
 }
 
 .vertical .tablist {
@@ -123,7 +123,7 @@
 .enclosed .tab.active {
   border: 1px solid var(--tabs-scheme);
   border-radius: tabs-border-radius;
-  background: white;
+  background: var(--plume-surface);
   border-block-end: none;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;

@@ -2,8 +2,8 @@
 
 @value date-picker-padding: var(--plume-space-4);
 @value date-picker-border-radius: var(--plume-radius-4);
-@value date-picker-color: #9ca3af;
-@value date-picker-border-color: #d3d3d3;
+@value date-picker-color: var(--plume-muted);
+@value date-picker-border-color: var(--plume-border);
 
 .datePicker {
   position: relative;
@@ -83,7 +83,7 @@
 
 .filled {
   composes: datePickerInputText;
-  background-color: #f3f4f6;
+  background-color: var(--plume-surface-muted);
   border-block-end: 1px solid date-picker-border-color;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -101,7 +101,7 @@
 }
 
 .filled:enabled:hover {
-  background-color: color-mix(in hsl, #f3f4f6, black 2%);
+  background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
 }
 
 .outline:enabled:focus {
@@ -119,7 +119,7 @@
   margin-top: var(--plume-space-2);
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--plume-surface);
   border: 1px solid date-picker-border-color;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -220,7 +220,7 @@
   display: block;
   text-align: center;
   font-size: var(--plume-font-size-sm);
-  color: #718096;
+  color: var(--plume-muted);
 }
 
 .calendarGrid {
@@ -279,7 +279,7 @@
 }
 
 button.footerButton {
-  color: black;
+  color: var(--plume-foreground);
 }
 
 button.footerButtonApply {

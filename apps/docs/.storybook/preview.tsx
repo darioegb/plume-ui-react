@@ -48,11 +48,7 @@ const preview: Preview = {
         <ThemeProvider
           key={colorMode}
           defaultColorMode={colorMode}
-          style={{
-            padding: '2rem',
-            background: colorMode === 'dark' ? '#18181b' : '#ffffff',
-            color: colorMode === 'dark' ? '#fafafa' : '#18181b',
-          }}
+          style={{ padding: '2rem', minHeight: '100vh' }}
         >
           <Story />
         </ThemeProvider>

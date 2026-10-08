@@ -11,6 +11,8 @@ function flatten(prefix: string, record: TokenRecord, target: Record<string, str
   }
 }
 
+const toKebab = (key: string): string => key.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+
 /**
  * Flattens a resolved Theme into a map of CSS custom properties
  * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-radius-2`).
@@ -23,6 +25,11 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   for (const [scheme, shades] of Object.entries(colors)) {
     flatten(`${PREFIX}-color-${scheme}`, shades, vars)
     vars[`${PREFIX}-color-${scheme}-contrast`] = getContrastColor(String(shades['500']))
+  }
+
+  const semantic = theme.semantic as unknown as Record<string, string>
+  for (const [key, value] of Object.entries(semantic)) {
+    vars[`${PREFIX}-${toKebab(key)}`] = value
   }
 
   vars[`${PREFIX}-font-family`] = theme.typography.fontFamily

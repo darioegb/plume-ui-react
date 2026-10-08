@@ -1,4 +1,4 @@
-import type { Theme } from './theme.types'
+import type { DeepPartial, Theme } from './theme.types'
 
 export const defaultTheme: Theme = {
   colors: {
@@ -146,6 +146,14 @@ export const defaultTheme: Theme = {
       950: '#442f04',
     },
   },
+  semantic: {
+    background: '#ffffff',
+    surface: '#ffffff',
+    surfaceMuted: '#f3f4f6',
+    foreground: '#18181b',
+    muted: '#71717a',
+    border: '#d4d4d8',
+  },
   typography: {
     fontFamily: "'Inter', sans-serif",
     fontSizes: {
@@ -256,5 +264,17 @@ export const defaultTheme: Theme = {
     lg: '1024px',
     xl: '1280px',
     '2xl': '1536px',
+  },
+}
+
+/** Built-in dark-mode overrides applied by <ThemeProvider> when colorMode is 'dark'. */
+export const defaultDarkTheme: DeepPartial<Theme> = {
+  semantic: {
+    background: '#18181b',
+    surface: '#27272a',
+    surfaceMuted: '#3f3f46',
+    foreground: '#fafafa',
+    muted: '#a1a1aa',
+    border: '#3f3f46',
   },
 }

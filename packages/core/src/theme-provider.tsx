@@ -3,7 +3,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { deepMerge } from '@plume-ui-react/merge-utils'
-import { defaultTheme } from './config'
+import { defaultDarkTheme, defaultTheme } from './config'
 import type { DeepPartial, Theme } from './theme.types'
 import { themeToCssVars } from './theme-to-css-vars'
 
@@ -48,7 +48,11 @@ export function ThemeProvider({
     [theme],
   )
   const resolvedDarkTheme = useMemo(
-    () => deepMerge<Theme>(lightTheme, (darkTheme ?? {}) as Theme),
+    () =>
+      deepMerge<Theme>(
+        deepMerge<Theme>(lightTheme, defaultDarkTheme as Theme),
+        (darkTheme ?? {}) as Theme,
+      ),
     [lightTheme, darkTheme],
   )
 
@@ -83,7 +87,12 @@ export function ThemeProvider({
       <div
         className={`plume-root ${className}`.trim()}
         data-plume-color-mode={colorMode}
-        style={{ ...(cssVars as CSSProperties), ...style }}
+        style={{
+          ...(cssVars as CSSProperties),
+          backgroundColor: 'var(--plume-background)',
+          color: 'var(--plume-foreground)',
+          ...style,
+        }}
       >
         {children}
       </div>

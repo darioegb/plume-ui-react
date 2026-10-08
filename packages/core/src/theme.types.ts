@@ -140,8 +140,18 @@ export interface Breakpoints {
   '2xl': string
 }
 
+export interface SemanticColors {
+  background: string
+  surface: string
+  surfaceMuted: string
+  foreground: string
+  muted: string
+  border: string
+}
+
 export interface Theme {
   colors: ColorPalette
+  semantic: SemanticColors
   typography: Typography
   spaces: Spaces // Padding & margin
   sizes: Sizes // Width & height
