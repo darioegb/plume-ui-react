@@ -1,9 +1,7 @@
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
-import { createStyles, getColorFromTheme, getColorWithShadeFromTheme } from '@plume-ui-react/core'
 import { Spinner } from '@plume-ui-react/spinner'
-import { getContrastColor } from '@plume-ui-react/color-utils'
 import styles from './button.module.css'
 
 export interface ButtonOwnProps {
@@ -58,38 +56,32 @@ const renderContent = (
   )
 }
 
-const generateButtonAttributes = (
+const generateButtonClasses = (
   variant: string,
   className: string,
-  colorScheme: ColorScheme,
   disabled: boolean,
   isBusy: boolean,
   size: Size,
   shape: Shape,
-): Record<string, string> => {
-  const color = getColorFromTheme(colorScheme)
-  const contrastColor = getContrastColor(color)
-  const hoverColor = getColorWithShadeFromTheme(colorScheme, 600)
-  const focusColor = getColorWithShadeFromTheme(colorScheme, 700)
-  const hoverAltColor = getColorWithShadeFromTheme(colorScheme, 100)
-  const focusAltColor = getColorWithShadeFromTheme(colorScheme, 200)
+): string => {
   const disabledClass = disabled || isBusy ? styles.disabled : ''
   const shapeClass = variant !== 'unstyled' ? styles[shape] : ''
   const sizeClass = variant !== 'unstyled' ? styles[size] : ''
   const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-  const buttonClasses = `${sizeClass} ${shapeClass} ${variantClass} 
+  return `${sizeClass} ${shapeClass} ${variantClass} 
     ${disabledClass} ${className}`.trim()
-
-  return {
-    color,
-    contrastColor,
-    hoverColor,
-    focusColor,
-    hoverAltColor,
-    focusAltColor,
-    buttonClasses,
-  }
 }
+
+// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
+const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
+  ({
+    '--button-color': `var(--plume-color-${colorScheme}-500)`,
+    '--button-contrast-color': `var(--plume-color-${colorScheme}-contrast)`,
+    '--button-hover-color': `var(--plume-color-${colorScheme}-600)`,
+    '--button-focus-color': `var(--plume-color-${colorScheme}-700)`,
+    '--button-hover-alt-color': `var(--plume-color-${colorScheme}-100)`,
+    '--button-focus-alt-color': `var(--plume-color-${colorScheme}-200)`,
+  }) as CSSProperties
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -112,31 +104,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const {
-      color,
-      contrastColor,
-      hoverColor,
-      focusColor,
-      hoverAltColor,
-      focusAltColor,
-      buttonClasses,
-    } = generateButtonAttributes(variant, className, colorScheme, disabled, isBusy, size, shape)
+    const buttonClasses = generateButtonClasses(variant, className, disabled, isBusy, size, shape)
 
     return (
       <button
         className={buttonClasses}
         disabled={disabled || isBusy}
         ref={ref}
-        style={createStyles({
-          color,
-          contrastColor,
-          hoverColor,
-          focusColor,
-          hoverAltColor,
-          focusAltColor,
-          style,
-          prefix: 'button',
-        })}
+        style={{ ...buttonColorVars(colorScheme), ...style }}
         type={type}
         {...rest}
       >
@@ -144,7 +119,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
         {isBusy ? (
           <Spinner
-            color={contrastColor !== '#ffffff' ? `${colorScheme}.900` : `${colorScheme}.50`}
+            style={{ '--spinner-scheme': 'var(--button-contrast-color)' } as CSSProperties}
             {...(busyText && { className: styles.spinnerMargin })}
             size='sm'
           />

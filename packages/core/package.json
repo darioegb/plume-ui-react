@@ -31,6 +31,7 @@
   ],
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "dependencies": {
+    "@plume-ui-react/color-utils": "workspace:*",
     "@plume-ui-react/merge-utils": "workspace:*"
   },
   "devDependencies": {

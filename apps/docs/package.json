@@ -11,6 +11,7 @@
     "lint:fix": "eslint src/ --ext .tsx,.ts"
   },
   "dependencies": {
+    "@plume-ui-react/core": "workspace:*",
     "@plume-ui-react/lib": "workspace:*"
   },
   "devDependencies": {

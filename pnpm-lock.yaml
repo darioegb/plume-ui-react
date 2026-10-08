@@ -229,6 +229,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@plume-ui-react/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@plume-ui-react/lib':
         specifier: workspace:*
         version: link:../../packages/components/lib
@@ -540,6 +543,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@plume-ui-react/color-utils':
+        specifier: workspace:*
+        version: link:../utilities/color-utils
       '@plume-ui-react/merge-utils':
         specifier: workspace:*
         version: link:../utilities/merge-utils

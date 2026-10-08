@@ -1,3 +1,4 @@
+import { getContrastColor } from '@plume-ui-react/color-utils'
 import type { Theme } from './theme.types'
 
 const PREFIX = '--plume'
@@ -21,6 +22,7 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   const colors = theme.colors as unknown as Record<string, TokenRecord>
   for (const [scheme, shades] of Object.entries(colors)) {
     flatten(`${PREFIX}-color-${scheme}`, shades, vars)
+    vars[`${PREFIX}-color-${scheme}-contrast`] = getContrastColor(String(shades['500']))
   }
 
   vars[`${PREFIX}-font-family`] = theme.typography.fontFamily

@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import type { HtmlHTMLAttributes } from 'react'
 import type { ColorShade, ComponentProps, Size } from '@plume-ui-react/core'
-import { getColorFromTheme } from '@plume-ui-react/core'
+import { colorVar } from '@plume-ui-react/core'
 import styles from './spinner.module.css'
 
 export interface SpinnerOwnProps {
@@ -24,7 +24,7 @@ const createSpinnerStyles = ({
   speed,
   thickness,
 }: SpinnerStylesOptions): Record<string, unknown> => ({
-  '--spinner-scheme': getColorFromTheme(color),
+  '--spinner-scheme': colorVar(color),
   ...(thickness && { '--spinner-border-width': `${thickness}px` }),
   '--spinner-animation-duration': speed?.length ? speed : '1s',
   ...(style ?? {}),
