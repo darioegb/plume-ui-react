@@ -1,18 +1,14 @@
 /* button.module.css */
-@value button-padding: 1rem;
-@value button-border-radius: 0.5rem;
-@value button-border: none;
-@value outline-width: 0.125rem;
 
 .button {
   align-items: center;
   background-color: transparent;
-  border: button-border;
-  border-radius: button-border-radius;
+  border: none;
+  border-radius: var(--plume-radius-4);
   display: inline-flex;
-  font-weight: 600;
+  font-weight: var(--plume-font-weight-semibold);
   justify-content: center;
-  padding-inline: button-padding;
+  padding-inline: var(--plume-space-4);
   transition:
   color 0.3s,
   background-color 0.3s;
@@ -20,28 +16,28 @@
 }
 
 .sm {
-  font-size: 0.75rem;
-  height: 2rem;
-  padding-inline: 0.5rem;
+  font-size: var(--plume-font-size-xs);
+  height: var(--plume-space-8);
+  padding-inline: var(--plume-space-2);
 }
 
 .md {
-  height: 2.5rem;
-  padding-inline: button-padding;
+  height: var(--plume-space-10);
+  padding-inline: var(--plume-space-4);
 }
 
 .lg {
-  font-size: 1.125rem;
-  height: 3rem;
-  padding-inline: 1.5rem;
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  padding-inline: var(--plume-space-6);
 }
 
 .rounded {
-  border-radius: button-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 .pill {
-  border-radius: 9999px;
+  border-radius: var(--plume-radius-full);
 }
 
 .solid {
@@ -65,13 +61,13 @@
   composes: button;
   color: var(--button-color);
   text-decoration-line: underline;
-  text-underline-offset: 0.5rem;
+  text-underline-offset: var(--plume-space-2);
 }
 
 .icon {
   composes: button;
   color: var(--button-color);
-  padding: 0.5rem;
+  padding: var(--plume-space-2);
 }
 
 :is(.outline, .ghost, .icon):enabled:hover {
@@ -92,8 +88,8 @@
 }
 
 .button:not(.link, :active):enabled:focus {
-  outline: outline-width solid var(--button-focus-alt-color);
-  outline-offset: outline-width;
+  outline: 0.125rem solid var(--button-focus-alt-color);
+  outline-offset: 0.125rem;
 }
 
 .link:not(:active):enabled:focus {
@@ -122,7 +118,7 @@ button.disabled {
 }
 
 .iconMargin {
-  margin: 0 0.25rem;
+  margin: 0 var(--plume-space-1);
 }
 
 .hidden {
@@ -130,5 +126,5 @@ button.disabled {
 }
 
 .spinnerMargin {
-  margin-left: 0.25rem;
+  margin-left: var(--plume-space-1);
 }

@@ -1,7 +1,7 @@
 /* input.module.css */
 
-@value input-padding: 1rem;
-@value input-border-radius: 0.5rem;
+@value input-padding: var(--plume-space-4);
+@value input-border-radius: var(--plume-radius-4);
 @value input-color: #9ca3af;
 @value input-border-color: #d3d3d3;
 @value input-background-color: #f3f4f6;
@@ -17,7 +17,7 @@ input {
   border-radius: input-border-radius;
   color: input-color;
   display: block;
-  height: 2.5rem;
+  height: var(--plume-space-10);
   min-width: 18rem;
   padding-inline: input-padding;
   position: relative;
@@ -25,20 +25,20 @@ input {
 }
 
 .sm {
-  font-size: 0.75rem;
-  height: 2rem;
-  padding-inline: 0.5rem;
+  font-size: var(--plume-font-size-xs);
+  height: var(--plume-space-8);
+  padding-inline: var(--plume-space-2);
 }
 
 .md {
-  height: 2.5rem;
+  height: var(--plume-space-10);
   padding-inline: input-padding;
 }
 
 .lg {
-  font-size: 1.125rem;
-  height: 3rem;
-  padding-inline: 1.5rem;
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  padding-inline: var(--plume-space-6);
 }
 
 .rounded {
@@ -46,7 +46,7 @@ input {
 }
 
 :is(.outline).pill {
-  border-radius: 9999px;
+  border-radius: var(--plume-radius-full);
 }
 
 .outline {

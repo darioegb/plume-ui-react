@@ -1,7 +1,7 @@
 /* tabs.module.css */
-@value tabs-padding: 0.5rem 0.75rem;
+@value tabs-padding: var(--plume-space-2) var(--plume-space-3);
 @value tabs-border-width: 2px;
-@value tabs-border-radius: 0.5rem;
+@value tabs-border-radius: var(--plume-radius-4);
 
 .tabs {
   display: flex;
@@ -29,7 +29,7 @@
 }
 
 .sm {
-  padding: 0.25rem 0.5rem;
+  padding: var(--plume-space-1) var(--plume-space-2);
   font-size: small;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .lg {
-  padding: 0.75rem 1rem;
+  padding: var(--plume-space-3) var(--plume-space-4);
   font-size: large;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .underline {
-  gap: 1rem;
+  gap: var(--plume-space-4);
   border-block-end: solid 1px lightgray;
 }
 
@@ -68,7 +68,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
   outline: none;
 }
 
@@ -135,8 +135,8 @@
 .segment {
   background-color: var(--tabs-scheme);
   color: white;
-  gap: 0.25rem;
-  padding: 0.75rem 1rem;
+  gap: var(--plume-space-1);
+  padding: var(--plume-space-3) var(--plume-space-4);
   transition: background-color 0.2s;
   border-radius: tabs-border-radius;
 }
@@ -153,15 +153,15 @@
 }
 
 .tab:focus > span {
-  outline: 0.25rem solid color-mix(in hsl, var(--tabs-scheme), black 10%);
+  outline: var(--plume-space-1) solid color-mix(in hsl, var(--tabs-scheme), black 10%);
   outline-offset: 0.125rem;
 }
 
 .vertical .panel {
-  padding: 0.5rem 1rem;
+  padding: var(--plume-space-2) var(--plume-space-4);
 }
 
 .panel {
-  padding: 1rem 0.5rem;
+  padding: var(--plume-space-4) var(--plume-space-2);
   border: none;
 }

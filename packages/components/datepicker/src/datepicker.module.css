@@ -1,7 +1,7 @@
 /* datepicker.module.css */
 
-@value date-picker-padding: 1rem;
-@value date-picker-border-radius: 0.5rem;
+@value date-picker-padding: var(--plume-space-4);
+@value date-picker-border-radius: var(--plume-radius-4);
 @value date-picker-color: #9ca3af;
 @value date-picker-border-color: #d3d3d3;
 
@@ -14,7 +14,7 @@
   border-radius: date-picker-border-radius;
   min-width: 18rem;
   width: 100%;
-  height: 2.5rem;
+  height: var(--plume-space-10);
   padding: 0 date-picker-padding;
   position: relative;
   display: block;
@@ -30,32 +30,32 @@
   right: 0;
   background-color: transparent;
   border-color: transparent;
-  margin-right: 0.5rem;
+  margin-right: var(--plume-space-2);
   margin-block-start: 0.125rem;
   margin-block-end: 0.125rem;
 }
 
 .inputButtonIcon {
-  height: 1.25rem;
-  width: 1.25rem;
+  height: var(--plume-space-5);
+  width: var(--plume-space-5);
   fill: date-picker-color;
 }
 
 .sm {
-  font-size: 0.75rem;
-  height: 2rem;
-  padding: 0 0.5rem;
+  font-size: var(--plume-font-size-xs);
+  height: var(--plume-space-8);
+  padding: 0 var(--plume-space-2);
 }
 
 .md {
-  height: 2.5rem;
+  height: var(--plume-space-10);
   padding: 0 date-picker-padding;
 }
 
 .lg {
-  font-size: 1.125rem;
-  height: 3rem;
-  padding: 0 1.5rem;
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  padding: 0 var(--plume-space-6);
 }
 
 .sm + .inputButton > .inputButtonIcon {
@@ -64,8 +64,8 @@
 }
 
 .lg + .inputButton > .inputButtonIcon {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: var(--plume-space-6);
+  width: var(--plume-space-6);
 }
 
 .rounded {
@@ -73,7 +73,7 @@
 }
 
 :is(.outline).pill {
-  border-radius: 9999px;
+  border-radius: var(--plume-radius-full);
 }
 
 .outline {
@@ -116,7 +116,7 @@
 }
 
 .datePickerModal {
-  margin-top: 0.5rem;
+  margin-top: var(--plume-space-2);
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -124,10 +124,10 @@
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border-radius: 0.75rem;
+  border-radius: var(--plume-radius-6);
   overflow: hidden;
   position: absolute;
-  z-index: 10;
+  z-index: var(--plume-z-1);
 }
 
 .calendarContainer {
@@ -142,30 +142,30 @@
 
 .calendar {
   width: 21rem;
-  padding: 0.75rem;
+  padding: var(--plume-space-3);
 }
 
 .calendarHeader {
   display: flex;
   justify-content: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--plume-space-3);
 }
 
 .monthYearSelectors {
   display: flex;
   justify-content: center;
   align-items: center;
-  column-gap: 0.25rem;
+  column-gap: var(--plume-space-1);
 }
 
 .monthYearSelectors button:not([class*='icon']) {
-  padding: 0.5rem 1rem;
+  padding: var(--plume-space-2) var(--plume-space-4);
   border-radius: date-picker-border-radius;
 }
 
 .monthYearSelectors button[class*='icon'] {
-  padding: 0.5rem;
-  border-radius: 9999px;
+  padding: var(--plume-space-2);
+  border-radius: var(--plume-radius-full);
 }
 
 .monthYearSelectors button:hover {
@@ -180,14 +180,14 @@
 .yearSelectorGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
 }
 
 .year,
 .month {
   display: inline-flex;
   justify-content: center;
-  padding: 0.5rem 1rem;
+  padding: var(--plume-space-2) var(--plume-space-4);
   border-radius: date-picker-border-radius;
 }
 
@@ -204,40 +204,40 @@
 .monthSelectorGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
 }
 
 .daysOfWeek {
   display: flex;
   justify-content: center;
-  column-gap: 0.25rem;
+  column-gap: var(--plume-space-1);
   padding-bottom: 0.375rem;
 }
 
 .dayOfWeek {
   margin: 1px;
-  width: 2.5rem;
+  width: var(--plume-space-10);
   display: block;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: var(--plume-font-size-sm);
   color: #718096;
 }
 
 .calendarGrid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.25rem;
+  gap: var(--plume-space-1);
 }
 
 .day {
   margin-left: 1px;
   margin-right: 1px;
   display: flex;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: var(--plume-space-10);
+  width: var(--plume-space-10);
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: var(--plume-radius-full);
 }
 
 .today {
@@ -274,7 +274,7 @@
 .footerActions {
   display: flex;
   justify-content: flex-end;
-  padding: 0.75rem;
+  padding: var(--plume-space-3);
   border-top: 1px solid date-picker-border-color;
 }
 
@@ -284,7 +284,7 @@ button.footerButton {
 
 button.footerButtonApply {
   color: white;
-  margin-left: 0.5rem;
+  margin-left: var(--plume-space-2);
 }
 
 .disabled,
