@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Preview } from '@storybook/react-vite'
 import { ThemeProvider } from '@plume-ui-react/core'
 import '@plume-ui-react/lib/dist/index.css'
