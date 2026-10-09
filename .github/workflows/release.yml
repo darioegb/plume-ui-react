@@ -48,17 +48,3 @@ jobs:
           pnpm changelog:commit
           gh pr create --base main --head changelog/main --title "Update Root Changelog" --body "This pull request updates the Main Changelog of the monorepo."
 
-      - name: Generate docs
-        id: run-build-docs
-        if: steps.changesets.outputs.published == 'true'
-        run: pnpm build:docs
-
-      - name: Publish Storybook to Chromatic
-        if: steps.changesets.outputs.published == 'true'
-        uses: chromaui/action@v1
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          storybookBuildDir: 'storybook-static'
-          workingDir: 'apps/docs'
-          zip: true
-          exitOnceUploaded: true

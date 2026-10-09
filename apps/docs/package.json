@@ -23,7 +23,6 @@
     "autoprefixer": "^10.4.14",
     "bootstrap": "^5.3.1",
     "eslint-config-custom": "workspace:*",
-    "chromatic": "^7.2.3",
     "prettier-config": "workspace:*",
     "react-docgen": "^7.0.3",
     "serve": "^13.0.4",

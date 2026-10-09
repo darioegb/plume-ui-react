@@ -28,7 +28,7 @@
 
 ## Documentation
 
-It's the [url](https://main--651ae00a0bf7aa70ffd0f34c.chromatic.com) website for the latest version of Plume UI.
+The [documentation site](https://darioegb.github.io/plume-ui-react/) hosts the latest Storybook for Plume UI.
 
 ## Installation
 
