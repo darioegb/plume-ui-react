@@ -1,0 +1,115 @@
+{/* migration.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Migration' />
+
+# Migrating to the `ThemeProvider`
+
+Plume's theming moved from a global, imperative API (`setUserTheme`) to a
+declarative, SSR/RSC‑safe `<ThemeProvider>` that serializes every design token
+to CSS variables. The old global helpers (`setUserTheme`, `getColorFromTheme`,
+`createStyles`) were removed — there is no shim, so update the few touch points
+below.
+
+## 1. Wrap your app in `<ThemeProvider>`
+
+The provider replaces `setUserTheme`. It emits the token CSS variables and
+drives light/dark mode.
+
+**Before**
+
+```tsx
+import { setUserTheme } from '@plume-ui-react/core'
+
+setUserTheme({ colors: { primary: { 500: '#5263ff' } } })
+
+function App() {
+  return <YourApp />
+}
+```
+
+**After**
+
+```tsx
+import { ThemeProvider } from '@plume-ui-react/core'
+
+function App() {
+  return (
+    <ThemeProvider theme={{ colors: { primary: { 500: '#5263ff' } } }}>
+      <YourApp />
+    </ThemeProvider>
+  )
+}
+```
+
+`theme` is a deep‑partial of the default theme, so you only override what you
+need. Everything else falls back to Plume's defaults.
+
+## 2. Import the stylesheet
+
+**Before**
+
+```ts
+import '@plume-ui-react/lib/dist/index.css'
+```
+
+**After**
+
+```ts
+import '@plume-ui-react/lib/styles.css'
+```
+
+Individual components expose the same subpath, e.g.
+`@plume-ui-react/button/styles.css`.
+
+## 3. Dark mode
+
+Pass `defaultColorMode` (`'light' | 'dark' | 'system'`) and/or override the dark
+palette with `darkTheme`. Read or switch the mode at runtime with `useTheme()`.
+
+```tsx
+import { ThemeProvider, useTheme } from '@plume-ui-react/core'
+
+function ThemeToggle() {
+  const { colorMode, setColorMode } = useTheme()
+  return (
+    <button onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')}>
+      {colorMode === 'dark' ? 'Light' : 'Dark'} mode
+    </button>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider defaultColorMode='system'>
+      <ThemeToggle />
+      <YourApp />
+    </ThemeProvider>
+  )
+}
+```
+
+By default the provider also themes `document.body` and sets
+`data-plume-color-mode` on `<html>` for full‑page theming. Pass
+`applyToBody={false}` on nested providers.
+
+## 4. Per‑component color maths are gone
+
+Components no longer recompute colors in JS. A `colorScheme` prop maps to the
+palette CSS variables emitted by the provider (e.g.
+`--plume-color-primary-500`), and text contrast is derived once in the
+serializer. If you called `getColorFromTheme` / `createStyles` directly, read
+the CSS variables instead:
+
+```tsx
+const style = { color: 'var(--plume-color-primary-500)' }
+```
+
+## 5. Styling with Tailwind or Bootstrap
+
+- **Tailwind:** add the Plume preset (`presets: [plumePreset]`) to get token
+  utilities (`bg-primary-500`, `text-foreground`, `rounded-4`, …) that follow the
+  theme and dark mode. See **Guides → Framework Integration**.
+- **Any framework:** use `variant="unstyled"` to drop Plume styling and pass your
+  own classes (e.g. Bootstrap's `btn btn-primary`).

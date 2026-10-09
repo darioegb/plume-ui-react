@@ -1,11 +1,32 @@
 import React from 'react'
 import type { Preview } from '@storybook/react-vite'
+import { DocsContainer } from '@storybook/addon-docs/blocks'
 import { ThemeProvider } from '@plume-ui-react/core'
 import '@plume-ui-react/lib/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../globals.css'
 import DocsTemplate from '../src/docs-template'
+import { darkTheme, lightTheme } from './theme'
+
+// Themes the docs page chrome to match the `colorMode` toggle so docs pages
+// follow the same light/dark mode as the rest of Storybook.
+const PlumeDocsContainer = ({
+  context,
+  children,
+}: {
+  context: React.ComponentProps<typeof DocsContainer>['context']
+  children: React.ReactNode
+}): React.ReactElement => {
+  const globals = (context as { store?: { userGlobals?: { globals?: Record<string, unknown> } } })
+    .store?.userGlobals?.globals
+  const colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
+  return (
+    <DocsContainer context={context} theme={colorMode === 'dark' ? darkTheme : lightTheme}>
+      {children}
+    </DocsContainer>
+  )
+}
 
 const preview: Preview = {
   parameters: {
@@ -17,6 +38,7 @@ const preview: Preview = {
       sort: 'requiredFirst',
     },
     docs: {
+      container: PlumeDocsContainer,
       page: () => DocsTemplate(),
       controls: {
         sort: 'requiredFirst',
