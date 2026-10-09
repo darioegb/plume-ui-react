@@ -5,7 +5,6 @@ import { Button } from '@plume-ui-react/lib'
 
 const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/packages/components/'
 const NPM_URL = 'https://www.npmjs.com/package/@plume-ui-react/'
-const COLOR_GRAY = '#000000a6'
 const COLOR_RED = 'red'
 
 interface IconLinkButtonProps {
@@ -26,7 +25,7 @@ function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): Re
   return (
     <a className="flex" href={href} rel="noopener" target="_blank">
       <Button iconLeft={icon} size="sm" variant="outline">
-        <p style={{ color: COLOR_GRAY, margin: 0 }}>{text}</p>
+        <p style={{ color: 'currentColor', margin: 0 }}>{text}</p>
       </Button>
     </a>
   )

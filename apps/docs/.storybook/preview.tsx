@@ -21,6 +21,13 @@ const PlumeDocsContainer = ({
   const globals = (context as { store?: { userGlobals?: { globals?: Record<string, unknown> } } })
     .store?.userGlobals?.globals
   const colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
+  // Expose the mode on <html> so preview-head.html can theme Storybook's own
+  // docs blocks (body, preview blocks, args table) that the theme prop misses.
+  React.useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-plume-color-mode', colorMode)
+    }
+  }, [colorMode])
   return (
     <DocsContainer context={context} theme={colorMode === 'dark' ? darkTheme : lightTheme}>
       {children}
@@ -49,18 +56,10 @@ const preview: Preview = {
     },
   },
   globalTypes: {
+    // Rendered as a toggle in the custom header (see manager.ts), not in the toolbar.
     colorMode: {
       description: 'Plume color mode',
       defaultValue: 'light',
-      toolbar: {
-        title: 'Color mode',
-        icon: 'contrast',
-        items: [
-          { value: 'light', title: 'Light', icon: 'sun' },
-          { value: 'dark', title: 'Dark', icon: 'moon' },
-        ],
-        dynamicTitle: true,
-      },
     },
   },
   decorators: [
@@ -70,7 +69,7 @@ const preview: Preview = {
         <ThemeProvider
           key={colorMode}
           defaultColorMode={colorMode}
-          style={{ padding: '2rem', minHeight: '100vh' }}
+          style={{ padding: '2rem' }}
         >
           <Story />
         </ThemeProvider>

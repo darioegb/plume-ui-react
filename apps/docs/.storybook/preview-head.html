@@ -1,0 +1,22 @@
+<style>
+  /* Dark-mode overrides for Storybook docs blocks that the DocsContainer theme
+     prop leaves white, plus the body text color Bootstrap forces to #212529. */
+  html[data-plume-color-mode='dark'] body {
+    background-color: #18181b;
+    color: #e4e4e7;
+  }
+
+  html[data-plume-color-mode='dark'] .sb-previewBlock,
+  html[data-plume-color-mode='dark'] .docs-story {
+    background-color: #18181b;
+  }
+
+  html[data-plume-color-mode='dark'] .sb-argstableBlock,
+  html[data-plume-color-mode='dark'] .sb-argstableBlock-body,
+  html[data-plume-color-mode='dark'] .sb-argstableBlock th,
+  html[data-plume-color-mode='dark'] .sb-argstableBlock td {
+    background-color: #27272a !important;
+    color: #e4e4e7 !important;
+    border-color: #3f3f46 !important;
+  }
+</style>

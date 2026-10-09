@@ -22,7 +22,7 @@ dedicated **Theme → Colors** page.
       <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <code style={{ width: '5rem' }}>space.{key}</code>
         <div style={{ width: value, height: '0.75rem', background: '#5263ff', borderRadius: '2px' }} />
-        <span style={{ color: '#71717a' }}>{value}</span>
+        <span style={{ opacity: 0.65 }}>{value}</span>
       </div>
     ))}
 </div>
@@ -46,7 +46,7 @@ dedicated **Theme → Colors** page.
       <div style={{ marginTop: '0.5rem' }}>
         <code>radius.{key}</code>
       </div>
-      <span style={{ color: '#71717a', fontSize: '0.75rem' }}>{value}</span>
+      <span style={{ opacity: 0.65, fontSize: '0.75rem' }}>{value}</span>
     </div>
   ))}
 </div>
@@ -85,7 +85,7 @@ dedicated **Theme → Colors** page.
       <span style={{ fontSize: value, fontFamily: defaultTheme.typography.fontFamily }}>
         The quick brown fox
       </span>
-      <span style={{ color: '#71717a', fontSize: '0.75rem' }}>{value}</span>
+      <span style={{ opacity: 0.65, fontSize: '0.75rem' }}>{value}</span>
     </div>
   ))}
 </div>
