@@ -285,3 +285,87 @@ export const Masked: Story = {
     </div>
   ),
 }
+
+/**
+ * Some examples of Input with custom classes from tailwind.
+ * Set **variant="unstyled"** so Plume styles don't override your utility classes.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input
+  variant="unstyled"
+  placeholder="Default Input"
+  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+/>
+<Input
+  variant="unstyled"
+  placeholder="Pill Input"
+  className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+/>
+<Input
+  variant="unstyled"
+  placeholder="Filled Input"
+  className="block w-full rounded-lg border border-transparent bg-gray-100 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:bg-white dark:bg-gray-700 dark:text-white"
+/>
+<Input
+  variant="unstyled"
+  placeholder="Error Input"
+  className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-600 focus:border-red-500 focus:ring focus:ring-red-200"
+/>`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4 w-72'>
+      <Input
+        className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+        placeholder='Default Input'
+        variant='unstyled'
+      />
+      <Input
+        className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+        placeholder='Pill Input'
+        variant='unstyled'
+      />
+      <Input
+        className='block w-full rounded-lg border border-transparent bg-gray-100 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:bg-white dark:bg-gray-700 dark:text-white'
+        placeholder='Filled Input'
+        variant='unstyled'
+      />
+      <Input
+        className='block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-600 focus:border-red-500 focus:ring focus:ring-red-200'
+        placeholder='Error Input'
+        variant='unstyled'
+      />
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Input with custom classes from bootstrap.
+ * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input variant="unstyled" className="form-control" placeholder="Default Input" />
+<Input variant="unstyled" className="form-control form-control-lg" placeholder="Large Input" />
+<Input variant="unstyled" className="form-control form-control-sm" placeholder="Small Input" />
+<Input variant="unstyled" className="form-control is-valid" placeholder="Valid Input" />
+<Input variant="unstyled" className="form-control is-invalid" placeholder="Invalid Input" />`,
+      },
+    },
+  },
+  render: () => (
+    <div className='d-flex flex-column gap-3' style={{ width: '18rem' }}>
+      <Input className='form-control' placeholder='Default Input' variant='unstyled' />
+      <Input className='form-control form-control-lg' placeholder='Large Input' variant='unstyled' />
+      <Input className='form-control form-control-sm' placeholder='Small Input' variant='unstyled' />
+      <Input className='form-control is-valid' placeholder='Valid Input' variant='unstyled' />
+      <Input className='form-control is-invalid' placeholder='Invalid Input' variant='unstyled' />
+    </div>
+  ),
+}

@@ -326,3 +326,115 @@ export const CustomConfiguration: Story = {
     },
   },
 }
+
+/**
+ * Some examples of DatePicker with custom classes from tailwind.
+ * Set **variant="unstyled"** so Plume styles don't override your utility classes.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  variant="unstyled"
+  placeholder="Pick a date"
+  value={value}
+  onChange={handleValueChange}
+  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+/>
+<DatePicker
+  variant="unstyled"
+  placeholder="Pill date"
+  value={value}
+  onChange={handleValueChange}
+  className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+/>`,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <div className='flex flex-col gap-4 w-72'>
+        <DatePicker
+          className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+          onChange={handleValueChange}
+          placeholder='Pick a date'
+          value={value}
+          variant='unstyled'
+        />
+        <DatePicker
+          className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+          onChange={handleValueChange}
+          placeholder='Pill date'
+          value={value}
+          variant='unstyled'
+        />
+      </div>
+    )
+  },
+}
+
+/**
+ * Some examples of DatePicker with custom classes from bootstrap.
+ * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  variant="unstyled"
+  className="form-control"
+  placeholder="Default date"
+  value={value}
+  onChange={handleValueChange}
+/>
+<DatePicker
+  variant="unstyled"
+  className="form-control form-control-lg"
+  placeholder="Large date"
+  value={value}
+  onChange={handleValueChange}
+/>`,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <div className='d-flex flex-column gap-3' style={{ width: '18rem' }}>
+        <DatePicker
+          className='form-control'
+          onChange={handleValueChange}
+          placeholder='Default date'
+          value={value}
+          variant='unstyled'
+        />
+        <DatePicker
+          className='form-control form-control-lg'
+          onChange={handleValueChange}
+          placeholder='Large date'
+          value={value}
+          variant='unstyled'
+        />
+      </div>
+    )
+  },
+}
