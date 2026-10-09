@@ -1,19 +1,34 @@
 // .storybook/manager.ts
 
 import { addons } from 'storybook/manager-api'
-import theme from './theme'
+import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events'
+import { darkTheme, lightTheme } from './theme'
 
 const isProd = process.env.NODE_ENV === 'prod'
 
-const config = {
-  theme,
+// Keep the manager chrome in sync with the `colorMode` global toggle so the
+// whole Storybook (sidebar, toolbar, panels) themes together with the preview.
+addons.register('plume/theme-sync', (api) => {
+  const syncTheme = (colorMode?: string): void => {
+    api.setOptions({ theme: colorMode === 'dark' ? darkTheme : lightTheme })
+  }
+
+  const onGlobals = ({ globals }: { globals?: { colorMode?: string } }): void => {
+    syncTheme(globals?.colorMode)
+  }
+
+  const channel = api.getChannel()
+  channel?.on(SET_GLOBALS, onGlobals)
+  channel?.on(GLOBALS_UPDATED, onGlobals)
+})
+
+addons.setConfig({
+  theme: lightTheme,
   ...(isProd && {
     enableShortcuts: false,
     showToolbar: false,
   }),
-}
-
-addons.setConfig(config)
+})
 
 // Adding custom styles for production build
 if (isProd) {
@@ -23,5 +38,3 @@ if (isProd) {
   const cssRule = "div[role='main'] div:first-child { box-shadow: none; }"
   styleSheet.insertRule(cssRule, styleSheet.cssRules.length)
 }
-
-export default config
