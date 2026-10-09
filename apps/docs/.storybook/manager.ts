@@ -9,6 +9,28 @@ const isProd = process.env.NODE_ENV === 'prod'
 const SUN_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`
 const MOON_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`
 
+const STORAGE_KEY = 'plume-colormode'
+
+const getStoredMode = (): 'light' | 'dark' | null => {
+  try {
+    const value = localStorage.getItem(STORAGE_KEY)
+    return value === 'dark' || value === 'light' ? value : null
+  } catch {
+    return null
+  }
+}
+
+const setStoredMode = (mode: 'light' | 'dark'): void => {
+  try {
+    localStorage.setItem(STORAGE_KEY, mode)
+  } catch {
+    // ignore storage errors
+  }
+}
+
+const prefersDark = (): boolean =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+
 // Keeps the manager chrome in sync with the `colorMode` global and renders the
 // color-mode toggle inside the custom header (so it stays visible even when the
 // toolbar is hidden in the production build).
@@ -31,9 +53,9 @@ addons.register('plume/theme-sync', (api) => {
       button.className = 'plume-theme-toggle'
       button.setAttribute('aria-label', 'Toggle color mode')
       button.addEventListener('click', () => {
-        channel.emit(UPDATE_GLOBALS, {
-          globals: { colorMode: colorMode === 'dark' ? 'light' : 'dark' },
-        })
+        const next = colorMode === 'dark' ? 'light' : 'dark'
+        setStoredMode(next)
+        channel.emit(UPDATE_GLOBALS, { globals: { colorMode: next } })
       })
       links.insertBefore(button, links.firstChild)
       renderToggle()
@@ -53,8 +75,29 @@ addons.register('plume/theme-sync', (api) => {
     document.documentElement.setAttribute('data-plume-mode', colorMode)
     renderToggle()
   }
-  channel.on(SET_GLOBALS, syncTheme)
+
+  // Default to the OS preference; honour the user's explicit choice once stored.
+  const applyPreferredMode = (): void => {
+    const target = getStoredMode() ?? (prefersDark() ? 'dark' : 'light')
+    if (target !== colorMode) {
+      channel.emit(UPDATE_GLOBALS, { globals: { colorMode: target } })
+    }
+  }
+
+  let initialized = false
+  channel.on(SET_GLOBALS, (payload: { globals?: { colorMode?: string } }) => {
+    syncTheme(payload)
+    if (!initialized) {
+      initialized = true
+      applyPreferredMode()
+    }
+  })
   channel.on(GLOBALS_UPDATED, syncTheme)
+
+  // Follow OS changes until the user picks a mode explicitly.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (!getStoredMode()) applyPreferredMode()
+  })
 
   // The header is injected via manager-head.html; wait for it to mount.
   const observer = new MutationObserver(injectToggle)

@@ -3,6 +3,12 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { Input } from '..'
 
+/**
+ * Collect text from users with the Input component.
+ * It supports multiple variants, sizes, shapes and color schemes, optional addons
+ * and inline elements, validation states, and an input mask for formatted values
+ * such as dates, phone numbers or card numbers.
+ */
 export default {
   title: 'Components/Form/Input',
   component: Input,
