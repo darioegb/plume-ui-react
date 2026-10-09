@@ -80,10 +80,10 @@ const generateButtonClasses = (
 // Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
-    '--button-color': `var(--plume-color-${colorScheme}-500)`,
-    '--button-contrast-color': `var(--plume-color-${colorScheme}-contrast)`,
-    '--button-hover-color': `var(--plume-color-${colorScheme}-600)`,
-    '--button-focus-color': `var(--plume-color-${colorScheme}-700)`,
+    '--button-color': `var(--plume-color-${colorScheme}-solid)`,
+    '--button-contrast-color': `var(--plume-color-${colorScheme}-solid-contrast)`,
+    '--button-hover-color': `var(--plume-color-${colorScheme}-solid-hover)`,
+    '--button-focus-color': `var(--plume-color-${colorScheme}-solid-active)`,
     '--button-hover-alt-color': `var(--plume-color-${colorScheme}-100)`,
     '--button-focus-alt-color': `var(--plume-color-${colorScheme}-200)`,
   }) as CSSProperties
