@@ -1,4 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
+import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { DatePicker } from '..'
 import type { DateRange } from '../datepicker'
@@ -330,6 +331,10 @@ export const CustomConfiguration: Story = {
 /**
  * Some examples of DatePicker with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
+ *
+ * Note: `variant` and `className` only restyle the **input trigger**. The calendar
+ * popup keeps its structural styles and is themed through `colorScheme` and the
+ * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
 export const Tailwind: Story = {
   parameters: {
@@ -386,6 +391,10 @@ export const Tailwind: Story = {
 /**
  * Some examples of DatePicker with custom classes from bootstrap.
  * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
+ *
+ * Note: `variant` and `className` only restyle the **input trigger**. The calendar
+ * popup keeps its structural styles and is themed through `colorScheme` and the
+ * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
 export const Bootstrap: Story = {
   parameters: {
@@ -435,6 +444,69 @@ export const Bootstrap: Story = {
           variant='unstyled'
         />
       </div>
+    )
+  },
+}
+
+/**
+ * The calendar popup is themed through CSS variables, so you can restyle it
+ * independently of the input trigger — even when `variant="unstyled"`. Override any
+ * of these on the `style` prop (they default to your `colorScheme`):
+ *
+ * - `--datepicker-scheme`: selected day background, today's text, focus border.
+ * - `--datepicker-contrast`: text color on the selected day.
+ * - `--datepicker-hover-color`: day hover background.
+ * - `--datepicker-selected-hover-color`: selected day hover background.
+ * - `--datepicker-range-item-color`: in-range day background.
+ * - `--datepicker-range-item-text`: in-range day text color.
+ */
+export const CalendarTheming: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  isRange
+  value={value}
+  onChange={handleValueChange}
+  style={{
+    '--datepicker-scheme': '#8b5cf6',
+    '--datepicker-contrast': '#ffffff',
+    '--datepicker-hover-color': '#f5f3ff',
+    '--datepicker-selected-hover-color': '#7c3aed',
+    '--datepicker-range-item-color': '#ede9fe',
+    '--datepicker-range-item-text': '#4c1d95',
+  }}
+/>`,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <DatePicker
+        isRange
+        onChange={handleValueChange}
+        placeholder='Custom themed calendar'
+        style={
+          {
+            '--datepicker-scheme': '#8b5cf6',
+            '--datepicker-contrast': '#ffffff',
+            '--datepicker-hover-color': '#f5f3ff',
+            '--datepicker-selected-hover-color': '#7c3aed',
+            '--datepicker-range-item-color': '#ede9fe',
+            '--datepicker-range-item-text': '#4c1d95',
+          } as CSSProperties
+        }
+        value={value}
+      />
     )
   },
 }
