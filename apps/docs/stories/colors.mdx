@@ -240,7 +240,7 @@ const userTheme = {
 
 export function App({ children }) {
   return <ThemeProvider theme={userTheme}>{children}</ThemeProvider>
-}`} />
+}`} dark />
 In this example we are modifying the primary color and creating new color.
 
 2 - If you use typescript and have created new colors,
@@ -256,4 +256,4 @@ declare module '@plume-ui-react/core' {
     salmon: ShadeLevel
   }
 }
-`} />
+`} dark />

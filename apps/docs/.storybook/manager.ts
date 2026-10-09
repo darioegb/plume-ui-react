@@ -25,18 +25,25 @@ addons.register('plume/theme-sync', (api) => {
 
   const injectToggle = (): void => {
     const links = document.querySelector('header .header-links')
-    if (!links || links.querySelector('.plume-theme-toggle')) return
-    const button = document.createElement('button')
-    button.type = 'button'
-    button.className = 'plume-theme-toggle'
-    button.setAttribute('aria-label', 'Toggle color mode')
-    button.addEventListener('click', () => {
-      channel.emit(UPDATE_GLOBALS, {
-        globals: { colorMode: colorMode === 'dark' ? 'light' : 'dark' },
+    if (links && !links.querySelector('.plume-theme-toggle')) {
+      const button = document.createElement('button')
+      button.type = 'button'
+      button.className = 'plume-theme-toggle'
+      button.setAttribute('aria-label', 'Toggle color mode')
+      button.addEventListener('click', () => {
+        channel.emit(UPDATE_GLOBALS, {
+          globals: { colorMode: colorMode === 'dark' ? 'light' : 'dark' },
+        })
       })
-    })
-    links.insertBefore(button, links.firstChild)
-    renderToggle()
+      links.insertBefore(button, links.firstChild)
+      renderToggle()
+    }
+    // The hamburger lives in manager-head.html; wire it to the sidebar toggle.
+    const navToggle = document.querySelector<HTMLButtonElement>('.plume-nav-toggle')
+    if (navToggle && !navToggle.dataset.wired) {
+      navToggle.dataset.wired = 'true'
+      navToggle.addEventListener('click', () => api.toggleNav())
+    }
   }
 
   const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {

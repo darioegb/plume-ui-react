@@ -246,12 +246,12 @@
 
 .rangeItem {
   background-color: var(--datepicker-range-item-color);
-  color: white;
+  color: var(--datepicker-range-item-text);
 }
 
 .selected {
   background-color: var(--datepicker-scheme);
-  color: white;
+  color: var(--datepicker-contrast);
 }
 
 .selectedHover {
@@ -283,7 +283,7 @@ button.footerButton {
 }
 
 button.footerButtonApply {
-  color: white;
+  color: var(--datepicker-contrast);
   margin-left: var(--plume-space-2);
 }
 

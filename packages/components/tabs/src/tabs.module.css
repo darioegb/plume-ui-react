@@ -134,7 +134,7 @@
 
 .segment {
   background-color: var(--tabs-scheme);
-  color: white;
+  color: var(--tabs-text-color);
   gap: var(--plume-space-1);
   padding: var(--plume-space-3) var(--plume-space-4);
   transition: background-color 0.2s;
