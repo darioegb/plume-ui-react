@@ -364,6 +364,9 @@ importers:
       '@plume-ui-react/date-utils':
         specifier: workspace:*
         version: link:../../utilities/date-utils
+      '@plume-ui-react/input':
+        specifier: workspace:*
+        version: link:../input
       '@plume-ui-react/use-click-outside':
         specifier: workspace:*
         version: link:../../hooks/use-click-outside
@@ -620,6 +623,13 @@ importers:
         version: link:../../tsconfig
 
   packages/hooks/use-mask:
+    dependencies:
+      react:
+        specifier: '>=16.11.0'
+        version: 18.3.1
+      react-dom:
+        specifier: '>=16.11.0'
+        version: 19.3.0(react@18.3.1)
     devDependencies:
       eslint-config-custom:
         specifier: workspace:*

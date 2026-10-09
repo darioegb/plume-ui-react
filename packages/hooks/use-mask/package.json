@@ -1,17 +1,48 @@
 {
   "name": "@plume-ui-react/use-mask",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "description": "Input mask hook for Plume UI lib",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
-    "dev": "echo 'Add dev script here'",
-    "build": "echo 'Add build script here'",
-    "test": "echo 'Add test script here'",
-    "lint": "echo 'Add lint script here'"
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "lint": "eslint src/",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "lib",
+    "hooks",
+    "mask",
+    "input-mask",
+    "use-mask",
+    "plume-ui",
+    "plume-ui-react"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "jest-preset": "workspace:*",
     "prettier-config": "workspace:*",
     "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.11.0",
+    "react-dom": ">=16.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -2,7 +2,9 @@ import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import type { ComponentProps } from '@plume-ui-react/core'
 import { Button } from '@plume-ui-react/button'
+import { Input } from '@plume-ui-react/input'
 import {
+  getDateFormatByLanguage,
   getDateFromDateString,
   getDateStringByLanguage,
   validateFormatDate,
@@ -108,10 +110,14 @@ export function DatePickerInput({
     setInputValue(e.target.value)
   }
 
+  const singleMask = (displayFormat ?? getDateFormatByLanguage(language)).replace(/[a-zA-Z]/g, '#')
+  const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
+
   return (
     <>
-      <input
+      <Input
         disabled={disabled}
+        mask={mask}
         onBlur={() => {
           onBlur && onBlur({ startDate, endDate })
         }}
@@ -119,6 +125,7 @@ export function DatePickerInput({
         ref={ref}
         type='text'
         value={inputValue}
+        variant='unstyled'
         {...rest}
       />
 

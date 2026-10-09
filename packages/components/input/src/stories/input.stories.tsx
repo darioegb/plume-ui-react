@@ -103,6 +103,14 @@ export default {
         type: { summary: 'string' },
       },
     },
+    mask: {
+      control: 'text',
+      description:
+        'Optional input mask. `#` matches any single character; every other character is a literal that is auto-inserted as the user types (e.g. `##/##/####`, `(###) ###-####`, `#### #### #### ####`).',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     onChange: {
       description: 'Event triggered when the text Input value changes.',
       action: 'changed',
@@ -244,4 +252,30 @@ export const ControlledInput: Story = {
       />
     )
   },
+}
+
+/**
+ * The **mask** prop formats the value as the user types. It is fully generic:
+ * `#` matches any single character and every other character is a literal that
+ * is auto-inserted. Type only the digits and the separators appear on their own.
+ */
+export const Masked: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input mask='##/##/####' placeholder='dd/mm/yyyy' />
+<Input mask='(###) ###-####' placeholder='(###) ###-####' />
+<Input mask='#### #### #### ####' placeholder='Card number' />
+<Input mask='##:##' placeholder='hh:mm' />`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4'>
+      <Input mask='##/##/####' placeholder='dd/mm/yyyy' />
+      <Input mask='(###) ###-####' placeholder='(###) ###-####' />
+      <Input mask='#### #### #### ####' placeholder='Card number' />
+      <Input mask='##:##' placeholder='hh:mm' />
+    </div>
+  ),
 }

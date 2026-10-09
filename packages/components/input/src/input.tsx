@@ -1,6 +1,7 @@
 import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
+import { useMask } from '@plume-ui-react/use-mask'
 import styles from './input.module.css'
 
 export interface InputOwnProps {
@@ -11,6 +12,7 @@ export interface InputOwnProps {
   colorScheme?: ColorScheme
   errorMessage?: string
   isRequired?: boolean
+  mask?: string
   shape?: Shape
   size?: Size
   variant?: InputVariant
@@ -18,6 +20,7 @@ export interface InputOwnProps {
 
 type InputRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
+  | 'defaultValue'
   | 'disabled'
   | 'id'
   | 'inputMode'
@@ -78,6 +81,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       size = 'md',
       type = 'text',
       variant = 'outline',
+      mask,
+      value,
+      defaultValue,
+      onChange,
       ...rest
     }: InputProps,
     ref: ForwardedRef<HTMLInputElement>,
@@ -86,6 +93,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputClasses = generateInputClasses(className, disabled, isStyled, shape, size, variant)
     const inputStyle = { ...inputColorVars(colorScheme), ...style }
     const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter
+    const { value: maskedValue, onChange: maskedOnChange } = useMask({
+      mask,
+      value: typeof value === 'string' ? value : undefined,
+      defaultValue: typeof defaultValue === 'string' ? defaultValue : undefined,
+      onChange,
+    })
+    const valueProps = {
+      onChange: maskedOnChange,
+      value: mask ? maskedValue : value,
+      defaultValue: mask ? undefined : defaultValue,
+    }
 
     if (!hasInputGroup) {
       return (
@@ -96,6 +114,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           style={inputStyle}
           type={type}
+          {...valueProps}
           {...rest}
         />
       )
@@ -116,6 +135,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           readOnly={readOnly}
           ref={ref}
           type={type}
+          {...valueProps}
           {...rest}
         />
         {addonAfter ? <span className={isStyled ? styles.addOn : ''}>{addonAfter}</span> : null}
