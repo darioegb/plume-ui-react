@@ -37,6 +37,14 @@ const PlumeDocsContainer = ({
 
 const preview: Preview = {
   parameters: {
+    a11y: {
+      // Stories render isolated fragments, not full pages, so the landmark
+      // "region" rule reports false positives; the real app embeds components
+      // inside its own landmarks.
+      config: {
+        rules: [{ id: 'region', enabled: false }],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

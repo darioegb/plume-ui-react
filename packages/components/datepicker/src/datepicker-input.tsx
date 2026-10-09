@@ -35,6 +35,7 @@ export function DatePickerInput({
 }: DatePickerInputProps): ReactNode {
   const {
     state: {
+      modalOpen,
       value: { startDate, endDate },
     },
     dispatch,
@@ -130,6 +131,9 @@ export function DatePickerInput({
       />
 
       <Button
+        aria-expanded={modalOpen}
+        aria-haspopup='dialog'
+        aria-label='Open calendar'
         className={styles.inputButton}
         disabled={disabled}
         onClick={handleButtonClick}

@@ -19,6 +19,10 @@ export interface ButtonOwnProps {
 type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'ghost' | 'unstyled'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
+  | 'aria-expanded'
+  | 'aria-haspopup'
+  | 'aria-label'
+  | 'aria-labelledby'
   | 'children'
   | 'disabled'
   | 'hidden'
@@ -29,6 +33,7 @@ type ButtonRootAttributes = Pick<
   | 'onMouseEnter'
   | 'role'
   | 'tabIndex'
+  | 'title'
   | 'type'
 >
 

@@ -219,6 +219,7 @@ export const Variants: Story = {
 />
 <Button 
   variant="icon"
+  aria-label="Notifications"
 >
   <svg
     fill="#000000"
@@ -241,7 +242,7 @@ export const Variants: Story = {
       <Button colorScheme='error' label='Link Button' variant='link' />
       <Button label='Unstyled Button' variant='unstyled' />
       <Button label='Ghost Button' variant='ghost' />
-      <Button colorScheme='primary' variant='icon'>
+      <Button aria-label='Notifications' colorScheme='primary' variant='icon'>
         <svg
           fill='currentColor'
           height='1.5rem'
@@ -335,6 +336,7 @@ export const Colors: Story = {
 export const WithIcons: Story = {
   args: {
     colorScheme: 'primary',
+    'aria-label': 'Navigate',
     iconLeft: (
       <svg
         fill='currentColor'
