@@ -1,5 +1,3 @@
-import './styles.css'
-
 export * from '@plume-ui-react/button'
 export * from '@plume-ui-react/datepicker'
 export * from '@plume-ui-react/input'

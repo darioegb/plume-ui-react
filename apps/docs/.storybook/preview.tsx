@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Preview } from '@storybook/react-vite'
 import { ThemeProvider } from '@plume-ui-react/core'
-import '@plume-ui-react/lib/dist/index.css'
+import '@plume-ui-react/lib/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../globals.css'
