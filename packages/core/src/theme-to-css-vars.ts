@@ -1,4 +1,9 @@
-import { getContrastColor, getContrastRatio, getDarkenColor } from '@plume-ui-react/color-utils'
+import {
+  getContrastColor,
+  getContrastRatio,
+  getDarkenColor,
+  getLightenColor,
+} from '@plume-ui-react/color-utils'
 import type { Theme } from './theme.types'
 
 const PREFIX = '--plume'
@@ -8,6 +13,10 @@ type TokenRecord = Record<string, string | number>
 const WHITE = '#ffffff'
 const BLACK = '#000000'
 const AA_NORMAL_TEXT = 4.5
+
+// A surface is "dark" when white text contrasts better on it than black text.
+const isDarkSurface = (surface: string): boolean =>
+  getContrastRatio(WHITE, surface) >= getContrastRatio(BLACK, surface)
 
 /**
  * Picks an accessible solid fill (background + text) for a color ramp so filled
@@ -29,6 +38,22 @@ function pickSolidPair(shades: TokenRecord): { bg: string; fg: string } {
   return { bg: String(shades['900']), fg: WHITE }
 }
 
+/**
+ * Picks an accessible text color (scheme color used as text on the theme surface)
+ * that meets WCAG AA. On a light surface it darkens the ramp; on a dark surface it
+ * lightens it, so the same component is readable in both light and dark themes.
+ */
+function pickTextOnSurface(shades: TokenRecord, surface: string): string {
+  const order = isDarkSurface(surface)
+    ? ['500', '400', '300', '200', '100', '50']
+    : ['500', '600', '700', '800', '900', '950']
+  for (const key of order) {
+    const color = String(shades[key])
+    if (getContrastRatio(color, surface) >= AA_NORMAL_TEXT) return color
+  }
+  return String(shades[isDarkSurface(surface) ? '50' : '950'])
+}
+
 function flatten(prefix: string, record: TokenRecord, target: Record<string, string>): void {
   for (const [key, value] of Object.entries(record)) {
     target[`${prefix}-${key}`] = String(value)
@@ -46,15 +71,30 @@ const toKebab = (key: string): string =>
 export function themeToCssVars(theme: Theme): Record<string, string> {
   const vars: Record<string, string> = {}
 
+  const surface = theme.semantic.background
+  const darkSurface = isDarkSurface(surface)
   const colors = theme.colors as unknown as Record<string, TokenRecord>
   for (const [scheme, shades] of Object.entries(colors)) {
     flatten(`${PREFIX}-color-${scheme}`, shades, vars)
     vars[`${PREFIX}-color-${scheme}-contrast`] = getContrastColor(String(shades['500']))
+
     const { bg: solid, fg: onSolid } = pickSolidPair(shades)
     vars[`${PREFIX}-color-${scheme}-solid`] = solid
     vars[`${PREFIX}-color-${scheme}-solid-contrast`] = onSolid
     vars[`${PREFIX}-color-${scheme}-solid-hover`] = getDarkenColor(solid, 12)
     vars[`${PREFIX}-color-${scheme}-solid-active`] = getDarkenColor(solid, 24)
+
+    // Surface-aware text + hover/active tints for text-on-surface usages.
+    const text = pickTextOnSurface(shades, surface)
+    vars[`${PREFIX}-color-${scheme}-text`] = text
+    vars[`${PREFIX}-color-${scheme}-text-hover`] = darkSurface
+      ? getLightenColor(text, 12)
+      : getDarkenColor(text, 12)
+    vars[`${PREFIX}-color-${scheme}-text-active`] = darkSurface
+      ? getLightenColor(text, 24)
+      : getDarkenColor(text, 24)
+    vars[`${PREFIX}-color-${scheme}-tint`] = String(shades[darkSurface ? '900' : '100'])
+    vars[`${PREFIX}-color-${scheme}-tint-strong`] = String(shades[darkSurface ? '800' : '200'])
   }
 
   const semantic = theme.semantic as unknown as Record<string, string>

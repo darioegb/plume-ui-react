@@ -64,7 +64,8 @@ export type DatePickerProps = ComponentProps & DatePickerRootAttributes & DatePi
 // Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
-    '--datepicker-scheme': `var(--plume-color-${colorScheme}-solid)`,
+    '--datepicker-scheme': `var(--plume-color-${colorScheme}-text)`,
+    '--datepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--datepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
     '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-200)`,
     '--datepicker-range-item-text': `var(--plume-color-${colorScheme}-900)`,

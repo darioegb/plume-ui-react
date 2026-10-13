@@ -80,12 +80,15 @@ const generateButtonClasses = (
 // Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
-    '--button-color': `var(--plume-color-${colorScheme}-solid)`,
+    '--button-color': `var(--plume-color-${colorScheme}-text)`,
     '--button-contrast-color': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--button-hover-color': `var(--plume-color-${colorScheme}-solid-hover)`,
-    '--button-focus-color': `var(--plume-color-${colorScheme}-solid-active)`,
-    '--button-hover-alt-color': `var(--plume-color-${colorScheme}-100)`,
-    '--button-focus-alt-color': `var(--plume-color-${colorScheme}-200)`,
+    '--button-solid-bg': `var(--plume-color-${colorScheme}-solid)`,
+    '--button-solid-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
+    '--button-solid-active': `var(--plume-color-${colorScheme}-solid-active)`,
+    '--button-hover-color': `var(--plume-color-${colorScheme}-text-hover)`,
+    '--button-focus-color': `var(--plume-color-${colorScheme}-text-active)`,
+    '--button-hover-alt-color': `var(--plume-color-${colorScheme}-tint)`,
+    '--button-focus-alt-color': `var(--plume-color-${colorScheme}-tint-strong)`,
   }) as CSSProperties
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

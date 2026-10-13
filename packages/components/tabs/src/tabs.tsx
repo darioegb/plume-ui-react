@@ -27,8 +27,9 @@ export type TabsProps = ComponentProps & TabsRootAttributes & TabsOwnProps
 // Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
-    '--tabs-scheme': `var(--plume-color-${colorScheme}-solid)`,
-    '--tabs-background-color': `var(--plume-color-${colorScheme}-solid-active)`,
+    '--tabs-scheme': `var(--plume-color-${colorScheme}-text)`,
+    '--tabs-solid': `var(--plume-color-${colorScheme}-solid)`,
+    '--tabs-solid-active': `var(--plume-color-${colorScheme}-solid-active)`,
     '--tabs-text-color': `var(--plume-color-${colorScheme}-solid-contrast)`,
     ...(style ?? {}),
   }) as CSSProperties

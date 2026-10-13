@@ -2,7 +2,7 @@
 
 @value input-padding: var(--plume-space-4);
 @value input-border-radius: var(--plume-radius-4);
-@value input-color: var(--plume-muted);
+@value input-color: var(--plume-foreground);
 @value input-border-color: var(--plume-border);
 @value input-background-color: var(--plume-surface-muted);
 
@@ -22,6 +22,10 @@ input {
   padding-inline: input-padding;
   position: relative;
   width: 100%;
+}
+
+.input::placeholder {
+  color: var(--plume-muted);
 }
 
 .sm {

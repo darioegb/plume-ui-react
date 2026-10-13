@@ -95,7 +95,7 @@
 }
 
 .rounded .tab.active {
-  background-color: var(--tabs-scheme);
+  background-color: var(--tabs-solid);
   color: var(--tabs-text-color);
   border-radius: tabs-border-radius;
   transition: color 0.2s;
@@ -133,7 +133,7 @@
 }
 
 .segment {
-  background-color: var(--tabs-scheme);
+  background-color: var(--tabs-solid);
   color: var(--tabs-text-color);
   gap: var(--plume-space-1);
   padding: var(--plume-space-3) var(--plume-space-4);
@@ -142,7 +142,7 @@
 }
 
 .segment .tab.active {
-  background-color: var(--tabs-background-color);
+  background-color: var(--tabs-solid-active);
   color: var(--tabs-text-color);
   border-radius: tabs-border-radius;
   transition: color 0.2s;

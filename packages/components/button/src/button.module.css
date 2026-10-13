@@ -42,7 +42,7 @@
 
 .solid {
   composes: button;
-  background-color: var(--button-color);
+  background-color: var(--button-solid-bg);
   color: var(--button-contrast-color);
 }
 
@@ -80,7 +80,7 @@
 }
 
 .solid:enabled:hover {
-  background-color: var(--button-hover-color);
+  background-color: var(--button-solid-hover);
 }
 
 .outline:enabled:hover {
@@ -105,7 +105,7 @@
 }
 
 .solid:enabled:active {
-  background-color: var(--button-focus-color);
+  background-color: var(--button-solid-active);
 }
 
 .link:enabled:active {

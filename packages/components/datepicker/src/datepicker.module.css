@@ -250,7 +250,7 @@
 }
 
 .selected {
-  background-color: var(--datepicker-scheme);
+  background-color: var(--datepicker-solid);
   color: var(--datepicker-contrast);
 }
 

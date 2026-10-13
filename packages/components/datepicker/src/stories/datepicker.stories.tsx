@@ -453,7 +453,8 @@ export const Bootstrap: Story = {
  * independently of the input trigger — even when `variant="unstyled"`. Override any
  * of these on the `style` prop (they default to your `colorScheme`):
  *
- * - `--datepicker-scheme`: selected day background, today's text, focus border.
+ * - `--datepicker-solid`: selected day background.
+ * - `--datepicker-scheme`: today's text and focus border.
  * - `--datepicker-contrast`: text color on the selected day.
  * - `--datepicker-hover-color`: day hover background.
  * - `--datepicker-selected-hover-color`: selected day hover background.
@@ -469,7 +470,8 @@ export const CalendarTheming: Story = {
   value={value}
   onChange={handleValueChange}
   style={{
-    '--datepicker-scheme': '#8b5cf6',
+    '--datepicker-solid': '#8b5cf6',
+    '--datepicker-scheme': '#7c3aed',
     '--datepicker-contrast': '#ffffff',
     '--datepicker-hover-color': '#f5f3ff',
     '--datepicker-selected-hover-color': '#7c3aed',
@@ -497,7 +499,8 @@ export const CalendarTheming: Story = {
         placeholder='Custom themed calendar'
         style={
           {
-            '--datepicker-scheme': '#8b5cf6',
+            '--datepicker-solid': '#8b5cf6',
+            '--datepicker-scheme': '#7c3aed',
             '--datepicker-contrast': '#ffffff',
             '--datepicker-hover-color': '#f5f3ff',
             '--datepicker-selected-hover-color': '#7c3aed',
