@@ -63,6 +63,12 @@ addons.register('plume/theme-sync', (api) => {
       navToggle.dataset.wired = 'true'
       navToggle.addEventListener('click', () => api.toggleNav())
     }
+    // The sidebar filters docs and tokens too, not only components.
+    const search = document.querySelector<HTMLInputElement>('#storybook-explorer-searchfield')
+    if (search && search.placeholder !== 'Search…') {
+      search.placeholder = 'Search…'
+      search.setAttribute('aria-label', 'Search')
+    }
   }
 
   const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {
