@@ -48,6 +48,18 @@ const preview: Preview = {
       },
       sort: 'requiredFirst',
     },
+    options: {
+      storySort: {
+        order: [
+          'Introduction',
+          'Theme',
+          ['Colors', 'Tokens'],
+          'Guides',
+          ['Framework Integration', 'Migration'],
+          'Components',
+        ],
+      },
+    },
     docs: {
       container: PlumeDocsContainer,
       page: () => DocsTemplate(),

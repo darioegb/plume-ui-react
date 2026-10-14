@@ -34,7 +34,7 @@ const commonTabs = (
  * it facilitates actions such as form submissions, dialog interactions, and deletion or cancellation operations.
  */
 export default {
-  title: 'Components/Navigation/Tabs',
+  title: 'Components/Tabs',
   component: Tabs,
   decorators: [(Story) => <div style={{ width: '50vw' }}>{Story()}</div>],
   tags: ['autodocs'],

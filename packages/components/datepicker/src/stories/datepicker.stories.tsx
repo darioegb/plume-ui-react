@@ -11,7 +11,7 @@ const defaultDateRangeValue = { startDate: null, endDate: null }
  * It supports single and range selection modes, configurable color schemes, and localization options.
  */
 export default {
-  title: 'Components/Form/DatePicker',
+  title: 'Components/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
   decorators: [(Story) => <div className='pb-[22rem]'>{Story()}</div>],

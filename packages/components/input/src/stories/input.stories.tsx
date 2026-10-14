@@ -10,7 +10,7 @@ import { Input } from '..'
  * such as dates, phone numbers or card numbers.
  */
 export default {
-  title: 'Components/Form/Input',
+  title: 'Components/Input',
   component: Input,
   parameters: {
     docs: {

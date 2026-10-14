@@ -9,7 +9,7 @@ import { Button } from '..'
  * it facilitates actions such as form submissions, dialog interactions, and deletion or cancellation operations.
  */
 export default {
-  title: 'Components/Interaction/Button',
+  title: 'Components/Button',
   component: Button,
   tags: ['autodocs'],
   parameters: {

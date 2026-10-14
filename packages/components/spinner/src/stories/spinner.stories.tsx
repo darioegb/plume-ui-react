@@ -15,7 +15,7 @@ const allKeys: string[] = Object.keys(colors).flatMap((colorScheme) => [
  * This component offers flexibility in customizing its appearance and behavior through various properties.
  */
 export default {
-  title: 'Components/Utility/Spinner',
+  title: 'Components/Spinner',
   component: Spinner,
   tags: ['autodocs'],
   parameters: {

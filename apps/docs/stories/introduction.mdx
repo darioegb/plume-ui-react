@@ -1,0 +1,75 @@
+{/* introduction.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Introduction' />
+
+# Plume UI React
+
+A lightweight, framework‑agnostic design system for React. Components ship their
+own scoped styles and are themed entirely through CSS variables, so they adapt to
+your brand and flip between light and dark without any runtime color math.
+
+- **Themeable** — every design token is a CSS variable emitted by `<ThemeProvider>`.
+- **Light & dark** — built in, driven by a single `colorMode`.
+- **Framework‑agnostic** — use the components as they are, or set `variant="unstyled"`
+  and bring your own Tailwind / Bootstrap classes.
+- **Typed** — written in TypeScript, with React 18 and 19 support.
+
+## Installation
+
+```sh
+# npm
+npm install @plume-ui-react/lib
+# yarn
+yarn add @plume-ui-react/lib
+# pnpm
+pnpm add @plume-ui-react/lib
+```
+
+`react` and `react-dom` (>= 18) are peer dependencies.
+
+## Quick start
+
+Wrap your app in `<ThemeProvider>` and import the stylesheet once:
+
+```tsx
+import { ThemeProvider } from '@plume-ui-react/core'
+import { Button } from '@plume-ui-react/lib'
+import '@plume-ui-react/lib/styles.css'
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <Button colorScheme='primary' label='Get started' />
+    </ThemeProvider>
+  )
+}
+```
+
+### Theming
+
+`theme` is a deep‑partial of the default theme, so you override only what you need:
+
+```tsx
+<ThemeProvider theme={{ colors: { primary: { 500: '#5263ff' } } }}>
+  <App />
+</ThemeProvider>
+```
+
+### Dark mode
+
+Pass `colorMode`, or let it follow the operating system with `"system"`:
+
+```tsx
+<ThemeProvider defaultColorMode='system'>
+  <App />
+</ThemeProvider>
+```
+
+## Explore
+
+- **Theme → Colors / Tokens** — the palette and design tokens.
+- **Guides → Framework Integration** — Tailwind and Bootstrap.
+- **Guides → Migration** — moving from `setUserTheme` to `<ThemeProvider>`.
+- **Components** — every component with its props and live examples.
