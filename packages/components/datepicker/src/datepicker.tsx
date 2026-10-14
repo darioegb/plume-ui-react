@@ -278,13 +278,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
       if (!isRange || newValue.endDate) {
         onChange({ startDate: newValue.startDate, endDate: newValue.endDate })
-        if (!isRange) {
-          dispatch({ type: 'SET_VALUE', payload: newValue })
-          handleToggleModal()
-        } else {
-          dispatch({ type: 'SET_VALUE', payload: newValue })
-          handleToggleModal()
-        }
+        dispatch({ type: 'SET_VALUE', payload: newValue })
+        handleToggleModal()
       }
     }
 
