@@ -1,6 +1,5 @@
 const { readFileSync, writeFileSync, existsSync } = require('fs')
 const { join, resolve } = require('path')
-const fetch = require('node-fetch')
 
 const monorepoPath = resolve(__dirname, '..')
 
