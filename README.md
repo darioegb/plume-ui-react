@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg">
-    <img src="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg" alt="Plume UI logo" width="300" />
+  <a href="https://darioegb.github.io/plume-ui-react/">
+    <img src="https://darioegb.github.io/plume-ui-react/logo.svg" alt="Plume UI logo" width="300" />
   </a>
 </p>
 
@@ -28,7 +28,7 @@
 
 ## Documentation
 
-It's the [url](https://main--651ae00a0bf7aa70ffd0f34c.chromatic.com) website for the latest version of Plume UI.
+The [documentation site](https://darioegb.github.io/plume-ui-react/) hosts the latest Storybook for Plume UI.
 
 ## Installation
 

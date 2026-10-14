@@ -17,7 +17,7 @@ To use this component in your React project, follow these steps:
 2. Import the stylesheet into your root component file:
 
    ```javascript
-   import '@plume-ui-react/spinner/dist/index.css'
+   import '@plume-ui-react/spinner/styles.css'
    ```
 
 3. Import the component in your JavaScript or TypeScript file:
@@ -39,7 +39,7 @@ This component accepts several properties to customize the appearance and behavi
 | Property      | Type                                                        | Description                                                                             |
 | ------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `className`   | `string`                                                    | Additional CSS classes for the spinner.                                                 |
-| `colorScheme` | `DefaultColorPalette \| keyof CustomColorPalette`           | The color scheme to be applied to the spinner.                                          |
+| `colorScheme` | `ColorPalette \| keyof CustomColorPalette`           | The color scheme to be applied to the spinner.                                          |
 | `hidden`      | `boolean`                                                   | Indicates whether the spinner should be hidden.                                         |
 | `id`          | `string`                                                    | The unique identifier for the spinner element.                                          |
 | `size`        | `Size`                                                      | The size of the spinner.                                                                |

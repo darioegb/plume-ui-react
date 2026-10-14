@@ -15,7 +15,7 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(({ children },
   return (
     <div aria-label="Tab Panel" className={isStyled ? styles.panel : ''} ref={ref} role="tabpanel">
       {isLazy ? (
-        <Suspense fallback={<Spinner colorScheme={colorScheme} />}>
+        <Suspense fallback={<Spinner color={colorScheme} />}>
           {createElement(tabContent as LazyExoticComponent<() => ReactNode>)}
         </Suspense>
       ) : (

@@ -17,7 +17,7 @@ To use this component in your React project, follow these steps:
 2. Import the stylesheet into your root component file:
 
    ```javascript
-   import '@plume-ui-react/button/dist/index.css'
+   import '@plume-ui-react/button/styles.css'
    ```
 
 3. Import the component in your JavaScript or TypeScript file:

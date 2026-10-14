@@ -17,7 +17,7 @@ To use this library in your React project, follow these steps:
 2. Import the stylesheet into your root component file:
 
    ```javascript
-   import '@plume-ui-react/lib/dist/index.css'
+   import '@plume-ui-react/lib/styles.css'
    ```   
 
 3. Import the components you need in your JavaScript or TypeScript files:

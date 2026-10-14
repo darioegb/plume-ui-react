@@ -1,41 +1,28 @@
-const { resolve } = require('node:path')
+const globals = require('globals')
+const jsxA11y = require('eslint-plugin-jsx-a11y')
+const react = require('eslint-plugin-react')
+const reactHooks = require('eslint-plugin-react-hooks')
+const base = require('./base')
 
-const project = resolve(process.cwd(), 'tsconfig.json')
-
-/*
- * This is a custom ESLint configuration for use a library
- * that utilizes React.
- *
- * This config extends the Vercel Engineering Style Guide.
- * For more information, see https://github.com/vercel/style-guide
- *
- */
-
-module.exports = {
-  extends: [
-    '@vercel/style-guide/eslint/browser',
-    '@vercel/style-guide/eslint/typescript',
-    '@vercel/style-guide/eslint/react',
-  ].map(require.resolve),
-  parserOptions: {
-    project,
-  },
-  globals: {
-    JSX: true,
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
-      },
+module.exports = [
+  ...base,
+  react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
+  jsxA11y.flatConfigs.recommended,
+  {
+    files: ['**/*.{ts,tsx,js,jsx}'],
+    plugins: { 'react-hooks': reactHooks },
+    languageOptions: {
+      globals: globals.browser,
+    },
+    settings: {
+      react: { version: 'detect' },
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      // Props are typed with TypeScript.
+      'react/prop-types': 'off',
     },
   },
-  ignorePatterns: ['node_modules/', 'dist/', '.eslintrc.js', '**/*.css'],
-  // add rules configurations here
-  rules: {
-    '@typescript-eslint/no-redundant-type-constituents': 'off',
-    'import/no-default-export': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'react/button-has-type': 'off',
-  },
-}
+]

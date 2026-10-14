@@ -21,9 +21,21 @@ describe('Spinner component', () => {
   })
 
   it('renders spinner with custom color', () => {
-    const { container } = render(<Spinner colorScheme="primary" />)
+    const { container } = render(<Spinner color="primary" />)
     const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle('--spinner-scheme: rgb(99, 102, 241);')
+    expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-primary-500)')
+  })
+
+  it('renders spinner with a specific color shade', () => {
+    const { container } = render(<Spinner color="primary.700" />)
+    const spinnerElement = container.querySelector('.solid')
+    expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-primary-700)')
+  })
+
+  it('defaults to the secondary 900 shade', () => {
+    const { container } = render(<Spinner />)
+    const spinnerElement = container.querySelector('.solid')
+    expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-secondary-900)')
   })
 
   it('renders spinner with custom speed', () => {
@@ -38,11 +50,9 @@ describe('Spinner component', () => {
         style={{ backgroundColor: 'lightgray', color: 'black' }}
       />,
     )
-    const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle(`
-      background-color: lightgray;
-      color: black;
-    `)
+    const spinnerElement = container.querySelector<HTMLElement>('.solid')
+    expect(spinnerElement?.style.backgroundColor).toBe('lightgray')
+    expect(spinnerElement?.style.color).toBe('black')
   })
 
   it('renders spinner with different variant', () => {

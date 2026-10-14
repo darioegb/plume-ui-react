@@ -1,19 +1,12 @@
 import { forwardRef } from 'react'
 import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
-import type {
-  DefaultColorPalette,
-  CustomColorPalette,
-  ComponentProps,
-  Size,
-} from '@plume-ui-react/core'
-import { getMergedConfig } from '@plume-ui-react/core'
-import { getContrastColor, getLightenColor } from '@plume-ui-react/color-utils'
+import type { ColorScheme, ComponentProps, Size } from '@plume-ui-react/core'
 import { TabsProvider } from './use-tabs'
 import styles from './tabs.module.css'
 
 export interface TabsOwnProps {
   alignment?: TabsAlignment
-  colorScheme?: DefaultColorPalette | keyof CustomColorPalette
+  colorScheme?: ColorScheme
   isLazy?: boolean
   onChange?: (index: number) => void
   orientation?: TabsOrientation
@@ -31,29 +24,25 @@ type TabsRootAttributes = Pick<
 
 export type TabsProps = ComponentProps & TabsRootAttributes & TabsOwnProps
 
-const createTabsStyles = (
-  color: string,
-  contrastColor: string,
-  lightenColor: string,
-  style?: CSSProperties,
-): Record<string, unknown> => ({
-  '--tabs-scheme': color,
-  '--tabs-background-color': lightenColor,
-  '--tabs-text-color': contrastColor,
-
-  ...(style ?? {}),
-})
+const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
+  ({
+    '--tabs-scheme': `var(--plume-color-${colorScheme}-text)`,
+    '--tabs-solid': `var(--plume-color-${colorScheme}-solid)`,
+    '--tabs-solid-active': `var(--plume-color-${colorScheme}-solid-active)`,
+    '--tabs-text-color': `var(--plume-color-${colorScheme}-solid-contrast)`,
+    ...(style ?? {}),
+  }) as CSSProperties
 
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
       children,
-      colorScheme,
       style,
       onChange,
       index = 0,
       alignment = 'left',
       className = '',
+      colorScheme = 'secondary',
       orientation = 'horizontal',
       size = 'md',
       variant = 'underline',
@@ -62,9 +51,6 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
-    const lightenColor = getLightenColor(color, 20)
-    const contrastColor = getContrastColor(color)
     const isStyled = variant !== 'unstyled'
     const tabsClassNames = `${
       orientation !== 'horizontal' || isStyled ? styles[orientation] : ''
@@ -86,7 +72,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         <div
           className={tabsClassNames}
           ref={ref}
-          style={createTabsStyles(color, contrastColor, lightenColor, style)}
+          style={tabsColorVars(colorScheme, style)}
           {...rest}
         >
           {children}

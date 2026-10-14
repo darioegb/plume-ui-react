@@ -4,19 +4,17 @@ runs:
   using: 'composite'
   steps:
     - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
-        run_install: false
+      uses: pnpm/action-setup@v4
 
-    - name: Setup Node.js 18.x
-      uses: actions/setup-node@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version-file: '.nvmrc'
+        cache: 'pnpm'
 
     - name: Turbo cache
       id: turbo-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .turbo
         key: turbo-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
@@ -30,6 +28,4 @@ runs:
     - name: Build
       shell: bash
       id: run-build
-      run: |
-        pnpm run build
-        pnpm run postbuild
+      run: pnpm run build

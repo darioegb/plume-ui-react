@@ -1,0 +1,105 @@
+{/* tokens.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+import { defaultTheme } from '@plume-ui-react/core'
+
+<Meta title='Theme/Tokens' />
+
+# Design tokens
+
+Every token below is serialized to a CSS variable by `<ThemeProvider>` and is
+also available as a Tailwind utility through the Plume preset. Colors live on the
+dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> page.
+
+## Spacing
+
+`--plume-space-*` · Tailwind `p-*`, `m-*`, `gap-*`, …
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+  {Object.entries(defaultTheme.spaces)
+    .filter(([key]) => Number(key) <= 16)
+    .map(([key, value]) => (
+      <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <code style={{ width: '5rem' }}>space.{key}</code>
+        <div style={{ width: value, height: '0.75rem', background: '#5263ff', borderRadius: '2px' }} />
+        <span style={{ opacity: 0.65 }}>{value}</span>
+      </div>
+    ))}
+</div>
+
+## Radii
+
+`--plume-radius-*` · Tailwind `rounded-*`
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem' }}>
+  {Object.entries(defaultTheme.radii).map(([key, value]) => (
+    <div key={key} style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          width: '4rem',
+          height: '4rem',
+          background: '#738bff',
+          borderRadius: value,
+          border: '1px solid #5263ff',
+        }}
+      />
+      <div style={{ marginTop: '0.5rem' }}>
+        <code>radius.{key}</code>
+      </div>
+      <span style={{ opacity: 0.65, fontSize: '0.75rem' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+## Shadows
+
+`--plume-shadow-*` · Tailwind `shadow-*`
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', padding: '1rem' }}>
+  {Object.entries(defaultTheme.shadows).map(([key, value]) => (
+    <div key={key} style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          width: '5rem',
+          height: '5rem',
+          background: '#ffffff',
+          borderRadius: '0.5rem',
+          boxShadow: value === 'none' ? '0 0 0 1px #e4e4e7' : value,
+        }}
+      />
+      <div style={{ marginTop: '0.75rem' }}>
+        <code>shadow.{key}</code>
+      </div>
+    </div>
+  ))}
+</div>
+
+## Typography
+
+`--plume-font-size-*`, `--plume-font-weight-*` · Tailwind `text-*`, `font-*`
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+  {Object.entries(defaultTheme.typography.fontSizes).map(([key, value]) => (
+    <div key={key} style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+      <code style={{ width: '6rem' }}>text.{key}</code>
+      <span style={{ fontSize: value, fontFamily: defaultTheme.typography.fontFamily }}>
+        The quick brown fox
+      </span>
+      <span style={{ opacity: 0.65, fontSize: '0.75rem' }}>{value}</span>
+    </div>
+  ))}
+</div>
+
+## Z‑index
+
+`--plume-z-*` · Tailwind `z-*`
+
+<ul>
+  {Object.entries(defaultTheme.zIndeces)
+    .filter(([key]) => Number(key) >= 1)
+    .map(([key, value]) => (
+      <li key={key}>
+        <code>z.{key}</code> → {value}
+      </li>
+    ))}
+</ul>

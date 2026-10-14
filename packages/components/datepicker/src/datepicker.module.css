@@ -1,0 +1,295 @@
+/* datepicker.module.css */
+
+@value date-picker-padding: var(--plume-space-4);
+@value date-picker-border-radius: var(--plume-radius-4);
+@value date-picker-color: var(--plume-muted);
+@value date-picker-border-color: var(--plume-border);
+
+.datePicker {
+  position: relative;
+}
+
+.datePickerInputText {
+  border: none;
+  border-radius: date-picker-border-radius;
+  min-width: 18rem;
+  width: 100%;
+  height: var(--plume-space-10);
+  padding: 0 date-picker-padding;
+  position: relative;
+  display: block;
+  outline: none;
+  color: date-picker-color;
+  background: none;
+}
+
+.inputButton {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: transparent;
+  border-color: transparent;
+  margin-right: var(--plume-space-2);
+  margin-block-start: 0.125rem;
+  margin-block-end: 0.125rem;
+}
+
+.inputButtonIcon {
+  height: var(--plume-space-5);
+  width: var(--plume-space-5);
+  fill: date-picker-color;
+}
+
+.sm {
+  font-size: var(--plume-font-size-xs);
+  height: var(--plume-space-8);
+  padding: 0 var(--plume-space-2);
+}
+
+.md {
+  height: var(--plume-space-10);
+  padding: 0 date-picker-padding;
+}
+
+.lg {
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  padding: 0 var(--plume-space-6);
+}
+
+.sm + .inputButton > .inputButtonIcon {
+  height: 1.125rem;
+  width: 1.125rem;
+}
+
+.lg + .inputButton > .inputButtonIcon {
+  height: var(--plume-space-6);
+  width: var(--plume-space-6);
+}
+
+.rounded {
+  border-radius: date-picker-border-radius;
+}
+
+:is(.outline).pill {
+  border-radius: var(--plume-radius-full);
+}
+
+.outline {
+  composes: datePickerInputText;
+  border: 1px solid date-picker-border-color;
+}
+
+.filled {
+  composes: datePickerInputText;
+  background-color: var(--plume-surface-muted);
+  border-block-end: 1px solid date-picker-border-color;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.underline {
+  composes: datePickerInputText;
+  border-radius: 0;
+  outline: none;
+  border-block-end: 1px solid date-picker-border-color;
+}
+
+:is(.outline, .filled, .underline):enabled:hover {
+  border-color: color-mix(in hsl, date-picker-border-color, black 10%);
+}
+
+.filled:enabled:hover {
+  background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
+}
+
+.outline:enabled:focus {
+  border-color: var(--datepicker-scheme);
+  outline: 2px solid var(--datepicker-range-item-color);
+  outline-offset: 2px;
+}
+
+:is(.filled, .underline):enabled:focus {
+  border-block-end-color: var(--datepicker-scheme);
+  border-block-end-width: 2px;
+}
+
+.datePickerModal {
+  margin-top: var(--plume-space-2);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--plume-surface);
+  border: 1px solid date-picker-border-color;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: var(--plume-radius-6);
+  overflow: hidden;
+  position: absolute;
+  z-index: var(--plume-z-1);
+}
+
+.calendarContainer {
+  display: flex;
+  width: 21rem;
+}
+
+.calendarContainerDouble {
+  display: flex;
+  width: 42rem;
+}
+
+.calendar {
+  width: 21rem;
+  padding: var(--plume-space-3);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--plume-space-3);
+}
+
+.monthYearSelectors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: var(--plume-space-1);
+}
+
+.monthYearSelectors button:not([class*='icon']) {
+  padding: var(--plume-space-2) var(--plume-space-4);
+  border-radius: date-picker-border-radius;
+}
+
+.monthYearSelectors button[class*='icon'] {
+  padding: var(--plume-space-2);
+  border-radius: var(--plume-radius-full);
+}
+
+.monthYearSelectors button:hover {
+  background-color: var(--datepicker-hover-color);
+}
+
+.monthSelector,
+.yearSelector {
+  font-weight: bold;
+}
+
+.yearSelectorGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--plume-space-2);
+}
+
+.year,
+.month {
+  display: inline-flex;
+  justify-content: center;
+  padding: var(--plume-space-2) var(--plume-space-4);
+  border-radius: date-picker-border-radius;
+}
+
+.year:not(.selected):hover,
+.month:not(.selected):hover {
+  background-color: var(--datepicker-hover-color);
+}
+
+.year:hover,
+.month:hover {
+  background-color: var(--datepicker-selected-hover-color);
+}
+
+.monthSelectorGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--plume-space-2);
+}
+
+.daysOfWeek {
+  display: flex;
+  justify-content: center;
+  column-gap: var(--plume-space-1);
+  padding-bottom: 0.375rem;
+}
+
+.dayOfWeek {
+  margin: 1px;
+  width: var(--plume-space-10);
+  display: block;
+  text-align: center;
+  font-size: var(--plume-font-size-sm);
+  color: var(--plume-muted);
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--plume-space-1);
+}
+
+.day {
+  margin-left: 1px;
+  margin-right: 1px;
+  display: flex;
+  height: var(--plume-space-10);
+  width: var(--plume-space-10);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--plume-radius-full);
+}
+
+.today {
+  color: var(--datepicker-scheme);
+}
+
+.rangeItem {
+  background-color: var(--datepicker-range-item-color);
+  color: var(--datepicker-range-item-text);
+}
+
+.selected {
+  background-color: var(--datepicker-solid);
+  color: var(--datepicker-contrast);
+}
+
+.selectedHover {
+  background-color: var(--datepicker-selected-hover-color);
+  color: var(--datepicker-contrast);
+}
+
+.hovered {
+  background-color: var(--datepicker-hover-color);
+}
+
+.disabledDay {
+  color: date-picker-color;
+  cursor: not-allowed;
+}
+
+.outOfRangeDay {
+  text-decoration-line: line-through;
+}
+
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--plume-space-3);
+  border-top: 1px solid date-picker-border-color;
+}
+
+button.footerButton {
+  color: var(--plume-foreground);
+}
+
+button.footerButtonApply {
+  color: var(--datepicker-contrast);
+  margin-left: var(--plume-space-2);
+}
+
+.disabled,
+.disabled + .inputButton {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

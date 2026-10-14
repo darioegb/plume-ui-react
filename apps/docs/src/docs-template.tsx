@@ -1,18 +1,9 @@
 import type { ReactNode } from 'react'
-import {
-  Title,
-  Description,
-  Primary,
-  Controls,
-  Source,
-  Stories,
-} from '@storybook/blocks'
+import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/addon-docs/blocks'
 import { Button } from '@plume-ui-react/lib'
 
-const GITHUB_URL =
-  'https://github.com/darioegb/plume-ui-react/tree/main/packages/components/'
+const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/packages/components/'
 const NPM_URL = 'https://www.npmjs.com/package/@plume-ui-react/'
-const COLOR_GRAY = '#000000a6'
 const COLOR_RED = 'red'
 
 interface IconLinkButtonProps {
@@ -25,20 +16,15 @@ function extractWordBeforeDocsFromURL(): string {
   const url = window.location.href
   const match = /(?<word>\w+)--docs/.exec(url)
   const wordBeforeDocs = match?.groups?.word ?? ''
-  const capitalizedWord =
-    wordBeforeDocs.charAt(0).toUpperCase() + wordBeforeDocs.slice(1)
+  const capitalizedWord = wordBeforeDocs.charAt(0).toUpperCase() + wordBeforeDocs.slice(1)
   return capitalizedWord
 }
 
-function IconLinkButton({
-  icon,
-  href,
-  text,
-}: Readonly<IconLinkButtonProps>): JSX.Element {
+function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): ReactNode {
   return (
-    <a className="flex" href={href} rel="noopener" target="_blank">
+    <a className="flex" href={href} rel="noopener noreferrer" target="_blank">
       <Button iconLeft={icon} size="sm" variant="outline">
-        <p style={{ color: COLOR_GRAY, margin: 0 }}>{text}</p>
+        <p style={{ color: 'currentColor', margin: 0 }}>{text}</p>
       </Button>
     </a>
   )
@@ -48,7 +34,7 @@ function ButtonGroup({
   componentName,
 }: Readonly<{
   componentName: string
-}>): JSX.Element {
+}>): ReactNode {
   const componentNameLowerCase = componentName.toLowerCase()
 
   return (
@@ -95,20 +81,17 @@ function ButtonGroup({
   )
 }
 
-function Footer(): JSX.Element {
+function Footer(): ReactNode {
   return (
     <footer className="p-4">
       <div className="container mx-auto text-center">
-        <p>
-          &copy; Plume UI is created in 🇦🇷 by Dario E
-          Gonzalez B
-        </p>
+        <p>&copy; Plume UI is created in 🇦🇷 by Dario E Gonzalez B</p>
       </div>
     </footer>
   )
 }
 
-function DocsTemplate(): JSX.Element {
+function DocsTemplate(): ReactNode {
   const componentName = extractWordBeforeDocsFromURL()
   return (
     <>
@@ -117,10 +100,7 @@ function DocsTemplate(): JSX.Element {
         <Description />
         <ButtonGroup componentName={componentName} />
         <h2>Import</h2>
-        <Source
-          code={`import { ${componentName} } from '@plume-ui-react/lib'`}
-          dark
-        />
+        <Source code={`import { ${componentName} } from '@plume-ui-react/lib'`} dark />
         <h2>Usage</h2>
         <Primary />
         <h2>Inputs</h2>

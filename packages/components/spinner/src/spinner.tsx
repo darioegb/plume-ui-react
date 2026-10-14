@@ -1,16 +1,11 @@
 import { forwardRef } from 'react'
 import type { HtmlHTMLAttributes } from 'react'
-import type {
-  DefaultColorPalette,
-  ComponentProps,
-  CustomColorPalette,
-  Size,
-} from '@plume-ui-react/core'
-import { getMergedConfig } from '@plume-ui-react/core'
+import type { ColorShade, ComponentProps, Size } from '@plume-ui-react/core'
+import { colorVar } from '@plume-ui-react/core'
 import styles from './spinner.module.css'
 
 export interface SpinnerOwnProps {
-  colorScheme?: DefaultColorPalette | keyof CustomColorPalette
+  color?: ColorShade
   size?: Size
   speed?: string
   thickness?: number
@@ -19,8 +14,8 @@ export interface SpinnerOwnProps {
 
 type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
 type SpinnerRootAttributes = Pick<HtmlHTMLAttributes<HTMLSpanElement>, 'hidden' | 'id' | 'tabIndex'>
-type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant' | 'colorScheme'> &
-  Pick<ComponentProps, 'style'> & { color: string }
+type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
+  Pick<ComponentProps, 'style'> & { color: ColorShade }
 export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps
 
 const createSpinnerStyles = ({
@@ -29,8 +24,8 @@ const createSpinnerStyles = ({
   speed,
   thickness,
 }: SpinnerStylesOptions): Record<string, unknown> => ({
+  '--spinner-scheme': colorVar(color),
   ...(thickness && { '--spinner-border-width': `${thickness}px` }),
-  ...(color && { '--spinner-scheme': color }),
   '--spinner-animation-duration': speed?.length ? speed : '1s',
   ...(style ?? {}),
 })
@@ -38,8 +33,8 @@ const createSpinnerStyles = ({
 export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
+      color = `secondary.900`,
       style,
-      colorScheme,
       speed,
       className = '',
       thickness = 3,
@@ -49,17 +44,8 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
     ref,
   ) => {
     const { size = variant !== 'unstyled' && 'md' } = rest
-    const color = (colorScheme && getMergedConfig().colors[colorScheme]) || '#d3d3d3'
-    const spinnerStyles = createSpinnerStyles({
-      color,
-      style,
-      speed,
-      thickness,
-    })
-
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-
     const spinnerClass = `
       ${sizeClass} 
       ${variantClass} 
@@ -71,7 +57,12 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
         aria-label="loading"
         className={spinnerClass}
         ref={ref}
-        style={spinnerStyles}
+        style={createSpinnerStyles({
+          color,
+          style,
+          speed,
+          thickness,
+        })}
         {...rest}
       />
     )

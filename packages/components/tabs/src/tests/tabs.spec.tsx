@@ -114,9 +114,12 @@ describe('Tabs Component', () => {
     )
 
     const tabsContainer = container.firstChild as HTMLDivElement
+    const style = getComputedStyle(tabsContainer)
 
-    expect(getComputedStyle(tabsContainer).getPropertyValue('--tabs-scheme')).toBe(
-      'rgb(99, 102, 241)',
+    expect(style.getPropertyValue('--tabs-scheme')).toBe('var(--plume-color-primary-text)')
+    expect(style.getPropertyValue('--tabs-solid')).toBe('var(--plume-color-primary-solid)')
+    expect(style.getPropertyValue('--tabs-text-color')).toBe(
+      'var(--plume-color-primary-solid-contrast)',
     )
   })
 

@@ -1,0 +1,87 @@
+{
+  "name": "@plume-ui-react/datepicker",
+  "version": "0.0.1",
+  "description": "A React component that is a datepicker.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./styles.css": "./dist/index.css"
+  },
+  "sideEffects": [
+    "**/*.module.css"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git"
+  },
+  "keywords": [
+    "datepicker",
+    "calendar",
+    "react",
+    "plume-ui",
+    "plume-ui-react",
+    "component",
+    "clickable",
+    "tabbable"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "jest": {
+    "preset": "jest-preset",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  },
+  "dependencies": {
+    "@plume-ui-react/date-utils": "workspace:*",
+    "@plume-ui-react/use-debounce": "workspace:*",
+    "@plume-ui-react/use-click-outside": "workspace:*",
+    "@plume-ui-react/core": "workspace:*",
+    "@plume-ui-react/button": "workspace:*",
+    "@plume-ui-react/input": "workspace:*"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "jest-preset": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "prettier-config": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=16.11.0",
+    "react-dom": ">=16.11.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
