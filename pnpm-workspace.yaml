@@ -1,6 +1,9 @@
 packages:
   - "apps/*"
   - "examples/*"
+  # Standalone consumption examples: resolve @plume-ui-react/* from npm, not the workspace.
+  - "!examples/vite-playground"
+  - "!examples/next-app"
   - "packages/*"
   - "packages/*/*"
 

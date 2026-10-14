@@ -16,6 +16,7 @@
 ## Table of Contents
 
 - 📚 [Documentation](#documentation)
+- 🧩 [Examples](#examples)
 - 📦 [Installation](#installation)
 - 🖥️ [Technologies](#technologies)
 - 🏃 [How to Run](#how-to-run)
@@ -29,6 +30,18 @@
 ## Documentation
 
 The [documentation site](https://darioegb.github.io/plume-ui-react/) hosts the latest Storybook for Plume UI.
+
+## Examples
+
+Standalone apps that consume the **published npm packages** (not the workspace sources):
+
+- **[Vite playground](examples/vite-playground)** — try the components live and tweak the code:
+
+  [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground)
+
+- **[Next.js App Router](examples/next-app)** — SSR/RSC-safe `<ThemeProvider>` consumption, ready to deploy on Vercel.
+- **[Next.js Pages Router](examples/next-pages)** — local workspace example (uses `workspace:*`).
+
 
 ## Installation
 
