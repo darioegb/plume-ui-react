@@ -256,6 +256,7 @@
 
 .selectedHover {
   background-color: var(--datepicker-selected-hover-color);
+  color: var(--datepicker-contrast);
 }
 
 .hovered {

@@ -32,16 +32,17 @@ function pickSolidPair(shades: TokenRecord): { bg: string; fg: string } {
   return { bg: String(shades['900']), fg: WHITE }
 }
 
-// Darkens the ramp on light surfaces and lightens it on dark ones until AA is met.
-function pickTextOnSurface(shades: TokenRecord, surface: string): string {
-  const order = isDarkSurface(surface)
+// Darkens the ramp on light themes and lightens it on dark ones until AA holds on every surface.
+function pickTextOnSurface(shades: TokenRecord, surfaces: string[]): string {
+  const dark = isDarkSurface(surfaces[0])
+  const order = dark
     ? ['500', '400', '300', '200', '100', '50']
     : ['500', '600', '700', '800', '900', '950']
   for (const key of order) {
     const color = String(shades[key])
-    if (getContrastRatio(color, surface) >= AA_NORMAL_TEXT) return color
+    if (surfaces.every((surface) => getContrastRatio(color, surface) >= AA_NORMAL_TEXT)) return color
   }
-  return String(shades[isDarkSurface(surface) ? '50' : '950'])
+  return String(shades[dark ? '50' : '950'])
 }
 
 function flatten(prefix: string, record: TokenRecord, target: Record<string, string>): void {
@@ -61,8 +62,9 @@ const toKebab = (key: string): string =>
 export function themeToCssVars(theme: Theme): Record<string, string> {
   const vars: Record<string, string> = {}
 
-  const surface = theme.semantic.background
-  const darkSurface = isDarkSurface(surface)
+  const { background, surface, surfaceMuted } = theme.semantic
+  const surfaces = [background, surface, surfaceMuted]
+  const darkSurface = isDarkSurface(background)
   const colors = theme.colors as unknown as Record<string, TokenRecord>
   for (const [scheme, shades] of Object.entries(colors)) {
     flatten(`${PREFIX}-color-${scheme}`, shades, vars)
@@ -74,7 +76,7 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
     vars[`${PREFIX}-color-${scheme}-solid-hover`] = getDarkenColor(solid, 12)
     vars[`${PREFIX}-color-${scheme}-solid-active`] = getDarkenColor(solid, 24)
 
-    const text = pickTextOnSurface(shades, surface)
+    const text = pickTextOnSurface(shades, surfaces)
     vars[`${PREFIX}-color-${scheme}-text`] = text
     vars[`${PREFIX}-color-${scheme}-text-hover`] = darkSurface
       ? getLightenColor(text, 12)

@@ -58,6 +58,12 @@ describe('DatePicker component', () => {
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
 
+  it('gives the calendar dialog an accessible name', () => {
+    render(<DatePicker onChange={jest.fn()} />)
+    openCalendar()
+    expect(screen.getByRole('dialog', { name: 'Calendar' })).toBeInTheDocument()
+  })
+
   it('selects a date, notifies onChange and closes the calendar', () => {
     const onChange = jest.fn<void, [DateRange]>()
     render(<DatePicker onChange={onChange} />)

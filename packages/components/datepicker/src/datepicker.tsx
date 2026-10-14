@@ -314,7 +314,12 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             />
           )}
           {isCalendar || state.modalOpen ? (
-            <div className={styles.datePickerModal} ref={datePickerRef} role='dialog'>
+            <div
+              aria-label='Calendar'
+              className={styles.datePickerModal}
+              ref={datePickerRef}
+              role='dialog'
+            >
               <div className={isRange ? styles.calendarContainerDouble : styles.calendarContainer}>
                 <Calendar
                   isRange={isRange}

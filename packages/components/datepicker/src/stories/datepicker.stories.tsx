@@ -470,11 +470,11 @@ export const CalendarTheming: Story = {
   value={value}
   onChange={handleValueChange}
   style={{
-    '--datepicker-solid': '#8b5cf6',
-    '--datepicker-scheme': '#7c3aed',
+    '--datepicker-solid': '#7c3aed',
+    '--datepicker-scheme': '#6d28d9',
     '--datepicker-contrast': '#ffffff',
     '--datepicker-hover-color': '#f5f3ff',
-    '--datepicker-selected-hover-color': '#7c3aed',
+    '--datepicker-selected-hover-color': '#6d28d9',
     '--datepicker-range-item-color': '#ede9fe',
     '--datepicker-range-item-text': '#4c1d95',
   }}
@@ -499,11 +499,11 @@ export const CalendarTheming: Story = {
         placeholder='Custom themed calendar'
         style={
           {
-            '--datepicker-solid': '#8b5cf6',
-            '--datepicker-scheme': '#7c3aed',
+            '--datepicker-solid': '#7c3aed',
+            '--datepicker-scheme': '#6d28d9',
             '--datepicker-contrast': '#ffffff',
             '--datepicker-hover-color': '#f5f3ff',
-            '--datepicker-selected-hover-color': '#7c3aed',
+            '--datepicker-selected-hover-color': '#6d28d9',
             '--datepicker-range-item-color': '#ede9fe',
             '--datepicker-range-item-text': '#4c1d95',
           } as CSSProperties
