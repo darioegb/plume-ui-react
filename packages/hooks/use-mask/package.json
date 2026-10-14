@@ -26,7 +26,10 @@
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
     "lint": "eslint src/",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -44,9 +47,14 @@
     "plume-ui-react"
   ],
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "jest": {
+    "preset": "jest-preset"
+  },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "jest-preset": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "prettier-config": "workspace:*",
     "tsconfig": "workspace:*"
   },

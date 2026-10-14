@@ -271,15 +271,17 @@ export function Calendar({
         <div className={styles.monthYearSelectors}>
           {selector !== 'year' ? (
             <Button
+              aria-label="Previous month"
               onClick={() => {
                 onMonthChange((isSecondCalendar ? state.secondMonth : state.month) - 1)
               }}
               variant="icon"
             >
               <svg
-                fill="black"
+                aria-hidden="true"
+                fill="currentColor"
                 height="16"
-                stroke="black"
+                stroke="currentColor"
                 strokeWidth="10"
                 viewBox="0 0 256 256"
                 width="16"
@@ -289,11 +291,12 @@ export function Calendar({
               </svg>
             </Button>
           ) : (
-            <Button onClick={handlePrev} variant="icon">
+            <Button aria-label="Previous years" onClick={handlePrev} variant="icon">
               <svg
-                fill="black"
+                aria-hidden="true"
+                fill="currentColor"
                 height="16"
-                stroke="black"
+                stroke="currentColor"
                 strokeWidth="10"
                 viewBox="0 0 256 256"
                 width="16"
@@ -322,15 +325,17 @@ export function Calendar({
           />
           {selector !== 'year' ? (
             <Button
+              aria-label="Next month"
               onClick={() => {
                 onMonthChange((isSecondCalendar ? state.secondMonth : state.month) + 1)
               }}
               variant="icon"
             >
               <svg
-                fill="black"
+                aria-hidden="true"
+                fill="currentColor"
                 height="16"
-                stroke="black"
+                stroke="currentColor"
                 strokeWidth="10"
                 viewBox="0 0 256 256"
                 width="16"
@@ -340,11 +345,12 @@ export function Calendar({
               </svg>
             </Button>
           ) : (
-            <Button onClick={handleNext} variant="icon">
+            <Button aria-label="Next years" onClick={handleNext} variant="icon">
               <svg
-                fill="black"
+                aria-hidden="true"
+                fill="currentColor"
                 height="16"
-                stroke="black"
+                stroke="currentColor"
                 strokeWidth="10"
                 viewBox="0 0 256 256"
                 width="16"

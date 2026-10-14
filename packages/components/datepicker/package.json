@@ -51,7 +51,15 @@
   ],
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "jest": {
-    "preset": "jest-preset"
+    "preset": "jest-preset",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   },
   "dependencies": {
     "@plume-ui-react/date-utils": "workspace:*",
@@ -64,6 +72,8 @@
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "jest-preset": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "prettier-config": "workspace:*",
     "tsconfig": "workspace:*"
   },

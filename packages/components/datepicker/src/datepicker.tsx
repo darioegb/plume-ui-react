@@ -245,8 +245,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
 
     const handleApply = (): void => {
       dispatch({ type: 'SET_VALUE', payload: state.tempValue })
-      if (state.value.startDate) {
-        onChange({ startDate: state.value.startDate, endDate: state.value.endDate })
+      if (state.tempValue.startDate) {
+        onChange({ startDate: state.tempValue.startDate, endDate: state.tempValue.endDate })
       }
       handleToggleModal()
     }

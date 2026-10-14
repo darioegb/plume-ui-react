@@ -63,11 +63,15 @@ export const datePickerReducer = (
     case 'TOGGLE_MODAL':
       return { ...state, modalOpen: !state.modalOpen }
     case 'SET_YEAR':
+      return { ...state, year: action.payload }
     case 'SET_SECOND_YEAR':
+      return { ...state, secondYear: action.payload }
     case 'SET_MONTH':
+      return { ...state, month: action.payload }
     case 'SET_SECOND_MONTH':
+      return { ...state, secondMonth: action.payload }
     case 'SET_RANGE_DAYS':
-      return { ...state, [action.type.toLowerCase().slice(4)]: action.payload }
+      return { ...state, rangeDays: action.payload }
     case 'SET_TEMP_VALUE':
     default:
       return { ...state, tempValue: action.payload }

@@ -49,6 +49,8 @@
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "prettier-config": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {

@@ -95,22 +95,22 @@ describe('Button component', () => {
   })
 
   it('renders busy button without busy text', () => {
-    const { getByText } = render(<Button colorScheme="dark" isBusy label="Busy Button" />)
+    const { getByText } = render(<Button colorScheme="primary" isBusy label="Busy Button" />)
     const buttonElement = getByText('Busy Button')
     expect(buttonElement).toBeInTheDocument()
     expect(buttonElement).toHaveClass('hidden')
   })
 
-  it('renders busy dark button', () => {
+  it('passes the contrast color to the busy spinner', () => {
     const { getByText } = render(
-      <Button colorScheme="dark" isBusy>
+      <Button colorScheme="primary" isBusy>
         Busy Button
       </Button>,
     )
     const buttonElement = getByText('Busy Button')
     expect(buttonElement).toBeInTheDocument()
     expect(buttonElement.querySelector('output')).toHaveStyle(
-      '--spinner-scheme: rgb(250, 250, 250)',
+      '--spinner-scheme: var(--button-contrast-color)',
     )
   })
 
@@ -172,10 +172,13 @@ describe('Button component', () => {
     expect(buttonElement).toHaveClass('pill solid')
   })
 
-  it('renders button with color scheme', () => {
-    const { getByText } = render(<Button colorScheme="dark">Dark Color Scheme</Button>)
-    const buttonElement = getByText('Dark Color Scheme')
-    expect(buttonElement).toBeInTheDocument()
-    expect(buttonElement).toHaveStyle('--button-scheme: rgb(31, 41, 55)')
+  it('maps the color scheme to palette CSS variables', () => {
+    const { getByText } = render(<Button colorScheme="success">Success</Button>)
+    const { style } = getByText('Success')
+    expect(style.getPropertyValue('--button-color')).toBe('var(--plume-color-success-text)')
+    expect(style.getPropertyValue('--button-solid-bg')).toBe('var(--plume-color-success-solid)')
+    expect(style.getPropertyValue('--button-contrast-color')).toBe(
+      'var(--plume-color-success-solid-contrast)',
+    )
   })
 })
