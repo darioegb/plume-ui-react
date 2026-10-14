@@ -24,7 +24,6 @@ type TabsRootAttributes = Pick<
 
 export type TabsProps = ComponentProps & TabsRootAttributes & TabsOwnProps
 
-// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
     '--tabs-scheme': `var(--plume-color-${colorScheme}-text)`,

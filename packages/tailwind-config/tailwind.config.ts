@@ -106,7 +106,6 @@ const zIndex = Object.fromEntries(
 )
 
 const config: Config = {
-  // `dark:` variants sync with <ThemeProvider>'s dark mode.
   darkMode: ['class', '[data-plume-color-mode="dark"]'],
   content: [
     // For examples projects

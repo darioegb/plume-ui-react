@@ -1,6 +1,4 @@
-// Bundles every component's built CSS into a single dist/index.css.
-// Each package is resolved through its `./styles.css` export, so this stays in
-// sync with the exports map and never relies on fragile relative paths.
+// Resolves each package via its `./styles.css` export so the bundle follows the exports map.
 import { createRequire } from 'node:module'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 

@@ -58,7 +58,6 @@ const generateInputClasses = (
       ${disabledClass} ${className}`.trim()
 }
 
-// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const inputColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
     '--input-color': `var(--plume-color-${colorScheme}-500)`,

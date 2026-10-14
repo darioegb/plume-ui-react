@@ -14,16 +14,10 @@ const WHITE = '#ffffff'
 const BLACK = '#000000'
 const AA_NORMAL_TEXT = 4.5
 
-// A surface is "dark" when white text contrasts better on it than black text.
 const isDarkSurface = (surface: string): boolean =>
   getContrastRatio(WHITE, surface) >= getContrastRatio(BLACK, surface)
 
-/**
- * Picks an accessible solid fill (background + text) for a color ramp so filled
- * surfaces such as solid buttons meet WCAG AA (4.5:1) for normal text.
- * Prefers white text on the lightest shade that passes; falls back to dark text
- * on the base shade for light hues (e.g. warning) so the brand color is kept.
- */
+// Light hues (e.g. warning) keep their base shade with dark text instead of darkening the fill.
 function pickSolidPair(shades: TokenRecord): { bg: string; fg: string } {
   for (const key of ['500', '600', '700']) {
     const color = String(shades[key])
@@ -38,11 +32,7 @@ function pickSolidPair(shades: TokenRecord): { bg: string; fg: string } {
   return { bg: String(shades['900']), fg: WHITE }
 }
 
-/**
- * Picks an accessible text color (scheme color used as text on the theme surface)
- * that meets WCAG AA. On a light surface it darkens the ramp; on a dark surface it
- * lightens it, so the same component is readable in both light and dark themes.
- */
+// Darkens the ramp on light surfaces and lightens it on dark ones until AA is met.
 function pickTextOnSurface(shades: TokenRecord, surface: string): string {
   const order = isDarkSurface(surface)
     ? ['500', '400', '300', '200', '100', '50']
@@ -84,7 +74,6 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
     vars[`${PREFIX}-color-${scheme}-solid-hover`] = getDarkenColor(solid, 12)
     vars[`${PREFIX}-color-${scheme}-solid-active`] = getDarkenColor(solid, 24)
 
-    // Surface-aware text + hover/active tints for text-on-surface usages.
     const text = pickTextOnSurface(shades, surface)
     vars[`${PREFIX}-color-${scheme}-text`] = text
     vars[`${PREFIX}-color-${scheme}-text-hover`] = darkSurface

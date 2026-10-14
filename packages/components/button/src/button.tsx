@@ -77,7 +77,6 @@ const generateButtonClasses = (
     ${disabledClass} ${className}`.trim()
 }
 
-// Maps the color scheme to the palette CSS variables emitted by <ThemeProvider>.
 const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
     '--button-color': `var(--plume-color-${colorScheme}-text)`,

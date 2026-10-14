@@ -9,8 +9,7 @@ import '../globals.css'
 import DocsTemplate from '../src/docs-template'
 import { darkTheme, lightTheme } from './theme'
 
-// Themes the docs page chrome to match the `colorMode` toggle so docs pages
-// follow the same light/dark mode as the rest of Storybook.
+// Mirrors the colorMode toggle onto docs pages.
 const PlumeDocsContainer = ({
   context,
   children,
@@ -21,8 +20,7 @@ const PlumeDocsContainer = ({
   const globals = (context as { store?: { userGlobals?: { globals?: Record<string, unknown> } } })
     .store?.userGlobals?.globals
   const colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
-  // Expose the mode on <html> so preview-head.html can theme Storybook's own
-  // docs blocks (body, preview blocks, args table) that the theme prop misses.
+  // preview-head.html themes the docs blocks the `theme` prop misses, keyed on this attribute.
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-plume-color-mode', colorMode)
@@ -38,9 +36,7 @@ const PlumeDocsContainer = ({
 const preview: Preview = {
   parameters: {
     a11y: {
-      // Stories render isolated fragments, not full pages, so the landmark
-      // "region" rule reports false positives; the real app embeds components
-      // inside its own landmarks.
+      // Stories are isolated fragments, so the page-level "region" rule is a false positive.
       config: {
         rules: [{ id: 'region', enabled: false }],
       },

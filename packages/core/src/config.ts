@@ -267,7 +267,6 @@ export const defaultTheme: Theme = {
   },
 }
 
-/** Built-in dark-mode overrides applied by <ThemeProvider> when colorMode is 'dark'. */
 export const defaultDarkTheme: DeepPartial<Theme> = {
   semantic: {
     background: '#18181b',

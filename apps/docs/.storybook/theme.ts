@@ -9,7 +9,6 @@ const shared = {
   inputBorderRadius: 4,
 }
 
-// Manager chrome themes that mirror Plume's light/dark semantic tokens.
 export const lightTheme = create({
   ...shared,
   base: 'light',

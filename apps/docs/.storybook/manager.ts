@@ -31,9 +31,7 @@ const setStoredMode = (mode: 'light' | 'dark'): void => {
 const prefersDark = (): boolean =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
 
-// Keeps the manager chrome in sync with the `colorMode` global and renders the
-// color-mode toggle inside the custom header (so it stays visible even when the
-// toolbar is hidden in the production build).
+// The toggle lives in the header so it stays visible when the production build hides the toolbar.
 addons.register('plume/theme-sync', (api) => {
   const channel = api.getChannel()
   let colorMode: 'light' | 'dark' = 'light'
@@ -60,7 +58,6 @@ addons.register('plume/theme-sync', (api) => {
       links.insertBefore(button, links.firstChild)
       renderToggle()
     }
-    // The hamburger lives in manager-head.html; wire it to the sidebar toggle.
     const navToggle = document.querySelector<HTMLButtonElement>('.plume-nav-toggle')
     if (navToggle && !navToggle.dataset.wired) {
       navToggle.dataset.wired = 'true'
@@ -71,12 +68,10 @@ addons.register('plume/theme-sync', (api) => {
   const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {
     colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
     api.setOptions({ theme: colorMode === 'dark' ? darkTheme : lightTheme })
-    // Expose the mode on <html> so the custom header (manager-head.html) can theme itself.
     document.documentElement.setAttribute('data-plume-mode', colorMode)
     renderToggle()
   }
 
-  // Default to the OS preference; honour the user's explicit choice once stored.
   const applyPreferredMode = (): void => {
     const target = getStoredMode() ?? (prefersDark() ? 'dark' : 'light')
     if (target !== colorMode) {
@@ -94,12 +89,10 @@ addons.register('plume/theme-sync', (api) => {
   })
   channel.on(GLOBALS_UPDATED, syncTheme)
 
-  // Follow OS changes until the user picks a mode explicitly.
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     if (!getStoredMode()) applyPreferredMode()
   })
 
-  // The header is injected via manager-head.html; wait for it to mount.
   const observer = new MutationObserver(injectToggle)
   observer.observe(document.body, { childList: true, subtree: true })
   injectToggle()

@@ -80,7 +80,6 @@ export function ThemeProvider({
   const activeTheme = colorMode === 'dark' ? resolvedDarkTheme : lightTheme
   const cssVars = useMemo(() => themeToCssVars(activeTheme), [activeTheme])
 
-  // Baseline: theme document.body + <html> so the whole page follows the theme.
   useEffect(() => {
     if (!applyToBody || typeof document === 'undefined') return
     const { documentElement: html, body } = document
