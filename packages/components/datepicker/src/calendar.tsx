@@ -169,9 +169,7 @@ export function Calendar({
   }
 
   const toggleSelector = (selectedSelector: SelectorType): void => {
-    selector !== 'day' && selector === selectedSelector
-      ? setSelector('day')
-      : setSelector(selectedSelector)
+    setSelector(selector !== 'day' && selector === selectedSelector ? 'day' : selectedSelector)
   }
 
   const handlePrev = (): void => {
@@ -254,10 +252,10 @@ export function Calendar({
           id={date.toString()}
           key={date.toString()}
           onClick={() => {
-            isCurrentMonth && onSelectDate(day, isSecondCalendar)
+            if (isCurrentMonth) onSelectDate(day, isSecondCalendar)
           }}
           onMouseEnter={() => {
-            isCurrentMonth && handleHoverEffect(date.toString())
+            if (isCurrentMonth) handleHoverEffect(date.toString())
           }}
           variant="unstyled"
         >

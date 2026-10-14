@@ -120,7 +120,7 @@ export function DatePickerInput({
         disabled={disabled}
         mask={mask}
         onBlur={() => {
-          onBlur && onBlur({ startDate, endDate })
+          onBlur?.({ startDate, endDate })
         }}
         onChange={handleChange}
         ref={ref}

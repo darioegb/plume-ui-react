@@ -27,8 +27,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src/ --ext .tsx,.ts",
-    "lint:fix": "eslint src/ --ext .tsx,.ts",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "jest",
     "test:coverage": "jest --coverage",

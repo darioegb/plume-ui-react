@@ -1,4 +1,3 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/addon-docs/blocks'
 import { Button } from '@plume-ui-react/lib'
@@ -23,7 +22,7 @@ function extractWordBeforeDocsFromURL(): string {
 
 function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): ReactNode {
   return (
-    <a className="flex" href={href} rel="noopener" target="_blank">
+    <a className="flex" href={href} rel="noopener noreferrer" target="_blank">
       <Button iconLeft={icon} size="sm" variant="outline">
         <p style={{ color: 'currentColor', margin: 0 }}>{text}</p>
       </Button>

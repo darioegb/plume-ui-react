@@ -7,8 +7,8 @@
     "build": "NODE_ENV=prod storybook build --docs",
     "preview-storybook": "serve storybook-static",
     "clean": "rm -rf .turbo && rm -rf node_modules",
-    "lint": "eslint src/ --ext .tsx,.ts",
-    "lint:fix": "eslint src/ --ext .tsx,.ts"
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix"
   },
   "dependencies": {
     "@plume-ui-react/core": "workspace:*",
