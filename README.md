@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg">
-    <img src="https://res.cloudinary.com/dyjeeqbka/image/upload/v1691691368/vy4lo0kyx29t44p3nefp.svg" alt="Plume UI logo" width="300" />
+  <a href="https://darioegb.github.io/plume-ui-react/">
+    <img src="https://darioegb.github.io/plume-ui-react/logo.svg" alt="Plume UI logo" width="300" />
   </a>
 </p>
 
