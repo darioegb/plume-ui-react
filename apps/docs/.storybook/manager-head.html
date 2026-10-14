@@ -10,6 +10,12 @@
     display: none;
   }
 
+  /* Hide the preview toolbar (grid/background/outline/fullscreen) on every page;
+     the panel tab bar lives outside <main> and is left untouched. */
+  main .sb-bar {
+    display: none;
+  }
+
   button[data-nodetype='group'] svg {
     display: none;
   }
