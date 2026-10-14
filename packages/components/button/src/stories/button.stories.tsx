@@ -1,4 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
+import type { CSSProperties } from 'react'
 import { Button } from '..'
 
 /**
@@ -485,32 +486,32 @@ export const Tailwind: Story = {
       source: {
         code: `<Button
     label="Primary Button"
-    className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+    className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded text-sm"
     variant="unstyled"
   />
 <Button
   label="Soft Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded text-sm"
   variant="unstyled"
 />
 <Button
   label="Outline Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded text-sm"
   variant="unstyled"
 />
 <Button
   label="Ghost Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded text-sm"
   variant="unstyled"
 />
 <Button
   label="Pilled Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-full text-sm"
   variant="unstyled"
 />
 <Button
   label="With icon right"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-700 text-white hover:bg-blue-800 transition-all text-sm"
   iconRight={
     <svg
       className="w-2.5 h-auto"
@@ -537,32 +538,32 @@ export const Tailwind: Story = {
   render: () => (
     <div className='grid gap-4 grid-cols-3 grid-rows-2'>
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white border border-transparent font-semibold rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded text-sm'
         label='Primary Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-500 hover:text-white hover:bg-gray-500 border border-transparent font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded text-sm'
         label='Soft Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-500 hover:border-blue-500 text-blue-500 border border-blue-200 font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded text-sm'
         label='Outline Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 text-blue-500 border border-transparent font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded text-sm'
         label='Ghost Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-full text-sm'
         label='Pilled Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 transition-all text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-700 text-white hover:bg-blue-800 transition-all text-sm'
         iconRight={
           <svg
             className='w-2.5 h-auto'
@@ -607,6 +608,7 @@ export const Bootstrap: Story = {
 <Button
   label="Outline Button"
   className="btn btn-outline-primary"
+  style={{ '--bs-btn-color': 'var(--bs-primary-text-emphasis)' }}
   variant="unstyled"
 />
 <Button
@@ -649,7 +651,12 @@ export const Bootstrap: Story = {
     <div className='grid gap-4 grid-cols-3 grid-rows-2'>
       <Button className='btn btn-primary bg-blue-600' label='Primary Button' variant='unstyled' />
       <Button className='btn btn-light' label='Soft Button' variant='unstyled' />
-      <Button className='btn btn-outline-primary' label='Outline Button' variant='unstyled' />
+      <Button
+        className='btn btn-outline-primary'
+        label='Outline Button'
+        style={{ '--bs-btn-color': 'var(--bs-primary-text-emphasis)' } as CSSProperties}
+        variant='unstyled'
+      />
       <Button className='btn btn-link' label='Link Button' variant='unstyled' />
       <Button
         className='btn btn-primary rounded-pill bg-blue-600'

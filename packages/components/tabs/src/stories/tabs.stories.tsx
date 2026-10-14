@@ -636,7 +636,7 @@ export const Tailwind: Story = {
 }
 
 .underline-tabs button[aria-selected="true"] {
-  @apply py-2 border-b-2 border-solid border-blue-500 text-blue-500;
+  @apply py-2 border-b-2 border-solid border-blue-700 text-blue-700 dark:border-blue-400 dark:text-blue-400;
 }
 
 .underline-tabs div[role="tabpanel"] {

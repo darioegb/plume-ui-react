@@ -312,7 +312,8 @@ export const Tailwind: Story = {
 <Input
   variant="unstyled"
   placeholder="Error Input"
-  className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-600 focus:border-red-500 focus:ring focus:ring-red-200"
+  defaultValue="Invalid value"
+  className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
 />`,
       },
     },
@@ -335,7 +336,8 @@ export const Tailwind: Story = {
         variant='unstyled'
       />
       <Input
-        className='block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-600 focus:border-red-500 focus:ring focus:ring-red-200'
+        className='block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400'
+        defaultValue='Invalid value'
         placeholder='Error Input'
         variant='unstyled'
       />
@@ -354,8 +356,8 @@ export const Bootstrap: Story = {
         code: `<Input variant="unstyled" className="form-control" placeholder="Default Input" />
 <Input variant="unstyled" className="form-control form-control-lg" placeholder="Large Input" />
 <Input variant="unstyled" className="form-control form-control-sm" placeholder="Small Input" />
-<Input variant="unstyled" className="form-control is-valid" placeholder="Valid Input" />
-<Input variant="unstyled" className="form-control is-invalid" placeholder="Invalid Input" />`,
+<Input variant="unstyled" className="form-control is-valid" placeholder="Valid Input" defaultValue="Valid value" style={{ backgroundImage: 'none' }} />
+<Input variant="unstyled" className="form-control is-invalid" placeholder="Invalid Input" defaultValue="Invalid value" style={{ backgroundImage: 'none' }} />`,
       },
     },
   },
@@ -364,8 +366,20 @@ export const Bootstrap: Story = {
       <Input className='form-control' placeholder='Default Input' variant='unstyled' />
       <Input className='form-control form-control-lg' placeholder='Large Input' variant='unstyled' />
       <Input className='form-control form-control-sm' placeholder='Small Input' variant='unstyled' />
-      <Input className='form-control is-valid' placeholder='Valid Input' variant='unstyled' />
-      <Input className='form-control is-invalid' placeholder='Invalid Input' variant='unstyled' />
+      <Input
+        className='form-control is-valid'
+        defaultValue='Valid value'
+        placeholder='Valid Input'
+        style={{ backgroundImage: 'none' }}
+        variant='unstyled'
+      />
+      <Input
+        className='form-control is-invalid'
+        defaultValue='Invalid value'
+        placeholder='Invalid Input'
+        style={{ backgroundImage: 'none' }}
+        variant='unstyled'
+      />
     </div>
   ),
 }

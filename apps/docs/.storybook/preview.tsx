@@ -79,7 +79,10 @@ const preview: Preview = {
           defaultColorMode={colorMode}
           style={{ padding: '2rem' }}
         >
-          <Story />
+          {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
+          <div data-bs-theme={colorMode}>
+            <Story />
+          </div>
         </ThemeProvider>
       )
     },
