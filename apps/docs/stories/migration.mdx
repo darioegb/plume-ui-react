@@ -108,8 +108,8 @@ const style = { color: 'var(--plume-color-primary-500)' }
 
 ## 5. Styling with Tailwind or Bootstrap
 
-- **Tailwind:** add the Plume preset (`presets: [plumePreset]`) to get token
-  utilities (`bg-primary-500`, `text-foreground`, `rounded-4`, …) that follow the
-  theme and dark mode. See **Guides → Framework Integration**.
+- **Tailwind:** components work as-is, and `variant="unstyled"` lets you style them
+  with utilities. To use Plume tokens as utilities, map the `--plume-*` CSS
+  variables in your `theme.extend`. See **Guides → Framework Integration**.
 - **Any framework:** use `variant="unstyled"` to drop Plume styling and pass your
   own classes (e.g. Bootstrap's `btn btn-primary`).

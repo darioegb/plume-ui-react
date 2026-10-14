@@ -5,25 +5,37 @@ import { Button, Input } from '@plume-ui-react/lib'
  * Plume is **CSS-framework agnostic**. Components ship their own scoped styles,
  * but they are designed to drop into any stack:
  *
- * ### Tailwind CSS (token preset)
+ * ### Tailwind CSS
  *
- * Add the Plume preset to your `tailwind.config.ts`:
+ * Components work as-is next to Tailwind, and `variant="unstyled"` lets you style
+ * them with utilities. To use Plume tokens as utilities in your own markup, map the
+ * CSS variables emitted by `<ThemeProvider>` in your `tailwind.config.ts`:
  *
  * ```ts
- * import plumePreset from 'tailwind-config/tailwind.config'
- *
  * export default {
- *   presets: [plumePreset],
+ *   darkMode: ['class', '[data-plume-color-mode="dark"]'],
  *   content: ['./src/**\/*.{ts,tsx}'],
+ *   theme: {
+ *     extend: {
+ *       colors: {
+ *         primary: {
+ *           DEFAULT: 'var(--plume-color-primary-500)',
+ *           contrast: 'var(--plume-color-primary-contrast)',
+ *         },
+ *         surface: 'var(--plume-surface)',
+ *         foreground: 'var(--plume-foreground)',
+ *         border: 'var(--plume-border)',
+ *       },
+ *       borderRadius: { 4: 'var(--plume-radius-4)' },
+ *     },
+ *   },
  * }
  * ```
  *
- * Every Plume token becomes a utility backed by a CSS variable from
- * `<ThemeProvider>`: `bg-primary-500`, `text-primary-contrast`, `bg-surface`,
- * `text-foreground`, `border-border`, `rounded-4`, `p-4`, `shadow-md`, `z-1`…
- * Because they resolve to the live CSS variables, they re-theme automatically
- * and flip in dark mode (`[data-plume-color-mode="dark"]`). Wrap your app in
- * `<ThemeProvider>` for the variables to resolve.
+ * Because the utilities resolve to the live CSS variables, they re-theme
+ * automatically and flip in dark mode. Wrap your app in `<ThemeProvider>` for the
+ * variables to resolve. Every token is available as `--plume-<group>-<name>`
+ * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-shadow-md`).
  *
  * ### Bootstrap / any other framework (bring your own className)
  *
@@ -59,9 +71,8 @@ const badges = [
 ]
 
 /**
- * These elements use only Tailwind utilities from the Plume preset. They read
- * the same CSS variables as the components, so they follow the theme and dark
- * mode toggle.
+ * These elements use Tailwind utilities backed by Plume CSS variables, through the
+ * preset this Storybook uses internally. They follow the theme and dark mode toggle.
  */
 export const TailwindPreset: Story = {
   render: () => (
