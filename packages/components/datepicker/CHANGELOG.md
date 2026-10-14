@@ -1,5 +1,12 @@
 # @plume-ui-react/button
 
+## 0.1.1
+
+### Patch Changes
+
+- [#34](https://github.com/darioegb/plume-ui-react/pull/34) [`6ad7a57ad29013649a7fac36308d516ccbac7559`](https://github.com/darioegb/plume-ui-react/commit/6ad7a57ad29013649a7fac36308d516ccbac7559) Thanks [@darioegb](https://github.com/darioegb)! - Export the `DateRange` type from the public API so consumers can type the
+  `DatePicker` `value`/`onChange` without deriving it from `DatePickerProps`.
+
 ## 0.1.0
 
 ### Minor Changes
