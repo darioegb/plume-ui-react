@@ -28,7 +28,9 @@ const paletteColors = Object.fromEntries(
         SHADES.map((shade) => [shade, `var(--plume-color-${scheme}-${shade})`]),
       ),
       DEFAULT: `var(--plume-color-${scheme}-500)`,
-      contrast: `var(--plume-color-${scheme}-contrast)`,
+      solid: `var(--plume-color-${scheme}-solid)`,
+      'on-solid': `var(--plume-color-${scheme}-solid-contrast)`,
+      text: `var(--plume-color-${scheme}-text)`,
     },
   ]),
 )

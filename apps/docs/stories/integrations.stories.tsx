@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type { CSSProperties } from 'react'
 import { Button, Input } from '@plume-ui-react/lib'
 
 /**
@@ -20,7 +21,9 @@ import { Button, Input } from '@plume-ui-react/lib'
  *       colors: {
  *         primary: {
  *           DEFAULT: 'var(--plume-color-primary-500)',
- *           contrast: 'var(--plume-color-primary-contrast)',
+ *           solid: 'var(--plume-color-primary-solid)',
+ *           'on-solid': 'var(--plume-color-primary-solid-contrast)',
+ *           text: 'var(--plume-color-primary-text)',
  *         },
  *         surface: 'var(--plume-surface)',
  *         foreground: 'var(--plume-foreground)',
@@ -36,6 +39,10 @@ import { Button, Input } from '@plume-ui-react/lib'
  * automatically and flip in dark mode. Wrap your app in `<ThemeProvider>` for the
  * variables to resolve. Every token is available as `--plume-<group>-<name>`
  * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-shadow-md`).
+ *
+ * For filled surfaces use `solid` with `on-solid`, and for colored text use `text`:
+ * unlike the raw `500` shade, they are derived to meet WCAG AA (4.5:1) in light and
+ * dark.
  *
  * ### Bootstrap / any other framework (bring your own className)
  *
@@ -62,12 +69,12 @@ type Story = StoryObj
 
 // Literal class strings so Tailwind's content scanner can detect them.
 const badges = [
-  'bg-primary-500 text-primary-contrast',
-  'bg-secondary-500 text-secondary-contrast',
-  'bg-info-500 text-info-contrast',
-  'bg-warning-500 text-warning-contrast',
-  'bg-error-500 text-error-contrast',
-  'bg-success-500 text-success-contrast',
+  'bg-primary-solid text-primary-on-solid',
+  'bg-secondary-solid text-secondary-on-solid',
+  'bg-info-solid text-info-on-solid',
+  'bg-warning-solid text-warning-on-solid',
+  'bg-error-solid text-error-on-solid',
+  'bg-success-solid text-success-on-solid',
 ]
 
 /**
@@ -82,7 +89,7 @@ export const TailwindPreset: Story = {
         <div className='flex flex-wrap gap-2'>
           {badges.map((className) => (
             <span className={`rounded-full px-3 py-1 text-sm ${className}`} key={className}>
-              {className.split(' ')[0].replace('bg-', '').replace('-500', '')}
+              {className.split(' ')[0].replace('bg-', '').replace('-solid', '')}
             </span>
           ))}
         </div>
@@ -104,7 +111,11 @@ export const Bootstrap: Story = {
       <Button className='btn btn-primary' variant='unstyled'>
         Bootstrap primary
       </Button>
-      <Button className='btn btn-outline-secondary' variant='unstyled'>
+      <Button
+        className='btn btn-outline-secondary'
+        style={{ '--bs-btn-color': 'var(--bs-secondary-text-emphasis)' } as CSSProperties}
+        variant='unstyled'
+      >
         Bootstrap outline
       </Button>
       <Input className='form-control' placeholder='Bootstrap input' variant='unstyled' />
