@@ -9,8 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@plume-ui-react/core": "^0.1.0",
-    "@plume-ui-react/lib": "^0.1.0",
+    "@plume-ui-react/lib": "^0.2.0",
     "next": "^14.2.15",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
