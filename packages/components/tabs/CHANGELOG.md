@@ -1,5 +1,16 @@
 # @plume-ui-react/tabs
 
+## 0.1.1
+
+### Patch Changes
+
+- [#38](https://github.com/darioegb/plume-ui-react/pull/38) [`61eb5ec22dd44ad493f965d1dab450a48321a25f`](https://github.com/darioegb/plume-ui-react/commit/61eb5ec22dd44ad493f965d1dab450a48321a25f) Thanks [@darioegb](https://github.com/darioegb)! - Components no longer depend on a global CSS reset (e.g. Tailwind preflight) to render correctly.
+
+  - `Tabs`: reset the `<button>` defaults (gray background, outset border) on tabs.
+  - `Input` and `DatePicker`: set `box-sizing: border-box` so the field no longer overflows its container.
+  - `DatePicker`: reset the calendar day and month/year buttons (they showed the browser's default border and background).
+  - `date-utils`: `getDaysOfWeekByLanguage` returned the weekday headers shifted (e.g. `Thu Fri Sat…`) depending on the year and timezone; it now always returns Monday to Sunday.
+
 ## 0.1.0
 
 ### Minor Changes
