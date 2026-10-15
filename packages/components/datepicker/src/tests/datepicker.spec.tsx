@@ -234,6 +234,16 @@ describe('DatePicker component', () => {
     expect(input).toHaveValue('03/15/2025')
   })
 
+  it('rejects letters and uses a numeric keyboard', () => {
+    render(<DatePicker onChange={jest.fn()} />)
+    const input = screen.getByRole<HTMLInputElement>('textbox')
+
+    fireEvent.change(input, { target: { value: '03ab15cd2025' } })
+
+    expect(input).toHaveValue('03/15/2025')
+    expect(input).toHaveAttribute('inputmode', 'numeric')
+  })
+
   describe('typed dates', () => {
     beforeEach(() => {
       jest.useFakeTimers()

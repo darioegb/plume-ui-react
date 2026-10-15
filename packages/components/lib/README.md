@@ -20,17 +20,18 @@ To use this library in your React project, follow these steps:
    import '@plume-ui-react/lib/styles.css'
    ```   
 
-3. Import the components you need in your JavaScript or TypeScript files:
+3. Import the components you need, and wrap your app in `<ThemeProvider>` (both come from the same package; `@plume-ui-react/core` is already included and re-exported):
 
    ```javascript
-   import { Button, ... } from '@plume-ui-react/lib'
+   import { Button, ThemeProvider } from '@plume-ui-react/lib'
    ```
 
 4. Start using the components in your application:
 
    ```javascript
-   <Button label="Click Me!" />
-   ...
+   <ThemeProvider>
+     <Button label="Click Me!" />
+   </ThemeProvider>
    ```
 
 ## Contributions

@@ -45,15 +45,15 @@ Standalone apps that consume the **published npm packages** (not the workspace s
 
 ## Installation
 
-To use Plume UI React components, all you need to do is install the @plume-ui-react package and its peer dependencies:
+To use Plume UI React components, install the `@plume-ui-react/lib` package. It already includes and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and types); `react` and `react-dom` are peer dependencies:
 
 ```sh
   # with npm
-  $ npm install @plume-ui-react
+  $ npm install @plume-ui-react/lib
   # with yarn
-  $ yarn add @plume-ui-react
+  $ yarn add @plume-ui-react/lib
   # with pnpm
-  $ pnpm @plume-ui-react
+  $ pnpm add @plume-ui-react/lib
 ```
 
 ## Technologies

@@ -49,6 +49,7 @@
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "dependencies": {
     "@plume-ui-react/button": "workspace:*",
+    "@plume-ui-react/core": "workspace:*",
     "@plume-ui-react/datepicker": "workspace:*",
     "@plume-ui-react/input": "workspace:*",
     "@plume-ui-react/spinner": "workspace:*",

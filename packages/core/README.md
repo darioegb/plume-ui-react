@@ -1,76 +1,47 @@
 # Plume UI React Core
 
-The Plume UI Core is the foundational module for the Plume UI library of React components. It provides configuration options and basic types used throughout the library.
+The foundation of Plume UI: the theme tokens, the `<ThemeProvider>` and the shared types used by every component.
+
+> Most apps should install `@plume-ui-react/lib`, which already includes and re-exports everything in this package. Install `@plume-ui-react/core` on its own only when you use individual component packages (e.g. `@plume-ui-react/button`).
 
 ## Installation
-
-You can install the Plume UI Core module using your preferred package manager:
 
 ```sh
 npm install @plume-ui-react/core
 # Or
 yarn add @plume-ui-react/core
+# Or
+pnpm add @plume-ui-react/core
 ```
 
-## Configuration
+`react` and `react-dom` (>= 16.11) are peer dependencies.
 
-The Plume UI Core allows you to customize the default configuration for the entire Plume UI library. You can configure various aspects, but the primary configuration is related to color palettes.
+## Usage
 
-### Default Configuration
+Wrap your app in `<ThemeProvider>`. It serializes every design token to CSS variables (server-rendered, no per-request global state) and drives light/dark mode.
 
-The default configuration includes a set of predefined colors:
+```tsx
+import { ThemeProvider } from '@plume-ui-react/core'
 
-```javascript
-import { DefaultConfig } from '@plume-ui-react/core'
-
-const defaultConfig: DefaultConfig = {
-  colors: {
-    primary: 'rgb(99, 102, 241)',
-    secondary: 'rgb(107, 114, 128)',
-    info: 'rgb(59, 130, 246)',
-    warning: 'rgb(234, 179, 8)',
-    error: 'rgb(239, 68, 68)',
-    success: 'rgb(34, 197, 94)',
-    dark: 'rgb(31, 41, 55)',
-    light: 'rgb(250, 250, 250)',
-  },
+export function App({ children }) {
+  return (
+    <ThemeProvider defaultColorMode="system" theme={{ colors: { primary: { 500: '#5263ff' } } }}>
+      {children}
+    </ThemeProvider>
+  )
 }
 ```
 
-### Custom Configuration
+`theme` and `darkTheme` are deep-partials of the default theme, so you only override what you need. Read or switch the mode at runtime with `useTheme()`:
 
-You can override the default configuration by providing your custom configuration:
+```tsx
+import { useTheme } from '@plume-ui-react/core'
 
-```javascript
-import { setUserConfig } from '@plume-ui-react/core'
-
-const customConfig = {
-  colors: {
-    primary: 'your-primary-color',
-    // Add more custom color overrides as needed
-  },
-}
-
-setUserConfig(customConfig)
+const { colorMode, setColorMode } = useTheme() // setColorMode('light' | 'dark' | 'system')
 ```
 
-### Merged Configuration
+## Exports
 
-To access the merged configuration that combines the default and custom configurations, use the following function:
-
-```javascript
-import { getMergedConfig } from '@plume-ui-react/core'
-
-const mergedConfig = getMergedConfig()
-```
-
-## Types and Interfaces
-
-The Plume UI Core module exports various types and interfaces that are essential for consistent and type-safe usage across the Plume UI library. These include:
-
-- `DefaultConfig`: The default configuration structure.
-- `CustomUserConfig`: The user's custom configuration structure.
-- `PlumeUIConfig`: The merged configuration that combines the default and user configurations.
-- `ComponentProps`: Common component props that allow custom classes and styles to be applied.
-
-Additionally, it defines color palette types, sizing options, custom color palette interfaces, etc. to ensure consistent styling and theming across Plume UI components.
+- `ThemeProvider`, `useTheme`, `themeToCssVars`
+- `defaultTheme`, `defaultDarkTheme`
+- Types: `Theme`, `DeepPartial`, `ColorPalette`, `ShadeLevel`, `ComponentProps`, `Size`, `Shape`, `ColorScheme`, ...

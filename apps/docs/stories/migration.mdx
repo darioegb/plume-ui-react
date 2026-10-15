@@ -32,7 +32,7 @@ function App() {
 **After**
 
 ```tsx
-import { ThemeProvider } from '@plume-ui-react/core'
+import { ThemeProvider } from '@plume-ui-react/lib'
 
 function App() {
   return (
@@ -69,7 +69,7 @@ Pass `defaultColorMode` (`'light' | 'dark' | 'system'`) and/or override the dark
 palette with `darkTheme`. Read or switch the mode at runtime with `useTheme()`.
 
 ```tsx
-import { ThemeProvider, useTheme } from '@plume-ui-react/core'
+import { ThemeProvider, useTheme } from '@plume-ui-react/lib'
 
 function ThemeToggle() {
   const { colorMode, setColorMode } = useTheme()
