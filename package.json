@@ -18,7 +18,7 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changelog": "node scripts/changelog.js",
-    "changelog:commit": "git add . && git commit -am 'docs: add changelog' && git push origin changelog/main",
+    "changelog:commit": "git add . && git commit -am 'docs: add changelog' && git push --force origin changelog/main",
     "changeset": "changeset",
     "test": "turbo run test --filter=@plume-ui-react/docs^...",
     "test:coverage": "turbo run test:coverage --filter=@plume-ui-react/docs^...",

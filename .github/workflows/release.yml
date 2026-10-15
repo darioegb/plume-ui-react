@@ -40,14 +40,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if ! git ls-remote --exit-code --h origin changelog/main; then
-            git checkout main
-            git checkout -b changelog/main
-            git push origin changelog/main
-          else
-            git checkout changelog/main 
-            git pull origin main
-          fi
+          # changelog/main is a bot-owned branch: always rebuild it from main so it never diverges.
+          git fetch origin main
+          git checkout -B changelog/main origin/main
           pnpm changelog
           pnpm changelog:commit
           gh pr create --base main --head changelog/main --title "Update Root Changelog" --body "This pull request updates the Main Changelog of the monorepo."
