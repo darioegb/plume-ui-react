@@ -20,6 +20,10 @@ npm install
 npm run dev
 ```
 
+## Live demo
+
+<https://plume-ui-react.vercel.app>
+
 ## Deploy to Vercel (free Hobby plan)
 
 1. Push this repo to GitHub (already done).
