@@ -1,4 +1,4 @@
-# @plume-ui-react/color-utils
+# @plume-ui-react/date-utils
 
 ## 0.1.0
 
