@@ -1,5 +1,14 @@
 # @plume-ui-react/lib
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`61eb5ec22dd44ad493f965d1dab450a48321a25f`](https://github.com/darioegb/plume-ui-react/commit/61eb5ec22dd44ad493f965d1dab450a48321a25f)]:
+  - @plume-ui-react/tabs@0.1.1
+  - @plume-ui-react/input@0.1.1
+  - @plume-ui-react/datepicker@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
