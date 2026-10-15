@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useTheme } from '@plume-ui-react/core'
 import {
+  useTheme,
   Button,
   Input,
   Tabs,
