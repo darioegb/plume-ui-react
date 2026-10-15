@@ -73,7 +73,7 @@ export function Demo(): React.ReactElement {
       <section style={card}>
         <h2 style={{ margin: 0, fontSize: '1rem' }}>Input</h2>
         <Input placeholder="Type something…" colorScheme="primary" />
-        <Input placeholder="Phone (masked)" mask="(999) 999-9999" colorScheme="primary" />
+        <Input placeholder="Phone (masked)" mask="(###) ###-####" colorScheme="primary" />
       </section>
 
       <section style={card}>

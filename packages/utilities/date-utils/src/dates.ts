@@ -45,12 +45,12 @@ export function getDateFormatByLanguage(language?: string): string {
 export function getDaysOfWeekByLanguage(language?: string): string[] {
   const locale = getLocale(language)
   const daysOfWeek: string[] = []
-  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short' })
-  const currentYear = new Date().getUTCFullYear()
+  // Format in UTC so the local timezone can't shift the weekday.
+  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' })
 
+  // 2024-01-01 is a Monday; the calendar grid starts on Monday.
   for (let i = 0; i < 7; i++) {
-    const day = new Date(Date.UTC(currentYear, 0, 2))
-    day.setUTCDate(day.getUTCDate() + i)
+    const day = new Date(Date.UTC(2024, 0, 1 + i))
     const dayOfWeek = formatter.format(day).replace(/^\w/, (c) => c.toUpperCase())
     daysOfWeek.push(dayOfWeek)
   }

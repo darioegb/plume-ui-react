@@ -58,6 +58,12 @@ describe('DatePicker component', () => {
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
 
+  it('lists the weekday headers Monday to Sunday', () => {
+    render(<DatePicker isCalendar config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }} onChange={jest.fn()} />)
+    const headers = document.querySelector('[class*="daysOfWeek"]') as HTMLElement
+    expect(headers.textContent).toBe('MonTueWedThuFriSatSun')
+  })
+
   it('gives the calendar dialog an accessible name', () => {
     render(<DatePicker onChange={jest.fn()} />)
     openCalendar()
