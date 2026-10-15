@@ -1,4 +1,4 @@
-# @plume-ui-react/button
+# @plume-ui-react/datepicker
 
 ## 0.1.1
 
