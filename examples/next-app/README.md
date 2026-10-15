@@ -25,7 +25,12 @@ npm run dev
 1. Push this repo to GitHub (already done).
 2. In [Vercel](https://vercel.com/new), import `darioegb/plume-ui-react`.
 3. Set **Root Directory** to `examples/next-app`.
-4. Framework preset: **Next.js**. Keep the defaults and deploy.
+4. Deploy. The bundled `vercel.json` pins the framework to **Next.js** and the
+   install/build commands to **npm**.
 
-Because this example is excluded from the pnpm workspace, Vercel installs
-`@plume-ui-react/*` from npm — exactly what a real consumer would get.
+This example is excluded from the pnpm workspace and ships its own
+`package-lock.json`, so `vercel.json` makes Vercel run `npm install` inside this
+folder instead of a workspace-wide `pnpm install` at the repo root. That installs
+`@plume-ui-react/*` from npm — exactly what a real consumer would get — and avoids
+the root `pnpm-lock.yaml` (which pnpm 12 writes as a multi-document file that
+Vercel's bundled pnpm can't parse).
