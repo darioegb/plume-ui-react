@@ -1,8 +1,17 @@
 # `@plume-ui-react/use-mask`
 
-Input mask hook for Plume UI. Formats an input value as the user types, where
-`#` matches any single character and every other mask character is a literal
-that is auto-inserted.
+Input mask hook for Plume UI. Formats an input value as the user types and
+rejects characters that don't fit the mask.
+
+| Mask character | Accepts |
+| -------------- | ------- |
+| `#` | a digit (`0-9`) |
+| `A` | a letter |
+| `*` | a letter or a digit |
+| `\` | escapes the next character so it is a literal (e.g. `\A`) |
+| anything else | a literal, auto-inserted as the user types |
+
+`(###) ###-####` formats a phone number, `AA-####` takes two letters then four digits.
 
 ## Usage
 

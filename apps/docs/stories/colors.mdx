@@ -204,10 +204,9 @@ import { Meta, ColorPalette, ColorItem, Source } from '@storybook/addon-docs/blo
 
 1 - Wrap your app in `<ThemeProvider>` and pass your theme overrides:
 
-<Source code={`import { ThemeProvider } from '@plume-ui-react/core'
+<Source code={`import { ThemeProvider, type DeepPartial, type Theme } from '@plume-ui-react/lib'
 
-/** @type {import('@plume-ui-react/core').Theme}  */
-const userTheme = {
+const userTheme: DeepPartial<Theme> = {
   colors: {
     primary: {
       '50': '#e8f1ff',
@@ -247,6 +246,7 @@ In this example we are modifying the primary color and creating new color.
 you should also do the next step so that those colors are inferred.
 In the example we are using typescript's <strong>Module Augmentation</strong> to make this possible.
 This code can be placed in a new definition file or if you already have a global definition file add the code there.
+The augmentation targets `@plume-ui-react/core` (where the types are declared), so with a strict package manager such as pnpm add it as a dev dependency too.
 
 <Source code={`// typings.d.ts  
 import { ColorPalette, ShadeLevel } from '@plume-ui-react/core'

@@ -118,6 +118,7 @@ export function DatePickerInput({
     <>
       <Input
         disabled={disabled}
+        inputMode='numeric'
         mask={mask}
         onBlur={() => {
           onBlur?.({ startDate, endDate })

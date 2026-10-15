@@ -48,6 +48,41 @@ describe('applyMask', () => {
   it('returns an empty string for an empty value', () => {
     expect(applyMask('', '##/##')).toBe('')
   })
+
+  it('only accepts digits in a # slot', () => {
+    expect(applyMask('a5b5c1', '(###)')).toBe('(551')
+    expect(applyMask('abc', '###')).toBe('')
+    expect(applyMask('12ab34', '##/##')).toBe('12/34')
+  })
+
+  it('only accepts letters in an A slot', () => {
+    expect(applyMask('1a2b3c', 'AAA')).toBe('abc')
+    expect(applyMask('ñandú', 'AAAAA')).toBe('ñandú')
+  })
+
+  it('accepts letters and digits in a * slot and drops anything else', () => {
+    expect(applyMask('a-1_b', '***')).toBe('a1b')
+  })
+
+  it('combines slot types in one mask', () => {
+    expect(applyMask('ab12', 'AA-##')).toBe('ab-12')
+    expect(applyMask('12ab', 'AA-##')).toBe('ab')
+  })
+
+  it('treats an escaped slot character as a literal', () => {
+    expect(applyMask('12', '\\A##')).toBe('A12')
+    expect(applyMask('1234', '\\###')).toBe('#12')
+  })
+
+  it('does not leave a dangling literal when the next character is rejected', () => {
+    expect(applyMask('15a', '##/##')).toBe('15')
+    expect(applyMask('15/', '##/##')).toBe('15')
+  })
+
+  it('is idempotent for an already formatted value', () => {
+    const formatted = applyMask('5551234567', '(###) ###-####')
+    expect(applyMask(formatted, '(###) ###-####')).toBe(formatted)
+  })
 })
 
 describe('useMask', () => {

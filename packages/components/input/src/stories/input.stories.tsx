@@ -112,7 +112,7 @@ export default {
     mask: {
       control: 'text',
       description:
-        'Optional input mask. `#` matches any single character; every other character is a literal that is auto-inserted as the user types (e.g. `##/##/####`, `(###) ###-####`, `#### #### #### ####`).',
+        'Optional input mask. `#` accepts a digit, `A` a letter and `*` a letter or digit; characters that do not fit are rejected. Any other character is a literal auto-inserted as the user types, and `\\` escapes the next character (e.g. `##/##/####`, `(###) ###-####`, `AA-####`).',
       table: {
         type: { summary: 'string' },
       },
@@ -261,9 +261,9 @@ export const ControlledInput: Story = {
 }
 
 /**
- * The **mask** prop formats the value as the user types. It is fully generic:
- * `#` matches any single character and every other character is a literal that
- * is auto-inserted. Type only the digits and the separators appear on their own.
+ * The **mask** prop formats the value as the user types and rejects characters that don't fit.
+ * `#` accepts a digit, `A` a letter and `*` a letter or digit; every other character is a
+ * literal that is auto-inserted (use `\` to escape a slot character).
  */
 export const Masked: Story = {
   parameters: {
@@ -272,7 +272,9 @@ export const Masked: Story = {
         code: `<Input mask='##/##/####' placeholder='dd/mm/yyyy' />
 <Input mask='(###) ###-####' placeholder='(###) ###-####' />
 <Input mask='#### #### #### ####' placeholder='Card number' />
-<Input mask='##:##' placeholder='hh:mm' />`,
+<Input mask='##:##' placeholder='hh:mm' />
+<Input mask='AA-####' placeholder='Letters, then digits' />
+<Input mask='***-***' placeholder='Letters or digits' />`,
       },
     },
   },
@@ -282,6 +284,8 @@ export const Masked: Story = {
       <Input mask='(###) ###-####' placeholder='(###) ###-####' />
       <Input mask='#### #### #### ####' placeholder='Card number' />
       <Input mask='##:##' placeholder='hh:mm' />
+      <Input mask='AA-####' placeholder='Letters, then digits' />
+      <Input mask='***-***' placeholder='Letters or digits' />
     </div>
   ),
 }

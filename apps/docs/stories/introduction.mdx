@@ -27,15 +27,16 @@ yarn add @plume-ui-react/lib
 pnpm add @plume-ui-react/lib
 ```
 
-`react` and `react-dom` (>= 18) are peer dependencies.
+`react` and `react-dom` (>= 18) are peer dependencies. `@plume-ui-react/lib` already
+includes and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and
+types), so it is the only package you need to install.
 
 ## Quick start
 
 Wrap your app in `<ThemeProvider>` and import the stylesheet once:
 
 ```tsx
-import { ThemeProvider } from '@plume-ui-react/core'
-import { Button } from '@plume-ui-react/lib'
+import { Button, ThemeProvider } from '@plume-ui-react/lib'
 import '@plume-ui-react/lib/styles.css'
 
 export function App() {
