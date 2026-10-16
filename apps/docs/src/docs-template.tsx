@@ -44,7 +44,7 @@ function ButtonGroup({
         icon={
           <svg
             aria-hidden="true"
-            fill="black"
+            fill="currentColor"
             focusable="false"
             height="1.25rem"
             stroke="currentColor"
@@ -81,38 +81,25 @@ function ButtonGroup({
   )
 }
 
-function Footer(): ReactNode {
-  return (
-    <footer className="p-4">
-      <div className="container mx-auto text-center">
-        <p>&copy; Plume UI is created in 🇦🇷 by Dario E Gonzalez B</p>
-      </div>
-    </footer>
-  )
-}
-
 function DocsTemplate(): ReactNode {
   const componentName = extractWordBeforeDocsFromURL()
   return (
-    <>
-      <div className="container">
-        <Title />
-        <Description />
-        <ButtonGroup componentName={componentName} />
-        <h2>Import</h2>
-        <Source code={`import { ${componentName} } from '@plume-ui-react/lib'`} dark />
-        <h2>Usage</h2>
-        <Primary />
-        <h2>Inputs</h2>
-        <p>The component accepts the following inputs (props):</p>
-        <Controls />
-        <hr />
-        <h2>Additional variations</h2>
-        <p>Listed below are additional variations of the {componentName}.</p>
-        <Stories includePrimary={false} title="" />
-      </div>
-      <Footer />
-    </>
+    <div className="container">
+      <Title />
+      <Description />
+      <ButtonGroup componentName={componentName} />
+      <h2>Import</h2>
+      <Source code={`import { ${componentName} } from '@plume-ui-react/lib'`} dark />
+      <h2>Playground</h2>
+      <p>Edit the props in the table below to try the {componentName} live.</p>
+      <Primary />
+      <h2>Props</h2>
+      <Controls />
+      <hr />
+      <h2>Additional variations</h2>
+      <p>Listed below are additional variations of the {componentName}.</p>
+      <Stories includePrimary={false} title="" />
+    </div>
   )
 }
 

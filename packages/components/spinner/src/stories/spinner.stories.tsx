@@ -45,7 +45,7 @@ export default {
     },
     style: {
       description: 'Array of additional CSS styles for the Spinner.',
-      control: 'object',
+      control: false,
       table: {
         type: { summary: 'CSSProperties' },
       },

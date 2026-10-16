@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../globals.css'
 import DocsTemplate from '../src/docs-template'
+import Footer from '../src/footer'
 import { darkTheme, lightTheme } from './theme'
 
 // Mirrors the colorMode toggle onto docs pages.
@@ -29,6 +30,7 @@ const PlumeDocsContainer = ({
   return (
     <DocsContainer context={context} theme={colorMode === 'dark' ? darkTheme : lightTheme}>
       {children}
+      <Footer />
     </DocsContainer>
   )
 }
@@ -85,7 +87,7 @@ const preview: Preview = {
         <ThemeProvider
           key={colorMode}
           defaultColorMode={colorMode}
-          style={{ padding: '2rem' }}
+          style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}
         >
           {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
           <div data-bs-theme={colorMode}>

@@ -25,8 +25,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS class for the DatePicker.',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     value: {
-      control: 'object',
+      control: false,
       description: 'The DatePicker value.',
       table: {
         type: { summary: 'DateRange' },
@@ -88,7 +95,7 @@ export default {
       },
     },
     config: {
-      control: 'object',
+      control: false,
       description: 'Additional configuration options for the DatePicker.',
       table: {
         type: { summary: 'DatePickerConfig' },
@@ -225,7 +232,7 @@ export const Colors: Story = {
       setValue(newValue)
     }
     return (
-      <div className='grid gap-4 grid-cols-2'>
+      <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
         <DatePicker onChange={handleValueChange} placeholder='Default DatePicker' value={value} />
         <DatePicker
           colorScheme='primary'
@@ -368,7 +375,7 @@ export const Tailwind: Story = {
       setValue(newValue)
     }
     return (
-      <div className='flex flex-col gap-4 w-72'>
+      <div className='flex flex-col gap-4 w-72 max-w-full'>
         <DatePicker
           className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
           onChange={handleValueChange}
@@ -428,7 +435,7 @@ export const Bootstrap: Story = {
       setValue(newValue)
     }
     return (
-      <div className='d-flex flex-column gap-3' style={{ width: '18rem' }}>
+      <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
         <DatePicker
           className='form-control'
           onChange={handleValueChange}
