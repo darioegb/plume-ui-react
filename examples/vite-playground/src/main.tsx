@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from '@plume-ui-react/lib'
 import '@plume-ui-react/lib/styles.css'
 import { App } from './App'
+import { theme } from './theme'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider defaultColorMode="light">
+    <ThemeProvider defaultColorMode="light" theme={theme}>
       <App />
     </ThemeProvider>
   </StrictMode>,

@@ -9,11 +9,8 @@ import {
   TabPanels,
   TabPanel,
   DatePicker,
-  type DatePickerProps,
+  type DateRange,
 } from '@plume-ui-react/lib'
-
-// DateRange isn't exported by @plume-ui-react/lib@0.1.0, so derive it from the public prop.
-type DateRange = Parameters<DatePickerProps['onChange']>[0]
 
 const card: React.CSSProperties = {
   border: '1px solid var(--plume-border)',
@@ -32,13 +29,13 @@ export function App(): React.ReactElement {
     <main
       style={{
         minHeight: '100vh',
+        fontFamily: 'system-ui, sans-serif',
         maxWidth: 720,
         margin: '0 auto',
         padding: '2rem 1.25rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '1.5rem',
-        fontFamily: 'system-ui, sans-serif',
       }}
     >
       <header
@@ -66,6 +63,7 @@ export function App(): React.ReactElement {
           <Button colorScheme="primary" disabled>
             Disabled
           </Button>
+          <Button colorScheme="salmon">Salmon (custom)</Button>
         </div>
       </section>
 

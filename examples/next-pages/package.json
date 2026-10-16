@@ -1,6 +1,6 @@
 {
-  "name": "next-pages",
-  "version": "0.0.0",
+  "name": "plume-ui-react-next-pages",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,19 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@plume-ui-react/lib": "workspace:*",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "@plume-ui-react/lib": "^0.2.1",
+    "next": "^14.2.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@plume-ui-react/core": "workspace:*",
-    "autoprefixer": "10.4.15",
-    "eslint-config-custom": "workspace:*",
-    "eslint-config-next": "^15.5.28",
-    "next": "^15.5.28",
-    "prettier-config": "workspace:*",
-    "tailwind-config": "workspace:*",
-    "tailwindcss": "^3.4.19",
-    "tsconfig": "workspace:*"
+    "@types/node": "^20.16.11",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
   }
 }

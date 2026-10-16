@@ -1,7 +1,7 @@
 # Plume UI React — Vite Playground
 
 A minimal [Vite](https://vite.dev) + React app that consumes the **published npm
-packages** (`@plume-ui-react/lib` and `@plume-ui-react/core`) — not the workspace
+package** (`@plume-ui-react/lib`), not the workspace
 sources. Use it to try the components in a real app and tweak the code live.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground)
@@ -18,3 +18,5 @@ npm run dev
 - `<ThemeProvider>` with a light/dark toggle via `useTheme()`.
 - `Button`, `Input` (incl. masked), `Tabs` and `DatePicker` from `@plume-ui-react/lib`.
 - The bundled stylesheet imported from `@plume-ui-react/lib/styles.css`.
+- A custom theme in `src/theme.ts`, passed to `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon` color scheme.
+- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"` (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
