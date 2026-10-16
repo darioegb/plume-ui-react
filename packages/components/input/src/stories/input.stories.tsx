@@ -169,7 +169,7 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <div className='flex gap-4 items-center'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Input placeholder='Small Input' size='sm' />
       <Input placeholder='Medium Input' size='md' />
       <Input placeholder='Large Input' size='lg' />
@@ -194,7 +194,7 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-2 grid-rows-3'>
+    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
       <Input placeholder='Outline Input' variant='outline' />
       <Input placeholder='Underline Input' variant='underline' />
       <Input placeholder='Filled Input' variant='filled' />
@@ -222,7 +222,7 @@ export const Colors: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-3'>
+    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
       <Input colorScheme='primary' placeholder='Primary Input' />
       <Input colorScheme='secondary' placeholder='Secondary Input' />
       <Input colorScheme='info' placeholder='Info Input' />
@@ -323,7 +323,7 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <div className='flex flex-col gap-4 w-72'>
+    <div className='flex flex-col gap-4 w-72 max-w-full'>
       <Input
         className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
         placeholder='Default Input'
@@ -366,7 +366,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className='d-flex flex-column gap-3' style={{ width: '18rem' }}>
+    <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
       <Input className='form-control' placeholder='Default Input' variant='unstyled' />
       <Input className='form-control form-control-lg' placeholder='Large Input' variant='unstyled' />
       <Input className='form-control form-control-sm' placeholder='Small Input' variant='unstyled' />

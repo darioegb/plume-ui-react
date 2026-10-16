@@ -180,7 +180,7 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <div className='flex gap-4 items-center'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button colorScheme='primary' label='Small Button' size='sm' />
       <Button colorScheme='primary' label='Medium Button' size='md' />
       <Button colorScheme='primary' label='Large Button' size='lg' />
@@ -237,7 +237,7 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-3 grid-rows-2'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button colorScheme='primary' label='Solid Button' />
       <Button colorScheme='success' label='Outline Button' variant='outline' />
       <Button colorScheme='error' label='Link Button' variant='link' />
@@ -315,7 +315,7 @@ export const Colors: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-3'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button colorScheme='primary' label='Primary Button' />
       <Button colorScheme='secondary' label='Secondary Button' />
       <Button colorScheme='info' label='Info Button' />
@@ -404,7 +404,7 @@ export const Block: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '20em' }}>
+      <div style={{ width: '20em', maxWidth: '100%' }}>
         <Story />
       </div>
     ),
@@ -453,7 +453,7 @@ export const Busy: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-2'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button isBusy label='Busy Default Button' />
       <Button busyText='Loading...' isBusy label='Busy Button' />
     </div>
@@ -536,7 +536,7 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-3 grid-rows-2'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button
         className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded text-sm'
         label='Primary Button'
@@ -648,7 +648,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className='grid gap-4 grid-cols-3 grid-rows-2'>
+    <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button className='btn btn-primary bg-blue-600' label='Primary Button' variant='unstyled' />
       <Button className='btn btn-light' label='Soft Button' variant='unstyled' />
       <Button

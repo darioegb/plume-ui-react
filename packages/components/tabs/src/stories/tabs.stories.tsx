@@ -36,7 +36,7 @@ const commonTabs = (
 export default {
   title: 'Components/Tabs',
   component: Tabs,
-  decorators: [(Story) => <div style={{ width: '50vw' }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ width: '100%', maxWidth: '40rem' }}>{Story()}</div>],
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -181,7 +181,7 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <div className="flex gap-4 items-center">
+    <div className="flex flex-wrap justify-center items-center gap-4">
       <Tabs colorScheme="primary" size="sm">
         {commonTabs}
       </Tabs>
@@ -265,7 +265,7 @@ export const Orientations: Story = {
     },
   },
   render: () => (
-    <div className="grid gap-4 grid-cols-2">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
       <Tabs colorScheme="primary" orientation="horizontal">
         {commonTabs}
       </Tabs>
@@ -318,7 +318,7 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <div className="grid gap-4 grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
       <Tabs colorScheme="primary" variant="underline">
         {commonTabs}
       </Tabs>
@@ -370,7 +370,7 @@ export const Colors: Story = {
     },
   },
   render: () => (
-    <div className="grid gap-4 grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
       <Tabs>{commonTabs}</Tabs>
       <Tabs colorScheme="primary">{commonTabs}</Tabs>
       <Tabs colorScheme="secondary">{commonTabs}</Tabs>
