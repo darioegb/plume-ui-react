@@ -36,7 +36,6 @@ const commonTabs = (
 export default {
   title: 'Components/Tabs',
   component: Tabs,
-  decorators: [(Story) => <div style={{ width: '100%', maxWidth: '40rem' }}>{Story()}</div>],
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -45,7 +44,7 @@ export default {
         disable: false,
       },
     },
-    layout: 'centered',
+    layout: 'padded',
   },
   argTypes: {
     children: {

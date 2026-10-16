@@ -8,426 +8,144 @@
 
 <p align="center">A lightweight design system for React</p>
 
-![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/%40plume-ui-react%2Flib)
-![npm](https://img.shields.io/npm/dm/%40plume-ui-react%2Flib)
-![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/darioegb/plume-ui-react)
-![NPM](https://img.shields.io/npm/l/%40plume-ui-react%2Flib)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=darioegb_plume-ui-react&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=darioegb_plume-ui-react)
+<p align="center">
+  <img alt="Bundle size" src="https://img.shields.io/bundlejs/size/%40plume-ui-react%2Flib" />
+  <img alt="npm downloads" src="https://img.shields.io/npm/dm/%40plume-ui-react%2Flib" />
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/darioegb/plume-ui-react" />
+  <img alt="License" src="https://img.shields.io/npm/l/%40plume-ui-react%2Flib" />
+  <a href="https://sonarcloud.io/summary/new_code?id=darioegb_plume-ui-react"><img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=darioegb_plume-ui-react&metric=alert_status" /></a>
+</p>
 
+Components ship their own scoped styles and are themed entirely through CSS variables, so they adapt to your brand and switch between light and dark without runtime color math.
 
-## Table of Contents
+- **Themeable**: every design token is a CSS variable emitted by `<ThemeProvider>`.
+- **Light & dark**: built in, driven by a single `colorMode`.
+- **Framework-agnostic**: use the components as they are, or set `variant="unstyled"` and style them with Tailwind or Bootstrap.
+- **Typed**: written in TypeScript, with React 18 and 19 support.
 
-- 📚 [Documentation](#documentation)
-- 🧩 [Examples](#examples)
-- 📦 [Installation](#installation)
-- 🖥️ [Technologies](#technologies)
-- 🏃 [How to Run](#how-to-run)
-- 🧪 [Run Tests](#run-tests)
-- 🐛 [Found a bug? Missing a specific feature?](#issues)
-- ✍️ [Contributing](#contributing)
-- 📖 [Project definition](#project-definition)
-- 🌟 [Contributors](#contributors)
-- ⚖️ [License](#license)
+## Contents
+
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Components](#components)
+- [Examples](#examples)
+- [Development](#development)
+- [Releasing](#releasing)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Documentation
 
-The [documentation site](https://darioegb.github.io/plume-ui-react/) hosts the latest Storybook for Plume UI.
+The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for every component, plus the color palette, design tokens and framework integration guides.
+
+## Installation
+
+```sh
+npm install @plume-ui-react/lib
+# or
+pnpm add @plume-ui-react/lib
+# or
+yarn add @plume-ui-react/lib
+```
+
+`@plume-ui-react/lib` includes every component and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and types), so it is the only package you need. `react` and `react-dom` are peer dependencies.
+
+Import the stylesheet once and wrap your app in `<ThemeProvider>`:
+
+```tsx
+import '@plume-ui-react/lib/styles.css'
+import { Button, ThemeProvider } from '@plume-ui-react/lib'
+
+export function App() {
+  return (
+    <ThemeProvider defaultColorMode="light">
+      <Button colorScheme="primary" label="Click me" />
+    </ThemeProvider>
+  )
+}
+```
+
+## Components
+
+| Component | Docs |
+| --- | --- |
+| Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
+| DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
+| Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
+| Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
+| Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
+
+Each component is also published on its own (for example `@plume-ui-react/button`). With individual packages, install `@plume-ui-react/core` as well.
 
 ## Examples
 
 Standalone apps that consume the **published npm packages** (not the workspace sources):
 
-- **[Vite playground](examples/vite-playground)** — try the components live and tweak the code:
+- **[Vite playground](examples/vite-playground)**: try the components live and edit the code.
 
   [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground)
 
-- **[Next.js App Router](examples/next-app)** — SSR/RSC-safe `<ThemeProvider>` consumption, ready to deploy on Vercel.
-- **[Next.js Pages Router](examples/next-pages)** — local workspace example (uses `workspace:*`).
+- **[Next.js App Router](examples/next-app)**: SSR/RSC-safe `<ThemeProvider>` usage, deployed on Vercel.
+- **[Next.js Pages Router](examples/next-pages)**: uses the workspace packages (`workspace:*`).
 
+## Development
 
-## Installation
+This is a [pnpm](https://pnpm.io) + [Turborepo](https://turborepo.com) monorepo. Packages are bundled with [tsup](https://tsup.egoist.dev), documented with [Storybook](https://storybook.js.org) and tested with [Jest](https://jestjs.io) and Testing Library.
 
-To use Plume UI React components, install the `@plume-ui-react/lib` package. It already includes and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and types); `react` and `react-dom` are peer dependencies:
-
-```sh
-  # with npm
-  $ npm install @plume-ui-react/lib
-  # with yarn
-  $ yarn add @plume-ui-react/lib
-  # with pnpm
-  $ pnpm add @plume-ui-react/lib
-```
-
-## Technologies
-
-This guide explains how to use a React design system starter powered by:
-
-- 🏎 [Turborepo](https://turbo.build/repo) — High-performance build system for Monorepos
-- 🚀 [React](https://reactjs.org/) — JavaScript library for user interfaces
-- 🛠 [Tsup](https://github.com/egoist/tsup) — TypeScript bundler powered by esbuild
-- 📖 [Storybook](https://storybook.js.org/) — UI component environment powered by Vite
-
-As well as a few others tools preconfigured:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Changesets](https://github.com/changesets/changesets) for managing versioning and changelogs
-- [GitHub Actions](https://github.com/changesets/action) for fully automated package publishing
-
-Others tools preconfigured for docs an examples projects:
-
-- 🎨 [TailwindCss](https://tailwindcss.com/) - Utility-first CSS framework for rapidly building modern websites
-
-## How to run
-
-Run the following command for run docs:
+Requirements: Node.js 20 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
 
 ```sh
-turbo run dev --filter docs
+pnpm install
+pnpm dev            # Storybook with hot reload at http://localhost:6006
 ```
 
-Or use this one for run examples projects:
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Run the docs (Storybook) in development mode |
+| `pnpm build` | Build every publishable package |
+| `pnpm build:docs` | Build the packages and the static Storybook site (`apps/docs/storybook-static`) |
+| `pnpm build:examples` | Build the example apps |
+| `pnpm test` | Run the package tests |
+| `pnpm test:coverage` | Run the tests with coverage |
+| `pnpm lint` / `pnpm lint:fix` | Lint every package |
+| `pnpm changeset` | Describe a change that should be released |
+| `pnpm clean` | Remove build output and `node_modules` |
 
-```sh
-turbo run dev --filter='./examples/*'
+### Repository structure
+
+```text
+apps/
+  docs/                      Storybook documentation site
+examples/                    Example apps (Vite, Next.js App Router, Next.js Pages Router)
+packages/
+  components/<name>/         One package per component, with its stories and tests
+  components/lib/            @plume-ui-react/lib: all components in a single package
+  core/                      ThemeProvider, design tokens and shared types
+  hooks/<name>/              Shared hooks (use-mask, use-debounce, use-click-outside)
+  utilities/<name>/          Shared utilities (color, date, lazy, merge)
+  tailwind-config/           Tailwind preset that maps the design tokens to utilities
+  eslint-config-custom/      Shared ESLint config
+  jest-preset/               Shared Jest preset
+  tsconfig/                  Shared TypeScript configs
 ```
 
-### Useful Commands
+Component stories live next to each component (`packages/components/<name>/src/stories`) and are picked up by the docs app.
 
-- `pnpm build` - Build all packages, including the Storybook site
-- `pnpm dev` - Run all packages locally and preview with Storybook
-- `pnpm lint` - Lint all packages
-- `pnpm test` - Run package tests (you can also run separately on each package)
-- `pnpm changeset` - Generate a changeset
-- `pnpm clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
+## Releasing
 
-## Run Tests
+Versioning and publishing use [Changesets](https://github.com/changesets/changesets):
 
-```bash
-# Install dependencies if you didn't
-# Run tests
-$ pnpm run test
+1. If a pull request changes a published package, add a changeset with `pnpm changeset` and commit the generated file. Changes to the docs, examples or stories don't need one.
+2. When it is merged into `main`, the Release workflow opens (or updates) a **Version packages** pull request that bumps versions and updates the changelogs.
+3. Merging that pull request publishes the new versions to npm.
 
-# Run test coverage
-$ pnpm run test:coverage
-```
-
-## Issues
-
-Certainly! Here's a rephrased version of your content:
-
-"Please don't hesitate to open a new issue on the [Plume UI React](https://github.com/darioegb/plume-ui-react/issues) repository. Just provide a suitable title and description. If you've already resolved your issue and want to contribute, I'd be delighted to examine your pull request!"
+The documentation site is deployed to GitHub Pages on every push to `main`.
 
 ## Contributing
 
-Thank you for your interest in contributing to the Plume UI React project! Your collaboration is valuable in enhancing our Design System and making it even better. Here's how you can contribute:
-
-### Creating a Pull Request
-
-If you already have a solution for an issue or an enhancement you'd like to implement, we're excited to see it! Follow these steps to submit a Pull Request:
-
-1. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the Plume UI React repository to your GitHub account.
-2. Clone your fork to your local machine: `git clone https://github.com/darioegb/plume-ui-react.git`.
-3. Create a new branch for your contribution: `git checkout -b my-contribution`.
-4. Make your changes and ensure they adhere to our [style and contribution guidelines](CONTRIBUTING.md).
-5. Push your changes to your GitHub repository: `git push origin my-contribution`.
-6. Open a Pull Request from your branch to the main branch of the original repository.
-
-Our team will review your Pull Request and work with you to merge your contributions into the Design System.
-
-### Welcoming Contributors
-
-We value all our contributors, regardless of their level of experience. If you're new to contributing to open-source projects or design systems, don't hesitate to reach out if you need guidance or assistance. We're here to help you succeed!
-
-Thank you for being a part of the My Turbo Components community and for helping us build a robust and efficient Design System.
-
-## Project definition
-
-### Turborepo
-
-[Turborepo](https://turbo.build/repo) is a high-performance build system for JavaScript and TypeScript codebases. It was designed after the workflows used by massive software engineering organizations to ship code at scale. Turborepo abstracts the complex configuration needed for monorepos and provides fast, incremental builds with zero-configuration remote caching.
-
-Using Turborepo simplifies managing your design system monorepo, as you can have a single lint, build, test, and release process for all packages. [Learn more](https://vercel.com/blog/monorepos-are-changing-how-teams-build-software) about how monorepos improve your development workflow.
-
-### Apps & Packages
-
-This Turborepo includes the following packages and applications:
-
-- `apps/docs`: Component documentation site with Storybook
-- `examples`: Projects examples using the library
-- `packages/components/<component-name>`: Component package
-- `packages/components/lib`: UI Components library package
-- `packages/core`: Core UI Features
-- `packages/types`: Definitions of types
-- `packages/utilities/<utility-name>`: Utility package
-- `packages/tsconfig`: Shared `tsconfig.json`s used throughout the Turborepo
-- `packages/eslint-config-custom`: ESLint preset
-- `packages/jest-preset`: Jest preset
-- `packages/prettier-config`: Prettier preset
-
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/). Workspaces enables us to "hoist" dependencies that are shared between packages to the root `package.json`. This means smaller `node_modules` folders and a better local dev experience. To install a dependency for the entire monorepo, use the `-w` workspaces flag with `pnpm add`.
-
-This example sets up your `.gitignore` to exclude all generated files, other folders like `node_modules` used to store your dependencies.
-
-### Compilation
-
-To make the core library code work across all browsers, we need to compile the raw TypeScript and React code to plain JavaScript. We can accomplish this with `tsup`, which uses `esbuild` to greatly improve performance.
-
-Running `pnpm build` from the root of the Turborepo will run the `build` command defined in each package's `package.json` file. Turborepo runs each `build` in parallel and caches & hashes the output to speed up future builds.
-
-For `button`, the `build` command (`tsup`) use the component level setup:
-
-```typescript
-export default defineConfig((options) => ({
-  entry: ['src/index.ts'],
-  dts: true,
-  sourcemap: false,
-  clean: true,
-  minify: !options.watch,
-  format: ['cjs', 'esm'],
-  target: 'es2020',
-  tsconfig: 'tsconfig.json',
-  external: ['react'],
-  esbuildPlugins: [
-    {
-      name: 'css-module',
-      setup(build): void {
-        build.onResolve(
-          { filter: /\.module\.css$/, namespace: 'file' },
-          (args) => ({
-            path: `${args.path}#css-module`,
-            namespace: 'css-module',
-            pluginData: {
-              pathDir: path.join(args.resolveDir, args.path),
-            },
-          }),
-        )
-        build.onLoad(
-          { filter: /#css-module$/, namespace: 'css-module' },
-          async (args) => {
-            const { pluginData } = args as {
-              pluginData: { pathDir: string }
-            }
-            const source = await fsPromises.readFile(pluginData.pathDir, 'utf8')
-            let cssModule = {}
-            const result = await postcss([
-              postcssModules({
-                getJSON(_, json) {
-                  cssModule = json
-                },
-              }),
-            ]).process(source, { from: pluginData.pathDir })
-            return {
-              pluginData: { css: result.css },
-              contents: `import "${
-                pluginData.pathDir
-              }"; export default ${JSON.stringify(cssModule)}`,
-            }
-          },
-        )
-        build.onResolve(
-          { filter: /\.module\.css$/, namespace: 'css-module' },
-          (args) => ({
-            path: path.join(args.resolveDir, args.path, '#css-module-data'),
-            namespace: 'css-module',
-            pluginData: args.pluginData as { css: string },
-          }),
-        )
-        build.onLoad(
-          { filter: /#css-module-data$/, namespace: 'css-module' },
-          (args) => ({
-            contents: (args.pluginData as { css: string }).css,
-            loader: 'css',
-          }),
-        )
-      },
-    },
-  ],
-}))
-```
-
-`tsup` compiles `src/index.tsx`, which exports all of the components in the design system, into both ES Modules and CommonJS formats as well as their TypeScript types. The `package.json` for `any package, e.g button` then instructs the consumer to select the correct format:
-
-```json
-{
-  "name": "@plume-ui-react/button",
-  "version": "0.0.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "sideEffects": [
-    "**/*.module.css"
-  ],
-  "license": "MIT",
-  "files": [
-    "dist/**"
-  ],
-}
-```
-
-Run `pnpm build` to confirm compilation is working correctly. You should see a folder `packages/components/button/dist` which contains the compiled output.
-
-```bash
-packages
-  components
-  └── button
-    └── dist
-        ├── index.css   <-- Styles
-        ├── index.d.ts  <-- Types
-        ├── index.d.mts  <-- Types ES  Module format
-        ├── index.js    <-- CommonJS version
-        └── index.mjs   <-- ES Modules version
-```
-
-### Components
-
-Each file inside of `packages/components` is a component inside our design system. For example:
-
-```bash
-  apps
-    ...
-  packages
-    components
-      └── button
-      └── spinner
-  ...
-```
-
-### Storybook
-
-Storybook provides us with an interactive UI playground for our components. This allows us to preview our components in the browser and instantly see changes when developing locally. This example preconfigures Storybook to:
-
-- Use Vite to bundle stories instantly (in milliseconds)
-- Automatically find any stories inside the `stories/` folder
-- Write MDX for component documentation pages
-
-For example, here's the included Story for our `Button` component:
-
-```ts:apps/docs/stories/button.stories.tsx
-import React from 'react'
-import type { StoryObj, Meta } from '@storybook/react'
-// others imports ...
-
-/**
- * Enhance user interactions with the Button component,
- * featuring customizable styles for triggering actions within forms, dialogs, and other contexts.
- * With support for various sizes and states,
- * it facilitates actions such as form submissions, dialog interactions, and deletion or cancellation operations.
- */
-export default {
-  title: 'Components/Interaction/Button',
-  component: Button,
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      // don't forget adding this to new component documentation
-      toc: {
-        title: 'On this page',
-        disable: false,
-      },
-    },
-    layout: 'centered',
-  },
-  argTypes: {
-    children: {
-      control: 'object',
-      description: 'Content of the button (text, HTML elements, etc.).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    // others argTypes ...
-  },
-  args: {
-    disabled: false,
-    busy: false,
-  },
-} satisfies Meta<typeof Button>
-
-type Story = StoryObj<typeof Button>
-
-/**
- * This is the default button with only setting a **label** prop.
- */
-export const Default: Story = {
-  args: {
-    label: 'Default Button',
-  },
-}
-
-// Others stories ...
-
-```
-
-This example includes a few helpful Storybook scripts:
-
-- `pnpm dev`: Starts Storybook in dev mode with hot reloading at `localhost:6006`
-- `pnpm build`: Builds the Storybook UI and generates the static HTML files
-- `pnpm preview-storybook`: Starts a local server to view the generated Storybook UI
-
-### Versioning & Publishing Packages
-
-This example uses [Changesets](https://github.com/changesets/changesets) to manage versions, create changelogs, and publish to npm. It's preconfigured so you can start publishing packages immediately.
-
-You'll need to create an `NPM_TOKEN` and `GITHUB_TOKEN` and add it to your GitHub repository settings to enable access to npm. It's also worth installing the [Changesets bot](https://github.com/apps/changeset-bot) on your repository.
-
-### Generating the Changelog
-
-To generate your changelog, run `pnpm changeset` locally:
-
-1. **Which packages would you like to include?** – This shows which packages and changed and which have remained the same. By default, no packages are included. Press `space` to select the packages you want to include in the `changeset`.
-1. **Which packages should have a major bump?** – Press `space` to select the packages you want to bump versions for.
-1. If doing the first major version, confirm you want to release.
-1. Write a summary for the changes.
-1. Confirm the changeset looks as expected.
-1. A new Markdown file will be created in the `changeset` folder with the summary and a list of the packages included.
-
-### Releasing
-
-When you push your code to GitHub, the [GitHub Action](https://github.com/changesets/action) will run the `release` script defined in the root `package.json`:
-
-```bash
-turbo run build --filter=docs^... && changeset publish
-```
-
-Turborepo runs the `build` script for all publishable packages (excluding docs) and publishes the packages to npm. By default, this example includes `@plume-ui-react` as the npm organization. To change this, do the following:
-
-To publish packages to a private npm organization scope, **remove** the following from each of the `package.json`'s
-
-```diff
-- "publishConfig": {
--  "access": "public"
-- },
-```
-
-Inside that directory, you can run several commands:
-
-`pnpm run build`
-Build all apps and packages
-
-`pnpm run dev`
-Develop all apps and packages
-
-`pnpm run lint`
-Lint all apps and packages
-
-Turborepo will cache locally by default. For an additional
-speed boost, enable Remote Caching with Vercel by
-entering the following command:
-
-`pnpm dlx turbo login`
-
-We suggest that you begin by typing:
-
-```
-cd plume-ui-react
-pnpm dlx turbo login
-```
+Bug reports, ideas and pull requests are welcome. Please [open an issue](https://github.com/darioegb/plume-ui-react/issues) first for larger changes, and read the [contributing guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md). Commit messages follow [Conventional Commits](https://www.conventionalcommits.org) (checked by commitlint).
 
 ## Contributors
-
-Thanks goes to these wonderful people
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -442,4 +160,4 @@ Thanks goes to these wonderful people
 
 ## License
 
-This library is open-source and available under the [MIT License](./LICENSE) made by [Dario Gonzalez](https://github.com/darioegb) 🎸. You are free to use and modify it in your projects.
+[MIT](./LICENSE) © [Dario Gonzalez](https://github.com/darioegb)
