@@ -1,10 +1,12 @@
 <p align="center">
   <a href="https://darioegb.github.io/plume-ui-react/">
-    <img src="https://darioegb.github.io/plume-ui-react/logo.svg" alt="Plume UI logo" width="300" />
+    <img src="https://darioegb.github.io/plume-ui-react/logo.svg" alt="" width="72" />
   </a>
 </p>
 
-<h1 align="center">A Lightweight Design System for React</h1>
+<h1 align="center">Plume UI React</h1>
+
+<p align="center">A lightweight design system for React</p>
 
 ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/%40plume-ui-react%2Flib)
 ![npm](https://img.shields.io/npm/dm/%40plume-ui-react%2Flib)
