@@ -1,5 +1,18 @@
 # @plume-ui-react/lib
 
+## 0.2.1
+
+### Patch Changes
+
+- [#50](https://github.com/darioegb/plume-ui-react/pull/50) [`b01c51ad105c83e70e5e3078b6dff53e6990b1a5`](https://github.com/darioegb/plume-ui-react/commit/b01c51ad105c83e70e5e3078b6dff53e6990b1a5) Thanks [@darioegb](https://github.com/darioegb)! - `Input` and `DatePicker` no longer overflow narrow containers.
+
+  - The 18rem minimum width now applies only when there is room (`min(18rem, 100%)`), so the fields fit on small screens.
+  - An `Input` with `addonBefore` / `addonAfter` shrinks its field to keep the addons beside it, and addons no longer wrap.
+
+- Updated dependencies [[`b01c51ad105c83e70e5e3078b6dff53e6990b1a5`](https://github.com/darioegb/plume-ui-react/commit/b01c51ad105c83e70e5e3078b6dff53e6990b1a5)]:
+  - @plume-ui-react/input@0.2.1
+  - @plume-ui-react/datepicker@0.1.4
+
 ## 0.2.0
 
 ### Minor Changes
