@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/date-utils",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Locale-aware date helpers from Plume UI.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

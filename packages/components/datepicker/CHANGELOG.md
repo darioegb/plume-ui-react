@@ -1,5 +1,19 @@
 # @plume-ui-react/datepicker
 
+## 0.1.5
+
+### Patch Changes
+
+- [#54](https://github.com/darioegb/plume-ui-react/pull/54) [`970f86be2e56619272600a4d5fda59b6e2cb4648`](https://github.com/darioegb/plume-ui-react/commit/970f86be2e56619272600a4d5fda59b6e2cb4648) Thanks [@darioegb](https://github.com/darioegb)! - `DatePicker` reads typed dates in the active format instead of always assuming month/day/year.
+
+  - Typing `31/01/2026` with `language: 'es'` (or `31.01.2026` with `de`) now selects January 31, 2026; it used to resolve to a wrong date or an invalid one.
+  - Dates that don't exist, such as `02/31/2040`, are ignored instead of rolling over to the next month.
+  - `displayFormat` accepts the `dd`, `mm` and `yyyy` tokens in either case, so `DD/MM/YYYY` works for typing as well as for display.
+  - `date-utils`: `getDateFromDateString` takes an optional format (default `mm/dd/yyyy`), `validateFormatDate` also checks that the date exists, and `formatDate` accepts lowercase tokens.
+
+- Updated dependencies [[`970f86be2e56619272600a4d5fda59b6e2cb4648`](https://github.com/darioegb/plume-ui-react/commit/970f86be2e56619272600a4d5fda59b6e2cb4648)]:
+  - @plume-ui-react/date-utils@0.1.2
+
 ## 0.1.4
 
 ### Patch Changes
