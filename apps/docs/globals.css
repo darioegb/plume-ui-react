@@ -6,14 +6,39 @@
 
 div.sbdocs-wrapper {
   justify-content: flex-start;
-  gap: 5rem;
 }
 div.sbdocs-content {
-  max-width: 80vw;
+  min-width: 0;
 }
 
-div.container {
-  margin-left: 2rem;
+/* Wide props tables scroll on their own instead of widening the whole page. */
+table.docblock-argstable {
+  display: block;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  div.sbdocs-wrapper {
+    gap: 5rem;
+  }
+  div.sbdocs-content {
+    max-width: 80vw;
+  }
+  div.container {
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  div.sbdocs-wrapper {
+    padding-inline: 1rem;
+  }
+  div.sbdocs-content {
+    max-width: 100%;
+  }
+  div.container {
+    padding-inline: 0;
+  }
 }
 
 h1.sbdocs-title {

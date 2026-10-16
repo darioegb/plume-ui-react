@@ -61,7 +61,15 @@ addons.register('plume/theme-sync', (api) => {
     const navToggle = document.querySelector<HTMLButtonElement>('.plume-nav-toggle')
     if (navToggle && !navToggle.dataset.wired) {
       navToggle.dataset.wired = 'true'
-      navToggle.addEventListener('click', () => api.toggleNav())
+      navToggle.addEventListener('click', () => {
+        // Below 600px Storybook swaps the sidebar for a drawer that toggleNav() doesn't control,
+        // so delegate to its own bottom-bar button instead.
+        const mobileMenu = document.querySelector<HTMLButtonElement>(
+          'button[aria-label="Open navigation menu"]',
+        )
+        if (mobileMenu?.offsetParent) mobileMenu.click()
+        else api.toggleNav()
+      })
     }
     // The sidebar filters docs and tokens too, not only components.
     const search = document.querySelector<HTMLInputElement>('#storybook-explorer-searchfield')
@@ -97,6 +105,30 @@ addons.register('plume/theme-sync', (api) => {
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     if (!getStoredMode()) applyPreferredMode()
+  })
+
+  // Opening the mobile drawer runs showModal(), which focuses its first focusable element: the
+  // search field. That pops the on-screen keyboard and swaps the tree for "recently opened", so
+  // move that initial focus to the dialog itself (Tab still reaches the search field).
+  let openingMobileMenu = false
+  document.addEventListener(
+    'click',
+    (event) => {
+      const target = event.target as Element | null
+      if (target?.closest('.plume-nav-toggle, button[aria-label="Open navigation menu"]')) {
+        openingMobileMenu = true
+        setTimeout(() => (openingMobileMenu = false), 500)
+      }
+    },
+    true,
+  )
+  document.addEventListener('focusin', (event) => {
+    const target = event.target as HTMLElement
+    const drawer = target.closest<HTMLDialogElement>('#storybook-mobile-menu')
+    if (!openingMobileMenu || !drawer || target.id !== 'storybook-explorer-searchfield') return
+    openingMobileMenu = false
+    drawer.tabIndex = -1
+    drawer.focus()
   })
 
   const observer = new MutationObserver(injectToggle)
