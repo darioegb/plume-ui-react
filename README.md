@@ -79,14 +79,14 @@ Each component is also published on its own (for example `@plume-ui-react/button
 
 ## Examples
 
-Standalone apps that consume the **published npm packages** (not the workspace sources):
+Standalone apps that consume the **published npm packages** (not the workspace sources). All three render the same demo and use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
 
 - **[Vite playground](examples/vite-playground)**: try the components live and edit the code.
 
   [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground)
 
 - **[Next.js App Router](examples/next-app)**: SSR/RSC-safe `<ThemeProvider>` usage, deployed on Vercel.
-- **[Next.js Pages Router](examples/next-pages)**: uses the workspace packages (`workspace:*`).
+- **[Next.js Pages Router](examples/next-pages)**: `<ThemeProvider>` in `_app`, for apps on the Pages Router.
 
 ## Development
 
@@ -104,7 +104,6 @@ pnpm dev            # Storybook with hot reload at http://localhost:6006
 | `pnpm dev` | Run the docs (Storybook) in development mode |
 | `pnpm build` | Build every publishable package |
 | `pnpm build:docs` | Build the packages and the static Storybook site (`apps/docs/storybook-static`) |
-| `pnpm build:examples` | Build the example apps |
 | `pnpm test` | Run the package tests |
 | `pnpm test:coverage` | Run the tests with coverage |
 | `pnpm lint` / `pnpm lint:fix` | Lint every package |

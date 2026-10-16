@@ -1,7 +1,7 @@
 # Plume UI React — Next.js App Router example
 
 A [Next.js](https://nextjs.org) **App Router** app that consumes the **published npm
-packages** (`@plume-ui-react/lib` and `@plume-ui-react/core`). It demonstrates that
+package** (`@plume-ui-react/lib`). It demonstrates that
 `<ThemeProvider>` is **SSR/RSC-safe**: the theme is serialized to CSS variables and
 server-rendered, with no flash and no per-request global state leaking between users.
 
@@ -12,6 +12,8 @@ server-rendered, with no flash and no per-request global state leaking between u
 - `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>`.
 - `src/app/page.tsx` — Server Component that renders the client `<Demo />`.
 - `src/app/demo.tsx` — `'use client'` interactive showcase (`useTheme()` + components).
+- A custom theme in `src/theme.ts` (imported by `providers.tsx`), passed to `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon` color scheme.
+- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"` (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
 ## Run locally
 

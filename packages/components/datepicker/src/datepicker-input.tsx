@@ -58,13 +58,14 @@ export function DatePickerInput({
     if (![10, 23].includes(debouncedValue.length) || isButtonClick) {
       return
     }
+    const format = displayFormat ?? getDateFormatByLanguage(language)
 
     if (
       debouncedValue.length === 10 &&
       !isRange &&
       validateFormatDate(debouncedValue, language, displayFormat)
     ) {
-      const newStartDate = getDateFromDateString(debouncedValue)
+      const newStartDate = getDateFromDateString(debouncedValue, format)
       dispatch({
         type: 'SET_VALUE',
         payload: {
@@ -81,8 +82,8 @@ export function DatePickerInput({
       dispatch({
         type: 'SET_VALUE',
         payload: {
-          startDate: getDateFromDateString(startDateString),
-          endDate: getDateFromDateString(endDateString),
+          startDate: getDateFromDateString(startDateString, format),
+          endDate: getDateFromDateString(endDateString, format),
         },
       })
     }

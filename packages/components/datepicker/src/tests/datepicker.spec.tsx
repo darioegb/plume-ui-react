@@ -290,6 +290,49 @@ describe('DatePicker component', () => {
 
       expect(selector('year')).not.toHaveTextContent('2025')
     })
+
+    it.each([
+      ['es', '31/01/2026', 'Enero'],
+      ['de', '31.01.2026', 'Januar'],
+    ])('reads a typed date in the %s day-first format', (language, typed, month) => {
+      render(<DatePicker config={{ language }} onChange={jest.fn()} />)
+      const input = screen.getByRole('textbox')
+      fireEvent.change(input, { target: { value: '31012026' } })
+      expect(input).toHaveValue(typed)
+
+      act(() => {
+        jest.advanceTimersByTime(600)
+      })
+      openCalendar()
+
+      expect(selector('month')).toHaveTextContent(month)
+      expect(selector('year')).toHaveTextContent('2026')
+    })
+
+    it('reads a typed date with an uppercase displayFormat', () => {
+      render(<DatePicker displayFormat="DD/MM/YYYY" onChange={jest.fn()} />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '31012026' } })
+
+      act(() => {
+        jest.advanceTimersByTime(600)
+      })
+      openCalendar()
+
+      expect(selector('month')).toHaveTextContent('January')
+      expect(selector('year')).toHaveTextContent('2026')
+    })
+
+    it('ignores a typed date that does not exist', () => {
+      render(<DatePicker onChange={jest.fn()} />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '02312040' } })
+
+      act(() => {
+        jest.advanceTimersByTime(600)
+      })
+      openCalendar()
+
+      expect(selector('year')).not.toHaveTextContent('2040')
+    })
   })
 
   it('calls onBlur with the current value', () => {

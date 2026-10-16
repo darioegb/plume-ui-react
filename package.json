@@ -11,7 +11,6 @@
   "scripts": {
     "build": "turbo run build --filter=@plume-ui-react/docs^...",
     "build:docs": "turbo run build  --filter=./apps/*",
-    "build:examples": "turbo run build  --filter=./examples/*",
     "dev": "turbo run dev --no-cache --continue --filter=./apps/*",
     "lint": "turbo run lint --filter=@plume-ui-react/docs...",
     "lint:fix": "turbo run lint:fix --filter=@plume-ui-react/docs...",

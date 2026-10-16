@@ -1,38 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Plume UI React — Next.js Pages Router example
 
-## Getting Started
+A [Next.js](https://nextjs.org) **Pages Router** app that consumes the **published npm
+package** (`@plume-ui-react/lib`). It renders the same demo as the
+[App Router](../next-app) and [Vite](../vite-playground) examples; the difference is
+where `<ThemeProvider>` lives.
 
-First, run the development server:
+## Structure
+
+- `src/pages/_app.tsx` — imports `@plume-ui-react/lib/styles.css` and wraps every page
+  in `<ThemeProvider>`, so the theme is server-rendered with each page.
+- `src/pages/_document.tsx` — document shell (`lang`, base body styles).
+- `src/pages/index.tsx` — renders the `<Demo />`.
+- `src/components/demo.tsx` — interactive showcase (`useTheme()` + components).
+- A custom theme in `src/theme.ts`, passed to `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon` color scheme.
+- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"` (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
+
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This example is excluded from the pnpm workspace and ships its own
+`package-lock.json`, so it installs `@plume-ui-react/*` from npm, exactly like a
+real consumer.

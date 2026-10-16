@@ -1,8 +1,12 @@
-import '@/styles/globals.css'
-import '@plume-ui-react/lib/styles.css'
-import 'plume-ui.config'
 import type { AppProps } from 'next/app'
+import { ThemeProvider } from '@plume-ui-react/lib'
+import '@plume-ui-react/lib/styles.css'
+import { theme } from '@/theme'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ThemeProvider defaultColorMode="light" theme={theme}>
+      <Component {...pageProps} />
+    </ThemeProvider>
+  )
 }
