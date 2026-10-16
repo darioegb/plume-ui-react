@@ -1,87 +1,62 @@
-# Contributing to My Turbo Components
+# Contributing to Plume UI React
 
-Thank you for considering contributing to My Turbo Components. We welcome your help to improve and enhance our Design System. Please take a moment to review the following guidelines before contributing.
+Thanks for your interest in improving Plume UI React. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) before taking part.
 
-## Code of Conduct
+## Reporting issues
 
-Please review our [Code of Conduct](CODE_OF_CONDUCT.md) to understand the behavior we expect from contributors.
+[Open an issue](https://github.com/darioegb/plume-ui-react/issues) for bugs, feature requests or questions. For bugs, include the package and version, what you expected, what happened, and a minimal reproduction (the [Vite playground on StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground) is a quick way to share one). For larger changes, open an issue to discuss them before sending a pull request.
 
-## How to Contribute
+## Setting up
 
-### Reporting Issues
+Requirements: Node.js 20 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
 
-If you encounter a bug, have a feature request, or want to discuss improvements, please [open an issue](https://github.com/denismend/my-turbo-components/issues). Make sure to provide a clear and detailed description of the problem or suggestion.
+```sh
+git clone https://github.com/<your-user>/plume-ui-react.git
+cd plume-ui-react
+pnpm install
+pnpm dev   # Storybook at http://localhost:6006
+```
 
-### Making Changes
+The [root README](README.md#development) lists the available commands and the repository structure.
 
-1. Fork the repository to your GitHub account.
-2. Clone your fork to your local machine.
-3. Create a new branch for your contribution: `git checkout -b my-contribution`.
-4. Make your changes, following our coding conventions and guidelines.
-5. Test your changes thoroughly.
-6. Commit your changes with clear and concise commit messages.
+## Making changes
 
-### Commit Strategy
+1. Fork the repository and create a branch from `main` (see [Branch names](#branch-names)).
+2. Make your change. Component code, styles, stories and tests live together in `packages/components/<name>/src`.
+3. Add or update tests, and stories when the change is visible in the docs.
+4. Run `pnpm lint` and `pnpm test`, and check your change in Storybook.
+5. If you changed a published package, run `pnpm changeset` and commit the generated file (see [Changesets](#changesets)).
+6. Open a pull request against `main` describing what changed and why.
 
-We follow a clear commit strategy to maintain an organized record of changes in our repository. Below are some common commit categories you can use:
+## Commit messages
 
-- **fix**: Used for bug fixes.
-   - Example: `fix: Resolve text overflow issue in the login button`.
+Commits follow [Conventional Commits](https://www.conventionalcommits.org) and are checked by commitlint on every commit. Use a lowercase subject and, when it helps, the package as the scope:
 
-- **feat**: For new features or functionalities.
-   - Example: `feat: Add image carousel component`.
+```text
+<type>(<scope>): <subject>
+```
 
-- **docs**: Changes related to documentation.
-   - Example: `docs: Update installation guide`.
+| Type | Use for | Example |
+| --- | --- | --- |
+| `feat` | A new feature | `feat(tabs): add a segment variant` |
+| `fix` | A bug fix | `fix(input): fit addons on narrow screens` |
+| `docs` | Documentation, stories, READMEs | `docs(button): add an icon-only example` |
+| `refactor` | Code changes without behavior changes | `refactor(core): extract token serialization` |
+| `perf` | Performance improvements | `perf(datepicker): memoize the month grid` |
+| `test` | Adding or updating tests | `test(use-mask): cover escaped characters` |
+| `chore` | Tooling, dependencies, maintenance | `chore: update storybook to 9.1` |
+| `ci` | GitHub Actions workflows | `ci: cache the pnpm store` |
 
-- **perf**: Performance improvements.
-   - Example: `perf: Optimize image loading in the gallery`.
+## Branch names
 
-- **refactor**: Code refactoring without functional changes.
-   - Example: `refactor: Rearrange utility functions`.
+Name branches after the commit type: `feat/<topic>`, `fix/<topic>`, `docs/<topic>`, `chore/<topic>` (for example `fix/input-min-width`).
 
-- **chore**: Maintenance tasks or general chores.
-   - Example: `chore: Update project dependencies`.
+## Changesets
 
-- **test**: Additions or modifications to tests.
-   - Example: `test: Add unit tests for the button component`.
+Releases are managed with [Changesets](https://github.com/changesets/changesets). A pull request that changes a published package (`@plume-ui-react/*`) needs a changeset describing the change and its version bump (`patch`, `minor` or `major`). Changes limited to the docs app, examples, stories or READMEs don't need one.
 
-- **style**: Changes in code style or formatting.
-   - Example: `style: Apply code formatting according to style guidelines`.
-
-Using a clear convention in commit messages helps contributors quickly understand the purpose of each change and makes Pull Request reviews smoother.
-
-### Pull Request Guidelines
-
-7. Push your changes to your GitHub repository.
-8. Open a Pull Request (PR) to the `main` branch of the original repository.
-
-### Branching Model
-
-We use a branching model to structure branches in our repository. Here's a suggested model based on commit categories:
-
-- **main (or master)**: The main branch containing stable, production-ready code.
-
-- **feat/xxx**: Individual branches for new features or functionalities. 
-
-  Example: `feat/user-authentication`
-
-- **fix/xxx**: Branches for specific bug fixes.
-
-  Example: `fix/navigation-menu`
-
-- **docs/xxx**: Branches for documentation updates.
-
-  Example: `docs/update-installation-guide`
-
-- **perf/xxx**: Branches for performance improvements.
-
-  Example: `perf/image-loading-optimization`
-
-Following this structure, you can maintain an organized workflow for developing new features, fixing bugs, updating documentation, and enhancing performance in your Design System. It also facilitates collaboration among team members and keeps a clear record of project changes.
+After a pull request is merged, the Release workflow opens a **Version packages** pull request; merging it publishes to npm.
 
 ## License
 
-By contributing to My Turbo Components, you agree that your contributions will be licensed under the project's [MIT License](LICENSE).
-
-Thank you for your contributions and helping to improve My Turbo Components!
+By contributing, you agree that your contributions are licensed under the project's [MIT License](LICENSE).

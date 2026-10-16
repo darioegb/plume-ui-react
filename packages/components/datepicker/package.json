@@ -1,7 +1,7 @@
 {
   "name": "@plume-ui-react/datepicker",
   "version": "0.1.4",
-  "description": "A React component that is a datepicker.",
+  "description": "Plume UI DatePicker component for React, with date and date-range selection.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

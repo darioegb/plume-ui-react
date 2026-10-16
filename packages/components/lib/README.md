@@ -1,45 +1,54 @@
 # Plume UI React
 
-Welcome to the Plume UI React! This library provides a collection of reusable React components to enhance your web application development experience. You can easily integrate these components into your projects to save time and maintain a consistent user interface.
+A lightweight design system for React. Components ship their own scoped styles and are themed entirely through CSS variables, so they adapt to your brand and switch between light and dark without runtime color math.
+
+- **Themeable**: every design token is a CSS variable emitted by `<ThemeProvider>`.
+- **Light & dark**: built in, driven by a single `colorMode`.
+- **Framework-agnostic**: use the components as they are, or set `variant="unstyled"` and style them with Tailwind or Bootstrap.
+- **Typed**: written in TypeScript, with React 18 and 19 support.
 
 ## Installation
 
-To use this library in your React project, follow these steps:
+```sh
+npm install @plume-ui-react/lib
+# or
+pnpm add @plume-ui-react/lib
+# or
+yarn add @plume-ui-react/lib
+```
 
-1. Install the library using npm or yarn:
+This package includes every component and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and types), so it is the only one you need. `react` and `react-dom` are peer dependencies.
 
-   ```bash
-   npm install @plume-ui-react/lib
-   # Or
-   yarn add @plume-ui-react/lib
-   ```
+## Usage
 
-2. Import the stylesheet into your root component file:
+Import the stylesheet once and wrap your app in `<ThemeProvider>`:
 
-   ```javascript
-   import '@plume-ui-react/lib/styles.css'
-   ```   
+```tsx
+import '@plume-ui-react/lib/styles.css'
+import { Button, ThemeProvider } from '@plume-ui-react/lib'
 
-3. Import the components you need, and wrap your app in `<ThemeProvider>` (both come from the same package; `@plume-ui-react/core` is already included and re-exported):
+export function App() {
+  return (
+    <ThemeProvider defaultColorMode="light">
+      <Button colorScheme="primary" label="Click me" />
+    </ThemeProvider>
+  )
+}
+```
 
-   ```javascript
-   import { Button, ThemeProvider } from '@plume-ui-react/lib'
-   ```
+## Components
 
-4. Start using the components in your application:
+`Button`, `DatePicker`, `Input`, `Spinner` and `Tabs` (with `TabList`, `Tab`, `TabPanels` and `TabPanel`).
 
-   ```javascript
-   <ThemeProvider>
-     <Button label="Click Me!" />
-   </ThemeProvider>
-   ```
+The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for each one, plus the color palette, design tokens and framework integration guides.
 
-## Contributions
+## Links
 
-Contributions to this library are welcome! If you have a new component to add or improvements to existing ones, feel free to submit a pull request.
+- [Documentation](https://darioegb.github.io/plume-ui-react/)
+- [GitHub repository](https://github.com/darioegb/plume-ui-react)
+- [Changelog](https://github.com/darioegb/plume-ui-react/blob/main/packages/components/lib/CHANGELOG.md)
+- [Report an issue](https://github.com/darioegb/plume-ui-react/issues)
 
-## About
+## License
 
-This library is maintained by Darío Gonzalez. If you have any questions or need assistance, please reach out to us at darioegb@gmail.com.
-
-Thank you for using the Plume UI React Library. Happy coding!
+[MIT](https://github.com/darioegb/plume-ui-react/blob/main/LICENSE)

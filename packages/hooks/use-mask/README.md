@@ -13,6 +13,12 @@ rejects characters that don't fit the mask.
 
 `(###) ###-####` formats a phone number, `AA-####` takes two letters then four digits.
 
+## Installation
+
+```sh
+npm install @plume-ui-react/use-mask
+```
+
 ## Usage
 
 ```tsx
@@ -29,3 +35,7 @@ Works for controlled (`value`) and uncontrolled (`defaultValue`) usage. When no
 
 The pure `applyMask(value, mask)` helper is also exported for formatting a value
 outside of React.
+
+## License
+
+[MIT](https://github.com/darioegb/plume-ui-react/blob/main/LICENSE)

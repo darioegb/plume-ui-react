@@ -1,7 +1,7 @@
 {
   "name": "@plume-ui-react/button",
   "version": "0.1.0",
-  "description": "A React component that is a button.",
+  "description": "Plume UI Button component for React.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

@@ -1,7 +1,7 @@
 {
   "name": "@plume-ui-react/tabs",
   "version": "0.1.1",
-  "description": "A React component that is a button.",
+  "description": "Plume UI Tabs components for React.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
