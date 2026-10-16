@@ -1,7 +1,7 @@
 {
   "name": "@plume-ui-react/lazy-utils",
   "version": "0.1.0",
-  "description": "",
+  "description": "Helper to lazy-render React content, from Plume UI.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

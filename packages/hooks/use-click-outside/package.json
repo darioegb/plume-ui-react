@@ -1,7 +1,7 @@
 {
   "name": "@plume-ui-react/use-click-outside",
   "version": "0.1.0",
-  "description": "Debounce hook for Plume UI lib",
+  "description": "React hook that detects clicks outside an element, from Plume UI.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
