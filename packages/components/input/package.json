@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/input",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Plume UI Input component for React, with addons, inline elements and input masks.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
