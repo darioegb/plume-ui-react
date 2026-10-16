@@ -4,8 +4,12 @@ A [Next.js](https://nextjs.org) **Pages Router** app that uses the Plume UI pack
 
 ## Structure
 
-- `src/pages/_app.tsx`: imports `@plume-ui-react/lib/styles.css` and wraps every page in `<ThemeProvider>`, overriding the primary color through the `theme` prop.
-- `src/components/ButtonList.tsx`: Plume buttons with built-in variants, color schemes, a busy state and Tailwind classes on `variant="unstyled"`.
+- `src/pages/_app.tsx`: imports `@plume-ui-react/lib/styles.css` and wraps every page in `<ThemeProvider>` with the custom theme.
+- `src/theme.ts`: the theme overrides. It replaces the `primary` palette and adds a custom `salmon` color scheme.
+- `typings.d.ts`: extends `ColorPalette` (module augmentation on `@plume-ui-react/core`) so TypeScript accepts `colorScheme="salmon"`.
+- `src/components/ButtonList.tsx`: Plume buttons with built-in variants, the custom `salmon` scheme, a busy state and Tailwind classes on `variant="unstyled"`.
+
+See [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs) in the docs for the same steps.
 
 ## Run locally
 

@@ -65,7 +65,7 @@ export default function ButtonList() {
         shape="rounded"
         size="lg"
         variant="outline"
-        colorScheme="brown"
+        colorScheme="salmon"
         label="Button Outline"
         onClick={handleClick}
       />
