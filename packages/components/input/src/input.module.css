@@ -19,7 +19,7 @@ input {
   color: input-color;
   display: block;
   height: var(--plume-space-10);
-  min-width: 18rem;
+  min-width: min(18rem, 100%);
   padding-inline: input-padding;
   position: relative;
   width: 100%;
@@ -105,6 +105,17 @@ input {
   position: relative;
   display: flex;
   border-radius: input-border-radius;
+  min-width: min(18rem, 100%);
+}
+
+.inputGroup > .input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.inputGroup > .addOn {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .inputGroup:has(.outline, .filled) > .addOn {
