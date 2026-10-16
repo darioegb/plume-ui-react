@@ -25,8 +25,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS class for the DatePicker.',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     value: {
-      control: 'object',
+      control: false,
       description: 'The DatePicker value.',
       table: {
         type: { summary: 'DateRange' },
@@ -88,7 +95,7 @@ export default {
       },
     },
     config: {
-      control: 'object',
+      control: false,
       description: 'Additional configuration options for the DatePicker.',
       table: {
         type: { summary: 'DatePickerConfig' },

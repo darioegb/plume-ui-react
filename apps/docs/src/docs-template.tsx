@@ -90,10 +90,10 @@ function DocsTemplate(): ReactNode {
       <ButtonGroup componentName={componentName} />
       <h2>Import</h2>
       <Source code={`import { ${componentName} } from '@plume-ui-react/lib'`} dark />
-      <h2>Usage</h2>
+      <h2>Playground</h2>
+      <p>Edit the props in the table below to try the {componentName} live.</p>
       <Primary />
-      <h2>Inputs</h2>
-      <p>The component accepts the following inputs (props):</p>
+      <h2>Props</h2>
       <Controls />
       <hr />
       <h2>Additional variations</h2>

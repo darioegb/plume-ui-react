@@ -23,6 +23,13 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS class for the Input.',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     colorScheme: {
       control: 'select',
       description: 'Color of the input.',

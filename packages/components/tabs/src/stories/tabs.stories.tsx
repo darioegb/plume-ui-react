@@ -48,6 +48,20 @@ export default {
     layout: 'centered',
   },
   argTypes: {
+    children: {
+      control: false,
+      description: 'A TabList with its Tab items and the matching TabPanels.',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    className: {
+      control: 'text',
+      description: 'Custom CSS class for the Tabs.',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     index: {
       control: 'number',
       description: 'Index of the initially active tab.',

@@ -23,7 +23,7 @@ export default {
   },
   argTypes: {
     children: {
-      control: 'object',
+      control: false,
       description: 'Content of the Button (text, HTML elements, etc.).',
       table: {
         type: { summary: 'ReactNode' },
@@ -38,7 +38,7 @@ export default {
     },
     style: {
       description: 'Array of additional CSS styles for the Button.',
-      control: 'object',
+      control: false,
       table: {
         type: { summary: 'CSSProperties' },
       },
@@ -80,14 +80,14 @@ export default {
       },
     },
     iconLeft: {
-      control: 'object',
+      control: false,
       description: 'Icon to be displayed on the left side of the Button.',
       table: {
         type: { summary: 'ReactNode' },
       },
     },
     iconRight: {
-      control: 'object',
+      control: false,
       description: 'Icon to be displayed on the right side of the Button.',
       if: { arg: 'children', truthy: false },
       table: {
