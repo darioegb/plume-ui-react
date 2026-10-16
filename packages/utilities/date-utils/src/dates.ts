@@ -14,7 +14,10 @@ function formatDateRegex(displayFormat: string): RegExp {
     yyyy: '\\d{4}',
   }
 
-  const regexFormat = displayFormat.replace(/dd|mm|yyyy/g, (match) => formatMap[match])
+  const regexFormat = displayFormat
+    .toLowerCase()
+    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/dd|mm|yyyy/g, (match) => formatMap[match])
 
   return new RegExp(`^${regexFormat}$`)
 }
@@ -105,12 +108,12 @@ export function getDateStringByLanguage({
 
 export function formatDate(date: Date, displayFormat: string): string {
   const map: Record<string, string> = {
-    YYYY: String(date.getFullYear()),
-    MM: String(date.getMonth() + 1).padStart(2, '0'),
-    DD: String(date.getDate()).padStart(2, '0'),
+    yyyy: String(date.getFullYear()),
+    mm: String(date.getMonth() + 1).padStart(2, '0'),
+    dd: String(date.getDate()).padStart(2, '0'),
   }
 
-  return displayFormat.replace(/YYYY|MM|DD/g, (match) => map[match])
+  return displayFormat.replace(/yyyy|mm|dd/gi, (match) => map[match.toLowerCase()])
 }
 
 export function validateFormatDate(
@@ -118,11 +121,19 @@ export function validateFormatDate(
   language: string,
   displayFormat?: string,
 ): boolean {
-  const regex = formatDateRegex(displayFormat ?? getDateFormatByLanguage(language))
-  return regex.test(dateString)
+  const format = displayFormat ?? getDateFormatByLanguage(language)
+  if (!formatDateRegex(format).test(dateString)) {
+    return false
+  }
+  const date = getDateFromDateString(dateString, format)
+  return !Number.isNaN(date.getTime()) && formatDate(date, format) === dateString
 }
 
-export function getDateFromDateString(dateString: string): Date {
-  const [month, day, year] = dateString.split(/[/-]/)
-  return new Date(Number(year), Number(month) - 1, Number(day))
+export function getDateFromDateString(dateString: string, displayFormat = 'mm/dd/yyyy'): Date {
+  const format = displayFormat.toLowerCase()
+  const part = (token: string): number => {
+    const index = format.indexOf(token)
+    return index === -1 ? Number.NaN : Number(dateString.slice(index, index + token.length))
+  }
+  return new Date(part('yyyy'), part('mm') - 1, part('dd'))
 }
