@@ -10,5 +10,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@plume-ui-react/docs", "next-pages"]
+  "ignore": ["@plume-ui-react/docs"]
 }
