@@ -54,6 +54,34 @@ export default {
         type: { summary: 'string' },
       },
     },
+    addonBefore: {
+      control: false,
+      description: 'Content attached before the Input, outside its border (e.g. a URL prefix).',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    addonAfter: {
+      control: false,
+      description: 'Content attached after the Input, outside its border (e.g. a domain suffix).',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    elementBefore: {
+      control: false,
+      description: 'Element rendered inside the Input, before the text (e.g. an icon).',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    elementAfter: {
+      control: false,
+      description: 'Element rendered inside the Input, after the text (e.g. an icon).',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
     shape: {
       control: 'inline-radio',
       description: 'Shape style of the Input.',
@@ -132,24 +160,6 @@ export const Default: Story = {
     placeholder: 'Input Placeholder',
     readOnly: false,
     type: 'text',
-    addonAfter: (
-      <svg
-        className='flex-shrink-0 size-4 text-gray-500'
-        fill='none'
-        height='24'
-        stroke='currentColor'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        strokeWidth='2'
-        viewBox='0 0 24 24'
-        width='24'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2' />
-        <circle cx='12' cy='7' r='4' />
-      </svg>
-    ),
-    // elementBefore: <button>Click</button>
   },
 }
 
@@ -229,6 +239,65 @@ export const Colors: Story = {
       <Input colorScheme='warning' placeholder='Warning Input' />
       <Input colorScheme='error' placeholder='Error Input' />
       <Input colorScheme='success' placeholder='Success Input' />
+    </div>
+  ),
+}
+
+const userIcon = (
+  <svg
+    aria-hidden='true'
+    fill='none'
+    height='16'
+    stroke='currentColor'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    strokeWidth='2'
+    viewBox='0 0 24 24'
+    width='16'
+  >
+    <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2' />
+    <circle cx='12' cy='7' r='4' />
+  </svg>
+)
+
+const searchIcon = (
+  <svg
+    aria-hidden='true'
+    fill='none'
+    height='16'
+    stroke='currentColor'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    strokeWidth='2'
+    viewBox='0 0 24 24'
+    width='16'
+  >
+    <circle cx='11' cy='11' r='8' />
+    <path d='m21 21-4.3-4.3' />
+  </svg>
+)
+
+/**
+ * **addonBefore** and **addonAfter** attach content outside the Input border, such as a URL
+ * prefix or a domain suffix. **elementBefore** and **elementAfter** place content inside the
+ * Input, usually an icon.
+ */
+export const AddonsAndElements: Story = {
+  name: 'Addons & elements',
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input addonBefore="https://" addonAfter=".com" placeholder="your-site" />
+<Input elementBefore={<UserIcon />} placeholder="Username" />
+<Input elementAfter={<SearchIcon />} placeholder="Search" />`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4'>
+      <Input addonAfter='.com' addonBefore='https://' placeholder='your-site' />
+      <Input elementBefore={userIcon} placeholder='Username' />
+      <Input elementAfter={searchIcon} placeholder='Search' />
     </div>
   ),
 }

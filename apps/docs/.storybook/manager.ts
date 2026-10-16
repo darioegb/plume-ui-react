@@ -67,7 +67,8 @@ addons.register('plume/theme-sync', (api) => {
         const mobileMenu = document.querySelector<HTMLButtonElement>(
           'button[aria-label="Open navigation menu"]',
         )
-        if (mobileMenu?.offsetParent) mobileMenu.click()
+        // Its bottom bar is hidden (see manager-head.html), so check the layout, not visibility.
+        if (mobileMenu && window.matchMedia('(max-width: 599px)').matches) mobileMenu.click()
         else api.toggleNav()
       })
     }
