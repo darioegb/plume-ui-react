@@ -10,7 +10,9 @@ describe('Textarea component', () => {
   })
 
   it('applies the rows, placeholder and length attributes', () => {
-    render(<Textarea aria-label="Bio" maxLength={200} minLength={10} placeholder="Tell us" rows={6} />)
+    render(
+      <Textarea aria-label="Bio" maxLength={200} minLength={10} placeholder="Tell us" rows={6} />,
+    )
     const textarea = screen.getByRole('textbox')
     expect(textarea).toHaveAttribute('rows', '6')
     expect(textarea).toHaveAttribute('placeholder', 'Tell us')
@@ -26,7 +28,13 @@ describe('Textarea component', () => {
   it('works as a controlled component', () => {
     function Controlled(): React.ReactNode {
       const [value, setValue] = useState('')
-      return <Textarea aria-label="Bio" onChange={(event) => setValue(event.target.value)} value={value} />
+      return (
+        <Textarea
+          aria-label="Bio"
+          onChange={(event) => setValue(event.target.value)}
+          value={value}
+        />
+      )
     }
     render(<Controlled />)
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'typed' } })
@@ -63,18 +71,28 @@ describe('Textarea component', () => {
 
     it('defaults to an outlined, rounded, medium textarea that resizes vertically', () => {
       render(<Textarea aria-label="Bio" />)
-      expect(screen.getByRole('textbox')).toHaveClass('base', 'outline', 'md', 'rounded', 'vertical')
+      expect(screen.getByRole('textbox')).toHaveClass(
+        'base',
+        'outline',
+        'md',
+        'rounded',
+        'vertical',
+      )
     })
 
     it('exposes the color scheme as a CSS variable', () => {
       render(<Textarea aria-label="Bio" colorScheme="success" />)
-      expect(screen.getByRole('textbox')).toHaveStyle('--textarea-color: var(--plume-color-success-text)')
+      expect(screen.getByRole('textbox')).toHaveStyle(
+        '--textarea-color: var(--plume-color-success-text)',
+      )
     })
 
     it('switches to the error scheme when it is invalid', () => {
       render(<Textarea aria-invalid aria-label="Bio" />)
       expect(screen.getByRole('textbox')).toHaveClass('invalid')
-      expect(screen.getByRole('textbox')).toHaveStyle('--textarea-color: var(--plume-color-error-text)')
+      expect(screen.getByRole('textbox')).toHaveStyle(
+        '--textarea-color: var(--plume-color-error-text)',
+      )
     })
 
     it('keeps className and lets style override the variable', () => {

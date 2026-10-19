@@ -1,6 +1,12 @@
 'use client'
 
-import type { ChangeEvent, CSSProperties, ForwardedRef, InputHTMLAttributes, MouseEvent } from 'react'
+import type {
+  ChangeEvent,
+  CSSProperties,
+  ForwardedRef,
+  InputHTMLAttributes,
+  MouseEvent,
+} from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import styles from './toggle.module.css'

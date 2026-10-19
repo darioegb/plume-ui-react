@@ -1,6 +1,12 @@
 'use client'
 
-import type { ChangeEvent, CSSProperties, ForwardedRef, InputHTMLAttributes, MouseEvent } from 'react'
+import type {
+  ChangeEvent,
+  CSSProperties,
+  ForwardedRef,
+  InputHTMLAttributes,
+  MouseEvent,
+} from 'react'
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import styles from './checkbox.module.css'
@@ -34,7 +40,9 @@ type CheckboxRootAttributes = Pick<
   | 'value'
 >
 
-export type CheckboxProps = Omit<ComponentProps, 'index'> & CheckboxRootAttributes & CheckboxOwnProps
+export type CheckboxProps = Omit<ComponentProps, 'index'> &
+  CheckboxRootAttributes &
+  CheckboxOwnProps
 
 const checkboxColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({

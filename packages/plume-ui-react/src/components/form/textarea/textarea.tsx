@@ -38,7 +38,9 @@ type TextareaRootAttributes = Pick<
   | 'wrap'
 >
 
-export type TextareaProps = Omit<ComponentProps, 'index'> & TextareaRootAttributes & TextareaOwnProps
+export type TextareaProps = Omit<ComponentProps, 'index'> &
+  TextareaRootAttributes &
+  TextareaOwnProps
 
 const textareaColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({

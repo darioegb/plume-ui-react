@@ -54,7 +54,8 @@ export default {
     },
     variant: {
       control: 'radio',
-      description: 'Visual variant. `unstyled` leaves the native switch so you can bring your own styles.',
+      description:
+        'Visual variant. `unstyled` leaves the native switch so you can bring your own styles.',
       options: ['solid', 'unstyled'],
       table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
     },
@@ -75,7 +76,8 @@ export default {
     },
     readOnly: {
       control: 'boolean',
-      description: 'Shows the state without letting the user change it. It also silences `onChange`.',
+      description:
+        'Shows the state without letting the user change it. It also silences `onChange`.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     required: {
@@ -110,7 +112,8 @@ export default {
     },
     'aria-describedby': {
       control: false,
-      description: 'Ids of the elements that describe the Toggle. A Field sets it for its helper and error text.',
+      description:
+        'Ids of the elements that describe the Toggle. A Field sets it for its helper and error text.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
@@ -121,7 +124,10 @@ export default {
     onChange: {
       control: false,
       description: 'Called when the user turns the Toggle on or off.',
-      table: { category: 'Events', type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
+      },
     },
     onBlur: {
       control: false,
@@ -151,10 +157,16 @@ export const Default: Story = {}
  */
 export const Sizes: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
-      <Toggle defaultChecked size='sm'>Small</Toggle>
-      <Toggle defaultChecked size='md'>Medium</Toggle>
-      <Toggle defaultChecked size='lg'>Large</Toggle>
+    <div className="flex flex-wrap justify-center items-center gap-6">
+      <Toggle defaultChecked size="sm">
+        Small
+      </Toggle>
+      <Toggle defaultChecked size="md">
+        Medium
+      </Toggle>
+      <Toggle defaultChecked size="lg">
+        Large
+      </Toggle>
     </div>
   ),
 }
@@ -164,9 +176,13 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
+    <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
-        <Toggle colorScheme={scheme as keyof typeof defaultTheme.colors} defaultChecked key={scheme}>
+        <Toggle
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          defaultChecked
+          key={scheme}
+        >
           {scheme}
         </Toggle>
       ))}
@@ -179,10 +195,14 @@ export const Colors: Story = {
  */
 export const DisabledAndReadOnly: Story = {
   render: () => (
-    <div className='flex flex-col gap-2'>
+    <div className="flex flex-col gap-2">
       <Toggle disabled>Disabled</Toggle>
-      <Toggle defaultChecked disabled>Disabled and on</Toggle>
-      <Toggle defaultChecked readOnly>Read only and on</Toggle>
+      <Toggle defaultChecked disabled>
+        Disabled and on
+      </Toggle>
+      <Toggle defaultChecked readOnly>
+        Read only and on
+      </Toggle>
     </div>
   ),
 }
@@ -201,7 +221,12 @@ export const Invalid: Story = {
  */
 export const WithField: Story = {
   render: () => (
-    <Field errorText='Turn notifications on to continue' helperText='We only send what matters' label='Alerts' required>
+    <Field
+      errorText="Turn notifications on to continue"
+      helperText="We only send what matters"
+      label="Alerts"
+      required
+    >
       <Toggle>Email notifications</Toggle>
     </Field>
   ),

@@ -55,7 +55,8 @@ export default {
     },
     variant: {
       control: 'radio',
-      description: 'Visual variant. `unstyled` leaves the native checkbox so you can bring your own styles.',
+      description:
+        'Visual variant. `unstyled` leaves the native checkbox so you can bring your own styles.',
       options: ['solid', 'unstyled'],
       table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
     },
@@ -81,7 +82,8 @@ export default {
     },
     readOnly: {
       control: 'boolean',
-      description: 'Shows the state without letting the user change it. It also silences `onChange`.',
+      description:
+        'Shows the state without letting the user change it. It also silences `onChange`.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     required: {
@@ -116,18 +118,23 @@ export default {
     },
     'aria-describedby': {
       control: false,
-      description: 'Ids of the elements that describe the Checkbox. A Field sets it for its helper and error text.',
+      description:
+        'Ids of the elements that describe the Checkbox. A Field sets it for its helper and error text.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description: 'Marks the Checkbox as invalid, which also switches it to the error color scheme.',
+      description:
+        'Marks the Checkbox as invalid, which also switches it to the error color scheme.',
       table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     onChange: {
       control: false,
       description: 'Called when the user checks or unchecks the Checkbox.',
-      table: { category: 'Events', type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
+      },
     },
     onBlur: {
       control: false,
@@ -157,10 +164,16 @@ export const Default: Story = {}
  */
 export const Sizes: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
-      <Checkbox defaultChecked size='sm'>Small</Checkbox>
-      <Checkbox defaultChecked size='md'>Medium</Checkbox>
-      <Checkbox defaultChecked size='lg'>Large</Checkbox>
+    <div className="flex flex-wrap justify-center items-center gap-6">
+      <Checkbox defaultChecked size="sm">
+        Small
+      </Checkbox>
+      <Checkbox defaultChecked size="md">
+        Medium
+      </Checkbox>
+      <Checkbox defaultChecked size="lg">
+        Large
+      </Checkbox>
     </div>
   ),
 }
@@ -170,9 +183,13 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
+    <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
-        <Checkbox colorScheme={scheme as keyof typeof defaultTheme.colors} defaultChecked key={scheme}>
+        <Checkbox
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          defaultChecked
+          key={scheme}
+        >
           {scheme}
         </Checkbox>
       ))}
@@ -188,7 +205,7 @@ function SelectAll(): React.ReactNode {
   const [selected, setSelected] = useState<string[]>(['Email'])
   const all = selected.length === options.length
   return (
-    <div className='flex flex-col gap-2'>
+    <div className="flex flex-col gap-2">
       <Checkbox
         checked={all}
         indeterminate={!all && selected.length > 0}
@@ -196,14 +213,16 @@ function SelectAll(): React.ReactNode {
       >
         All notifications
       </Checkbox>
-      <div className='flex flex-col gap-2 ps-6'>
+      <div className="flex flex-col gap-2 ps-6">
         {options.map((option) => (
           <Checkbox
             checked={selected.includes(option)}
             key={option}
             onChange={() =>
               setSelected((current) =>
-                current.includes(option) ? current.filter((item) => item !== option) : [...current, option],
+                current.includes(option)
+                  ? current.filter((item) => item !== option)
+                  : [...current, option],
               )
             }
           >
@@ -224,10 +243,14 @@ export const Indeterminate: Story = {
  */
 export const DisabledAndReadOnly: Story = {
   render: () => (
-    <div className='flex flex-col gap-2'>
+    <div className="flex flex-col gap-2">
       <Checkbox disabled>Disabled</Checkbox>
-      <Checkbox defaultChecked disabled>Disabled and checked</Checkbox>
-      <Checkbox defaultChecked readOnly>Read only and checked</Checkbox>
+      <Checkbox defaultChecked disabled>
+        Disabled and checked
+      </Checkbox>
+      <Checkbox defaultChecked readOnly>
+        Read only and checked
+      </Checkbox>
     </div>
   ),
 }
@@ -246,7 +269,12 @@ export const Invalid: Story = {
  */
 export const WithField: Story = {
   render: () => (
-    <Field errorText='You must accept the terms to continue' helperText='Read them before accepting' label='Terms' required>
+    <Field
+      errorText="You must accept the terms to continue"
+      helperText="Read them before accepting"
+      label="Terms"
+      required
+    >
       <Checkbox>I accept the terms and conditions</Checkbox>
     </Field>
   ),

@@ -149,18 +149,23 @@ export default {
     },
     'aria-describedby': {
       control: false,
-      description: 'Ids of the elements that describe the Textarea. A Field sets it for its helper and error text.',
+      description:
+        'Ids of the elements that describe the Textarea. A Field sets it for its helper and error text.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description: 'Marks the Textarea as invalid, which also switches it to the error color scheme.',
+      description:
+        'Marks the Textarea as invalid, which also switches it to the error color scheme.',
       table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     onChange: {
       control: false,
       description: 'Called when the user changes the text.',
-      table: { category: 'Events', type: { summary: '(event: ChangeEvent<HTMLTextAreaElement>) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: ChangeEvent<HTMLTextAreaElement>) => void' },
+      },
     },
     onBlur: {
       control: false,
@@ -192,10 +197,10 @@ export const Default: Story = {}
  */
 export const Variants: Story = {
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Textarea aria-label='Outline' placeholder='Outline' variant='outline' />
-      <Textarea aria-label='Filled' placeholder='Filled' variant='filled' />
-      <Textarea aria-label='Underline' placeholder='Underline' variant='underline' />
+    <div className="flex flex-col gap-4">
+      <Textarea aria-label="Outline" placeholder="Outline" variant="outline" />
+      <Textarea aria-label="Filled" placeholder="Filled" variant="filled" />
+      <Textarea aria-label="Underline" placeholder="Underline" variant="underline" />
     </div>
   ),
 }
@@ -205,10 +210,10 @@ export const Variants: Story = {
  */
 export const Sizes: Story = {
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Textarea aria-label='Small' placeholder='Small' size='sm' />
-      <Textarea aria-label='Medium' placeholder='Medium' size='md' />
-      <Textarea aria-label='Large' placeholder='Large' size='lg' />
+    <div className="flex flex-col gap-4">
+      <Textarea aria-label="Small" placeholder="Small" size="sm" />
+      <Textarea aria-label="Medium" placeholder="Medium" size="md" />
+      <Textarea aria-label="Large" placeholder="Large" size="lg" />
     </div>
   ),
 }
@@ -218,7 +223,7 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className='flex flex-col gap-4'>
+    <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
         <Textarea
           aria-label={scheme}
@@ -237,10 +242,10 @@ export const Colors: Story = {
  */
 export const RowsAndResize: Story = {
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Textarea aria-label='Six rows' placeholder='Six rows' rows={6} />
-      <Textarea aria-label='Not resizable' placeholder='Not resizable' resize='none' />
-      <Textarea aria-label='Resizable both ways' placeholder='Resizable both ways' resize='both' />
+    <div className="flex flex-col gap-4">
+      <Textarea aria-label="Six rows" placeholder="Six rows" rows={6} />
+      <Textarea aria-label="Not resizable" placeholder="Not resizable" resize="none" />
+      <Textarea aria-label="Resizable both ways" placeholder="Resizable both ways" resize="both" />
     </div>
   ),
 }
@@ -250,9 +255,9 @@ export const RowsAndResize: Story = {
  */
 export const DisabledAndReadOnly: Story = {
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Textarea aria-label='Disabled' disabled placeholder='Disabled' />
-      <Textarea aria-label='Read only' defaultValue='Read only text' readOnly />
+    <div className="flex flex-col gap-4">
+      <Textarea aria-label="Disabled" disabled placeholder="Disabled" />
+      <Textarea aria-label="Read only" defaultValue="Read only text" readOnly />
     </div>
   ),
 }
@@ -272,8 +277,13 @@ export const Invalid: Story = {
  */
 export const WithField: Story = {
   render: () => (
-    <Field errorText='Write at least 10 characters' helperText='Tell us about yourself' label='Bio' required>
-      <Textarea defaultValue='Too short' placeholder='Your bio' />
+    <Field
+      errorText="Write at least 10 characters"
+      helperText="Tell us about yourself"
+      label="Bio"
+      required
+    >
+      <Textarea defaultValue="Too short" placeholder="Your bio" />
     </Field>
   ),
 }
