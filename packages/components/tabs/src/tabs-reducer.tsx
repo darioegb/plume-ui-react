@@ -1,11 +1,13 @@
 import type { Size } from '@plume-ui-react/core'
-import type { TabsAlignment, TabsOwnProps, TabsVariant } from './tabs'
+import type { TabsAlignment, TabsOrientation, TabsOwnProps, TabsVariant } from './tabs'
 
 export interface TabsState extends TabsOwnProps {
   index: number
   alignment: TabsAlignment
+  baseId: string
   isLazy: boolean
   isStyled: boolean
+  orientation: TabsOrientation
   size: Size
   variant: TabsVariant
 }

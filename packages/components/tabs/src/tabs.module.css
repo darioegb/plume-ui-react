@@ -75,7 +75,12 @@
   justify-content: center;
   align-items: center;
   gap: var(--plume-space-2);
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+:is(.rounded, .segment) .tab {
+  border-radius: tabs-border-radius;
 }
 
 .vertical .underline .tab {
@@ -158,9 +163,17 @@
   color: color-mix(in hsl, var(--tabs-scheme), black 10%);
 }
 
-.tab:focus > span {
-  outline: var(--plume-space-1) solid color-mix(in hsl, var(--tabs-scheme), black 10%);
-  outline-offset: 0.125rem;
+.tab:focus-visible {
+  outline-color: var(--tabs-scheme);
+}
+
+.segment .tab:focus-visible {
+  outline-color: var(--tabs-text-color);
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--tabs-scheme);
+  outline-offset: 2px;
 }
 
 .vertical .panel {

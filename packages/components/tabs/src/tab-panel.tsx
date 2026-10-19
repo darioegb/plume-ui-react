@@ -2,27 +2,38 @@ import type { HTMLAttributes, LazyExoticComponent, ReactNode } from 'react'
 import { Suspense, createElement, forwardRef } from 'react'
 import { Spinner } from '@plume-ui-react/spinner'
 import { lazyLoadContent } from '@plume-ui-react/lazy-utils'
+import type { ComponentProps } from '@plume-ui-react/core'
 import styles from './tabs.module.css'
-import { useTabs } from './use-tabs'
+import { getPanelId, getTabId, useTabs } from './use-tabs'
 
-export type TabPanelProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'>
+export type TabPanelProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'> &
+  Pick<ComponentProps, 'index'>
 
-export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(({ children }, ref) => {
-  const { colorScheme, isLazy, isStyled } = useTabs()
+export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
+  ({ children, index = 0 }, ref) => {
+    const { baseId, colorScheme, isLazy, isStyled } = useTabs()
 
-  const tabContent = isLazy ? lazyLoadContent(children) : children
+    const tabContent = isLazy ? lazyLoadContent(children) : children
 
-  return (
-    <div aria-label="Tab Panel" className={isStyled ? styles.panel : ''} ref={ref} role="tabpanel">
-      {isLazy ? (
-        <Suspense fallback={<Spinner color={colorScheme} />}>
-          {createElement(tabContent as LazyExoticComponent<() => ReactNode>)}
-        </Suspense>
-      ) : (
-        (tabContent as ReactNode)
-      )}
-    </div>
-  )
-})
+    return (
+      <div
+        aria-labelledby={getTabId(baseId, index)}
+        className={isStyled ? styles.panel : ''}
+        id={getPanelId(baseId, index)}
+        ref={ref}
+        role="tabpanel"
+        tabIndex={0}
+      >
+        {isLazy ? (
+          <Suspense fallback={<Spinner color={colorScheme} />}>
+            {createElement(tabContent as LazyExoticComponent<() => ReactNode>)}
+          </Suspense>
+        ) : (
+          (tabContent as ReactNode)
+        )}
+      </div>
+    )
+  },
+)
 
 TabPanel.displayName = 'TabPanel'

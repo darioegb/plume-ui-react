@@ -2,14 +2,16 @@ import type { DateRange } from './datepicker'
 
  export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
 
+const nextMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+
 export const DATE_PICKER_INITIAL_STATE = {
   value: DEFAULT_DATE_PICKER_VALUE,
   tempValue: DEFAULT_DATE_PICKER_VALUE,
   modalOpen: false,
   year: new Date().getFullYear(),
-  secondYear: new Date().getFullYear(),
+  secondYear: nextMonth.getFullYear(),
   month: new Date().getMonth(),
-  secondMonth: new Date().getMonth() + 1,
+  secondMonth: nextMonth.getMonth(),
   rangeDays: [],
 }
 
@@ -28,6 +30,7 @@ export type DatePickerAction =
   | { type: 'SET_VALUE'; payload: DateRange }
   | { type: 'SET_TEMP_VALUE'; payload: DateRange }
   | { type: 'TOGGLE_MODAL' }
+  | { type: 'CLOSE_MODAL' }
   | { type: 'SET_YEAR'; payload: number }
   | { type: 'SET_SECOND_YEAR'; payload: number }
   | { type: 'SET_MONTH'; payload: number }
@@ -62,6 +65,8 @@ export const datePickerReducer = (
     }
     case 'TOGGLE_MODAL':
       return { ...state, modalOpen: !state.modalOpen }
+    case 'CLOSE_MODAL':
+      return state.modalOpen ? { ...state, modalOpen: false } : state
     case 'SET_YEAR':
       return { ...state, year: action.payload }
     case 'SET_SECOND_YEAR':

@@ -9,12 +9,19 @@ const defaultDateRangeValue = { startDate: null, endDate: null }
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
  * It supports single and range selection modes, configurable color schemes, and localization options.
+ *
+ * ### Keyboard
+ *
+ * Opening the calendar moves focus to the selected day, or to today.
+ * <kbd>←</kbd> <kbd>→</kbd> move one day, <kbd>↑</kbd> <kbd>↓</kbd> one week,
+ * <kbd>Home</kbd> / <kbd>End</kbd> to the start or end of the week and <kbd>PageUp</kbd> / <kbd>PageDown</kbd> one month.
+ * <kbd>Enter</kbd> picks the day and <kbd>Escape</kbd> closes the calendar; both return focus to the input.
  */
 export default {
   title: 'Components/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className='pb-[22rem]'>{Story()}</div>],
+  decorators: [(Story) => <div className='w-72 max-w-full pb-[22rem]'>{Story()}</div>],
   parameters: {
     docs: {
       toc: {

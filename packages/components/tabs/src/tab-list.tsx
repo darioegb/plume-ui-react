@@ -3,15 +3,18 @@ import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import styles from './tabs.module.css'
 import { useTabs } from './use-tabs'
 
-export type TabListProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'>
+export type TabListProps = Pick<
+  HTMLAttributes<HTMLDivElement>,
+  'aria-label' | 'aria-labelledby' | 'className' | 'id' | 'children'
+>
 
 export const TabList = forwardRef<HTMLDivElement, TabListProps>(
   ({ children, ...rest }: TabListProps, ref: Ref<HTMLDivElement>) => {
-    const { index, alignmentClass, isStyled, variantClass } = useTabs()
+    const { index, alignmentClass, isStyled, orientation, variantClass } = useTabs()
 
     return (
       <div
-        aria-label="Tab List"
+        aria-orientation={orientation}
         className={`${isStyled ? styles.tablist : ''} ${variantClass} ${alignmentClass}`.trim()}
         ref={ref}
         role="tablist"
