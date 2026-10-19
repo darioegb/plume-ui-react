@@ -1,8 +1,15 @@
 'use client'
 
-import type { ChangeEvent, CSSProperties, ForwardedRef, InputHTMLAttributes, MouseEvent } from 'react'
+import type {
+  ChangeEvent,
+  CSSProperties,
+  ForwardedRef,
+  InputHTMLAttributes,
+  MouseEvent,
+} from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
 export interface RadioOwnProps {
@@ -46,48 +53,71 @@ const radioColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPro
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   (
     {
+      checked,
       children,
       className = '',
-      colorScheme = 'primary',
+      colorScheme,
+      defaultChecked,
       disabled = false,
+      name,
       onChange,
       readOnly = false,
-      size = 'md',
+      required = false,
+      size,
       style,
+      value,
       variant = 'solid',
       ...rest
     }: RadioProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
+    const group = useRadioGroupContext()
     const isStyled = variant !== 'unstyled'
-    const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
-    const rootClasses = `${isStyled ? `${styles.root} ${styles[size]}` : ''} ${
-      disabled ? styles.disabled : ''
+    const isInvalid =
+      rest['aria-invalid'] === true || rest['aria-invalid'] === 'true' || Boolean(group?.invalid)
+    const isDisabled = disabled || Boolean(group?.disabled)
+    const isReadOnly = readOnly || Boolean(group?.readOnly)
+    const resolvedSize = size ?? group?.size ?? 'md'
+    const resolvedColorScheme = colorScheme ?? group?.colorScheme ?? 'primary'
+    const rootClasses = `${isStyled ? `${styles.root} ${styles[resolvedSize]}` : ''} ${
+      isDisabled ? styles.disabled : ''
     } ${className}`.trim()
     const inputClasses = isStyled
       ? `${styles.radio} ${isInvalid ? styles.invalid : ''}`.trim()
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
-      if (readOnly) event.preventDefault()
+      if (isReadOnly) event.preventDefault()
     }
 
-    const ignoreWhenReadOnly = (event: ChangeEvent<HTMLInputElement>): void => {
-      if (!readOnly) onChange?.(event)
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+      if (isReadOnly) return
+      onChange?.(event)
+      group?.select(String(value ?? ''), event)
     }
+
+    const stateProps = group
+      ? {
+          checked: group.value === String(value ?? ''),
+          name: group.name,
+          required: group.required || required,
+        }
+      : { checked, defaultChecked, name, required }
 
     return (
       <label
         className={rootClasses}
-        style={radioColorVars(isInvalid ? 'error' : colorScheme, style)}
+        style={radioColorVars(isInvalid ? 'error' : resolvedColorScheme, style)}
       >
         <input
           className={inputClasses}
-          disabled={disabled}
-          onChange={onChange ? ignoreWhenReadOnly : undefined}
+          disabled={isDisabled}
+          onChange={onChange || group ? handleChange : undefined}
           onClick={preventWhenReadOnly}
           ref={ref}
           type="radio"
+          value={value}
+          {...stateProps}
           {...rest}
         />
         {children ? <span className={isStyled ? styles.label : undefined}>{children}</span> : null}

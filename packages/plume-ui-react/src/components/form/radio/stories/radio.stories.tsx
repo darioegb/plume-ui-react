@@ -1,5 +1,4 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
 import { Radio } from '..'
@@ -8,8 +7,9 @@ const colorSchemes = Object.keys(defaultTheme.colors)
 
 /**
  * A radio to pick one option out of a few. Radios that share a **name** form a group, and the arrow keys move
- * the selection between them. It renders a native `<input type="radio">`, so it works with forms, labels and
- * the keyboard out of the box. Children become its label, and the `ref` points to the input.
+ * the selection between them. To manage the group's value, size and state in one place, wrap the radios in a
+ * `RadioGroup`. It renders a native `<input type="radio">`, so it works with forms, labels and the keyboard
+ * out of the box. Children become its label, and the `ref` points to the input.
  */
 export default {
   title: 'Components/Radio',
@@ -55,7 +55,8 @@ export default {
     },
     variant: {
       control: 'radio',
-      description: 'Visual variant. `unstyled` leaves the native radio so you can bring your own styles.',
+      description:
+        'Visual variant. `unstyled` leaves the native radio so you can bring your own styles.',
       options: ['solid', 'unstyled'],
       table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
     },
@@ -76,7 +77,8 @@ export default {
     },
     readOnly: {
       control: 'boolean',
-      description: 'Keeps the state without letting the user change it. It also silences `onChange`.',
+      description:
+        'Keeps the state without letting the user change it. It also silences `onChange`.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     required: {
@@ -111,7 +113,8 @@ export default {
     },
     'aria-describedby': {
       control: false,
-      description: 'Ids of the elements that describe the Radio. A Field sets it for its helper and error text.',
+      description:
+        'Ids of the elements that describe the Radio. A Field sets it for its helper and error text.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
@@ -122,7 +125,10 @@ export default {
     onChange: {
       control: false,
       description: 'Called when the user selects the Radio.',
-      table: { category: 'Events', type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
+      },
     },
     onBlur: {
       control: false,
@@ -152,10 +158,16 @@ export const Default: Story = {}
  */
 export const Sizes: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
-      <Radio defaultChecked size='sm'>Small</Radio>
-      <Radio defaultChecked size='md'>Medium</Radio>
-      <Radio defaultChecked size='lg'>Large</Radio>
+    <div className="flex flex-wrap justify-center items-center gap-6">
+      <Radio defaultChecked size="sm">
+        Small
+      </Radio>
+      <Radio defaultChecked size="md">
+        Medium
+      </Radio>
+      <Radio defaultChecked size="lg">
+        Large
+      </Radio>
     </div>
   ),
 }
@@ -165,7 +177,7 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-6'>
+    <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
         <Radio colorScheme={scheme as keyof typeof defaultTheme.colors} defaultChecked key={scheme}>
           {scheme}
@@ -178,33 +190,21 @@ export const Colors: Story = {
 /**
  * Radios with the same **name** are a group. Control it by comparing a value with each Radio's **checked**.
  */
-function PlanGroup(): React.ReactNode {
-  const plans = ['Free', 'Pro', 'Team']
-  const [plan, setPlan] = useState('Pro')
-  return (
-    <div aria-label='Plan' className='flex flex-col gap-2' role='radiogroup'>
-      {plans.map((option) => (
-        <Radio checked={plan === option} key={option} name='plan' onChange={() => setPlan(option)} value={option}>
-          {option}
-        </Radio>
-      ))}
-    </div>
-  )
-}
-
-export const Group: Story = {
-  render: () => <PlanGroup />,
-}
-
 /**
  * A **disabled** Radio can't be changed or focused. A **readOnly** one can be focused but not changed.
  */
 export const DisabledAndReadOnly: Story = {
   render: () => (
-    <div className='flex flex-col gap-2'>
-      <Radio disabled name='disabled-demo'>Disabled</Radio>
-      <Radio defaultChecked disabled name='disabled-demo'>Disabled and selected</Radio>
-      <Radio defaultChecked name='readonly-demo' readOnly>Read only and selected</Radio>
+    <div className="flex flex-col gap-2">
+      <Radio disabled name="disabled-demo">
+        Disabled
+      </Radio>
+      <Radio defaultChecked disabled name="disabled-demo">
+        Disabled and selected
+      </Radio>
+      <Radio defaultChecked name="readonly-demo" readOnly>
+        Read only and selected
+      </Radio>
     </div>
   ),
 }
@@ -223,8 +223,15 @@ export const Invalid: Story = {
  */
 export const WithField: Story = {
   render: () => (
-    <Field errorText='Pick a plan to continue' helperText='You can change it later' label='Plan' required>
-      <Radio name='plan-field' value='free'>Free plan</Radio>
+    <Field
+      errorText="Pick a plan to continue"
+      helperText="You can change it later"
+      label="Plan"
+      required
+    >
+      <Radio name="plan-field" value="free">
+        Free plan
+      </Radio>
     </Field>
   ),
 }

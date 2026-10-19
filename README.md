@@ -75,6 +75,7 @@ export function App() {
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | Radio | [Radio](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radio--docs) |
+| RadioGroup | [RadioGroup](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radiogroup--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |

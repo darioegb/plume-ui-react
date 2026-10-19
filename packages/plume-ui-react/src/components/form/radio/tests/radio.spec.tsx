@@ -35,7 +35,11 @@ describe('Radio component', () => {
   })
 
   it('starts selected with defaultChecked', () => {
-    render(<Radio defaultChecked value="free">Free</Radio>)
+    render(
+      <Radio defaultChecked value="free">
+        Free
+      </Radio>,
+    )
     expect(screen.getByRole('radio')).toBeChecked()
   })
 
@@ -97,7 +101,11 @@ describe('Radio component', () => {
 
   describe('disabled', () => {
     it('disables the input, marks the label and does not select', () => {
-      render(<Radio disabled value="free">Free</Radio>)
+      render(
+        <Radio disabled value="free">
+          Free
+        </Radio>,
+      )
       expect(screen.getByRole('radio')).toBeDisabled()
       expect(screen.getByRole('radio').closest('label')).toHaveClass('disabled')
       fireEvent.click(screen.getByText('Free'))
@@ -108,14 +116,22 @@ describe('Radio component', () => {
   describe('read only', () => {
     it('does not select and does not call onChange', () => {
       const onChange = vi.fn()
-      render(<Radio onChange={onChange} readOnly value="free">Free</Radio>)
+      render(
+        <Radio onChange={onChange} readOnly value="free">
+          Free
+        </Radio>,
+      )
       fireEvent.click(screen.getByRole('radio'))
       expect(screen.getByRole('radio')).not.toBeChecked()
       expect(onChange).not.toHaveBeenCalled()
     })
 
     it('works without an onChange handler', () => {
-      render(<Radio readOnly value="free">Free</Radio>)
+      render(
+        <Radio readOnly value="free">
+          Free
+        </Radio>,
+      )
       fireEvent.click(screen.getByRole('radio'))
       expect(screen.getByRole('radio')).not.toBeChecked()
     })
@@ -123,20 +139,32 @@ describe('Radio component', () => {
 
   describe('appearance', () => {
     it('applies the base, size and input classes', () => {
-      render(<Radio size="lg" value="x">Free</Radio>)
+      render(
+        <Radio size="lg" value="x">
+          Free
+        </Radio>,
+      )
       expect(screen.getByRole('radio').closest('label')).toHaveClass('root', 'lg')
       expect(screen.getByRole('radio')).toHaveClass('radio')
     })
 
     it('exposes the color scheme as CSS variables', () => {
-      render(<Radio colorScheme="success" value="x">Free</Radio>)
+      render(
+        <Radio colorScheme="success" value="x">
+          Free
+        </Radio>,
+      )
       expect(screen.getByRole('radio').closest('label')).toHaveStyle(
         '--radio-solid: var(--plume-color-success-solid)',
       )
     })
 
     it('switches to the error scheme when it is invalid', () => {
-      render(<Radio aria-invalid value="x">Free</Radio>)
+      render(
+        <Radio aria-invalid value="x">
+          Free
+        </Radio>,
+      )
       expect(screen.getByRole('radio')).toHaveClass('invalid')
       expect(screen.getByRole('radio').closest('label')).toHaveStyle(
         '--radio-solid: var(--plume-color-error-solid)',
@@ -145,7 +173,11 @@ describe('Radio component', () => {
 
     it('puts className and style on the label', () => {
       render(
-        <Radio className="custom" style={{ '--radio-solid': 'red' } as React.CSSProperties} value="x">
+        <Radio
+          className="custom"
+          style={{ '--radio-solid': 'red' } as React.CSSProperties}
+          value="x"
+        >
           Free
         </Radio>,
       )
@@ -169,7 +201,11 @@ describe('Radio component', () => {
 
   it('forwards the ref to the input', () => {
     const ref = createRef<HTMLInputElement>()
-    render(<Radio ref={ref} value="x">Free</Radio>)
+    render(
+      <Radio ref={ref} value="x">
+        Free
+      </Radio>,
+    )
     expect(ref.current).toBe(screen.getByRole('radio'))
   })
 

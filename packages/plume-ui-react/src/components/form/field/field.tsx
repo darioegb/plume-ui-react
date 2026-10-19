@@ -1,6 +1,9 @@
-import { Children, cloneElement, forwardRef, useId } from 'react'
+'use client'
+
+import { Children, cloneElement, forwardRef, useId, useMemo } from 'react'
 import type { ForwardedRef, ReactElement, ReactNode } from 'react'
 import type { ComponentProps } from '../../../theme'
+import { FieldContext } from './field-context'
 import styles from './field.module.css'
 
 export interface FieldOwnProps {
@@ -52,6 +55,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
     const control = Children.only(children)
     const controlProps = control.props
     const controlId = controlProps.id ?? `${baseId}-control`
+    const labelId = label ? `${baseId}-label` : undefined
     const helperId = `${baseId}-helper`
     const errorId = `${baseId}-error`
     const showError = invalid && Boolean(errorText)
@@ -61,44 +65,48 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
         .filter(Boolean)
         .join(' ') || undefined
 
+    const context = useMemo(() => ({ labelId }), [labelId])
+
     const fieldClasses = `${styles.field} ${styles[orientation]} ${
       disabled ? styles.disabled : ''
     } ${className}`.trim()
 
     return (
-      <div className={fieldClasses} ref={ref} style={style}>
-        {label ? (
-          <label className={styles.label} htmlFor={controlId}>
-            {label}
-            {required ? (
-              <span aria-hidden="true" className={styles.requiredIndicator}>
-                *
-              </span>
-            ) : null}
-            {!required && optionalText ? (
-              <span className={styles.optionalText}>{optionalText}</span>
-            ) : null}
-          </label>
-        ) : null}
-        {cloneElement(control, {
-          id: controlId,
-          'aria-describedby': describedBy,
-          'aria-invalid': invalid || controlProps['aria-invalid'] || undefined,
-          disabled: disabled || controlProps.disabled,
-          readOnly: readOnly || controlProps.readOnly,
-          required: required || controlProps.required,
-        })}
-        {helperText ? (
-          <p className={styles.helperText} id={helperId}>
-            {helperText}
-          </p>
-        ) : null}
-        {showError ? (
-          <p className={styles.errorText} id={errorId}>
-            {errorText}
-          </p>
-        ) : null}
-      </div>
+      <FieldContext.Provider value={context}>
+        <div className={fieldClasses} ref={ref} style={style}>
+          {label ? (
+            <label className={styles.label} htmlFor={controlId} id={labelId}>
+              {label}
+              {required ? (
+                <span aria-hidden="true" className={styles.requiredIndicator}>
+                  *
+                </span>
+              ) : null}
+              {!required && optionalText ? (
+                <span className={styles.optionalText}>{optionalText}</span>
+              ) : null}
+            </label>
+          ) : null}
+          {cloneElement(control, {
+            id: controlId,
+            'aria-describedby': describedBy,
+            'aria-invalid': invalid || controlProps['aria-invalid'] || undefined,
+            disabled: disabled || controlProps.disabled,
+            readOnly: readOnly || controlProps.readOnly,
+            required: required || controlProps.required,
+          })}
+          {helperText ? (
+            <p className={styles.helperText} id={helperId}>
+              {helperText}
+            </p>
+          ) : null}
+          {showError ? (
+            <p className={styles.errorText} id={errorId}>
+              {errorText}
+            </p>
+          ) : null}
+        </div>
+      </FieldContext.Provider>
     )
   },
 )

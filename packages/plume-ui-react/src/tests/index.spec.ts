@@ -9,6 +9,7 @@ describe('plume-ui-react', () => {
       'Field',
       'Input',
       'Radio',
+      'RadioGroup',
       'Spinner',
       'Tab',
       'TabList',
