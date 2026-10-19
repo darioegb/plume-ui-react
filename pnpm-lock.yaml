@@ -235,12 +235,9 @@ importers:
 
   apps/docs:
     dependencies:
-      '@plume-ui-react/core':
+      plume-ui-react:
         specifier: workspace:*
-        version: link:../../packages/core
-      '@plume-ui-react/lib':
-        specifier: workspace:*
-        version: link:../../packages/components/lib
+        version: link:../../packages/plume-ui-react
     devDependencies:
       '@storybook/addon-a11y':
         specifier: ^9.1.20
@@ -288,299 +285,6 @@ importers:
         specifier: ^7.0.0
         version: 7.3.7(@types/node@24.19.1)(jiti@1.21.7)(less@4.9.1(supports-color@8.1.1))(terser@5.51.2)(yaml@2.9.1)
 
-  packages/components/button:
-    dependencies:
-      '@plume-ui-react/color-utils':
-        specifier: workspace:*
-        version: link:../../utilities/color-utils
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@plume-ui-react/spinner':
-        specifier: workspace:*
-        version: link:../spinner
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/components/datepicker:
-    dependencies:
-      '@plume-ui-react/button':
-        specifier: workspace:*
-        version: link:../button
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@plume-ui-react/date-utils':
-        specifier: workspace:*
-        version: link:../../utilities/date-utils
-      '@plume-ui-react/input':
-        specifier: workspace:*
-        version: link:../input
-      '@plume-ui-react/use-click-outside':
-        specifier: workspace:*
-        version: link:../../hooks/use-click-outside
-      '@plume-ui-react/use-debounce':
-        specifier: workspace:*
-        version: link:../../hooks/use-debounce
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      react-hook-form:
-        specifier: 7.89.0
-        version: 7.89.0(@types/react@19.3.0)(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/components/field:
-    dependencies:
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-    devDependencies:
-      '@plume-ui-react/button':
-        specifier: workspace:*
-        version: link:../button
-      '@plume-ui-react/datepicker':
-        specifier: workspace:*
-        version: link:../datepicker
-      '@plume-ui-react/input':
-        specifier: workspace:*
-        version: link:../input
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      react-hook-form:
-        specifier: 7.89.0
-        version: 7.89.0(@types/react@19.3.0)(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-      typescript:
-        specifier: ^5.2.2
-        version: 5.9.3
-
-  packages/components/input:
-    dependencies:
-      '@plume-ui-react/button':
-        specifier: workspace:*
-        version: link:../button
-      '@plume-ui-react/color-utils':
-        specifier: workspace:*
-        version: link:../../utilities/color-utils
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@plume-ui-react/use-debounce':
-        specifier: workspace:*
-        version: link:../../hooks/use-debounce
-      '@plume-ui-react/use-mask':
-        specifier: workspace:*
-        version: link:../../hooks/use-mask
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      react-hook-form:
-        specifier: 7.89.0
-        version: 7.89.0(@types/react@19.3.0)(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/components/lib:
-    dependencies:
-      '@plume-ui-react/button':
-        specifier: workspace:*
-        version: link:../button
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@plume-ui-react/datepicker':
-        specifier: workspace:*
-        version: link:../datepicker
-      '@plume-ui-react/field':
-        specifier: workspace:*
-        version: link:../field
-      '@plume-ui-react/input':
-        specifier: workspace:*
-        version: link:../input
-      '@plume-ui-react/spinner':
-        specifier: workspace:*
-        version: link:../spinner
-      '@plume-ui-react/tabs':
-        specifier: workspace:*
-        version: link:../tabs
-      react-dom:
-        specifier: '>=16.11.0'
-        version: 19.3.0(react@19.3.0)
-    devDependencies:
-      '@types/react':
-        specifier: ^19.3.0
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: ^19.3.0
-        version: 19.3.0(@types/react@19.3.0)
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-      tsup:
-        specifier: ^8.5.1
-        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(supports-color@8.1.1)(typescript@5.9.3)(yaml@2.9.1)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.9.3
-
-  packages/components/spinner:
-    dependencies:
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-      typescript:
-        specifier: ^5.2.2
-        version: 5.9.3
-
-  packages/components/tabs:
-    dependencies:
-      '@plume-ui-react/button':
-        specifier: workspace:*
-        version: link:../button
-      '@plume-ui-react/core':
-        specifier: workspace:*
-        version: link:../../core
-      '@plume-ui-react/lazy-utils':
-        specifier: workspace:*
-        version: link:../../utilities/lazy-utils
-      '@plume-ui-react/spinner':
-        specifier: workspace:*
-        version: link:../spinner
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/core:
-    dependencies:
-      '@plume-ui-react/color-utils':
-        specifier: workspace:*
-        version: link:../utilities/color-utils
-      '@plume-ui-react/merge-utils':
-        specifier: workspace:*
-        version: link:../utilities/merge-utils
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../eslint-config-custom
-      prettier-config:
-        specifier: workspace:*
-        version: link:../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-
   packages/eslint-config-custom:
     dependencies:
       '@eslint/js':
@@ -610,69 +314,6 @@ importers:
       typescript-eslint:
         specifier: ^8.46.0
         version: 8.71.2(eslint@9.39.5(jiti@1.21.7)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
-
-  packages/hooks/use-click-outside:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/hooks/use-debounce:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/hooks/use-mask:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      jest-preset:
-        specifier: workspace:*
-        version: link:../../jest-preset
-      prettier-config:
-        specifier: workspace:*
-        version: link:../../prettier-config
-      react:
-        specifier: ^19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: ^19.3.0
-        version: 19.3.0(react@19.3.0)
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
 
   packages/jest-preset:
     dependencies:
@@ -704,6 +345,48 @@ importers:
         specifier: ^29.4.0
         version: 29.4.14(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.27.7)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.19.1)(esbuild-register@3.6.0(esbuild@0.27.7)(supports-color@8.1.1))(supports-color@8.1.1)(ts-node@10.9.2(@types/node@24.19.1)(typescript@5.9.3)))(typescript@5.9.3)
 
+  packages/plume-ui-react:
+    devDependencies:
+      '@types/react':
+        specifier: ^19.3.0
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: ^19.3.0
+        version: 19.3.0(@types/react@19.3.0)
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      jest-preset:
+        specifier: workspace:*
+        version: link:../jest-preset
+      postcss:
+        specifier: ^8.4.29
+        version: 8.5.29
+      postcss-modules:
+        specifier: ^6.0.0
+        version: 6.0.1(postcss@8.5.29)
+      prettier-config:
+        specifier: workspace:*
+        version: link:../prettier-config
+      react:
+        specifier: ^19.3.0
+        version: 19.3.0
+      react-dom:
+        specifier: ^19.3.0
+        version: 19.3.0(react@19.3.0)
+      react-hook-form:
+        specifier: 7.89.0
+        version: 7.89.0(@types/react@19.3.0)(react@19.3.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(supports-color@8.1.1)(typescript@5.9.3)(yaml@2.9.1)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.9.3
+
   packages/prettier-config:
     devDependencies:
       prettier:
@@ -717,42 +400,6 @@ importers:
         version: 3.4.19(yaml@2.9.1)
 
   packages/tsconfig: {}
-
-  packages/utilities/color-utils:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/utilities/date-utils:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/utilities/lazy-utils:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
-
-  packages/utilities/merge-utils:
-    devDependencies:
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../eslint-config-custom
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../tsconfig
 
 packages:
 

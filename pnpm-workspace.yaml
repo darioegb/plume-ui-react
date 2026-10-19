@@ -1,12 +1,8 @@
 packages:
   - "apps/*"
-  - "examples/*"
-  # Standalone consumption examples: resolve @plume-ui-react/* from npm, not the workspace.
-  - "!examples/vite-playground"
-  - "!examples/next-app"
-  - "!examples/next-pages"
+  # Standalone consumption examples: resolve plume-ui-react from npm, not the workspace.
+  - "!apps/example-*"
   - "packages/*"
-  - "packages/*/*"
 
 allowBuilds:
   '@parcel/watcher': false

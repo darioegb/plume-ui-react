@@ -1,0 +1,41 @@
+import * as plume from '..'
+
+describe('plume-ui-react', () => {
+  it('exports the components, theme, hooks and utilities from a single entry', () => {
+    expect(Object.keys(plume).sort()).toEqual([
+      'Button',
+      'DatePicker',
+      'Field',
+      'Input',
+      'Spinner',
+      'Tab',
+      'TabList',
+      'TabPanel',
+      'TabPanels',
+      'Tabs',
+      'ThemeProvider',
+      'applyMask',
+      'colorVar',
+      'deepMerge',
+      'defaultDarkTheme',
+      'defaultTheme',
+      'formatDate',
+      'getContrastColor',
+      'getContrastRatio',
+      'getDarkenColor',
+      'getDateFormatByLanguage',
+      'getDateFromDateString',
+      'getDateStringByLanguage',
+      'getDaysOfWeekByLanguage',
+      'getLightenColor',
+      'getMonthsByLanguage',
+      'lazyLoadContent',
+      'themeToCssVars',
+      'useClickOutside',
+      'useDebounce',
+      'useMask',
+      'useTheme',
+      'validateFormatDate',
+    ])
+  })
+})

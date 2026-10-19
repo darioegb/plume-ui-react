@@ -9,10 +9,10 @@
 <p align="center">A lightweight design system for React</p>
 
 <p align="center">
-  <img alt="Bundle size" src="https://img.shields.io/bundlejs/size/%40plume-ui-react%2Flib" />
-  <img alt="npm downloads" src="https://img.shields.io/npm/dm/%40plume-ui-react%2Flib" />
+  <img alt="Bundle size" src="https://img.shields.io/bundlejs/size/plume-ui-react" />
+  <img alt="npm downloads" src="https://img.shields.io/npm/dm/plume-ui-react" />
   <img alt="Last commit" src="https://img.shields.io/github/last-commit/darioegb/plume-ui-react" />
-  <img alt="License" src="https://img.shields.io/npm/l/%40plume-ui-react%2Flib" />
+  <img alt="License" src="https://img.shields.io/npm/l/plume-ui-react" />
   <a href="https://sonarcloud.io/summary/new_code?id=darioegb_plume-ui-react"><img alt="Quality Gate Status" src="https://sonarcloud.io/api/project_badges/measure?project=darioegb_plume-ui-react&metric=alert_status" /></a>
 </p>
 
@@ -41,20 +41,20 @@ The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live 
 ## Installation
 
 ```sh
-npm install @plume-ui-react/lib
+npm install plume-ui-react
 # or
-pnpm add @plume-ui-react/lib
+pnpm add plume-ui-react
 # or
-yarn add @plume-ui-react/lib
+yarn add plume-ui-react
 ```
 
-`@plume-ui-react/lib` includes every component and re-exports `@plume-ui-react/core` (`ThemeProvider`, `useTheme`, tokens and types), so it is the only package you need. `react` and `react-dom` are peer dependencies.
+`plume-ui-react` is the only package you need: it includes every component, the theme (`ThemeProvider`, `useTheme`, tokens and types), the hooks and the utilities. `react` and `react-dom` (>= 18) are peer dependencies.
 
 Import the stylesheet once and wrap your app in `<ThemeProvider>`:
 
 ```tsx
-import '@plume-ui-react/lib/styles.css'
-import { Button, ThemeProvider } from '@plume-ui-react/lib'
+import 'plume-ui-react/styles.css'
+import { Button, ThemeProvider } from 'plume-ui-react'
 
 export function App() {
   return (
@@ -76,18 +76,18 @@ export function App() {
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 
-Each component is also published on its own (for example `@plume-ui-react/button`). With individual packages, install `@plume-ui-react/core` as well.
+Coming from the `@plume-ui-react/*` packages? See the [migration guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-migration--docs).
 
 ## Examples
 
 Standalone apps that consume the **published npm packages** (not the workspace sources). All three render the same demo and use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
 
-- **[Vite playground](examples/vite-playground)**: try the components live and edit the code.
+- **[Vite playground](apps/example-vite)**: try the components live and edit the code.
 
-  [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground)
+  [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite)
 
-- **[Next.js App Router](examples/next-app)**: SSR/RSC-safe `<ThemeProvider>` usage, deployed on Vercel.
-- **[Next.js Pages Router](examples/next-pages)**: `<ThemeProvider>` in `_app`, for apps on the Pages Router.
+- **[Next.js App Router](apps/example-next-app)**: SSR/RSC-safe `<ThemeProvider>` usage, deployed on Vercel.
+- **[Next.js Pages Router](apps/example-next-pages)**: `<ThemeProvider>` in `_app`, for apps on the Pages Router.
 
 ## Development
 
@@ -103,9 +103,9 @@ pnpm dev            # Storybook with hot reload at http://localhost:6006
 | Command | Description |
 | --- | --- |
 | `pnpm dev` | Run the docs (Storybook) in development mode |
-| `pnpm build` | Build every publishable package |
+| `pnpm build` | Build the `plume-ui-react` package |
 | `pnpm build:docs` | Build the packages and the static Storybook site (`apps/docs/storybook-static`) |
-| `pnpm test` | Run the package tests |
+| `pnpm test` | Run the tests |
 | `pnpm test:coverage` | Run the tests with coverage |
 | `pnpm lint` / `pnpm lint:fix` | Lint every package |
 | `pnpm changeset` | Describe a change that should be released |
@@ -116,26 +116,26 @@ pnpm dev            # Storybook with hot reload at http://localhost:6006
 ```text
 apps/
   docs/                      Storybook documentation site
-examples/                    Example apps (Vite, Next.js App Router, Next.js Pages Router)
+  example-*/                 Example apps (Vite, Next.js App Router, Next.js Pages Router), outside the pnpm workspace
 packages/
-  components/<name>/         One package per component, with its stories and tests
-  components/lib/            @plume-ui-react/lib: all components in a single package
-  core/                      ThemeProvider, design tokens and shared types
-  hooks/<name>/              Shared hooks (use-mask, use-debounce, use-click-outside)
-  utilities/<name>/          Shared utilities (color, date, lazy, merge)
+  plume-ui-react/            The published package
+    src/components/<category>/<name>/   One folder per component, with its stories and tests
+    src/theme/               ThemeProvider, design tokens and shared types
+    src/hooks/               Shared hooks (use-mask, use-debounce, use-click-outside)
+    src/utils/               Shared utilities (color, date, lazy, merge)
   tailwind-config/           Tailwind preset that maps the design tokens to utilities
   eslint-config-custom/      Shared ESLint config
   jest-preset/               Shared Jest preset
   tsconfig/                  Shared TypeScript configs
 ```
 
-Component stories live next to each component (`packages/components/<name>/src/stories`) and are picked up by the docs app.
+Component stories live next to each component (`packages/plume-ui-react/src/components/<category>/<name>/stories`) and are picked up by the docs app.
 
 ## Releasing
 
 Versioning and publishing use [Changesets](https://github.com/changesets/changesets):
 
-1. If a pull request changes a published package, add a changeset with `pnpm changeset` and commit the generated file. Changes to the docs, examples or stories don't need one.
+1. If a pull request changes `plume-ui-react`, add a changeset with `pnpm changeset` and commit the generated file. Changes to the docs, examples or stories don't need one.
 2. When it is merged into `main`, the Release workflow opens (or updates) a **Version packages** pull request that bumps versions and updates the changelogs.
 3. Merging that pull request publishes the new versions to npm.
 

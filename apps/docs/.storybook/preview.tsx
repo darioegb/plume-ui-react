@@ -1,8 +1,8 @@
 import React from 'react'
 import type { Preview } from '@storybook/react-vite'
 import { DocsContainer } from '@storybook/addon-docs/blocks'
-import { ThemeProvider } from '@plume-ui-react/core'
-import '@plume-ui-react/lib/styles.css'
+import { ThemeProvider } from 'plume-ui-react'
+import 'plume-ui-react/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../globals.css'

@@ -1,9 +1,18 @@
 import type { ReactNode } from 'react'
-import { Title, Description, Primary, Controls, Source, Stories } from '@storybook/addon-docs/blocks'
-import { Button } from '@plume-ui-react/lib'
+import {
+  Title,
+  Description,
+  Primary,
+  Controls,
+  Source,
+  Stories,
+  useOf,
+} from '@storybook/addon-docs/blocks'
+import { Button } from 'plume-ui-react'
 
-const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/packages/components/'
-const NPM_URL = 'https://www.npmjs.com/package/@plume-ui-react/'
+const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/'
+const PACKAGE_NAME = 'plume-ui-react'
+const NPM_URL = `https://www.npmjs.com/package/${PACKAGE_NAME}`
 const COLOR_RED = 'red'
 
 interface IconLinkButtonProps {
@@ -30,17 +39,15 @@ function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): Re
   )
 }
 
-function ButtonGroup({
-  componentName,
-}: Readonly<{
-  componentName: string
-}>): ReactNode {
-  const componentNameLowerCase = componentName.toLowerCase()
+function getComponentSourcePath(storyFileName: string): string {
+  return storyFileName.slice(storyFileName.indexOf('packages/')).replace(/\/stories\/[^/]+$/, '')
+}
 
+function ButtonGroup({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode {
   return (
     <div className="flex gap-2" style={{ marginBlockEnd: '2rem' }}>
       <IconLinkButton
-        href={`${GITHUB_URL}${componentNameLowerCase}`}
+        href={`${GITHUB_URL}${sourcePath}`}
         icon={
           <svg
             aria-hidden="true"
@@ -59,7 +66,7 @@ function ButtonGroup({
         text="Source"
       />
       <IconLinkButton
-        href={`${NPM_URL}${componentNameLowerCase}`}
+        href={NPM_URL}
         icon={
           <svg
             aria-hidden="true"
@@ -75,7 +82,7 @@ function ButtonGroup({
             <path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z" />
           </svg>
         }
-        text={`@plume-ui-react/${componentNameLowerCase}`}
+        text={PACKAGE_NAME}
       />
     </div>
   )
@@ -83,13 +90,15 @@ function ButtonGroup({
 
 function DocsTemplate(): ReactNode {
   const componentName = extractWordBeforeDocsFromURL()
+  const { preparedMeta } = useOf('meta', ['meta'])
+  const sourcePath = getComponentSourcePath(String(preparedMeta.parameters.fileName))
   return (
     <div className="container">
       <Title />
       <Description />
-      <ButtonGroup componentName={componentName} />
+      <ButtonGroup sourcePath={sourcePath} />
       <h2>Import</h2>
-      <Source code={`import { ${componentName} } from '@plume-ui-react/lib'`} dark />
+      <Source code={`import { ${componentName} } from '${PACKAGE_NAME}'`} dark />
       <h2>Playground</h2>
       <p>Edit the props in the table below to try the {componentName} live.</p>
       <Primary />

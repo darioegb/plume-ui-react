@@ -4,7 +4,7 @@ Thanks for your interest in improving Plume UI React. Please read the [Code of C
 
 ## Reporting issues
 
-[Open an issue](https://github.com/darioegb/plume-ui-react/issues) for bugs, feature requests or questions. For bugs, include the package and version, what you expected, what happened, and a minimal reproduction (the [Vite playground on StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/examples/vite-playground) is a quick way to share one). For larger changes, open an issue to discuss them before sending a pull request.
+[Open an issue](https://github.com/darioegb/plume-ui-react/issues) for bugs, feature requests or questions. For bugs, include the package and version, what you expected, what happened, and a minimal reproduction (the [Vite playground on StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite) is a quick way to share one). For larger changes, open an issue to discuss them before sending a pull request.
 
 ## Setting up
 
@@ -22,10 +22,10 @@ The [root README](README.md#development) lists the available commands and the re
 ## Making changes
 
 1. Fork the repository and create a branch from `main` (see [Branch names](#branch-names)).
-2. Make your change. Component code, styles, stories and tests live together in `packages/components/<name>/src`.
+2. Make your change. Component code, styles, stories and tests live together in `packages/plume-ui-react/src/components/<category>/<name>`.
 3. Add or update tests, and stories when the change is visible in the docs.
 4. Run `pnpm lint` and `pnpm test`, and check your change in Storybook.
-5. If you changed a published package, run `pnpm changeset` and commit the generated file (see [Changesets](#changesets)).
+5. If you changed `plume-ui-react`, run `pnpm changeset` and commit the generated file (see [Changesets](#changesets)).
 6. Open a pull request against `main` describing what changed and why.
 
 ## Commit messages
@@ -53,7 +53,7 @@ Name branches after the commit type: `feat/<topic>`, `fix/<topic>`, `docs/<topic
 
 ## Changesets
 
-Releases are managed with [Changesets](https://github.com/changesets/changesets). A pull request that changes a published package (`@plume-ui-react/*`) needs a changeset describing the change and its version bump (`patch`, `minor` or `major`). Changes limited to the docs app, examples, stories or READMEs don't need one.
+Releases are managed with [Changesets](https://github.com/changesets/changesets). A pull request that changes the published package (`plume-ui-react`) needs a changeset describing the change and its version bump (`patch`, `minor` or `major`). Changes limited to the docs app, examples, stories or READMEs don't need one.
 
 After a pull request is merged, the Release workflow opens a **Version packages** pull request; merging it publishes to npm.
 

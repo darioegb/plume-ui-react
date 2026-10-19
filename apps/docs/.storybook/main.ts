@@ -4,7 +4,7 @@ const config: StorybookConfig = {
   stories: [
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../../packages/components/*/src/stories/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
+    '../../../packages/plume-ui-react/src/components/**/stories/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
   ],
   staticDirs: ['../public'],
   addons: [

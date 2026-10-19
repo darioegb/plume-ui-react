@@ -29,9 +29,9 @@ async function getLatestMergedPrInfo(repoOwner, repoName) {
     throw new Error('No merged "Version Packages" PR found')
   }
 
-  const versionMatch = pr.body?.match(/## @plume-ui-react\/lib@(\d+\.\d+\.\d+)/)
+  const versionMatch = pr.body?.match(/## plume-ui-react@(\d+\.\d+\.\d+)/)
   if (!versionMatch) {
-    throw new Error(`Could not read the lib version from PR #${pr.number}`)
+    throw new Error(`Could not read the plume-ui-react version from PR #${pr.number}`)
   }
 
   return {

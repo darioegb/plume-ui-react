@@ -1,0 +1,86 @@
+{
+  "name": "plume-ui-react",
+  "version": "0.0.0",
+  "description": "A lightweight TypeScript React UI component library, themed with CSS variables.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darioegb/plume-ui-react.git",
+    "directory": "packages/plume-ui-react"
+  },
+  "homepage": "https://darioegb.github.io/plume-ui-react/",
+  "bugs": "https://github.com/darioegb/plume-ui-react/issues",
+  "keywords": [
+    "react",
+    "typescript",
+    "components",
+    "ui",
+    "design-system",
+    "react-components",
+    "uikit",
+    "accessible",
+    "css-variables",
+    "ssr",
+    "plume-ui",
+    "plume-ui-react"
+  ],
+  "author": "Dario E Gonzalez B <darioegb@gmail.com>",
+  "jest": {
+    "preset": "jest-preset"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint-config-custom": "workspace:*",
+    "jest-preset": "workspace:*",
+    "postcss": "^8.4.29",
+    "postcss-modules": "^6.0.0",
+    "prettier-config": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-hook-form": "7.89.0",
+    "tsconfig": "workspace:*",
+    "tsup": "^8.5.1",
+    "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
