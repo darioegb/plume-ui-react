@@ -91,9 +91,9 @@ Standalone apps that consume the **published npm packages** (not the workspace s
 
 ## Development
 
-This is a [pnpm](https://pnpm.io) + [Turborepo](https://turborepo.com) monorepo. Packages are bundled with [tsup](https://tsup.egoist.dev), documented with [Storybook](https://storybook.js.org) and tested with [Jest](https://jestjs.io) and Testing Library.
+This is a [pnpm](https://pnpm.io) + [Turborepo](https://turborepo.com) monorepo. Packages are bundled with [tsup](https://tsup.egoist.dev), documented with [Storybook](https://storybook.js.org) and tested with [Vitest](https://vitest.dev) and Testing Library.
 
-Requirements: Node.js 20 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
+Requirements: Node.js 24 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
 
 ```sh
 pnpm install
@@ -125,7 +125,6 @@ packages/
     src/utils/               Shared utilities (color, date, lazy, merge)
   tailwind-config/           Tailwind preset that maps the design tokens to utilities
   eslint-config-custom/      Shared ESLint config
-  jest-preset/               Shared Jest preset
   tsconfig/                  Shared TypeScript configs
 ```
 

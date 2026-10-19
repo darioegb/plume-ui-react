@@ -107,7 +107,7 @@ describe('Field component', () => {
   it('wires a DatePicker the same way', () => {
     render(
       <Field errorText="Pick a date" label="Check-in" required>
-        <DatePicker onChange={jest.fn()} />
+        <DatePicker onChange={vi.fn()} />
       </Field>,
     )
     const input = screen.getByRole('textbox', { name: 'Check-in' })
@@ -146,7 +146,7 @@ describe('Field with react-hook-form', () => {
   }
 
   it('shows the validation error and focuses the control', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<SignupForm onSubmit={onSubmit} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }))

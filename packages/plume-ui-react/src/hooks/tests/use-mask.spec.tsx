@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactElement } from 'react'
 import { applyMask, useMask } from '../use-mask'
 
 function MaskedField({
@@ -12,7 +12,7 @@ function MaskedField({
   value?: string
   defaultValue?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-}): JSX.Element {
+}): ReactElement {
   const props = useMask({ mask, value, defaultValue, onChange })
   return <input {...props} />
 }
@@ -101,7 +101,7 @@ describe('useMask', () => {
   })
 
   it('masks a controlled value', () => {
-    render(<MaskedField mask="##:##" onChange={jest.fn()} value="0930" />)
+    render(<MaskedField mask="##:##" onChange={vi.fn()} value="0930" />)
     expect(screen.getByRole('textbox')).toHaveValue('09:30')
   })
 
@@ -118,7 +118,7 @@ describe('useMask', () => {
   })
 
   it('passes the value and handler through when there is no mask', () => {
-    const onChange = jest.fn()
+    const onChange = vi.fn()
     render(<MaskedField onChange={onChange} value="plain" />)
     const input = screen.getByRole<HTMLInputElement>('textbox')
 

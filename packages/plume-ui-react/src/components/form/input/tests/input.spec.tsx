@@ -62,7 +62,7 @@ describe('Input component', () => {
   })
 
   it('calls onChange when typing', () => {
-    const onChange = jest.fn()
+    const onChange = vi.fn()
     render(<Input onChange={onChange} placeholder="x" />)
 
     fireEvent.change(screen.getByPlaceholderText('x'), { target: { value: 'abc' } })

@@ -4,7 +4,7 @@ import { tabsReducer } from '../tabs-reducer'
 
 describe('Tabs Component', () => {
   it('should call onChange with the correct index when a tab is clicked', () => {
-    const onChangeMock = jest.fn()
+    const onChangeMock = vi.fn()
     const { getByText } = render(
       <Tabs onChange={onChangeMock}>
         <TabList>
@@ -24,7 +24,7 @@ describe('Tabs Component', () => {
   })
 
   it('should handle disabled tabs correctly', () => {
-    const onChangeMock = jest.fn()
+    const onChangeMock = vi.fn()
     const { getByText } = render(
       <Tabs onChange={onChangeMock}>
         <TabList>
@@ -160,7 +160,7 @@ describe('Tabs Component', () => {
       )
     }
 
-    const tab = (name: string): HTMLElement => screen.getByRole('tab', { name }) as HTMLElement
+    const tab = (name: string): HTMLElement => screen.getByRole<HTMLElement>('tab', { name })
 
     it('names the tab list with the given label', () => {
       renderTabs()
@@ -193,7 +193,7 @@ describe('Tabs Component', () => {
     })
 
     it('moves with the arrow keys, skipping disabled tabs and wrapping around', () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       renderTabs({ onChange })
       tab('One').focus()
 

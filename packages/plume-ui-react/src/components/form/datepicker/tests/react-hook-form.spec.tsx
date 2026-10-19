@@ -66,7 +66,7 @@ const pickDay = (day: number): void => {
 
 describe('DatePicker with react-hook-form', () => {
   it('shows the error and focuses the input when the rule fails', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<BookingForm onSubmit={onSubmit} />)
 
     submit()
@@ -82,7 +82,7 @@ describe('DatePicker with react-hook-form', () => {
   })
 
   it('submits the picked date', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<BookingForm onSubmit={onSubmit} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
@@ -98,7 +98,7 @@ describe('DatePicker with react-hook-form', () => {
   })
 
   it('submits a picked range', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<BookingForm isRange onSubmit={onSubmit} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
