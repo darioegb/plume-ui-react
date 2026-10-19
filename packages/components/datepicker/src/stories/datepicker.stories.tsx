@@ -179,6 +179,17 @@ export default {
       description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
       table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
+    name: {
+      control: false,
+      description: 'Name of the `<input>`, submitted with the form as the formatted date.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    inputRef: {
+      control: false,
+      description:
+        'Ref to the `<input>`. The component `ref` points to the wrapper, so pass a form library ref here (e.g. `field.ref` from react-hook-form) to let it focus the field on errors.',
+      table: { category: 'HTML attributes', type: { summary: 'Ref<HTMLInputElement>' } },
+    },
     required: {
       control: 'boolean',
       description: 'Marks the input as required for form validation.',

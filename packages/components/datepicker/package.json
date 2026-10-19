@@ -62,19 +62,20 @@
     }
   },
   "dependencies": {
-    "@plume-ui-react/date-utils": "workspace:*",
-    "@plume-ui-react/use-debounce": "workspace:*",
-    "@plume-ui-react/use-click-outside": "workspace:*",
-    "@plume-ui-react/core": "workspace:*",
     "@plume-ui-react/button": "workspace:*",
-    "@plume-ui-react/input": "workspace:*"
+    "@plume-ui-react/core": "workspace:*",
+    "@plume-ui-react/date-utils": "workspace:*",
+    "@plume-ui-react/input": "workspace:*",
+    "@plume-ui-react/use-click-outside": "workspace:*",
+    "@plume-ui-react/use-debounce": "workspace:*"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "jest-preset": "workspace:*",
+    "prettier-config": "workspace:*",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "prettier-config": "workspace:*",
+    "react-hook-form": "7.89.0",
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {

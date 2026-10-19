@@ -14,6 +14,8 @@ const dayButton = (day: number, month = new Date().getMonth()): HTMLElement =>
     },
   ) as HTMLElement
 
+const defaultRange = { startDate: null, endDate: null }
+
 const selector = (kind: 'month' | 'year'): HTMLElement =>
   document.querySelector<HTMLElement>(`[class*="${kind}Selector"]`) as HTMLElement
 
@@ -365,6 +367,23 @@ describe('DatePicker component', () => {
 
       expect(selector('year')).not.toHaveTextContent('2040')
     })
+  })
+
+  it('does not echo a new value prop back through onChange', () => {
+    const onChange = jest.fn()
+    const { rerender } = render(<DatePicker isRange onChange={onChange} value={defaultRange} />)
+
+    rerender(
+      <DatePicker
+        isRange
+        onChange={onChange}
+        value={{ startDate: new Date(2040, 0, 10), endDate: new Date(2040, 0, 12) }}
+      />,
+    )
+    openCalendar()
+
+    expect(onChange).not.toHaveBeenCalled()
+    expect(dayButton(10, 0)).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('calls onBlur with the current value', () => {

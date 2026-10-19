@@ -15,3 +15,5 @@ Props that did nothing or leaked to the DOM, and a few behavior fixes found whil
 - `Tabs`: `TabPanel` applies its `className`. `Tab` and `TabPanel` no longer accept `id`, which was ignored; their ids derive from the `Tabs` `id`.
 - `DatePicker`: `readOnly` also disables the calendar button, so the date can't be changed from the calendar.
 - `DatePicker`: every `config` key is optional. `{ language: 'es' }` or `{ footer: { apply: 'Aplicar' } }` work alone, and the missing keys fall back to `en`, `Apply` and `Cancel`. `DatePickerConfig` is now exported.
+- `DatePicker`: accepts `name`, passed to the input, and `inputRef`, a ref to the input for form libraries such as react-hook-form, which focus the field when validation fails.
+- `DatePicker`: a new `value` prop is no longer echoed back through `onChange`. With a complete range, that echo made a controlled DatePicker (e.g. inside react-hook-form's `Controller`) re-render forever.

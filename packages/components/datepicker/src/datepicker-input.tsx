@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import type { ReactNode, Ref } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentProps } from '@plume-ui-react/core'
 import { Button } from '@plume-ui-react/button'
 import { Input } from '@plume-ui-react/input'
@@ -15,6 +15,7 @@ import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
 interface DatePickerInputOwnProps {
+  inputRef?: Ref<HTMLInputElement>
   onClick: () => void
   isRange: boolean
   language: string
@@ -27,6 +28,7 @@ type DatePickerInputProps = ComponentProps & DatePickerRootAttributes & DatePick
 export function DatePickerInput({
   disabled,
   displayFormat,
+  inputRef,
   isRange,
   language,
   onClick,
@@ -54,6 +56,14 @@ export function DatePickerInput({
   const debouncedValue = useDebounce({ value: inputValue, delay: 500 })
 
   const ref = useRef<HTMLInputElement>(null)
+  const setRef = useCallback(
+    (node: HTMLInputElement | null): void => {
+      ref.current = node
+      if (typeof inputRef === 'function') inputRef(node)
+      else if (inputRef) inputRef.current = node
+    },
+    [inputRef],
+  )
 
   useEffect(() => {
     if (![10, 23].includes(debouncedValue.length) || isButtonClick) {
@@ -127,7 +137,7 @@ export function DatePickerInput({
         }}
         onChange={handleChange}
         readOnly={readOnly}
-        ref={ref}
+        ref={setRef}
         type='text'
         value={inputValue}
         variant='unstyled'
