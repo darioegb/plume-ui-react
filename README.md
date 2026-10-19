@@ -108,6 +108,7 @@ pnpm dev            # Storybook with hot reload at http://localhost:6006
 | `pnpm test` | Run the tests |
 | `pnpm test:coverage` | Run the tests with coverage |
 | `pnpm lint` / `pnpm lint:fix` | Lint every package |
+| `pnpm new:component <Name> <category>` | Scaffold a component (see [AUTHORING.md](AUTHORING.md)) |
 | `pnpm changeset` | Describe a change that should be released |
 | `pnpm clean` | Remove build output and `node_modules` |
 

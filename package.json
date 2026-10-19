@@ -19,6 +19,7 @@
     "changelog": "node scripts/changelog.js",
     "changelog:commit": "git add . && git commit -am 'docs: add changelog' && git push --force origin changelog/main",
     "changeset": "changeset",
+    "new:component": "node scripts/new-component.mjs",
     "test": "turbo run test --filter=@plume-ui-react/docs^...",
     "test:coverage": "turbo run test:coverage --filter=@plume-ui-react/docs^...",
     "test:watch": "turbo run test:watch --filter=@plume-ui-react/docs^...",
