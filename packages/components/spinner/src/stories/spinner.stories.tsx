@@ -30,10 +30,12 @@ export default {
   argTypes: {
     color: {
       control: 'select',
-      description: 'Custom color scheme for the Spinner.',
+      description:
+        'Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`).',
       options: allKeys,
       table: {
-        type: { summary: 'string' },
+        defaultValue: { summary: 'secondary.900' },
+        type: { summary: 'ColorShade' },
       },
     },
     className: {
@@ -44,7 +46,8 @@ export default {
       },
     },
     style: {
-      description: 'Array of additional CSS styles for the Spinner.',
+      description:
+        'Inline styles. They are applied after the Spinner variables, so they can override them (e.g. `--spinner-scheme`).',
       control: false,
       table: {
         type: { summary: 'CSSProperties' },
@@ -61,7 +64,7 @@ export default {
     },
     speed: {
       control: 'text',
-      description: 'The animation speed of the Spinner.',
+      description: 'Duration of one turn, as a CSS time (e.g. `0.5s`, `800ms`).',
       table: {
         defaultValue: { summary: '1s' },
         type: { summary: 'string' },
@@ -69,7 +72,7 @@ export default {
     },
     thickness: {
       control: 'number',
-      description: 'The border thickness of the Spinner.',
+      description: 'Border width in pixels.',
       table: {
         defaultValue: { summary: 3 },
         type: { summary: 'number' },
@@ -83,6 +86,16 @@ export default {
         defaultValue: { summary: 'solid' },
         type: { summary: `"solid" | "dashed" | "dotted" | "double" | "unstyled"` },
       },
+    },
+    id: {
+      control: false,
+      description: 'Id of the `<output>` element.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    hidden: {
+      control: 'boolean',
+      description: 'Hides the Spinner.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
   },
 } satisfies Meta<typeof Spinner>

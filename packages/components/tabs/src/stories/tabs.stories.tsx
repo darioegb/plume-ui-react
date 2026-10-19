@@ -1,10 +1,13 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
+import { defaultTheme } from '@plume-ui-react/core'
 import { Tabs } from '..'
 import { TabList } from '../tab-list'
 import { Tab } from '../tab'
 import { TabPanels } from '../tab-panels'
 import { TabPanel } from '../tab-panel'
+
+const colorSchemes = Object.keys(defaultTheme.colors)
 
 const commonTabs = (
   <>
@@ -37,6 +40,17 @@ const commonTabs = (
  * Inside the tab list, <kbd>←</kbd> <kbd>→</kbd> (<kbd>↑</kbd> <kbd>↓</kbd> when vertical) select the previous or next tab,
  * and <kbd>Home</kbd> / <kbd>End</kbd> the first or last one. Disabled tabs are skipped.
  * Give the `TabList` an `aria-label` (or `aria-labelledby`) that describes the group.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `TabList` | `aria-label`, `aria-labelledby`, `className`, `id`, `children` (the `Tab` items) |
+ * | `Tab` | `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `children` |
+ * | `TabPanels` | `className`, `id`, `children` (one `TabPanel` per `Tab`, in the same order) |
+ * | `TabPanel` | `className`, `children` |
+ *
+ * Tab and panel ids are generated, and derive from the `Tabs` `id` when you set one (`settings` → `settings-tab-0`, `settings-panel-0`).
  */
 export default {
   title: 'Components/Tabs',
@@ -68,7 +82,8 @@ export default {
     },
     index: {
       control: 'number',
-      description: 'Index of the initially active tab.',
+      description:
+        'Index of the selected tab. Changing it selects that tab; pair it with `onChange` to keep it in sync with user selection.',
       table: {
         defaultValue: { summary: 0 },
         type: { summary: 'number' },
@@ -85,16 +100,16 @@ export default {
     },
     colorScheme: {
       control: 'select',
-      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
-      description: 'Custom color scheme for the Tabs.',
+      options: colorSchemes,
+      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       table: {
-        type: { summary: 'string' },
+        type: { summary: 'ColorScheme' },
       },
     },
     isLazy: {
       control: 'boolean',
-      description: 'Enable lazy loading for tab content.',
-      if: { arg: 'disabled', truthy: false },
+      description:
+        'Renders the selected panel inside `Suspense`, with a Spinner as fallback. Only the selected panel is mounted either way.',
       table: {
         defaultValue: { summary: false },
         type: { summary: 'boolean' },
@@ -102,7 +117,8 @@ export default {
     },
     onChange: {
       action: 'tabChanged',
-      description: 'Function triggered when a tab is changed.',
+      description: 'Called with the index of the newly selected tab.',
+      table: { category: 'Events', type: { summary: '(index: number) => void' } },
     },
     orientation: {
       control: 'radio',
@@ -130,6 +146,22 @@ export default {
         defaultValue: { summary: 'underline' },
         type: { summary: '"underline" | "rounded" | "enclosed" | "segment" | "unstyled"' },
       },
+    },
+    id: {
+      control: false,
+      description: 'Id of the root element, also used as the base for the tab and panel ids.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    style: {
+      control: false,
+      description:
+        'Inline styles. They are applied after the color variables, so they can override them (e.g. `--tabs-scheme`).',
+      table: { type: { summary: 'CSSProperties' } },
+    },
+    hidden: {
+      control: false,
+      description: 'Hides the Tabs.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
   },
 } satisfies Meta<typeof Tabs>

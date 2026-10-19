@@ -68,6 +68,11 @@ describe('Input component', () => {
     expect(screen.getByPlaceholderText('x')).toHaveValue('hello')
   })
 
+  it('passes required to the input', () => {
+    render(<Input placeholder="x" required />)
+    expect(screen.getByPlaceholderText('x')).toBeRequired()
+  })
+
   it('forwards the ref to the input element', () => {
     const ref = { current: null as HTMLInputElement | null }
     render(<Input placeholder="x" ref={ref} />)

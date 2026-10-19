@@ -14,6 +14,11 @@ describe('Spinner component', () => {
     expect(spinnerElement).toHaveClass('lg solid')
   })
 
+  it('keeps the size out of the DOM attributes', () => {
+    const { container } = render(<Spinner size="lg" />)
+    expect(container.firstChild).not.toHaveAttribute('size')
+  })
+
   it('renders spinner with custom thickness', () => {
     const { container } = render(<Spinner thickness={5} />)
     const spinnerElement = container.querySelector('.solid')

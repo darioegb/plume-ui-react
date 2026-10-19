@@ -39,11 +39,11 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
       className = '',
       thickness = 3,
       variant = 'solid',
+      size = variant !== 'unstyled' ? 'md' : undefined,
       ...rest
     }: SpinnerProps,
     ref,
   ) => {
-    const { size = variant !== 'unstyled' && 'md' } = rest
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
     const spinnerClass = `

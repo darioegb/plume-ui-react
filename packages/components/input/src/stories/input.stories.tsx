@@ -1,7 +1,10 @@
 // Input.stories.tsx
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
+import { defaultTheme } from '@plume-ui-react/core'
 import { Input } from '..'
+
+const colorSchemes = Object.keys(defaultTheme.colors)
 
 /**
  * Collect text from users with the Input component.
@@ -32,10 +35,12 @@ export default {
     },
     colorScheme: {
       control: 'select',
-      description: 'Color of the input.',
-      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
+      description:
+        'Color scheme for the focus border and ring, from the theme palette (custom schemes included).',
+      options: colorSchemes,
       table: {
-        defaultValue: { summary: 'primary' },
+        defaultValue: { summary: 'secondary' },
+        type: { summary: 'ColorScheme' },
       },
     },
     disabled: {
@@ -91,10 +96,10 @@ export default {
     },
     shape: {
       control: 'inline-radio',
-      description: 'Shape style of the Input.',
+      description: 'Shape style of the Input. `pill` only applies to the `outline` variant.',
       options: ['pill', 'rounded'],
-      if: { arg: 'variant', eq: 'outline' },
       table: {
+        defaultValue: { summary: 'rounded' },
         type: { summary: `"pill" | "rounded"` },
       },
     },
@@ -152,9 +157,72 @@ export default {
         type: { summary: 'string' },
       },
     },
+    defaultValue: {
+      control: false,
+      description: 'Initial value for an uncontrolled Input.',
+      table: { type: { summary: 'string' } },
+    },
+    style: {
+      control: false,
+      description:
+        'Inline styles. They are applied after the color variables, so they can override `--input-color`.',
+      table: { type: { summary: 'CSSProperties' } },
+    },
+    id: {
+      control: false,
+      description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    name: {
+      control: false,
+      description: 'Name submitted with the form.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    required: {
+      control: 'boolean',
+      description: 'Marks the Input as required for form validation.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
+    },
+    inputMode: {
+      control: 'select',
+      options: ['text', 'numeric', 'decimal', 'tel', 'email', 'url', 'search', 'none'],
+      description: 'Virtual keyboard to show on touch devices.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    pattern: {
+      control: 'text',
+      description: 'Regular expression the value must match for form validation.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    minLength: {
+      control: 'number',
+      description: 'Minimum number of characters.',
+      table: { category: 'HTML attributes', type: { summary: 'number' } },
+    },
+    maxLength: {
+      control: 'number',
+      description: 'Maximum number of characters.',
+      table: { category: 'HTML attributes', type: { summary: 'number' } },
+    },
+    min: {
+      control: false,
+      description: 'Minimum value for `number`, `date` and other range types.',
+      table: { category: 'HTML attributes', type: { summary: 'number | string' } },
+    },
+    max: {
+      control: false,
+      description: 'Maximum value for `number`, `date` and other range types.',
+      table: { category: 'HTML attributes', type: { summary: 'number | string' } },
+    },
     onChange: {
-      description: 'Event triggered when the text Input value changes.',
+      description: 'Called when the value changes. With a `mask`, `event.target.value` is already formatted.',
       action: 'changed',
+      table: { category: 'Events', type: { summary: '(event: ChangeEvent) => void' } },
+    },
+    onBlur: {
+      control: false,
+      description: 'Called when the Input loses focus.',
+      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
     },
   },
 } as Meta<typeof Input>
@@ -171,7 +239,7 @@ export const Default: Story = {
 }
 
 /**
- * This is a list o Input with different sizes.
+ * This is a list of Input with different sizes.
  * Just adding the **size** prop.
  */
 export const Sizes: Story = {
@@ -195,7 +263,7 @@ export const Sizes: Story = {
 }
 
 /**
- * This is a list o Input with different variants.
+ * This is a list of Input with different variants.
  * Just adding the **variant** prop in one of these values **outline**, **underline**, **filled** and **unstyled**.
  */
 export const Variants: Story = {

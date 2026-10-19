@@ -1,10 +1,13 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
+import { defaultTheme } from '@plume-ui-react/core'
 import { DatePicker } from '..'
 import type { DateRange } from '../datepicker'
 
 const defaultDateRangeValue = { startDate: null, endDate: null }
+const colorSchemes = Object.keys(defaultTheme.colors)
+const toDate = (value?: Date): Date | undefined => (value === undefined ? undefined : new Date(value))
 
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
@@ -41,31 +44,35 @@ export default {
     },
     value: {
       control: false,
-      description: 'The DatePicker value.',
+      description:
+        'Selected date or range as `{ startDate, endDate }`. In single mode `endDate` is `null`.',
       table: {
         type: { summary: 'DateRange' },
       },
     },
     isCalendar: {
       control: 'boolean',
-      description: "Indicates whether the DatePicker it's just a  static calendar.",
+      description: 'Renders only the calendar, always visible, without the input.',
       table: {
+        defaultValue: { summary: false },
         type: { summary: 'boolean' },
       },
     },
     isRange: {
       control: 'boolean',
-      description: 'Indicates whether the DatePicker allows selecting a range of dates.',
+      description: 'Selects a start and an end date, showing two consecutive months.',
       table: {
+        defaultValue: { summary: false },
         type: { summary: 'boolean' },
       },
     },
     colorScheme: {
       control: 'select',
-      description: 'Custom color scheme for the DatePicker.',
-      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
+      description: 'Color scheme from the theme palette, including custom schemes added to it.',
+      options: colorSchemes,
       table: {
-        type: { summary: 'string' },
+        defaultValue: { summary: 'secondary' },
+        type: { summary: 'ColorScheme' },
       },
     },
     disabled: {
@@ -78,39 +85,53 @@ export default {
     },
     displayFormat: {
       control: 'text',
-      description: 'The display format date.',
+      description:
+        'Format of the typed and displayed date, built from the `dd`, `mm` and `yyyy` tokens in any order and case (e.g. `dd/mm/yyyy`, `YYYY-MM-DD`). Defaults to the format of `config.language`.',
+      table: {
+        type: { summary: 'string' },
+      },
     },
     maxDate: {
       control: 'date',
-      description: 'The maximum selectable date.',
+      description: 'Last selectable date. Later days are disabled.',
       table: {
         type: { summary: 'Date' },
       },
     },
     minDate: {
       control: 'date',
-      description: 'The minimum selectable date.',
+      description: 'First selectable date. Earlier days are disabled.',
       table: {
         type: { summary: 'Date' },
       },
     },
     showFooter: {
       control: 'boolean',
-      description: 'Indicates whether to display the footer with actions.',
+      description:
+        'Shows Cancel and Apply buttons, so the selection is only applied (and `onChange` called) on Apply.',
       table: {
+        defaultValue: { summary: false },
         type: { summary: 'boolean' },
       },
     },
     config: {
       control: false,
-      description: 'Additional configuration options for the DatePicker.',
+      description:
+        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the button labels. Every key is optional and falls back to its default.',
       table: {
-        type: { summary: 'DatePickerConfig' },
+        defaultValue: {
+          summary: 'object',
+          detail: "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' } }",
+        },
+        type: {
+          summary: 'DatePickerConfig',
+          detail: '{ language?: string; footer?: { apply?: string; cancel?: string } }',
+        },
       },
     },
     readOnly: {
       control: 'boolean',
-      description: 'Indicates whether the DatePicker is readOnly.',
+      description: 'Shows the value but blocks typing and the calendar button.',
       table: {
         defaultValue: { summary: false },
         type: { summary: 'boolean' },
@@ -118,10 +139,10 @@ export default {
     },
     shape: {
       control: 'inline-radio',
-      description: 'Shape style of the DatePicker.',
+      description: 'Shape style of the DatePicker. `pill` only applies to the `outline` variant.',
       options: ['pill', 'rounded'],
-      if: { arg: 'variant', eq: 'outline' },
       table: {
+        defaultValue: { summary: 'rounded' },
         type: { summary: `"pill" | "rounded"` },
       },
     },
@@ -130,6 +151,7 @@ export default {
       description: 'Size of the DatePicker.',
       options: ['sm', 'md', 'lg'],
       table: {
+        defaultValue: { summary: 'md' },
         type: { summary: `"sm" | "md" | "lg"` },
       },
     },
@@ -141,11 +163,53 @@ export default {
         type: { summary: `"outline" | "underline" | "filled" | "unstyled"` },
       },
     },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder of the input. Defaults to the display format.',
+      table: { type: { summary: 'string' } },
+    },
+    style: {
+      control: false,
+      description:
+        'Inline styles. They are applied after the color variables, so they can override them (e.g. `--datepicker-solid`).',
+      table: { type: { summary: 'CSSProperties' } },
+    },
+    id: {
+      control: false,
+      description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    name: {
+      control: false,
+      description: 'Name of the `<input>`, submitted with the form as the formatted date.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    inputRef: {
+      control: false,
+      description:
+        'Ref to the `<input>`. The component `ref` points to the wrapper, so pass a form library ref here (e.g. `field.ref` from react-hook-form) to let it focus the field on errors.',
+      table: { category: 'HTML attributes', type: { summary: 'Ref<HTMLInputElement>' } },
+    },
+    required: {
+      control: 'boolean',
+      description: 'Marks the input as required for form validation.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
+    },
     onChange: {
       action: 'changed',
-      description: 'Function triggered when the selected date(s) change.',
+      description:
+        'Called with the new `{ startDate, endDate }` when a date is picked, when a range is complete, or on Apply when `showFooter` is set.',
+      table: { category: 'Events', type: { summary: '(value: DateRange) => void' } },
+    },
+    onBlur: {
+      action: 'blurred',
+      description: 'Called with the current value when the input loses focus.',
+      table: { category: 'Events', type: { summary: '(value?: DateRange) => void' } },
     },
   },
+  render: ({ minDate, maxDate, ...args }) => (
+    <DatePicker {...args} maxDate={toDate(maxDate)} minDate={toDate(minDate)} />
+  ),
   args: {
     disabled: false,
     isRange: false,
@@ -327,11 +391,14 @@ export const WithFooterActions: Story = {
 }
 
 /**
- * DatePicker with custom configuration.
+ * DatePicker localized to Spanish through **config**.
+ * Every key is optional: `language` alone localizes the month and weekday names and the date format,
+ * and `footer` only needs the labels you want to change.
  */
 export const CustomConfiguration: Story = {
   args: {
     ...Default.args,
+    showFooter: true,
     config: {
       language: 'es',
       footer: {

@@ -4,6 +4,7 @@ import type {
   ForwardedRef,
   InputHTMLAttributes,
   ReactNode,
+  Ref,
 } from 'react'
 import { forwardRef, useEffect, useRef, useReducer } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
@@ -24,6 +25,7 @@ export interface DatePickerOwnProps {
   colorScheme?: ColorScheme
   config?: DatePickerConfig
   displayFormat?: string
+  inputRef?: Ref<HTMLInputElement>
   isCalendar?: boolean
   isRange?: boolean
   maxDate?: Date
@@ -42,15 +44,18 @@ export interface DateRange {
   startDate: Date | null
 }
 
-interface DatePickerConfig {
-  footer: FooterLabels
-  language: string
+export interface DatePickerConfig {
+  footer?: Partial<FooterLabels>
+  language?: string
 }
 
 interface FooterLabels {
   apply: string
   cancel: string
 }
+
+const DEFAULT_LANGUAGE = 'en'
+const DEFAULT_FOOTER_LABELS: FooterLabels = { apply: 'Apply', cancel: 'Cancel' }
 
 interface FooterActionsProps {
   labels: FooterLabels
@@ -62,7 +67,7 @@ interface FooterActionsProps {
 export type DatePickerVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export type DatePickerRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
-  'disabled' | 'readOnly' | 'id' | 'required' | 'placeholder'
+  'disabled' | 'readOnly' | 'id' | 'name' | 'required' | 'placeholder'
 >
 
 export type DatePickerProps = ComponentProps & DatePickerRootAttributes & DatePickerOwnProps
@@ -118,6 +123,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     {
       onChange,
       onBlur,
+      inputRef,
       displayFormat,
       style,
       showFooter,
@@ -129,20 +135,18 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       className = '',
       colorScheme = 'secondary',
       variant = 'outline',
-      config = {
-        language: 'en',
-        footer: {
-          cancel: 'Cancel',
-          apply: 'Apply',
-        },
-      },
+      config,
       isCalendar = false,
       isRange = false,
       ...rest
     }: DatePickerProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const { language, footer: footerLabels } = config
+    const language = config?.language ?? DEFAULT_LANGUAGE
+    const footerLabels: FooterLabels = {
+      apply: config?.footer?.apply ?? DEFAULT_FOOTER_LABELS.apply,
+      cancel: config?.footer?.cancel ?? DEFAULT_FOOTER_LABELS.cancel,
+    }
     const [state, dispatch] = useReducer(
       datePickerReducer,
       value,
@@ -195,12 +199,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         isFirstRender.current = false
         return
       }
-      if (value?.startDate && value.endDate) {
-        onChange(value)
-      }
-      dispatch({ type: 'SET_VALUE', payload: value ?? value ?? DEFAULT_DATE_PICKER_VALUE })
-      dispatch({ type: 'SET_TEMP_VALUE', payload: value ?? value ?? DEFAULT_DATE_PICKER_VALUE })
-    }, [value, isRange, language, onChange])
+      dispatch({ type: 'SET_VALUE', payload: value ?? DEFAULT_DATE_PICKER_VALUE })
+    }, [value])
 
     useEffect(() => {
       if (!state.modalOpen) return
@@ -332,6 +332,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
               className={datePickerInputClasses}
               disabled={disabled}
               displayFormat={displayFormat}
+              inputRef={inputRef}
               isRange={isRange}
               language={language}
               onBlur={onBlur}

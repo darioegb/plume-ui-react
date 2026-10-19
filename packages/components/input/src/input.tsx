@@ -10,8 +10,6 @@ export interface InputOwnProps {
   elementBefore?: ReactNode
   elementAfter?: ReactNode
   colorScheme?: ColorScheme
-  errorMessage?: string
-  isRequired?: boolean
   mask?: string
   shape?: Shape
   size?: Size

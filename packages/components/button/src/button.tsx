@@ -49,14 +49,13 @@ const renderContent = (
   label?: string,
 ): ReactNode => {
   const iconMarginClass = isUnstyled ? styles.iconMarginNone : styles.iconMargin
-  const contentClass = isBusy && busyText.length < 1 ? styles.hidden : iconMarginClass
+  const contentClass = isBusy && !busyText ? styles.hidden : iconMarginClass
+  const text = isBusy && busyText ? busyText : label
 
   return (
     <>
       {iconLeft ? <span className={iconMarginClass}>{iconLeft}</span> : null}
-      {Boolean(label) || busyText ? (
-        <span className={contentClass}>{busyText || label}</span>
-      ) : null}
+      {text ? <span className={contentClass}>{text}</span> : null}
       {iconRight ? <span className={iconMarginClass}>{iconRight}</span> : null}
     </>
   )

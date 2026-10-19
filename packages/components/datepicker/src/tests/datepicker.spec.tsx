@@ -14,6 +14,8 @@ const dayButton = (day: number, month = new Date().getMonth()): HTMLElement =>
     },
   ) as HTMLElement
 
+const defaultRange = { startDate: null, endDate: null }
+
 const selector = (kind: 'month' | 'year'): HTMLElement =>
   document.querySelector<HTMLElement>(`[class*="${kind}Selector"]`) as HTMLElement
 
@@ -39,6 +41,12 @@ describe('DatePicker component', () => {
   it('disables the input and the calendar button', () => {
     render(<DatePicker disabled onChange={jest.fn()} />)
     expect(screen.getByRole('textbox')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
+  })
+
+  it('blocks typing and the calendar when read-only', () => {
+    render(<DatePicker onChange={jest.fn()} readOnly />)
+    expect(screen.getByRole('textbox')).toHaveAttribute('readonly')
     expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
   })
 
@@ -128,6 +136,30 @@ describe('DatePicker component', () => {
 
     expect(onChange).not.toHaveBeenCalled()
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('fills in the config keys that are left out', () => {
+    render(<DatePicker config={{ footer: { apply: 'Aplicar' } }} onChange={jest.fn()} showFooter />)
+    openCalendar()
+
+    expect(screen.getByRole('button', { name: 'Aplicar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+    expect(selector('month').textContent).toBe(
+      new Intl.DateTimeFormat('en', { month: 'long' }).format(new Date()),
+    )
+  })
+
+  it('reads the language alone from the config', () => {
+    render(<DatePicker config={{ language: 'es' }} onChange={jest.fn()} showFooter />)
+
+    expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'dd/mm/yyyy')
+    openCalendar()
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeInTheDocument()
+  })
+
+  it('passes required to the input', () => {
+    render(<DatePicker onChange={jest.fn()} required />)
+    expect(screen.getByRole('textbox')).toBeRequired()
   })
 
   it('uses custom footer labels', () => {
@@ -335,6 +367,23 @@ describe('DatePicker component', () => {
 
       expect(selector('year')).not.toHaveTextContent('2040')
     })
+  })
+
+  it('does not echo a new value prop back through onChange', () => {
+    const onChange = jest.fn()
+    const { rerender } = render(<DatePicker isRange onChange={onChange} value={defaultRange} />)
+
+    rerender(
+      <DatePicker
+        isRange
+        onChange={onChange}
+        value={{ startDate: new Date(2040, 0, 10), endDate: new Date(2040, 0, 12) }}
+      />,
+    )
+    openCalendar()
+
+    expect(onChange).not.toHaveBeenCalled()
+    expect(dayButton(10, 0)).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('calls onBlur with the current value', () => {

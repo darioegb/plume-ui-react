@@ -1,6 +1,9 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
+import { defaultTheme } from '@plume-ui-react/core'
 import { Button } from '..'
+
+const colorSchemes = Object.keys(defaultTheme.colors)
 
 /**
  * Enhance user interactions with the Button component,
@@ -37,7 +40,8 @@ export default {
       },
     },
     style: {
-      description: 'Array of additional CSS styles for the Button.',
+      description:
+        'Inline styles for the Button. They are applied after the color variables, so they can override them (e.g. `--button-solid-bg`).',
       control: false,
       table: {
         type: { summary: 'CSSProperties' },
@@ -46,7 +50,6 @@ export default {
     disabled: {
       control: 'boolean',
       description: 'Indicates whether the Button is disabled.',
-      if: { arg: 'busy', truthy: false },
       table: {
         defaultValue: { summary: false },
         type: { summary: 'boolean' },
@@ -54,7 +57,8 @@ export default {
     },
     onClick: {
       action: 'clicked',
-      description: 'Function triggered when the Button is clicked.',
+      description: 'Called when the Button is clicked.',
+      table: { category: 'Events', type: { summary: '(event: MouseEvent) => void' } },
     },
     type: {
       control: 'radio',
@@ -66,15 +70,15 @@ export default {
     },
     colorScheme: {
       control: 'select',
-      description: 'Custom color scheme for the Button.',
-      options: ['primary', 'secondary', 'info', 'warning', 'error', 'success', 'dark', 'light'],
+      description: 'Color scheme from the theme palette, including custom schemes added to it.',
+      options: colorSchemes,
       table: {
-        type: { summary: 'string' },
+        type: { summary: 'ColorScheme' },
       },
     },
     label: {
       control: 'text',
-      description: 'Label for the Button. If set, it will override children.',
+      description: 'Text of the Button. When `children` are also set, they render after the label.',
       table: {
         type: { summary: 'string' },
       },
@@ -89,15 +93,14 @@ export default {
     iconRight: {
       control: false,
       description: 'Icon to be displayed on the right side of the Button.',
-      if: { arg: 'children', truthy: false },
       table: {
         type: { summary: 'ReactNode' },
       },
     },
     isBusy: {
       control: 'boolean',
-      description: 'Whether the Button is in a busy/loading state.',
-      if: { arg: 'disabled', truthy: false },
+      description:
+        'Shows a spinner and disables the Button. Without `busyText` the label is hidden while busy.',
       table: {
         defaultValue: { summary: false },
         type: { summary: 'boolean' },
@@ -105,7 +108,7 @@ export default {
     },
     busyText: {
       control: 'text',
-      description: 'Text to display when the Button is in a busy/loading state.',
+      description: 'Text shown instead of the label while `isBusy` is set.',
       table: {
         type: { summary: 'string' },
       },
@@ -133,6 +136,74 @@ export default {
       table: {
         type: { summary: `"solid" | "outline" | "link" | "icon" | "ghost" | "unstyled"` },
       },
+    },
+    'aria-label': {
+      control: 'text',
+      description: 'Accessible name. Required for `icon` buttons, which have no visible text.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-labelledby': {
+      control: false,
+      description: 'Id of the element that names the Button.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-expanded': {
+      control: false,
+      description: 'Whether the element the Button controls (a menu, a popover) is open.',
+      table: { category: 'Accessibility', type: { summary: 'boolean' } },
+    },
+    'aria-haspopup': {
+      control: false,
+      description: 'Kind of popup the Button opens.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: `boolean | "menu" | "listbox" | "tree" | "grid" | "dialog"` },
+      },
+    },
+    role: {
+      control: false,
+      description: 'ARIA role, when the Button acts as another widget (e.g. `"tab"`).',
+      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
+    },
+    id: {
+      control: false,
+      description: 'Id of the `<button>` element.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    title: {
+      control: 'text',
+      description: 'Tooltip text shown on hover.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    tabIndex: {
+      control: false,
+      description: 'Position in the tab order.',
+      table: { category: 'HTML attributes', type: { summary: 'number' } },
+    },
+    hidden: {
+      control: false,
+      description: 'Hides the Button.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
+    },
+    onBlur: {
+      control: false,
+      description: 'Called when the Button loses focus.',
+      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
+    },
+    onFocus: {
+      control: false,
+      description: 'Called when the Button receives focus.',
+      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
+    },
+    onKeyDown: {
+      control: false,
+      description: 'Called when a key is pressed while the Button has focus.',
+      table: { category: 'Events', type: { summary: '(event: KeyboardEvent) => void' } },
+    },
+    onMouseEnter: {
+      control: false,
+      description: 'Called when the pointer enters the Button.',
+      table: { category: 'Events', type: { summary: '(event: MouseEvent) => void' } },
     },
   },
   args: {
@@ -427,8 +498,8 @@ export const Disabled: Story = {
 
 /**
  * This is a Button with busy state.
- * Using **busy** and **busyText** props,
- * for customize the button during the busy stage.
+ * Use **isBusy** to show a spinner and disable the Button,
+ * and **busyText** to replace the label while it is busy.
  */
 export const Busy: Story = {
   args: {
