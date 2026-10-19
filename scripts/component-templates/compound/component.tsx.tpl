@@ -1,3 +1,5 @@
+'use client'
+
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useId, useMemo } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'

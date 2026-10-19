@@ -1,3 +1,5 @@
+'use client'
+
 import type { HTMLAttributes, LazyExoticComponent, ReactNode } from 'react'
 import { Suspense, createElement, forwardRef } from 'react'
 import { Spinner } from '../../presentation/spinner'

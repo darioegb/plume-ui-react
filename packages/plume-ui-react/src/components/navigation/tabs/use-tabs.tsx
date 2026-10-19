@@ -1,3 +1,5 @@
+'use client'
+
 import type { ReactNode } from 'react'
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import type { TabsState } from './tabs-reducer'

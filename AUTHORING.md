@@ -32,7 +32,7 @@ The folder is the lowercase name (`datepicker`), which is also what Storybook us
 - **`size`** (`sm | md | lg`), **`shape`** and **`colorScheme`** reuse the shared types from the theme. A `colorScheme` is any key of the theme palette, including custom ones added with module augmentation.
 - **`variant="unstyled"`** drops every Plume class and keeps only the user's `className`, so the component can be styled with Tailwind or Bootstrap.
 - **Ids** come from React's `useId` (React 18 is the minimum), never from a module counter.
-- **Server rendering:** don't touch `window` or `document` while rendering. Use effects.
+- **Server rendering:** don't touch `window` or `document` while rendering. Use effects. See [Server and client components](#server-and-client-components) for the `'use client'` rule.
 
 ## Theming
 
@@ -44,6 +44,22 @@ Components never compute colors in JavaScript. A `colorScheme` is mapped to loca
 ```
 
 The stylesheet uses those variables and the `--plume-*` scales (`--plume-space-*`, `--plume-radius-*`, `--plume-font-size-*`), never raw values. The schemes expose `solid`, `solid-contrast`, `solid-hover`, `solid-active`, `text`, `text-hover`, `text-active`, `tint` and `tint-strong`, already adjusted for contrast in light and dark mode, so a component works in both without extra rules.
+
+## Server and client components
+
+The package is built module by module, and each module keeps its own `'use client'` directive in the build. That lets a Next.js Server Component import from `plume-ui-react` directly, including `<ThemeProvider>` in the root layout and the utilities (`themeToCssVars`, `defaultTheme`, the date and color helpers).
+
+A module starts with `'use client'` when it:
+
+- imports `createContext`, `Component` or `PureComponent` from React,
+- calls a hook other than `useId`, `useMemo`, `useCallback` and `useDebugValue` (the ones React also provides on the server), or
+- renders a context `Provider`.
+
+Nothing else gets the directive. `Button`, `Spinner`, `Field` and the pure helpers have none, so they also render on the server. Don't add it defensively: once a module is a client module, a Server Component can only render it, not call anything else it exports.
+
+`pnpm build` checks both sides of this in `packages/plume-ui-react/scripts/check-client-directives.mjs`: every module that needs the directive has it, none has it without need, and the built file of each module agrees with its source. Keep `export *` out of modules that have the directive, because Next.js doesn't support it there.
+
+Props a Server Component passes to a client module have to be serializable, so anything that takes a callback (`DatePicker` requires `onChange`) needs a client parent. The directives live in the ESM build, which is what bundlers resolve. The CommonJS build is a single file and has none.
 
 ## Compound components
 
@@ -93,7 +109,7 @@ Copy it into the pull request description.
 
 **Tests**
 - [ ] Specs cover rendering, props, refs, keyboard and error paths; coverage stays above the 90% threshold (`pnpm test:coverage`)
-- [ ] `pnpm lint` and `pnpm build` pass
+- [ ] `pnpm lint` and `pnpm build` pass (the build includes the `'use client'` check)
 
 **Docs**
 - [ ] Story with `autodocs`, a description, every prop in `argTypes` and the main variations (the docs page and its Source link are generated from it)

@@ -1,3 +1,5 @@
+'use client'
+
 import type { ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'

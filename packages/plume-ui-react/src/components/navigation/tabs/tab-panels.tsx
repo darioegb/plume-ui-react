@@ -1,3 +1,5 @@
+'use client'
+
 import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import type { Attributes, HTMLAttributes, Ref } from 'react'
 import { useTabs } from './use-tabs'

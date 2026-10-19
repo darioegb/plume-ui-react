@@ -21,6 +21,18 @@ const config: StorybookConfig = {
     return {
       ...config,
       define: { 'process.env': {} },
+      build: {
+        ...config.build,
+        rollupOptions: {
+          ...config.build?.rollupOptions,
+          onwarn(warning, warn) {
+            const isDirective = warning.code === 'MODULE_LEVEL_DIRECTIVE'
+            const isDirectiveSourcemap =
+              warning.code === 'SOURCEMAP_ERROR' && warning.message.includes('(1:0)')
+            if (!isDirective && !isDirectiveSourcemap) warn(warning)
+          },
+        },
+      },
     }
   },
 }

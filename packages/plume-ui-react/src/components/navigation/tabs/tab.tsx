@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef } from 'react'
 import type { ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
 import { Button } from '../../interaction/button'

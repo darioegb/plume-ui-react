@@ -1,3 +1,5 @@
+'use client'
+
 import type { Attributes, HTMLAttributes, Ref } from 'react'
 import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import styles from './tabs.module.css'
