@@ -27,7 +27,7 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsup",
+    "build": "rm -rf dist && tsup && node scripts/check-client-directives.mjs",
     "dev": "tsup --watch",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",

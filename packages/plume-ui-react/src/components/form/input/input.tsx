@@ -1,3 +1,5 @@
+'use client'
+
 import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'

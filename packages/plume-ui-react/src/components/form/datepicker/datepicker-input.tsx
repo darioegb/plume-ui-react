@@ -1,3 +1,5 @@
+'use client'
+
 import type { ReactNode, Ref } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentProps } from '../../../theme'

@@ -50,26 +50,33 @@ function cssModulePlugin({ emitCss }: { emitCss: boolean }): Plugin {
   }
 }
 
-// Every module is its own ESM entry so index.mjs only re-exports and bundlers can drop unused components.
-const moduleEntries = [
-  'src/index.ts',
-  'src/components/*/*/index.ts',
-  'src/theme/index.ts',
-  'src/hooks/use-*.tsx',
-  'src/utils/*.ts',
-  '!src/utils/index.ts',
-]
+function preserveModulesPlugin(): Plugin {
+  return {
+    name: 'preserve-modules',
+    setup(build): void {
+      build.onResolve({ filter: /^\.\.?\// }, async (args) => {
+        if (args.kind === 'entry-point' || args.path.endsWith('.css') || args.pluginData) return undefined
+        const resolved = await build.resolve(args.path, {
+          kind: args.kind,
+          resolveDir: args.resolveDir,
+          pluginData: true,
+        })
+        if (resolved.errors.length > 0) return { errors: resolved.errors }
+        const relative = path
+          .relative(args.resolveDir, resolved.path)
+          .replace(/\.tsx?$/, '.mjs')
+          .split(path.sep)
+          .join('/')
+        return { path: relative.startsWith('.') ? relative : `./${relative}`, external: true }
+      })
+    },
+  }
+}
+
+const moduleEntries = ['src/**/*.{ts,tsx}', '!src/**/tests/**', '!src/**/stories/**']
 
 async function emitStylesheet(): Promise<void> {
-  const cssFiles = (await fsPromises.readdir('dist', { recursive: true })).filter((file) =>
-    file.endsWith('.css'),
-  )
   await fsPromises.rename('dist/index.css', 'dist/styles.css')
-  await Promise.all(
-    cssFiles
-      .filter((file) => file !== 'index.css')
-      .map((file) => fsPromises.rm(path.join('dist', file))),
-  )
 }
 
 export default defineConfig((options) => {
@@ -85,18 +92,16 @@ export default defineConfig((options) => {
       ...shared,
       entry: moduleEntries,
       format: ['esm'],
-      splitting: true,
-      treeshake: true,
       dts: { entry: 'src/index.ts' },
-      esbuildPlugins: [cssModulePlugin({ emitCss: true })],
-      onSuccess: emitStylesheet,
+      esbuildPlugins: [cssModulePlugin({ emitCss: false }), preserveModulesPlugin()],
     },
     {
       ...shared,
       entry: ['src/index.ts'],
       format: ['cjs'],
       dts: { entry: 'src/index.ts' },
-      esbuildPlugins: [cssModulePlugin({ emitCss: false })],
+      esbuildPlugins: [cssModulePlugin({ emitCss: true })],
+      onSuccess: emitStylesheet,
     },
   ]
 })

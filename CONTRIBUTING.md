@@ -22,7 +22,7 @@ The [root README](README.md#development) lists the available commands and the re
 ## Making changes
 
 1. Fork the repository and create a branch from `main` (see [Branch names](#branch-names)).
-2. Make your change. Component code, styles, stories and tests live together in `packages/plume-ui-react/src/components/<category>/<name>`.
+2. Make your change. Component code, styles, stories and tests live together in `packages/plume-ui-react/src/components/<category>/<name>`. To add a component, run `pnpm new:component` and follow [AUTHORING.md](AUTHORING.md).
 3. Add or update tests, and stories when the change is visible in the docs.
 4. Run `pnpm lint` and `pnpm test`, and check your change in Storybook.
 5. If you changed `plume-ui-react`, run `pnpm changeset` and commit the generated file (see [Changesets](#changesets)).

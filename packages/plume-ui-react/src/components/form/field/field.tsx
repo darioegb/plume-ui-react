@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { Children, cloneElement, forwardRef, useState } from 'react'
+import { Children, cloneElement, forwardRef, useId } from 'react'
 import type { ForwardedRef, ReactElement, ReactNode } from 'react'
 import type { ComponentProps } from '../../../theme'
 import styles from './field.module.css'
@@ -31,15 +30,6 @@ type FieldRootAttributes = { children: ReactElement<FieldControlProps> }
 
 export type FieldProps = Omit<ComponentProps, 'index'> & FieldRootAttributes & FieldOwnProps
 
-let fieldCount = 0
-const reactUseId = (React as { useId?: () => string }).useId
-
-function useFieldId(): string {
-  const reactId = reactUseId ? reactUseId() : undefined
-  const [fallbackId] = useState(() => `plume-field-${++fieldCount}`)
-  return reactId ?? fallbackId
-}
-
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
     {
@@ -58,7 +48,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
     }: FieldProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const baseId = useFieldId()
+    const baseId = useId()
     const control = Children.only(children)
     const controlProps = control.props
     const controlId = controlProps.id ?? `${baseId}-control`
