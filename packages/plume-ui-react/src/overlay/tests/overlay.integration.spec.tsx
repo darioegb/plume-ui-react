@@ -36,7 +36,7 @@ const press = (key: string, shiftKey = false): void => {
 
 describe('overlay primitives together', () => {
   it('renders nothing from an overlay on the server', () => {
-    const html = renderToString(<Overlay name="one" />).replaceAll('<!-- -->', '')
+    const html = renderToString(<Overlay name="one" />).replace(/<!-- -->/g, '')
     expect(html).toBe('<button>one trigger</button>')
   })
 

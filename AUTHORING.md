@@ -52,8 +52,9 @@ The package is built module by module, and each module keeps its own `'use clien
 A module starts with `'use client'` when it:
 
 - imports `createContext`, `Component` or `PureComponent` from React,
-- calls a hook other than `useId`, `useMemo`, `useCallback` and `useDebugValue` (the ones React also provides on the server), or
-- renders a context `Provider`.
+- calls a hook other than `useId`, `useMemo`, `useCallback` and `useDebugValue` (the ones React also provides on the server),
+- renders a context `Provider`, or
+- attaches an event handler to an element (`onClick={...}`), because a Server Component can't pass a function to an element (`Event handlers cannot be passed to Client Component props`). Forwarding the handlers a consumer passes in `...rest` is fine.
 
 Nothing else gets the directive. `Button`, `Spinner`, `Field` and the pure helpers have none, so they also render on the server. Don't add it defensively: once a module is a client module, a Server Component can only render it, not call anything else it exports.
 

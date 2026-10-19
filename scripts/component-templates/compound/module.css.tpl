@@ -22,5 +22,5 @@
 }
 
 .lg {
-  font-size: var(--plume-font-size-md);
+  font-size: var(--plume-font-size-lg);
 }

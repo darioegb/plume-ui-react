@@ -32,6 +32,7 @@ function clientReason(code) {
     if (!serverSafeHooks.has(hook)) return `calls ${hook}`
   }
   if (/\.Provider\b/.test(source)) return 'renders a context Provider'
+  if (/\bon[A-Z]\w*=\{/.test(source)) return 'attaches an event handler to an element'
   return undefined
 }
 
