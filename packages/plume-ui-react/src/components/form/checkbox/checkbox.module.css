@@ -26,7 +26,7 @@
 .checkbox {
   appearance: none;
   background-color: var(--plume-surface);
-  border: 2px solid var(--plume-muted);
+  border: 2px solid var(--plume-border-strong);
   border-radius: var(--plume-radius-2);
   box-sizing: border-box;
   cursor: inherit;

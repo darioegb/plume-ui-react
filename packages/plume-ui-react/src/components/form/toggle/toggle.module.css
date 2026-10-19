@@ -27,7 +27,7 @@
   --toggle-gap: 3px;
   --toggle-thumb: calc(var(--toggle-height) - var(--toggle-gap) * 2);
   appearance: none;
-  background-color: var(--plume-muted);
+  background-color: var(--plume-border-strong);
   border: 0;
   border-radius: var(--plume-radius-full);
   box-sizing: border-box;

@@ -1,6 +1,6 @@
 @value textarea-padding: var(--plume-space-4);
 @value textarea-border-radius: var(--plume-radius-4);
-@value textarea-border-color: var(--plume-border);
+@value textarea-border-color: var(--plume-border-strong);
 @value textarea-background-color: var(--plume-surface-muted);
 
 :where(.base) {

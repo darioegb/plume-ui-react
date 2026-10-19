@@ -153,6 +153,7 @@ export const defaultTheme: Theme = {
     foreground: '#18181b',
     muted: '#71717a',
     border: '#d4d4d8',
+    borderStrong: '#80808a',
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
@@ -275,5 +276,6 @@ export const defaultDarkTheme: DeepPartial<Theme> = {
     foreground: '#fafafa',
     muted: '#a1a1aa',
     border: '#3f3f46',
+    borderStrong: '#9a9aa3',
   },
 }

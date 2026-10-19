@@ -147,6 +147,7 @@ export interface SemanticColors {
   foreground: string
   muted: string
   border: string
+  borderStrong: string
 }
 
 export interface Theme {
