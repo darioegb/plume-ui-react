@@ -14,3 +14,4 @@ Props that did nothing or leaked to the DOM, and a few behavior fixes found whil
 - `Spinner`: `size` no longer leaks to the `<output>` element as an HTML attribute.
 - `Tabs`: `TabPanel` applies its `className`. `Tab` and `TabPanel` no longer accept `id`, which was ignored; their ids derive from the `Tabs` `id`.
 - `DatePicker`: `readOnly` also disables the calendar button, so the date can't be changed from the calendar.
+- `DatePicker`: every `config` key is optional. `{ language: 'es' }` or `{ footer: { apply: 'Aplicar' } }` work alone, and the missing keys fall back to `en`, `Apply` and `Cancel`. `DatePickerConfig` is now exported.

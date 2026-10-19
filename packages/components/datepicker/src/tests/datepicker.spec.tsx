@@ -136,6 +136,30 @@ describe('DatePicker component', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
+  it('fills in the config keys that are left out', () => {
+    render(<DatePicker config={{ footer: { apply: 'Aplicar' } }} onChange={jest.fn()} showFooter />)
+    openCalendar()
+
+    expect(screen.getByRole('button', { name: 'Aplicar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+    expect(selector('month').textContent).toBe(
+      new Intl.DateTimeFormat('en', { month: 'long' }).format(new Date()),
+    )
+  })
+
+  it('reads the language alone from the config', () => {
+    render(<DatePicker config={{ language: 'es' }} onChange={jest.fn()} showFooter />)
+
+    expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'dd/mm/yyyy')
+    openCalendar()
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeInTheDocument()
+  })
+
+  it('passes required to the input', () => {
+    render(<DatePicker onChange={jest.fn()} required />)
+    expect(screen.getByRole('textbox')).toBeRequired()
+  })
+
   it('uses custom footer labels', () => {
     render(
       <DatePicker

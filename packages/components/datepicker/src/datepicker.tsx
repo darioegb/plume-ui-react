@@ -42,15 +42,18 @@ export interface DateRange {
   startDate: Date | null
 }
 
-interface DatePickerConfig {
-  footer: FooterLabels
-  language: string
+export interface DatePickerConfig {
+  footer?: Partial<FooterLabels>
+  language?: string
 }
 
 interface FooterLabels {
   apply: string
   cancel: string
 }
+
+const DEFAULT_LANGUAGE = 'en'
+const DEFAULT_FOOTER_LABELS: FooterLabels = { apply: 'Apply', cancel: 'Cancel' }
 
 interface FooterActionsProps {
   labels: FooterLabels
@@ -129,20 +132,18 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       className = '',
       colorScheme = 'secondary',
       variant = 'outline',
-      config = {
-        language: 'en',
-        footer: {
-          cancel: 'Cancel',
-          apply: 'Apply',
-        },
-      },
+      config,
       isCalendar = false,
       isRange = false,
       ...rest
     }: DatePickerProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const { language, footer: footerLabels } = config
+    const language = config?.language ?? DEFAULT_LANGUAGE
+    const footerLabels: FooterLabels = {
+      apply: config?.footer?.apply ?? DEFAULT_FOOTER_LABELS.apply,
+      cancel: config?.footer?.cancel ?? DEFAULT_FOOTER_LABELS.cancel,
+    }
     const [state, dispatch] = useReducer(
       datePickerReducer,
       value,

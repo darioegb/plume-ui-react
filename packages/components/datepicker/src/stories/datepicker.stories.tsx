@@ -117,7 +117,7 @@ export default {
     config: {
       control: false,
       description:
-        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the button labels. Pass both keys.',
+        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the button labels. Every key is optional and falls back to its default.',
       table: {
         defaultValue: {
           summary: 'object',
@@ -125,7 +125,7 @@ export default {
         },
         type: {
           summary: 'DatePickerConfig',
-          detail: '{ language: string; footer: { apply: string; cancel: string } }',
+          detail: '{ language?: string; footer?: { apply?: string; cancel?: string } }',
         },
       },
     },
@@ -380,11 +380,14 @@ export const WithFooterActions: Story = {
 }
 
 /**
- * DatePicker with custom configuration.
+ * DatePicker localized to Spanish through **config**.
+ * Every key is optional: `language` alone localizes the month and weekday names and the date format,
+ * and `footer` only needs the labels you want to change.
  */
 export const CustomConfiguration: Story = {
   args: {
     ...Default.args,
+    showFooter: true,
     config: {
       language: 'es',
       footer: {
