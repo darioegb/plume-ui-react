@@ -77,6 +77,11 @@
   border-color: color-mix(in hsl, input-border-color, black 10%);
 }
 
+:is(.outline, .filled, .underline).invalid,
+:is(.outline, .filled, .underline).invalid:enabled:hover {
+  border-color: var(--input-color);
+}
+
 .filled:enabled:hover {
   background-color: color-mix(in hsl, input-background-color, black 2%);
 }

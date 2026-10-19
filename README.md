@@ -71,6 +71,7 @@ export function App() {
 | --- | --- |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
+| Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |

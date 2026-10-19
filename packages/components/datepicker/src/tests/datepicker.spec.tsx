@@ -44,6 +44,14 @@ describe('DatePicker component', () => {
     expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
   })
 
+  it('marks the input invalid when aria-invalid is set', () => {
+    render(<DatePicker aria-describedby="hint" aria-invalid onChange={jest.fn()} />)
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveClass('invalid')
+    expect(input).toHaveAttribute('aria-invalid', 'true')
+    expect(input).toHaveAttribute('aria-describedby', 'hint')
+  })
+
   it('blocks typing and the calendar when read-only', () => {
     render(<DatePicker onChange={jest.fn()} readOnly />)
     expect(screen.getByRole('textbox')).toHaveAttribute('readonly')

@@ -67,7 +67,14 @@ interface FooterActionsProps {
 export type DatePickerVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export type DatePickerRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
-  'disabled' | 'readOnly' | 'id' | 'name' | 'required' | 'placeholder'
+  | 'aria-describedby'
+  | 'aria-invalid'
+  | 'disabled'
+  | 'readOnly'
+  | 'id'
+  | 'name'
+  | 'required'
+  | 'placeholder'
 >
 
 export type DatePickerProps = ComponentProps & DatePickerRootAttributes & DatePickerOwnProps
@@ -106,6 +113,7 @@ function FooterActions({
 const generateDatePickerInputClasses = (
   className: string,
   disabled: boolean,
+  isInvalid: boolean,
   variant: string,
   shape?: Shape,
   size?: Size,
@@ -114,8 +122,9 @@ const generateDatePickerInputClasses = (
   const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
   const variantClass = variant !== 'unstyled' ? styles[variant] : ''
   const disabledClass = disabled ? styles.disabled : ''
+  const invalidClass = isInvalid && variant !== 'unstyled' ? styles.invalid : ''
   return `${sizeClass} ${shapeClass} ${variantClass} 
-    ${disabledClass} ${className}`.trim()
+    ${disabledClass} ${invalidClass} ${className}`.trim()
 }
 
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
@@ -174,6 +183,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     const datePickerInputClasses = generateDatePickerInputClasses(
       className,
       disabled,
+      rest['aria-invalid'] === true || rest['aria-invalid'] === 'true',
       variant,
       shape,
       size,

@@ -362,6 +362,46 @@ importers:
         specifier: workspace:*
         version: link:../../tsconfig
 
+  packages/components/field:
+    dependencies:
+      '@plume-ui-react/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      '@plume-ui-react/button':
+        specifier: workspace:*
+        version: link:../button
+      '@plume-ui-react/datepicker':
+        specifier: workspace:*
+        version: link:../datepicker
+      '@plume-ui-react/input':
+        specifier: workspace:*
+        version: link:../input
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../eslint-config-custom
+      jest-preset:
+        specifier: workspace:*
+        version: link:../../jest-preset
+      prettier-config:
+        specifier: workspace:*
+        version: link:../../prettier-config
+      react:
+        specifier: ^19.3.0
+        version: 19.3.0
+      react-dom:
+        specifier: ^19.3.0
+        version: 19.3.0(react@19.3.0)
+      react-hook-form:
+        specifier: 7.89.0
+        version: 7.89.0(@types/react@19.3.0)(react@19.3.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tsconfig
+      typescript:
+        specifier: ^5.2.2
+        version: 5.9.3
+
   packages/components/input:
     dependencies:
       '@plume-ui-react/button':
@@ -413,6 +453,9 @@ importers:
       '@plume-ui-react/datepicker':
         specifier: workspace:*
         version: link:../datepicker
+      '@plume-ui-react/field':
+        specifier: workspace:*
+        version: link:../field
       '@plume-ui-react/input':
         specifier: workspace:*
         version: link:../input

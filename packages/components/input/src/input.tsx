@@ -18,6 +18,8 @@ export interface InputOwnProps {
 
 type InputRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
+  | 'aria-describedby'
+  | 'aria-invalid'
   | 'defaultValue'
   | 'disabled'
   | 'id'
@@ -43,17 +45,19 @@ export type InputProps = ComponentProps & InputRootAttributes & InputOwnProps
 const generateInputClasses = (
   className: string,
   disabled: boolean,
+  isInvalid: boolean,
   isStyled: boolean,
   shape: Shape,
   size: Size,
   variant: string,
 ): string => {
   const disabledClass = disabled ? styles.disabled : ''
+  const invalidClass = isInvalid && isStyled ? styles.invalid : ''
   const shapeClass = isStyled ? styles[shape] : ''
   const sizeClass = isStyled ? styles[size] : ''
   const variantClass = isStyled ? styles[variant] : ''
   return `${styles.base} ${sizeClass} ${shapeClass} ${variantClass}
-      ${disabledClass} ${className}`.trim()
+      ${disabledClass} ${invalidClass} ${className}`.trim()
 }
 
 const inputColorVars = (colorScheme: ColorScheme): CSSProperties =>
@@ -86,8 +90,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const inputClasses = generateInputClasses(className, disabled, isStyled, shape, size, variant)
-    const inputStyle = { ...inputColorVars(colorScheme), ...style }
+    const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
+    const inputClasses = generateInputClasses(
+      className,
+      disabled,
+      isInvalid,
+      isStyled,
+      shape,
+      size,
+      variant,
+    )
+    const inputStyle = { ...inputColorVars(isInvalid ? 'error' : colorScheme), ...style }
     const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter
     const { value: maskedValue, onChange: maskedOnChange } = useMask({
       mask,
