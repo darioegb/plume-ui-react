@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/field",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Plume UI Field for React: label, required indicator, helper and error text wired to a form control.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
