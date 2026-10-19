@@ -7,10 +7,12 @@ const openCalendar = (): void => {
 }
 
 const dayButton = (day: number, month = new Date().getMonth()): HTMLElement =>
-  screen.getAllByRole('button', { name: `${day}` }).find((button) => {
-    const date = new Date(button.id)
-    return date.getMonth() === month && date.getDate() === day
-  }) as HTMLElement
+  Array.from(document.querySelectorAll<HTMLElement>('[data-date]:not([aria-hidden])')).find(
+    (button) => {
+      const [, buttonMonth, buttonDay] = (button.dataset.date ?? '').split('-').map(Number)
+      return buttonMonth - 1 === month && buttonDay === day
+    },
+  ) as HTMLElement
 
 const selector = (kind: 'month' | 'year'): HTMLElement =>
   document.querySelector<HTMLElement>(`[class*="${kind}Selector"]`) as HTMLElement
@@ -75,7 +77,7 @@ describe('DatePicker component', () => {
     render(<DatePicker onChange={onChange} />)
     openCalendar()
 
-    fireEvent.click(screen.getByRole('button', { name: '15' }))
+    fireEvent.click(dayButton(15))
 
     expect(onChange).toHaveBeenCalledTimes(1)
     const { startDate, endDate } = onChange.mock.calls[0][0]
@@ -90,9 +92,9 @@ describe('DatePicker component', () => {
     render(<DatePicker isRange onChange={onChange} />)
     openCalendar()
 
-    fireEvent.click(screen.getAllByRole('button', { name: '15' })[0])
+    fireEvent.click(dayButton(15))
     expect(onChange).not.toHaveBeenCalled()
-    fireEvent.click(screen.getAllByRole('button', { name: '16' })[0])
+    fireEvent.click(dayButton(16))
 
     expect(onChange).toHaveBeenCalledTimes(1)
     const { startDate, endDate } = onChange.mock.calls[0][0]
@@ -106,7 +108,7 @@ describe('DatePicker component', () => {
     render(<DatePicker onChange={onChange} showFooter />)
     openCalendar()
 
-    fireEvent.click(screen.getByRole('button', { name: '15' }))
+    fireEvent.click(dayButton(15))
     expect(onChange).not.toHaveBeenCalled()
     expect(screen.getByRole('dialog')).toBeInTheDocument()
 
@@ -275,7 +277,7 @@ describe('DatePicker component', () => {
       })
       openCalendar()
 
-      expect(screen.getAllByRole('button', { name: '15' }).length).toBeGreaterThan(0)
+      expect(dayButton(15, 2)).toHaveAttribute('aria-pressed', 'true')
       expect(selector('month')).toHaveTextContent('March')
     })
 
@@ -436,6 +438,160 @@ describe('DatePicker component', () => {
       expect(second.month).toBe('January')
       expect(first.month).toBe('December')
       expect(Number(first.year)).toBe(Number(second.year) - 1)
+    })
+  })
+
+  describe('accessibility', () => {
+    const value = { startDate: new Date(2040, 0, 15), endDate: null }
+
+    it('names each day with its full date and marks today and the selection', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      const selected = screen.getByRole('button', { name: 'Sunday, January 15, 2040' })
+      expect(selected).toHaveAttribute('aria-pressed', 'true')
+      expect(screen.getByRole('button', { name: 'Monday, January 16, 2040' })).toHaveAttribute(
+        'aria-pressed',
+        'false',
+      )
+    })
+
+    it('marks only the current day of the current month as today', () => {
+      render(<DatePicker onChange={jest.fn()} />)
+      openCalendar()
+
+      const today = document.querySelectorAll('[aria-current="date"]')
+      expect(today).toHaveLength(1)
+      expect(today[0]).toBe(dayButton(new Date().getDate()))
+    })
+
+    it('moves focus to the selected day when it opens', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      expect(dayButton(15, 0)).toHaveFocus()
+      expect(dayButton(15, 0)).toHaveAttribute('tabindex', '0')
+      expect(dayButton(16, 0)).toHaveAttribute('tabindex', '-1')
+    })
+
+    it('closes with Escape and returns focus to the input', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      fireEvent.keyDown(dayButton(15, 0), { key: 'Escape' })
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByRole('textbox')).toHaveFocus()
+    })
+
+    it('returns focus to the input after picking a date', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      fireEvent.click(dayButton(20, 0))
+
+      expect(screen.getByRole('textbox')).toHaveFocus()
+    })
+
+    it('closes when focus leaves the date picker', () => {
+      render(
+        <>
+          <DatePicker onChange={jest.fn()} value={value} />
+          <button type="button">Next field</button>
+        </>,
+      )
+      openCalendar()
+
+      fireEvent.blur(dayButton(15, 0), {
+        relatedTarget: screen.getByRole('button', { name: 'Next field' }),
+      })
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('closes from the trigger button instead of reopening', () => {
+      render(<DatePicker onChange={jest.fn()} />)
+      const trigger = screen.getByRole('button', { name: 'Open calendar' })
+      fireEvent.click(trigger)
+
+      fireEvent.mouseDown(trigger)
+      fireEvent.click(trigger)
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('moves between days with the arrow keys', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      fireEvent.keyDown(dayButton(15, 0), { key: 'ArrowRight' })
+      expect(dayButton(16, 0)).toHaveFocus()
+
+      fireEvent.keyDown(dayButton(16, 0), { key: 'ArrowDown' })
+      expect(dayButton(23, 0)).toHaveFocus()
+      expect(dayButton(23, 0)).toHaveAttribute('tabindex', '0')
+
+      fireEvent.keyDown(dayButton(23, 0), { key: 'End' })
+      expect(dayButton(29, 0)).toHaveFocus()
+
+      fireEvent.keyDown(dayButton(29, 0), { key: 'Home' })
+      expect(dayButton(23, 0)).toHaveFocus()
+    })
+
+    it('changes month when the arrow keys leave the visible one', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      fireEvent.keyDown(dayButton(15, 0), { key: 'PageUp' })
+      expect(selector('month')).toHaveTextContent('December')
+      expect(selector('year')).toHaveTextContent('2039')
+      expect(dayButton(15, 11)).toHaveFocus()
+
+      fireEvent.keyDown(dayButton(15, 11), { key: 'ArrowDown' })
+      fireEvent.keyDown(dayButton(22, 11), { key: 'ArrowDown' })
+      fireEvent.keyDown(dayButton(29, 11), { key: 'ArrowDown' })
+      expect(selector('month')).toHaveTextContent('January')
+      expect(selector('year')).toHaveTextContent('2040')
+      expect(dayButton(5, 0)).toHaveFocus()
+    })
+
+    it('does not move past the min and max dates', () => {
+      render(
+        <DatePicker
+          maxDate={new Date(2040, 0, 16)}
+          minDate={new Date(2040, 0, 15)}
+          onChange={jest.fn()}
+          value={value}
+        />,
+      )
+      openCalendar()
+
+      fireEvent.keyDown(dayButton(15, 0), { key: 'ArrowLeft' })
+      expect(dayButton(15, 0)).toHaveFocus()
+
+      fireEvent.keyDown(dayButton(15, 0), { key: 'ArrowRight' })
+      fireEvent.keyDown(dayButton(16, 0), { key: 'ArrowRight' })
+      expect(dayButton(16, 0)).toHaveFocus()
+    })
+
+    it('goes back to December of the previous year from January', () => {
+      render(<DatePicker onChange={jest.fn()} value={value} />)
+      openCalendar()
+
+      fireEvent.click(screen.getByRole('button', { name: 'Previous month' }))
+
+      expect(selector('month')).toHaveTextContent('December')
+      expect(selector('year')).toHaveTextContent('2039')
+    })
+
+    it('previews the range for the focused day', () => {
+      render(<DatePicker isRange onChange={jest.fn()} />)
+      openCalendar()
+
+      fireEvent.click(dayButton(10))
+      fireEvent.focus(dayButton(12))
+
+      expect(dayButton(11)).toHaveClass('rangeItem')
     })
   })
 

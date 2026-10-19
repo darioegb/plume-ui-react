@@ -44,8 +44,7 @@ describe('Input component', () => {
   it('maps the color scheme to palette CSS variables', () => {
     render(<Input colorScheme="success" placeholder="x" />)
     const { style } = screen.getByPlaceholderText('x')
-    expect(style.getPropertyValue('--input-color')).toBe('var(--plume-color-success-500)')
-    expect(style.getPropertyValue('--input-hover-color')).toBe('var(--plume-color-success-200)')
+    expect(style.getPropertyValue('--input-color')).toBe('var(--plume-color-success-text)')
   })
 
   it('lets the style prop override the color variables', () => {
@@ -97,7 +96,7 @@ describe('Input component', () => {
         <Input addonBefore={<span>$</span>} colorScheme="info" placeholder="x" />,
       )
       const group = container.firstChild as HTMLElement
-      expect(group.style.getPropertyValue('--input-color')).toBe('var(--plume-color-info-500)')
+      expect(group.style.getPropertyValue('--input-color')).toBe('var(--plume-color-info-text)')
     })
 
     it('does not wrap the input when there is nothing to group', () => {

@@ -28,10 +28,15 @@ const commonTabs = (
 )
 
 /**
- * Enhance user interactions with the Button component,
- * featuring customizable styles for triggering actions within forms, dialogs, and other contexts.
- * With support for various sizes and states,
- * it facilitates actions such as form submissions, dialog interactions, and deletion or cancellation operations.
+ * Tabs split related content into panels and show one at a time.
+ * Compose them with `TabList`, `Tab`, `TabPanels` and `TabPanel`; tabs and panels are linked by position.
+ *
+ * ### Keyboard
+ *
+ * Only the selected tab is in the tab order, so <kbd>Tab</kbd> moves from it to its panel.
+ * Inside the tab list, <kbd>←</kbd> <kbd>→</kbd> (<kbd>↑</kbd> <kbd>↓</kbd> when vertical) select the previous or next tab,
+ * and <kbd>Home</kbd> / <kbd>End</kbd> the first or last one. Disabled tabs are skipped.
+ * Give the `TabList` an `aria-label` (or `aria-labelledby`) that describes the group.
  */
 export default {
   title: 'Components/Tabs',

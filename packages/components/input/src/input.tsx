@@ -54,14 +54,13 @@ const generateInputClasses = (
   const shapeClass = isStyled ? styles[shape] : ''
   const sizeClass = isStyled ? styles[size] : ''
   const variantClass = isStyled ? styles[variant] : ''
-  return `${sizeClass} ${shapeClass} ${variantClass} 
+  return `${styles.base} ${sizeClass} ${shapeClass} ${variantClass}
       ${disabledClass} ${className}`.trim()
 }
 
 const inputColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
-    '--input-color': `var(--plume-color-${colorScheme}-500)`,
-    '--input-hover-color': `var(--plume-color-${colorScheme}-200)`,
+    '--input-color': `var(--plume-color-${colorScheme}-text)`,
   }) as CSSProperties
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(

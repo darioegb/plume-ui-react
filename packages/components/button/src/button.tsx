@@ -30,6 +30,7 @@ type ButtonRootAttributes = Pick<
   | 'onBlur'
   | 'onClick'
   | 'onFocus'
+  | 'onKeyDown'
   | 'onMouseEnter'
   | 'role'
   | 'tabIndex'

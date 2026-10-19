@@ -33,9 +33,11 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Just adding needed dependencies
   }, [
     config.alignment,
+    config.baseId,
     config.colorScheme,
     config.index,
     config.isLazy,
+    config.orientation,
     config.size,
     config.variant,
   ])
@@ -61,6 +63,9 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
     </TabContext.Provider>
   )
 }
+
+export const getTabId = (baseId: string, index: number): string => `${baseId}-tab-${index}`
+export const getPanelId = (baseId: string, index: number): string => `${baseId}-panel-${index}`
 
 export const useTabs = (): TabContextProps => {
   const context = useContext(TabContext)

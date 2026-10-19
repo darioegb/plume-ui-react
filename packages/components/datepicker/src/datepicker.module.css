@@ -19,7 +19,8 @@
   padding: 0 date-picker-padding;
   position: relative;
   display: block;
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   color: date-picker-color;
   background: none;
 }
@@ -93,7 +94,6 @@
 .underline {
   composes: datePickerInputText;
   border-radius: 0;
-  outline: none;
   border-block-end: 1px solid date-picker-border-color;
 }
 
@@ -107,8 +107,7 @@
 
 .outline:enabled:focus {
   border-color: var(--datepicker-scheme);
-  outline: 2px solid var(--datepicker-range-item-color);
-  outline-offset: 2px;
+  outline-color: var(--datepicker-scheme);
 }
 
 :is(.filled, .underline):enabled:focus {
@@ -162,6 +161,14 @@
   color: inherit;
   cursor: pointer;
   font: inherit;
+}
+
+.day:focus-visible,
+.year:focus-visible,
+.month:focus-visible,
+.monthYearSelectors button:focus-visible {
+  outline: 2px solid var(--datepicker-scheme);
+  outline-offset: 1px;
 }
 
 .monthYearSelectors {

@@ -1,4 +1,5 @@
-import { forwardRef } from 'react'
+import * as React from 'react'
+import { forwardRef, useState } from 'react'
 import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '@plume-ui-react/core'
 import { TabsProvider } from './use-tabs'
@@ -33,6 +34,15 @@ const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProp
     ...(style ?? {}),
   }) as CSSProperties
 
+let tabsCount = 0
+const useReactId = (React as { useId?: () => string }).useId ?? ((): undefined => undefined)
+
+function useTabsId(id?: string): string {
+  const reactId = useReactId()
+  const [fallbackId] = useState(() => `plume-tabs-${++tabsCount}`)
+  return id ?? reactId ?? fallbackId
+}
+
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
@@ -51,6 +61,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
+    const baseId = useTabsId(rest.id)
     const isStyled = variant !== 'unstyled'
     const tabsClassNames = `${
       orientation !== 'horizontal' || isStyled ? styles[orientation] : ''
@@ -61,9 +72,11 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         config={{
           index,
           alignment,
+          baseId,
           colorScheme,
           isLazy,
           isStyled,
+          orientation,
           size,
           variant,
           onChange,

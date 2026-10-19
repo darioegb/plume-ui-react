@@ -1,4 +1,10 @@
-import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
+import type {
+  CSSProperties,
+  FocusEvent,
+  ForwardedRef,
+  InputHTMLAttributes,
+  ReactNode,
+} from 'react'
 import { forwardRef, useEffect, useRef, useReducer } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '@plume-ui-react/core'
 import { getDateFormatByLanguage } from '@plume-ui-react/date-utils'
@@ -137,16 +143,25 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const { language, footer: footerLabels } = config
-    const [state, dispatch] = useReducer(datePickerReducer, {
-      ...DATE_PICKER_INITIAL_STATE,
-      ...(value && { value, tempValue: value }),
-    })
+    const [state, dispatch] = useReducer(
+      datePickerReducer,
+      value,
+      (initialValue?: DateRange) =>
+        initialValue
+          ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })
+          : DATE_PICKER_INITIAL_STATE,
+    )
     const isFirstRender = useRef(true)
-    const datePickerRef = useClickOutside({
+    const rootRef = useClickOutside({
       callback: (): void => {
-        dispatch({ type: 'TOGGLE_MODAL' })
+        dispatch({ type: 'CLOSE_MODAL' })
       },
     })
+    const setRootRef = (node: HTMLDivElement | null): void => {
+      rootRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) ref.current = node
+    }
 
     const {
       size = variant !== 'unstyled' ? 'md' : undefined,
@@ -187,60 +202,76 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       dispatch({ type: 'SET_TEMP_VALUE', payload: value ?? value ?? DEFAULT_DATE_PICKER_VALUE })
     }, [value, isRange, language, onChange])
 
+    useEffect(() => {
+      if (!state.modalOpen) return
+      rootRef.current
+        ?.querySelector<HTMLButtonElement>('[role="dialog"] [data-date][tabindex="0"]')
+        ?.focus()
+    }, [state.modalOpen, rootRef])
+
     const handleToggleModal = (): void => {
       dispatch({ type: 'TOGGLE_MODAL' })
     }
 
-    const handleYearChange = (newYear: number): void => {
-      if (newYear > state.secondYear) {
-        dispatch({ type: 'SET_YEAR', payload: newYear })
-        dispatch({ type: 'SET_SECOND_YEAR', payload: newYear })
-      } else {
-        dispatch({ type: 'SET_YEAR', payload: newYear })
+    const closeAndRestoreFocus = (): void => {
+      if (isCalendar) return
+      dispatch({ type: 'CLOSE_MODAL' })
+      rootRef.current?.querySelector('input')?.focus()
+    }
+
+    useEffect(() => {
+      if (!state.modalOpen || isCalendar) return
+      const handleEscape = (event: KeyboardEvent): void => {
+        if (event.key !== 'Escape' || !rootRef.current?.contains(event.target as Node)) return
+        dispatch({ type: 'CLOSE_MODAL' })
+        rootRef.current.querySelector('input')?.focus()
       }
+      document.addEventListener('keydown', handleEscape)
+      return () => {
+        document.removeEventListener('keydown', handleEscape)
+      }
+    }, [state.modalOpen, isCalendar, rootRef])
+
+    const handleBlur = (event: FocusEvent<HTMLDivElement>): void => {
+      const next = event.relatedTarget
+      if (next && !event.currentTarget.contains(next)) {
+        dispatch({ type: 'CLOSE_MODAL' })
+      }
+    }
+
+    const toMonthIndex = (year: number, month: number): number => year * 12 + month
+
+    const showMonths = (first: number, second: number): void => {
+      dispatch({ type: 'SET_YEAR', payload: Math.floor(first / 12) })
+      dispatch({ type: 'SET_MONTH', payload: first % 12 })
+      dispatch({ type: 'SET_SECOND_YEAR', payload: Math.floor(second / 12) })
+      dispatch({ type: 'SET_SECOND_MONTH', payload: second % 12 })
+    }
+
+    const showFirstMonth = (year: number, month: number): void => {
+      const first = toMonthIndex(year, month)
+      showMonths(first, Math.max(toMonthIndex(state.secondYear, state.secondMonth), first + 1))
+    }
+
+    const showSecondMonth = (year: number, month: number): void => {
+      const second = toMonthIndex(year, month)
+      showMonths(Math.min(toMonthIndex(state.year, state.month), second - 1), second)
+    }
+
+    const handleYearChange = (newYear: number): void => {
+      showFirstMonth(newYear, state.month)
     }
 
     const handleMonthChange = (newMonth: number): void => {
-      if (
-        state.year < state.secondYear ||
-        (state.year === state.secondYear && newMonth < state.secondMonth)
-      ) {
-        dispatch({ type: 'SET_MONTH', payload: newMonth })
-      } else {
-        dispatch({ type: 'SET_MONTH', payload: newMonth })
-        if (newMonth === 11) {
-          dispatch({ type: 'SET_SECOND_MONTH', payload: 0 })
-          dispatch({ type: 'SET_SECOND_YEAR', payload: state.secondYear + 1 })
-        } else {
-          dispatch({ type: 'SET_SECOND_MONTH', payload: newMonth + 1 })
-        }
-      }
+      showFirstMonth(state.year, newMonth)
     }
 
     const handleSecondYearChange = (newYear: number): void => {
-      if (newYear < state.year) {
-        dispatch({ type: 'SET_SECOND_YEAR', payload: newYear })
-        dispatch({ type: 'SET_YEAR', payload: newYear })
-      } else {
-        dispatch({ type: 'SET_SECOND_YEAR', payload: newYear })
-      }
+      showSecondMonth(newYear, state.secondMonth)
     }
 
     const handleSecondMonthChange = (newMonth: number): void => {
-      if (
-        state.secondYear > state.year ||
-        (state.secondYear === state.year && newMonth > state.month)
-      ) {
-        dispatch({ type: 'SET_SECOND_MONTH', payload: newMonth })
-      } else {
-        dispatch({ type: 'SET_SECOND_MONTH', payload: newMonth })
-        if (state.secondYear === state.year && newMonth === 0) {
-          dispatch({ type: 'SET_YEAR', payload: state.year - 1 })
-          dispatch({ type: 'SET_MONTH', payload: 11 })
-        } else {
-          dispatch({ type: 'SET_MONTH', payload: state.month - 1 })
-        }
-      }
+      showSecondMonth(state.secondYear, newMonth)
     }
 
     const handleApply = (): void => {
@@ -248,7 +279,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       if (state.tempValue.startDate) {
         onChange({ startDate: state.tempValue.startDate, endDate: state.tempValue.endDate })
       }
-      handleToggleModal()
+      closeAndRestoreFocus()
     }
 
     const handleDateSelection = (day: number, isSecondCalendar?: boolean): void => {
@@ -279,7 +310,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       if (!isRange || newValue.endDate) {
         onChange({ startDate: newValue.startDate, endDate: newValue.endDate })
         dispatch({ type: 'SET_VALUE', payload: newValue })
-        handleToggleModal()
+        closeAndRestoreFocus()
       }
     }
 
@@ -292,7 +323,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       <DatePickerContext.Provider value={{ state, dispatch }}>
         <div
           className={styles.datePicker}
-          ref={ref}
+          onBlur={handleBlur}
+          ref={setRootRef}
           style={datePickerColorVars(colorScheme, style)}
         >
           {!isCalendar && (
@@ -312,7 +344,6 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
             <div
               aria-label='Calendar'
               className={styles.datePickerModal}
-              ref={datePickerRef}
               role='dialog'
             >
               <div className={isRange ? styles.calendarContainerDouble : styles.calendarContainer}>
@@ -343,7 +374,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
                   colorScheme={colorScheme}
                   labels={footerLabels}
                   onApply={handleApply}
-                  onCancel={handleToggleModal}
+                  onCancel={closeAndRestoreFocus}
                 />
               ) : null}
             </div>

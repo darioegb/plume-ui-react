@@ -6,11 +6,11 @@
 @value input-border-color: var(--plume-border);
 @value input-background-color: var(--plume-surface-muted);
 
-/* reset browser styles */
-input {
+.base {
   background: transparent;
   border: none;
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .input {
@@ -70,7 +70,6 @@ input {
 .underline {
   composes: input;
   border-radius: 0;
-  outline: none;
   border-block-end: 1px solid input-border-color;
 }
 
@@ -85,7 +84,7 @@ input {
 :not(.inputGroup) > .outline:enabled:focus,
 .inputGroup:has(.outline:enabled):focus-within {
   border-color: var(--input-color);
-  outline: 2px solid var(--input-hover-color);
+  outline: 2px solid var(--input-color);
   outline-offset: 2px;
 }
 

@@ -1,8 +1,39 @@
-import { useState, type ReactNode } from 'react'
-import { getDaysOfWeekByLanguage, getMonthsByLanguage } from '@plume-ui-react/date-utils'
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import {
+  formatDate,
+  getDateFromDateString,
+  getDaysOfWeekByLanguage,
+  getMonthsByLanguage,
+} from '@plume-ui-react/date-utils'
 import { Button } from '@plume-ui-react/button'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
+
+const DATA_DATE_FORMAT = 'yyyy-mm-dd'
+
+const addDays = (date: Date, days: number): Date =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate() + days)
+
+const addMonths = (date: Date, months: number): Date => {
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + months + 1, 0).getDate()
+  return new Date(date.getFullYear(), date.getMonth() + months, Math.min(date.getDate(), lastDay))
+}
+
+const daysFromMonday = (date: Date): number => (date.getDay() + 6) % 7
+
+const KEY_MOVES: Record<string, (date: Date) => Date> = {
+  ArrowLeft: (date) => addDays(date, -1),
+  ArrowRight: (date) => addDays(date, 1),
+  ArrowUp: (date) => addDays(date, -7),
+  ArrowDown: (date) => addDays(date, 7),
+  Home: (date) => addDays(date, -daysFromMonday(date)),
+  End: (date) => addDays(date, 6 - daysFromMonday(date)),
+  PageUp: (date) => addMonths(date, -1),
+  PageDown: (date) => addMonths(date, 1),
+}
+
+const startOfDay = (date: Date): number =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
 
 function DayOfWeek({ day }: { day: string }): ReactNode {
   return <span className={styles.dayOfWeek}>{day}</span>
@@ -23,6 +54,7 @@ function MonthSelector({ selectedMonth, months, onChange }: MonthSelectorProps):
     <div className={styles.monthSelectorGrid}>
       {months.map((currentMonth, index) => (
         <Button
+          aria-pressed={index === selectedMonth}
           className={`${index === selectedMonth ? styles.selected : ''} ${styles.month}`}
           key={currentMonth}
           label={currentMonth}
@@ -52,6 +84,7 @@ function YearSelector({ selectedYear, startYear, onChange }: YearSelectorProps):
     for (let i = startYear; i < startYear + 20; i++) {
       years.push(
         <Button
+          aria-pressed={selectedYear === i}
           className={`${selectedYear === i ? styles.selected : ''} ${styles.year}`}
           key={i}
           onClick={() => {
@@ -95,16 +128,32 @@ export function Calendar({
   const { state } = useDatePicker()
   const [selector, setSelector] = useState<SelectorType>('day')
   const [startYear, setStartYear] = useState(isSecondCalendar ? state.secondYear : state.year)
+  const [focusedDate, setFocusedDate] = useState<Date | null>(null)
+  const shouldMoveFocus = useRef(false)
+  const calendarRef = useRef<HTMLDivElement>(null)
 
-  const dateButtons = isSecondCalendar
-    ? getCalendarDays(state.secondYear, state.secondMonth)
-    : getCalendarDays(state.year, state.month)
+  const year = isSecondCalendar ? state.secondYear : state.year
+  const month = isSecondCalendar ? state.secondMonth : state.month
+  const dateButtons = getCalendarDays()
   const months = getMonthsByLanguage(language)
 
-  const handleHoverEffect = (id: string): void => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`)
-    const hoveredIndex = Array.from(buttons).findIndex((button) => button.id === id)
-    const selectedButton = document.querySelector<HTMLButtonElement>(`.${styles.selected}`)
+  useEffect(() => {
+    if (!shouldMoveFocus.current || !focusedDate) return
+    shouldMoveFocus.current = false
+    calendarRef.current
+      ?.querySelector<HTMLButtonElement>(
+        `[data-date="${formatDate(focusedDate, DATA_DATE_FORMAT)}"]:enabled`,
+      )
+      ?.focus()
+  })
+
+  const handleHoverEffect = (dataDate: string): void => {
+    const scope = calendarRef.current?.closest('[role="dialog"]') ?? document
+    const buttons = scope.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`)
+    const hoveredIndex = Array.from(buttons).findIndex(
+      (button) => button.dataset.date === dataDate,
+    )
+    const selectedButton = scope.querySelector<HTMLButtonElement>(`.${styles.day}.${styles.selected}`)
     const isRangeAndStartSelected = isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButton
 
     buttons.forEach((button, index) => {
@@ -180,93 +229,88 @@ export function Calendar({
     setStartYear(startYear + 20)
   }
 
-  function getCalendarDays(year: number, month: number): ReactNode {
-    const firstDay = new Date(year, month, 1)
-    const lastDay = new Date(year, month + 1, 0)
-    const startDay = firstDay.getDay()
-    const lastDateOfMonth = lastDay.getDate()
+  function getCalendarDays(): ReactNode {
+    const daysFromPrevMonth = daysFromMonday(new Date(year, month, 1))
+    const minTime = minDate ? startOfDay(minDate) : -Infinity
+    const maxTime = maxDate ? startOfDay(maxDate) : Infinity
+    const today = new Date().toDateString()
+    const dateLabel = new Intl.DateTimeFormat(language, { dateStyle: 'full' })
+    const isSameDay = (a: Date | null, b: Date): boolean => a?.toDateString() === b.toDateString()
 
-    minDate?.setHours(0, 0, 0)
-    maxDate?.setHours(0, 0, 0)
-    const minDateTime = minDate?.getTime() || Number.MIN_VALUE
-    const maxDateTime = maxDate?.getTime() || Number.MAX_VALUE
-
-    const days = Array.from({ length: lastDateOfMonth }, (_, i) => {
-      const day = i + 1
-      const date = new Date(year, month, day)
-      const isCurrentMonth = true
-      const dateTime = date.getTime()
-      const isDisabled = dateTime < minDateTime || dateTime > maxDateTime
-      const isToday = day === new Date().getDate() && !isSecondCalendar
-      return { day, date, isCurrentMonth, isDisabled, isToday }
+    const allDays = Array.from({ length: 42 }, (_, i) => {
+      const date = new Date(year, month, i - daysFromPrevMonth + 1)
+      const isCurrentMonth = date.getMonth() === month
+      const isDisabled = !isCurrentMonth || date.getTime() < minTime || date.getTime() > maxTime
+      return { date, isCurrentMonth, isDisabled }
     })
 
-    const prevMonth = month === 0 ? 11 : month - 1
-    const prevYear = month === 0 ? year - 1 : year
-    const daysInPrevMonth = new Date(prevYear, prevMonth + 1, 0).getDate()
-    const daysFromPrevMonth = startDay === 0 ? 6 : startDay - 1
+    const enabledDays = allDays.filter(({ isDisabled }) => !isDisabled).map(({ date }) => date)
+    const tabStop =
+      [focusedDate, state.tempValue.startDate, new Date()]
+        .map((candidate) => enabledDays.find((date) => isSameDay(candidate, date)))
+        .find(Boolean) ?? enabledDays[0]
 
-    const prevMonthDays = Array.from({ length: daysFromPrevMonth }, (_, i) => {
-      const day = daysInPrevMonth - daysFromPrevMonth + i + 1
-      const date = new Date(prevYear, prevMonth, day)
-      const isCurrentMonth = false
-      const isDisabled = true
-      const isToday = false
-      return { day, date, isCurrentMonth, isDisabled, isToday }
-    })
-
-    const nextMonth = month === 11 ? 0 : month + 1
-    const nextYear = month === 11 ? year + 1 : year
-    const daysFromNextMonth = 42 - lastDateOfMonth - daysFromPrevMonth
-
-    const nextMonthDays = Array.from({ length: daysFromNextMonth }, (_, i) => {
-      const day = i + 1
-      const date = new Date(nextYear, nextMonth, day)
-      const isCurrentMonth = false
-      const isDisabled = true
-      const isToday = false
-      return { day, date, isCurrentMonth, isDisabled, isToday }
-    })
-
-    const allDays = [...prevMonthDays, ...days, ...nextMonthDays]
-
-    return allDays.map(({ day, date, isCurrentMonth, isDisabled, isToday }) => {
-      const isStartDate =
-        state.tempValue.startDate && isCurrentMonth && date.toDateString() === state.tempValue.startDate.toDateString()
-      const isEndDate =
-        state.tempValue.endDate && isCurrentMonth && date.toDateString() === state.tempValue.endDate.toDateString()
-      const isInRange = state.rangeDays.some(
-        (rangeDate) => date.toDateString() === rangeDate.toDateString(),
-      )
+    return allDays.map(({ date, isCurrentMonth, isDisabled }) => {
+      const dataDate = formatDate(date, DATA_DATE_FORMAT)
+      const isStartDate = isCurrentMonth && isSameDay(state.tempValue.startDate, date)
+      const isEndDate = isCurrentMonth && isSameDay(state.tempValue.endDate, date)
+      const isSelected = isStartDate || isEndDate
+      const isInRange = state.rangeDays.some((rangeDate) => isSameDay(rangeDate, date))
+      const isToday = isCurrentMonth && date.toDateString() === today
 
       return (
         <Button
+          aria-current={isToday ? 'date' : undefined}
+          aria-hidden={isCurrentMonth ? undefined : true}
+          aria-label={dateLabel.format(date)}
+          aria-pressed={isCurrentMonth ? isSelected : undefined}
           className={`${styles.day} ${!isCurrentMonth ? styles.disabledDay : ''} ${
-            isStartDate || isEndDate ? styles.selected : ''
-          } ${
-            isInRange && !isStartDate && !isEndDate && isCurrentMonth ? styles.rangeItem : ''
-          } ${isCurrentMonth && isDisabled ? styles.outOfRangeDay : ''} ${
-            isToday ? styles.today : ''
-          }`}
+            isSelected ? styles.selected : ''
+          } ${isInRange && !isSelected && isCurrentMonth ? styles.rangeItem : ''} ${
+            isCurrentMonth && isDisabled ? styles.outOfRangeDay : ''
+          } ${isToday ? styles.today : ''}`}
+          data-date={dataDate}
           disabled={isDisabled}
-          id={date.toString()}
-          key={date.toString()}
+          key={dataDate}
           onClick={() => {
-            if (isCurrentMonth) onSelectDate(day, isSecondCalendar)
+            if (isCurrentMonth) onSelectDate(date.getDate(), isSecondCalendar)
           }}
+          onFocus={() => {
+            if (isCurrentMonth) handleHoverEffect(dataDate)
+          }}
+          onKeyDown={handleDayKeyDown}
           onMouseEnter={() => {
-            if (isCurrentMonth) handleHoverEffect(date.toString())
+            if (isCurrentMonth) handleHoverEffect(dataDate)
           }}
+          tabIndex={tabStop && isSameDay(tabStop, date) ? 0 : -1}
           variant="unstyled"
         >
-          <span className={styles.dayText}>{day}</span>
+          <span className={styles.dayText}>{date.getDate()}</span>
         </Button>
       )
     })
   }
 
+  function handleDayKeyDown(event: KeyboardEvent<HTMLButtonElement>): void {
+    const current = event.currentTarget.dataset.date
+    const move = KEY_MOVES[event.key]
+    if (!current || !move) return
+    event.preventDefault()
+
+    const next = move(getDateFromDateString(current, DATA_DATE_FORMAT))
+    const nextTime = next.getTime()
+    if ((minDate && nextTime < startOfDay(minDate)) || (maxDate && nextTime > startOfDay(maxDate))) {
+      return
+    }
+
+    const monthOffset = (next.getFullYear() - year) * 12 + next.getMonth() - month
+    if (monthOffset !== 0) onMonthChange(month + monthOffset)
+    shouldMoveFocus.current = true
+    setFocusedDate(next)
+  }
+
   return (
-    <div className={styles.calendar}>
+    <div className={styles.calendar} ref={calendarRef}>
       <div className={styles.calendarHeader}>
         <div className={styles.monthYearSelectors}>
           {selector !== 'year' ? (
