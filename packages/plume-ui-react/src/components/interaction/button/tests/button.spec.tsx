@@ -2,7 +2,7 @@ import { render, fireEvent } from '@testing-library/react'
 import { Button } from '..'
 
 describe('Button component', () => {
-  const handleClick = jest.fn()
+  const handleClick = vi.fn()
   it('renders button correctly', () => {
     const { getByText } = render(<Button onClick={handleClick}>Click Me</Button>)
     const button = getByText('Click Me')

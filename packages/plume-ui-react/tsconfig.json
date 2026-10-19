@@ -1,5 +1,8 @@
 {
   "extends": "tsconfig/react-library.json",
+  "compilerOptions": {
+    "types": ["vitest/globals", "css-modules"]
+  },
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

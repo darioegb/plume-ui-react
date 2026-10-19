@@ -42,7 +42,7 @@ module.exports = [
     ...tseslint.configs.disableTypeChecked,
   },
   {
-    // Jest/Testing Library matchers are not typed in every package, so the unsafe-any rules only add noise here.
+    // Vitest/Testing Library matchers are not typed in every package, so the unsafe-any rules only add noise here.
     files: TEST_FILES,
     rules: {
       '@typescript-eslint/no-unsafe-argument': 'off',

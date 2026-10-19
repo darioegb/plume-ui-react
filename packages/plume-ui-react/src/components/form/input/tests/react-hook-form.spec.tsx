@@ -39,7 +39,7 @@ const submit = (): void => {
 
 describe('Input with react-hook-form', () => {
   it('shows the error and focuses the input when a rule fails', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<SignupForm onSubmit={onSubmit} />)
 
     submit()
@@ -54,7 +54,7 @@ describe('Input with react-hook-form', () => {
   })
 
   it('submits the typed value', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     render(<SignupForm onSubmit={onSubmit} />)
 
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'ada@example.com' } })

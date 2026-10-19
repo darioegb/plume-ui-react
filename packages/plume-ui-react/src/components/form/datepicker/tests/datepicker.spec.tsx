@@ -21,17 +21,17 @@ const selector = (kind: 'month' | 'year'): HTMLElement =>
 
 describe('DatePicker component', () => {
   it('renders the input with a placeholder', () => {
-    render(<DatePicker onChange={jest.fn()} placeholder="Select date" />)
+    render(<DatePicker onChange={vi.fn()} placeholder="Select date" />)
     expect(screen.getByPlaceholderText('Select date')).toBeInTheDocument()
   })
 
   it('uses the format of the language as the default placeholder', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'mm/dd/yyyy')
   })
 
   it('shows a range placeholder in range mode', () => {
-    render(<DatePicker isRange onChange={jest.fn()} />)
+    render(<DatePicker isRange onChange={vi.fn()} />)
     expect(screen.getByRole('textbox')).toHaveAttribute(
       'placeholder',
       'mm/dd/yyyy - mm/dd/yyyy',
@@ -39,13 +39,13 @@ describe('DatePicker component', () => {
   })
 
   it('disables the input and the calendar button', () => {
-    render(<DatePicker disabled onChange={jest.fn()} />)
+    render(<DatePicker disabled onChange={vi.fn()} />)
     expect(screen.getByRole('textbox')).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
   })
 
   it('marks the input invalid when aria-invalid is set', () => {
-    render(<DatePicker aria-describedby="hint" aria-invalid onChange={jest.fn()} />)
+    render(<DatePicker aria-describedby="hint" aria-invalid onChange={vi.fn()} />)
     const input = screen.getByRole('textbox')
     expect(input).toHaveClass('invalid')
     expect(input).toHaveAttribute('aria-invalid', 'true')
@@ -53,13 +53,13 @@ describe('DatePicker component', () => {
   })
 
   it('blocks typing and the calendar when read-only', () => {
-    render(<DatePicker onChange={jest.fn()} readOnly />)
+    render(<DatePicker onChange={vi.fn()} readOnly />)
     expect(screen.getByRole('textbox')).toHaveAttribute('readonly')
     expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
   })
 
   it('opens the calendar from the trigger button', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     const trigger = screen.getByRole('button', { name: 'Open calendar' })
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -71,25 +71,25 @@ describe('DatePicker component', () => {
   })
 
   it('always renders the calendar when isCalendar is set', () => {
-    render(<DatePicker isCalendar onChange={jest.fn()} />)
+    render(<DatePicker isCalendar onChange={vi.fn()} />)
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
 
   it('lists the weekday headers Monday to Sunday', () => {
-    render(<DatePicker isCalendar config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }} onChange={jest.fn()} />)
+    render(<DatePicker isCalendar config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }} onChange={vi.fn()} />)
     const headers = document.querySelector('[class*="daysOfWeek"]') as HTMLElement
     expect(headers.textContent).toBe('MonTueWedThuFriSatSun')
   })
 
   it('gives the calendar dialog an accessible name', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
     expect(screen.getByRole('dialog', { name: 'Calendar' })).toBeInTheDocument()
   })
 
   it('selects a date, notifies onChange and closes the calendar', () => {
-    const onChange = jest.fn<void, [DateRange]>()
+    const onChange = vi.fn<(value: DateRange) => void>()
     render(<DatePicker onChange={onChange} />)
     openCalendar()
 
@@ -100,11 +100,11 @@ describe('DatePicker component', () => {
     expect(startDate?.getDate()).toBe(15)
     expect(endDate).toBeNull()
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    expect((screen.getByRole('textbox') as HTMLInputElement).value).toMatch(/15/)
+    expect(screen.getByRole<HTMLInputElement>('textbox').value).toMatch(/15/)
   })
 
   it('selects a range with two clicks', () => {
-    const onChange = jest.fn<void, [DateRange]>()
+    const onChange = vi.fn<(value: DateRange) => void>()
     render(<DatePicker isRange onChange={onChange} />)
     openCalendar()
 
@@ -116,11 +116,11 @@ describe('DatePicker component', () => {
     const { startDate, endDate } = onChange.mock.calls[0][0]
     expect(startDate?.getDate()).toBe(15)
     expect(endDate?.getDate()).toBe(16)
-    expect((screen.getByRole('textbox') as HTMLInputElement).value).toMatch(/15.* - .*16/)
+    expect(screen.getByRole<HTMLInputElement>('textbox').value).toMatch(/15.* - .*16/)
   })
 
   it('notifies the applied value when the footer is used', () => {
-    const onChange = jest.fn<void, [DateRange]>()
+    const onChange = vi.fn<(value: DateRange) => void>()
     render(<DatePicker onChange={onChange} showFooter />)
     openCalendar()
 
@@ -136,7 +136,7 @@ describe('DatePicker component', () => {
   })
 
   it('closes the calendar with the cancel button without notifying', () => {
-    const onChange = jest.fn()
+    const onChange = vi.fn()
     render(<DatePicker onChange={onChange} showFooter />)
     openCalendar()
 
@@ -147,7 +147,7 @@ describe('DatePicker component', () => {
   })
 
   it('fills in the config keys that are left out', () => {
-    render(<DatePicker config={{ footer: { apply: 'Aplicar' } }} onChange={jest.fn()} showFooter />)
+    render(<DatePicker config={{ footer: { apply: 'Aplicar' } }} onChange={vi.fn()} showFooter />)
     openCalendar()
 
     expect(screen.getByRole('button', { name: 'Aplicar' })).toBeInTheDocument()
@@ -158,7 +158,7 @@ describe('DatePicker component', () => {
   })
 
   it('reads the language alone from the config', () => {
-    render(<DatePicker config={{ language: 'es' }} onChange={jest.fn()} showFooter />)
+    render(<DatePicker config={{ language: 'es' }} onChange={vi.fn()} showFooter />)
 
     expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'dd/mm/yyyy')
     openCalendar()
@@ -166,7 +166,7 @@ describe('DatePicker component', () => {
   })
 
   it('passes required to the input', () => {
-    render(<DatePicker onChange={jest.fn()} required />)
+    render(<DatePicker onChange={vi.fn()} required />)
     expect(screen.getByRole('textbox')).toBeRequired()
   })
 
@@ -174,7 +174,7 @@ describe('DatePicker component', () => {
     render(
       <DatePicker
         config={{ language: 'es', footer: { cancel: 'Cancelar', apply: 'Aplicar' } }}
-        onChange={jest.fn()}
+        onChange={vi.fn()}
         showFooter
       />,
     )
@@ -185,7 +185,7 @@ describe('DatePicker component', () => {
   })
 
   it('moves between months with the navigation buttons', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
 
     const monthButton = selector('month')
@@ -199,7 +199,7 @@ describe('DatePicker component', () => {
   })
 
   it('picks a month from the month grid', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
 
     fireEvent.click(selector('month'))
@@ -209,7 +209,7 @@ describe('DatePicker component', () => {
   })
 
   it('picks a year from the year grid', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
 
     fireEvent.click(selector('year'))
@@ -220,7 +220,7 @@ describe('DatePicker component', () => {
   })
 
   it('pages through the year grid in blocks of 20', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
     const year = new Date().getFullYear()
 
@@ -234,7 +234,7 @@ describe('DatePicker component', () => {
   })
 
   it('previews the hovered day', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     openCalendar()
 
     fireEvent.mouseEnter(dayButton(12))
@@ -243,7 +243,7 @@ describe('DatePicker component', () => {
   })
 
   it('previews the range between the first click and the hovered day', () => {
-    render(<DatePicker isRange onChange={jest.fn()} />)
+    render(<DatePicker isRange onChange={vi.fn()} />)
     openCalendar()
 
     fireEvent.click(dayButton(10))
@@ -259,7 +259,7 @@ describe('DatePicker component', () => {
     const today = new Date()
     const minDate = new Date(today.getFullYear(), today.getMonth(), 10)
     const maxDate = new Date(today.getFullYear(), today.getMonth(), 20)
-    render(<DatePicker maxDate={maxDate} minDate={minDate} onChange={jest.fn()} />)
+    render(<DatePicker maxDate={maxDate} minDate={minDate} onChange={vi.fn()} />)
     openCalendar()
 
     expect(dayButton(5)).toBeDisabled()
@@ -268,7 +268,7 @@ describe('DatePicker component', () => {
   })
 
   it('formats typed digits with the date mask', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     const input = screen.getByRole<HTMLInputElement>('textbox')
 
     fireEvent.change(input, { target: { value: '03152025' } })
@@ -277,7 +277,7 @@ describe('DatePicker component', () => {
   })
 
   it('rejects letters and uses a numeric keyboard', () => {
-    render(<DatePicker onChange={jest.fn()} />)
+    render(<DatePicker onChange={vi.fn()} />)
     const input = screen.getByRole<HTMLInputElement>('textbox')
 
     fireEvent.change(input, { target: { value: '03ab15cd2025' } })
@@ -288,19 +288,19 @@ describe('DatePicker component', () => {
 
   describe('typed dates', () => {
     beforeEach(() => {
-      jest.useFakeTimers()
+      vi.useFakeTimers()
     })
 
     afterEach(() => {
-      jest.useRealTimers()
+      vi.useRealTimers()
     })
 
     it('moves the calendar to a valid typed date after the debounce', () => {
-      render(<DatePicker onChange={jest.fn()} />)
+      render(<DatePicker onChange={vi.fn()} />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: '03152025' } })
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -309,11 +309,11 @@ describe('DatePicker component', () => {
     })
 
     it('moves the calendar to a valid typed range', () => {
-      render(<DatePicker isRange onChange={jest.fn()} />)
+      render(<DatePicker isRange onChange={vi.fn()} />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: '0315202504202025' } })
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -322,11 +322,11 @@ describe('DatePicker component', () => {
     })
 
     it('ignores an invalid typed date', () => {
-      render(<DatePicker onChange={jest.fn()} />)
+      render(<DatePicker onChange={vi.fn()} />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: '99992025' } })
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -337,13 +337,13 @@ describe('DatePicker component', () => {
       ['es', '31/01/2026', 'Enero'],
       ['de', '31.01.2026', 'Januar'],
     ])('reads a typed date in the %s day-first format', (language, typed, month) => {
-      render(<DatePicker config={{ language }} onChange={jest.fn()} />)
+      render(<DatePicker config={{ language }} onChange={vi.fn()} />)
       const input = screen.getByRole('textbox')
       fireEvent.change(input, { target: { value: '31012026' } })
       expect(input).toHaveValue(typed)
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -352,11 +352,11 @@ describe('DatePicker component', () => {
     })
 
     it('reads a typed date with an uppercase displayFormat', () => {
-      render(<DatePicker displayFormat="DD/MM/YYYY" onChange={jest.fn()} />)
+      render(<DatePicker displayFormat="DD/MM/YYYY" onChange={vi.fn()} />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: '31012026' } })
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -365,11 +365,11 @@ describe('DatePicker component', () => {
     })
 
     it('ignores a typed date that does not exist', () => {
-      render(<DatePicker onChange={jest.fn()} />)
+      render(<DatePicker onChange={vi.fn()} />)
       fireEvent.change(screen.getByRole('textbox'), { target: { value: '02312040' } })
 
       act(() => {
-        jest.advanceTimersByTime(600)
+        vi.advanceTimersByTime(600)
       })
       openCalendar()
 
@@ -378,7 +378,7 @@ describe('DatePicker component', () => {
   })
 
   it('does not echo a new value prop back through onChange', () => {
-    const onChange = jest.fn()
+    const onChange = vi.fn()
     const { rerender } = render(<DatePicker isRange onChange={onChange} value={defaultRange} />)
 
     rerender(
@@ -395,8 +395,8 @@ describe('DatePicker component', () => {
   })
 
   it('calls onBlur with the current value', () => {
-    const onBlur = jest.fn()
-    render(<DatePicker onBlur={onBlur} onChange={jest.fn()} />)
+    const onBlur = vi.fn()
+    render(<DatePicker onBlur={onBlur} onChange={vi.fn()} />)
 
     fireEvent.blur(screen.getByRole('textbox'))
 
@@ -411,7 +411,7 @@ describe('DatePicker component', () => {
       }))
 
     const openRange = (): void => {
-      render(<DatePicker isRange onChange={jest.fn()} />)
+      render(<DatePicker isRange onChange={vi.fn()} />)
       openCalendar()
     }
 
@@ -502,7 +502,7 @@ describe('DatePicker component', () => {
     const value = { startDate: new Date(2040, 0, 15), endDate: null }
 
     it('names each day with its full date and marks today and the selection', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       const selected = screen.getByRole('button', { name: 'Sunday, January 15, 2040' })
@@ -514,7 +514,7 @@ describe('DatePicker component', () => {
     })
 
     it('marks only the current day of the current month as today', () => {
-      render(<DatePicker onChange={jest.fn()} />)
+      render(<DatePicker onChange={vi.fn()} />)
       openCalendar()
 
       const today = document.querySelectorAll('[aria-current="date"]')
@@ -523,7 +523,7 @@ describe('DatePicker component', () => {
     })
 
     it('moves focus to the selected day when it opens', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       expect(dayButton(15, 0)).toHaveFocus()
@@ -532,7 +532,7 @@ describe('DatePicker component', () => {
     })
 
     it('closes with Escape and returns focus to the input', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       fireEvent.keyDown(dayButton(15, 0), { key: 'Escape' })
@@ -542,7 +542,7 @@ describe('DatePicker component', () => {
     })
 
     it('returns focus to the input after picking a date', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       fireEvent.click(dayButton(20, 0))
@@ -553,7 +553,7 @@ describe('DatePicker component', () => {
     it('closes when focus leaves the date picker', () => {
       render(
         <>
-          <DatePicker onChange={jest.fn()} value={value} />
+          <DatePicker onChange={vi.fn()} value={value} />
           <button type="button">Next field</button>
         </>,
       )
@@ -567,7 +567,7 @@ describe('DatePicker component', () => {
     })
 
     it('closes from the trigger button instead of reopening', () => {
-      render(<DatePicker onChange={jest.fn()} />)
+      render(<DatePicker onChange={vi.fn()} />)
       const trigger = screen.getByRole('button', { name: 'Open calendar' })
       fireEvent.click(trigger)
 
@@ -578,7 +578,7 @@ describe('DatePicker component', () => {
     })
 
     it('moves between days with the arrow keys', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       fireEvent.keyDown(dayButton(15, 0), { key: 'ArrowRight' })
@@ -596,7 +596,7 @@ describe('DatePicker component', () => {
     })
 
     it('changes month when the arrow keys leave the visible one', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       fireEvent.keyDown(dayButton(15, 0), { key: 'PageUp' })
@@ -617,7 +617,7 @@ describe('DatePicker component', () => {
         <DatePicker
           maxDate={new Date(2040, 0, 16)}
           minDate={new Date(2040, 0, 15)}
-          onChange={jest.fn()}
+          onChange={vi.fn()}
           value={value}
         />,
       )
@@ -632,7 +632,7 @@ describe('DatePicker component', () => {
     })
 
     it('goes back to December of the previous year from January', () => {
-      render(<DatePicker onChange={jest.fn()} value={value} />)
+      render(<DatePicker onChange={vi.fn()} value={value} />)
       openCalendar()
 
       fireEvent.click(screen.getByRole('button', { name: 'Previous month' }))
@@ -642,7 +642,7 @@ describe('DatePicker component', () => {
     })
 
     it('previews the range for the focused day', () => {
-      render(<DatePicker isRange onChange={jest.fn()} />)
+      render(<DatePicker isRange onChange={vi.fn()} />)
       openCalendar()
 
       fireEvent.click(dayButton(10))
@@ -653,7 +653,7 @@ describe('DatePicker component', () => {
   })
 
   it('maps the color scheme to calendar CSS variables', () => {
-    const { container } = render(<DatePicker colorScheme="success" onChange={jest.fn()} />)
+    const { container } = render(<DatePicker colorScheme="success" onChange={vi.fn()} />)
     const root = container.firstChild as HTMLElement
 
     expect(root.style.getPropertyValue('--datepicker-solid')).toBe(

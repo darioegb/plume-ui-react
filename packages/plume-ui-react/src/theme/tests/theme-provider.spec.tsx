@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest'
 import { act, render, renderHook, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { defaultDarkTheme, defaultTheme } from '../config'
@@ -7,15 +8,15 @@ type Listener = () => void
 
 function mockSystemColorScheme(initiallyDark: boolean): {
   setDark: (dark: boolean) => void
-  removeEventListener: jest.Mock
+  removeEventListener: Mock
 } {
   const listeners = new Set<Listener>()
   const query = {
     matches: initiallyDark,
-    addEventListener: jest.fn((_: string, listener: Listener) => listeners.add(listener)),
-    removeEventListener: jest.fn((_: string, listener: Listener) => listeners.delete(listener)),
+    addEventListener: vi.fn((_: string, listener: Listener) => listeners.add(listener)),
+    removeEventListener: vi.fn((_: string, listener: Listener) => listeners.delete(listener)),
   }
-  window.matchMedia = jest.fn().mockReturnValue(query)
+  window.matchMedia = vi.fn().mockReturnValue(query)
   return {
     setDark: (dark) => {
       query.matches = dark
@@ -155,16 +156,16 @@ describe('ThemeProvider', () => {
       </ThemeProvider>,
     )
     expect(root()).toHaveClass('plume-root app')
-    expect(root()).toHaveStyle('padding: 1rem')
+    expect(root().style.padding).toBe('1rem')
   })
 })
 
 describe('useTheme', () => {
   it('throws outside of a ThemeProvider', () => {
-    jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    vi.spyOn(console, 'error').mockImplementation(() => undefined)
     expect(() => {
       renderHook(() => useTheme())
     }).toThrow('useTheme must be used within a <ThemeProvider>')
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 })

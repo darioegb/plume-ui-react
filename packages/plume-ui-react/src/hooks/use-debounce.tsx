@@ -7,7 +7,7 @@ export interface UseDebounceProps<T> {
 
 export function useDebounce<T>({ value, delay }: UseDebounceProps<T>): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (timerRef.current) {

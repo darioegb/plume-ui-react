@@ -3,7 +3,7 @@ import { deepMerge } from '../merge'
 describe('deepMerge', () => {
   it('merges nested objects without mutating the inputs', () => {
     const base = { colors: { primary: { 500: '#000', 600: '#111' } }, radius: 4 }
-    const override = { colors: { primary: { 500: '#fff' } } }
+    const override = { colors: { primary: { 500: '#fff' } } } as Partial<typeof base>
 
     const result = deepMerge(base, override)
 
