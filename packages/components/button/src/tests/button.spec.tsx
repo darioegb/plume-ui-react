@@ -82,6 +82,15 @@ describe('Button component', () => {
     expect(iconRight).toBeInTheDocument()
   })
 
+  it('shows the busy text only while busy', () => {
+    const { getByRole, rerender } = render(<Button busyText="Saving" label="Save" />)
+    expect(getByRole('button')).toHaveTextContent('Save')
+    expect(getByRole('button')).not.toHaveTextContent('Saving')
+
+    rerender(<Button busyText="Saving" isBusy label="Save" />)
+    expect(getByRole('button')).toHaveTextContent('Saving')
+  })
+
   it('renders busy button', () => {
     const { getByText, getByLabelText } = render(
       <Button busyText="Loading" isBusy>

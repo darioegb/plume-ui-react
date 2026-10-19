@@ -31,6 +31,7 @@ export function DatePickerInput({
   language,
   onClick,
   onBlur,
+  readOnly,
   ...rest
 }: DatePickerInputProps): ReactNode {
   const {
@@ -125,6 +126,7 @@ export function DatePickerInput({
           onBlur?.({ startDate, endDate })
         }}
         onChange={handleChange}
+        readOnly={readOnly}
         ref={ref}
         type='text'
         value={inputValue}
@@ -137,7 +139,7 @@ export function DatePickerInput({
         aria-haspopup='dialog'
         aria-label='Open calendar'
         className={styles.inputButton}
-        disabled={disabled}
+        disabled={disabled || readOnly}
         onClick={handleButtonClick}
         shape='pill'
         variant='icon'

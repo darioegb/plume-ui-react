@@ -42,6 +42,12 @@ describe('DatePicker component', () => {
     expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
   })
 
+  it('blocks typing and the calendar when read-only', () => {
+    render(<DatePicker onChange={jest.fn()} readOnly />)
+    expect(screen.getByRole('textbox')).toHaveAttribute('readonly')
+    expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
+  })
+
   it('opens the calendar from the trigger button', () => {
     render(<DatePicker onChange={jest.fn()} />)
     const trigger = screen.getByRole('button', { name: 'Open calendar' })

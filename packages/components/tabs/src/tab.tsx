@@ -13,7 +13,7 @@ export interface TabOwnProps {
   extraContentRight?: ReactNode
 }
 
-type TabRootAttributes = Pick<HTMLAttributes<HTMLButtonElement>, 'id' | 'children'>
+type TabRootAttributes = Pick<HTMLAttributes<HTMLButtonElement>, 'children'>
 
 export type TabProps = ComponentProps & TabRootAttributes & TabOwnProps
 

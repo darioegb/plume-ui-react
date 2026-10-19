@@ -6,11 +6,11 @@ import type { ComponentProps } from '@plume-ui-react/core'
 import styles from './tabs.module.css'
 import { getPanelId, getTabId, useTabs } from './use-tabs'
 
-export type TabPanelProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'> &
+export type TabPanelProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'children'> &
   Pick<ComponentProps, 'index'>
 
 export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
-  ({ children, index = 0 }, ref) => {
+  ({ children, className = '', index = 0 }, ref) => {
     const { baseId, colorScheme, isLazy, isStyled } = useTabs()
 
     const tabContent = isLazy ? lazyLoadContent(children) : children
@@ -18,7 +18,7 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
     return (
       <div
         aria-labelledby={getTabId(baseId, index)}
-        className={isStyled ? styles.panel : ''}
+        className={`${isStyled ? styles.panel : ''} ${className}`.trim()}
         id={getPanelId(baseId, index)}
         ref={ref}
         role="tabpanel"
