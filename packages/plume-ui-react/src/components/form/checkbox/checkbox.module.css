@@ -1,0 +1,113 @@
+.root {
+  align-items: center;
+  color: var(--plume-foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--plume-font-family);
+  gap: var(--plume-space-2);
+  vertical-align: middle;
+}
+
+.sm {
+  --checkbox-size: var(--plume-space-4);
+  font-size: var(--plume-font-size-xs);
+}
+
+.md {
+  --checkbox-size: var(--plume-space-5);
+  font-size: var(--plume-font-size-base);
+}
+
+.lg {
+  --checkbox-size: var(--plume-space-6);
+  font-size: var(--plume-font-size-lg);
+}
+
+.checkbox {
+  appearance: none;
+  background-color: var(--plume-surface);
+  border: 2px solid var(--plume-muted);
+  border-radius: var(--plume-radius-2);
+  box-sizing: border-box;
+  cursor: inherit;
+  flex: none;
+  height: var(--checkbox-size);
+  margin: 0;
+  position: relative;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+  width: var(--checkbox-size);
+}
+
+.checkbox::before {
+  background-color: var(--checkbox-contrast);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  content: '';
+  inset: 17%;
+  position: absolute;
+  transform: scale(0);
+  transition: transform 0.12s;
+}
+
+.checkbox:checked,
+.checkbox:indeterminate {
+  background-color: var(--checkbox-solid);
+  border-color: var(--checkbox-solid);
+}
+
+.checkbox:checked::before {
+  transform: scale(1);
+}
+
+.checkbox:indeterminate::before {
+  clip-path: none;
+  inset: calc(50% - 1px) 20%;
+  transform: scale(1);
+}
+
+.checkbox:enabled:hover:not(:checked, :indeterminate) {
+  border-color: var(--checkbox-text);
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--checkbox-text);
+  outline-offset: 2px;
+}
+
+.invalid:not(:checked, :indeterminate) {
+  border-color: var(--checkbox-text);
+}
+
+.label {
+  line-height: var(--plume-line-height-normal);
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkbox,
+  .checkbox::before {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .checkbox {
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .checkbox:checked,
+  .checkbox:indeterminate {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  .checkbox::before {
+    background-color: HighlightText;
+  }
+}

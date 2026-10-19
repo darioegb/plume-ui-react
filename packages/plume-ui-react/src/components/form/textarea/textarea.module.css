@@ -1,0 +1,112 @@
+@value textarea-padding: var(--plume-space-4);
+@value textarea-border-radius: var(--plume-radius-4);
+@value textarea-border-color: var(--plume-border);
+@value textarea-background-color: var(--plume-surface-muted);
+
+:where(.base) {
+  background: transparent;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.textarea {
+  border-radius: textarea-border-radius;
+  box-sizing: border-box;
+  color: var(--plume-foreground);
+  display: block;
+  font-family: var(--plume-font-family);
+  min-width: min(18rem, 100%);
+  padding: var(--plume-space-2) textarea-padding;
+  width: 100%;
+}
+
+.textarea::placeholder {
+  color: var(--plume-muted);
+}
+
+.sm {
+  font-size: var(--plume-font-size-xs);
+  padding: var(--plume-space-1) var(--plume-space-2);
+}
+
+.md {
+  font-size: var(--plume-font-size-base);
+}
+
+.lg {
+  font-size: var(--plume-font-size-lg);
+  padding: var(--plume-space-3) var(--plume-space-6);
+}
+
+.rounded {
+  border-radius: textarea-border-radius;
+}
+
+:is(.outline).pill {
+  border-radius: var(--plume-radius-6);
+}
+
+.outline {
+  composes: textarea;
+  border: 1px solid textarea-border-color;
+}
+
+.filled {
+  composes: textarea;
+  background-color: textarea-background-color;
+  border-block-end: 1px solid textarea-border-color;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.underline {
+  composes: textarea;
+  border-radius: 0;
+  border-block-end: 1px solid textarea-border-color;
+}
+
+.none {
+  resize: none;
+}
+
+.vertical {
+  resize: vertical;
+}
+
+.horizontal {
+  resize: horizontal;
+}
+
+.both {
+  resize: both;
+}
+
+:is(.outline, .filled, .underline):enabled:hover {
+  border-color: color-mix(in hsl, textarea-border-color, black 10%);
+}
+
+:is(.outline, .filled, .underline).invalid,
+:is(.outline, .filled, .underline).invalid:enabled:hover {
+  border-color: var(--textarea-color);
+}
+
+.filled:enabled:hover {
+  background-color: color-mix(in hsl, textarea-background-color, black 2%);
+}
+
+.outline:enabled:focus {
+  border-color: var(--textarea-color);
+  outline: 2px solid var(--textarea-color);
+  outline-offset: 2px;
+}
+
+:is(.filled, .underline):enabled:focus {
+  border-block-end-color: var(--textarea-color);
+  border-block-end-width: 2px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

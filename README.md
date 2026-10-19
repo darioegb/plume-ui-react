@@ -70,11 +70,15 @@ export function App() {
 | Component | Docs |
 | --- | --- |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
+| Checkbox | [Checkbox](https://darioegb.github.io/plume-ui-react/?path=/docs/components-checkbox--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
+| Radio | [Radio](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radio--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
+| Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
+| Toggle | [Toggle](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toggle--docs) |
 
 Coming from the `@plume-ui-react/*` packages? See the [migration guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-migration--docs).
 
