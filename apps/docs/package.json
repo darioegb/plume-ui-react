@@ -11,8 +11,7 @@
     "lint:fix": "eslint src/ --fix"
   },
   "dependencies": {
-    "@plume-ui-react/core": "workspace:*",
-    "@plume-ui-react/lib": "workspace:*"
+    "plume-ui-react": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^9.1.20",

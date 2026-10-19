@@ -4,6 +4,42 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 <Meta title='Guides/Migration' />
 
+# Moving to `plume-ui-react`
+
+Plume is now published as a single package, `plume-ui-react`. It replaces
+`@plume-ui-react/lib`, the per-component packages (`@plume-ui-react/button`,
+`@plume-ui-react/input`, ...), `@plume-ui-react/core`, the hooks and the utilities.
+The scoped packages no longer receive updates.
+
+```sh
+npm uninstall @plume-ui-react/lib @plume-ui-react/core
+npm install plume-ui-react
+```
+
+Every export keeps its name, so only the import paths change:
+
+| Before | After |
+| --- | --- |
+| `import { Button } from '@plume-ui-react/lib'` | `import { Button } from 'plume-ui-react'` |
+| `import { Button } from '@plume-ui-react/button'` | `import { Button } from 'plume-ui-react'` |
+| `import { ThemeProvider } from '@plume-ui-react/core'` | `import { ThemeProvider } from 'plume-ui-react'` |
+| `import { useMask } from '@plume-ui-react/use-mask'` | `import { useMask } from 'plume-ui-react'` |
+| `import { formatDate } from '@plume-ui-react/date-utils'` | `import { formatDate } from 'plume-ui-react'` |
+| `import '@plume-ui-react/lib/styles.css'` | `import 'plume-ui-react/styles.css'` |
+
+Importing a single component still keeps the rest out of your bundle. Module
+augmentation of custom colors now targets `plume-ui-react`:
+
+```ts
+import type { ShadeLevel } from 'plume-ui-react'
+
+declare module 'plume-ui-react' {
+  interface ColorPalette {
+    salmon: ShadeLevel
+  }
+}
+```
+
 # Migrating to the `ThemeProvider`
 
 Plume's theming moved from a global, imperative API (`setUserTheme`) to a
@@ -32,7 +68,7 @@ function App() {
 **After**
 
 ```tsx
-import { ThemeProvider } from '@plume-ui-react/lib'
+import { ThemeProvider } from 'plume-ui-react'
 
 function App() {
   return (
@@ -57,11 +93,8 @@ import '@plume-ui-react/lib/dist/index.css'
 **After**
 
 ```ts
-import '@plume-ui-react/lib/styles.css'
+import 'plume-ui-react/styles.css'
 ```
-
-Individual components expose the same subpath, e.g.
-`@plume-ui-react/button/styles.css`.
 
 ## 3. Dark mode
 
@@ -69,7 +102,7 @@ Pass `defaultColorMode` (`'light' | 'dark' | 'system'`) and/or override the dark
 palette with `darkTheme`. Read or switch the mode at runtime with `useTheme()`.
 
 ```tsx
-import { ThemeProvider, useTheme } from '@plume-ui-react/lib'
+import { ThemeProvider, useTheme } from 'plume-ui-react'
 
 function ThemeToggle() {
   const { colorMode, setColorMode } = useTheme()

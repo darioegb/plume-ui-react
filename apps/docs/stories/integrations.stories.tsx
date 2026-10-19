@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
-import { Button, Input } from '@plume-ui-react/lib'
+import { Button, Input } from 'plume-ui-react'
 
 /**
  * Plume is **CSS-framework agnostic**. Components ship their own scoped styles,
@@ -9,7 +9,7 @@ import { Button, Input } from '@plume-ui-react/lib'
  * ### Vite and Next.js
  *
  * Wrap your app in `<ThemeProvider>` and import the stylesheet once. These examples show where the provider goes in each setup:
- * <a href="https://github.com/darioegb/plume-ui-react/tree/main/examples/vite-playground" target="_blank" rel="noopener noreferrer">Vite</a>, <a href="https://github.com/darioegb/plume-ui-react/tree/main/examples/next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/examples/next-pages" target="_blank" rel="noopener noreferrer">Next.js Pages Router</a>.
+ * <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite" target="_blank" rel="noopener noreferrer">Vite</a>, <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-pages" target="_blank" rel="noopener noreferrer">Next.js Pages Router</a>.
  *
  * ### Tailwind CSS
  *

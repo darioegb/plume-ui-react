@@ -114,7 +114,7 @@ const config: Config = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     // For storybook
     './stories/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/components/*/src/stories/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/plume-ui-react/src/components/**/stories/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {

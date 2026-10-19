@@ -1,7 +1,7 @@
 module.exports = {
   testEnvironment: 'jsdom',
   preset: 'ts-jest',
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!<rootDir>/src/tests/**', '!<rootDir>/src/stories/**'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}', '!<rootDir>/src/**/tests/**', '!<rootDir>/src/**/stories/**'],
   coverageThreshold: {
     global: {
       branches: 90,
