@@ -12,8 +12,6 @@ import { Button } from 'plume-ui-react'
 
 const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/'
 const PACKAGE_NAME = 'plume-ui-react'
-const NPM_URL = `https://www.npmjs.com/package/${PACKAGE_NAME}`
-const COLOR_RED = 'red'
 
 interface IconLinkButtonProps {
   icon: ReactNode
@@ -43,7 +41,7 @@ function getComponentSourcePath(storyFileName: string): string {
   return storyFileName.slice(storyFileName.indexOf('packages/')).replace(/\/stories\/[^/]+$/, '')
 }
 
-function ButtonGroup({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode {
+function SourceLink({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode {
   return (
     <div className="flex gap-2" style={{ marginBlockEnd: '2rem' }}>
       <IconLinkButton
@@ -65,25 +63,6 @@ function ButtonGroup({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNod
         }
         text="Source"
       />
-      <IconLinkButton
-        href={NPM_URL}
-        icon={
-          <svg
-            aria-hidden="true"
-            fill={COLOR_RED}
-            focusable="false"
-            height="2rem"
-            stroke="currentColor"
-            strokeWidth="0"
-            viewBox="0 0 576 512"
-            width="2rem"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M288 288h-32v-64h32v64zm288-128v192H288v32H160v-32H0V160h576zm-416 32H32v128h64v-96h32v96h32V192zm160 0H192v160h64v-32h64V192zm224 0H352v128h64v-96h32v96h32v-96h32v96h32V192z" />
-          </svg>
-        }
-        text={PACKAGE_NAME}
-      />
     </div>
   )
 }
@@ -96,7 +75,7 @@ function DocsTemplate(): ReactNode {
     <div className="container">
       <Title />
       <Description />
-      <ButtonGroup sourcePath={sourcePath} />
+      <SourceLink sourcePath={sourcePath} />
       <h2>Import</h2>
       <Source code={`import { ${componentName} } from '${PACKAGE_NAME}'`} dark />
       <h2>Playground</h2>
