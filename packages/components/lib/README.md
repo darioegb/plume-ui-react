@@ -38,7 +38,7 @@ export function App() {
 
 ## Components
 
-`Button`, `DatePicker`, `Input`, `Spinner` and `Tabs` (with `TabList`, `Tab`, `TabPanels` and `TabPanel`).
+`Button`, `DatePicker`, `Field`, `Input`, `Spinner` and `Tabs` (with `TabList`, `Tab`, `TabPanels` and `TabPanel`).
 
 The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for each one, plus the color palette, design tokens and framework integration guides.
 

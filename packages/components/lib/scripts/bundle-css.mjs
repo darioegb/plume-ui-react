@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 
 const require = createRequire(import.meta.url)
 
-const packages = ['button', 'spinner', 'input', 'tabs', 'datepicker']
+const packages = ['button', 'datepicker', 'field', 'input', 'spinner', 'tabs']
 
 const css = packages
   .map((name) => {

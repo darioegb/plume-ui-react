@@ -47,6 +47,13 @@ describe('Input component', () => {
     expect(style.getPropertyValue('--input-color')).toBe('var(--plume-color-success-text)')
   })
 
+  it('switches to the error colors when aria-invalid is set', () => {
+    render(<Input aria-invalid colorScheme="success" placeholder="x" />)
+    const input = screen.getByPlaceholderText('x')
+    expect(input).toHaveClass('invalid')
+    expect(input.style.getPropertyValue('--input-color')).toBe('var(--plume-color-error-text)')
+  })
+
   it('lets the style prop override the color variables', () => {
     render(<Input placeholder="x" style={{ '--input-color': 'hotpink' } as React.CSSProperties} />)
     expect(screen.getByPlaceholderText('x').style.getPropertyValue('--input-color')).toBe(

@@ -1,0 +1,60 @@
+/* field.module.css */
+
+.field {
+  color: var(--plume-foreground);
+  display: flex;
+  flex-direction: column;
+  gap: var(--plume-space-1);
+}
+
+.vertical {
+  composes: field;
+}
+
+.horizontal {
+  composes: field;
+  align-items: center;
+  column-gap: var(--plume-space-4);
+  display: grid;
+  grid-template-columns: var(--field-label-width, 8rem) minmax(0, 1fr);
+}
+
+.horizontal > :not(.label) {
+  grid-column: 2;
+}
+
+.label {
+  font-size: var(--plume-font-size-sm);
+  font-weight: var(--plume-font-weight-medium);
+  line-height: var(--plume-line-height-snug);
+}
+
+.requiredIndicator {
+  color: var(--plume-color-error-text);
+  margin-inline-start: var(--plume-space-1);
+}
+
+.optionalText {
+  color: var(--plume-muted);
+  font-weight: var(--plume-font-weight-normal);
+  margin-inline-start: var(--plume-space-1);
+}
+
+.helperText,
+.errorText {
+  font-size: var(--plume-font-size-sm);
+  line-height: var(--plume-line-height-snug);
+  margin: 0;
+}
+
+.helperText {
+  color: var(--plume-muted);
+}
+
+.errorText {
+  color: var(--plume-color-error-text);
+}
+
+.disabled .label {
+  opacity: 0.5;
+}
