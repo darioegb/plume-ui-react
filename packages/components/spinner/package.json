@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/spinner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plume UI Spinner loading indicator for React.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

@@ -1,6 +1,6 @@
 {
   "name": "@plume-ui-react/tabs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Plume UI Tabs components for React.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
