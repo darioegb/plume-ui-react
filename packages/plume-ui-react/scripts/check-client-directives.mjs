@@ -23,7 +23,9 @@ function clientReason(code) {
   const source = stripComments(code)
   for (const [, specifiers] of source.matchAll(/import\s*\{([^}]*)\}\s*from\s*'react'/g)) {
     const names = specifiers.split(',').map((specifier) => specifier.trim().split(/\s+as\s+/)[0])
-    const clientOnly = names.find((name) => clientOnlyImports.has(name))
+    const clientOnly = names.find(
+      (name) => clientOnlyImports.has(name) || (/^use[A-Z]/.test(name) && !serverSafeHooks.has(name)),
+    )
     if (clientOnly) return `imports ${clientOnly} from react`
   }
   for (const [, hook] of source.matchAll(/\b(use[A-Z]\w*)\s*[(<]/g)) {

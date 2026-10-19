@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { deepMerge } from '../utils/merge'
 import { defaultDarkTheme, defaultTheme } from './config'
 import type { DeepPartial, Theme } from './theme.types'
+import { ThemeRootContext } from './theme-root'
 import { themeToCssVars } from './theme-to-css-vars'
 
 export type ColorMode = 'light' | 'dark'
@@ -60,6 +61,7 @@ export function ThemeProvider({
   )
 
   const [setting, setSetting] = useState<ColorModeSetting>(defaultColorMode)
+  const [root, setRoot] = useState<HTMLDivElement | null>(null)
   const [colorMode, setResolvedMode] = useState<ColorMode>(
     defaultColorMode === 'system' ? 'light' : defaultColorMode,
   )
@@ -107,6 +109,7 @@ export function ThemeProvider({
       <div
         className={`plume-root ${className}`.trim()}
         data-plume-color-mode={colorMode}
+        ref={setRoot}
         style={{
           ...(cssVars as CSSProperties),
           backgroundColor: 'var(--plume-background)',
@@ -114,7 +117,7 @@ export function ThemeProvider({
           ...style,
         }}
       >
-        {children}
+        <ThemeRootContext.Provider value={root}>{children}</ThemeRootContext.Provider>
       </div>
     </ThemeContext.Provider>
   )

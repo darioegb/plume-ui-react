@@ -77,6 +77,44 @@ The rest of the pattern:
 
 [Tabs](packages/plume-ui-react/src/components/navigation/tabs) is the reference for the keyboard model, ids and ARIA wiring.
 
+## Overlays
+
+Modal, Popover, Tooltip, Dropdown and Toast are built on the primitives in `src/overlay`. They have no dependencies and are internal: they are not exported from the package, so they can change until a component settles how it uses them.
+
+| Primitive | What it does |
+| --- | --- |
+| `Portal` | Renders its children after mount (nothing on the server) into the closest `<ThemeProvider>` root, so the content inherits the tokens and the color mode. `container` overrides the target. |
+| `useLayer(open)` | Registers the overlay in a stack and returns `isTopmost()`, so nested overlays act one at a time. |
+| `useDismiss` | Closes on Escape and on a press outside. List the trigger among `elements` so pressing it doesn't count as outside. |
+| `useFocusTrap` | Moves the focus in when it activates, keeps Tab inside and gives the focus back on close (`returnFocus` takes the trigger, because Safari doesn't focus a button when clicked). |
+| `useScrollLock` | Locks the page scroll and compensates for the scrollbar. It is reference counted, so stacked modals release it once. |
+| `usePosition` | Places a `position: fixed` element next to an anchor, flipping and shifting to stay inside the viewport, and follows scroll, resize and size changes. `computePosition` is the same logic as a pure function. |
+
+The hooks take **elements**, not refs: keep them in state with a callback ref. The content of a `Portal` mounts after `open` becomes true, and a ref object wouldn't tell the hook when it appears.
+
+```tsx
+const [anchor, setAnchor] = useState<HTMLElement | null>(null)
+const [floating, setFloating] = useState<HTMLElement | null>(null)
+const isTopmost = useLayer(open)
+useDismiss({ enabled: open, onDismiss: close, elements: [anchor, floating], isTopmost })
+useFocusTrap(floating, { active: open, isTopmost, returnFocus: anchor })
+useScrollLock(open && isModal)
+const { style } = usePosition({ anchor, floating, enabled: open, placement })
+
+return (
+  <>
+    <button ref={setAnchor}>Open</button>
+    {open ? (
+      <Portal>
+        <div ref={setFloating} role="dialog" style={style}>...</div>
+      </Portal>
+    ) : null}
+  </>
+)
+```
+
+Each component still owns what these don't do: the role and ARIA wiring, hiding the rest of the page from assistive technology in a modal, and enter and exit transitions.
+
 ## Form controls
 
 Form controls are **bare controls**: they render the control only and never their own label, helper text or error message. [`Field`](packages/plume-ui-react/src/components/form/field) wraps a control and provides those, wiring the accessibility attributes through `cloneElement`.
@@ -105,6 +143,7 @@ Copy it into the pull request description.
 **Accessibility**
 - [ ] The right role, name and state (`aria-*`) for the pattern
 - [ ] Fully usable with the keyboard, with a visible focus
+- [ ] Overlays share one `useLayer` between `useDismiss` and `useFocusTrap`, and return the focus to the trigger
 - [ ] No violations in the Storybook accessibility panel, in light and dark mode
 
 **Tests**
