@@ -8,7 +8,7 @@ Thanks for your interest in improving Plume UI React. Please read the [Code of C
 
 ## Setting up
 
-Requirements: Node.js 20 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
+Requirements: Node.js 24 (see `.nvmrc`) and pnpm (`corepack enable` picks the version pinned in `package.json`).
 
 ```sh
 git clone https://github.com/<your-user>/plume-ui-react.git
