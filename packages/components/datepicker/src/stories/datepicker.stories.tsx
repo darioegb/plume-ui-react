@@ -21,7 +21,7 @@ export default {
   title: 'Components/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className='pb-[22rem]'>{Story()}</div>],
+  decorators: [(Story) => <div className='w-72 max-w-full pb-[22rem]'>{Story()}</div>],
   parameters: {
     docs: {
       toc: {

@@ -6,7 +6,7 @@
 @value input-border-color: var(--plume-border);
 @value input-background-color: var(--plume-surface-muted);
 
-.base {
+:where(.base) {
   background: transparent;
   border: none;
   outline: 2px solid transparent;

@@ -60,6 +60,14 @@
   padding: 0 var(--plume-space-6);
 }
 
+:is(.datePickerInputText, .sm, .md, .lg) {
+  padding-inline-end: 3rem;
+}
+
+.lg {
+  padding-inline-end: 3.25rem;
+}
+
 .sm + .inputButton > .inputButtonIcon {
   height: 1.125rem;
   width: 1.125rem;
