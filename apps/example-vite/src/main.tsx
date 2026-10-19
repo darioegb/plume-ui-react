@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ThemeProvider } from '@plume-ui-react/lib'
-import '@plume-ui-react/lib/styles.css'
+import { ThemeProvider } from 'plume-ui-react'
+import 'plume-ui-react/styles.css'
 import { App } from './App'
 import { theme } from './theme'
 

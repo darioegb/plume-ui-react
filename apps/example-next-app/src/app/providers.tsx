@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { ThemeProvider } from '@plume-ui-react/lib'
+import { ThemeProvider } from 'plume-ui-react'
 import { theme } from '@/theme'
 
 export function Providers({ children }: { children: ReactNode }): ReactNode {

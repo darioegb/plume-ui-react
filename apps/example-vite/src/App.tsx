@@ -10,7 +10,7 @@ import {
   TabPanel,
   DatePicker,
   type DateRange,
-} from '@plume-ui-react/lib'
+} from 'plume-ui-react'
 
 const card: React.CSSProperties = {
   border: '1px solid var(--plume-border)',

@@ -1,13 +1,13 @@
 # Plume UI React — Next.js Pages Router example
 
 A [Next.js](https://nextjs.org) **Pages Router** app that consumes the **published npm
-package** (`@plume-ui-react/lib`). It renders the same demo as the
-[App Router](../next-app) and [Vite](../vite-playground) examples; the difference is
+package** (`plume-ui-react`). It renders the same demo as the
+[App Router](../example-next-app) and [Vite](../example-vite) examples; the difference is
 where `<ThemeProvider>` lives.
 
 ## Structure
 
-- `src/pages/_app.tsx` — imports `@plume-ui-react/lib/styles.css` and wraps every page
+- `src/pages/_app.tsx` — imports `plume-ui-react/styles.css` and wraps every page
   in `<ThemeProvider>`, so the theme is server-rendered with each page.
 - `src/pages/_document.tsx` — document shell (`lang`, base body styles).
 - `src/pages/index.tsx` — renders the `<Demo />`.
@@ -23,5 +23,5 @@ npm run dev
 ```
 
 This example is excluded from the pnpm workspace and ships its own
-`package-lock.json`, so it installs `@plume-ui-react/*` from npm, exactly like a
+`package-lock.json`, so it installs `plume-ui-react` from npm, exactly like a
 real consumer.

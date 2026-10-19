@@ -1,4 +1,4 @@
-import type { DeepPartial, Theme } from '@plume-ui-react/lib'
+import type { DeepPartial, Theme } from 'plume-ui-react'
 
 export const theme: DeepPartial<Theme> = {
   colors: {
