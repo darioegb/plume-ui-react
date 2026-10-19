@@ -19,14 +19,6 @@ interface IconLinkButtonProps {
   text: string
 }
 
-function extractWordBeforeDocsFromURL(): string {
-  const url = window.location.href
-  const match = /(?<word>\w+)--docs/.exec(url)
-  const wordBeforeDocs = match?.groups?.word ?? ''
-  const capitalizedWord = wordBeforeDocs.charAt(0).toUpperCase() + wordBeforeDocs.slice(1)
-  return capitalizedWord
-}
-
 function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): ReactNode {
   return (
     <a className="flex" href={href} rel="noopener noreferrer" target="_blank">
@@ -68,8 +60,8 @@ function SourceLink({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode
 }
 
 function DocsTemplate(): ReactNode {
-  const componentName = extractWordBeforeDocsFromURL()
   const { preparedMeta } = useOf('meta', ['meta'])
+  const componentName = preparedMeta.title.split('/').pop() ?? preparedMeta.title
   const sourcePath = getComponentSourcePath(String(preparedMeta.parameters.fileName))
   return (
     <div className="container">
