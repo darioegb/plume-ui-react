@@ -1,5 +1,24 @@
 # @plume-ui-react/datepicker
 
+## 0.2.1
+
+### Patch Changes
+
+- [#61](https://github.com/darioegb/plume-ui-react/pull/61) [`56edaee837a1a1ffb0243208c9278e420c32a99c`](https://github.com/darioegb/plume-ui-react/commit/56edaee837a1a1ffb0243208c9278e420c32a99c) Thanks [@darioegb](https://github.com/darioegb)! - Props that did nothing or leaked to the DOM, and a few behavior fixes found while documenting every prop.
+
+  - `Button`: `busyText` only replaces the label while `isBusy` is set; it used to show even when the button wasn't busy.
+  - `Input`: removed `errorMessage` and `isRequired` from the props. They were never implemented and ended up as unknown attributes on the `<input>`, with a React warning.
+  - `Spinner`: `size` no longer leaks to the `<output>` element as an HTML attribute.
+  - `Tabs`: `TabPanel` applies its `className`. `Tab` and `TabPanel` no longer accept `id`, which was ignored; their ids derive from the `Tabs` `id`.
+  - `DatePicker`: `readOnly` also disables the calendar button, so the date can't be changed from the calendar.
+  - `DatePicker`: every `config` key is optional. `{ language: 'es' }` or `{ footer: { apply: 'Aplicar' } }` work alone, and the missing keys fall back to `en`, `Apply` and `Cancel`. `DatePickerConfig` is now exported.
+  - `DatePicker`: accepts `name`, passed to the input, and `inputRef`, a ref to the input for form libraries such as react-hook-form, which focus the field when validation fails.
+  - `DatePicker`: a new `value` prop is no longer echoed back through `onChange`. With a complete range, that echo made a controlled DatePicker (e.g. inside react-hook-form's `Controller`) re-render forever.
+
+- Updated dependencies [[`56edaee837a1a1ffb0243208c9278e420c32a99c`](https://github.com/darioegb/plume-ui-react/commit/56edaee837a1a1ffb0243208c9278e420c32a99c)]:
+  - @plume-ui-react/button@0.2.1
+  - @plume-ui-react/input@0.3.1
+
 ## 0.2.0
 
 ### Minor Changes
