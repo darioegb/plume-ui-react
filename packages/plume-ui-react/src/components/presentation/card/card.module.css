@@ -1,0 +1,91 @@
+.card {
+  border-radius: var(--plume-radius-4);
+  box-sizing: border-box;
+  color: var(--plume-foreground);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--plume-font-family);
+  overflow: hidden;
+}
+
+.sm {
+  --card-padding: var(--plume-space-3);
+  font-size: var(--plume-font-size-xs);
+}
+
+.md {
+  --card-padding: var(--plume-space-4);
+  font-size: var(--plume-font-size-sm);
+}
+
+.lg {
+  --card-padding: var(--plume-space-6);
+  font-size: var(--plume-font-size-base);
+}
+
+.elevated {
+  background-color: var(--plume-surface);
+  box-shadow: var(--plume-shadow-md);
+}
+
+.outline {
+  background-color: var(--plume-surface);
+  border: 1px solid var(--plume-border);
+}
+
+.filled {
+  background-color: var(--plume-surface-muted);
+}
+
+.card .header,
+.card .body,
+.card .footer {
+  padding: var(--card-padding);
+}
+
+.card .header {
+  font-size: 1.125em;
+  font-weight: var(--plume-font-weight-semibold);
+}
+
+.card .body {
+  flex: 1 1 auto;
+  line-height: var(--plume-line-height-normal);
+}
+
+.card .footer {
+  align-items: center;
+  display: flex;
+  gap: var(--plume-space-2);
+}
+
+.card .header + .body,
+.card .body + .footer,
+.card .header + .footer {
+  padding-block-start: 0;
+}
+
+.outline .header,
+.outline .footer {
+  background-color: var(--plume-surface-muted);
+}
+
+.outline .header {
+  border-block-end: 1px solid var(--plume-border);
+}
+
+.outline .footer {
+  border-block-start: 1px solid var(--plume-border);
+}
+
+.outline .header + .body,
+.outline .body + .footer,
+.outline .header + .footer {
+  padding-block-start: var(--card-padding);
+}
+
+@media (forced-colors: active) {
+  .card {
+    border: 1px solid CanvasText;
+  }
+}

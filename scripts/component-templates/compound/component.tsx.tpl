@@ -45,7 +45,9 @@ export const __Name__ = forwardRef<HTMLDivElement, __Name__Props>(
     const generatedId = useId()
     const baseId = id ?? generatedId
     const isStyled = variant !== 'unstyled'
-    const classes = `${isStyled ? `${styles.__slug__} ${styles[variant]}` : ''} ${className}`.trim()
+    const classes = [isStyled && styles.__slug__, isStyled && styles[variant], className]
+      .filter(Boolean)
+      .join(' ')
     const context = useMemo(() => ({ baseId, isStyled, size }), [baseId, isStyled, size])
 
     return (

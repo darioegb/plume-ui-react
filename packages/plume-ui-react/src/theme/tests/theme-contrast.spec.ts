@@ -1,6 +1,7 @@
 import { getContrastRatio } from '../../utils/colors'
 import { deepMerge } from '../../utils/merge'
 import { defaultDarkTheme, defaultTheme } from '../config'
+import { themeToCssVars } from '../theme-to-css-vars'
 import type { Theme } from '../theme.types'
 
 const themes = [
@@ -19,14 +20,22 @@ describe.each(themes)('default %s theme contrast', (_, theme) => {
     },
   )
 
-  it.each([semantic.background, semantic.surface])(
-    'keeps muted text at 4.5:1 or more against %s',
-    (surface) => {
-      expect(getContrastRatio(semantic.muted, surface)).toBeGreaterThanOrEqual(4.5)
-    },
-  )
+  it.each(surfaces)('keeps muted text at 4.5:1 or more against %s', (surface) => {
+    expect(getContrastRatio(semantic.muted, surface)).toBeGreaterThanOrEqual(4.5)
+  })
 
   it.each(surfaces)('keeps the foreground at 4.5:1 or more against %s', (surface) => {
     expect(getContrastRatio(semantic.foreground, surface)).toBeGreaterThanOrEqual(4.5)
+  })
+
+  it('keeps the text of every color scheme at 4.5:1 or more on its tints', () => {
+    const vars = themeToCssVars(theme)
+    for (const scheme of Object.keys(theme.colors)) {
+      const text = vars[`--plume-color-${scheme}-tint-text`]
+      for (const tint of ['tint', 'tint-strong']) {
+        const ratio = getContrastRatio(text, vars[`--plume-color-${scheme}-${tint}`])
+        expect(ratio, `${scheme} on ${tint}`).toBeGreaterThanOrEqual(4.5)
+      }
+    }
   })
 })

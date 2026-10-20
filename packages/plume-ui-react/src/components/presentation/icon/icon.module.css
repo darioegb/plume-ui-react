@@ -1,0 +1,28 @@
+.icon {
+  align-items: center;
+  color: var(--icon-color, currentColor);
+  display: inline-flex;
+  flex: none;
+  height: var(--icon-size);
+  justify-content: center;
+  vertical-align: middle;
+  width: var(--icon-size);
+}
+
+.icon > svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.sm {
+  --icon-size: var(--plume-space-4);
+}
+
+.md {
+  --icon-size: var(--plume-space-5);
+}
+
+.lg {
+  --icon-size: var(--plume-space-6);
+}

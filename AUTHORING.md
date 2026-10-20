@@ -46,7 +46,7 @@ Components never compute colors in JavaScript. A `colorScheme` is mapped to loca
 '--badge-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
 ```
 
-The stylesheet uses those variables and the `--plume-*` scales (`--plume-space-*`, `--plume-radius-*`, `--plume-font-size-*`), never raw values. The schemes expose `solid`, `solid-contrast`, `solid-hover`, `solid-active`, `text`, `text-hover`, `text-active`, `tint` and `tint-strong`, already adjusted for contrast in light and dark mode, so a component works in both without extra rules.
+The stylesheet uses those variables and the `--plume-*` scales (`--plume-space-*`, `--plume-radius-*`, `--plume-font-size-*`), never raw values. The schemes expose `solid`, `solid-contrast`, `solid-hover`, `solid-active`, `text`, `text-hover`, `text-active`, `tint`, `tint-strong` and `tint-text`, already adjusted for contrast in light and dark mode, so a component works in both without extra rules. Text over a `tint` or `tint-strong` background takes `tint-text`: the plain `text` color is tuned for the page surfaces and can fall short of 4.5:1 on a tint.
 
 ## Server and client components
 
@@ -73,7 +73,8 @@ Do **not** attach the parts to the root (`Accordion.Item`). A Client Component c
 
 The rest of the pattern:
 
-- **One context per component**, in its own file (`<name>-context.ts`), created with `undefined` as default. The root provides it and the parts read it through a `use<Name>Context` hook that throws a clear error when a part is rendered outside the root. Memoize the context value.
+- **One context per component that shares state**, in its own file (`<name>-context.ts`), created with `undefined` as default. The root provides it and the parts read it through a `use<Name>Context` hook that throws a clear error when a part is rendered outside the root. Memoize the context value.
+- **Presentational compounds** (`Card`, `List`) have no state to share, so they have no context. The root sets CSS variables (`--card-padding`) that the parts read, which keeps them free of `'use client'` and renderable in a Server Component. Scope the rules of the parts under the root class (`.card .header`), so the root's `unstyled` variant leaves its parts bare too.
 - **The root owns the state** and the shared options (`size`, `colorScheme`, `variant`). Parts read them from the context instead of repeating props.
 - **Ids link the parts** (`aria-controls`, `aria-labelledby`) and derive from the root id, as `getTabId` and `getPanelId` do in Tabs.
 - **Parts forward refs and accept `className` and `style`** like any other component.
@@ -127,6 +128,7 @@ For that to work, a control has to:
 
 - accept the `FieldControlProps` that `Field` injects: `id`, `aria-describedby`, `aria-invalid`, `disabled`, `readOnly` and `required`, and apply them to the actual element (the `<input>`, not a wrapper);
 - forward its `ref` to that element, so it also works with form libraries such as react-hook-form;
+- have **one** `<label>` at most: a control that renders its own text (`Checkbox`, `Radio`, `Toggle`) wraps it in a `<label>`, so it is marked `labelsItself` (`Object.assign(Control, { labelsItself: true })`) and the Field doesn't tie its own label to it with `for`. The control calls `useControlLabelledBy` to name itself with the Field label and its text, and renders a `<span>` instead of a `<label>` when it has no text. Two labels on one input is a violation in axe (`form-field-multiple-labels`);
 - stay independent of any form library. Add a spec with react-hook-form's `register` or `Controller` as `Input` and `DatePicker` do, but the component itself doesn't import it.
 
 ## Checklist
@@ -138,7 +140,7 @@ Copy it into the pull request description.
 - [ ] `forwardRef` and `displayName`; `className` and `style` work
 - [ ] Has variants (`solid` and `outline` at least, when it makes sense) and a `Variants` story with one example per variant, `unstyled` included
 - [ ] `variant="unstyled"` leaves only the user's classes
-- [ ] Compound parts are separate prefixed exports, with a context and a hook that throws outside the root
+- [ ] Compound parts are separate prefixed exports, with a context and a hook that throws outside the root (or CSS variables from the root, for presentational ones)
 - [ ] Form controls accept `FieldControlProps` on the real element and forward the ref
 
 **Styling**

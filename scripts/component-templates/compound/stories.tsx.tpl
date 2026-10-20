@@ -70,6 +70,23 @@ type Story = StoryObj<typeof __Name__>
 export const Default: Story = {}
 
 /**
+ * Use the **variant** prop to pick how the __Name__ looks. `unstyled` drops the Plume styles so you can style it
+ * yourself. Show every variant of the component here, once each.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className='flex flex-wrap justify-center items-center gap-4'>
+      <__Name__ variant='solid'>
+        <__Name__Content>Solid</__Name__Content>
+      </__Name__>
+      <__Name__ className='px-3 py-1 rounded bg-black text-white' variant='unstyled'>
+        <__Name__Content className='p-2'>Unstyled</__Name__Content>
+      </__Name__>
+    </div>
+  ),
+}
+
+/**
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
@@ -101,15 +118,4 @@ export const Colors: Story = {
       ))}
     </div>
   ),
-}
-
-/**
- * The **unstyled** variant leaves the styling to you.
- */
-export const Unstyled: Story = {
-  args: {
-    variant: 'unstyled',
-    className: 'px-3 py-1 rounded bg-black text-white',
-    children: <__Name__Content className='p-2'>Unstyled</__Name__Content>,
-  },
 }

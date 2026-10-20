@@ -15,7 +15,9 @@ export const __Name__Content = forwardRef<HTMLDivElement, __Name__ContentProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const { baseId, isStyled, size } = use__Name__Context()
-    const classes = `${isStyled ? `${styles.content} ${styles[size]}` : ''} ${className}`.trim()
+    const classes = [isStyled && styles.content, isStyled && styles[size], className]
+      .filter(Boolean)
+      .join(' ')
 
     return (
       <div

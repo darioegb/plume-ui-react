@@ -9,6 +9,7 @@ import type {
 } from 'react'
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './checkbox.module.css'
 
 export interface CheckboxOwnProps {
@@ -52,7 +53,7 @@ const checkboxColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSS
     ...style,
   }) as CSSProperties
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       children,
@@ -71,6 +72,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const isStyled = variant !== 'unstyled'
+    const { labelledBy, textId } = useControlLabelledBy({
+      hasText: Boolean(children),
+      id: rest.id,
+      labelledBy: rest['aria-labelledby'],
+    })
+    const Wrapper = children ? 'label' : 'span'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
@@ -100,7 +107,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     }
 
     return (
-      <label
+      <Wrapper
         className={rootClasses}
         style={checkboxColorVars(isInvalid ? 'error' : colorScheme, style)}
       >
@@ -113,11 +120,18 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           ref={inputRef}
           type="checkbox"
           {...rest}
+          aria-labelledby={labelledBy}
         />
-        {children ? <span className={isStyled ? styles.label : undefined}>{children}</span> : null}
-      </label>
+        {children ? (
+          <span className={isStyled ? styles.label : undefined} id={textId}>
+            {children}
+          </span>
+        ) : null}
+      </Wrapper>
     )
   },
 )
 
-Checkbox.displayName = 'Checkbox'
+CheckboxControl.displayName = 'Checkbox'
+
+export const Checkbox = Object.assign(CheckboxControl, { labelsItself: true })
