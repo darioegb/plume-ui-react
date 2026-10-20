@@ -10,11 +10,14 @@ export interface ToastAction {
   onClick?: () => void
 }
 
+export type ToastIcons = Partial<Record<ToastStatus, ReactNode>>
+
 export interface ToastOptions {
   action?: ToastAction
   description?: ReactNode
   dismissible?: boolean
   duration?: number
+  icon?: ReactNode
   id?: string
   onDismiss?: () => void
   status?: ToastStatus

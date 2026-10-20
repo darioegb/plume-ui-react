@@ -121,7 +121,7 @@ describe('ToastProvider component', () => {
       run(() => api[status]('Message'))
       const toast = screen.getByRole('status')
       expect(toast).toHaveClass('toast', status)
-      expect(toast.querySelector('svg[aria-hidden="true"]')).not.toBeNull()
+      expect(toast.querySelector('span[aria-hidden="true"] svg')).not.toBeNull()
     })
 
     it('announces an error at once', () => {
@@ -129,13 +129,6 @@ describe('ToastProvider component', () => {
       run(() => api.error('Failed'))
       expect(screen.getByRole('alert')).toHaveClass('error')
       expect(screen.queryByRole('status')).toBeNull()
-    })
-
-    it('has no icon when it is neutral', () => {
-      setup()
-      run(() => api.toast('Neutral'))
-      expect(screen.getByRole('status')).toHaveClass('neutral')
-      expect(screen.getByRole('status').querySelectorAll('svg')).toHaveLength(1)
     })
 
     it('lets the status be set in the options', () => {
@@ -425,7 +418,7 @@ describe('ToastProvider component', () => {
       expect(screen.getByRole('button', { name: 'Dismiss notification' })).not.toHaveClass(
         'dismiss',
       )
-      expect(toast.querySelector('svg')).not.toHaveClass('icon')
+      expect(toast.querySelector('span[aria-hidden="true"]')).not.toHaveClass('icon')
     })
 
     it('keeps the className of the region and of the toasts', () => {
@@ -461,7 +454,74 @@ describe('ToastProvider component', () => {
       )
       expect(screen.getByRole('button', { name: 'Undo' })).toHaveClass('action')
       expect(screen.getByRole('button', { name: 'Dismiss notification' })).toHaveClass('dismiss')
-      expect(screen.getByRole('status').querySelector('svg')).toHaveClass('icon')
+      expect(screen.getByRole('status').querySelector('span[aria-hidden="true"]')).toHaveClass(
+        'icon',
+      )
+    })
+  })
+
+  describe('icons', () => {
+    const iconOf = (): HTMLElement | null =>
+      screen.getByRole('status').querySelector<HTMLElement>('span[aria-hidden="true"]')
+
+    it('has no icon when it is neutral', () => {
+      setup()
+      run(() => api.toast('Neutral'))
+      expect(iconOf()).toBeNull()
+    })
+
+    it('hides every icon with icons={false}', () => {
+      setup({ icons: false })
+      run(() => api.success('Saved'))
+      expect(iconOf()).toBeNull()
+    })
+
+    it('replaces the icon of a status', () => {
+      setup({ icons: { success: <b data-testid="mine">ok</b> } })
+      run(() => api.success('Saved'))
+      expect(iconOf()).toContainElement(screen.getByTestId('mine'))
+      expect(iconOf()?.querySelector('svg')).toBeNull()
+    })
+
+    it('keeps the default icon of the statuses it does not replace', () => {
+      setup({ icons: { success: <b>ok</b> } })
+      run(() => api.info('Info'))
+      expect(iconOf()?.querySelector('svg')).not.toBeNull()
+    })
+
+    it('adds an icon to a neutral toast', () => {
+      setup({ icons: { neutral: <b data-testid="mine">n</b> } })
+      run(() => api.toast('Neutral'))
+      expect(iconOf()).toContainElement(screen.getByTestId('mine'))
+    })
+
+    it('hides the icon of a status with null', () => {
+      setup({ icons: { error: null } })
+      run(() => api.info('Info'))
+      expect(iconOf()).not.toBeNull()
+      act(() => {
+        api.dismissAll()
+        api.error('Failed')
+      })
+      expect(screen.getByRole('alert').querySelector('span[aria-hidden="true"]')).toBeNull()
+    })
+
+    it('sets the icon of one toast, over the provider', () => {
+      setup({ icons: false })
+      run(() => api.success({ icon: <b data-testid="mine">ok</b>, title: 'Saved' }))
+      expect(iconOf()).toContainElement(screen.getByTestId('mine'))
+    })
+
+    it('hides the icon of one toast with icon={false}', () => {
+      setup()
+      run(() => api.success({ icon: false, title: 'Saved' }))
+      expect(iconOf()).toBeNull()
+    })
+
+    it('hides a custom icon from screen readers', () => {
+      setup()
+      run(() => api.info({ icon: <b>i</b>, title: 'Info' }))
+      expect(iconOf()).toHaveAttribute('aria-hidden', 'true')
     })
   })
 })

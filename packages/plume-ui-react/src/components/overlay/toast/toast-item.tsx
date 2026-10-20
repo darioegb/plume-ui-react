@@ -2,7 +2,7 @@
 
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import type { ToastAction, ToastStatus } from './toast-context'
+import type { ToastAction, ToastIcons, ToastStatus } from './toast-context'
 import styles from './toast.module.css'
 
 export interface ToastData {
@@ -10,6 +10,7 @@ export interface ToastData {
   description?: ReactNode
   dismissible: boolean
   duration: number
+  icon?: ReactNode
   id: string
   onDismiss?: () => void
   revision: number
@@ -20,6 +21,7 @@ export interface ToastData {
 interface ToastItemProps {
   className: string
   dismissLabel: string
+  icons?: false | ToastIcons
   isStyled: boolean
   onDismiss: (id: string) => void
   toast: ToastData
@@ -31,6 +33,32 @@ const iconPaths: Record<Exclude<ToastStatus, 'neutral'>, string> = {
   success: 'M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14l-3-3',
   warning:
     'M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+}
+
+function StatusIcon({ status }: Readonly<{ status: Exclude<ToastStatus, 'neutral'> }>): ReactNode {
+  return (
+    <svg
+      fill="none"
+      focusable="false"
+      height="1.25em"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="1.25em"
+    >
+      <path d={iconPaths[status]} />
+    </svg>
+  )
+}
+
+function resolveIcon(toast: ToastData, icons: false | ToastIcons | undefined): ReactNode {
+  if (toast.icon !== undefined) return toast.icon
+  if (icons === false) return null
+  const custom = icons?.[toast.status]
+  if (custom !== undefined) return custom
+  return toast.status === 'neutral' ? null : <StatusIcon status={toast.status} />
 }
 
 const colors: Record<ToastStatus, string> = {
@@ -54,6 +82,7 @@ export function toastColorVars(status: ToastStatus): CSSProperties {
 export function ToastItem({
   className,
   dismissLabel,
+  icons,
   isStyled,
   onDismiss,
   toast,
@@ -94,6 +123,7 @@ export function ToastItem({
     dismiss()
   }
 
+  const icon = resolveIcon(toast, icons)
   const isError = toast.status === 'error'
   const classes =
     [isStyled && styles.toast, isStyled && styles[toast.status], className]
@@ -123,23 +153,11 @@ export function ToastItem({
       role={isError ? 'alert' : 'status'}
       style={toastColorVars(toast.status)}
     >
-      {toast.status === 'neutral' ? null : (
-        <svg
-          aria-hidden="true"
-          className={isStyled ? styles.icon : undefined}
-          fill="none"
-          focusable="false"
-          height="1.25em"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="1.25em"
-        >
-          <path d={iconPaths[toast.status]} />
-        </svg>
-      )}
+      {icon ? (
+        <span aria-hidden="true" className={isStyled ? styles.icon : undefined}>
+          {icon}
+        </span>
+      ) : null}
       <div className={isStyled ? styles.content : undefined}>
         {toast.title ? (
           <span className={isStyled ? styles.title : undefined}>{toast.title}</span>

@@ -1,5 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
+import { Icon } from '../../../presentation/icon'
 import {
   ToastProvider,
   useToast,
@@ -67,6 +68,7 @@ function Demo({
  * | --- | --- |
  * | `title`, `description` | The text of the toast. |
  * | `status` | `neutral`, `info`, `success`, `warning` or `error`. The `success`, `info`, `warning` and `error` methods set it. |
+ * | `icon` | A node that replaces the icon of the status, or `false` for a toast with no icon. |
  * | `duration` | Milliseconds before it goes away. `0` keeps it until it is dismissed. Defaults to the one of the provider. |
  * | `action` | `{ label, onClick }`: a button that runs `onClick` and dismisses the toast. |
  * | `dismissible` | Whether it has a dismiss button, and <kbd>Esc</kbd> dismisses it. `true` by default. |
@@ -105,6 +107,12 @@ export default {
       description:
         'Milliseconds before a toast goes away, unless it sets its own. `0` keeps them until dismissed.',
       table: { type: { summary: 'number' }, defaultValue: { summary: '5000' } },
+    },
+    icons: {
+      control: false,
+      description:
+        'The icons of the toasts. `false` shows none. An object replaces the icon of a status (`success`, `info`, `warning`, `error`) and can give one to `neutral`. A toast can set its own with the `icon` option.',
+      table: { type: { summary: 'false | Partial<Record<ToastStatus, ReactNode>>' } },
     },
     max: {
       control: 'number',
@@ -247,6 +255,62 @@ export const Statuses: Story = {
         />
       </div>
     </Demo>
+  ),
+}
+
+const bell = (
+  <Icon>
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0" />
+    </svg>
+  </Icon>
+)
+
+/**
+ * The status icons are optional and can be replaced. Set **icons** on the provider to `false` for no icons, or to
+ * an object with a node for each status, which can also give an icon to `neutral`. A single toast can set its own
+ * with the **icon** option, or hide it with `icon: false`. Icons are decorative, so they are hidden from screen
+ * readers: the status is announced by the role of the toast.
+ */
+export const Icons: Story = {
+  render: () => (
+    <div className="flex flex-wrap justify-center gap-4">
+      <ToastProvider icons={false} regionLabel="no icons notifications" position="top-start">
+        <Fire
+          label="No icons"
+          make={(api) => api.success({ description: 'Your changes were saved.', title: 'Saved' })}
+          variant="outline"
+        />
+      </ToastProvider>
+      <ToastProvider
+        icons={{ neutral: bell, success: <span>🎉</span> }}
+        position="bottom"
+        regionLabel="custom icons notifications"
+      >
+        <Fire
+          label="Custom icons"
+          make={(api) => {
+            api.toast({ title: 'A neutral toast with an icon' })
+            api.success({ title: 'Saved' })
+          }}
+          variant="outline"
+        />
+      </ToastProvider>
+      <Demo position="top-end" regionLabel="one icon notifications">
+        <Fire
+          label="One toast"
+          make={(api) => api.info({ icon: bell, title: 'This toast has its own icon' })}
+          variant="outline"
+        />
+      </Demo>
+    </div>
   ),
 }
 

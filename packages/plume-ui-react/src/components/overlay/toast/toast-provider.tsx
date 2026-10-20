@@ -7,6 +7,7 @@ import {
   ToastContext,
   type ToastApi,
   type ToastContent,
+  type ToastIcons,
   type ToastOptions,
   type ToastStatus,
 } from './toast-context'
@@ -31,6 +32,7 @@ export interface ToastProviderProps {
   className?: string
   dismissLabel?: string
   duration?: number
+  icons?: false | ToastIcons
   max?: number
   position?: ToastPosition
   regionLabel?: string
@@ -49,6 +51,7 @@ export function ToastProvider({
   className = '',
   dismissLabel = 'Dismiss notification',
   duration = 5000,
+  icons,
   max = 5,
   position = 'bottom-end',
   regionLabel = 'Notifications',
@@ -83,6 +86,7 @@ export function ToastProvider({
         description: merged.description,
         dismissible: merged.dismissible ?? true,
         duration: merged.duration ?? defaults.current.duration,
+        icon: merged.icon,
         id,
         onDismiss: merged.onDismiss,
         status: merged.status ?? status ?? 'neutral',
@@ -133,6 +137,7 @@ export function ToastProvider({
             <ToastItem
               dismissLabel={dismissLabel}
               className={toastClassName}
+              icons={icons}
               isStyled={isStyled}
               key={`${toast.id}-${toast.revision}`}
               onDismiss={remove}

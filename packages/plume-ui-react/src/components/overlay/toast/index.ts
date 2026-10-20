@@ -9,6 +9,7 @@ export {
   type ToastAction,
   type ToastApi,
   type ToastContent,
+  type ToastIcons,
   type ToastOptions,
   type ToastStatus,
 } from './toast-context'
