@@ -67,6 +67,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      story: { inline: false, iframeHeight: 520 },
       importNames: [
         'Modal',
         'ModalTrigger',

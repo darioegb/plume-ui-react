@@ -46,6 +46,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      story: { inline: false, iframeHeight: 280 },
       toc: {
         title: 'On this page',
         disable: false,

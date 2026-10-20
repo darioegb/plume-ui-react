@@ -53,6 +53,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      story: { inline: false, iframeHeight: 420 },
       importNames: ['Popover', 'PopoverTrigger', 'PopoverContent', 'PopoverClose'],
       toc: {
         title: 'On this page',
