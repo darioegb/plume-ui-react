@@ -35,6 +35,60 @@ const PlumeDocsContainer = ({
   )
 }
 
+type ColorMode = 'light' | 'dark'
+
+const docsColorMode = (): ColorMode | null => {
+  try {
+    if (window.parent === window || !window.parent.location.pathname.endsWith('iframe.html')) {
+      return null
+    }
+    const mode = window.parent.document.documentElement.getAttribute('data-plume-color-mode')
+    return mode === 'dark' || mode === 'light' ? mode : null
+  } catch {
+    return null
+  }
+}
+
+// A story shown in an iframe of the docs page doesn't get the globals, so it follows the docs page.
+const useColorMode = (globalMode: ColorMode): ColorMode => {
+  const [docsMode, setDocsMode] = React.useState<ColorMode | null>(docsColorMode)
+  React.useEffect(() => {
+    if (!docsColorMode()) return undefined
+    const sync = (): void => setDocsMode(docsColorMode())
+    sync()
+    const observer = new MutationObserver(sync)
+    observer.observe(window.parent.document.documentElement, {
+      attributeFilter: ['data-plume-color-mode'],
+      attributes: true,
+    })
+    return () => observer.disconnect()
+  }, [])
+  return docsMode ?? globalMode
+}
+
+const StoryFrame = ({
+  children,
+  globalMode,
+}: {
+  children: React.ReactNode
+  globalMode: ColorMode
+}): React.ReactElement => {
+  const colorMode = useColorMode(globalMode)
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-plume-color-mode', colorMode)
+  }, [colorMode])
+  return (
+    <ThemeProvider
+      key={colorMode}
+      defaultColorMode={colorMode}
+      style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}
+    >
+      {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
+      <div data-bs-theme={colorMode}>{children}</div>
+    </ThemeProvider>
+  )
+}
+
 const preview: Preview = {
   parameters: {
     a11y: {
@@ -82,21 +136,11 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story, context) => {
-      const colorMode = (context.globals.colorMode as 'light' | 'dark') ?? 'light'
-      return (
-        <ThemeProvider
-          key={colorMode}
-          defaultColorMode={colorMode}
-          style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}
-        >
-          {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
-          <div data-bs-theme={colorMode}>
-            <Story />
-          </div>
-        </ThemeProvider>
-      )
-    },
+    (Story, context) => (
+      <StoryFrame globalMode={(context.globals.colorMode as ColorMode) ?? 'light'}>
+        <Story />
+      </StoryFrame>
+    ),
   ],
 }
 

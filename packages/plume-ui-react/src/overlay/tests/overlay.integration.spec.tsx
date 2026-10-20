@@ -8,7 +8,12 @@ function Overlay({ name, children }: Readonly<{ name: string; children?: ReactNo
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
   const [floating, setFloating] = useState<HTMLElement | null>(null)
   const isTopmost = useLayer(open)
-  useDismiss({ enabled: open, onDismiss: () => setOpen(false), elements: [anchor, floating], isTopmost })
+  useDismiss({
+    enabled: open,
+    onDismiss: () => setOpen(false),
+    elements: [anchor, floating],
+    isTopmost,
+  })
   useFocusTrap(floating, { active: open, isTopmost })
   useScrollLock(open)
   const { style } = usePosition({ anchor, floating, enabled: open })

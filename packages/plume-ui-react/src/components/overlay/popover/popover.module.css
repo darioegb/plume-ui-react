@@ -1,0 +1,93 @@
+:global(:where(dialog[data-plume-dialog])) {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  height: auto;
+  inset: auto;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  padding: 0;
+  position: static;
+  width: auto;
+}
+
+.content {
+  background-color: var(--plume-surface);
+  border-radius: var(--plume-radius-4);
+  box-sizing: border-box;
+  color: var(--plume-foreground);
+  font-family: var(--plume-font-family);
+  font-size: var(--plume-font-size-sm);
+  line-height: var(--plume-line-height-normal);
+  max-width: calc(100vw - var(--plume-space-4));
+  padding: var(--plume-space-4);
+  width: max-content;
+  z-index: var(--plume-z-7);
+}
+
+.sm {
+  max-width: min(14rem, calc(100vw - var(--plume-space-4)));
+}
+
+.md {
+  max-width: min(20rem, calc(100vw - var(--plume-space-4)));
+}
+
+.lg {
+  max-width: min(28rem, calc(100vw - var(--plume-space-4)));
+}
+
+.elevated {
+  box-shadow: var(--plume-shadow-lg);
+}
+
+.outline {
+  border: 1px solid var(--plume-border-strong);
+}
+
+.close {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--plume-radius-full);
+  color: var(--plume-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-6);
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+  width: var(--plume-space-6);
+}
+
+.close:hover {
+  background-color: var(--plume-surface-muted);
+  color: var(--plume-foreground);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--plume-color-primary-text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .content {
+    animation: content-in 0.12s ease-out;
+  }
+}
+
+@keyframes content-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .content {
+    border: 1px solid CanvasText;
+  }
+}

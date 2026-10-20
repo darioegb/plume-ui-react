@@ -4,7 +4,12 @@ import { useDismiss, type UseDismissOptions } from '../use-dismiss'
 
 type HarnessProps = Partial<Omit<UseDismissOptions, 'elements'>> & { extra?: boolean }
 
-function Harness({ onDismiss = vi.fn(), enabled = true, extra = false, ...options }: HarnessProps): React.ReactNode {
+function Harness({
+  onDismiss = vi.fn(),
+  enabled = true,
+  extra = false,
+  ...options
+}: HarnessProps): React.ReactNode {
   const [content, setContent] = useState<HTMLElement | null>(null)
   const [trigger, setTrigger] = useState<HTMLElement | null>(null)
   useDismiss({ enabled, onDismiss, elements: extra ? [content, trigger] : [content], ...options })

@@ -1,0 +1,7 @@
+export { Modal, type ModalProps } from './modal'
+export { ModalBody, type ModalBodyProps } from './modal-body'
+export { ModalClose, type ModalCloseProps } from './modal-close'
+export { ModalContent, type ModalContentProps } from './modal-content'
+export { ModalFooter, type ModalFooterProps } from './modal-footer'
+export { ModalHeader, type ModalHeaderProps } from './modal-header'
+export { ModalTrigger, type ModalTriggerProps } from './modal-trigger'

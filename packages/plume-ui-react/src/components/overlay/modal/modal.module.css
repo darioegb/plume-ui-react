@@ -1,0 +1,141 @@
+:global(:where(dialog[data-plume-dialog])) {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  height: auto;
+  inset: auto;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  padding: 0;
+  position: static;
+  width: auto;
+}
+
+.backdrop {
+  align-items: center;
+  background-color: rgb(0 0 0 / 50%);
+  box-sizing: border-box;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: var(--plume-space-4);
+  position: fixed;
+  z-index: var(--plume-z-6);
+}
+
+.content {
+  background-color: var(--plume-surface);
+  border-radius: var(--plume-radius-6);
+  box-shadow: var(--plume-shadow-xl);
+  box-sizing: border-box;
+  color: var(--plume-foreground);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--plume-font-family);
+  font-size: var(--plume-font-size-sm);
+  line-height: var(--plume-line-height-normal);
+  max-height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.sm {
+  max-width: 24rem;
+}
+
+.md {
+  max-width: 32rem;
+}
+
+.lg {
+  max-width: 48rem;
+}
+
+.header {
+  font-size: var(--plume-font-size-lg);
+  font-weight: var(--plume-font-weight-semibold);
+  line-height: var(--plume-line-height-snug);
+  margin: 0;
+  padding: var(--plume-space-5) var(--plume-space-12) var(--plume-space-3) var(--plume-space-6);
+}
+
+.body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--plume-space-3) var(--plume-space-6);
+}
+
+.body:focus-visible {
+  outline: 2px solid var(--plume-color-primary-text);
+  outline-offset: -2px;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--plume-space-2);
+  justify-content: flex-end;
+  padding: var(--plume-space-4) var(--plume-space-6) var(--plume-space-5);
+}
+
+.close {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--plume-radius-full);
+  color: var(--plume-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--plume-font-size-xl);
+  height: var(--plume-space-8);
+  inset-block-start: var(--plume-space-3);
+  inset-inline-end: var(--plume-space-3);
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+  width: var(--plume-space-8);
+}
+
+.close:hover {
+  background-color: var(--plume-surface-muted);
+  color: var(--plume-foreground);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--plume-color-primary-text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .backdrop {
+    animation: backdrop-in 0.15s ease-out;
+  }
+
+  .content {
+    animation: content-in 0.18s ease-out;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes content-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+
+@media (forced-colors: active) {
+  .content {
+    border: 1px solid CanvasText;
+  }
+}

@@ -4,7 +4,12 @@ import { getTabbableElements, useFocusTrap, type UseFocusTrapOptions } from '../
 
 type TrapProps = Partial<UseFocusTrapOptions> & { empty?: boolean; withInitial?: boolean }
 
-function Trap({ active = true, empty = false, withInitial = false, ...options }: TrapProps): React.ReactNode {
+function Trap({
+  active = true,
+  empty = false,
+  withInitial = false,
+  ...options
+}: TrapProps): React.ReactNode {
   const [container, setContainer] = useState<HTMLElement | null>(null)
   const [second, setSecond] = useState<HTMLElement | null>(null)
   useFocusTrap(container, { active, initialFocus: withInitial ? second : undefined, ...options })
@@ -220,6 +225,8 @@ describe('getTabbableElements', () => {
       <a>no href</a>
       <button>visible</button>
     `)
-    expect(getTabbableElements(container).map((element) => element.textContent)).toEqual(['visible'])
+    expect(getTabbableElements(container).map((element) => element.textContent)).toEqual([
+      'visible',
+    ])
   })
 })

@@ -118,6 +118,8 @@ return (
 )
 ```
 
+`Modal`, `Popover`, `Tooltip` and `Toast` are built this way, and they show the recipe: the root keeps the open state (controlled with `open` and `onOpenChange`, or uncontrolled), a trigger takes a single element and gives it its handlers and `aria-*` attributes through `cloneWithProps` in `src/overlay/trigger.ts` (which merges the refs and chains the handlers), and the content renders in a `Portal` only while it is open. A toast is the exception: `ToastProvider` keeps a list, renders one live region that is always in the page, and `useToast()` adds to it.
+
 Each component still owns what these don't do: the role and ARIA wiring, hiding the rest of the page from assistive technology in a modal, and enter and exit transitions.
 
 ## Form controls

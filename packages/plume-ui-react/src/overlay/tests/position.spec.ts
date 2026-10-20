@@ -32,14 +32,18 @@ describe('computePosition', () => {
   })
 
   it('applies the offset', () => {
-    expect(computePosition({ anchor, floating, viewport, placement: 'bottom', offset: 20 }).y).toBe(360)
+    expect(computePosition({ anchor, floating, viewport, placement: 'bottom', offset: 20 }).y).toBe(
+      360,
+    )
     expect(computePosition({ anchor, floating, viewport, placement: 'top', offset: 0 }).y).toBe(200)
   })
 
   describe('flip', () => {
     it('flips to the opposite side when the preferred one overflows and the other fits', () => {
       const nearBottom = { ...anchor, y: 700 }
-      expect(computePosition({ anchor: nearBottom, floating, viewport, placement: 'bottom' })).toMatchObject({
+      expect(
+        computePosition({ anchor: nearBottom, floating, viewport, placement: 'bottom' }),
+      ).toMatchObject({
         y: 592,
         side: 'top',
         placement: 'top',
@@ -48,19 +52,24 @@ describe('computePosition', () => {
 
     it('keeps the alignment when flipping', () => {
       const nearBottom = { ...anchor, y: 700 }
-      expect(computePosition({ anchor: nearBottom, floating, viewport, placement: 'bottom-start' }).placement).toBe(
-        'top-start',
-      )
+      expect(
+        computePosition({ anchor: nearBottom, floating, viewport, placement: 'bottom-start' })
+          .placement,
+      ).toBe('top-start')
     })
 
     it('flips horizontally', () => {
       const nearRight = { x: 900, y: 300, width: 80, height: 40 }
-      expect(computePosition({ anchor: nearRight, floating, viewport, placement: 'right' })).toMatchObject({
+      expect(
+        computePosition({ anchor: nearRight, floating, viewport, placement: 'right' }),
+      ).toMatchObject({
         x: 692,
         side: 'left',
       })
       const nearLeft = { x: 10, y: 300, width: 80, height: 40 }
-      expect(computePosition({ anchor: nearLeft, floating, viewport, placement: 'left' })).toMatchObject({
+      expect(
+        computePosition({ anchor: nearLeft, floating, viewport, placement: 'left' }),
+      ).toMatchObject({
         x: 98,
         side: 'right',
       })
@@ -68,7 +77,9 @@ describe('computePosition', () => {
 
     it('flips from top to bottom', () => {
       const nearTop = { ...anchor, y: 20 }
-      expect(computePosition({ anchor: nearTop, floating, viewport, placement: 'top' }).side).toBe('bottom')
+      expect(computePosition({ anchor: nearTop, floating, viewport, placement: 'top' }).side).toBe(
+        'bottom',
+      )
     })
 
     it('keeps the preferred side when the opposite overflows more', () => {
@@ -85,14 +96,21 @@ describe('computePosition', () => {
 
     it('does not flip when disabled', () => {
       const nearBottom = { ...anchor, y: 700 }
-      expect(computePosition({ anchor: nearBottom, floating, viewport, flip: false }).side).toBe('bottom')
+      expect(computePosition({ anchor: nearBottom, floating, viewport, flip: false }).side).toBe(
+        'bottom',
+      )
     })
   })
 
   describe('shift', () => {
     it('keeps a top or bottom placement inside the viewport horizontally', () => {
-      expect(computePosition({ anchor: { x: 0, y: 300, width: 100, height: 40 }, floating, viewport }).x).toBe(8)
-      expect(computePosition({ anchor: { x: 950, y: 300, width: 40, height: 40 }, floating, viewport }).x).toBe(792)
+      expect(
+        computePosition({ anchor: { x: 0, y: 300, width: 100, height: 40 }, floating, viewport }).x,
+      ).toBe(8)
+      expect(
+        computePosition({ anchor: { x: 950, y: 300, width: 40, height: 40 }, floating, viewport })
+          .x,
+      ).toBe(792)
     })
 
     it('keeps a left or right placement inside the viewport vertically', () => {
@@ -114,7 +132,12 @@ describe('computePosition', () => {
 
     it('does not move the element when disabled', () => {
       expect(
-        computePosition({ anchor: { x: 0, y: 300, width: 100, height: 40 }, floating, viewport, shift: false }).x,
+        computePosition({
+          anchor: { x: 0, y: 300, width: 100, height: 40 },
+          floating,
+          viewport,
+          shift: false,
+        }).x,
       ).toBe(-50)
     })
 
