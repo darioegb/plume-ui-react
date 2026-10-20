@@ -23,6 +23,7 @@ export type FieldOrientation = 'vertical' | 'horizontal'
 export interface FieldControlProps {
   'aria-describedby'?: string
   'aria-invalid'?: boolean | 'true' | 'false'
+  children?: ReactNode
   disabled?: boolean
   id?: string
   readOnly?: boolean
@@ -65,7 +66,13 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
         .filter(Boolean)
         .join(' ') || undefined
 
-    const context = useMemo(() => ({ labelId }), [labelId])
+    const labelsItself = Boolean(
+      (control.type as { labelsItself?: boolean }).labelsItself && controlProps.children,
+    )
+    const context = useMemo(
+      () => ({ controlId, labelId, labelsItself }),
+      [controlId, labelId, labelsItself],
+    )
 
     const fieldClasses = `${styles.field} ${styles[orientation]} ${
       disabled ? styles.disabled : ''
@@ -75,7 +82,11 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
       <FieldContext.Provider value={context}>
         <div className={fieldClasses} ref={ref} style={style}>
           {label ? (
-            <label className={styles.label} htmlFor={controlId} id={labelId}>
+            <label
+              className={styles.label}
+              htmlFor={labelsItself ? undefined : controlId}
+              id={labelId}
+            >
               {label}
               {required ? (
                 <span aria-hidden="true" className={styles.requiredIndicator}>

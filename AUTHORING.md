@@ -128,6 +128,7 @@ For that to work, a control has to:
 
 - accept the `FieldControlProps` that `Field` injects: `id`, `aria-describedby`, `aria-invalid`, `disabled`, `readOnly` and `required`, and apply them to the actual element (the `<input>`, not a wrapper);
 - forward its `ref` to that element, so it also works with form libraries such as react-hook-form;
+- have **one** `<label>` at most: a control that renders its own text (`Checkbox`, `Radio`, `Toggle`) wraps it in a `<label>`, so it is marked `labelsItself` (`Object.assign(Control, { labelsItself: true })`) and the Field doesn't tie its own label to it with `for`. The control calls `useControlLabelledBy` to name itself with the Field label and its text, and renders a `<span>` instead of a `<label>` when it has no text. Two labels on one input is a violation in axe (`form-field-multiple-labels`);
 - stay independent of any form library. Add a spec with react-hook-form's `register` or `Controller` as `Input` and `DatePicker` do, but the component itself doesn't import it.
 
 ## Checklist

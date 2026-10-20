@@ -9,6 +9,7 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
@@ -50,7 +51,7 @@ const radioColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPro
     ...style,
   }) as CSSProperties
 
-export const Radio = forwardRef<HTMLInputElement, RadioProps>(
+const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
   (
     {
       checked,
@@ -73,6 +74,12 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ) => {
     const group = useRadioGroupContext()
     const resolvedVariant = variant ?? group?.variant ?? 'solid'
+    const { labelledBy, textId } = useControlLabelledBy({
+      hasText: Boolean(children),
+      id: rest.id,
+      labelledBy: rest['aria-labelledby'],
+    })
+    const Wrapper = children ? 'label' : 'span'
     const isStyled = resolvedVariant !== 'unstyled'
     const isInvalid =
       rest['aria-invalid'] === true || rest['aria-invalid'] === 'true' || Boolean(group?.invalid)
@@ -113,7 +120,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       : { checked, defaultChecked, name, required }
 
     return (
-      <label
+      <Wrapper
         className={rootClasses}
         style={radioColorVars(isInvalid ? 'error' : resolvedColorScheme, style)}
       >
@@ -127,11 +134,18 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           value={value}
           {...stateProps}
           {...rest}
+          aria-labelledby={labelledBy}
         />
-        {children ? <span className={isStyled ? styles.label : undefined}>{children}</span> : null}
-      </label>
+        {children ? (
+          <span className={isStyled ? styles.label : undefined} id={textId}>
+            {children}
+          </span>
+        ) : null}
+      </Wrapper>
     )
   },
 )
 
-Radio.displayName = 'Radio'
+RadioControl.displayName = 'Radio'
+
+export const Radio = Object.assign(RadioControl, { labelsItself: true })

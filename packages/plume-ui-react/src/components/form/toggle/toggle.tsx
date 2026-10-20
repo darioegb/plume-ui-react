@@ -9,6 +9,7 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './toggle.module.css'
 
 export interface ToggleOwnProps {
@@ -49,7 +50,7 @@ const toggleColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPr
     ...style,
   }) as CSSProperties
 
-export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
+const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
   (
     {
       children,
@@ -66,6 +67,12 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
+    const { labelledBy, textId } = useControlLabelledBy({
+      hasText: Boolean(children),
+      id: rest.id,
+      labelledBy: rest['aria-labelledby'],
+    })
+    const Wrapper = children ? 'label' : 'span'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
     const rootClasses = [
       isStyled && styles.root,
@@ -88,7 +95,7 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
     }
 
     return (
-      <label
+      <Wrapper
         className={rootClasses}
         style={toggleColorVars(isInvalid ? 'error' : colorScheme, style)}
       >
@@ -102,11 +109,18 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
           role="switch"
           type="checkbox"
           {...rest}
+          aria-labelledby={labelledBy}
         />
-        {children ? <span className={isStyled ? styles.label : undefined}>{children}</span> : null}
-      </label>
+        {children ? (
+          <span className={isStyled ? styles.label : undefined} id={textId}>
+            {children}
+          </span>
+        ) : null}
+      </Wrapper>
     )
   },
 )
 
-Toggle.displayName = 'Toggle'
+ToggleControl.displayName = 'Toggle'
+
+export const Toggle = Object.assign(ToggleControl, { labelsItself: true })
