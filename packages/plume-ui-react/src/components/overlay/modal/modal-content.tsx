@@ -9,21 +9,21 @@ import { useModalContext } from './modal-context'
 import styles from './modal.module.css'
 
 type ModalContentRootAttributes = Pick<
-  HTMLAttributes<HTMLDivElement>,
+  HTMLAttributes<HTMLDialogElement>,
   'aria-describedby' | 'aria-label' | 'aria-labelledby' | 'children'
 >
 
 export type ModalContentProps = Omit<ComponentProps, 'index'> & ModalContentRootAttributes
 
-export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
+export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
   (
     { children, className = '', style, ...rest }: ModalContentProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLDialogElement>,
   ): ReactNode => {
     const context = useModalContext('ModalContent')
     const { closeOnEscape, closeOnOutside, contentId, initialFocus, isStyled, open, setOpen } =
       context
-    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
+    const [panel, setPanel] = useState<HTMLDialogElement | null>(null)
     const isTopmost = useLayer(open)
 
     useScrollLock(open)
@@ -52,18 +52,19 @@ export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
     return (
       <Portal>
         <div className={isStyled ? styles.backdrop : undefined}>
-          <div
+          <dialog
             {...rest}
             aria-labelledby={labelledBy}
             aria-modal="true"
             className={classes}
+            data-plume-dialog=""
             id={contentId}
-            ref={mergeRefs<HTMLDivElement>(setPanel, ref)}
-            role="dialog"
+            open
+            ref={mergeRefs<HTMLDialogElement>(setPanel, ref)}
             style={style}
           >
             {children}
-          </div>
+          </dialog>
         </div>
       </Portal>
     )

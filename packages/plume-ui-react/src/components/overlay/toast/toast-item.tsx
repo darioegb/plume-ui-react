@@ -1,9 +1,10 @@
 'use client'
 
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback } from 'react'
 import type { ToastAction, ToastIcons, ToastStatus } from './toast-context'
 import styles from './toast.module.css'
+import { useToastTimer } from './use-toast-timer'
 
 export interface ToastData {
   action?: ToastAction
@@ -38,6 +39,7 @@ const iconPaths: Record<Exclude<ToastStatus, 'neutral'>, string> = {
 function StatusIcon({ status }: Readonly<{ status: Exclude<ToastStatus, 'neutral'> }>): ReactNode {
   return (
     <svg
+      aria-hidden="true"
       fill="none"
       focusable="false"
       height="1.25em"
@@ -88,31 +90,8 @@ export function ToastItem({
   toast,
 }: Readonly<ToastItemProps>): ReactNode {
   const { duration, id } = toast
-  const remaining = useRef(duration)
-  const startedAt = useRef(0)
-  const timer = useRef<number | undefined>(undefined)
-  const hovered = useRef(false)
-  const focused = useRef(false)
   const dismiss = useCallback(() => onDismiss(id), [id, onDismiss])
-
-  const pause = useCallback((): void => {
-    if (timer.current === undefined) return
-    window.clearTimeout(timer.current)
-    timer.current = undefined
-    remaining.current -= Date.now() - startedAt.current
-  }, [])
-
-  const resume = useCallback((): void => {
-    if (timer.current !== undefined || hovered.current || focused.current) return
-    if (!Number.isFinite(duration) || duration <= 0) return
-    startedAt.current = Date.now()
-    timer.current = window.setTimeout(dismiss, Math.max(remaining.current, 0))
-  }, [dismiss, duration])
-
-  useEffect(() => {
-    resume()
-    return pause
-  }, [pause, resume])
+  const timerHandlers = useToastTimer(duration, dismiss)
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
     if (event.key === 'Escape' && toast.dismissible) dismiss()
@@ -123,6 +102,7 @@ export function ToastItem({
     dismiss()
   }
 
+  const part = (name: string): string | undefined => (isStyled ? styles[name] : undefined)
   const icon = resolveIcon(toast, icons)
   const isError = toast.status === 'error'
   const classes =
@@ -133,44 +113,23 @@ export function ToastItem({
   return (
     <div
       className={classes}
-      onBlur={() => {
-        focused.current = false
-        resume()
-      }}
-      onFocus={() => {
-        focused.current = true
-        pause()
-      }}
+      {...timerHandlers}
       onKeyDown={handleKeyDown}
-      onPointerEnter={() => {
-        hovered.current = true
-        pause()
-      }}
-      onPointerLeave={() => {
-        hovered.current = false
-        resume()
-      }}
       role={isError ? 'alert' : 'status'}
       style={toastColorVars(toast.status)}
     >
       {icon ? (
-        <span aria-hidden="true" className={isStyled ? styles.icon : undefined}>
+        <span aria-hidden="true" className={part('icon')}>
           {icon}
         </span>
       ) : null}
-      <div className={isStyled ? styles.content : undefined}>
-        {toast.title ? (
-          <span className={isStyled ? styles.title : undefined}>{toast.title}</span>
-        ) : null}
+      <div className={part('content')}>
+        {toast.title ? <span className={part('title')}>{toast.title}</span> : null}
         {toast.description ? (
-          <span className={isStyled ? styles.description : undefined}>{toast.description}</span>
+          <span className={part('description')}>{toast.description}</span>
         ) : null}
         {toast.action ? (
-          <button
-            className={isStyled ? styles.action : undefined}
-            onClick={handleAction}
-            type="button"
-          >
+          <button className={part('action')} onClick={handleAction} type="button">
             {toast.action.label}
           </button>
         ) : null}
@@ -178,7 +137,7 @@ export function ToastItem({
       {toast.dismissible ? (
         <button
           aria-label={dismissLabel}
-          className={isStyled ? styles.dismiss : undefined}
+          className={part('dismiss')}
           onClick={dismiss}
           type="button"
         >

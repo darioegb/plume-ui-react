@@ -7,14 +7,14 @@ import type { ComponentProps } from '../../../theme'
 import { useModalContext } from './modal-context'
 import styles from './modal.module.css'
 
-type ModalBodyRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'>
+type ModalBodyRootAttributes = Pick<HTMLAttributes<HTMLElement>, 'children'>
 
 export type ModalBodyProps = Omit<ComponentProps, 'index'> & ModalBodyRootAttributes
 
-export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(
-  ({ children, className = '', style }: ModalBodyProps, ref: ForwardedRef<HTMLDivElement>) => {
+export const ModalBody = forwardRef<HTMLElement, ModalBodyProps>(
+  ({ children, className = '', style }: ModalBodyProps, ref: ForwardedRef<HTMLElement>) => {
     const { bodyId, isStyled, titleId } = useModalContext('ModalBody')
-    const element = useRef<HTMLDivElement>(null)
+    const element = useRef<HTMLElement>(null)
     const [scrolls, setScrolls] = useState(false)
     const classes = [isStyled && styles.body, className].filter(Boolean).join(' ')
 
@@ -29,18 +29,18 @@ export const ModalBody = forwardRef<HTMLDivElement, ModalBodyProps>(
       return () => observer?.disconnect()
     }, [])
 
+    const scrollableProps = scrolls ? { 'aria-labelledby': titleId, tabIndex: 0 } : undefined
+
     return (
-      <div
-        aria-labelledby={scrolls ? titleId : undefined}
+      <section
+        {...scrollableProps}
         className={classes}
         id={bodyId}
-        ref={mergeRefs<HTMLDivElement>(element, ref)}
-        role={scrolls ? 'region' : undefined}
+        ref={mergeRefs<HTMLElement>(element, ref)}
         style={style}
-        tabIndex={scrolls ? 0 : undefined}
       >
         {children}
-      </div>
+      </section>
     )
   },
 )

@@ -9,20 +9,20 @@ import { usePopoverContext } from './popover-context'
 import styles from './popover.module.css'
 
 type PopoverContentRootAttributes = Pick<
-  HTMLAttributes<HTMLDivElement>,
+  HTMLAttributes<HTMLDialogElement>,
   'aria-describedby' | 'aria-label' | 'aria-labelledby' | 'children'
 >
 
 export type PopoverContentProps = Omit<ComponentProps, 'index'> & PopoverContentRootAttributes
 
-export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
+export const PopoverContent = forwardRef<HTMLDialogElement, PopoverContentProps>(
   (
     { children, className = '', style, ...rest }: PopoverContentProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLDialogElement>,
   ): ReactNode => {
     const context = usePopoverContext('PopoverContent')
     const { contentId, flip, isStyled, offset, open, placement, setOpen, shift, trigger } = context
-    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
+    const [panel, setPanel] = useState<HTMLDialogElement | null>(null)
     const isTopmost = useLayer(open)
     const position = usePosition({
       anchor: trigger,
@@ -55,17 +55,18 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
 
     return (
       <Portal>
-        <div
+        <dialog
           {...rest}
           className={classes}
           data-placement={position.placement}
+          data-plume-dialog=""
           id={contentId}
-          ref={mergeRefs<HTMLDivElement>(setPanel, ref)}
-          role="dialog"
+          open
+          ref={mergeRefs<HTMLDialogElement>(setPanel, ref)}
           style={{ ...position.style, opacity: position.isPositioned ? undefined : 0, ...style }}
         >
           {children}
-        </div>
+        </dialog>
       </Portal>
     )
   },

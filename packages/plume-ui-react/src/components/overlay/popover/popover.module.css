@@ -1,3 +1,17 @@
+:global(:where(dialog[data-plume-dialog])) {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  height: auto;
+  inset: auto;
+  margin: 0;
+  max-height: none;
+  max-width: none;
+  padding: 0;
+  position: static;
+  width: auto;
+}
+
 .content {
   background-color: var(--plume-surface);
   border-radius: var(--plume-radius-4);

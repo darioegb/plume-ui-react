@@ -312,7 +312,6 @@ describe('Modal component', () => {
 
       const body = screen.getByLabelText('Name').parentElement as HTMLElement
       expect(body).toHaveAttribute('tabindex', '0')
-      expect(body).toHaveAttribute('role', 'region')
       expect(screen.getByRole('region', { name: 'Title' })).toBe(body)
     })
 
