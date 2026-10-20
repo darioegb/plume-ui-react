@@ -37,7 +37,13 @@ export function getTabbableElements(container: HTMLElement): HTMLElement[] {
 
 export function useFocusTrap(
   container: HTMLElement | null,
-  { active, initialFocus, restoreFocus = true, returnFocus, isTopmost = () => true }: UseFocusTrapOptions,
+  {
+    active,
+    initialFocus,
+    restoreFocus = true,
+    returnFocus,
+    isTopmost = () => true,
+  }: UseFocusTrapOptions,
 ): void {
   const latest = useRef({ initialFocus, restoreFocus, returnFocus, isTopmost })
 

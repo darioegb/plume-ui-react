@@ -69,14 +69,21 @@ function coordinates(
   }
 }
 
-function overflow(side: Side, point: { x: number; y: number }, floating: Size, viewport: Size, padding: number): number {
+function overflow(
+  side: Side,
+  point: { x: number; y: number },
+  floating: Size,
+  viewport: Size,
+  padding: number,
+): number {
   if (side === 'top') return Math.max(0, padding - point.y)
   if (side === 'bottom') return Math.max(0, point.y + floating.height - (viewport.height - padding))
   if (side === 'left') return Math.max(0, padding - point.x)
   return Math.max(0, point.x + floating.width - (viewport.width - padding))
 }
 
-const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(value, max))
+const clamp = (value: number, min: number, max: number): number =>
+  Math.max(min, Math.min(value, max))
 
 export function computePosition({
   anchor,

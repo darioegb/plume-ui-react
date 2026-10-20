@@ -90,7 +90,8 @@ export function usePosition({
   }, [enabled, update, anchor, floating])
 
   useEffect(() => {
-    if (!enabled) setState((current) => (current.isPositioned ? { ...current, isPositioned: false } : current))
+    if (!enabled)
+      setState((current) => (current.isPositioned ? { ...current, isPositioned: false } : current))
   }, [enabled])
 
   return {

@@ -1,8 +1,9 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useCallback, useId, useMemo, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 import type { Placement } from '../../../overlay'
+import { useOpenState } from '../../../overlay/use-open-state'
 import type { Size } from '../../../theme'
 import { PopoverContext, type PopoverVariant } from './popover-context'
 
@@ -32,18 +33,8 @@ export function Popover({
   variant = 'elevated',
 }: Readonly<PopoverProps>): ReactNode {
   const baseId = useId()
-  const [internalOpen, setInternalOpen] = useState(defaultOpen)
   const [trigger, setTrigger] = useState<HTMLElement | null>(null)
-  const isControlled = openProp !== undefined
-  const open = isControlled ? openProp : internalOpen
-
-  const setOpen = useCallback(
-    (next: boolean): void => {
-      if (!isControlled) setInternalOpen(next)
-      if (next !== open) onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange, open],
-  )
+  const [open, setOpen] = useOpenState({ defaultOpen, onOpenChange, open: openProp })
 
   const context = useMemo(
     () => ({
