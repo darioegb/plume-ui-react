@@ -1,6 +1,6 @@
 'use client'
 
-import type { ForwardedRef, KeyboardEvent, MouseEvent, ReactNode } from 'react'
+import type { ForwardedRef, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CheckIcon } from '../../../overlay/icons'
@@ -22,6 +22,41 @@ export interface SelectOptionOwnProps {
 
 export type SelectOptionProps = Omit<ComponentProps, 'index'> & SelectOptionOwnProps
 
+function useOptionRecord(
+  {
+    children,
+    disabled,
+    icon,
+    label,
+    value,
+  }: Pick<SelectOptionProps, 'children' | 'disabled' | 'icon' | 'label' | 'value'>,
+  register: (record: SelectOptionRecord) => () => void,
+): { resolved: string; textRef: RefObject<HTMLSpanElement | null> } {
+  const textRef = useRef<HTMLSpanElement>(null)
+  const iconRef = useRef(icon)
+  const [text, setText] = useState(label ?? '')
+  const resolved = label ?? text
+  iconRef.current = icon
+
+  useEffect(() => {
+    if (label === undefined) setText(textRef.current?.textContent ?? '')
+  }, [children, label])
+
+  useEffect(() => {
+    const record: SelectOptionRecord = {
+      disabled: Boolean(disabled),
+      get icon() {
+        return iconRef.current
+      },
+      label: resolved,
+      value,
+    }
+    return register(record)
+  }, [disabled, register, resolved, value])
+
+  return { resolved, textRef }
+}
+
 export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
   (
     {
@@ -41,28 +76,11 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     const id = useId()
     const descriptionId = useId()
     const textId = useId()
-    const textRef = useRef<HTMLSpanElement>(null)
-    const iconRef = useRef(icon)
-    const [text, setText] = useState(label ?? '')
     const { isStyled, multiple, query, register, select, setActiveId } = context
-    const resolved = label ?? text
-    iconRef.current = icon
-
-    useEffect(() => {
-      if (label === undefined) setText(textRef.current?.textContent ?? '')
-    }, [children, label])
-
-    useEffect(() => {
-      const record: SelectOptionRecord = {
-        disabled,
-        get icon() {
-          return iconRef.current
-        },
-        label: resolved,
-        value,
-      }
-      return register(record)
-    }, [disabled, register, resolved, value])
+    const { resolved, textRef } = useOptionRecord(
+      { children, disabled, icon, label, value },
+      register,
+    )
 
     const selected = context.isSelected(value)
     const matches = !query || resolved.toLowerCase().includes(query.toLowerCase())

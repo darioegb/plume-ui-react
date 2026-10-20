@@ -93,8 +93,17 @@ export function Select({
   const [trigger, setTrigger] = useState<HTMLElement | null>(null)
   const [listbox, setListbox] = useState<HTMLElement | null>(null)
   const [labelling, setLabelling] = useState<SelectLabelling>({})
-  const [open, setOpenState] = useOpenState({ defaultOpen, onOpenChange, open: openProp })
-  const { commit, selected } = useSelectValue({ defaultValue, multiple, onValueChange, value })
+  const [open, setOpenState] = useOpenState({
+    defaultOpen,
+    onOpenChange,
+    open: openProp,
+  })
+  const { commit, selected } = useSelectValue({
+    defaultValue,
+    multiple,
+    onValueChange,
+    value,
+  })
   const { options, register } = useSelectRegistry()
   const canEdit = !disabled && !readOnly
   const shouldClose = closeOnSelect ?? !multiple
@@ -114,27 +123,35 @@ export function Select({
     [setOpenState, trigger],
   )
 
-  const select = (next: string): void => {
-    if (!canEdit) return
-    const result = nextSelection(selected, next, multiple)
-    if (result) commit(result)
-    if (shouldClose) close(true)
-  }
+  const select = useCallback(
+    (next: string): void => {
+      if (!canEdit) return
+      const result = nextSelection(selected, next, multiple)
+      if (result) commit(result)
+      if (shouldClose) close(true)
+    },
+    [canEdit, close, commit, multiple, selected, shouldClose],
+  )
 
-  const clear = (): void => {
+  const clear = useCallback((): void => {
     if (canEdit && selected.length > 0) commit([])
-  }
+  }, [canEdit, commit, selected])
 
-  const remove = (item: string): void => {
-    if (canEdit) commit(selected.filter((current) => current !== item))
-  }
+  const remove = useCallback(
+    (item: string): void => {
+      if (canEdit) commit(selected.filter((current) => current !== item))
+    },
+    [canEdit, commit, selected],
+  )
 
-  const clearLast = (): void => {
+  const clearLast = useCallback((): void => {
     if (!canEdit || selected.length === 0) return
     commit(multiple ? selected.slice(0, -1) : [])
-  }
+  }, [canEdit, commit, multiple, selected])
 
-  const keyboard = useSelectKeyboard({
+  const isSelected = useCallback((item: string): boolean => selected.includes(item), [selected])
+
+  const { activeId, onListKeyDown, query, setActiveId, setQuery } = useSelectKeyboard({
     canEdit,
     canRemove: canEdit && (multiple || clearable),
     clearLast,
@@ -155,49 +172,90 @@ export function Select({
     [options, selected],
   )
 
-  const context = {
-    activeId: keyboard.activeId,
-    canClear: clearable && canEdit,
-    clear,
-    close,
-    colorScheme,
-    controlId: baseId,
-    describedBy,
-    disabled,
-    flip,
-    invalid: ariaInvalid === true || ariaInvalid === 'true',
-    isSelected: (item: string): boolean => selected.includes(item),
-    isStyled: variant !== 'unstyled',
-    labelling,
-    listboxId: `${baseId}-listbox`,
-    multiple,
-    name,
-    offset,
-    onListKeyDown: keyboard.onListKeyDown,
-    open,
-    options,
-    placement,
-    query: keyboard.query,
-    readOnly,
-    register,
-    remove,
-    required,
-    searchable,
-    select,
-    selected,
-    selectedOptions: chosen,
-    setActiveId: keyboard.setActiveId,
-    setLabelling,
-    setListbox,
-    setOpen,
-    setQuery: keyboard.setQuery,
-    setTrigger,
-    shape,
-    shift,
-    size,
-    trigger,
-    variant,
-  }
+  const context = useMemo(
+    () => ({
+      activeId,
+      canClear: clearable && canEdit,
+      clear,
+      close,
+      colorScheme,
+      controlId: baseId,
+      describedBy,
+      disabled,
+      flip,
+      invalid: ariaInvalid === true || ariaInvalid === 'true',
+      isSelected,
+      isStyled: variant !== 'unstyled',
+      labelling,
+      listboxId: `${baseId}-listbox`,
+      multiple,
+      name,
+      offset,
+      onListKeyDown,
+      open,
+      options,
+      placement,
+      query,
+      readOnly,
+      register,
+      remove,
+      required,
+      searchable,
+      select,
+      selected,
+      selectedOptions: chosen,
+      setActiveId,
+      setLabelling,
+      setListbox,
+      setOpen,
+      setQuery,
+      setTrigger,
+      shape,
+      shift,
+      size,
+      trigger,
+      variant,
+    }),
+    [
+      activeId,
+      ariaInvalid,
+      baseId,
+      canEdit,
+      chosen,
+      clear,
+      clearable,
+      close,
+      colorScheme,
+      describedBy,
+      disabled,
+      flip,
+      isSelected,
+      labelling,
+      multiple,
+      name,
+      offset,
+      onListKeyDown,
+      open,
+      options,
+      placement,
+      query,
+      readOnly,
+      register,
+      remove,
+      required,
+      searchable,
+      select,
+      selected,
+      setActiveId,
+      setOpen,
+      setQuery,
+      shape,
+      shift,
+      size,
+      trigger,
+      variant,
+    ],
+  )
 
   return <SelectContext.Provider value={context}>{children}</SelectContext.Provider>
 }

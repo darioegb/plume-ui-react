@@ -46,7 +46,7 @@ function Chips({
   maxDisplay,
   removeLabel,
 }: Readonly<{
-  classNames?: SelectTriggerProps['classNames']
+  classNames: SelectTriggerProps['classNames']
   context: SelectContextValue
   maxDisplay: number
   removeLabel: (label: string) => string
@@ -82,6 +82,137 @@ function Chips({
   )
 }
 
+interface ControlParts {
+  classNames?: SelectTriggerProps['classNames']
+  context: SelectContextValue
+}
+
+function controlClasses(context: SelectContextValue, className: string): string | undefined {
+  const { isStyled } = context
+  const classes = [
+    isStyled && styles.control,
+    isStyled && styles[context.variant],
+    isStyled && styles[context.size],
+    isStyled && styles[context.shape],
+    isStyled && context.invalid && styles.invalid,
+    isStyled && context.disabled && styles.disabled,
+    className,
+  ]
+  return classes.filter(Boolean).join(' ') || undefined
+}
+
+interface ComboboxButtonProps extends ControlParts {
+  ariaLabel?: string
+  children?: ReactNode
+  labelledBy?: string
+  placeholder?: ReactNode
+  showChips: boolean
+}
+
+const ComboboxButton = forwardRef<HTMLButtonElement, ComboboxButtonProps>(
+  (
+    { ariaLabel, children, classNames, context, labelledBy, placeholder, showChips },
+    ref: ForwardedRef<HTMLButtonElement>,
+  ): ReactNode => {
+    const { isStyled, open } = context
+    const hasValue = context.selected.length > 0
+    const chipLabels = context.selectedOptions.map((option) => option.label).join(', ')
+
+    return (
+      <button
+        aria-activedescendant={open && !context.searchable ? context.activeId : undefined}
+        aria-controls={context.listboxId}
+        aria-describedby={context.describedBy}
+        aria-expanded={open}
+        aria-invalid={context.invalid || undefined}
+        aria-label={ariaLabel}
+        aria-labelledby={labelledBy}
+        aria-readonly={context.readOnly || undefined}
+        aria-required={context.required || undefined}
+        className={joinClasses(isStyled && styles.trigger, classNames?.trigger)}
+        data-placeholder={hasValue ? undefined : ''}
+        data-plume-select-trigger=""
+        disabled={context.disabled}
+        id={context.controlId}
+        onClick={() => (open ? context.close(false) : context.setOpen(true))}
+        onKeyDown={(event) => context.onListKeyDown(event, false)}
+        ref={ref}
+        role="combobox"
+        type="button"
+      >
+        {showChips ? (
+          <>
+            {hasValue ? null : (
+              <span className={isStyled ? styles.placeholder : undefined}>{placeholder}</span>
+            )}
+            {hasValue ? <span style={srOnly}>{chipLabels}</span> : null}
+          </>
+        ) : (
+          (children ?? <SelectValue placeholder={placeholder} />)
+        )}
+      </button>
+    )
+  },
+)
+
+ComboboxButton.displayName = 'ComboboxButton'
+
+function ClearButton({
+  classNames,
+  clearLabel,
+  context,
+}: Readonly<ControlParts & { clearLabel: string }>): ReactNode {
+  return (
+    <button
+      aria-label={clearLabel}
+      className={joinClasses(context.isStyled && styles.clear, classNames?.clear)}
+      data-plume-select-clear=""
+      onClick={context.clear}
+      type="button"
+    >
+      <CloseIcon />
+    </button>
+  )
+}
+
+function ChevronButton({
+  classNames,
+  context,
+  onToggle,
+}: Readonly<ControlParts & { onToggle: () => void }>): ReactNode {
+  return (
+    <button
+      aria-hidden="true"
+      className={joinClasses(context.isStyled && styles.chevron, classNames?.chevron)}
+      data-plume-select-chevron=""
+      disabled={context.disabled}
+      onClick={onToggle}
+      onMouseDown={(event) => event.preventDefault()}
+      tabIndex={-1}
+      type="button"
+    >
+      <ChevronDownIcon />
+    </button>
+  )
+}
+
+function useLabelledBy(
+  context: SelectContextValue,
+  ariaLabel: string | undefined,
+  ariaLabelledby: string | undefined,
+): string | undefined {
+  const field = useFieldContext()
+  const { setLabelling } = context
+  const fieldLabel = field?.controlId === context.controlId ? field.labelId : undefined
+  const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
+
+  useEffect(() => {
+    setLabelling({ label: ariaLabel, labelledBy })
+  }, [ariaLabel, labelledBy, setLabelling])
+
+  return labelledBy
+}
+
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   (
     {
@@ -101,37 +232,23 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ): ReactNode => {
     const context = useSelectContext('SelectTrigger')
     const button = useRef<HTMLButtonElement>(null)
-    const field = useFieldContext()
-    const { colorScheme, isStyled, multiple, name, open, selected, setLabelling, variant } = context
-    const fieldLabel = field?.controlId === context.controlId ? field?.labelId : undefined
-    const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
-    const showChips = multiple && display === 'chips' && children === undefined
-    const hasValue = selected.length > 0
-
-    useEffect(() => {
-      setLabelling({ label: ariaLabel, labelledBy })
-    }, [ariaLabel, labelledBy, setLabelling])
-
-    const classes = [
-      isStyled && styles.control,
-      isStyled && styles[variant],
-      isStyled && styles[context.size],
-      isStyled && styles[context.shape],
-      isStyled && context.invalid && styles.invalid,
-      isStyled && context.disabled && styles.disabled,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ')
-
+    const labelledBy = useLabelledBy(context, ariaLabel, ariaLabelledby)
+    const { isStyled, name, open } = context
+    const showChips = context.multiple && display === 'chips' && children === undefined
     const colorVars = {
-      '--select-color': `var(--plume-color-${colorScheme}-text)`,
+      '--select-color': `var(--plume-color-${context.colorScheme}-text)`,
       ...style,
     } as CSSProperties
 
+    const toggle = (): void => {
+      button.current?.focus()
+      if (open) context.close(false)
+      else context.setOpen(true)
+    }
+
     return (
       <div
-        className={classes || undefined}
+        className={controlClasses(context, className)}
         data-open={open ? '' : undefined}
         data-plume-select-control=""
         ref={context.setTrigger}
@@ -149,70 +266,22 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
               removeLabel={removeLabel}
             />
           ) : null}
-          <button
-            aria-activedescendant={open && !context.searchable ? context.activeId : undefined}
-            aria-controls={context.listboxId}
-            aria-describedby={context.describedBy}
-            aria-expanded={open}
-            aria-invalid={context.invalid || undefined}
-            aria-label={ariaLabel}
-            aria-labelledby={labelledBy}
-            aria-readonly={context.readOnly || undefined}
-            aria-required={context.required || undefined}
-            className={joinClasses(isStyled && styles.trigger, classNames?.trigger)}
-            data-placeholder={hasValue ? undefined : ''}
-            data-plume-select-trigger=""
-            disabled={context.disabled}
-            id={context.controlId}
-            onClick={() => (open ? context.close(false) : context.setOpen(true))}
-            onKeyDown={(event) => context.onListKeyDown(event, false)}
+          <ComboboxButton
+            ariaLabel={ariaLabel}
+            classNames={classNames}
+            context={context}
+            labelledBy={labelledBy}
+            placeholder={placeholder}
             ref={mergeRefs<HTMLButtonElement>(button, ref)}
-            role="combobox"
-            type="button"
+            showChips={showChips}
           >
-            {showChips ? (
-              <>
-                {hasValue ? null : (
-                  <span className={isStyled ? styles.placeholder : undefined}>{placeholder}</span>
-                )}
-                {hasValue ? (
-                  <span style={srOnly}>
-                    {context.selectedOptions.map((option) => option.label).join(', ')}
-                  </span>
-                ) : null}
-              </>
-            ) : (
-              (children ?? <SelectValue placeholder={placeholder} />)
-            )}
-          </button>
+            {children}
+          </ComboboxButton>
         </div>
-        {context.canClear && hasValue ? (
-          <button
-            aria-label={clearLabel}
-            className={joinClasses(isStyled && styles.clear, classNames?.clear)}
-            data-plume-select-clear=""
-            onClick={context.clear}
-            type="button"
-          >
-            <CloseIcon />
-          </button>
+        {context.canClear && context.selected.length > 0 ? (
+          <ClearButton classNames={classNames} clearLabel={clearLabel} context={context} />
         ) : null}
-        <button
-          aria-hidden="true"
-          className={joinClasses(isStyled && styles.chevron, classNames?.chevron)}
-          data-plume-select-chevron=""
-          disabled={context.disabled}
-          onClick={() => {
-            button.current?.focus()
-            if (open) context.close(false)
-            else context.setOpen(true)
-          }}
-          onMouseDown={(event) => event.preventDefault()}
-          tabIndex={-1}
-          type="button"
-        >
-          <ChevronDownIcon />
-        </button>
+        <ChevronButton classNames={classNames} context={context} onToggle={toggle} />
         {name ? <HiddenInputs name={name} /> : null}
       </div>
     )

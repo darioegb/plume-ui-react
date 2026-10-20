@@ -18,7 +18,7 @@ export const DropdownLabel = forwardRef<HTMLDivElement, DropdownLabelProps>(
     const { isStyled } = useDropdownContext('DropdownLabel')
     const classes = [isStyled && styles.groupLabel, className].filter(Boolean).join(' ')
     return (
-      <div className={classes || undefined} ref={ref} role="presentation" style={style}>
+      <div className={classes || undefined} ref={ref} style={style}>
         {children}
       </div>
     )

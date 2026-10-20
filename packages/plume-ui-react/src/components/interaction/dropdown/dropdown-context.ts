@@ -1,6 +1,6 @@
 'use client'
 
-import type { MutableRefObject } from 'react'
+import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
 import type { Placement } from '../../../overlay'
 import type { Size } from '../../../theme'
@@ -12,7 +12,7 @@ export type DropdownInitialItem = 'first' | 'last' | 'none'
 export interface DropdownContextValue {
   closeOnSelect: boolean
   flip: boolean
-  initialItem: MutableRefObject<DropdownInitialItem>
+  initialItem: RefObject<DropdownInitialItem>
   isStyled: boolean
   menuId: string
   offset: number

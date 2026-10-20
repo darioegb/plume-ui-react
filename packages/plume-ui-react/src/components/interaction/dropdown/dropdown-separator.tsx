@@ -8,14 +8,14 @@ import styles from './dropdown.module.css'
 
 export type DropdownSeparatorProps = Omit<ComponentProps, 'index'>
 
-export const DropdownSeparator = forwardRef<HTMLDivElement, DropdownSeparatorProps>(
+export const DropdownSeparator = forwardRef<HTMLHRElement, DropdownSeparatorProps>(
   (
     { className = '', style }: DropdownSeparatorProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLHRElement>,
   ): ReactNode => {
     const { isStyled } = useDropdownContext('DropdownSeparator')
     const classes = [isStyled && styles.separator, className].filter(Boolean).join(' ')
-    return <div className={classes || undefined} ref={ref} role="separator" style={style} />
+    return <hr className={classes || undefined} ref={ref} style={style} />
   },
 )
 

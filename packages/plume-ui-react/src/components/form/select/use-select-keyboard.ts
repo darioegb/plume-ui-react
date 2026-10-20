@@ -1,14 +1,19 @@
 'use client'
 
 import type { KeyboardEvent } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { isTypeaheadKey, matchTypeahead, useTypeahead } from '../../../overlay/use-typeahead'
 import type { SelectOptionRecord } from './select-context'
 import { getEnabledOptions, scrollOptionIntoView, stepOption } from './select-dom'
 
 const openKeys = new Set(['ArrowDown', 'ArrowUp', 'Enter', ' '])
 const removeKeys = new Set(['Backspace', 'Delete'])
-const steps: Record<string, number> = { ArrowDown: 1, ArrowUp: -1, PageDown: 10, PageUp: -10 }
+const steps: Record<string, number> = {
+  ArrowDown: 1,
+  ArrowUp: -1,
+  PageDown: 10,
+  PageUp: -10,
+}
 
 interface UseSelectKeyboardOptions {
   canEdit: boolean
@@ -114,10 +119,16 @@ export function useSelectKeyboard(options: UseSelectKeyboardOptions): SelectKeyb
     }
   }
 
-  const onListKeyDown = (event: KeyboardEvent, isTextInput: boolean): void => {
+  const handleKey = (event: KeyboardEvent, isTextInput: boolean): void => {
     if (open) handleOpenKey(event, isTextInput)
     else handleClosedKey(event)
   }
+  const handler = useRef(handleKey)
+  handler.current = handleKey
+  const onListKeyDown = useCallback(
+    (event: KeyboardEvent, isTextInput: boolean): void => handler.current(event, isTextInput),
+    [],
+  )
 
   return { activeId, onListKeyDown, query, setActiveId, setQuery }
 }

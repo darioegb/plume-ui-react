@@ -36,7 +36,6 @@ export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
             [isStyled && styles.groupLabel, labelClassName].filter(Boolean).join(' ') || undefined
           }
           id={labelId}
-          role="presentation"
         >
           {label}
         </div>
