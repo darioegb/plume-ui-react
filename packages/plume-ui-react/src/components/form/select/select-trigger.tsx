@@ -2,6 +2,7 @@
 
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useEffect } from 'react'
+import { ChevronDownIcon, CloseIcon } from '../../../overlay/icons'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
@@ -18,39 +19,6 @@ export interface SelectTriggerOwnProps {
 }
 
 export type SelectTriggerProps = Omit<ComponentProps, 'index'> & SelectTriggerOwnProps
-
-const chevron = (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    focusable="false"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-)
-
-const clearIcon = (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    focusable="false"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <path d="M6 6l12 12M18 6 6 18" />
-  </svg>
-)
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   (
@@ -121,7 +89,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         >
           {children ?? <SelectValue placeholder={placeholder} />}
           <span aria-hidden="true" className={isStyled ? styles.chevron : undefined}>
-            {chevron}
+            <ChevronDownIcon />
           </span>
         </button>
         {canClear ? (
@@ -131,7 +99,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
             onClick={context.clear}
             type="button"
           >
-            {clearIcon}
+            <CloseIcon />
           </button>
         ) : null}
         {name ? <HiddenInputs name={name} /> : null}

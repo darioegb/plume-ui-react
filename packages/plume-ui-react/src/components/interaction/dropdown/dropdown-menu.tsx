@@ -1,8 +1,9 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
-import { Portal, useDismiss, useFocusTrap, useLayer, usePosition } from '../../../overlay'
+import { forwardRef, useEffect } from 'react'
+import { Portal, useFocusTrap } from '../../../overlay'
+import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { mergeRefs } from '../../../overlay/trigger'
 import { isTypeaheadKey, matchTypeahead, useTypeahead } from '../../../overlay/use-typeahead'
 import type { ComponentProps } from '../../../theme'
@@ -42,25 +43,17 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       shift,
       trigger,
     } = context
-    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
-    const isTopmost = useLayer(open)
     const type = useTypeahead()
-    const position = usePosition({
+    const { isTopmost, panel, position, setPanel } = useFloatingPanel({
       anchor: trigger,
-      floating: panel,
       enabled: open,
-      placement,
-      offset,
       flip,
+      offset,
+      onDismiss: () => setOpen(false),
+      placement,
       shift,
     })
 
-    useDismiss({
-      enabled: open,
-      onDismiss: () => setOpen(false),
-      elements: [trigger, panel],
-      isTopmost,
-    })
     useFocusTrap(panel, { active: open, isTopmost, returnFocus: trigger })
 
     useEffect(() => {

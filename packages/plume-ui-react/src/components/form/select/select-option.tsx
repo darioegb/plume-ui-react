@@ -2,6 +2,7 @@
 
 import type { ForwardedRef, KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
+import { CheckIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext, type SelectOptionRecord } from './select-context'
 import styles from './select.module.css'
@@ -16,23 +17,6 @@ export interface SelectOptionOwnProps {
 }
 
 export type SelectOptionProps = Omit<ComponentProps, 'index'> & SelectOptionOwnProps
-
-const checkIcon = (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    focusable="false"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="3"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <path d="M20 6 9 17l-5-5" />
-  </svg>
-)
 
 export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
   (
@@ -116,7 +100,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
       >
         {multiple ? (
           <span aria-hidden="true" className={isStyled ? styles.checkbox : undefined}>
-            {selected ? checkIcon : null}
+            {selected ? <CheckIcon /> : null}
           </span>
         ) : null}
         {icon ? (
@@ -137,7 +121,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         </span>
         {!multiple && selected ? (
           <span aria-hidden="true" className={isStyled ? styles.check : undefined}>
-            {checkIcon}
+            <CheckIcon />
           </span>
         ) : null}
       </div>

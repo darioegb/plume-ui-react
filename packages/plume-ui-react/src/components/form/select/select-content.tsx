@@ -2,7 +2,8 @@
 
 import type { ChangeEvent, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
-import { Portal, useDismiss, useLayer, usePosition } from '../../../overlay'
+import { Portal } from '../../../overlay'
+import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext } from './select-context'
@@ -47,25 +48,16 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       shift,
       trigger,
     } = context
-    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
     const [search, setSearch] = useState<HTMLInputElement | null>(null)
     const [width, setWidth] = useState<number | undefined>(undefined)
-    const isTopmost = useLayer(open)
-    const position = usePosition({
+    const { position, setPanel } = useFloatingPanel({
       anchor: trigger,
-      floating: panel,
       enabled: open,
-      placement,
-      offset,
       flip,
-      shift,
-    })
-
-    useDismiss({
-      enabled: open,
+      offset,
       onDismiss: (reason) => close(reason === 'escape'),
-      elements: [trigger, panel],
-      isTopmost,
+      placement,
+      shift,
     })
 
     useEffect(() => {

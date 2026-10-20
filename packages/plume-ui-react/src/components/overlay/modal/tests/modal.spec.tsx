@@ -386,9 +386,9 @@ describe('Modal component', () => {
 
     it('keeps the className and style of every part, and forwards their refs', () => {
       const refs = {
-        body: createRef<HTMLDivElement>(),
+        body: createRef<HTMLElement>(),
         close: createRef<HTMLElement>(),
-        content: createRef<HTMLDivElement>(),
+        content: createRef<HTMLDialogElement>(),
         footer: createRef<HTMLDivElement>(),
         header: createRef<HTMLHeadingElement>(),
       }
