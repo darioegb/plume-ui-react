@@ -16,7 +16,7 @@ npm run dev
 ## What it shows
 
 - `<ThemeProvider>` with a light/dark toggle via `useTheme()`.
-- `Button`, `Input` (incl. masked), `Tabs` and `DatePicker` from `plume-ui-react`.
+- Every component of `plume-ui-react`, one section each: `Badge`, `Button`, `Card`, `Checkbox`, `DatePicker`, `Field`, `Icon`, `Input` (incl. masked), `List`, `Radio`, `Spinner`, `Tabs`, `Textarea` and `Toggle`. The Next.js examples show the same page.
 - The bundled stylesheet imported from `plume-ui-react/styles.css`.
 - A custom theme in `src/theme.ts`, passed to `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon` color scheme.
 - `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"` (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).

@@ -166,3 +166,4 @@ Copy it into the pull request description.
 **Release**
 - [ ] Exported from `src/index.ts` and listed in `src/tests/index.spec.ts` (the scaffold does both)
 - [ ] Changeset added with `pnpm changeset`: `minor` while the package is `0.x`
+- [ ] Once the release that publishes it is out, add it to the three examples under `apps/` (`example-vite`, `example-next-app` and `example-next-pages`): they install `plume-ui-react` from npm, so bump it to that version and add a section to the demo
