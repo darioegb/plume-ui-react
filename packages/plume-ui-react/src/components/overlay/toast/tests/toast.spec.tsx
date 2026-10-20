@@ -386,13 +386,20 @@ describe('ToastProvider component', () => {
       expect(region()).toHaveClass('region', 'bottom-end', 'subtle')
     })
 
-    it.each(['top-start', 'top', 'top-end', 'bottom-start', 'bottom', 'bottom-end'] as const)(
-      'supports the %s position',
-      (position) => {
-        setup({ position })
-        expect(region()).toHaveClass(position)
-      },
-    )
+    it.each([
+      'top-start',
+      'top',
+      'top-end',
+      'center-start',
+      'center',
+      'center-end',
+      'bottom-start',
+      'bottom',
+      'bottom-end',
+    ] as const)('supports the %s position', (position) => {
+      setup({ position })
+      expect(region()).toHaveClass(position)
+    })
 
     it.each(['solid', 'subtle', 'outline'] as const)('supports the %s variant', (variant) => {
       setup({ variant })

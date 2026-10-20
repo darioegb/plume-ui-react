@@ -12,6 +12,9 @@ const positions: ToastPosition[] = [
   'top-start',
   'top',
   'top-end',
+  'center-start',
+  'center',
+  'center-end',
   'bottom-start',
   'bottom',
   'bottom-end',
@@ -76,6 +79,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      story: { inline: false, iframeHeight: 420 },
       importNames: ['ToastProvider', 'useToast'],
       toc: {
         title: 'On this page',
@@ -247,7 +251,7 @@ export const Statuses: Story = {
 }
 
 /**
- * Use the **position** prop of the provider to choose the corner or the edge where the toasts stack. The newest
+ * Use the **position** prop of the provider to choose the corner, the edge or the center of the screen where the toasts stack. The newest
  * one is the closest to the edge of the screen.
  */
 export const Positions: Story = {

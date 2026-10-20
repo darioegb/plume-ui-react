@@ -14,7 +14,15 @@ import { ToastItem, type ToastData } from './toast-item'
 import styles from './toast.module.css'
 
 export type ToastPosition =
-  'top-start' | 'top' | 'top-end' | 'bottom-start' | 'bottom' | 'bottom-end'
+  | 'top-start'
+  | 'top'
+  | 'top-end'
+  | 'center-start'
+  | 'center'
+  | 'center-end'
+  | 'bottom-start'
+  | 'bottom'
+  | 'bottom-end'
 
 export type ToastVariant = 'solid' | 'subtle' | 'outline' | 'unstyled'
 

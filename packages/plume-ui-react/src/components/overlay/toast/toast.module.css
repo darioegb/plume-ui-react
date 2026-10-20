@@ -21,6 +21,13 @@
   inset-block-start: 0;
 }
 
+.center-start,
+.center,
+.center-end {
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+}
+
 .bottom-start,
 .bottom,
 .bottom-end {
@@ -28,22 +35,29 @@
 }
 
 .top-start,
+.center-start,
 .bottom-start {
   align-items: flex-start;
   inset-inline-start: 0;
 }
 
 .top-end,
+.center-end,
 .bottom-end {
   align-items: flex-end;
   inset-inline-end: 0;
 }
 
 .top,
+.center,
 .bottom {
   align-items: center;
   inset-inline-start: 50%;
   transform: translateX(-50%);
+}
+
+.center {
+  transform: translate(-50%, -50%);
 }
 
 .toast {
