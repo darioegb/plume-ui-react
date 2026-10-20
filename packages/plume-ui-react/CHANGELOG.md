@@ -1,5 +1,19 @@
 # plume-ui-react
 
+## 0.4.0
+
+### Minor Changes
+
+- [#79](https://github.com/darioegb/plume-ui-react/pull/79) [`0488375b8e81e0ac89e740ea8e57040052daaad3`](https://github.com/darioegb/plume-ui-react/commit/0488375b8e81e0ac89e740ea8e57040052daaad3) Thanks [@darioegb](https://github.com/darioegb)! - Adds four presentation components: `Badge` (`solid`, `outline` and `subtle` variants, an optional status `dot`), `Card` (with `CardHeader`, `CardBody` and `CardFooter`; `elevated`, `outline` and `filled` variants), `Icon` (sizes and colors an SVG you bring, and hides it from screen readers unless it has a `label`) and `List` (with `ListItem`, `ListItemButton`, `ListItemIcon`, `ListItemText`, `ListSubheader` and `ListDivider`; `plain`, `bordered` and `filled` variants, bullets or numbers, selected and disabled buttons or links as rows). None of them needs JavaScript on the client, so they can be rendered in a Server Component. `Card` and `List` share their size with their parts through CSS variables instead of a context.
+
+  Also adds the `tint-text` token of every color scheme (`--plume-color-<scheme>-tint-text`): text that keeps at least 4.5:1 on the `tint` and `tint-strong` backgrounds in light and dark mode, which `text` doesn't always do. The subtle `Badge` and the selected row of `List` use it.
+
+### Patch Changes
+
+- [#79](https://github.com/darioegb/plume-ui-react/pull/79) [`c8d6cdb62be5428b9c9b1b77df247f8d3e1b9ab7`](https://github.com/darioegb/plume-ui-react/commit/c8d6cdb62be5428b9c9b1b77df247f8d3e1b9ab7) Thanks [@darioegb](https://github.com/darioegb)! - Fixes `Checkbox`, `Radio` and `Toggle` inside a `Field`: the input had two `<label>` elements, the one of the Field and the one that wraps the control, which screen readers handle unevenly and axe reports as `form-field-multiple-labels`. The Field no longer ties its label to a control that has text of its own, and the input is named with the Field label followed by that text. A control with no text no longer wraps itself in an empty `<label>`.
+
+- [#79](https://github.com/darioegb/plume-ui-react/pull/79) [`216904f1067fd8e4b5c9b6bfef87d92bec18a78c`](https://github.com/darioegb/plume-ui-react/commit/216904f1067fd8e4b5c9b6bfef87d92bec18a78c) Thanks [@darioegb](https://github.com/darioegb)! - Darkens the default `semantic.muted` color in light mode (`#71717a` to `#6e6e77`) and lightens it in dark mode (`#a1a1aa` to `#acacb5`). The placeholder of the `filled` variant of `Input`, `Textarea` and `DatePicker` is `muted` text over `surfaceMuted`, where it reached only 4.39:1 in light mode and 4.07:1 in dark mode, below the 4.5:1 that WCAG AA asks of text. A test now keeps `muted` at 4.5:1 or more on the background, the surface and the muted surface in both modes.
+
 ## 0.3.0
 
 ### Minor Changes
