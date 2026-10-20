@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.4.1
+
+### Patch Changes
+
+- [#82](https://github.com/darioegb/plume-ui-react/pull/82) [`df3b3cea452373354373e2a769b5ed33802ed3e9`](https://github.com/darioegb/plume-ui-react/commit/df3b3cea452373354373e2a769b5ed33802ed3e9) Thanks [@darioegb](https://github.com/darioegb)! - `Icon` with a `label` no longer puts `role="img"` and `aria-label` on its wrapper. The SVG is hidden from assistive technology and the label is rendered as text that only screen readers get, which works in every screen reader and browser combination and needs no ARIA role.
+
 ## 0.4.0
 
 ### Minor Changes
