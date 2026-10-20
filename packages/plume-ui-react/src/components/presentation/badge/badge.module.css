@@ -44,7 +44,7 @@
 
 .subtle {
   background-color: var(--badge-tint);
-  color: var(--badge-text);
+  color: var(--badge-tint-text);
 }
 
 .dotOnly {

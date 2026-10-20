@@ -62,6 +62,7 @@ export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
           className={classes}
           href={disabled ? undefined : href}
           ref={ref as ForwardedRef<HTMLAnchorElement>}
+          role={disabled ? 'link' : undefined}
           style={style}
           {...rest}
         >

@@ -12,7 +12,7 @@ export const ListDivider = forwardRef<HTMLLIElement, ListDividerProps>(
     <li
       className={[styles.divider, className].filter(Boolean).join(' ')}
       ref={ref}
-      role="separator"
+      role="presentation"
       style={style}
       {...rest}
     />

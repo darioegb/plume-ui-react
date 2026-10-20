@@ -26,6 +26,7 @@ const badgeColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPro
     '--badge-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
     '--badge-text': `var(--plume-color-${colorScheme}-text)`,
     '--badge-tint': `var(--plume-color-${colorScheme}-tint)`,
+    '--badge-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
     ...style,
   }) as CSSProperties
 
@@ -47,7 +48,8 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ) => {
     const isStyled = variant !== 'unstyled'
     const isDotOnly = dot && !children
-    const resolvedRole = role ?? (isDotOnly && rest['aria-label'] ? 'img' : undefined)
+    const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'])
+    const resolvedRole = role ?? (isNamed ? 'img' : undefined)
     const classes = [
       isStyled && styles.badge,
       isStyled && styles[size],

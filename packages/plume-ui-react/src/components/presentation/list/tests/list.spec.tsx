@@ -143,6 +143,7 @@ describe('List component', () => {
     expect(list).toHaveStyle('--list-text: var(--plume-color-success-text)')
     expect(list).toHaveStyle('--list-tint: var(--plume-color-success-tint)')
     expect(list).toHaveStyle('--list-tint-strong: var(--plume-color-success-tint-strong)')
+    expect(list).toHaveStyle('--list-tint-text: var(--plume-color-success-tint-text)')
   })
 
   it('lets the style prop override the color variables', () => {
@@ -324,6 +325,7 @@ describe('ListItemButton', () => {
     expect(link.tagName).toBe('A')
     expect(link).not.toHaveAttribute('href')
     expect(link).toHaveAttribute('aria-disabled', 'true')
+    expect(link).toHaveAttribute('role', 'link')
   })
 
   it('takes className, style and a ref', () => {
@@ -472,7 +474,7 @@ describe('ListSubheader', () => {
 })
 
 describe('ListDivider', () => {
-  it('renders a separator', () => {
+  it('renders a line that is not an item of the list', () => {
     const ref = createRef<HTMLLIElement>()
     render(
       <List>
@@ -481,7 +483,8 @@ describe('ListDivider', () => {
         <ListItem>Two</ListItem>
       </List>,
     )
-    const divider = screen.getByRole('separator')
+    const divider = screen.getAllByRole('presentation')[0]
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
     expect(divider).toHaveClass('divider', 'custom')
     expect(divider).toHaveStyle({ width: '80px' })
     expect(ref.current).toBe(divider)

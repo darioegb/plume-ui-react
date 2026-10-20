@@ -40,7 +40,8 @@ function pickTextOnSurface(shades: TokenRecord, surfaces: string[]): string {
     : ['500', '600', '700', '800', '900', '950']
   for (const key of order) {
     const color = String(shades[key])
-    if (surfaces.every((surface) => getContrastRatio(color, surface) >= AA_NORMAL_TEXT)) return color
+    if (surfaces.every((surface) => getContrastRatio(color, surface) >= AA_NORMAL_TEXT))
+      return color
   }
   return String(shades[dark ? '50' : '950'])
 }
@@ -84,8 +85,11 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
     vars[`${PREFIX}-color-${scheme}-text-active`] = darkSurface
       ? getLightenColor(text, 24)
       : getDarkenColor(text, 24)
-    vars[`${PREFIX}-color-${scheme}-tint`] = String(shades[darkSurface ? '900' : '100'])
-    vars[`${PREFIX}-color-${scheme}-tint-strong`] = String(shades[darkSurface ? '800' : '200'])
+    const tint = String(shades[darkSurface ? '900' : '100'])
+    const tintStrong = String(shades[darkSurface ? '800' : '200'])
+    vars[`${PREFIX}-color-${scheme}-tint`] = tint
+    vars[`${PREFIX}-color-${scheme}-tint-strong`] = tintStrong
+    vars[`${PREFIX}-color-${scheme}-tint-text`] = pickTextOnSurface(shades, [tint, tintStrong])
   }
 
   const semantic = theme.semantic as unknown as Record<string, string>

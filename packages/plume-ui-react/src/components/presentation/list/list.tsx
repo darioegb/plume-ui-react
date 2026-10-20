@@ -27,6 +27,7 @@ const listColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProp
     '--list-text': `var(--plume-color-${colorScheme}-text)`,
     '--list-tint': `var(--plume-color-${colorScheme}-tint)`,
     '--list-tint-strong': `var(--plume-color-${colorScheme}-tint-strong)`,
+    '--list-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
     ...style,
   }) as CSSProperties
 

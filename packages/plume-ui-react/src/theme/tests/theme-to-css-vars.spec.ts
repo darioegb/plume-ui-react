@@ -85,12 +85,28 @@ describe('themeToCssVars', () => {
 
   it('lightens the text and uses dark tints on dark themes', () => {
     const vars = themeToCssVars(
-      withColors({ ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) }, darkTheme),
+      withColors(
+        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        darkTheme,
+      ),
     )
     expect(vars['--plume-color-ink-text']).toBe('#bfdbfe')
     expect(vars['--plume-color-ink-text-hover']).toMatch(/^rgb\(/)
     expect(vars['--plume-color-ink-tint']).toBe('#1e3a5f')
     expect(vars['--plume-color-ink-tint-strong']).toBe('#1e40af')
+  })
+
+  it('picks text that reads on the tints, which the text color does not always do', () => {
+    const light = themeToCssVars(withColors({ sky: ramp('#7dd3fc', { 800: '#075985' }) }))
+    expect(light['--plume-color-sky-tint-text']).toBe('#075985')
+
+    const dark = themeToCssVars(
+      withColors(
+        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        darkTheme,
+      ),
+    )
+    expect(dark['--plume-color-ink-tint-text']).toBe('#bfdbfe')
   })
 
   it('falls back to the lightest shade on dark themes when no shade reaches AA', () => {

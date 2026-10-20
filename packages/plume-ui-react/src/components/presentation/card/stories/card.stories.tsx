@@ -17,6 +17,9 @@ const sample = (
  * combination: all three are optional. A Card is a plain container with no role of its own, so give it a
  * `role` and an `aria-label` only when it is a landmark or a group.
  *
+ * `CardHeader` is a plain `<div>`, not a heading. When the title should show up in the outline of the page, put
+ * a heading inside it (`<h3>`, at the level that fits the page).
+ *
  * To make a card clickable, put a real link or button inside it. The Card doesn't take an `onClick`.
  *
  * ### Subcomponents
@@ -190,10 +193,7 @@ export const Clickable: Story = {
   render: () => (
     <Card style={{ position: 'relative', width: '20rem' }} variant="outline">
       <CardHeader>
-        <a
-          className="after:absolute after:inset-0 hover:underline focus-visible:outline-none"
-          href="#report"
-        >
+        <a className="after:absolute after:inset-0 hover:underline" href="#report">
           Weekly report
         </a>
       </CardHeader>

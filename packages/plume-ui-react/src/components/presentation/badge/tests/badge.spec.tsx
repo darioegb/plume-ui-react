@@ -34,6 +34,7 @@ describe('Badge component', () => {
     expect(badge).toHaveStyle('--badge-contrast: var(--plume-color-success-solid-contrast)')
     expect(badge).toHaveStyle('--badge-text: var(--plume-color-success-text)')
     expect(badge).toHaveStyle('--badge-tint: var(--plume-color-success-tint)')
+    expect(badge).toHaveStyle('--badge-tint-text: var(--plume-color-success-tint-text)')
   })
 
   it('lets the style prop override the color variables', () => {
@@ -97,6 +98,21 @@ describe('Badge component', () => {
     it('does not get the image role when it has text', () => {
       render(<Badge dot>Online</Badge>)
       expect(screen.queryByRole('img')).toBeNull()
+    })
+
+    it('becomes an image named by aria-label also when it has text', () => {
+      render(<Badge aria-label="99 notifications">99+</Badge>)
+      expect(screen.getByRole('img', { name: '99 notifications' })).toBeInTheDocument()
+    })
+
+    it('becomes an image named by aria-labelledby', () => {
+      render(
+        <>
+          <span id="name">Online</span>
+          <Badge aria-labelledby="name" dot />
+        </>,
+      )
+      expect(screen.getByRole('img', { name: 'Online' })).toBeInTheDocument()
     })
 
     it('does not get the image role without a name', () => {

@@ -56,7 +56,7 @@ const files = ['Annual report.pdf', 'Budget.xlsx', 'Meeting notes.md']
  * | `ListItemIcon` | `className`, `style`, `children`. An icon at the start of the row. It is hidden from screen readers. |
  * | `ListItemText` | `primary`, `secondary`, `className`, `style`. The text of the row. |
  * | `ListSubheader` | `className`, `style`, `id`, `children`. A small title for the items that follow. |
- * | `ListDivider` | `className`, `style`, `id`. A line between two items (`role="separator"`). |
+ * | `ListDivider` | `className`, `style`, `id`. A line between two items. It is presentational: it doesn't count as an item of the list. |
  *
  * None of the parts needs JavaScript, so a List can be rendered in a Server Component.
  */

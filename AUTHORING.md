@@ -46,7 +46,7 @@ Components never compute colors in JavaScript. A `colorScheme` is mapped to loca
 '--badge-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
 ```
 
-The stylesheet uses those variables and the `--plume-*` scales (`--plume-space-*`, `--plume-radius-*`, `--plume-font-size-*`), never raw values. The schemes expose `solid`, `solid-contrast`, `solid-hover`, `solid-active`, `text`, `text-hover`, `text-active`, `tint` and `tint-strong`, already adjusted for contrast in light and dark mode, so a component works in both without extra rules.
+The stylesheet uses those variables and the `--plume-*` scales (`--plume-space-*`, `--plume-radius-*`, `--plume-font-size-*`), never raw values. The schemes expose `solid`, `solid-contrast`, `solid-hover`, `solid-active`, `text`, `text-hover`, `text-active`, `tint`, `tint-strong` and `tint-text`, already adjusted for contrast in light and dark mode, so a component works in both without extra rules. Text over a `tint` or `tint-strong` background takes `tint-text`: the plain `text` color is tuned for the page surfaces and can fall short of 4.5:1 on a tint.
 
 ## Server and client components
 

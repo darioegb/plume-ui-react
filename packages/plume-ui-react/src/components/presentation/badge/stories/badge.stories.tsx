@@ -7,7 +7,8 @@ const colorSchemes = Object.keys(defaultTheme.colors)
 /**
  * A small label that tags something with a status, a count or a category. It renders a `<span>`, so it can sit
  * inside a heading, a button or a line of text. Its meaning has to be in the text: when a color or a dot is all
- * it shows, give it an `aria-label`.
+ * it shows, give it an `aria-label`. A Badge with an `aria-label` or an `aria-labelledby` is an image for
+ * assistive technology, because a plain `<span>` can't take a name, and the label replaces its text.
  */
 export default {
   title: 'Components/Badge',
@@ -86,12 +87,13 @@ export default {
     role: {
       control: 'text',
       description:
-        'Role of the Badge. A Badge that is only a dot and has an `aria-label` gets `img` by default. Use `status` for a badge that changes while the user is on the page.',
+        'Role of the Badge. A Badge with an `aria-label` or an `aria-labelledby` gets `img` by default. Use `status` for a badge that changes while the user is on the page.',
       table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Badge has no text, as with a dot on its own.',
+      description:
+        'Accessible name when the Badge has no text, as with a dot on its own, or to say more than its text does (`99+` and `99 notifications`).',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
