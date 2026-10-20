@@ -34,6 +34,36 @@ type FieldRootAttributes = { children: ReactElement<FieldControlProps> }
 
 export type FieldProps = Omit<ComponentProps, 'index'> & FieldRootAttributes & FieldOwnProps
 
+interface FieldLabelProps {
+  children: ReactNode
+  htmlFor: string | undefined
+  id: string | undefined
+  optionalText: ReactNode
+  required: boolean
+}
+
+function FieldLabel({
+  children,
+  htmlFor,
+  id,
+  optionalText,
+  required,
+}: Readonly<FieldLabelProps>): ReactElement {
+  return (
+    <label className={styles.label} htmlFor={htmlFor} id={id}>
+      {children}
+      {required ? (
+        <span aria-hidden="true" className={styles.requiredIndicator}>
+          *
+        </span>
+      ) : null}
+      {!required && optionalText ? (
+        <span className={styles.optionalText}>{optionalText}</span>
+      ) : null}
+    </label>
+  )
+}
+
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
     {
@@ -82,21 +112,14 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
       <FieldContext.Provider value={context}>
         <div className={fieldClasses} ref={ref} style={style}>
           {label ? (
-            <label
-              className={styles.label}
+            <FieldLabel
               htmlFor={labelsItself ? undefined : controlId}
               id={labelId}
+              optionalText={optionalText}
+              required={required}
             >
               {label}
-              {required ? (
-                <span aria-hidden="true" className={styles.requiredIndicator}>
-                  *
-                </span>
-              ) : null}
-              {!required && optionalText ? (
-                <span className={styles.optionalText}>{optionalText}</span>
-              ) : null}
-            </label>
+            </FieldLabel>
           ) : null}
           {cloneElement(control, {
             id: controlId,

@@ -10,9 +10,9 @@ export type ListDividerProps = Omit<ComponentProps, 'index'> & ListDividerRootAt
 export const ListDivider = forwardRef<HTMLLIElement, ListDividerProps>(
   ({ className = '', style, ...rest }: ListDividerProps, ref: ForwardedRef<HTMLLIElement>) => (
     <li
+      aria-hidden="true"
       className={[styles.divider, className].filter(Boolean).join(' ')}
       ref={ref}
-      role="presentation"
       style={style}
       {...rest}
     />

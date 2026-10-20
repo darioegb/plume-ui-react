@@ -34,7 +34,7 @@ export const Icon = forwardRef<HTMLSpanElement, IconProps>(
         aria-label={label}
         className={classes}
         ref={ref}
-        role={label ? 'img' : undefined}
+        role={label ? 'img' : undefined} // NOSONAR: the wrapper of an inline svg can't be an <img>
         style={iconColorVars(colorScheme, style)}
         {...rest}
       >

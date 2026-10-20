@@ -483,10 +483,10 @@ describe('ListDivider', () => {
         <ListItem>Two</ListItem>
       </List>,
     )
-    const divider = screen.getAllByRole('presentation')[0]
+    const divider = ref.current as HTMLLIElement
+    expect(divider).toHaveAttribute('aria-hidden', 'true')
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
     expect(divider).toHaveClass('divider', 'custom')
     expect(divider).toHaveStyle({ width: '80px' })
-    expect(ref.current).toBe(divider)
   })
 })
