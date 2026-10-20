@@ -1,5 +1,21 @@
 # plume-ui-react
 
+## 0.3.0
+
+### Minor Changes
+
+- [#76](https://github.com/darioegb/plume-ui-react/pull/76) [`87acb6e65b565d3cd71c295e0814d720277bd1cf`](https://github.com/darioegb/plume-ui-react/commit/87acb6e65b565d3cd71c295e0814d720277bd1cf) Thanks [@darioegb](https://github.com/darioegb)! - Adds the `borderStrong` semantic color and uses it for the boundary of form controls: `Input`, `Textarea`, the `DatePicker` field and the new `Checkbox`, `Radio` and `Toggle`. The default `border` was about 1.5:1 against white, and in dark mode it was the same color as the `filled` background, so the field boundary was hard to see or invisible. `borderStrong` keeps at least 3:1 against the background, surface and muted surface in light and dark mode (WCAG 1.4.11). The decorative dividers of `Tabs` and the `DatePicker` calendar keep using `border`.
+
+  The default theme looks different: control borders are darker. If you customized `semantic.border` to change the border of inputs, set `semantic.borderStrong` instead. The `SemanticColors` type has a new `borderStrong` key, so a full `Theme` object needs it.
+
+  `Field` is now a client component that gives its label an id, which `RadioGroup` uses to name itself.
+
+- [#76](https://github.com/darioegb/plume-ui-react/pull/76) [`12c2c31ba7eeb51279fb94d1a46dd840f9d2eb49`](https://github.com/darioegb/plume-ui-react/commit/12c2c31ba7eeb51279fb94d1a46dd840f9d2eb49) Thanks [@darioegb](https://github.com/darioegb)! - Adds five form components: `Checkbox` (with an `indeterminate` state), `Radio`, `RadioGroup`, `Toggle` (a switch) and `Textarea`. `RadioGroup` owns the value, name, size, color scheme and state of its radios, and inside a `Field` it is named by the Field label. They render the native elements, so they work with forms, labels and the keyboard, and they accept what `Field` passes to its control (`id`, `aria-describedby`, `aria-invalid`, `disabled`, `readOnly`, `required`), so a `Field` can wrap them. `Checkbox` and `Radio` have a `solid` (default) and an `outline` variant, and a `RadioGroup` can set the variant of its radios. `Checkbox`, `Radio` and `Toggle` take their label as children and send `className` and `style` to the label that wraps the input, while `ref` points to the input. They also work with react-hook-form's `register`.
+
+### Patch Changes
+
+- [#76](https://github.com/darioegb/plume-ui-react/pull/76) [`25d397a464ceb3440542a98ee140bd0d2de64e30`](https://github.com/darioegb/plume-ui-react/commit/25d397a464ceb3440542a98ee140bd0d2de64e30) Thanks [@darioegb](https://github.com/darioegb)! - Fixes the calendar icon of `DatePicker`, which sat a few pixels below the center of the field (6px with `size="sm"`). The button now takes the height of the input instead of its own fixed height.
+
 ## 0.2.0
 
 ### Minor Changes
