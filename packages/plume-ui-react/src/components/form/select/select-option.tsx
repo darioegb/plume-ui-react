@@ -27,6 +27,35 @@ const matchesQuery = (label: string, query: string): boolean =>
 
 const isActivationKey = (key: string): boolean => key === 'Enter' || key === ' '
 
+function OptionMark({
+  children,
+  className,
+  show,
+}: Readonly<{ children: ReactNode; className: string | undefined; show: boolean }>): ReactNode {
+  if (!show) return null
+  return (
+    <span aria-hidden="true" className={className}>
+      {children}
+    </span>
+  )
+}
+
+function OptionDescription({
+  children,
+  className,
+  id,
+}: Readonly<{ children: ReactNode; className: string | undefined; id: string }>): ReactNode {
+  if (!children) return null
+  return (
+    <>
+      {' '}
+      <span className={className} id={id}>
+        {children}
+      </span>
+    </>
+  )
+}
+
 function useOptionRecord(
   {
     children,
@@ -127,44 +156,35 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         style={style}
         tabIndex={-1}
       >
-        {multiple ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.checkbox, classNames?.checkbox)}
-          >
-            {selected ? <CheckIcon /> : null}
-          </span>
-        ) : null}
-        {icon ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.optionIcon, classNames?.icon)}
-          >
-            {icon}
-          </span>
-        ) : null}
+        <OptionMark
+          className={joinClasses(isStyled && styles.checkbox, classNames?.checkbox)}
+          show={multiple}
+        >
+          {selected ? <CheckIcon /> : null}
+        </OptionMark>
+        <OptionMark
+          className={joinClasses(isStyled && styles.optionIcon, classNames?.icon)}
+          show={Boolean(icon)}
+        >
+          {icon}
+        </OptionMark>
         <span className={isStyled ? styles.optionBody : undefined} data-plume-select-option-body="">
           <span id={textId} ref={textRef}>
             {children ?? label}
           </span>
-          {description ? ' ' : null}
-          {description ? (
-            <span
-              className={joinClasses(isStyled && styles.description, classNames?.description)}
-              id={descriptionId}
-            >
-              {description}
-            </span>
-          ) : null}
-        </span>
-        {!multiple && selected ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.check, classNames?.check)}
+          <OptionDescription
+            className={joinClasses(isStyled && styles.description, classNames?.description)}
+            id={descriptionId}
           >
-            <CheckIcon />
-          </span>
-        ) : null}
+            {description}
+          </OptionDescription>
+        </span>
+        <OptionMark
+          className={joinClasses(isStyled && styles.check, classNames?.check)}
+          show={!multiple && selected}
+        >
+          <CheckIcon />
+        </OptionMark>
       </div>
     )
   },
