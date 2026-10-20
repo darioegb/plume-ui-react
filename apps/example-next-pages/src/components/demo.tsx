@@ -18,6 +18,17 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
+  Modal,
+  ModalBody,
+  ModalClose,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalTrigger,
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
   Radio,
   RadioGroup,
   Spinner,
@@ -28,6 +39,8 @@ import {
   Tabs,
   Textarea,
   Toggle,
+  Tooltip,
+  useToast,
   type DateRange,
 } from 'plume-ui-react'
 
@@ -74,6 +87,33 @@ const inbox = (
     </svg>
   </Icon>
 )
+
+function ToastButtons(): React.ReactElement {
+  const toast = useToast()
+  return (
+    <div style={row}>
+      <Button
+        variant="outline"
+        onClick={() => toast.success({ description: 'Your changes were saved.', title: 'Saved' })}
+      >
+        Success toast
+      </Button>
+      <Button
+        colorScheme="error"
+        variant="outline"
+        onClick={() =>
+          toast.error({
+            action: { label: 'Retry', onClick: () => toast.info('Trying again…') },
+            description: 'Check your connection.',
+            title: 'Could not save',
+          })
+        }
+      >
+        Error toast
+      </Button>
+    </div>
+  )
+}
 
 export function Demo(): React.ReactElement {
   const { colorMode, setColorMode } = useTheme()
@@ -216,6 +256,43 @@ export function Demo(): React.ReactElement {
             </TabPanel>
           </TabPanels>
         </Tabs>
+      </Section>
+
+      <Section title="Modal, Popover, Tooltip and Toast">
+        <div style={row}>
+          <Modal>
+            <ModalTrigger>
+              <Button>Open modal</Button>
+            </ModalTrigger>
+            <ModalContent>
+              <ModalHeader>Delete project</ModalHeader>
+              <ModalBody>This removes its files and its history, and cannot be undone.</ModalBody>
+              <ModalFooter>
+                <ModalClose>
+                  <Button variant="ghost">Cancel</Button>
+                </ModalClose>
+                <ModalClose>
+                  <Button colorScheme="error">Delete</Button>
+                </ModalClose>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          <Popover>
+            <PopoverTrigger>
+              <Button variant="outline">Open popover</Button>
+            </PopoverTrigger>
+            <PopoverContent aria-label="Share">
+              <p style={{ margin: '0 0 0.75rem' }}>Anyone with the link can view.</p>
+              <PopoverClose>
+                <Button size="sm">Done</Button>
+              </PopoverClose>
+            </PopoverContent>
+          </Popover>
+          <Tooltip content="Save the changes">
+            <Button variant="outline">Hover or focus me</Button>
+          </Tooltip>
+        </div>
+        <ToastButtons />
       </Section>
 
       <Section title="DatePicker">
