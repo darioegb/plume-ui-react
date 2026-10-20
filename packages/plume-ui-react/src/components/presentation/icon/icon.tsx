@@ -29,12 +29,12 @@ export const Icon = forwardRef<HTMLSpanElement, IconProps>(
     const classes = [styles.icon, styles[size], className].filter(Boolean).join(' ')
 
     return (
-      <span
+      <span // NOSONAR: the wrapper of an inline svg can't be an <img>
         aria-hidden={label ? undefined : true}
         aria-label={label}
         className={classes}
         ref={ref}
-        role={label ? 'img' : undefined} // NOSONAR: the wrapper of an inline svg can't be an <img>
+        role={label ? 'img' : undefined}
         style={iconColorVars(colorScheme, style)}
         {...rest}
       >
