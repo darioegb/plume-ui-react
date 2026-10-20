@@ -108,36 +108,6 @@ type Story = StoryObj<typeof Spinner>
 export const Default: Story = {}
 
 /**
- * This is a list of Spinner with different sizes.
- * Just adding the **size** prop with lg, md or sm.
- */
-export const Sizes: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Spinner 
-  color="primary"
-  size="sm" 
-/>
-<Spinner color="primary" />
-<Spinner 
-  color="primary" 
-  size="lg" 
-/>
-        `,
-      },
-    },
-  },
-  render: () => (
-    <>
-      <Spinner color='primary' size='sm' style={{ marginRight: '.5rem' }} />
-      <Spinner color='primary' style={{ marginRight: '.5rem' }} />
-      <Spinner color='primary' size='lg' />
-    </>
-  ),
-}
-
-/**
  * This is a list of spinners with different border variant.
  * Just adding **variant** prop with dashed, dotted, double or solid.
  */
@@ -168,6 +138,36 @@ export const Variants: Story = {
       <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='dotted' />
       <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='double' />
       <Spinner color='primary' />
+    </>
+  ),
+}
+
+/**
+ * This is a list of Spinner with different sizes.
+ * Just adding the **size** prop with lg, md or sm.
+ */
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Spinner 
+  color="primary"
+  size="sm" 
+/>
+<Spinner color="primary" />
+<Spinner 
+  color="primary" 
+  size="lg" 
+/>
+        `,
+      },
+    },
+  },
+  render: () => (
+    <>
+      <Spinner color='primary' size='sm' style={{ marginRight: '.5rem' }} />
+      <Spinner color='primary' style={{ marginRight: '.5rem' }} />
+      <Spinner color='primary' size='lg' />
     </>
   ),
 }

@@ -14,6 +14,26 @@ describe('Field component', () => {
     expect(screen.getByRole('textbox', { name: 'Email' })).toBeInTheDocument()
   })
 
+  it('gives its label an id for the controls that are named through it', () => {
+    render(
+      <Field label="Email">
+        <Input />
+      </Field>,
+    )
+    const label = screen.getByText('Email')
+    expect(label).toHaveAttribute('id')
+    expect(label.id.endsWith('-label')).toBe(true)
+  })
+
+  it('has no label id when there is no label', () => {
+    const { container } = render(
+      <Field helperText="Only a helper">
+        <Input aria-label="Email" />
+      </Field>,
+    )
+    expect(container.querySelector('label')).toBeNull()
+  })
+
   it('keeps the id of the control', () => {
     render(
       <Field label="Email">

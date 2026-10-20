@@ -244,6 +244,113 @@ export const Default: Story = {
 }
 
 /**
+ * This is a list of DatePicker with different variants.
+ * Just adding the **variant** prop in one of these values **outline**, **underline**, **filled** and **unstyled**.
+ */
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker placeholder="Outline DatePicker" variant="outline" value={value} onChange={handleValueChange} />
+<DatePicker placeholder="Underline DatePicker" variant="underline" value={value} onChange={handleValueChange} />
+<DatePicker placeholder="Filled DatePicker" variant="filled" value={value} onChange={handleValueChange} />
+<DatePicker placeholder="Unstyled DatePicker" variant="unstyled" value={value} onChange={handleValueChange} />
+          `,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Outline DatePicker'
+          value={value}
+          variant='outline'
+        />
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Underline DatePicker'
+          value={value}
+          variant='underline'
+        />
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Filled DatePicker'
+          value={value}
+          variant='filled'
+        />
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Unstyled DatePicker'
+          value={value}
+          variant='unstyled'
+        />
+      </div>
+    )
+  },
+}
+
+/**
+ * This is a list of DatePicker with different sizes.
+ * Just adding the **size** prop.
+ */
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker size="sm" placeholder="Small DatePicker" value={value} onChange={handleValueChange} />
+<DatePicker size="md" placeholder="Medium DatePicker" value={value} onChange={handleValueChange} />
+<DatePicker size="lg" placeholder="Large DatePicker" value={value} onChange={handleValueChange} />
+          `,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Small DatePicker'
+          size='sm'
+          value={value}
+        />
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Medium DatePicker'
+          size='md'
+          value={value}
+        />
+        <DatePicker
+          onChange={handleValueChange}
+          placeholder='Large DatePicker'
+          size='lg'
+          value={value}
+        />
+      </div>
+    )
+  },
+}
+
+/**
  * This is a list of DatePicker with different colors.
  * Just adding the **colorScheme** prop.
  */
@@ -368,18 +475,6 @@ export const WithMinMaxDates: Story = {
 }
 
 /**
- * This is a disabled DatePicker.
- * Just adding the **disabled** prop in true.
- * The disabled state add **.disabled** class,
- */
-export const Disabled: Story = {
-  args: {
-    ...Default.args,
-    disabled: true,
-  },
-}
-
-/**
  * DatePicker with footer actions.
  */
 export const WithFooterActions: Story = {
@@ -406,6 +501,84 @@ export const CustomConfiguration: Story = {
         apply: 'Aplicar',
       },
     },
+  },
+}
+
+/**
+ * The calendar popup is themed through CSS variables, so you can restyle it
+ * independently of the input trigger — even when `variant="unstyled"`. Override any
+ * of these on the `style` prop (they default to your `colorScheme`):
+ *
+ * - `--datepicker-solid`: selected day background.
+ * - `--datepicker-scheme`: today's text and focus border.
+ * - `--datepicker-contrast`: text color on the selected day.
+ * - `--datepicker-hover-color`: day hover background.
+ * - `--datepicker-selected-hover-color`: selected day hover background.
+ * - `--datepicker-range-item-color`: in-range day background.
+ * - `--datepicker-range-item-text`: in-range day text color.
+ */
+export const CalendarTheming: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  isRange
+  value={value}
+  onChange={handleValueChange}
+  style={{
+    '--datepicker-solid': '#7c3aed',
+    '--datepicker-scheme': '#6d28d9',
+    '--datepicker-contrast': '#ffffff',
+    '--datepicker-hover-color': '#f5f3ff',
+    '--datepicker-selected-hover-color': '#6d28d9',
+    '--datepicker-range-item-color': '#ede9fe',
+    '--datepicker-range-item-text': '#4c1d95',
+  }}
+/>`,
+      },
+    },
+  },
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    })
+
+    const handleValueChange = (newValue: DateRange): void => {
+      setValue(newValue)
+    }
+    return (
+      <DatePicker
+        isRange
+        onChange={handleValueChange}
+        placeholder='Custom themed calendar'
+        style={
+          {
+            '--datepicker-solid': '#7c3aed',
+            '--datepicker-scheme': '#6d28d9',
+            '--datepicker-contrast': '#ffffff',
+            '--datepicker-hover-color': '#f5f3ff',
+            '--datepicker-selected-hover-color': '#6d28d9',
+            '--datepicker-range-item-color': '#ede9fe',
+            '--datepicker-range-item-text': '#4c1d95',
+          } as CSSProperties
+        }
+        value={value}
+      />
+    )
+  },
+}
+
+/**
+ * This is a disabled DatePicker.
+ * Just adding the **disabled** prop in true.
+ * The disabled state add **.disabled** class,
+ */
+export const Disabled: Story = {
+  args: {
+    ...Default.args,
+    disabled: true,
   },
 }
 
@@ -525,72 +698,6 @@ export const Bootstrap: Story = {
           variant='unstyled'
         />
       </div>
-    )
-  },
-}
-
-/**
- * The calendar popup is themed through CSS variables, so you can restyle it
- * independently of the input trigger — even when `variant="unstyled"`. Override any
- * of these on the `style` prop (they default to your `colorScheme`):
- *
- * - `--datepicker-solid`: selected day background.
- * - `--datepicker-scheme`: today's text and focus border.
- * - `--datepicker-contrast`: text color on the selected day.
- * - `--datepicker-hover-color`: day hover background.
- * - `--datepicker-selected-hover-color`: selected day hover background.
- * - `--datepicker-range-item-color`: in-range day background.
- * - `--datepicker-range-item-text`: in-range day text color.
- */
-export const CalendarTheming: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<DatePicker
-  isRange
-  value={value}
-  onChange={handleValueChange}
-  style={{
-    '--datepicker-solid': '#7c3aed',
-    '--datepicker-scheme': '#6d28d9',
-    '--datepicker-contrast': '#ffffff',
-    '--datepicker-hover-color': '#f5f3ff',
-    '--datepicker-selected-hover-color': '#6d28d9',
-    '--datepicker-range-item-color': '#ede9fe',
-    '--datepicker-range-item-text': '#4c1d95',
-  }}
-/>`,
-      },
-    },
-  },
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
-    const [value, setValue] = useState<DateRange>({
-      startDate: null,
-      endDate: null,
-    })
-
-    const handleValueChange = (newValue: DateRange): void => {
-      setValue(newValue)
-    }
-    return (
-      <DatePicker
-        isRange
-        onChange={handleValueChange}
-        placeholder='Custom themed calendar'
-        style={
-          {
-            '--datepicker-solid': '#7c3aed',
-            '--datepicker-scheme': '#6d28d9',
-            '--datepicker-contrast': '#ffffff',
-            '--datepicker-hover-color': '#f5f3ff',
-            '--datepicker-selected-hover-color': '#6d28d9',
-            '--datepicker-range-item-color': '#ede9fe',
-            '--datepicker-range-item-text': '#4c1d95',
-          } as CSSProperties
-        }
-        value={value}
-      />
     )
   },
 }

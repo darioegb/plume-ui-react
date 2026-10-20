@@ -19,14 +19,6 @@ interface IconLinkButtonProps {
   text: string
 }
 
-function extractWordBeforeDocsFromURL(): string {
-  const url = window.location.href
-  const match = /(?<word>\w+)--docs/.exec(url)
-  const wordBeforeDocs = match?.groups?.word ?? ''
-  const capitalizedWord = wordBeforeDocs.charAt(0).toUpperCase() + wordBeforeDocs.slice(1)
-  return capitalizedWord
-}
-
 function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): ReactNode {
   return (
     <a className="flex" href={href} rel="noopener noreferrer" target="_blank">
@@ -68,8 +60,10 @@ function SourceLink({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode
 }
 
 function DocsTemplate(): ReactNode {
-  const componentName = extractWordBeforeDocsFromURL()
   const { preparedMeta } = useOf('meta', ['meta'])
+  const componentName = preparedMeta.title.split('/').pop() ?? preparedMeta.title
+  const docsParameters = preparedMeta.parameters.docs as { importNames?: string[] } | undefined
+  const importNames = docsParameters?.importNames ?? [componentName]
   const sourcePath = getComponentSourcePath(String(preparedMeta.parameters.fileName))
   return (
     <div className="container">
@@ -77,7 +71,7 @@ function DocsTemplate(): ReactNode {
       <Description />
       <SourceLink sourcePath={sourcePath} />
       <h2>Import</h2>
-      <Source code={`import { ${componentName} } from '${PACKAGE_NAME}'`} dark />
+      <Source code={`import { ${importNames.join(', ')} } from '${PACKAGE_NAME}'`} dark />
       <h2>Playground</h2>
       <p>Edit the props in the table below to try the {componentName} live.</p>
       <Primary />

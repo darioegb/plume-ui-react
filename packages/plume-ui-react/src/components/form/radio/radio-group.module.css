@@ -1,0 +1,15 @@
+.group {
+  display: flex;
+  font-family: var(--plume-font-family);
+}
+
+.vertical {
+  flex-direction: column;
+  gap: var(--plume-space-2);
+}
+
+.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--plume-space-2) var(--plume-space-4);
+}

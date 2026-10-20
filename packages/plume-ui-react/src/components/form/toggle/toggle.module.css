@@ -1,0 +1,198 @@
+.root {
+  align-items: center;
+  color: var(--plume-foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--plume-font-family);
+  gap: var(--plume-space-2);
+  vertical-align: middle;
+}
+
+.sm {
+  --toggle-height: var(--plume-space-5);
+  font-size: var(--plume-font-size-xs);
+}
+
+.md {
+  --toggle-height: var(--plume-space-6);
+  font-size: var(--plume-font-size-base);
+}
+
+.lg {
+  --toggle-height: var(--plume-space-8);
+  font-size: var(--plume-font-size-lg);
+}
+
+.toggle {
+  --toggle-border: 0px;
+  --toggle-gap: 3px;
+  --toggle-thumb: calc(var(--toggle-height) - (var(--toggle-border) + var(--toggle-gap)) * 2);
+  appearance: none;
+  background-color: var(--plume-border-strong);
+  border: 0;
+  border-radius: var(--plume-radius-full);
+  box-sizing: border-box;
+  cursor: inherit;
+  flex: none;
+  height: var(--toggle-height);
+  margin: 0;
+  position: relative;
+  transition: background-color 0.15s;
+  width: calc(var(--toggle-height) * 1.8);
+}
+
+.toggle::before {
+  background-color: var(--plume-surface);
+  border-radius: var(--plume-radius-full);
+  content: '';
+  height: var(--toggle-thumb);
+  inset-block-start: var(--toggle-gap);
+  inset-inline-start: var(--toggle-gap);
+  position: absolute;
+  transition:
+    inset-inline-start 0.15s,
+    background-color 0.15s;
+  width: var(--toggle-thumb);
+}
+
+.toggle:checked::before {
+  inset-inline-start: calc(100% - var(--toggle-thumb) - var(--toggle-gap));
+}
+
+.solid:checked {
+  background-color: var(--toggle-solid);
+}
+
+.solid:checked::before {
+  background-color: var(--toggle-contrast);
+}
+
+.outline {
+  --toggle-border: 2px;
+  --toggle-gap: 2px;
+  background-color: var(--plume-surface);
+  border: var(--toggle-border) solid var(--plume-border-strong);
+}
+
+.outline::before {
+  background-color: var(--plume-border-strong);
+}
+
+.outline:checked {
+  background-color: var(--plume-surface);
+  border-color: var(--toggle-text);
+}
+
+.outline:checked::before {
+  background-color: var(--toggle-text);
+}
+
+.raised {
+  --toggle-border: 0px;
+  --toggle-gap: 0px;
+  background-color: transparent;
+}
+
+.raised::before {
+  background-color: var(--plume-surface);
+  box-shadow: var(--plume-shadow-md);
+  z-index: 1;
+}
+
+.raised::after {
+  background-color: var(--plume-border-strong);
+  border-radius: var(--plume-radius-full);
+  content: '';
+  inset-block: calc(var(--toggle-height) * 0.2);
+  inset-inline: calc(var(--toggle-height) * 0.25);
+  position: absolute;
+  transition: background-color 0.15s;
+}
+
+.raised:checked::before {
+  background-color: var(--toggle-solid);
+}
+
+.raised:checked::after {
+  background-color: color-mix(in srgb, var(--toggle-solid) 45%, transparent);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--toggle-text);
+  outline-offset: 2px;
+}
+
+.invalid:not(:checked) {
+  outline: 2px solid var(--toggle-text);
+  outline-offset: 1px;
+}
+
+.label {
+  line-height: var(--plume-line-height-normal);
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggle::before,
+  .toggle::after {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .toggle {
+    --toggle-border: 2px;
+    border: 2px solid CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .toggle:checked {
+    background-color: Highlight;
+    border-color: Highlight;
+  }
+
+  .toggle::before {
+    background-color: CanvasText;
+  }
+
+  .toggle:checked::before {
+    background-color: HighlightText;
+  }
+
+  .outline:checked {
+    background-color: Canvas;
+  }
+
+  .outline:checked::before {
+    background-color: Highlight;
+  }
+
+  .raised {
+    --toggle-border: 0px;
+    border: 0;
+  }
+
+  .raised::before {
+    background-color: Canvas;
+    border: 2px solid CanvasText;
+    box-sizing: border-box;
+  }
+
+  .raised::after {
+    background-color: CanvasText;
+  }
+
+  .raised:checked::before {
+    background-color: Canvas;
+    border-color: Highlight;
+  }
+
+  .raised:checked::after {
+    background-color: Highlight;
+  }
+}

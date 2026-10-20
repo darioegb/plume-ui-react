@@ -15,7 +15,7 @@
 }
 
 .lg {
-  font-size: var(--plume-font-size-md);
+  font-size: var(--plume-font-size-lg);
   padding: var(--plume-space-2) var(--plume-space-4);
 }
 

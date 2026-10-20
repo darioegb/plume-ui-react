@@ -201,6 +201,66 @@ export const Default: Story = {
 }
 
 /**
+ * This is a list o Tabs with different variants.
+ * Just adding the **variant** prop in one of these values **underline**, **rounded**, **enclosed**, **segment** and **unstyled**.
+ */
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs
+  colorScheme="primary"
+  variant="underline"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
+  colorScheme="primary"
+  variant="rounded"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
+  colorScheme="primary"
+  variant="enclosed"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
+  colorScheme="primary"
+  variant="segment"
+>
+  {commonTabs}
+</Tabs>
+<Tabs
+  variant="unstyled"
+>
+  {commonTabs}
+</Tabs>
+          `,
+      },
+    },
+  },
+  render: () => (
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+      <Tabs colorScheme="primary" variant="underline">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="rounded">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="enclosed">
+        {commonTabs}
+      </Tabs>
+      <Tabs colorScheme="primary" variant="segment">
+        {commonTabs}
+      </Tabs>
+      <Tabs variant="unstyled">{commonTabs}</Tabs>
+    </div>
+  ),
+}
+
+/**
  * This is a list o Tabs with different sizes.
  * Just adding the **size** prop. We support 3 sizes **sm**, **md**, **lg**.
  */
@@ -241,6 +301,52 @@ export const Sizes: Story = {
       <Tabs colorScheme="primary" size="lg">
         {commonTabs}
       </Tabs>
+    </div>
+  ),
+}
+
+/**
+ * This is a list o Tabs with different colors.
+ * Just adding the **colorScheme** prop.
+ */
+export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs>
+  {commonTabs}
+</Tabs>
+<Tabs colorScheme="primary">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="secondary">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="info">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="warning">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="error">
+  {commonTabs}
+</Tabs>
+<Tabs rScheme="success">
+  {commonTabs}
+</Tabs>
+  `,
+      },
+    },
+  },
+  render: () => (
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+      <Tabs>{commonTabs}</Tabs>
+      <Tabs colorScheme="primary">{commonTabs}</Tabs>
+      <Tabs colorScheme="secondary">{commonTabs}</Tabs>
+      <Tabs colorScheme="info">{commonTabs}</Tabs>
+      <Tabs colorScheme="warning">{commonTabs}</Tabs>
+      <Tabs colorScheme="error">{commonTabs}</Tabs>
+      <Tabs colorScheme="success">{commonTabs}</Tabs>
     </div>
   ),
 }
@@ -324,169 +430,6 @@ export const Orientations: Story = {
       </Tabs>
     </div>
   ),
-}
-
-/**
- * This is a list o Tabs with different variants.
- * Just adding the **variant** prop in one of these values **underline**, **rounded**, **enclosed**, **segment** and **unstyled**.
- */
-export const Variants: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Tabs
-  colorScheme="primary"
-  variant="underline"
->
-  {commonTabs}
-</Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="rounded"
->
-  {commonTabs}
-</Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="enclosed"
->
-  {commonTabs}
-</Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="segment"
->
-  {commonTabs}
-</Tabs>
-<Tabs
-  variant="unstyled"
->
-  {commonTabs}
-</Tabs>
-          `,
-      },
-    },
-  },
-  render: () => (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-      <Tabs colorScheme="primary" variant="underline">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="rounded">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="enclosed">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="segment">
-        {commonTabs}
-      </Tabs>
-      <Tabs variant="unstyled">{commonTabs}</Tabs>
-    </div>
-  ),
-}
-
-/**
- * This is a list o Tabs with different colors.
- * Just adding the **colorScheme** prop.
- */
-export const Colors: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Tabs>
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="primary">
-  {commonTabs}
-</Tabs>
-<Tabs rScheme="secondary">
-  {commonTabs}
-</Tabs>
-<Tabs rScheme="info">
-  {commonTabs}
-</Tabs>
-<Tabs rScheme="warning">
-  {commonTabs}
-</Tabs>
-<Tabs rScheme="error">
-  {commonTabs}
-</Tabs>
-<Tabs rScheme="success">
-  {commonTabs}
-</Tabs>
-  `,
-      },
-    },
-  },
-  render: () => (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-      <Tabs>{commonTabs}</Tabs>
-      <Tabs colorScheme="primary">{commonTabs}</Tabs>
-      <Tabs colorScheme="secondary">{commonTabs}</Tabs>
-      <Tabs colorScheme="info">{commonTabs}</Tabs>
-      <Tabs colorScheme="warning">{commonTabs}</Tabs>
-      <Tabs colorScheme="error">{commonTabs}</Tabs>
-      <Tabs colorScheme="success">{commonTabs}</Tabs>
-    </div>
-  ),
-}
-
-/**
- * This is a disabled Tabs.
- * Just adding the **disabled** prop in true.
- * The disabled state add **.disabled** class,
- * that contain **opacity: .5** and **cursor: not-allowed**.
- */
-export const Disabled: Story = {
-  args: {
-    colorScheme: 'primary',
-    children: (
-      <>
-        <TabList>
-          <Tab label="One" />
-          <Tab disabled label="Two" />
-          <Tab label="Three" />
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <p>one!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>three!</p>
-          </TabPanel>
-        </TabPanels>
-      </>
-    ),
-  },
-  parameters: {
-    docs: {
-      source: {
-        code: `<Tabs>
-  <TabList>
-    <Tab label="One" />
-    <Tab disabled label="Two" />
-    <Tab label="Three" />
-  </TabList>
-  <TabPanels>
-    <TabPanel>
-      <p>one!</p>
-    </TabPanel>
-    <TabPanel>
-      <p>two!</p>
-    </TabPanel>
-    <TabPanel>
-      <p>three!</p>
-    </TabPanel>
-  </TabPanels>
-</Tabs>
-        `,
-      },
-    },
-  },
 }
 
 /**
@@ -648,6 +591,63 @@ export const ExtraContent: Story = {
       isExtraContentRight 
       label="Three" 
     />
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <p>one!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>two!</p>
+    </TabPanel>
+    <TabPanel>
+      <p>three!</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+        `,
+      },
+    },
+  },
+}
+
+/**
+ * This is a disabled Tabs.
+ * Just adding the **disabled** prop in true.
+ * The disabled state add **.disabled** class,
+ * that contain **opacity: .5** and **cursor: not-allowed**.
+ */
+export const Disabled: Story = {
+  args: {
+    colorScheme: 'primary',
+    children: (
+      <>
+        <TabList>
+          <Tab label="One" />
+          <Tab disabled label="Two" />
+          <Tab label="Three" />
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <p>one!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>two!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>three!</p>
+          </TabPanel>
+        </TabPanels>
+      </>
+    ),
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs>
+  <TabList>
+    <Tab label="One" />
+    <Tab disabled label="Two" />
+    <Tab label="Three" />
   </TabList>
   <TabPanels>
     <TabPanel>

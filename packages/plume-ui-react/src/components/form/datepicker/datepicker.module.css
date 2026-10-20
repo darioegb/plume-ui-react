@@ -4,6 +4,7 @@
 @value date-picker-border-radius: var(--plume-radius-4);
 @value date-picker-color: var(--plume-muted);
 @value date-picker-border-color: var(--plume-border);
+@value date-picker-control-border-color: var(--plume-border-strong);
 
 .datePicker {
   position: relative;
@@ -35,6 +36,10 @@
   margin-right: var(--plume-space-2);
   margin-block-start: 0.125rem;
   margin-block-end: 0.125rem;
+}
+
+input + .inputButton {
+  height: auto;
 }
 
 .inputButtonIcon {
@@ -88,13 +93,13 @@
 
 .outline {
   composes: datePickerInputText;
-  border: 1px solid date-picker-border-color;
+  border: 1px solid date-picker-control-border-color;
 }
 
 .filled {
   composes: datePickerInputText;
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid date-picker-border-color;
+  border-block-end: 1px solid date-picker-control-border-color;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -102,11 +107,11 @@
 .underline {
   composes: datePickerInputText;
   border-radius: 0;
-  border-block-end: 1px solid date-picker-border-color;
+  border-block-end: 1px solid date-picker-control-border-color;
 }
 
 :is(.outline, .filled, .underline):enabled:hover {
-  border-color: color-mix(in hsl, date-picker-border-color, black 10%);
+  border-color: color-mix(in hsl, date-picker-control-border-color, black 10%);
 }
 
 :is(.outline, .filled, .underline).invalid,

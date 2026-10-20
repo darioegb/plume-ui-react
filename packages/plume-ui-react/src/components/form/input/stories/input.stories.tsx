@@ -239,30 +239,6 @@ export const Default: Story = {
 }
 
 /**
- * This is a list of Input with different sizes.
- * Just adding the **size** prop.
- */
-export const Sizes: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Input size="sm" placeholder="Small Input" />
-  <Input size="md" placeholder="Medium Input" />
-  <Input size="lg" placeholder="Large Input" />
-            `,
-      },
-    },
-  },
-  render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-4'>
-      <Input placeholder='Small Input' size='sm' />
-      <Input placeholder='Medium Input' size='md' />
-      <Input placeholder='Large Input' size='lg' />
-    </div>
-  ),
-}
-
-/**
  * This is a list of Input with different variants.
  * Just adding the **variant** prop in one of these values **outline**, **underline**, **filled** and **unstyled**.
  */
@@ -284,6 +260,30 @@ export const Variants: Story = {
       <Input placeholder='Underline Input' variant='underline' />
       <Input placeholder='Filled Input' variant='filled' />
       <Input placeholder='Unstyled Input' variant='unstyled' />
+    </div>
+  ),
+}
+
+/**
+ * This is a list of Input with different sizes.
+ * Just adding the **size** prop.
+ */
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input size="sm" placeholder="Small Input" />
+  <Input size="md" placeholder="Medium Input" />
+  <Input size="lg" placeholder="Large Input" />
+            `,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-wrap justify-center items-center gap-4'>
+      <Input placeholder='Small Input' size='sm' />
+      <Input placeholder='Medium Input' size='md' />
+      <Input placeholder='Large Input' size='lg' />
     </div>
   ),
 }

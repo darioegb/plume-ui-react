@@ -3,7 +3,7 @@
 @value input-padding: var(--plume-space-4);
 @value input-border-radius: var(--plume-radius-4);
 @value input-color: var(--plume-foreground);
-@value input-border-color: var(--plume-border);
+@value input-border-color: var(--plume-border-strong);
 @value input-background-color: var(--plume-surface-muted);
 
 :where(.base) {
