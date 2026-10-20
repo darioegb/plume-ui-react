@@ -6,9 +6,10 @@ import { ChevronDownIcon, CloseIcon } from '../../../overlay/icons'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
+import { Chip } from '../../presentation/chip'
 import { useFieldContext } from '../field/field-context'
 import { useSelectContext, type SelectContextValue } from './select-context'
-import { OptionContent, SelectValue } from './select-value'
+import { SelectValue } from './select-value'
 import styles from './select.module.css'
 
 export type SelectTriggerPart = 'chevron' | 'chip' | 'chipRemove' | 'clear' | 'field' | 'trigger'
@@ -54,38 +55,28 @@ function Chips({
   const shown = selectedOptions.slice(0, maxDisplay)
   const hidden = selectedOptions.length - shown.length
   const canRemove = !context.disabled && !context.readOnly
+  const variant = isStyled ? 'subtle' : 'unstyled'
 
   return (
     <>
       {shown.map((option) => (
-        <span
-          className={joinClasses(isStyled && styles.chip, classNames?.chip)}
-          data-plume-select-chip=""
+        <Chip
+          className={classNames?.chip}
+          classNames={{ remove: classNames?.chipRemove }}
+          icon={option.icon}
           key={option.value}
+          onRemove={canRemove ? () => context.remove(option.value) : undefined}
+          removeLabel={removeLabel(option.label)}
+          size={context.size}
+          variant={variant}
         >
-          <span aria-hidden="true" className={isStyled ? styles.chipContent : undefined}>
-            <OptionContent option={option} />
-          </span>
-          {canRemove ? (
-            <button
-              aria-label={removeLabel(option.label)}
-              className={joinClasses(isStyled && styles.chipRemove, classNames?.chipRemove)}
-              data-plume-select-remove=""
-              onClick={() => context.remove(option.value)}
-              type="button"
-            >
-              <CloseIcon />
-            </button>
-          ) : null}
-        </span>
+          <span aria-hidden="true">{option.label}</span>
+        </Chip>
       ))}
       {hidden > 0 ? (
-        <span
-          className={joinClasses(isStyled && styles.chip, classNames?.chip)}
-          data-plume-select-chip=""
-        >
+        <Chip className={classNames?.chip} size={context.size} variant={variant}>
           +{hidden}
-        </span>
+        </Chip>
       ) : null}
     </>
   )

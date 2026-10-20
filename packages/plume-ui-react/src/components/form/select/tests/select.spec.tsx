@@ -1057,7 +1057,7 @@ describe('Select component', () => {
         'chevron',
         'my-chevron',
       )
-      expect(control().querySelector('[data-plume-select-chip]')).toHaveClass('chip', 'my-chip')
+      expect(control().querySelector('[data-plume-chip]')).toHaveClass('chip', 'my-chip')
       expect(listbox()).toHaveClass('list', 'my-list')
       expect(screen.getByRole('combobox', { name: 'Search' }).parentElement).toHaveClass(
         'search',

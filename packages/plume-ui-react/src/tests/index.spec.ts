@@ -10,6 +10,7 @@ describe('plume-ui-react', () => {
       'CardFooter',
       'CardHeader',
       'Checkbox',
+      'Chip',
       'DatePicker',
       'Dropdown',
       'DropdownItem',
