@@ -1,38 +1,62 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
+import { useState } from 'react'
+import { defaultTheme } from '../../../../theme'
+import { Badge } from '../../badge'
 import { Icon } from '../../icon'
-import { List, ListIcon, ListItem } from '..'
+import {
+  List,
+  ListDivider,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from '..'
 
-const check = (
-  <svg
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M20 6 9 17l-5-5" />
-  </svg>
+const colorSchemes = Object.keys(defaultTheme.colors)
+
+const icon = (path: string): React.ReactNode => (
+  <Icon size="sm">
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d={path} />
+    </svg>
+  </Icon>
 )
 
-const features = [
-  'Server Components ready',
-  'Light and dark mode',
-  'Fully typed',
-  'No dependencies',
-]
+const inboxIcon = icon(
+  'M22 12h-6l-2 3h-4l-2-3H2M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z',
+)
+const sendIcon = icon('m22 2-7 20-4-9-9-4zM22 2 11 13')
+const trashIcon = icon('M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14')
+
+const files = ['Annual report.pdf', 'Budget.xlsx', 'Meeting notes.md']
 
 /**
- * A list of items. Compose it with `ListItem`, and with `ListIcon` when an item has an icon instead of a
- * bullet. The `variant` picks the markers and the element: an `ordered` list is an `<ol>`, the others are a
- * `<ul>`. A list with no markers (`plain`) keeps its list role, which some browsers drop when the bullets go.
+ * A list of items, for plain content, menus, settings and navigation. Compose it with the parts you need:
+ * `ListItem` is a row, `ListItemButton` makes the row a button or a link, `ListItemIcon` and `ListItemText`
+ * (with a `primary` and a `secondary` line) fill it, `ListSubheader` titles a section and `ListDivider`
+ * separates two.
+ *
+ * The `variant` picks the container: `plain` has none, `bordered` is a bordered box with dividers, like a list
+ * group, and `filled` has a muted background. `marker` adds bullets or numbers to a list of plain text items.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `ListItem` | `className`, `style`, `id`, `value`, `children`. A `<li>`. |
- * | `ListIcon` | `className`, `style`, `id`, `children`. Puts an icon at the start of a `ListItem`, lined up with the first line of text. It is hidden from screen readers. |
+ * | `ListItem` | `className`, `style`, `id`, `value` (the number of an item in a numbered list), `children`. A row that lines up its icon, its text and anything you add after them, like a `Badge` or a switch. |
+ * | `ListItemButton` | `selected`, `disabled`, `href` (renders a link instead of a button), `target`, `rel`, `onClick`, `aria-current`, `className`, `style`, `children`. Goes inside a `ListItem` and fills it. `selected` highlights it and sets `aria-current="true"`; for navigation pass `aria-current="page"`. |
+ * | `ListItemIcon` | `className`, `style`, `children`. An icon at the start of the row. It is hidden from screen readers. |
+ * | `ListItemText` | `primary`, `secondary`, `className`, `style`. The text of the row. |
+ * | `ListSubheader` | `className`, `style`, `id`, `children`. A small title for the items that follow. |
+ * | `ListDivider` | `className`, `style`, `id`. A line between two items (`role="separator"`). |
  *
  * None of the parts needs JavaScript, so a List can be rendered in a Server Component.
  */
@@ -42,7 +66,15 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      importNames: ['List', 'ListItem', 'ListIcon'],
+      importNames: [
+        'List',
+        'ListItem',
+        'ListItemButton',
+        'ListItemIcon',
+        'ListItemText',
+        'ListSubheader',
+        'ListDivider',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -53,7 +85,7 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The `ListItem` elements of the List.',
+      description: 'The `ListItem`, `ListSubheader` and `ListDivider` elements of the List.',
       table: { type: { summary: 'ReactNode' } },
     },
     className: {
@@ -63,35 +95,53 @@ export default {
     },
     style: {
       control: false,
-      description: 'Inline styles for the List.',
+      description:
+        'Inline styles for the List. They are applied after the color variables, so they can override them (e.g. `--list-tint`).',
       table: { type: { summary: 'CSSProperties' } },
+    },
+    colorScheme: {
+      control: 'select',
+      description:
+        'Color scheme from the theme palette, used for the selected item and the focus ring.',
+      options: colorSchemes,
+      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the text of the List.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    spacing: {
-      control: 'radio',
-      description: 'Space between the items.',
+      description: 'Size of the text and of the padding of the items.',
       options: ['sm', 'md', 'lg'],
       table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `unordered` shows bullets, `ordered` shows numbers and renders an `<ol>`, and `plain` shows no markers. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['unordered', 'ordered', 'plain', 'unstyled'],
+        'Visual variant. `plain` has no container, `bordered` draws a border and divides the items, and `filled` gives the List a muted background. `unstyled` drops the Plume styles so you can bring your own.',
+      options: ['plain', 'bordered', 'filled', 'unstyled'],
       table: {
-        type: { summary: `"unordered" | "ordered" | "plain" | "unstyled"` },
-        defaultValue: { summary: 'unordered' },
+        type: { summary: `"plain" | "bordered" | "filled" | "unstyled"` },
+        defaultValue: { summary: 'plain' },
+      },
+    },
+    divided: {
+      control: 'boolean',
+      description:
+        'Draws a line between the items. It is on by default for `bordered` and off for the other variants.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'variant === "bordered"' } },
+    },
+    marker: {
+      control: 'radio',
+      description:
+        'Bullets or numbers for a list of plain text items. `number` renders an `<ol>`. The markers go with text items: a row with an icon or a button is a flex row and has none.',
+      options: ['none', 'bullet', 'number'],
+      table: {
+        type: { summary: `"none" | "bullet" | "number"` },
+        defaultValue: { summary: 'none' },
       },
     },
     as: {
       control: 'radio',
       description:
-        'The element to render. By default it follows the variant: `ol` for `ordered` and `ul` for the rest. Use it to get an `<ol>` with the `unstyled` variant.',
+        'The element to render. By default it follows the marker: `ol` for `number` and `ul` for the rest. Use it to get an `<ol>` with the `unstyled` variant.',
       options: [undefined, 'ul', 'ol'],
       table: { type: { summary: `"ul" | "ol"` } },
     },
@@ -107,7 +157,8 @@ export default {
     },
     role: {
       control: 'text',
-      description: 'Role of the List. A `plain` list gets `list` by default.',
+      description:
+        'Role of the List. A List without markers gets `list` by default, because some browsers drop the list role when the markers are gone.',
       table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
@@ -121,10 +172,14 @@ export default {
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
+  args: {
+    'aria-label': 'Files',
+    style: { width: '18rem' },
+  },
   render: (args) => (
     <List {...args}>
-      {features.map((feature) => (
-        <ListItem key={feature}>{feature}</ListItem>
+      {files.map((file) => (
+        <ListItem key={file}>{file}</ListItem>
       ))}
     </List>
   ),
@@ -133,27 +188,35 @@ export default {
 type Story = StoryObj<typeof List>
 
 /**
- * This is the default List, with bullets.
+ * This is the default List, with no container and no markers.
  */
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick the markers: `unordered` shows bullets, `ordered` shows numbers, `plain`
- * shows none, and `unstyled` drops the Plume styles so you can style it yourself.
+ * Use the **variant** prop to pick the container: `plain` has none, `bordered` draws a border and divides the
+ * items, `filled` gives the List a muted background, and `unstyled` drops the Plume styles so you can style it
+ * yourself.
  */
 export const Variants: Story = {
   render: () => (
-    <div className="flex flex-wrap justify-center gap-10">
-      {(['unordered', 'ordered', 'plain'] as const).map((variant) => (
-        <List aria-label={variant} key={variant} variant={variant}>
-          {features.slice(0, 3).map((feature) => (
-            <ListItem key={feature}>{feature}</ListItem>
+    <div className="flex flex-wrap justify-center gap-6">
+      {(['plain', 'bordered', 'filled'] as const).map((variant) => (
+        <List aria-label={variant} key={variant} style={{ width: '14rem' }} variant={variant}>
+          {files.map((file) => (
+            <ListItem key={file}>{file}</ListItem>
           ))}
         </List>
       ))}
-      <List aria-label="unstyled" className="list-none space-y-1 m-0 p-0" variant="unstyled">
-        {features.slice(0, 3).map((feature) => (
-          <ListItem key={feature}>{feature}</ListItem>
+      <List
+        aria-label="unstyled"
+        className="border border-gray-400 rounded divide-y divide-gray-300"
+        style={{ width: '14rem' }}
+        variant="unstyled"
+      >
+        {files.map((file) => (
+          <ListItem className="p-2" key={file}>
+            {file}
+          </ListItem>
         ))}
       </List>
     </div>
@@ -161,15 +224,21 @@ export const Variants: Story = {
 }
 
 /**
- * Use the **size** prop to change the size of the text.
+ * Use the **size** prop to change the text and the padding of the items.
  */
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-wrap justify-center gap-10">
+    <div className="flex flex-wrap justify-center gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <List aria-label={size} key={size} size={size}>
-          {features.slice(0, 3).map((feature) => (
-            <ListItem key={feature}>{feature}</ListItem>
+        <List
+          aria-label={size}
+          key={size}
+          size={size}
+          style={{ width: '14rem' }}
+          variant="bordered"
+        >
+          {files.map((file) => (
+            <ListItem key={file}>{file}</ListItem>
           ))}
         </List>
       ))}
@@ -178,53 +247,210 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **spacing** prop to change the space between the items.
+ * Use the **colorScheme** prop to pick the color of the selected item and of the focus ring.
  */
-export const Spacing: Story = {
+export const Colors: Story = {
+  render: () => (
+    <div className="flex flex-wrap justify-center gap-4">
+      {colorSchemes.map((scheme) => (
+        <List
+          aria-label={scheme}
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          key={scheme}
+          style={{ width: '9rem' }}
+          variant="bordered"
+        >
+          <ListItem>
+            <ListItemButton selected>{scheme}</ListItemButton>
+          </ListItem>
+        </List>
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use **marker** for bullets or numbers in a list of plain text. A numbered list is an `<ol>`, and a
+ * `ListItem` can set its own number with **value**.
+ */
+export const Markers: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-10">
-      {(['sm', 'md', 'lg'] as const).map((spacing) => (
-        <List aria-label={spacing} key={spacing} spacing={spacing}>
-          {features.slice(0, 3).map((feature) => (
-            <ListItem key={feature}>{feature}</ListItem>
-          ))}
-        </List>
-      ))}
+      <List aria-label="Bullets" marker="bullet">
+        <ListItem>Install the package</ListItem>
+        <ListItem>Wrap the app in the ThemeProvider</ListItem>
+        <ListItem>Import the stylesheet</ListItem>
+      </List>
+      <List aria-label="Steps" marker="number">
+        <ListItem>Install the package</ListItem>
+        <ListItem>Wrap the app in the ThemeProvider</ListItem>
+        <ListItem value={10}>Import the stylesheet</ListItem>
+      </List>
     </div>
   ),
 }
 
 /**
- * Put a **ListIcon** with an **Icon** at the start of an item to use it instead of the bullet. Combine it with
- * the `plain` variant.
+ * Add **divided** to draw a line between the items of a `plain` or `filled` List. The `bordered` variant has
+ * them already, and turning it off with `divided={false}` leaves the box alone.
  */
-export const WithIcons: Story = {
+export const Dividers: Story = {
   render: () => (
-    <List aria-label="Features" variant="plain">
-      {features.map((feature) => (
-        <ListItem key={feature}>
-          <ListIcon>
-            <Icon colorScheme="success" size="sm">
-              {check}
-            </Icon>
-          </ListIcon>
-          {feature}
-        </ListItem>
-      ))}
+    <div className="flex flex-wrap justify-center gap-6">
+      <List aria-label="Divided" divided style={{ width: '14rem' }}>
+        {files.map((file) => (
+          <ListItem key={file}>{file}</ListItem>
+        ))}
+      </List>
+      <List
+        aria-label="Bordered without dividers"
+        divided={false}
+        style={{ width: '14rem' }}
+        variant="bordered"
+      >
+        {files.map((file) => (
+          <ListItem key={file}>{file}</ListItem>
+        ))}
+      </List>
+    </div>
+  ),
+}
+
+/**
+ * **ListItemIcon** puts an icon at the start of the row, and **ListItemText** takes the text, with a
+ * **secondary** line under the **primary** one.
+ */
+export const IconsAndText: Story = {
+  render: () => (
+    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+      <ListItem>
+        <ListItemIcon>{inboxIcon}</ListItemIcon>
+        <ListItemText primary="Inbox" secondary="12 unread messages" />
+      </ListItem>
+      <ListItem>
+        <ListItemIcon>{sendIcon}</ListItemIcon>
+        <ListItemText primary="Sent" secondary="Last one yesterday" />
+      </ListItem>
+      <ListItem>
+        <ListItemIcon>{trashIcon}</ListItemIcon>
+        <ListItemText primary="Trash" />
+      </ListItem>
     </List>
   ),
 }
 
 /**
- * An ordered list of steps. The **start** and **value** of a numbered list are the native ones of `<ol>`:
- * set `value` on a `ListItem` to change its number.
+ * Anything after the text sits at the end of the row. Here, a **Badge** with a count.
  */
-export const Ordered: Story = {
+export const TrailingContent: Story = {
   render: () => (
-    <List aria-label="Steps" variant="ordered">
-      <ListItem>Install the package</ListItem>
-      <ListItem>Wrap the app in the ThemeProvider</ListItem>
-      <ListItem value={10}>Import the stylesheet</ListItem>
+    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+      <ListItem>
+        <ListItemIcon>{inboxIcon}</ListItemIcon>
+        <ListItemText primary="Inbox" />
+        <Badge shape="pill" size="sm">
+          12
+        </Badge>
+      </ListItem>
+      <ListItem>
+        <ListItemIcon>{sendIcon}</ListItemIcon>
+        <ListItemText primary="Sent" />
+      </ListItem>
+      <ListItem>
+        <ListItemIcon>{trashIcon}</ListItemIcon>
+        <ListItemText primary="Trash" />
+        <Badge colorScheme="secondary" shape="pill" size="sm" variant="subtle">
+          3
+        </Badge>
+      </ListItem>
+    </List>
+  ),
+}
+
+/**
+ * Put a **ListItemButton** inside a `ListItem` to make the row a button. With **href** it is a link. A button
+ * can be **selected**, which highlights it and sets `aria-current`, or **disabled**.
+ */
+export const Interactive: Story = {
+  render: () => (
+    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+      <ListItem>
+        <ListItemButton selected>
+          <ListItemIcon>{inboxIcon}</ListItemIcon>
+          <ListItemText primary="Inbox (selected)" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton href="#sent">
+          <ListItemIcon>{sendIcon}</ListItemIcon>
+          <ListItemText primary="Sent (a link)" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton disabled>
+          <ListItemIcon>{trashIcon}</ListItemIcon>
+          <ListItemText primary="Trash (disabled)" />
+        </ListItemButton>
+      </ListItem>
+    </List>
+  ),
+}
+
+function SelectableMailbox(): React.ReactNode {
+  const [selected, setSelected] = useState('inbox')
+  const boxes = [
+    { id: 'inbox', icon: inboxIcon, label: 'Inbox' },
+    { id: 'sent', icon: sendIcon, label: 'Sent' },
+    { id: 'trash', icon: trashIcon, label: 'Trash' },
+  ]
+  return (
+    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+      {boxes.map((box) => (
+        <ListItem key={box.id}>
+          <ListItemButton onClick={() => setSelected(box.id)} selected={selected === box.id}>
+            <ListItemIcon>{box.icon}</ListItemIcon>
+            <ListItemText primary={box.label} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  )
+}
+
+/**
+ * The List doesn't keep the selection: you set **selected** on the button, from your own state.
+ */
+export const Selectable: Story = {
+  render: () => <SelectableMailbox />,
+}
+
+/**
+ * **ListSubheader** titles the items that follow, and **ListDivider** separates two groups.
+ */
+export const Sections: Story = {
+  render: () => (
+    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+      <ListSubheader>Folders</ListSubheader>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon>{inboxIcon}</ListItemIcon>
+          <ListItemText primary="Inbox" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon>{sendIcon}</ListItemIcon>
+          <ListItemText primary="Sent" />
+        </ListItemButton>
+      </ListItem>
+      <ListDivider />
+      <ListSubheader>Other</ListSubheader>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon>{trashIcon}</ListItemIcon>
+          <ListItemText primary="Trash" />
+        </ListItemButton>
+      </ListItem>
     </List>
   ),
 }

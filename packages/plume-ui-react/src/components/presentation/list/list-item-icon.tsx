@@ -3,13 +3,16 @@ import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
 import styles from './list.module.css'
 
-type ListIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children' | 'hidden' | 'id'>
+type ListItemIconRootAttributes = Pick<
+  HTMLAttributes<HTMLSpanElement>,
+  'children' | 'hidden' | 'id'
+>
 
-export type ListIconProps = Omit<ComponentProps, 'index'> & ListIconRootAttributes
+export type ListItemIconProps = Omit<ComponentProps, 'index'> & ListItemIconRootAttributes
 
-export const ListIcon = forwardRef<HTMLSpanElement, ListIconProps>(
+export const ListItemIcon = forwardRef<HTMLSpanElement, ListItemIconProps>(
   (
-    { children, className = '', style, ...rest }: ListIconProps,
+    { children, className = '', style, ...rest }: ListItemIconProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ) => (
     <span
@@ -24,4 +27,4 @@ export const ListIcon = forwardRef<HTMLSpanElement, ListIconProps>(
   ),
 )
 
-ListIcon.displayName = 'ListIcon'
+ListItemIcon.displayName = 'ListItemIcon'
