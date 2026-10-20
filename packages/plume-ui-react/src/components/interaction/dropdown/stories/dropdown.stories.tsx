@@ -204,11 +204,11 @@ export const Variants: Story = {
         <DropdownTrigger>
           <Button label="Unstyled" variant="outline" />
         </DropdownTrigger>
-        <DropdownMenu className="min-w-40 rounded border border-gray-300 bg-white p-1 shadow">
-          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-gray-100 focus:bg-gray-100">
+        <DropdownMenu className="min-w-40 rounded border border-border bg-surface p-1 text-foreground shadow">
+          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
             Profile
           </DropdownItem>
-          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-gray-100 focus:bg-gray-100">
+          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
             Settings
           </DropdownItem>
         </DropdownMenu>
@@ -364,4 +364,138 @@ function ControlledExample(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <ControlledExample />,
+}
+
+/**
+ * Some examples of Dropdown with Tailwind classes. With `variant="unstyled"` the menu, its items, separators and labels have only the classes you give them. An item is a `button` (or an `a` with `href`), and the one the arrows reach has the focus, so `focus:` styles it.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Dropdown variant="unstyled">
+  <DropdownTrigger>
+    <Button
+      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      label="Account"
+      variant="unstyled"
+    />
+  </DropdownTrigger>
+  <DropdownMenu className="min-w-48 rounded-lg border border-border bg-surface p-1 text-sm text-foreground shadow-lg">
+    <DropdownLabel className="px-3 py-1 text-xs font-semibold uppercase text-[var(--plume-muted)]">
+      Signed in as ada
+    </DropdownLabel>
+    <DropdownItem
+      className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+      icon={userIcon}
+      shortcut="⌘P"
+    >
+      Profile
+    </DropdownItem>
+    <DropdownItem
+      className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+      icon={settingsIcon}
+      shortcut="⌘,"
+    >
+      Settings
+    </DropdownItem>
+    <DropdownSeparator className="my-1 h-px bg-border" />
+    <DropdownItem
+      className="rounded px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-none dark:hover:bg-red-950 dark:focus:bg-red-950"
+      icon={logoutIcon}
+    >
+      Sign out
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>`,
+      },
+    },
+  },
+  render: () => (
+    <Dropdown variant="unstyled">
+      <DropdownTrigger>
+        <Button
+          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          label="Account"
+          variant="unstyled"
+        />
+      </DropdownTrigger>
+      <DropdownMenu className="min-w-48 rounded-lg border border-border bg-surface p-1 text-sm text-foreground shadow-lg">
+        <DropdownLabel className="px-3 py-1 text-xs font-semibold uppercase text-[var(--plume-muted)]">
+          Signed in as ada
+        </DropdownLabel>
+        <DropdownItem
+          className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+          icon={userIcon}
+          shortcut="⌘P"
+        >
+          Profile
+        </DropdownItem>
+        <DropdownItem
+          className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+          icon={settingsIcon}
+          shortcut="⌘,"
+        >
+          Settings
+        </DropdownItem>
+        <DropdownSeparator className="my-1 h-px bg-border" />
+        <DropdownItem
+          className="rounded px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-none dark:hover:bg-red-950 dark:focus:bg-red-950"
+          icon={logoutIcon}
+        >
+          Sign out
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  ),
+}
+
+/**
+ * Some examples of Dropdown with Bootstrap classes: `dropdown-menu show` on the menu, `dropdown-item` on its items, `dropdown-divider` on the separator and `dropdown-header text-body-secondary` on the label.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Dropdown variant="unstyled">
+  <DropdownTrigger>
+    <Button className="btn btn-primary dropdown-toggle" label="Account" variant="unstyled" />
+  </DropdownTrigger>
+  <DropdownMenu className="dropdown-menu show">
+    <DropdownLabel className="dropdown-header text-body-secondary">Signed in as ada</DropdownLabel>
+    <DropdownItem className="dropdown-item">Profile</DropdownItem>
+    <DropdownItem className="dropdown-item">Settings</DropdownItem>
+    <DropdownItem className="dropdown-item" disabled>
+      Billing (soon)
+    </DropdownItem>
+    <DropdownSeparator className="dropdown-divider" />
+    <DropdownItem className="dropdown-item text-danger-emphasis">Sign out</DropdownItem>
+  </DropdownMenu>
+</Dropdown>`,
+      },
+    },
+  },
+  render: () => (
+    <Dropdown variant="unstyled">
+      <DropdownTrigger>
+        <Button
+          className="btn btn-primary dropdown-toggle"
+          label="Account"
+          variant="unstyled"
+        />
+      </DropdownTrigger>
+      <DropdownMenu className="dropdown-menu show">
+        <DropdownLabel className="dropdown-header text-body-secondary">
+          Signed in as ada
+        </DropdownLabel>
+        <DropdownItem className="dropdown-item">Profile</DropdownItem>
+        <DropdownItem className="dropdown-item">Settings</DropdownItem>
+        <DropdownItem className="dropdown-item" disabled>
+          Billing (soon)
+        </DropdownItem>
+        <DropdownSeparator className="dropdown-divider" />
+        <DropdownItem className="dropdown-item text-danger-emphasis">Sign out</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  ),
 }

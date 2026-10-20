@@ -76,7 +76,9 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
             {icon}
           </span>
         ) : null}
-        <span className={context.isStyled ? styles.label : undefined}>{children}</span>
+        <span className={context.isStyled ? styles.label : undefined} data-plume-menu-item-label="">
+          {children}
+        </span>
         {shortcut ? (
           <span className={context.isStyled ? styles.shortcut : undefined}>{shortcut}</span>
         ) : null}
@@ -94,6 +96,7 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
           {...rest}
           aria-disabled={disabled || undefined}
           className={classes}
+          data-plume-menu-item=""
           href={disabled ? undefined : href}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
@@ -114,6 +117,7 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
       <button
         {...rest}
         className={classes}
+        data-plume-menu-item=""
         disabled={disabled}
         onClick={handleClick}
         onPointerMove={handlePointerMove}

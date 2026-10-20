@@ -1,3 +1,24 @@
+:global(:where([data-plume-menu-item-label])) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+:global(:where([data-plume-menu-item])) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 0.5rem;
+  padding: 0;
+  text-align: start;
+  text-decoration: none;
+  width: 100%;
+}
+
 .menu {
   background-color: var(--plume-surface);
   border-radius: var(--plume-radius-4);
