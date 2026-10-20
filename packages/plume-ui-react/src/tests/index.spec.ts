@@ -42,6 +42,7 @@ describe('plume-ui-react', () => {
       'Tabs',
       'Textarea',
       'ThemeProvider',
+      'ToastProvider',
       'Toggle',
       'Tooltip',
       'applyMask',
@@ -65,6 +66,7 @@ describe('plume-ui-react', () => {
       'useDebounce',
       'useMask',
       'useTheme',
+      'useToast',
       'validateFormatDate',
     ])
   })
