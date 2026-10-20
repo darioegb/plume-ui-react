@@ -62,6 +62,8 @@ function SourceLink({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode
 function DocsTemplate(): ReactNode {
   const { preparedMeta } = useOf('meta', ['meta'])
   const componentName = preparedMeta.title.split('/').pop() ?? preparedMeta.title
+  const docsParameters = preparedMeta.parameters.docs as { importNames?: string[] } | undefined
+  const importNames = docsParameters?.importNames ?? [componentName]
   const sourcePath = getComponentSourcePath(String(preparedMeta.parameters.fileName))
   return (
     <div className="container">
@@ -69,7 +71,7 @@ function DocsTemplate(): ReactNode {
       <Description />
       <SourceLink sourcePath={sourcePath} />
       <h2>Import</h2>
-      <Source code={`import { ${componentName} } from '${PACKAGE_NAME}'`} dark />
+      <Source code={`import { ${importNames.join(', ')} } from '${PACKAGE_NAME}'`} dark />
       <h2>Playground</h2>
       <p>Edit the props in the table below to try the {componentName} live.</p>
       <Primary />

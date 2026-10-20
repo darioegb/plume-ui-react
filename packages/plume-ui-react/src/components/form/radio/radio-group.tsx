@@ -4,6 +4,7 @@ import type { ChangeEvent, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useId, useMemo, useState } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
+import type { RadioVariant } from './radio'
 import { RadioGroupContext } from './radio-group-context'
 import styles from './radio-group.module.css'
 
@@ -18,6 +19,7 @@ export interface RadioGroupOwnProps {
   required?: boolean
   size?: Size
   value?: string
+  variant?: RadioVariant
 }
 
 export type RadioGroupOrientation = 'vertical' | 'horizontal'
@@ -47,6 +49,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       size,
       style,
       value,
+      variant,
       ...rest
     }: RadioGroupProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -78,6 +81,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         select,
         size,
         value: currentValue,
+        variant,
       }),
       [
         colorScheme,
@@ -90,6 +94,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         required,
         select,
         size,
+        variant,
       ],
     )
 

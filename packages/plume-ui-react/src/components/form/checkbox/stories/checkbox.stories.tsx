@@ -45,20 +45,29 @@ export default {
       control: 'select',
       description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
+      table: {
+        type: { summary: 'ColorScheme' },
+        defaultValue: { summary: 'primary' },
+      },
     },
     size: {
       control: 'radio',
       description: 'Size of the Checkbox.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
+      table: {
+        type: { summary: `"sm" | "md" | "lg"` },
+        defaultValue: { summary: 'md' },
+      },
     },
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `unstyled` leaves the native checkbox so you can bring your own styles.',
-      options: ['solid', 'unstyled'],
-      table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
+        'Visual variant. `solid` fills the box when checked and `outline` only colors its border and mark. `unstyled` leaves the native checkbox so you can bring your own styles.',
+      options: ['solid', 'outline', 'unstyled'],
+      table: {
+        type: { summary: `"solid" | "outline" | "unstyled"` },
+        defaultValue: { summary: 'solid' },
+      },
     },
     checked: {
       control: 'boolean',
@@ -73,18 +82,27 @@ export default {
     indeterminate: {
       control: 'boolean',
       description: 'Shows a mixed state, for a parent that selects some of its children.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Disables the Checkbox.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     readOnly: {
       control: 'boolean',
       description:
         'Shows the state without letting the user change it. It also silences `onChange`.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     required: {
       control: 'boolean',
@@ -139,12 +157,18 @@ export default {
     onBlur: {
       control: false,
       description: 'Called when the Checkbox loses focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: FocusEvent) => void' },
+      },
     },
     onFocus: {
       control: false,
       description: 'Called when the Checkbox receives focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
+      table: {
+        category: 'Events',
+        type: { summary: '(event: FocusEvent) => void' },
+      },
     },
   },
   args: {
@@ -158,6 +182,26 @@ type Story = StoryObj<typeof Checkbox>
  * This is the default Checkbox. Its **children** are the label.
  */
 export const Default: Story = {}
+
+/**
+ * Use the **variant** prop to pick how a checked box looks: `solid` fills it with the color, `outline` only
+ * colors the border and the mark, and `unstyled` leaves the native checkbox so you can style it yourself.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-wrap justify-center items-center gap-6">
+      <Checkbox defaultChecked variant="solid">
+        Solid
+      </Checkbox>
+      <Checkbox defaultChecked variant="outline">
+        Outline
+      </Checkbox>
+      <Checkbox defaultChecked variant="unstyled">
+        Unstyled
+      </Checkbox>
+    </div>
+  ),
+}
 
 /**
  * Use the **size** prop to change the size of the box and of the label.
@@ -278,13 +322,4 @@ export const WithField: Story = {
       <Checkbox>I accept the terms and conditions</Checkbox>
     </Field>
   ),
-}
-
-/**
- * The **unstyled** variant leaves the native checkbox.
- */
-export const Unstyled: Story = {
-  args: {
-    variant: 'unstyled',
-  },
 }

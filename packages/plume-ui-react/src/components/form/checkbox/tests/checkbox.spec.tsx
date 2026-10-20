@@ -137,6 +137,16 @@ describe('Checkbox component', () => {
       expect(label).toHaveStyle('--checkbox-solid: red')
     })
 
+    it('uses the solid variant by default and can switch to outline', () => {
+      const { rerender } = render(<Checkbox>Accept</Checkbox>)
+      expect(screen.getByRole('checkbox')).toHaveClass('checkbox', 'solid')
+      expect(screen.getByRole('checkbox')).not.toHaveClass('outline')
+
+      rerender(<Checkbox variant="outline">Accept</Checkbox>)
+      expect(screen.getByRole('checkbox')).toHaveClass('checkbox', 'outline')
+      expect(screen.getByRole('checkbox')).not.toHaveClass('solid')
+    })
+
     it('drops the Plume classes when unstyled', () => {
       render(
         <Checkbox className="custom" variant="unstyled">

@@ -38,6 +38,10 @@
   margin-block-end: 0.125rem;
 }
 
+input + .inputButton {
+  height: auto;
+}
+
 .inputButtonIcon {
   height: var(--plume-space-5);
   width: var(--plume-space-5);

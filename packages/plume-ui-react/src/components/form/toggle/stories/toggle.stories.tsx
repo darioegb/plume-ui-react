@@ -55,9 +55,12 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `unstyled` leaves the native switch so you can bring your own styles.',
-      options: ['solid', 'unstyled'],
-      table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
+        'Visual variant. `solid` fills the track when on, `outline` only colors its border and thumb, and `raised` floats a bigger thumb with a shadow over a thin track. `unstyled` leaves the native switch so you can bring your own styles.',
+      options: ['solid', 'outline', 'raised', 'unstyled'],
+      table: {
+        type: { summary: `"solid" | "outline" | "raised" | "unstyled"` },
+        defaultValue: { summary: 'solid' },
+      },
     },
     checked: {
       control: 'boolean',
@@ -153,7 +156,31 @@ type Story = StoryObj<typeof Toggle>
 export const Default: Story = {}
 
 /**
- * Use the **size** prop to change the size of the box and of the label.
+ * Use the **variant** prop to pick how an on switch looks: `solid` fills the track with the color, `outline`
+ * only colors the border and the thumb, `raised` floats a bigger thumb with a shadow over a thin track, and
+ * `unstyled` leaves the native switch so you can style it yourself.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-wrap justify-center items-center gap-6">
+      <Toggle defaultChecked variant="solid">
+        Solid
+      </Toggle>
+      <Toggle defaultChecked variant="outline">
+        Outline
+      </Toggle>
+      <Toggle defaultChecked variant="raised">
+        Raised
+      </Toggle>
+      <Toggle defaultChecked variant="unstyled">
+        Unstyled
+      </Toggle>
+    </div>
+  ),
+}
+
+/**
+ * Use the **size** prop to change the size of the switch and of the label.
  */
 export const Sizes: Story = {
   render: () => (
@@ -230,13 +257,4 @@ export const WithField: Story = {
       <Toggle>Email notifications</Toggle>
     </Field>
   ),
-}
-
-/**
- * The **unstyled** variant leaves the native switch.
- */
-export const Unstyled: Story = {
-  args: {
-    variant: 'unstyled',
-  },
 }

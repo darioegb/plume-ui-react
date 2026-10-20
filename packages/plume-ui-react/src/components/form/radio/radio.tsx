@@ -19,7 +19,7 @@ export interface RadioOwnProps {
   variant?: RadioVariant
 }
 
-export type RadioVariant = 'solid' | 'unstyled'
+export type RadioVariant = 'solid' | 'outline' | 'unstyled'
 
 type RadioRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
@@ -66,13 +66,14 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       size,
       style,
       value,
-      variant = 'solid',
+      variant,
       ...rest
     }: RadioProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const group = useRadioGroupContext()
-    const isStyled = variant !== 'unstyled'
+    const resolvedVariant = variant ?? group?.variant ?? 'solid'
+    const isStyled = resolvedVariant !== 'unstyled'
     const isInvalid =
       rest['aria-invalid'] === true || rest['aria-invalid'] === 'true' || Boolean(group?.invalid)
     const isDisabled = disabled || Boolean(group?.disabled)
@@ -83,7 +84,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
       isDisabled ? styles.disabled : ''
     } ${className}`.trim()
     const inputClasses = isStyled
-      ? `${styles.radio} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? `${styles.radio} ${styles[resolvedVariant]} ${isInvalid ? styles.invalid : ''}`.trim()
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {

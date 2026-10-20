@@ -30,6 +30,9 @@ The folder is the lowercase name (`datepicker`), which is also what Storybook us
 - **`forwardRef`** to the root DOM element, and set `displayName`.
 - **`className` and `style`** always work. `style` is applied last, so it can override the component's CSS variables.
 - **`size`** (`sm | md | lg`), **`shape`** and **`colorScheme`** reuse the shared types from the theme. A `colorScheme` is any key of the theme palette, including custom ones added with module augmentation.
+- **`variant`**: whenever it makes sense, give the component more than one look. `solid` and `outline` are the minimum for anything with an active state or a fill (`Checkbox`, `Radio`, `Toggle`, `Button`), the text fields share `outline`, `filled` and `underline`, and every component with variants also has `unstyled`. A component without variants (a plain container like `Field`) should say why in its story. A group that shares options with its parts passes the variant down, and a part can set its own.
+- **Story order** is the same in every component, for the stories they have: `Default`, `Variants`, `Sizes`, `Colors`, then the ones specific to the component, then the states (`Disabled`, `Invalid`), `WithField` and last `Tailwind` and `Bootstrap`. Storybook lists them in the order they are exported.
+- **The `Variants` story** shows every variant of the component once, `unstyled` included, and nothing else (no sizes or states mixed in). `unstyled` is not a story of its own; a separate story is only for showing it next to Tailwind or Bootstrap.
 - **`variant="unstyled"`** drops every Plume class and keeps only the user's `className`, so the component can be styled with Tailwind or Bootstrap.
 - **Ids** come from React's `useId` (React 18 is the minimum), never from a module counter.
 - **Server rendering:** don't touch `window` or `document` while rendering. Use effects. See [Server and client components](#server-and-client-components) for the `'use client'` rule.
@@ -133,6 +136,7 @@ Copy it into the pull request description.
 **API**
 - [ ] Props split in own props, root attributes and `<Name>Props`; DOM attributes whitelisted
 - [ ] `forwardRef` and `displayName`; `className` and `style` work
+- [ ] Has variants (`solid` and `outline` at least, when it makes sense) and a `Variants` story with one example per variant, `unstyled` included
 - [ ] `variant="unstyled"` leaves only the user's classes
 - [ ] Compound parts are separate prefixed exports, with a context and a hook that throws outside the root
 - [ ] Form controls accept `FieldControlProps` on the real element and forward the ref
@@ -152,7 +156,7 @@ Copy it into the pull request description.
 - [ ] `pnpm lint` and `pnpm build` pass (the build includes the `'use client'` check)
 
 **Docs**
-- [ ] Story with `autodocs`, a description, every prop in `argTypes` and the main variations (the docs page and its Source link are generated from it)
+- [ ] Story with `autodocs`, a description, every prop in `argTypes` and the main variations, in the usual order (the docs page and its Source link are generated from it)
 - [ ] The component is listed alphabetically in `packages/plume-ui-react/README.md` (the scaffold already adds it to the root README)
 
 **Release**

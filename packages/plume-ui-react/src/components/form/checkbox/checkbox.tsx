@@ -19,7 +19,7 @@ export interface CheckboxOwnProps {
   variant?: CheckboxVariant
 }
 
-export type CheckboxVariant = 'solid' | 'unstyled'
+export type CheckboxVariant = 'solid' | 'outline' | 'unstyled'
 
 type CheckboxRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
@@ -83,7 +83,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       disabled ? styles.disabled : ''
     } ${className}`.trim()
     const inputClasses = isStyled
-      ? `${styles.checkbox} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? `${styles.checkbox} ${styles[variant]} ${isInvalid ? styles.invalid : ''}`.trim()
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {

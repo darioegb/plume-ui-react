@@ -35,6 +35,20 @@ describe('RadioGroup component', () => {
     expect(new Set(names).size).toBe(1)
   })
 
+  it('shares its variant with the radios, and a radio can set its own', () => {
+    render(
+      <RadioGroup aria-label="Plan" variant="outline">
+        <Radio value="free">free</Radio>
+        <Radio value="pro" variant="solid">
+          pro
+        </Radio>
+      </RadioGroup>,
+    )
+    expect(radio('free')).toHaveClass('outline')
+    expect(radio('pro')).toHaveClass('solid')
+    expect(radio('pro')).not.toHaveClass('outline')
+  })
+
   it('uses the name it is given', () => {
     render(<Plans name="plan" />)
     for (const input of screen.getAllByRole('radio')) expect(input).toHaveAttribute('name', 'plan')

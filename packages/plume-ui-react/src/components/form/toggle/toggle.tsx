@@ -18,7 +18,7 @@ export interface ToggleOwnProps {
   variant?: ToggleVariant
 }
 
-export type ToggleVariant = 'solid' | 'unstyled'
+export type ToggleVariant = 'solid' | 'outline' | 'raised' | 'unstyled'
 
 type ToggleRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
@@ -71,7 +71,7 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
       disabled ? styles.disabled : ''
     } ${className}`.trim()
     const inputClasses = isStyled
-      ? `${styles.toggle} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? `${styles.toggle} ${styles[variant]} ${isInvalid ? styles.invalid : ''}`.trim()
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {

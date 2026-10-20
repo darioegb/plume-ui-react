@@ -120,6 +120,20 @@ describe('Toggle component', () => {
       expect(label).toHaveStyle('--toggle-solid: red')
     })
 
+    it('uses the solid variant by default and can switch to another one', () => {
+      const { rerender } = render(<Toggle>Notifications</Toggle>)
+      expect(screen.getByRole('switch')).toHaveClass('toggle', 'solid')
+      expect(screen.getByRole('switch')).not.toHaveClass('outline')
+
+      rerender(<Toggle variant="outline">Notifications</Toggle>)
+      expect(screen.getByRole('switch')).toHaveClass('toggle', 'outline')
+      expect(screen.getByRole('switch')).not.toHaveClass('solid')
+
+      rerender(<Toggle variant="raised">Notifications</Toggle>)
+      expect(screen.getByRole('switch')).toHaveClass('toggle', 'raised')
+      expect(screen.getByRole('switch')).not.toHaveClass('outline')
+    })
+
     it('drops the Plume classes when unstyled', () => {
       render(
         <Toggle className="custom" variant="unstyled">

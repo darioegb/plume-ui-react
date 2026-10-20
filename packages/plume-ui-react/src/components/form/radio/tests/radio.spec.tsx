@@ -186,6 +186,19 @@ describe('Radio component', () => {
       expect(label).toHaveStyle('--radio-solid: red')
     })
 
+    it('uses the solid variant by default and can switch to outline', () => {
+      const { rerender } = render(<Radio value="x">Free</Radio>)
+      expect(screen.getByRole('radio')).toHaveClass('radio', 'solid')
+
+      rerender(
+        <Radio value="x" variant="outline">
+          Free
+        </Radio>,
+      )
+      expect(screen.getByRole('radio')).toHaveClass('radio', 'outline')
+      expect(screen.getByRole('radio')).not.toHaveClass('solid')
+    })
+
     it('drops the Plume classes when unstyled', () => {
       render(
         <Radio className="custom" value="x" variant="unstyled">

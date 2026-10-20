@@ -193,7 +193,8 @@ type Story = StoryObj<typeof Textarea>
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick how the Textarea looks.
+ * Use the **variant** prop to pick how the Textarea looks. `unstyled` leaves the native textarea so you can
+ * style it yourself.
  */
 export const Variants: Story = {
   render: () => (
@@ -201,6 +202,12 @@ export const Variants: Story = {
       <Textarea aria-label="Outline" placeholder="Outline" variant="outline" />
       <Textarea aria-label="Filled" placeholder="Filled" variant="filled" />
       <Textarea aria-label="Underline" placeholder="Underline" variant="underline" />
+      <Textarea
+        aria-label="Unstyled"
+        className="border border-gray-400 rounded p-2"
+        placeholder="Unstyled"
+        variant="unstyled"
+      />
     </div>
   ),
 }
@@ -286,14 +293,4 @@ export const WithField: Story = {
       <Textarea defaultValue="Too short" placeholder="Your bio" />
     </Field>
   ),
-}
-
-/**
- * The **unstyled** variant leaves the native textarea so you can style it yourself.
- */
-export const Unstyled: Story = {
-  args: {
-    variant: 'unstyled',
-    className: 'border border-gray-400 rounded p-2',
-  },
 }
