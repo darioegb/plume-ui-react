@@ -23,13 +23,15 @@ describe('Icon component', () => {
   it('is hidden from assistive technology without a label', () => {
     const { container } = render(<Icon>{svg}</Icon>)
     expect(container.firstElementChild).toHaveAttribute('aria-hidden', 'true')
-    expect(screen.queryByRole('img')).toBeNull()
+    expect(container.querySelector('.label')).toBeNull()
   })
 
-  it('is an image named by the label', () => {
+  it('reads the label as text, with the svg hidden', () => {
     const { container } = render(<Icon label="Notifications">{svg}</Icon>)
-    expect(screen.getByRole('img', { name: 'Notifications' })).toBeInTheDocument()
     expect(container.firstElementChild).not.toHaveAttribute('aria-hidden')
+    expect(screen.getByText('Notifications')).toHaveClass('label')
+    expect(screen.getByTestId('svg').closest('[aria-hidden="true"]')).toHaveClass('glyph')
+    expect(screen.queryByRole('img')).toBeNull()
   })
 
   it('exposes the color scheme as a CSS variable', () => {

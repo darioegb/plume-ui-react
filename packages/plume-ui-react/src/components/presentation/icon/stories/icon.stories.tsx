@@ -27,7 +27,7 @@ const bell = (
  * `style` to change what it does have.
  *
  * An icon next to text is decoration, and the Icon hides it from screen readers. When the icon is the only
- * content, pass a **label**.
+ * content, pass a **label**: it is added as text that only screen readers get, and the SVG stays hidden.
  */
 export default {
   title: 'Components/Icon',
@@ -75,7 +75,7 @@ export default {
     label: {
       control: 'text',
       description:
-        'Accessible name. With it the Icon is an image (`role="img"`); without it the Icon is hidden from assistive technology.',
+        'Accessible name, rendered as text that only screen readers get. Without it the Icon is hidden from assistive technology.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     id: {
@@ -132,8 +132,8 @@ export const Colors: Story = {
 }
 
 /**
- * An Icon with a **label** is an image for assistive technology. Use it when the icon is the only content,
- * as in a button with no text.
+ * An Icon with a **label** is read by assistive technology as that text. Use it when the icon is the only
+ * content, as in a button with no text.
  */
 export const WithLabel: Story = {
   args: {

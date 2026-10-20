@@ -5,14 +5,33 @@
   flex: none;
   height: var(--icon-size);
   justify-content: center;
+  position: relative;
   vertical-align: middle;
   width: var(--icon-size);
 }
 
-.icon > svg {
+.glyph {
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+}
+
+.glyph > svg {
   display: block;
   height: 100%;
   width: 100%;
+}
+
+.label {
+  block-size: 1px;
+  border: 0;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
 }
 
 .sm {
