@@ -14,6 +14,8 @@ import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
 export interface RadioOwnProps {
+  inputClassName?: string
+  labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -57,6 +59,8 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
       checked,
       children,
       className = '',
+      inputClassName = '',
+      labelClassName = '',
       colorScheme,
       defaultChecked,
       disabled = false,
@@ -95,11 +99,15 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
     ]
       .filter(Boolean)
       .join(' ')
-    const inputClasses = isStyled
-      ? [styles.radio, styles[resolvedVariant], isInvalid && styles.invalid]
-          .filter(Boolean)
-          .join(' ')
-      : undefined
+    const inputClasses =
+      [
+        isStyled && styles.radio,
+        isStyled && styles[resolvedVariant],
+        isStyled && isInvalid && styles.invalid,
+        inputClassName,
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (isReadOnly) event.preventDefault()
@@ -137,7 +145,12 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
           aria-labelledby={labelledBy}
         />
         {children ? (
-          <span className={isStyled ? styles.label : undefined} id={textId}>
+          <span
+            className={
+              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+            }
+            id={textId}
+          >
             {children}
           </span>
         ) : null}

@@ -232,4 +232,46 @@ describe('Radio component', () => {
     expect(radio).toHaveAttribute('aria-invalid', 'true')
     expect(radio).toHaveAccessibleDescription('Pick one Required')
   })
+
+  describe('classes of the parts', () => {
+    it('adds inputClassName to the input and labelClassName to the text', () => {
+      render(
+        <Radio inputClassName="my-input" labelClassName="my-label" value="x">
+          Label
+        </Radio>,
+      )
+      expect(screen.getByRole('radio')).toHaveClass('my-input')
+      expect(screen.getByText('Label')).toHaveClass('my-label')
+    })
+
+    it('keeps them next to the Plume classes', () => {
+      render(
+        <Radio inputClassName="my-input" labelClassName="my-label" value="x">
+          Label
+        </Radio>,
+      )
+      expect(screen.getByRole('radio').className).toMatch(/radio.+my-input/)
+      expect(screen.getByText('Label').className).toMatch(/label.+my-label/)
+    })
+
+    it('is the only class of the input and the text when unstyled', () => {
+      render(
+        <Radio inputClassName="my-input" labelClassName="my-label" variant="unstyled" value="x">
+          Label
+        </Radio>,
+      )
+      expect(screen.getByRole('radio')).toHaveAttribute('class', 'my-input')
+      expect(screen.getByText('Label')).toHaveAttribute('class', 'my-label')
+    })
+
+    it('leaves the input and the text without a class attribute when unstyled and empty', () => {
+      render(
+        <Radio variant="unstyled" value="x">
+          Label
+        </Radio>,
+      )
+      expect(screen.getByRole('radio')).not.toHaveAttribute('class')
+      expect(screen.getByText('Label')).not.toHaveAttribute('class')
+    })
+  })
 })

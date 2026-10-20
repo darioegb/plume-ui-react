@@ -1,9 +1,10 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useState } from 'react'
+import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
-import { Portal, useDismiss, useFocusTrap, useLayer, usePosition } from '../../../overlay'
+import { Portal, useFocusTrap } from '../../../overlay'
+import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { mergeRefs } from '../../../overlay/trigger'
 import { usePopoverContext } from './popover-context'
 import styles from './popover.module.css'
@@ -22,23 +23,14 @@ export const PopoverContent = forwardRef<HTMLDialogElement, PopoverContentProps>
   ): ReactNode => {
     const context = usePopoverContext('PopoverContent')
     const { contentId, flip, isStyled, offset, open, placement, setOpen, shift, trigger } = context
-    const [panel, setPanel] = useState<HTMLDialogElement | null>(null)
-    const isTopmost = useLayer(open)
-    const position = usePosition({
+    const { isTopmost, panel, position, setPanel } = useFloatingPanel({
       anchor: trigger,
-      floating: panel,
       enabled: open,
-      placement,
-      offset,
       flip,
-      shift,
-    })
-
-    useDismiss({
-      enabled: open,
+      offset,
       onDismiss: () => setOpen(false),
-      elements: [trigger, panel],
-      isTopmost,
+      placement,
+      shift,
     })
     useFocusTrap(panel, { active: open, isTopmost, returnFocus: trigger })
 

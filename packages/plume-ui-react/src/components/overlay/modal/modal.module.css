@@ -1,3 +1,13 @@
+:global(:where([data-plume-modal-backdrop])) {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: var(--plume-z-6);
+}
+
 :global(:where(dialog[data-plume-dialog])) {
   background-color: transparent;
   border: 0;

@@ -35,6 +35,17 @@ export default {
       description: 'Custom CSS class for the label that wraps the input.',
       table: { type: { summary: 'string' } },
     },
+    inputClassName: {
+      control: 'text',
+      description:
+        'Custom CSS class for the `<input>`, in every variant. With `variant="unstyled"` it is the only class of the input, so it is how Tailwind or Bootstrap style the control itself.',
+      table: { type: { summary: 'string' } },
+    },
+    labelClassName: {
+      control: 'text',
+      description: 'Custom CSS class for the text of the label, in every variant.',
+      table: { type: { summary: 'string' } },
+    },
     style: {
       control: false,
       description:
@@ -107,17 +118,17 @@ export default {
     required: {
       control: 'boolean',
       description: 'Marks the Checkbox as required.',
-      table: { category: 'Form', type: { summary: 'boolean' } },
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     name: {
       control: 'text',
       description: 'Name used when the form is submitted.',
-      table: { category: 'Form', type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     value: {
       control: 'text',
       description: 'Value submitted when the Checkbox is checked.',
-      table: { category: 'Form', type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     id: {
       control: false,
@@ -321,5 +332,141 @@ export const WithField: Story = {
     >
       <Checkbox>I accept the terms and conditions</Checkbox>
     </Field>
+  ),
+}
+
+/**
+ * Some examples of Checkbox with Tailwind classes. With `variant="unstyled"` the Plume classes are gone: `className` styles the label that wraps the input, `inputClassName` the input and `labelClassName` the text. A native checkbox takes its color from `accent-*`.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-3">
+  <Checkbox
+    className="inline-flex items-center gap-2 text-sm"
+    inputClassName="h-4 w-4 rounded accent-blue-600"
+    variant="unstyled"
+  >
+    Accept the terms
+  </Checkbox>
+  <Checkbox
+    className="inline-flex items-center gap-2 text-sm"
+    defaultChecked
+    inputClassName="h-5 w-5 accent-emerald-600"
+    labelClassName="font-semibold"
+    variant="unstyled"
+  >
+    Subscribe to the newsletter
+  </Checkbox>
+  <Checkbox
+    className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
+    disabled
+    inputClassName="h-4 w-4 accent-blue-600"
+    variant="unstyled"
+  >
+    Disabled
+  </Checkbox>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Checkbox
+        className="inline-flex items-center gap-2 text-sm"
+        inputClassName="h-4 w-4 rounded accent-blue-600"
+        variant="unstyled"
+      >
+        Accept the terms
+      </Checkbox>
+      <Checkbox
+        className="inline-flex items-center gap-2 text-sm"
+        defaultChecked
+        inputClassName="h-5 w-5 accent-emerald-600"
+        labelClassName="font-semibold"
+        variant="unstyled"
+      >
+        Subscribe to the newsletter
+      </Checkbox>
+      <Checkbox
+        className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
+        disabled
+        inputClassName="h-4 w-4 accent-blue-600"
+        variant="unstyled"
+      >
+        Disabled
+      </Checkbox>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Checkbox with Bootstrap classes. `className` goes to the label that wraps the input, so it takes `form-check`, while `inputClassName` takes `form-check-input` and `labelClassName` `form-check-label`.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-column gap-2">
+  <Checkbox
+    className="form-check"
+    inputClassName="form-check-input"
+    labelClassName="form-check-label"
+    variant="unstyled"
+  >
+    Accept the terms
+  </Checkbox>
+  <Checkbox
+    className="form-check"
+    defaultChecked
+    inputClassName="form-check-input"
+    labelClassName="form-check-label"
+    variant="unstyled"
+  >
+    Subscribe to the newsletter
+  </Checkbox>
+  <Checkbox
+    className="form-check"
+    disabled
+    inputClassName="form-check-input"
+    labelClassName="form-check-label"
+    variant="unstyled"
+  >
+    Disabled
+  </Checkbox>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-2">
+      <Checkbox
+        className="form-check"
+        inputClassName="form-check-input"
+        labelClassName="form-check-label"
+        variant="unstyled"
+      >
+        Accept the terms
+      </Checkbox>
+      <Checkbox
+        className="form-check"
+        defaultChecked
+        inputClassName="form-check-input"
+        labelClassName="form-check-label"
+        variant="unstyled"
+      >
+        Subscribe to the newsletter
+      </Checkbox>
+      <Checkbox
+        className="form-check"
+        disabled
+        inputClassName="form-check-input"
+        labelClassName="form-check-label"
+        variant="unstyled"
+      >
+        Disabled
+      </Checkbox>
+    </div>
   ),
 }

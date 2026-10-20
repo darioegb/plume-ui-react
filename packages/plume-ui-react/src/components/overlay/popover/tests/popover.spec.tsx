@@ -284,7 +284,7 @@ describe('Popover component', () => {
     })
 
     it('keeps the className and style, and forwards the ref', () => {
-      const ref = createRef<HTMLDivElement>()
+      const ref = createRef<HTMLDialogElement>()
       render(
         <Popover defaultOpen>
           <PopoverContent

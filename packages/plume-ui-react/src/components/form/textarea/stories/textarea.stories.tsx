@@ -99,23 +99,23 @@ export default {
     maxLength: {
       control: 'number',
       description: 'Maximum number of characters.',
-      table: { category: 'Form', type: { summary: 'number' } },
+      table: { category: 'HTML attributes', type: { summary: 'number' } },
     },
     minLength: {
       control: 'number',
       description: 'Minimum number of characters for the value to be valid.',
-      table: { category: 'Form', type: { summary: 'number' } },
+      table: { category: 'HTML attributes', type: { summary: 'number' } },
     },
     name: {
       control: 'text',
       description: 'Name used when the form is submitted.',
-      table: { category: 'Form', type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     wrap: {
       control: 'radio',
       description: 'How the text wraps when the form is submitted.',
       options: ['soft', 'hard', 'off'],
-      table: { category: 'Form', type: { summary: `"soft" | "hard" | "off"` } },
+      table: { category: 'HTML attributes', type: { summary: `"soft" | "hard" | "off"` } },
     },
     disabled: {
       control: 'boolean',
@@ -130,7 +130,7 @@ export default {
     required: {
       control: 'boolean',
       description: 'Marks the Textarea as required.',
-      table: { category: 'Form', type: { summary: 'boolean' } },
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     id: {
       control: false,
@@ -292,5 +292,89 @@ export const WithField: Story = {
     >
       <Textarea defaultValue="Too short" placeholder="Your bio" />
     </Field>
+  ),
+}
+
+/**
+ * Some examples of Textarea with Tailwind classes. With `variant="unstyled"` the `className` is the only class of the `<textarea>`.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex w-72 max-w-full flex-col gap-4">
+  <Textarea
+    className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+    placeholder="Tell us more"
+    variant="unstyled"
+  />
+  <Textarea
+    className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
+    placeholder="Rounded and fixed"
+    rows={4}
+    variant="unstyled"
+  />
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex w-72 max-w-full flex-col gap-4">
+      <Textarea
+        className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+        placeholder="Tell us more"
+        variant="unstyled"
+      />
+      <Textarea
+        className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
+        placeholder="Rounded and fixed"
+        rows={4}
+        variant="unstyled"
+      />
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Textarea with Bootstrap classes: `form-control`, with its size and validation states.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+  <Textarea className="form-control" placeholder="Default textarea" variant="unstyled" />
+  <Textarea
+    className="form-control form-control-sm"
+    placeholder="Small textarea"
+    variant="unstyled"
+  />
+  <Textarea
+    className="form-control is-invalid"
+    defaultValue="Invalid value"
+    placeholder="Invalid textarea"
+    style={{ backgroundImage: 'none' }}
+    variant="unstyled"
+  />
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+      <Textarea className="form-control" placeholder="Default textarea" variant="unstyled" />
+      <Textarea
+        className="form-control form-control-sm"
+        placeholder="Small textarea"
+        variant="unstyled"
+      />
+      <Textarea
+        className="form-control is-invalid"
+        defaultValue="Invalid value"
+        placeholder="Invalid textarea"
+        style={{ backgroundImage: 'none' }}
+        variant="unstyled"
+      />
+    </div>
   ),
 }

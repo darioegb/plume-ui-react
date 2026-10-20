@@ -38,7 +38,7 @@ export function App() {
 
 ## Components
 
-`Badge`, `Button`, `Card` (with `CardHeader`, `CardBody` and `CardFooter`), `Checkbox`, `DatePicker`, `Field`, `Icon`, `Input`, `List` (with `ListDivider`, `ListItem`, `ListItemButton`, `ListItemIcon`, `ListItemText` and `ListSubheader`), `Modal` (with `ModalBody`, `ModalClose`, `ModalContent`, `ModalFooter`, `ModalHeader` and `ModalTrigger`), `Popover` (with `PopoverClose`, `PopoverContent` and `PopoverTrigger`), `Radio`, `RadioGroup`, `Spinner`, `Tabs` (with `TabList`, `Tab`, `TabPanels` and `TabPanel`), `Textarea`, `ToastProvider` (with the `useToast` hook), `Toggle` and `Tooltip`.
+`Badge`, `Button`, `Card` (with `CardHeader`, `CardBody` and `CardFooter`), `Checkbox`, `Chip`, `DatePicker`, `Dropdown` (with `DropdownItem`, `DropdownLabel`, `DropdownMenu`, `DropdownSeparator` and `DropdownTrigger`), `Field`, `Icon`, `Input`, `List` (with `ListDivider`, `ListItem`, `ListItemButton`, `ListItemIcon`, `ListItemText` and `ListSubheader`), `Modal` (with `ModalBody`, `ModalClose`, `ModalContent`, `ModalFooter`, `ModalHeader` and `ModalTrigger`), `Popover` (with `PopoverClose`, `PopoverContent` and `PopoverTrigger`), `Radio`, `RadioGroup`, `Select` (with `SelectContent`, `SelectGroup`, `SelectOption`, `SelectTrigger` and `SelectValue`), `Spinner`, `Tabs` (with `TabList`, `Tab`, `TabPanels` and `TabPanel`), `Textarea`, `ToastProvider` (with the `useToast` hook), `Toggle` and `Tooltip`.
 
 The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for each one, plus the color palette, design tokens and framework integration guides.
 

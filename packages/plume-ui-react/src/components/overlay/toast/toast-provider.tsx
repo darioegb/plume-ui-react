@@ -27,9 +27,12 @@ export type ToastPosition =
 
 export type ToastVariant = 'solid' | 'subtle' | 'outline' | 'unstyled'
 
+export type ToastPart = 'action' | 'content' | 'description' | 'dismiss' | 'icon' | 'title'
+
 export interface ToastProviderProps {
   children: ReactNode
   className?: string
+  classNames?: Partial<Record<ToastPart, string>>
   dismissLabel?: string
   duration?: number
   icons?: false | ToastIcons
@@ -49,6 +52,7 @@ const isOptions = (content: ToastContent): content is ToastOptions =>
 export function ToastProvider({
   children,
   className = '',
+  classNames,
   dismissLabel = 'Dismiss notification',
   duration = 5000,
   icons,
@@ -137,6 +141,7 @@ export function ToastProvider({
             <ToastItem
               dismissLabel={dismissLabel}
               className={toastClassName}
+              classNames={classNames}
               icons={icons}
               isStyled={isStyled}
               key={`${toast.id}-${toast.revision}`}

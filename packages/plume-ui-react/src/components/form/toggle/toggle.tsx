@@ -13,6 +13,8 @@ import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './toggle.module.css'
 
 export interface ToggleOwnProps {
+  inputClassName?: string
+  labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -55,6 +57,8 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
     {
       children,
       className = '',
+      inputClassName = '',
+      labelClassName = '',
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -82,9 +86,15 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
     ]
       .filter(Boolean)
       .join(' ')
-    const inputClasses = isStyled
-      ? [styles.toggle, styles[variant], isInvalid && styles.invalid].filter(Boolean).join(' ')
-      : undefined
+    const inputClasses =
+      [
+        isStyled && styles.toggle,
+        isStyled && styles[variant],
+        isStyled && isInvalid && styles.invalid,
+        inputClassName,
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (readOnly) event.preventDefault()
@@ -112,7 +122,12 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
           aria-labelledby={labelledBy}
         />
         {children ? (
-          <span className={isStyled ? styles.label : undefined} id={textId}>
+          <span
+            className={
+              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+            }
+            id={textId}
+          >
             {children}
           </span>
         ) : null}

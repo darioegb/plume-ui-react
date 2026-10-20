@@ -13,6 +13,8 @@ import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './checkbox.module.css'
 
 export interface CheckboxOwnProps {
+  inputClassName?: string
+  labelClassName?: string
   colorScheme?: ColorScheme
   indeterminate?: boolean
   readOnly?: boolean
@@ -58,6 +60,8 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
     {
       children,
       className = '',
+      inputClassName = '',
+      labelClassName = '',
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -94,9 +98,15 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
     ]
       .filter(Boolean)
       .join(' ')
-    const inputClasses = isStyled
-      ? [styles.checkbox, styles[variant], isInvalid && styles.invalid].filter(Boolean).join(' ')
-      : undefined
+    const inputClasses =
+      [
+        isStyled && styles.checkbox,
+        isStyled && styles[variant],
+        isStyled && isInvalid && styles.invalid,
+        inputClassName,
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (readOnly) event.preventDefault()
@@ -123,7 +133,12 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
           aria-labelledby={labelledBy}
         />
         {children ? (
-          <span className={isStyled ? styles.label : undefined} id={textId}>
+          <span
+            className={
+              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+            }
+            id={textId}
+          >
             {children}
           </span>
         ) : null}

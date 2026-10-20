@@ -3,6 +3,7 @@
 import type { ForwardedRef, ReactElement, ReactNode } from 'react'
 import { forwardRef, isValidElement } from 'react'
 import type { ComponentProps } from '../theme'
+import { CloseIcon } from './icons'
 import { cloneWithProps } from './trigger'
 
 export interface OverlayCloseOwnProps {
@@ -16,22 +17,6 @@ interface OverlayCloseInternalProps extends OverlayCloseProps {
   closeClassName?: string
   onClose: () => void
 }
-
-const closeIcon = (
-  <svg
-    aria-hidden="true"
-    fill="none"
-    focusable="false"
-    height="1em"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-    width="1em"
-  >
-    <path d="M6 6l12 12M18 6 6 18" />
-  </svg>
-)
 
 export const OverlayClose = forwardRef<HTMLElement, OverlayCloseInternalProps>(
   (
@@ -51,7 +36,7 @@ export const OverlayClose = forwardRef<HTMLElement, OverlayCloseInternalProps>(
         style={style}
         type="button"
       >
-        {children ?? closeIcon}
+        {children ?? <CloseIcon />}
       </button>
     )
   },
