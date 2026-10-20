@@ -20,12 +20,9 @@ describe.each(themes)('default %s theme contrast', (_, theme) => {
     },
   )
 
-  it.each([semantic.background, semantic.surface])(
-    'keeps muted text at 4.5:1 or more against %s',
-    (surface) => {
-      expect(getContrastRatio(semantic.muted, surface)).toBeGreaterThanOrEqual(4.5)
-    },
-  )
+  it.each(surfaces)('keeps muted text at 4.5:1 or more against %s', (surface) => {
+    expect(getContrastRatio(semantic.muted, surface)).toBeGreaterThanOrEqual(4.5)
+  })
 
   it.each(surfaces)('keeps the foreground at 4.5:1 or more against %s', (surface) => {
     expect(getContrastRatio(semantic.foreground, surface)).toBeGreaterThanOrEqual(4.5)
