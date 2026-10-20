@@ -212,3 +212,99 @@ export const DotOnly: Story = {
     </div>
   ),
 }
+
+/**
+ * Some examples of Badge with Tailwind classes. With `variant="unstyled"` the `className` is the only class of the badge.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center gap-3">
+  <Badge
+    className="inline-flex items-center rounded-full bg-primary-solid px-2.5 py-0.5 text-xs font-semibold text-primary-on-solid"
+    variant="unstyled"
+  >
+    New
+  </Badge>
+  <Badge
+    className="inline-flex items-center rounded border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
+    variant="unstyled"
+  >
+    Paid
+  </Badge>
+  <Badge
+    className="inline-flex items-center rounded-md bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800"
+    variant="unstyled"
+  >
+    Failed
+  </Badge>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Badge
+        className="inline-flex items-center rounded-full bg-primary-solid px-2.5 py-0.5 text-xs font-semibold text-primary-on-solid"
+        variant="unstyled"
+      >
+        New
+      </Badge>
+      <Badge
+        className="inline-flex items-center rounded border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
+        variant="unstyled"
+      >
+        Paid
+      </Badge>
+      <Badge
+        className="inline-flex items-center rounded-md bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800"
+        variant="unstyled"
+      >
+        Failed
+      </Badge>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Badge with Bootstrap classes: `badge` with a `text-bg-*` color, and `rounded-pill`.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-wrap align-items-center gap-2">
+  <Badge className="badge text-bg-primary" variant="unstyled">
+    New
+  </Badge>
+  <Badge className="badge rounded-pill text-bg-success" variant="unstyled">
+    Paid
+  </Badge>
+  <Badge className="badge text-bg-danger" variant="unstyled">
+    Failed
+  </Badge>
+  <Badge className="badge border text-body" variant="unstyled">
+    Draft
+  </Badge>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-wrap align-items-center gap-2">
+      <Badge className="badge text-bg-primary" variant="unstyled">
+        New
+      </Badge>
+      <Badge className="badge rounded-pill text-bg-success" variant="unstyled">
+        Paid
+      </Badge>
+      <Badge className="badge text-bg-danger" variant="unstyled">
+        Failed
+      </Badge>
+      <Badge className="badge border text-body" variant="unstyled">
+        Draft
+      </Badge>
+    </div>
+  ),
+}

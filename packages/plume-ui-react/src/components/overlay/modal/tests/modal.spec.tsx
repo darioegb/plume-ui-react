@@ -476,4 +476,39 @@ describe('Modal component', () => {
       expect(dialog()).toBeInTheDocument()
     })
   })
+
+  describe('backdrop', () => {
+    it('takes a class next to the Plume one', () => {
+      render(
+        <Modal defaultOpen>
+          <ModalContent aria-label="Name" backdropClassName="my-backdrop">
+            Body
+          </ModalContent>
+        </Modal>,
+      )
+      const backdrop = screen.getByRole('dialog').parentElement
+      expect(backdrop).toHaveClass('backdrop', 'my-backdrop')
+      expect(backdrop).toHaveAttribute('data-plume-modal-backdrop')
+    })
+
+    it('has only the class of the user when unstyled', () => {
+      render(
+        <Modal defaultOpen variant="unstyled">
+          <ModalContent aria-label="Name" backdropClassName="my-backdrop">
+            Body
+          </ModalContent>
+        </Modal>,
+      )
+      expect(screen.getByRole('dialog').parentElement).toHaveAttribute('class', 'my-backdrop')
+    })
+
+    it('has no class attribute when unstyled and there is none', () => {
+      render(
+        <Modal defaultOpen variant="unstyled">
+          <ModalContent aria-label="Name">Body</ModalContent>
+        </Modal>,
+      )
+      expect(screen.getByRole('dialog').parentElement).not.toHaveAttribute('class')
+    })
+  })
 })

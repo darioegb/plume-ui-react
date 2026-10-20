@@ -454,3 +454,150 @@ export const Sections: Story = {
     </List>
   ),
 }
+
+/**
+ * Some examples of List with Tailwind classes. With `variant="unstyled"` the List and its parts have no Plume styles. `ListItemButton` sets `aria-current` when it is `selected`, which Tailwind reads with `aria-[current=true]:`.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<List
+  className="w-72 max-w-full divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground"
+  variant="unstyled"
+>
+  <ListItem>
+    <ListItemButton
+      className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted aria-[current=true]:bg-surface-muted aria-[current=true]:font-semibold"
+      selected
+    >
+      <ListItemIcon>{inboxIcon}</ListItemIcon>
+      <ListItemText className="flex-1" primary="Inbox" />
+      <Badge
+        className="rounded-full bg-primary-solid px-2 py-0.5 text-xs text-primary-on-solid"
+        variant="unstyled"
+      >
+        4
+      </Badge>
+    </ListItemButton>
+  </ListItem>
+  <ListItem>
+    <ListItemButton
+      className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted"
+    >
+      <ListItemIcon>{sendIcon}</ListItemIcon>
+      <ListItemText primary="Sent" />
+    </ListItemButton>
+  </ListItem>
+  <ListItem>
+    <ListItemButton
+      className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted"
+    >
+      <ListItemIcon>{trashIcon}</ListItemIcon>
+      <ListItemText primary="Trash" />
+    </ListItemButton>
+  </ListItem>
+</List>`,
+      },
+    },
+  },
+  render: () => (
+    <List
+      className="w-72 max-w-full divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground"
+      variant="unstyled"
+    >
+      <ListItem>
+        <ListItemButton
+          className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted aria-[current=true]:bg-surface-muted aria-[current=true]:font-semibold"
+          selected
+        >
+          <ListItemIcon>{inboxIcon}</ListItemIcon>
+          <ListItemText className="flex-1" primary="Inbox" />
+          <Badge
+            className="rounded-full bg-primary-solid px-2 py-0.5 text-xs text-primary-on-solid"
+            variant="unstyled"
+          >
+            4
+          </Badge>
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted">
+          <ListItemIcon>{sendIcon}</ListItemIcon>
+          <ListItemText primary="Sent" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton className="flex w-full items-center gap-3 bg-transparent px-4 py-2 text-left hover:bg-surface-muted">
+          <ListItemIcon>{trashIcon}</ListItemIcon>
+          <ListItemText primary="Trash" />
+        </ListItemButton>
+      </ListItem>
+    </List>
+  ),
+}
+
+/**
+ * Some examples of List with Bootstrap classes: `list-group` on the List and `list-group-item` on its items. An item with a button uses `list-group-item-action` and `active` for the selected one.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-column gap-4" style={{ width: '20rem', maxWidth: '100%' }}>
+  <List className="list-group" variant="unstyled">
+    <ListItem className="list-group-item d-flex justify-content-between align-items-center">
+      Inbox
+      <Badge className="badge rounded-pill text-bg-primary" variant="unstyled">
+        4
+      </Badge>
+    </ListItem>
+    <ListItem className="list-group-item">Sent</ListItem>
+    <ListItem className="list-group-item">Trash</ListItem>
+  </List>
+  <List className="list-group" variant="unstyled">
+    <ListItem className="list-group-item p-0">
+      <ListItemButton className="list-group-item list-group-item-action active border-0" selected>
+        Inbox
+      </ListItemButton>
+    </ListItem>
+    <ListItem className="list-group-item p-0">
+      <ListItemButton className="list-group-item list-group-item-action border-0">
+        Sent
+      </ListItemButton>
+    </ListItem>
+  </List>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-4" style={{ width: '20rem', maxWidth: '100%' }}>
+      <List className="list-group" variant="unstyled">
+        <ListItem className="list-group-item d-flex justify-content-between align-items-center">
+          Inbox
+          <Badge className="badge rounded-pill text-bg-primary" variant="unstyled">
+            4
+          </Badge>
+        </ListItem>
+        <ListItem className="list-group-item">Sent</ListItem>
+        <ListItem className="list-group-item">Trash</ListItem>
+      </List>
+      <List className="list-group" variant="unstyled">
+        <ListItem className="list-group-item p-0">
+          <ListItemButton
+            className="list-group-item list-group-item-action active border-0"
+            selected
+          >
+            Inbox
+          </ListItemButton>
+        </ListItem>
+        <ListItem className="list-group-item p-0">
+          <ListItemButton className="list-group-item list-group-item-action border-0">
+            Sent
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </div>
+  ),
+}

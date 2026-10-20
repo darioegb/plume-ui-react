@@ -34,6 +34,17 @@ export default {
       description: 'Custom CSS class for the label that wraps the input.',
       table: { type: { summary: 'string' } },
     },
+    inputClassName: {
+      control: 'text',
+      description:
+        'Custom CSS class for the `<input>`, in every variant. With `variant="unstyled"` it is the only class of the input, so it is how Tailwind or Bootstrap style the control itself.',
+      table: { type: { summary: 'string' } },
+    },
+    labelClassName: {
+      control: 'text',
+      description: 'Custom CSS class for the text of the label, in every variant.',
+      table: { type: { summary: 'string' } },
+    },
     style: {
       control: false,
       description:
@@ -86,17 +97,17 @@ export default {
     required: {
       control: 'boolean',
       description: 'Marks the Toggle as required.',
-      table: { category: 'Form', type: { summary: 'boolean' } },
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     name: {
       control: 'text',
       description: 'Name used when the form is submitted.',
-      table: { category: 'Form', type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     value: {
       control: 'text',
       description: 'Value submitted when the Toggle is on.',
-      table: { category: 'Form', type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     id: {
       control: false,
@@ -256,5 +267,105 @@ export const WithField: Story = {
     >
       <Toggle>Email notifications</Toggle>
     </Field>
+  ),
+}
+
+/**
+ * Some examples of Toggle with Tailwind classes. The input is a native checkbox with `role="switch"`: `appearance-none` and a `before:` pseudo-element draw the track and the thumb, and `checked:` styles the on state.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-3">
+  <Toggle
+    className="inline-flex items-center gap-3 text-sm"
+    inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+    variant="unstyled"
+  >
+    Email notifications
+  </Toggle>
+  <Toggle
+    className="inline-flex items-center gap-3 text-sm"
+    defaultChecked
+    inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+    variant="unstyled"
+  >
+    Dark mode
+  </Toggle>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Toggle
+        className="inline-flex items-center gap-3 text-sm"
+        inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+        variant="unstyled"
+      >
+        Email notifications
+      </Toggle>
+      <Toggle
+        className="inline-flex items-center gap-3 text-sm"
+        defaultChecked
+        inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        variant="unstyled"
+      >
+        Dark mode
+      </Toggle>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Toggle with Bootstrap classes: `form-check form-switch` on the toggle, `form-check-input` on its input (Bootstrap draws the switch for `role="switch"`) and `form-check-label` on its text.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-column gap-2">
+  <Toggle
+    className="form-check form-switch"
+    inputClassName="form-check-input"
+    labelClassName="form-check-label"
+    variant="unstyled"
+  >
+    Email notifications
+  </Toggle>
+  <Toggle
+    className="form-check form-switch"
+    defaultChecked
+    inputClassName="form-check-input"
+    labelClassName="form-check-label"
+    variant="unstyled"
+  >
+    Dark mode
+  </Toggle>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-2">
+      <Toggle
+        className="form-check form-switch"
+        inputClassName="form-check-input"
+        labelClassName="form-check-label"
+        variant="unstyled"
+      >
+        Email notifications
+      </Toggle>
+      <Toggle
+        className="form-check form-switch"
+        defaultChecked
+        inputClassName="form-check-input"
+        labelClassName="form-check-label"
+        variant="unstyled"
+      >
+        Dark mode
+      </Toggle>
+    </div>
   ),
 }

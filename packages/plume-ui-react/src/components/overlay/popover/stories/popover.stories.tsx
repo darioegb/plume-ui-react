@@ -273,3 +273,89 @@ export const WithForm: Story = {
     </Popover>
   ),
 }
+
+/**
+ * Some examples of Popover with Tailwind classes. With `variant="unstyled"` the content is the only thing with classes: the ones you give it.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Popover variant="unstyled">
+  <PopoverTrigger>
+    <Button
+      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      label="Open popover"
+      variant="unstyled"
+    />
+  </PopoverTrigger>
+  <PopoverContent
+    aria-label="Details"
+    className="w-72 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+  >
+    <strong className="block">Team members</strong>
+    <p className="mt-2 text-[var(--plume-muted)]">
+      Anyone in the team can see this project and comment on it.
+    </p>
+  </PopoverContent>
+</Popover>`,
+      },
+    },
+  },
+  render: () => (
+    <Popover variant="unstyled">
+      <PopoverTrigger>
+        <Button
+          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          label="Open popover"
+          variant="unstyled"
+        />
+      </PopoverTrigger>
+      <PopoverContent
+        aria-label="Details"
+        className="w-72 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+      >
+        <strong className="block">Team members</strong>
+        <p className="mt-2 text-[var(--plume-muted)]">
+          Anyone in the team can see this project and comment on it.
+        </p>
+      </PopoverContent>
+    </Popover>
+  ),
+}
+
+/**
+ * Some examples of Popover with Bootstrap classes: `popover` on the content with `popover-header` and `popover-body` inside. Bootstrap positions its popovers with JavaScript, here the Popover does it.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Popover variant="unstyled">
+  <PopoverTrigger>
+    <Button className="btn btn-primary" label="Open popover" variant="unstyled" />
+  </PopoverTrigger>
+  <PopoverContent aria-label="Details" className="popover">
+    <h3 className="popover-header">Team members</h3>
+    <div className="popover-body">
+      Anyone in the team can see this project and comment on it.
+    </div>
+  </PopoverContent>
+</Popover>`,
+      },
+    },
+  },
+  render: () => (
+    <Popover variant="unstyled">
+      <PopoverTrigger>
+        <Button className="btn btn-primary" label="Open popover" variant="unstyled" />
+      </PopoverTrigger>
+      <PopoverContent aria-label="Details" className="popover">
+        <h3 className="popover-header">Team members</h3>
+        <div className="popover-body">
+          Anyone in the team can see this project and comment on it.
+        </div>
+      </PopoverContent>
+    </Popover>
+  ),
+}

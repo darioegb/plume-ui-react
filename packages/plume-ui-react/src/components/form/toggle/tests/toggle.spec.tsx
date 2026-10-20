@@ -164,4 +164,42 @@ describe('Toggle component', () => {
     expect(toggle).toHaveAttribute('aria-invalid', 'true')
     expect(toggle).toHaveAccessibleDescription('Needed Turn it on')
   })
+
+  describe('classes of the parts', () => {
+    it('adds inputClassName to the input and labelClassName to the text', () => {
+      render(
+        <Toggle inputClassName="my-input" labelClassName="my-label">
+          Label
+        </Toggle>,
+      )
+      expect(screen.getByRole('switch')).toHaveClass('my-input')
+      expect(screen.getByText('Label')).toHaveClass('my-label')
+    })
+
+    it('keeps them next to the Plume classes', () => {
+      render(
+        <Toggle inputClassName="my-input" labelClassName="my-label">
+          Label
+        </Toggle>,
+      )
+      expect(screen.getByRole('switch').className).toMatch(/toggle.+my-input/)
+      expect(screen.getByText('Label').className).toMatch(/label.+my-label/)
+    })
+
+    it('is the only class of the input and the text when unstyled', () => {
+      render(
+        <Toggle inputClassName="my-input" labelClassName="my-label" variant="unstyled">
+          Label
+        </Toggle>,
+      )
+      expect(screen.getByRole('switch')).toHaveAttribute('class', 'my-input')
+      expect(screen.getByText('Label')).toHaveAttribute('class', 'my-label')
+    })
+
+    it('leaves the input and the text without a class attribute when unstyled and empty', () => {
+      render(<Toggle variant="unstyled">Label</Toggle>)
+      expect(screen.getByRole('switch')).not.toHaveAttribute('class')
+      expect(screen.getByText('Label')).not.toHaveAttribute('class')
+    })
+  })
 })

@@ -152,3 +152,94 @@ export const WithText: Story = {
     </p>
   ),
 }
+
+/**
+ * Some examples of Icon with Tailwind classes. The Icon takes its color from the text around it, so a text color on a parent colors the icon, and its `className` can add what Plume does not, like an animation.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center gap-4">
+  <span className="text-emerald-600 dark:text-emerald-400">
+    <Icon size="lg">{bell}</Icon>
+  </span>
+  <span className="text-blue-600 dark:text-blue-400">
+    <Icon className="animate-pulse" size="lg">
+      {bell}
+    </Icon>
+  </span>
+  <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
+    <Icon size="sm">{bell}</Icon>
+    Notifications
+  </span>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      <span className="text-emerald-600 dark:text-emerald-400">
+        <Icon size="lg">{bell}</Icon>
+      </span>
+      <span className="text-blue-600 dark:text-blue-400">
+        <Icon className="animate-pulse" size="lg">
+          {bell}
+        </Icon>
+      </span>
+      <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
+        <Icon size="sm">{bell}</Icon>
+        Notifications
+      </span>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Icon with Bootstrap classes. The Icon takes its color from the text around it, so `text-*` utilities on a parent color it, and it fits inside badges and buttons.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-wrap align-items-center gap-3">
+  <span className="text-primary">
+    <Icon size="lg">{bell}</Icon>
+  </span>
+  <span className="text-success">
+    <Icon size="lg">{bell}</Icon>
+  </span>
+  <span className="badge text-bg-primary d-inline-flex align-items-center gap-1">
+    <Icon size="sm">{bell}</Icon>
+    Notifications
+  </span>
+  <button className="btn btn-primary d-inline-flex align-items-center gap-2" type="button">
+    <Icon size="sm">{bell}</Icon>
+    Alerts
+  </button>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-wrap align-items-center gap-3">
+      <span className="text-primary">
+        <Icon size="lg">{bell}</Icon>
+      </span>
+      <span className="text-success">
+        <Icon size="lg">{bell}</Icon>
+      </span>
+      <span className="badge text-bg-primary d-inline-flex align-items-center gap-1">
+        <Icon size="sm">{bell}</Icon>
+        Notifications
+      </span>
+      <button
+        className="btn btn-primary d-inline-flex align-items-center gap-2"
+        type="button"
+      >
+        <Icon size="sm">{bell}</Icon>
+        Alerts
+      </button>
+    </div>
+  ),
+}

@@ -76,6 +76,7 @@ const StoryFrame = ({
   const colorMode = useColorMode(globalMode)
   React.useEffect(() => {
     document.documentElement.setAttribute('data-plume-color-mode', colorMode)
+    document.documentElement.setAttribute('data-bs-theme', colorMode)
   }, [colorMode])
   return (
     <ThemeProvider

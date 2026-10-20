@@ -296,3 +296,115 @@ function ControlledExample(): React.ReactNode {
 export const Controlled: Story = {
   render: () => <ControlledExample />,
 }
+
+/**
+ * Some examples of Tooltip with Tailwind classes. With `variant="unstyled"` the `className` is the only class of the tooltip.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <Tooltip
+    className="rounded bg-gray-900 px-2 py-1 text-xs text-white shadow"
+    content="Save the changes"
+    variant="unstyled"
+  >
+    <Button
+      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      label="Dark tooltip"
+      variant="unstyled"
+    />
+  </Tooltip>
+  <Tooltip
+    className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm"
+    content="Save the changes"
+    placement="bottom"
+    variant="unstyled"
+  >
+    <Button
+      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      label="Pill tooltip"
+      variant="unstyled"
+    />
+  </Tooltip>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap justify-center gap-4">
+      <Tooltip
+        className="rounded bg-gray-900 px-2 py-1 text-xs text-white shadow"
+        content="Save the changes"
+        variant="unstyled"
+      >
+        <Button
+          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          label="Dark tooltip"
+          variant="unstyled"
+        />
+      </Tooltip>
+      <Tooltip
+        className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm"
+        content="Save the changes"
+        placement="bottom"
+        variant="unstyled"
+      >
+        <Button
+          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          label="Pill tooltip"
+          variant="unstyled"
+        />
+      </Tooltip>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Tooltip with Bootstrap classes: `tooltip show` on the tooltip and `tooltip-inner` on its content, which is where Bootstrap draws the box.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-wrap justify-content-center gap-3">
+  <Tooltip
+    className="tooltip show"
+    content={<div className="tooltip-inner">Save the changes</div>}
+    variant="unstyled"
+  >
+    <Button className="btn btn-primary" label="Top" variant="unstyled" />
+  </Tooltip>
+  <Tooltip
+    className="tooltip show"
+    content={<div className="tooltip-inner">Save the changes</div>}
+    placement="bottom"
+    variant="unstyled"
+  >
+    <Button className="btn btn-light border" label="Bottom" variant="unstyled" />
+  </Tooltip>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-wrap justify-content-center gap-3">
+      <Tooltip
+        className="tooltip show"
+        content={<div className="tooltip-inner">Save the changes</div>}
+        variant="unstyled"
+      >
+        <Button className="btn btn-primary" label="Top" variant="unstyled" />
+      </Tooltip>
+      <Tooltip
+        className="tooltip show"
+        content={<div className="tooltip-inner">Save the changes</div>}
+        placement="bottom"
+        variant="unstyled"
+      >
+        <Button className="btn btn-light border" label="Bottom" variant="unstyled" />
+      </Tooltip>
+    </div>
+  ),
+}

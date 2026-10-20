@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useState } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { Portal, useDismiss, useFocusTrap, useLayer, useScrollLock } from '../../../overlay'
+import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useModalContext } from './modal-context'
 import styles from './modal.module.css'
@@ -13,11 +14,17 @@ type ModalContentRootAttributes = Pick<
   'aria-describedby' | 'aria-label' | 'aria-labelledby' | 'children'
 >
 
-export type ModalContentProps = Omit<ComponentProps, 'index'> & ModalContentRootAttributes
+export interface ModalContentOwnProps {
+  backdropClassName?: string
+}
+
+export type ModalContentProps = Omit<ComponentProps, 'index'> &
+  ModalContentRootAttributes &
+  ModalContentOwnProps
 
 export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
   (
-    { children, className = '', style, ...rest }: ModalContentProps,
+    { backdropClassName = '', children, className = '', style, ...rest }: ModalContentProps,
     ref: ForwardedRef<HTMLDialogElement>,
   ): ReactNode => {
     const context = useModalContext('ModalContent')
@@ -51,7 +58,10 @@ export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
 
     return (
       <Portal>
-        <div className={isStyled ? styles.backdrop : undefined}>
+        <div
+          className={joinClasses(isStyled && styles.backdrop, backdropClassName)}
+          data-plume-modal-backdrop=""
+        >
           <dialog
             {...rest}
             aria-labelledby={labelledBy}

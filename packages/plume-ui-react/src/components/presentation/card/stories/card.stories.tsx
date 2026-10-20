@@ -201,3 +201,81 @@ export const Clickable: Story = {
     </Card>
   ),
 }
+
+/**
+ * Some examples of Card with Tailwind classes. With `variant="unstyled"` the Card and its parts have no Plume styles, so each takes the classes you give it.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Card
+  className="w-80 max-w-full overflow-hidden rounded-xl border border-border bg-surface text-foreground shadow-md"
+  variant="unstyled"
+>
+  <CardHeader className="border-b border-border px-4 py-3 font-semibold">Team plan</CardHeader>
+  <CardBody className="px-4 py-3 text-sm">
+    Up to ten members, with shared projects and a history of thirty days.
+  </CardBody>
+  <CardFooter className="flex justify-end gap-2 border-t border-border px-4 py-3">
+    <Button
+      className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+      label="Choose"
+      variant="unstyled"
+    />
+  </CardFooter>
+</Card>`,
+      },
+    },
+  },
+  render: () => (
+    <Card
+      className="w-80 max-w-full overflow-hidden rounded-xl border border-border bg-surface text-foreground shadow-md"
+      variant="unstyled"
+    >
+      <CardHeader className="border-b border-border px-4 py-3 font-semibold">Team plan</CardHeader>
+      <CardBody className="px-4 py-3 text-sm">
+        Up to ten members, with shared projects and a history of thirty days.
+      </CardBody>
+      <CardFooter className="flex justify-end gap-2 border-t border-border px-4 py-3">
+        <Button
+          className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+          label="Choose"
+          variant="unstyled"
+        />
+      </CardFooter>
+    </Card>
+  ),
+}
+
+/**
+ * Some examples of Card with Bootstrap classes: `card`, `card-header`, `card-body` and `card-footer`.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Card className="card" style={{ width: '20rem', maxWidth: '100%' }} variant="unstyled">
+  <CardHeader className="card-header fw-semibold">Team plan</CardHeader>
+  <CardBody className="card-body">
+    Up to ten members, with shared projects and a history of thirty days.
+  </CardBody>
+  <CardFooter className="card-footer d-flex justify-content-end">
+    <Button className="btn btn-primary btn-sm" label="Choose" variant="unstyled" />
+  </CardFooter>
+</Card>`,
+      },
+    },
+  },
+  render: () => (
+    <Card className="card" style={{ width: '20rem', maxWidth: '100%' }} variant="unstyled">
+      <CardHeader className="card-header fw-semibold">Team plan</CardHeader>
+      <CardBody className="card-body">
+        Up to ten members, with shared projects and a history of thirty days.
+      </CardBody>
+      <CardFooter className="card-footer d-flex justify-content-end">
+        <Button className="btn btn-primary btn-sm" label="Choose" variant="unstyled" />
+      </CardFooter>
+    </Card>
+  ),
+}

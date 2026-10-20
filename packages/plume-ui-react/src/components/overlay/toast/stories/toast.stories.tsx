@@ -139,6 +139,12 @@ export default {
       description: 'Custom CSS class for every toast.',
       table: { type: { summary: 'string' } },
     },
+    classNames: {
+      control: false,
+      description:
+        'Custom CSS classes for the parts of every toast, in every variant: `icon`, `content`, `title`, `description`, `action` and `dismiss`. With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: `Partial<Record<ToastPart, string>>` } },
+    },
     regionLabel: {
       control: 'text',
       description: 'Accessible name of the region that holds the toasts.',
@@ -421,5 +427,116 @@ export const Limit: Story = {
         make={(api) => api.info({ title: `Toast at ${new Date().toLocaleTimeString()}` })}
       />
     </Demo>
+  ),
+}
+
+/**
+ * Some examples of Toast with Tailwind classes. With `variant="unstyled"` the region is yours to place (`className`), `toastClassName` styles every toast and `classNames` each of its parts: `icon`, `content`, `title`, `description`, `action` and `dismiss`.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ToastProvider
+  className="fixed bottom-4 right-4 z-10 flex flex-col gap-2"
+  classNames={{
+    action: "mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted",
+    content: "flex-1",
+    description: "block text-[var(--plume-muted)]",
+    dismiss: "rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted",
+    icon: "mt-0.5 text-emerald-600",
+    title: "block font-semibold",
+  }}
+  toastClassName="flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+  variant="unstyled"
+>
+  <App />
+</ToastProvider>`,
+      },
+    },
+  },
+  render: () => (
+    <ToastProvider
+      className="fixed bottom-4 right-4 z-10 flex flex-col gap-2"
+      classNames={{
+        action:
+          'mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted',
+        content: 'flex-1',
+        description: 'block text-[var(--plume-muted)]',
+        dismiss: 'rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted',
+        icon: 'mt-0.5 text-emerald-600',
+        title: 'block font-semibold',
+      }}
+      regionLabel="Tailwind notifications"
+      toastClassName="flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+      variant="unstyled"
+    >
+      <Fire
+        label="Show a toast"
+        make={(api) =>
+          api.success({
+            action: { label: 'Undo' },
+            description: 'Your changes were saved.',
+            title: 'Saved',
+          })
+        }
+        variant="outline"
+      />
+    </ToastProvider>
+  ),
+}
+
+/**
+ * Some examples of Toast with Bootstrap classes: `toast-container` on the region, `toast show` on every toast and `toast-body` on its content.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ToastProvider
+  className="toast-container position-fixed bottom-0 end-0 p-3"
+  classNames={{
+    action: "btn btn-sm btn-primary mt-2",
+    content: "toast-body flex-grow-1",
+    description: "d-block text-body-secondary",
+    dismiss: "btn btn-sm btn-light border-0 m-2 align-self-start",
+    icon: "ms-3 mt-3 text-success",
+    title: "d-block fw-semibold",
+  }}
+  toastClassName="toast show d-flex align-items-start"
+  variant="unstyled"
+>
+  <App />
+</ToastProvider>`,
+      },
+    },
+  },
+  render: () => (
+    <ToastProvider
+      className="toast-container position-fixed bottom-0 end-0 p-3"
+      classNames={{
+        action: 'btn btn-sm btn-primary mt-2',
+        content: 'toast-body flex-grow-1',
+        description: 'd-block text-body-secondary',
+        dismiss: 'btn btn-sm btn-light border-0 m-2 align-self-start',
+        icon: 'ms-3 mt-3 text-success',
+        title: 'd-block fw-semibold',
+      }}
+      regionLabel="Bootstrap notifications"
+      toastClassName="toast show d-flex align-items-start"
+      variant="unstyled"
+    >
+      <Fire
+        label="Show a toast"
+        make={(api) =>
+          api.success({
+            action: { label: 'Undo' },
+            description: 'Your changes were saved.',
+            title: 'Saved',
+          })
+        }
+        variant="outline"
+      />
+    </ToastProvider>
   ),
 }

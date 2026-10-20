@@ -3,7 +3,9 @@
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import { useCallback } from 'react'
 import { CloseIcon } from '../../../overlay/icons'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ToastAction, ToastIcons, ToastStatus } from './toast-context'
+import type { ToastPart } from './toast-provider'
 import styles from './toast.module.css'
 import { useToastTimer } from './use-toast-timer'
 
@@ -22,6 +24,7 @@ export interface ToastData {
 
 interface ToastItemProps {
   className: string
+  classNames?: Partial<Record<ToastPart, string>>
   dismissLabel: string
   icons?: false | ToastIcons
   isStyled: boolean
@@ -84,6 +87,7 @@ export function toastColorVars(status: ToastStatus): CSSProperties {
 
 export function ToastItem({
   className,
+  classNames,
   dismissLabel,
   icons,
   isStyled,
@@ -103,7 +107,8 @@ export function ToastItem({
     dismiss()
   }
 
-  const part = (name: string): string | undefined => (isStyled ? styles[name] : undefined)
+  const part = (name: ToastPart): string | undefined =>
+    joinClasses(isStyled && styles[name], classNames?.[name])
   const icon = resolveIcon(toast, icons)
   const isError = toast.status === 'error'
   const classes =
