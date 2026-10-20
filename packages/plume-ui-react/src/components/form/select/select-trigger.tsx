@@ -83,7 +83,7 @@ function Chips({
 }
 
 interface ControlParts {
-  classNames?: SelectTriggerProps['classNames']
+  classNames?: NonNullable<SelectTriggerProps['classNames']>
   context: SelectContextValue
 }
 

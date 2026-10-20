@@ -22,6 +22,11 @@ export interface SelectOptionOwnProps {
 
 export type SelectOptionProps = Omit<ComponentProps, 'index'> & SelectOptionOwnProps
 
+const matchesQuery = (label: string, query: string): boolean =>
+  label.toLowerCase().includes(query.toLowerCase())
+
+const isActivationKey = (key: string): boolean => key === 'Enter' || key === ' '
+
 function useOptionRecord(
   {
     children,
@@ -83,7 +88,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     )
 
     const selected = context.isSelected(value)
-    const matches = !query || resolved.toLowerCase().includes(query.toLowerCase())
+    const matches = matchesQuery(resolved, query)
     const classes = [isStyled && styles.option, className].filter(Boolean).join(' ')
 
     const handlePointerMove = (): void => {
@@ -96,7 +101,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-      if (event.key !== 'Enter' && event.key !== ' ') return
+      if (!isActivationKey(event.key)) return
       event.preventDefault()
       if (!disabled) select(value)
     }
