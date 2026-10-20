@@ -125,6 +125,10 @@ export function Select({
     if (canEdit && selected.length > 0) commit([])
   }
 
+  const remove = (item: string): void => {
+    if (canEdit) commit(selected.filter((current) => current !== item))
+  }
+
   const clearLast = (): void => {
     if (!canEdit || selected.length === 0) return
     commit(multiple ? selected.slice(0, -1) : [])
@@ -176,6 +180,7 @@ export function Select({
     query: keyboard.query,
     readOnly,
     register,
+    remove,
     required,
     searchable,
     select,

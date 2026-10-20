@@ -4,6 +4,7 @@ import type { ChangeEvent, ForwardedRef, HTMLAttributes, ReactNode } from 'react
 import { forwardRef, useEffect, useState } from 'react'
 import { Portal } from '../../../overlay'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
+import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext } from './select-context'
@@ -11,7 +12,10 @@ import styles from './select.module.css'
 
 type SelectContentRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'aria-label' | 'children'>
 
+export type SelectContentPart = 'empty' | 'list' | 'search' | 'searchInput'
+
 export interface SelectContentOwnProps {
+  classNames?: Partial<Record<SelectContentPart, string>>
   emptyText?: ReactNode
   searchLabel?: string
   searchPlaceholder?: string
@@ -27,6 +31,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       'aria-label': ariaLabel,
       children,
       className = '',
+      classNames,
       emptyText = 'No results',
       searchLabel = 'Search',
       searchPlaceholder,
@@ -78,6 +83,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         <div
           className={classes || undefined}
           data-placement={position.placement}
+          data-plume-select-panel=""
           hidden={!open}
           ref={mergeRefs<HTMLDivElement>(setPanel, ref)}
           style={{
@@ -88,7 +94,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           }}
         >
           {context.searchable ? (
-            <div className={isStyled ? styles.search : undefined}>
+            <div className={joinClasses(isStyled && styles.search, classNames?.search)}>
               <input
                 aria-activedescendant={context.activeId}
                 aria-autocomplete="list"
@@ -96,7 +102,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 aria-expanded={open}
                 aria-label={searchLabel}
                 autoComplete="off"
-                className={isStyled ? styles.searchInput : undefined}
+                className={joinClasses(isStyled && styles.searchInput, classNames?.searchInput)}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   context.setQuery(event.target.value)
                 }
@@ -114,7 +120,8 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
             aria-label={ariaLabel ?? labelling.label}
             aria-labelledby={ariaLabel ? undefined : labelling.labelledBy}
             aria-multiselectable={multiple || undefined}
-            className={isStyled ? styles.list : undefined}
+            className={joinClasses(isStyled && styles.list, classNames?.list)}
+            data-plume-select-list=""
             id={context.listboxId}
             ref={context.setListbox}
             role="listbox"
@@ -122,7 +129,9 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
             {children}
           </div>
           {query && !hasMatches ? (
-            <div className={isStyled ? styles.empty : undefined}>{emptyText}</div>
+            <div className={joinClasses(isStyled && styles.empty, classNames?.empty)}>
+              {emptyText}
+            </div>
           ) : null}
         </div>
       </Portal>

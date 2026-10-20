@@ -2,13 +2,17 @@
 
 import type { ForwardedRef, KeyboardEvent, MouseEvent, ReactNode } from 'react'
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import { CheckIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext, type SelectOptionRecord } from './select-context'
 import styles from './select.module.css'
 
+export type SelectOptionPart = 'check' | 'checkbox' | 'description' | 'icon'
+
 export interface SelectOptionOwnProps {
   children?: ReactNode
+  classNames?: Partial<Record<SelectOptionPart, string>>
   description?: ReactNode
   disabled?: boolean
   icon?: ReactNode
@@ -23,6 +27,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     {
       children,
       className = '',
+      classNames,
       description,
       disabled = false,
       icon,
@@ -86,6 +91,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         className={classes || undefined}
         data-active={context.activeId === id ? '' : undefined}
         data-label={resolved}
+        data-plume-select-option=""
         data-value={value}
         hidden={!matches}
         id={id}
@@ -99,28 +105,40 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         tabIndex={-1}
       >
         {multiple ? (
-          <span aria-hidden="true" className={isStyled ? styles.checkbox : undefined}>
+          <span
+            aria-hidden="true"
+            className={joinClasses(isStyled && styles.checkbox, classNames?.checkbox)}
+          >
             {selected ? <CheckIcon /> : null}
           </span>
         ) : null}
         {icon ? (
-          <span aria-hidden="true" className={isStyled ? styles.optionIcon : undefined}>
+          <span
+            aria-hidden="true"
+            className={joinClasses(isStyled && styles.optionIcon, classNames?.icon)}
+          >
             {icon}
           </span>
         ) : null}
-        <span className={isStyled ? styles.optionBody : undefined}>
+        <span className={isStyled ? styles.optionBody : undefined} data-plume-select-option-body="">
           <span id={textId} ref={textRef}>
             {children ?? label}
           </span>
           {description ? ' ' : null}
           {description ? (
-            <span className={isStyled ? styles.description : undefined} id={descriptionId}>
+            <span
+              className={joinClasses(isStyled && styles.description, classNames?.description)}
+              id={descriptionId}
+            >
               {description}
             </span>
           ) : null}
         </span>
         {!multiple && selected ? (
-          <span aria-hidden="true" className={isStyled ? styles.check : undefined}>
+          <span
+            aria-hidden="true"
+            className={joinClasses(isStyled && styles.check, classNames?.check)}
+          >
             <CheckIcon />
           </span>
         ) : null}

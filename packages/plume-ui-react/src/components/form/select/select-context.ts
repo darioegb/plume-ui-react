@@ -47,6 +47,7 @@ export interface SelectContextValue {
   query: string
   readOnly: boolean
   register: (record: SelectOptionRecord) => () => void
+  remove: (value: string) => void
   required: boolean
   searchable: boolean
   select: (value: string) => void

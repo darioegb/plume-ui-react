@@ -9,7 +9,6 @@ import {
   SelectGroup,
   SelectOption,
   SelectTrigger,
-  SelectValue,
   type SelectProps,
 } from '..'
 
@@ -105,11 +104,11 @@ function Example({
  *
  * | Component | Props |
  * | --- | --- |
- * | `SelectTrigger` | `placeholder`, `aria-label`, `aria-labelledby`, `clearLabel`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button. |
- * | `SelectValue` | `placeholder`, `display`, `maxDisplay`, `children`. What the trigger shows. `SelectTrigger` renders one by default; use your own to change how a `multiple` value is shown (`display="chips"` or `"text"`, `maxDisplay` chips and a `+N`) or to render it yourself with a function of the chosen options. |
- * | `SelectContent` | `emptyText`, `searchLabel`, `searchPlaceholder`, `aria-label`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. |
- * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). |
- * | `SelectGroup` | `label`, `className`, `style`, `children`. A titled set of options. It hides itself when the search leaves it empty. |
+ * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `removeLabel`, `clearLabel`, `aria-label`, `aria-labelledby`, `classNames`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button; `classNames` styles its parts (`field`, `trigger`, `chip`, `chipRemove`, `clear` and `chevron`). `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. |
+ * | `SelectValue` | `placeholder`, `children`. What the button of the trigger shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectTrigger` renders one by default; use your own to render the value yourself with a function of the chosen options. |
+ * | `SelectContent` | `emptyText`, `searchLabel`, `searchPlaceholder`, `aria-label`, `classNames`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. `classNames` styles its parts (`search`, `searchInput`, `list` and `empty`). |
+ * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `classNames`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). `classNames` styles `icon`, `description`, `checkbox` and `check`. The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
+ * | `SelectGroup` | `label`, `labelClassName`, `className`, `style`, `children`. A titled set of options. It hides itself when the search leaves it empty. |
  */
 export default {
   title: 'Components/Select',
@@ -238,7 +237,7 @@ export default {
       control: 'text',
       description:
         'Name of the field in a form. The select adds hidden inputs with the chosen values: one for a single value, one for each value when it is `multiple`.',
-      table: { type: { summary: 'string' } },
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     disabled: {
       control: 'boolean',
@@ -250,10 +249,32 @@ export default {
       description: 'The value is shown and focusable, but the list does not open.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
+    id: {
+      control: false,
+      description:
+        'Id of the button of the trigger. A `Field` sets it, to link its label to the select.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    'aria-describedby': {
+      control: false,
+      description:
+        'Id of the elements that describe the select. A `Field` adds its helper text and its error.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-invalid': {
+      control: 'boolean',
+      description:
+        'Marks the value as invalid, and the field draws its border with the error color. A `Field` sets it.',
+      table: { category: 'Accessibility', type: { summary: 'boolean' } },
+    },
     required: {
       control: 'boolean',
       description: 'Marks the select as required for assistive technology.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+      table: {
+        category: 'HTML attributes',
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     open: {
       control: 'boolean',
@@ -295,13 +316,17 @@ export const Variants: Story = {
       <Select variant="unstyled">
         <SelectTrigger
           aria-label="Unstyled"
-          className="rounded border border-gray-400 bg-white px-3 py-2 text-gray-900"
+          className="w-full rounded border border-border bg-surface px-3 py-2 text-foreground"
+          classNames={{
+            chevron: 'text-[var(--plume-muted)]',
+            trigger: 'data-[placeholder]:text-[var(--plume-muted)]',
+          }}
           placeholder="Unstyled"
         />
-        <SelectContent className="rounded border border-gray-300 bg-white text-gray-900 shadow">
+        <SelectContent className="rounded border border-border bg-surface p-1 text-foreground shadow">
           {fruits.map((fruit) => (
             <SelectOption
-              className="cursor-pointer px-3 py-1 hover:bg-gray-100"
+              className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
               key={fruit}
               value={fruit.toLowerCase()}
             >
@@ -348,9 +373,9 @@ export const Colors: Story = {
 
 /**
  * With **multiple** the user can choose several options. The list stays open, each option has a check box and the
- * trigger shows the chosen options as chips. <kbd>Backspace</kbd> removes the last one. **onValueChange** receives an
- * array. Show at most **maxDisplay** chips with a `+N` for the rest, or the labels as `display="text"`, through the
- * `SelectValue` of the trigger.
+ * trigger shows the chosen options as chips, each with a button to remove just that one. <kbd>Backspace</kbd>
+ * removes the last one. **onValueChange** receives an array. On the trigger, **maxDisplay** shows at most that many
+ * chips with a `+N` for the rest, and `display="text"` shows the labels as text instead of chips.
  */
 export const Multiple: Story = {
   render: () => (
@@ -362,17 +387,13 @@ export const Multiple: Story = {
         placeholder="Pick fruits"
       />
       <Select defaultValue={['apple', 'banana', 'cherry', 'grape']} multiple>
-        <SelectTrigger aria-label="At most two chips">
-          <SelectValue maxDisplay={2} />
-        </SelectTrigger>
+        <SelectTrigger aria-label="At most two chips" maxDisplay={2} />
         <SelectContent>
           <Fruits />
         </SelectContent>
       </Select>
       <Select defaultValue={['apple', 'banana']} multiple>
-        <SelectTrigger aria-label="As text">
-          <SelectValue display="text" />
-        </SelectTrigger>
+        <SelectTrigger aria-label="As text" display="text" />
         <SelectContent>
           <Fruits />
         </SelectContent>
@@ -491,8 +512,9 @@ export const Groups: Story = {
 }
 
 /**
- * **clearable** shows a button that clears the value, and lets <kbd>Backspace</kbd> clear a single one. The value
- * becomes an empty string, or an empty array when it is `multiple`.
+ * **clearable** shows a button that clears the whole value, and lets <kbd>Backspace</kbd> clear a single one. A
+ * `multiple` select can also remove one option at a time with the button of its chip. The value becomes an empty
+ * string, or an empty array when it is `multiple`.
  */
 export const Clearable: Story = {
   render: () => (
@@ -633,29 +655,250 @@ export const WithField: Story = {
 }
 
 /**
- * With `variant="unstyled"` the select has none of the Plume classes, so Tailwind (or any other framework) styles
- * it: the `className` of the trigger goes to the field, the one of the content to the list and the one of each
- * option to the option.
+ * Some examples of Select with Tailwind classes. With `variant="unstyled"` the select has none of the Plume classes: `className` styles the field, `classNames` its parts and the parts of the list and of the options, and the option the arrows are on has `data-active`, so `data-[active]:` styles it, as `aria-selected:` and `aria-disabled:` do for the chosen and the disabled ones.
  */
 export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex w-72 max-w-full flex-col gap-4">
+  <Select variant="unstyled">
+    <SelectTrigger
+      aria-label="Fruit"
+      className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+      classNames={{ chevron: "text-[var(--plume-muted)]", trigger: "data-[placeholder]:text-[var(--plume-muted)]" }}
+      placeholder="Pick a fruit"
+    />
+    <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
+      {fruits.map((fruit) => (
+        <SelectOption
+          className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
+          classNames={{ check: "text-blue-600" }}
+          key={fruit}
+          value={fruit.toLowerCase()}
+        >
+          {fruit}
+        </SelectOption>
+      ))}
+    </SelectContent>
+  </Select>
+  <Select clearable defaultValue={["apple", "mango"]} multiple searchable variant="unstyled">
+    <SelectTrigger
+      aria-label="Fruits"
+      className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
+      classNames={{
+        chevron: "text-[var(--plume-muted)]",
+        chip: "rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900",
+        chipRemove: "ml-1 rounded-full hover:bg-emerald-200",
+        clear: "mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground",
+        trigger: "px-1 data-[placeholder]:text-[var(--plume-muted)]",
+      }}
+      placeholder="Search fruits"
+    />
+    <SelectContent
+      className="rounded-lg border border-border bg-surface shadow-lg"
+      classNames={{
+        empty: "p-3 text-center text-sm text-[var(--plume-muted)]",
+        list: "p-1",
+        search: "border-b border-border p-2",
+        searchInput: "w-full rounded border border-border bg-transparent px-2 py-1 text-sm",
+      }}
+      searchLabel="Search fruits"
+    >
+      {fruits.map((fruit) => (
+        <SelectOption
+          className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+          classNames={{ checkbox: "flex h-4 w-4 items-center justify-center rounded border border-border text-[10px] text-emerald-700" }}
+          key={fruit}
+          value={fruit.toLowerCase()}
+        >
+          {fruit}
+        </SelectOption>
+      ))}
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
-    <Select variant="unstyled">
-      <SelectTrigger
-        aria-label="Fruit"
-        className="w-64 rounded-full border-2 border-emerald-600 bg-emerald-50 px-4 py-2 text-emerald-900"
-        placeholder="Pick a fruit"
-      />
-      <SelectContent className="rounded-xl border border-emerald-600 bg-white p-1 shadow-lg">
-        {fruits.map((fruit) => (
-          <SelectOption
-            className="cursor-pointer rounded px-3 py-1 text-emerald-900 hover:bg-emerald-100"
-            key={fruit}
-            value={fruit.toLowerCase()}
-          >
-            {fruit}
-          </SelectOption>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex w-72 max-w-full flex-col gap-4">
+      <Select variant="unstyled">
+        <SelectTrigger
+          aria-label="Fruit"
+          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+          classNames={{
+            chevron: 'text-[var(--plume-muted)]',
+            trigger: 'data-[placeholder]:text-[var(--plume-muted)]',
+          }}
+          placeholder="Pick a fruit"
+        />
+        <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
+          {fruits.map((fruit) => (
+            <SelectOption
+              className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
+              classNames={{ check: 'text-blue-600' }}
+              key={fruit}
+              value={fruit.toLowerCase()}
+            >
+              {fruit}
+            </SelectOption>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select clearable defaultValue={['apple', 'mango']} multiple searchable variant="unstyled">
+        <SelectTrigger
+          aria-label="Fruits"
+          className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
+          classNames={{
+            chevron: 'text-[var(--plume-muted)]',
+            chip: 'rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900',
+            chipRemove: 'ml-1 rounded-full hover:bg-emerald-200',
+            clear: 'mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground',
+            trigger: 'px-1 data-[placeholder]:text-[var(--plume-muted)]',
+          }}
+          placeholder="Search fruits"
+        />
+        <SelectContent
+          className="rounded-lg border border-border bg-surface shadow-lg"
+          classNames={{
+            empty: 'p-3 text-center text-sm text-[var(--plume-muted)]',
+            list: 'p-1',
+            search: 'border-b border-border p-2',
+            searchInput: 'w-full rounded border border-border bg-transparent px-2 py-1 text-sm',
+          }}
+          searchLabel="Search fruits"
+        >
+          {fruits.map((fruit) => (
+            <SelectOption
+              className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+              classNames={{
+                checkbox:
+                  'flex h-4 w-4 items-center justify-center rounded border border-border text-[10px] text-emerald-700',
+              }}
+              key={fruit}
+              value={fruit.toLowerCase()}
+            >
+              {fruit}
+            </SelectOption>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of Select with Bootstrap classes: `form-control d-flex` on the field (`form-control` is `display: block`), `dropdown-menu show` and `dropdown-item` on the list and its options, and `badge` for the chips. The option the arrows are on has `data-active`, which Bootstrap does not know, so a rule styles it.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+  <style>{".dropdown-item[data-active] { background-color: var(--bs-tertiary-bg); }"}</style>
+  <Select variant="unstyled">
+    <SelectTrigger
+      aria-label="Fruit"
+      className="form-control d-flex align-items-center ps-3 pe-0"
+      classNames={{ chevron: "px-3 text-body-secondary", trigger: "bg-transparent border-0 p-0" }}
+      placeholder="Pick a fruit"
+    />
+    <SelectContent className="dropdown-menu show p-1">
+      {fruits.map((fruit) => (
+        <SelectOption
+          className="dropdown-item rounded"
+          classNames={{ check: "text-primary" }}
+          key={fruit}
+          value={fruit.toLowerCase()}
+        >
+          {fruit}
+        </SelectOption>
+      ))}
+    </SelectContent>
+  </Select>
+  <Select clearable defaultValue={["apple", "mango"]} multiple variant="unstyled">
+    <SelectTrigger
+      aria-label="Fruits"
+      className="form-control d-flex align-items-center ps-2 pe-0"
+      classNames={{
+        chevron: "px-3 text-body-secondary",
+        chip: "badge text-bg-primary fw-normal",
+        chipRemove: "ms-1 text-white",
+        clear: "btn btn-sm border-0 text-body-secondary",
+        trigger: "bg-transparent border-0 p-1",
+      }}
+      placeholder="Pick fruits"
+    />
+    <SelectContent className="dropdown-menu show p-1">
+      {fruits.map((fruit) => (
+        <SelectOption
+          className="dropdown-item rounded"
+          classNames={{ checkbox: "me-2 border rounded px-1" }}
+          key={fruit}
+          value={fruit.toLowerCase()}
+        >
+          {fruit}
+        </SelectOption>
+      ))}
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+      <style>{'.dropdown-item[data-active] { background-color: var(--bs-tertiary-bg); }'}</style>
+      <Select variant="unstyled">
+        <SelectTrigger
+          aria-label="Fruit"
+          className="form-control d-flex align-items-center ps-3 pe-0"
+          classNames={{
+            chevron: 'px-3 text-body-secondary',
+            trigger: 'bg-transparent border-0 p-0',
+          }}
+          placeholder="Pick a fruit"
+        />
+        <SelectContent className="dropdown-menu show p-1">
+          {fruits.map((fruit) => (
+            <SelectOption
+              className="dropdown-item rounded"
+              classNames={{ check: 'text-primary' }}
+              key={fruit}
+              value={fruit.toLowerCase()}
+            >
+              {fruit}
+            </SelectOption>
+          ))}
+        </SelectContent>
+      </Select>
+      <Select clearable defaultValue={['apple', 'mango']} multiple variant="unstyled">
+        <SelectTrigger
+          aria-label="Fruits"
+          className="form-control d-flex align-items-center ps-2 pe-0"
+          classNames={{
+            chevron: 'px-3 text-body-secondary',
+            chip: 'badge text-bg-primary fw-normal',
+            chipRemove: 'ms-1 text-white',
+            clear: 'btn btn-sm border-0 text-body-secondary',
+            trigger: 'bg-transparent border-0 p-1',
+          }}
+          placeholder="Pick fruits"
+        />
+        <SelectContent className="dropdown-menu show p-1">
+          {fruits.map((fruit) => (
+            <SelectOption
+              className="dropdown-item rounded"
+              classNames={{ checkbox: 'me-2 border rounded px-1' }}
+              key={fruit}
+              value={fruit.toLowerCase()}
+            >
+              {fruit}
+            </SelectOption>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   ),
 }

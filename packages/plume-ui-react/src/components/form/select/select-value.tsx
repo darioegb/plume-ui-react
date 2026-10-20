@@ -6,12 +6,10 @@ import styles from './select.module.css'
 
 export interface SelectValueProps {
   children?: (selected: readonly SelectedOption[]) => ReactNode
-  display?: 'chips' | 'text'
-  maxDisplay?: number
   placeholder?: ReactNode
 }
 
-function OptionContent({ option }: Readonly<{ option: SelectedOption }>): ReactNode {
+export function OptionContent({ option }: Readonly<{ option: SelectedOption }>): ReactNode {
   const { isStyled } = useSelectContext('SelectValue')
   return (
     <>
@@ -25,12 +23,7 @@ function OptionContent({ option }: Readonly<{ option: SelectedOption }>): ReactN
   )
 }
 
-export function SelectValue({
-  children,
-  display = 'chips',
-  maxDisplay = 3,
-  placeholder,
-}: Readonly<SelectValueProps>): ReactNode {
+export function SelectValue({ children, placeholder }: Readonly<SelectValueProps>): ReactNode {
   const { isStyled, multiple, selected, selectedOptions } = useSelectContext('SelectValue')
 
   if (selected.length === 0) {
@@ -39,30 +32,16 @@ export function SelectValue({
     ) : null
   }
   if (children) return children(selectedOptions)
-  if (!multiple) {
-    return selectedOptions[0] ? (
-      <span className={isStyled ? styles.value : undefined}>
-        <OptionContent option={selectedOptions[0]} />
-      </span>
-    ) : null
-  }
-  if (display === 'text') {
+  if (multiple) {
     return (
       <span className={isStyled ? styles.valueText : undefined}>
         {selectedOptions.map((option) => option.label).join(', ')}
       </span>
     )
   }
-  const shown = selectedOptions.slice(0, maxDisplay)
-  const hidden = selectedOptions.length - shown.length
-  return (
-    <span className={isStyled ? styles.chips : undefined}>
-      {shown.map((option) => (
-        <span className={isStyled ? styles.chip : undefined} key={option.value}>
-          <OptionContent option={option} />
-        </span>
-      ))}
-      {hidden > 0 ? <span className={isStyled ? styles.chip : undefined}>+{hidden}</span> : null}
+  return selectedOptions[0] ? (
+    <span className={isStyled ? styles.value : undefined}>
+      <OptionContent option={selectedOptions[0]} />
     </span>
-  )
+  ) : null
 }

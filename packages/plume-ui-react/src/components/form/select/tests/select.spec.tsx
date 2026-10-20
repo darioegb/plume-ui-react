@@ -39,6 +39,12 @@ function Example({
 }
 
 const trigger = (): HTMLElement => screen.getByRole('combobox', { name: 'Fruit' })
+const control = (): HTMLElement =>
+  trigger().closest<HTMLElement>('[data-plume-select-control]') as HTMLElement
+const chips = (): string[] =>
+  screen
+    .queryAllByRole('button', { name: /^Remove / })
+    .map((button) => button.getAttribute('aria-label')?.replace('Remove ', '') ?? '')
 const listbox = (): HTMLElement => screen.getByRole('listbox')
 const option = (name: string): HTMLElement => screen.getByRole('option', { name })
 const active = (): string | null => trigger().getAttribute('aria-activedescendant')
@@ -374,48 +380,30 @@ describe('Select component', () => {
 
     it('shows the chosen options as chips', () => {
       render(<Example defaultValue={['apple', 'banana']} multiple />)
-      expect(trigger()).toHaveTextContent('AppleBanana')
+      expect(chips()).toEqual(['Apple', 'Banana'])
+      expect(trigger()).toHaveTextContent('Apple, Banana')
+      expect(control()).toHaveTextContent('AppleBanana')
     })
 
     it('limits the chips and counts the rest', () => {
       render(
-        <Example
-          defaultValue={['apple', 'banana', 'date']}
-          multiple
-          content={
-            <>
-              <SelectOption value="apple">Apple</SelectOption>
-              <SelectOption value="banana">Banana</SelectOption>
-              <SelectOption value="date">Date</SelectOption>
-            </>
-          }
-        />,
-      )
-      expect(trigger()).toHaveTextContent('AppleBananaDate')
-    })
-
-    it('shows a plain list and a count with the SelectValue props', () => {
-      render(
-        <Select defaultValue={['a', 'b', 'c']} multiple>
-          <SelectTrigger aria-label="Letters">
-            <SelectValue maxDisplay={2} />
-          </SelectTrigger>
+        <Select defaultValue={['apple', 'banana', 'date']} multiple>
+          <SelectTrigger aria-label="Fruit" maxDisplay={2} />
           <SelectContent>
-            <SelectOption value="a">A</SelectOption>
-            <SelectOption value="b">B</SelectOption>
-            <SelectOption value="c">C</SelectOption>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+            <SelectOption value="date">Date</SelectOption>
           </SelectContent>
         </Select>,
       )
-      expect(screen.getByRole('combobox', { name: 'Letters' })).toHaveTextContent('AB+1')
+      expect(chips()).toEqual(['Apple', 'Banana'])
+      expect(control()).toHaveTextContent('+1')
     })
 
-    it('shows the labels as text', () => {
+    it('shows the labels as text with display="text"', () => {
       render(
         <Select defaultValue={['a', 'b']} multiple>
-          <SelectTrigger aria-label="Letters">
-            <SelectValue display="text" />
-          </SelectTrigger>
+          <SelectTrigger aria-label="Letters" display="text" />
           <SelectContent>
             <SelectOption value="a">A</SelectOption>
             <SelectOption value="b">B</SelectOption>
@@ -423,12 +411,66 @@ describe('Select component', () => {
         </Select>,
       )
       expect(screen.getByRole('combobox', { name: 'Letters' })).toHaveTextContent('A, B')
+      expect(screen.queryByRole('button', { name: /^Remove / })).toBeNull()
+    })
+
+    it('shows the value of a multiple select through a SelectValue render function', () => {
+      render(
+        <Select defaultValue={['a', 'b']} multiple>
+          <SelectTrigger aria-label="Letters">
+            <SelectValue>{(chosen) => `${chosen.length} chosen`}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+            <SelectOption value="b">B</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(screen.getByRole('combobox', { name: 'Letters' })).toHaveTextContent('2 chosen')
+    })
+
+    it('puts the chips before the field in the tab order', async () => {
+      render(<Example defaultValue={['apple', 'banana']} multiple />)
+      await userEvent.tab()
+      expect(screen.getByRole('button', { name: 'Remove Apple' })).toHaveFocus()
+      await userEvent.tab()
+      expect(screen.getByRole('button', { name: 'Remove Banana' })).toHaveFocus()
+      await userEvent.tab()
+      expect(trigger()).toHaveFocus()
+    })
+
+    it('removes one option with the button of its chip', async () => {
+      const onValueChange = vi.fn()
+      render(<Example defaultValue={['apple', 'banana']} multiple onValueChange={onValueChange} />)
+      await userEvent.click(screen.getByRole('button', { name: 'Remove Apple' }))
+      expect(onValueChange).toHaveBeenCalledWith(['banana'])
+      expect(chips()).toEqual(['Banana'])
+      expect(screen.queryByRole('listbox')).toBeNull()
+    })
+
+    it('has no remove buttons when it is disabled or read only', () => {
+      const { rerender } = render(<Example defaultValue={['apple']} disabled multiple />)
+      expect(chips()).toEqual([])
+      rerender(<Example defaultValue={['apple']} multiple readOnly />)
+      expect(chips()).toEqual([])
+    })
+
+    it('names the remove buttons with removeLabel', () => {
+      render(
+        <Select defaultValue={['a']} multiple>
+          <SelectTrigger aria-label="Letters" removeLabel={(label) => `Quitar ${label}`} />
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(screen.getByRole('button', { name: 'Quitar A' })).toBeInTheDocument()
     })
 
     it('removes the last option with Backspace and Delete', async () => {
       const onValueChange = vi.fn()
       render(<Example defaultValue={['apple', 'banana']} multiple onValueChange={onValueChange} />)
-      await userEvent.tab()
+      act(() => trigger().focus())
       await userEvent.keyboard('{Backspace}')
       expect(onValueChange).toHaveBeenLastCalledWith(['apple'])
       await userEvent.keyboard('{Delete}')
@@ -459,7 +501,7 @@ describe('Select component', () => {
       render(<Controlled />)
       await userEvent.click(trigger())
       await userEvent.click(option('Banana'))
-      expect(trigger()).toHaveTextContent('AppleBanana')
+      expect(chips()).toEqual(['Apple', 'Banana'])
     })
   })
 
@@ -700,7 +742,7 @@ describe('Select component', () => {
           multiple
         />,
       )
-      expect(within(trigger()).getAllByTestId('icon')).toHaveLength(1)
+      expect(within(control()).getAllByTestId('icon')).toHaveLength(1)
     })
 
     it('groups options under a label', async () => {
@@ -840,27 +882,27 @@ describe('Select component', () => {
   describe('rendering', () => {
     it('is an outline medium select by default', () => {
       render(<Example />)
-      expect(trigger().parentElement).toHaveClass('control', 'outline', 'md', 'rounded')
+      expect(control()).toHaveClass('control', 'outline', 'md', 'rounded')
     })
 
     it.each(['outline', 'filled', 'underline'] as const)('supports the %s variant', (variant) => {
       render(<Example variant={variant} />)
-      expect(trigger().parentElement).toHaveClass(variant)
+      expect(control()).toHaveClass(variant)
     })
 
     it.each(['sm', 'md', 'lg'] as const)('supports the %s size', (size) => {
       render(<Example size={size} />)
-      expect(trigger().parentElement).toHaveClass(size)
+      expect(control()).toHaveClass(size)
     })
 
     it('supports the pill shape and the invalid and disabled looks', () => {
       render(<Example aria-invalid disabled shape="pill" />)
-      expect(trigger().parentElement).toHaveClass('pill', 'invalid', 'disabled')
+      expect(control()).toHaveClass('pill', 'invalid', 'disabled')
     })
 
     it('sets the color of the focus ring from the color scheme', () => {
       render(<Example colorScheme="primary" />)
-      expect(trigger().parentElement).toHaveStyle({
+      expect(control()).toHaveStyle({
         '--select-color': 'var(--plume-color-primary-text)',
       })
     })
@@ -878,8 +920,8 @@ describe('Select component', () => {
           </SelectContent>
         </Select>,
       )
-      expect(trigger().parentElement).toHaveClass('control', 'trigger-mine')
-      expect(trigger().parentElement).toHaveStyle({ width: '200px' })
+      expect(control()).toHaveClass('control', 'trigger-mine')
+      expect(control()).toHaveStyle({ width: '200px' })
       await userEvent.click(trigger())
       expect(listbox().parentElement).toHaveClass('panel', 'content-mine')
       expect(option('Apple')).toHaveClass('option', 'option-mine')
@@ -900,7 +942,7 @@ describe('Select component', () => {
           </SelectContent>
         </Select>,
       )
-      expect(trigger().parentElement).toHaveAttribute('class', 'trigger-mine')
+      expect(control()).toHaveAttribute('class', 'trigger-mine')
       expect(trigger()).not.toHaveAttribute('class')
       await userEvent.click(trigger())
       expect(listbox().parentElement).toHaveAttribute('class', 'content-mine')
@@ -955,6 +997,111 @@ describe('Select component', () => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
       expect(() => render(part)).toThrow(`${name} must be used within a <Select>`)
       error.mockRestore()
+    })
+  })
+
+  describe('classNames', () => {
+    function Parts({ variant }: Readonly<{ variant?: 'unstyled' }>): React.ReactNode {
+      return (
+        <Select clearable defaultValue={['apple']} multiple searchable variant={variant}>
+          <SelectTrigger
+            aria-label="Fruit"
+            classNames={{
+              chevron: 'my-chevron',
+              chip: 'my-chip',
+              chipRemove: 'my-remove',
+              clear: 'my-clear',
+              field: 'my-field',
+              trigger: 'my-trigger',
+            }}
+            maxDisplay={1}
+          />
+          <SelectContent
+            classNames={{
+              empty: 'my-empty',
+              list: 'my-list',
+              search: 'my-search',
+              searchInput: 'my-search-input',
+            }}
+          >
+            <SelectGroup label="Fruits" labelClassName="my-group-label">
+              <SelectOption
+                classNames={{
+                  check: 'my-check',
+                  checkbox: 'my-checkbox',
+                  description: 'my-description',
+                  icon: 'my-icon',
+                }}
+                description="Red"
+                icon={<i />}
+                value="apple"
+              >
+                Apple
+              </SelectOption>
+              <SelectOption value="banana">Banana</SelectOption>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )
+    }
+
+    it('adds a class to each part', async () => {
+      render(<Parts />)
+      await userEvent.click(trigger())
+      await userEvent.keyboard('zz')
+      expect(trigger()).toHaveClass('trigger', 'my-trigger')
+      expect(trigger().parentElement).toHaveClass('field', 'my-field')
+      expect(screen.getByRole('button', { name: 'Remove Apple' })).toHaveClass('my-remove')
+      expect(screen.getByRole('button', { name: 'Clear' })).toHaveClass('my-clear')
+      expect(control().querySelector('[data-plume-select-chevron]')).toHaveClass(
+        'chevron',
+        'my-chevron',
+      )
+      expect(control().querySelector('[data-plume-select-chip]')).toHaveClass('chip', 'my-chip')
+      expect(listbox()).toHaveClass('list', 'my-list')
+      expect(screen.getByRole('combobox', { name: 'Search' }).parentElement).toHaveClass(
+        'search',
+        'my-search',
+      )
+      expect(screen.getByRole('combobox', { name: 'Search' })).toHaveClass('my-search-input')
+      expect(screen.getByText('No results')).toHaveClass('empty', 'my-empty')
+      expect(screen.getByText('Fruits')).toHaveClass('groupLabel', 'my-group-label')
+    })
+
+    it('adds a class to the parts of an option', async () => {
+      render(<Parts />)
+      await userEvent.click(trigger())
+      const apple = screen.getByRole('option', { name: /Apple/ })
+      expect(apple.querySelector('.my-checkbox')).not.toBeNull()
+      expect(apple.querySelector('.my-icon')).not.toBeNull()
+      expect(apple.querySelector('.my-description')).not.toBeNull()
+    })
+
+    it('adds a class to the check of a single option', async () => {
+      render(
+        <Select defaultValue="apple">
+          <SelectTrigger aria-label="Fruit" />
+          <SelectContent>
+            <SelectOption classNames={{ check: 'my-check' }} value="apple">
+              Apple
+            </SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      await userEvent.click(trigger())
+      expect(option('Apple').querySelector('.my-check')).not.toBeNull()
+    })
+
+    it('are the only classes of the parts when unstyled', async () => {
+      render(<Parts variant="unstyled" />)
+      await userEvent.click(trigger())
+      expect(trigger()).toHaveAttribute('class', 'my-trigger')
+      expect(trigger().parentElement).toHaveAttribute('class', 'my-field')
+      expect(screen.getByRole('button', { name: 'Remove Apple' })).toHaveAttribute(
+        'class',
+        'my-remove',
+      )
+      expect(listbox()).toHaveAttribute('class', 'my-list')
     })
   })
 })
