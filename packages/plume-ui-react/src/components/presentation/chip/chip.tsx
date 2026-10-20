@@ -1,10 +1,12 @@
 'use client'
 
-import type { CSSProperties, ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
+import type { ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { tagColorVars } from '../shared/tag-vars'
+import tag from '../shared/tag.module.css'
 import styles from './chip.module.css'
 
 export type ChipPart = 'icon' | 'label' | 'remove'
@@ -30,16 +32,6 @@ type ChipRootAttributes = Pick<
 
 export type ChipProps = Omit<ComponentProps, 'index'> & ChipRootAttributes & ChipOwnProps
 
-const chipColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
-  ({
-    '--chip-solid': `var(--plume-color-${colorScheme}-solid)`,
-    '--chip-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--chip-text': `var(--plume-color-${colorScheme}-text)`,
-    '--chip-tint': `var(--plume-color-${colorScheme}-tint)`,
-    '--chip-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
-    ...style,
-  }) as CSSProperties
-
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   (
     {
@@ -64,9 +56,9 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
     const removeId = useId()
     const classes = joinClasses(
       isStyled && styles.chip,
-      isStyled && styles[size],
-      isStyled && styles[shape],
-      isStyled && styles[variant],
+      isStyled && tag[size],
+      isStyled && tag[shape],
+      isStyled && tag[variant],
       isStyled && disabled && styles.disabled,
       className,
     )
@@ -76,7 +68,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
         className={classes}
         data-plume-chip=""
         ref={ref}
-        style={chipColorVars(colorScheme, style)}
+        style={tagColorVars('chip', colorScheme, style)}
         {...rest}
       >
         {icon ? (

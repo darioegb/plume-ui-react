@@ -24,44 +24,6 @@
   vertical-align: middle;
 }
 
-.sm {
-  font-size: var(--plume-font-size-xs);
-  padding: var(--plume-space-1) var(--plume-space-2);
-}
-
-.md {
-  font-size: var(--plume-font-size-sm);
-  padding: var(--plume-space-1) var(--plume-space-3);
-}
-
-.lg {
-  font-size: var(--plume-font-size-base);
-  padding: var(--plume-space-2) var(--plume-space-4);
-}
-
-.rounded {
-  border-radius: var(--plume-radius-2);
-}
-
-.pill {
-  border-radius: var(--plume-radius-full);
-}
-
-.solid {
-  background-color: var(--chip-solid);
-  color: var(--chip-contrast);
-}
-
-.outline {
-  box-shadow: inset 0 0 0 1px var(--chip-text);
-  color: var(--chip-text);
-}
-
-.subtle {
-  background-color: var(--chip-tint);
-  color: var(--chip-tint-text);
-}
-
 .disabled {
   cursor: not-allowed;
   opacity: 0.5;

@@ -1,6 +1,8 @@
-import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
+import type { ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { tagColorVars } from '../shared/tag-vars'
+import tag from '../shared/tag.module.css'
 import styles from './badge.module.css'
 
 export interface BadgeOwnProps {
@@ -19,16 +21,6 @@ type BadgeRootAttributes = Pick<
 >
 
 export type BadgeProps = Omit<ComponentProps, 'index'> & BadgeRootAttributes & BadgeOwnProps
-
-const badgeColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
-  ({
-    '--badge-solid': `var(--plume-color-${colorScheme}-solid)`,
-    '--badge-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--badge-text': `var(--plume-color-${colorScheme}-text)`,
-    '--badge-tint': `var(--plume-color-${colorScheme}-tint)`,
-    '--badge-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
-    ...style,
-  }) as CSSProperties
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   (
@@ -52,9 +44,9 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     const resolvedRole = role ?? (isNamed ? 'img' : undefined)
     const classes = [
       isStyled && styles.badge,
-      isStyled && styles[size],
-      isStyled && styles[shape],
-      isStyled && styles[variant],
+      isStyled && tag[size],
+      isStyled && tag[shape],
+      isStyled && tag[variant],
       isStyled && isDotOnly && styles.dotOnly,
       className,
     ]
@@ -66,7 +58,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         className={classes}
         ref={ref}
         role={resolvedRole}
-        style={badgeColorVars(colorScheme, style)}
+        style={tagColorVars('badge', colorScheme, style)}
         {...rest}
       >
         {dot && isStyled ? <span aria-hidden="true" className={styles.dot} /> : null}
