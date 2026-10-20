@@ -86,6 +86,7 @@ export function App() {
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
 | Toggle | [Toggle](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toggle--docs) |
+| Tooltip | [Tooltip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tooltip--docs) |
 
 Coming from the `@plume-ui-react/*` packages? See the [migration guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-migration--docs).
 

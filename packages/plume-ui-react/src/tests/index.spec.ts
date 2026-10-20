@@ -43,6 +43,7 @@ describe('plume-ui-react', () => {
       'Textarea',
       'ThemeProvider',
       'Toggle',
+      'Tooltip',
       'applyMask',
       'colorVar',
       'deepMerge',
