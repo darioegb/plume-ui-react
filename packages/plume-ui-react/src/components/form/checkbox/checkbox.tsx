@@ -79,11 +79,16 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       if (inputRef.current) inputRef.current.indeterminate = indeterminate
     }, [indeterminate])
 
-    const rootClasses = `${isStyled ? `${styles.root} ${styles[size]}` : ''} ${
-      disabled ? styles.disabled : ''
-    } ${className}`.trim()
+    const rootClasses = [
+      isStyled && styles.root,
+      isStyled && styles[size],
+      disabled && styles.disabled,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')
     const inputClasses = isStyled
-      ? `${styles.checkbox} ${styles[variant]} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? [styles.checkbox, styles[variant], isInvalid && styles.invalid].filter(Boolean).join(' ')
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {

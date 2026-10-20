@@ -67,11 +67,16 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
   ) => {
     const isStyled = variant !== 'unstyled'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
-    const rootClasses = `${isStyled ? `${styles.root} ${styles[size]}` : ''} ${
-      disabled ? styles.disabled : ''
-    } ${className}`.trim()
+    const rootClasses = [
+      isStyled && styles.root,
+      isStyled && styles[size],
+      disabled && styles.disabled,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')
     const inputClasses = isStyled
-      ? `${styles.toggle} ${styles[variant]} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? [styles.toggle, styles[variant], isInvalid && styles.invalid].filter(Boolean).join(' ')
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {

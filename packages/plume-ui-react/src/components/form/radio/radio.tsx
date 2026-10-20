@@ -80,11 +80,18 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
     const isReadOnly = readOnly || Boolean(group?.readOnly)
     const resolvedSize = size ?? group?.size ?? 'md'
     const resolvedColorScheme = colorScheme ?? group?.colorScheme ?? 'primary'
-    const rootClasses = `${isStyled ? `${styles.root} ${styles[resolvedSize]}` : ''} ${
-      isDisabled ? styles.disabled : ''
-    } ${className}`.trim()
+    const rootClasses = [
+      isStyled && styles.root,
+      isStyled && styles[resolvedSize],
+      isDisabled && styles.disabled,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')
     const inputClasses = isStyled
-      ? `${styles.radio} ${styles[resolvedVariant]} ${isInvalid ? styles.invalid : ''}`.trim()
+      ? [styles.radio, styles[resolvedVariant], isInvalid && styles.invalid]
+          .filter(Boolean)
+          .join(' ')
       : undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
