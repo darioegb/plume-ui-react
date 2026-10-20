@@ -3,11 +3,20 @@ import * as plume from '..'
 describe('plume-ui-react', () => {
   it('exports the components, theme, hooks and utilities from a single entry', () => {
     expect(Object.keys(plume).sort()).toEqual([
+      'Badge',
       'Button',
+      'Card',
+      'CardBody',
+      'CardFooter',
+      'CardHeader',
       'Checkbox',
       'DatePicker',
       'Field',
+      'Icon',
       'Input',
+      'List',
+      'ListIcon',
+      'ListItem',
       'Radio',
       'RadioGroup',
       'Spinner',

@@ -69,11 +69,15 @@ export function App() {
 
 | Component | Docs |
 | --- | --- |
+| Badge | [Badge](https://darioegb.github.io/plume-ui-react/?path=/docs/components-badge--docs) |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
+| Card | [Card](https://darioegb.github.io/plume-ui-react/?path=/docs/components-card--docs) |
 | Checkbox | [Checkbox](https://darioegb.github.io/plume-ui-react/?path=/docs/components-checkbox--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
+| Icon | [Icon](https://darioegb.github.io/plume-ui-react/?path=/docs/components-icon--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
+| List | [List](https://darioegb.github.io/plume-ui-react/?path=/docs/components-list--docs) |
 | Radio | [Radio](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radio--docs) |
 | RadioGroup | [RadioGroup](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radiogroup--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |

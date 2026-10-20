@@ -73,7 +73,8 @@ Do **not** attach the parts to the root (`Accordion.Item`). A Client Component c
 
 The rest of the pattern:
 
-- **One context per component**, in its own file (`<name>-context.ts`), created with `undefined` as default. The root provides it and the parts read it through a `use<Name>Context` hook that throws a clear error when a part is rendered outside the root. Memoize the context value.
+- **One context per component that shares state**, in its own file (`<name>-context.ts`), created with `undefined` as default. The root provides it and the parts read it through a `use<Name>Context` hook that throws a clear error when a part is rendered outside the root. Memoize the context value.
+- **Presentational compounds** (`Card`, `List`) have no state to share, so they have no context. The root sets CSS variables (`--card-padding`) that the parts read, which keeps them free of `'use client'` and renderable in a Server Component. Scope the rules of the parts under the root class (`.card .header`), so the root's `unstyled` variant leaves its parts bare too.
 - **The root owns the state** and the shared options (`size`, `colorScheme`, `variant`). Parts read them from the context instead of repeating props.
 - **Ids link the parts** (`aria-controls`, `aria-labelledby`) and derive from the root id, as `getTabId` and `getPanelId` do in Tabs.
 - **Parts forward refs and accept `className` and `style`** like any other component.
@@ -138,7 +139,7 @@ Copy it into the pull request description.
 - [ ] `forwardRef` and `displayName`; `className` and `style` work
 - [ ] Has variants (`solid` and `outline` at least, when it makes sense) and a `Variants` story with one example per variant, `unstyled` included
 - [ ] `variant="unstyled"` leaves only the user's classes
-- [ ] Compound parts are separate prefixed exports, with a context and a hook that throws outside the root
+- [ ] Compound parts are separate prefixed exports, with a context and a hook that throws outside the root (or CSS variables from the root, for presentational ones)
 - [ ] Form controls accept `FieldControlProps` on the real element and forward the ref
 
 **Styling**

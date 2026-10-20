@@ -39,7 +39,14 @@ export const __Name__ = forwardRef<HTMLDivElement, __Name__Props>(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const classes = `${isStyled ? `${styles.__slug__} ${styles[size]} ${styles[variant]}` : ''} ${className}`.trim()
+    const classes = [
+      isStyled && styles.__slug__,
+      isStyled && styles[size],
+      isStyled && styles[variant],
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')
 
     return (
       <div className={classes} ref={ref} style={__camel__ColorVars(colorScheme, style)} {...rest}>
