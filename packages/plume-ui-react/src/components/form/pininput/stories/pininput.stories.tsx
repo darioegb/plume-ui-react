@@ -443,7 +443,7 @@ export const Bootstrap: Story = {
   className="d-flex gap-2"
   inputClassName="form-control form-control-lg text-center px-0"
   length={6}
-  style={{ width: "20rem" }}
+  style={{ maxWidth: "100%", width: "20rem" }}
   variant="unstyled"
 />`,
       },
@@ -455,7 +455,7 @@ export const Bootstrap: Story = {
       className="d-flex gap-2"
       inputClassName="form-control form-control-lg text-center px-0"
       length={6}
-      style={{ width: '20rem' }}
+      style={{ maxWidth: '100%', width: '20rem' }}
       variant="unstyled"
     />
   ),
