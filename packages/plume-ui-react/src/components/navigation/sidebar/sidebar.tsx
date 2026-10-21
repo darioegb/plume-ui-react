@@ -1,0 +1,122 @@
+'use client'
+
+import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
+import { useDismiss } from '../../../overlay/use-dismiss'
+import { useFocusTrap } from '../../../overlay/use-focus-trap'
+import { useLayer } from '../../../overlay/layer'
+import { useScrollLock } from '../../../overlay/use-scroll-lock'
+import { mergeRefs } from '../../../overlay/trigger'
+import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import {
+  SidebarStyleContext,
+  type SidebarSide,
+  type SidebarVariant,
+  useSidebarContext,
+} from './sidebar-context'
+import styles from './sidebar.module.css'
+
+export interface SidebarOwnProps {
+  backdropClassName?: string
+  colorScheme?: ColorScheme
+  side?: SidebarSide
+  size?: Size
+  variant?: SidebarVariant
+}
+
+type SidebarRootAttributes = Pick<
+  HTMLAttributes<HTMLDivElement>,
+  'aria-label' | 'aria-labelledby' | 'children' | 'hidden' | 'title'
+>
+
+export type SidebarProps = Omit<ComponentProps, 'index'> & SidebarRootAttributes & SidebarOwnProps
+
+const sidebarColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
+  ({
+    '--sidebar-text': `var(--plume-color-${colorScheme}-text)`,
+    '--sidebar-tint': `var(--plume-color-${colorScheme}-tint)`,
+    '--sidebar-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
+    ...style,
+  }) as CSSProperties
+
+export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
+  (
+    {
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      backdropClassName,
+      children,
+      className,
+      colorScheme = 'primary',
+      side = 'left',
+      size = 'md',
+      style,
+      variant = 'outline',
+      ...rest
+    }: SidebarProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
+    const { breakpoint, collapsed, isMobile, open, panelId, setOpen, toggleRef } =
+      useSidebarContext('Sidebar')
+    const isStyled = variant !== 'unstyled'
+    const modal = isMobile && open
+    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
+    const isTopmost = useLayer(modal)
+
+    useDismiss({
+      enabled: modal,
+      isTopmost,
+      onDismiss: () => setOpen(false),
+      outsidePress: false,
+      elements: [panel],
+    })
+    useFocusTrap(panel, { active: modal, isTopmost, returnFocus: toggleRef.current })
+    useScrollLock(modal)
+
+    const styleContext = useMemo(() => ({ isStyled }), [isStyled])
+    const modalProps = modal
+      ? {
+          'aria-label': ariaLabel,
+          'aria-labelledby': ariaLabelledBy,
+          'aria-modal': true,
+          role: 'dialog',
+        }
+      : {}
+
+    return (
+      <SidebarStyleContext.Provider value={styleContext}>
+        <div
+          aria-hidden="true"
+          className={joinClasses(isStyled && styles.backdrop, backdropClassName)}
+          data-breakpoint={breakpoint}
+          data-open={open ? '' : undefined}
+          data-plume-sidebar-backdrop=""
+          onClick={() => setOpen(false)}
+        />
+        <div
+          className={joinClasses(
+            isStyled && styles.sidebar,
+            isStyled && styles[variant],
+            isStyled && styles[size],
+            className,
+          )}
+          data-breakpoint={breakpoint}
+          data-collapsed={collapsed ? '' : undefined}
+          data-open={open ? '' : undefined}
+          data-plume-sidebar=""
+          data-side={side}
+          id={panelId}
+          ref={mergeRefs(ref, setPanel)}
+          style={sidebarColorVars(colorScheme, style)}
+          {...modalProps}
+          {...rest}
+        >
+          {children}
+        </div>
+      </SidebarStyleContext.Provider>
+    )
+  },
+)
+
+Sidebar.displayName = 'Sidebar'

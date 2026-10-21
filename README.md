@@ -71,6 +71,7 @@ export function App() {
 | --- | --- |
 | Accordion | [Accordion](https://darioegb.github.io/plume-ui-react/?path=/docs/components-accordion--docs) |
 | Badge | [Badge](https://darioegb.github.io/plume-ui-react/?path=/docs/components-badge--docs) |
+| Breadcrumb | [Breadcrumb](https://darioegb.github.io/plume-ui-react/?path=/docs/components-breadcrumb--docs) |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
 | Card | [Card](https://darioegb.github.io/plume-ui-react/?path=/docs/components-card--docs) |
 | Checkbox | [Checkbox](https://darioegb.github.io/plume-ui-react/?path=/docs/components-checkbox--docs) |
@@ -82,6 +83,7 @@ export function App() {
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | List | [List](https://darioegb.github.io/plume-ui-react/?path=/docs/components-list--docs) |
 | Modal | [Modal](https://darioegb.github.io/plume-ui-react/?path=/docs/components-modal--docs) |
+| Navbar | [Navbar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-navbar--docs) |
 | NumberInput | [NumberInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-numberinput--docs) |
 | PinInput | [PinInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-pininput--docs) |
 | Popover | [Popover](https://darioegb.github.io/plume-ui-react/?path=/docs/components-popover--docs) |
@@ -90,8 +92,10 @@ export function App() {
 | RadioGroup | [RadioGroup](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radiogroup--docs) |
 | Rating | [Rating](https://darioegb.github.io/plume-ui-react/?path=/docs/components-rating--docs) |
 | Select | [Select](https://darioegb.github.io/plume-ui-react/?path=/docs/components-select--docs) |
+| Sidebar | [Sidebar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-sidebar--docs) |
 | Skeleton | [Skeleton](https://darioegb.github.io/plume-ui-react/?path=/docs/components-skeleton--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
+| Stepper | [Stepper](https://darioegb.github.io/plume-ui-react/?path=/docs/components-stepper--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |

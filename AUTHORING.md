@@ -82,7 +82,7 @@ The rest of the pattern:
 - **The root owns the state** and the shared options (`size`, `colorScheme`, `variant`). Parts read them from the context instead of repeating props.
 - **Ids link the parts** (`aria-controls`, `aria-labelledby`) and derive from the root id, as `getTabId` and `getPanelId` do in Tabs.
 - **Parts forward refs and accept `className` and `style`** like any other component.
-- Prefer context over `cloneElement` to tell a part which one it is. Tabs still injects `index` with `cloneElement`, which breaks when a child is wrapped; don't copy that part.
+- Prefer context over `cloneElement` to tell a part which one it is. Tabs still injects `index` with `cloneElement`, which breaks when a child is wrapped; don't copy that part. `Stepper` shows the way when a part needs its position: the root wraps every child in a context provider with `Children.map`, so a part wrapped in a component of its own still finds its index.
 
 [Tabs](packages/plume-ui-react/src/components/navigation/tabs) is the reference for the keyboard model, ids and ARIA wiring.
 
