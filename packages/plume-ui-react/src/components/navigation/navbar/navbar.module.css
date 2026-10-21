@@ -76,9 +76,7 @@
     flex-direction: column;
   }
 
-  :global(
-    :where([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-content]:not([data-open]))
-  ) {
+  :global([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-content]:not([data-open])) {
     display: none;
   }
 }
@@ -100,9 +98,7 @@
     flex-direction: column;
   }
 
-  :global(
-    :where([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-content]:not([data-open]))
-  ) {
+  :global([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-content]:not([data-open])) {
     display: none;
   }
 }
@@ -124,9 +120,7 @@
     flex-direction: column;
   }
 
-  :global(
-    :where([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-content]:not([data-open]))
-  ) {
+  :global([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-content]:not([data-open])) {
     display: none;
   }
 }
