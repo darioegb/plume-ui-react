@@ -11,6 +11,19 @@ div.sbdocs-content {
   min-width: 0;
 }
 
+/* A story with the centered layout is as wide as its content, so a width of `100%` inside it never
+   shrinks: let it follow the screen on a phone. */
+.sb-main-centered #storybook-root,
+.sb-main-centered .plume-root {
+  max-width: 100%;
+}
+
+/* Long inline code, like an import line, wraps instead of widening the page on a phone. */
+.sbdocs-content :not(pre) > code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
 /* Wide props tables scroll on their own instead of widening the whole page. */
 table.docblock-argstable {
   display: block;

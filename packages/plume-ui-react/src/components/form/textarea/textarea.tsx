@@ -1,12 +1,17 @@
 import type { CSSProperties, ForwardedRef, TextareaHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { TextareaCounter } from './textarea-counter'
 import styles from './textarea.module.css'
 
 export interface TextareaOwnProps {
   colorScheme?: ColorScheme
+  countClassName?: string
+  formatCount?: (count: number, max: number | undefined) => string
+  formatRemaining?: (remaining: number) => string
   resize?: TextareaResize
   shape?: Shape
+  showCount?: boolean
   size?: Size
   variant?: TextareaVariant
 }
@@ -53,10 +58,14 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     {
       className = '',
       colorScheme = 'secondary',
+      countClassName,
       disabled = false,
+      formatCount,
+      formatRemaining,
       resize = 'vertical',
       rows = 3,
       shape = 'rounded',
+      showCount = false,
       size = 'md',
       style,
       variant = 'outline',
@@ -74,14 +83,24 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       .replace(/\s+/g, ' ')
       .trim()
 
+    const textareaProps = {
+      className: classes,
+      disabled,
+      rows,
+      style: textareaColorVars(isInvalid ? 'error' : colorScheme, style),
+      ...rest,
+    }
+
+    if (!showCount) return <textarea ref={ref} {...textareaProps} />
+
     return (
-      <textarea
-        className={classes}
-        disabled={disabled}
+      <TextareaCounter
+        countClassName={countClassName}
+        formatCount={formatCount}
+        formatRemaining={formatRemaining}
+        isStyled={isStyled}
         ref={ref}
-        rows={rows}
-        style={textareaColorVars(isInvalid ? 'error' : colorScheme, style)}
-        {...rest}
+        textareaProps={textareaProps}
       />
     )
   },

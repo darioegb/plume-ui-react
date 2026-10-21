@@ -205,11 +205,16 @@ export const Sizes: Story = {
  */
 export const Placements: Story = {
   render: () => (
-    <div className="grid grid-cols-3 gap-4 p-16">
+    <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 sm:gap-4 sm:p-12">
       {placements.map((placement) => (
         <Popover key={placement} placement={placement} size="sm">
           <PopoverTrigger>
-            <Button label={placement} size="sm" variant="outline" />
+            <Button
+              className="w-full whitespace-nowrap"
+              label={placement}
+              size="sm"
+              variant="outline"
+            />
           </PopoverTrigger>
           <PopoverContent aria-label={placement}>Opens at {placement}.</PopoverContent>
         </Popover>

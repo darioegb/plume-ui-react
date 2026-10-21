@@ -68,6 +68,17 @@ describe('usePosition', () => {
     expect(floatingElement()).toHaveAttribute('data-placement', 'bottom')
   })
 
+  it('exposes the room it has as CSS variables, so a tall panel can scroll', () => {
+    render(<Harness />)
+    expect(floatingElement().style.getPropertyValue('--plume-available-height')).toBe('444px')
+    expect(floatingElement().style.getPropertyValue('--plume-available-width')).toBe('984px')
+  })
+
+  it('has no variables before it is positioned', () => {
+    render(<Harness enabled={false} />)
+    expect(floatingElement().style.getPropertyValue('--plume-available-height')).toBe('')
+  })
+
   it('respects the placement and reports the one it ended up with', () => {
     rects.anchor = { left: 400, top: 700, width: 100, height: 40 }
     render(<Harness placement="bottom-start" />)

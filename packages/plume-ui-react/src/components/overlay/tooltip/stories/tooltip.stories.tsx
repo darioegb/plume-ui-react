@@ -213,10 +213,15 @@ export const Sizes: Story = {
  */
 export const Placements: Story = {
   render: () => (
-    <div className="grid grid-cols-3 gap-4 p-12">
+    <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 sm:gap-4 sm:p-12">
       {placements.map((placement) => (
         <Tooltip content={placement} key={placement} placement={placement}>
-          <Button label={placement} size="sm" variant="outline" />
+          <Button
+            className="w-full whitespace-nowrap"
+            label={placement}
+            size="sm"
+            variant="outline"
+          />
         </Tooltip>
       ))}
     </div>

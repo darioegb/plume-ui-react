@@ -30,6 +30,8 @@ export interface PositionResult {
   y: number
   placement: Placement
   side: Side
+  maxHeight: number
+  maxWidth: number
 }
 
 const opposites: Record<Side, Side> = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }
@@ -85,6 +87,41 @@ function overflow(
 const clamp = (value: number, min: number, max: number): number =>
   Math.max(min, Math.min(value, max))
 
+function availableSpace(
+  side: Side,
+  anchor: Rect,
+  viewport: Size,
+  offset: number,
+  padding: number,
+): Size {
+  const across = { height: viewport.height - padding * 2, width: viewport.width - padding * 2 }
+  const space = (value: number): number => Math.max(0, value - offset - padding)
+  if (side === 'top') return { ...across, height: space(anchor.y) }
+  if (side === 'bottom') {
+    return { ...across, height: space(viewport.height - anchor.y - anchor.height) }
+  }
+  if (side === 'left') return { ...across, width: space(anchor.x) }
+  return { ...across, width: space(viewport.width - anchor.x - anchor.width) }
+}
+
+function chooseSide(
+  preferred: Side,
+  align: Align,
+  anchor: Rect,
+  floating: Size,
+  viewport: Size,
+  offset: number,
+  padding: number,
+): Side {
+  const point = coordinates(preferred, align, anchor, floating, offset)
+  const preferredOverflow = overflow(preferred, point, floating, viewport, padding)
+  if (preferredOverflow <= 0) return preferred
+  const opposite = opposites[preferred]
+  const oppositePoint = coordinates(opposite, align, anchor, floating, offset)
+  const oppositeOverflow = overflow(opposite, oppositePoint, floating, viewport, padding)
+  return oppositeOverflow < preferredOverflow ? opposite : preferred
+}
+
 export function computePosition({
   anchor,
   floating,
@@ -96,31 +133,29 @@ export function computePosition({
   shift = true,
 }: ComputePositionOptions): PositionResult {
   const { side: preferred, align } = parsePlacement(placement)
-  let side = preferred
-  let point = coordinates(side, align, anchor, floating, offset)
+  const side = flip
+    ? chooseSide(preferred, align, anchor, floating, viewport, offset, padding)
+    : preferred
 
-  if (flip) {
-    const preferredOverflow = overflow(side, point, floating, viewport, padding)
-    if (preferredOverflow > 0) {
-      const opposite = opposites[side]
-      const oppositePoint = coordinates(opposite, align, anchor, floating, offset)
-      if (overflow(opposite, oppositePoint, floating, viewport, padding) < preferredOverflow) {
-        side = opposite
-        point = oppositePoint
-      }
-    }
+  const available = availableSpace(side, anchor, viewport, offset, padding)
+  const size = {
+    height: Math.min(floating.height, available.height),
+    width: Math.min(floating.width, available.width),
   }
+  let point = coordinates(side, align, anchor, size, offset)
 
   if (shift) {
     const horizontal = side === 'top' || side === 'bottom'
     point = horizontal
-      ? { x: clamp(point.x, padding, viewport.width - padding - floating.width), y: point.y }
-      : { x: point.x, y: clamp(point.y, padding, viewport.height - padding - floating.height) }
+      ? { x: clamp(point.x, padding, viewport.width - padding - size.width), y: point.y }
+      : { x: point.x, y: clamp(point.y, padding, viewport.height - padding - size.height) }
   }
 
   return {
     x: point.x,
     y: point.y,
+    maxHeight: available.height,
+    maxWidth: available.width,
     side,
     placement: align === 'center' && !placement.includes('-') ? side : `${side}-${align}`,
   }

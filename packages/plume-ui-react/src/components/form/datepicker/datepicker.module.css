@@ -148,7 +148,11 @@ input + .inputButton {
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border-radius: var(--plume-radius-6);
-  overflow: hidden;
+  max-height: var(--plume-available-height, none);
+  max-width: calc(100vw - var(--plume-space-4));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   position: absolute;
   z-index: var(--plume-z-1);
 }
@@ -161,6 +165,13 @@ input + .inputButton {
 .calendarContainerDouble {
   display: flex;
   width: 42rem;
+}
+
+@media (max-width: 45rem) {
+  .calendarContainerDouble {
+    flex-direction: column;
+    width: 21rem;
+  }
 }
 
 .calendar {

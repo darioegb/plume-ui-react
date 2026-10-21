@@ -62,6 +62,36 @@ export default {
       options: ['rounded', 'pill'],
       table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
     },
+    showCount: {
+      control: 'boolean',
+      description:
+        'Shows how many characters there are under the Textarea, as `12` or, with `maxLength`, as `12 / 200`. The count describes the textarea (`aria-describedby`), and near the limit a polite message says how many characters are left. The count turns red at the limit.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    countClassName: {
+      control: 'text',
+      description:
+        'Custom CSS class for the count, in every variant. With `variant="unstyled"` it is the only class the count has.',
+      table: { type: { summary: 'string' } },
+    },
+    formatCount: {
+      control: false,
+      description:
+        'The text of the count, from the number of characters and the `maxLength`. The default says `12 / 200`, or `12` without a limit. Use it to translate it or to show what is left: `188 left`.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: '(count: number, max: number | undefined) => string' },
+      },
+    },
+    formatRemaining: {
+      control: false,
+      description:
+        'The message a screen reader gets when there are few characters left: at ten, or at a tenth of the `maxLength` if that is more. The default says `8 characters left`.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: '(remaining: number) => string' },
+      },
+    },
     resize: {
       control: 'radio',
       description: 'Which way the user can resize the Textarea.',
@@ -245,6 +275,33 @@ export const Colors: Story = {
 }
 
 /**
+ * **showCount** shows how many characters there are under the Textarea, and with a **maxLength** how many are
+ * allowed. The count describes the field to a screen reader when it gets the focus, and near the limit a polite
+ * message says how many characters are left. Use **formatCount** and **formatRemaining** to change the texts.
+ */
+export const CharacterCount: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Textarea aria-label="Notes" placeholder="Without a limit" showCount />
+      <Textarea
+        aria-label="Bio"
+        defaultValue="I write documentation."
+        maxLength={120}
+        placeholder="With a limit"
+        showCount
+      />
+      <Textarea
+        aria-label="Short bio"
+        defaultValue="Almost there, only a few more characters can fit in this one"
+        formatCount={(count, max) => `${(max ?? 0) - count} left`}
+        maxLength={64}
+        showCount
+      />
+    </div>
+  ),
+}
+
+/**
  * Use **rows** for the initial height and **resize** to control how the user can change it.
  */
 export const RowsAndResize: Story = {
@@ -314,6 +371,15 @@ export const Tailwind: Story = {
     rows={4}
     variant="unstyled"
   />
+  <Textarea
+    className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+    countClassName="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600"
+    aria-label="With a count"
+    maxLength={80}
+    placeholder="With a count"
+    showCount
+    variant="unstyled"
+  />
 </div>`,
       },
     },
@@ -329,6 +395,15 @@ export const Tailwind: Story = {
         className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
         placeholder="Rounded and fixed"
         rows={4}
+        variant="unstyled"
+      />
+      <Textarea
+        className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+        countClassName="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600"
+        aria-label="With a count"
+        maxLength={80}
+        placeholder="With a count"
+        showCount
         variant="unstyled"
       />
     </div>
@@ -356,6 +431,15 @@ export const Bootstrap: Story = {
     style={{ backgroundImage: 'none' }}
     variant="unstyled"
   />
+  <Textarea
+    className="form-control"
+    countClassName="form-text text-end"
+    aria-label="With a count"
+    maxLength={80}
+    placeholder="With a count"
+    showCount
+    variant="unstyled"
+  />
 </div>`,
       },
     },
@@ -373,6 +457,15 @@ export const Bootstrap: Story = {
         defaultValue="Invalid value"
         placeholder="Invalid textarea"
         style={{ backgroundImage: 'none' }}
+        variant="unstyled"
+      />
+      <Textarea
+        className="form-control"
+        countClassName="form-text text-end"
+        aria-label="With a count"
+        maxLength={80}
+        placeholder="With a count"
+        showCount
         variant="unstyled"
       />
     </div>

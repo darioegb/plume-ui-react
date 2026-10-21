@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
 import { Field } from '../../field'
 import { Textarea } from '..'
@@ -130,5 +131,125 @@ describe('Textarea component', () => {
     expect(textarea).toBeRequired()
     expect(textarea).toHaveAttribute('aria-invalid', 'true')
     expect(textarea).toHaveAccessibleDescription('Too short Say something')
+  })
+  describe('character count', () => {
+    const count = (): HTMLElement =>
+      document.querySelector('[data-plume-textarea-count]') as HTMLElement
+    const status = (): HTMLElement => screen.getByRole('status')
+
+    it('shows no count by default', () => {
+      render(<Textarea aria-label="Bio" />)
+      expect(count()).toBeNull()
+      expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby')
+    })
+
+    it('shows the number of characters', async () => {
+      render(<Textarea aria-label="Bio" showCount />)
+      expect(count()).toHaveTextContent('0')
+      await userEvent.type(screen.getByRole('textbox'), 'Hello')
+      expect(count()).toHaveTextContent('5')
+    })
+
+    it('starts from the default value', () => {
+      render(<Textarea aria-label="Bio" defaultValue="Hello" showCount />)
+      expect(count()).toHaveTextContent('5')
+    })
+
+    it('follows the value when it is controlled', () => {
+      const { rerender } = render(<Textarea aria-label="Bio" showCount value="Hi" />)
+      expect(count()).toHaveTextContent('2')
+      rerender(<Textarea aria-label="Bio" showCount value="Hello there" />)
+      expect(count()).toHaveTextContent('11')
+    })
+
+    it('shows the limit next to the count', async () => {
+      render(<Textarea aria-label="Bio" maxLength={20} showCount />)
+      expect(count()).toHaveTextContent('0 / 20')
+      await userEvent.type(screen.getByRole('textbox'), 'abc')
+      expect(count()).toHaveTextContent('3 / 20')
+    })
+
+    it('calls the onChange of the user', async () => {
+      const onChange = vi.fn()
+      render(<Textarea aria-label="Bio" onChange={onChange} showCount />)
+      await userEvent.type(screen.getByRole('textbox'), 'ab')
+      expect(onChange).toHaveBeenCalledTimes(2)
+    })
+
+    it('describes the textarea with the count, next to what it already had', () => {
+      render(<Textarea aria-describedby="hint" aria-label="Bio" showCount />)
+      const described = screen.getByRole('textbox').getAttribute('aria-describedby') ?? ''
+      expect(described.split(' ')).toContain('hint')
+      expect(described.split(' ')).toContain(count().id)
+    })
+
+    it('marks the count when the limit is reached', async () => {
+      render(<Textarea aria-label="Bio" maxLength={3} showCount />)
+      expect(count()).not.toHaveAttribute('data-limit')
+      await userEvent.type(screen.getByRole('textbox'), 'abc')
+      expect(count()).toHaveAttribute('data-limit')
+    })
+
+    it('says nothing while there is room, and how many are left near the limit', () => {
+      render(<Textarea aria-label="Bio" maxLength={100} showCount />)
+      expect(status()).toBeEmptyDOMElement()
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'a'.repeat(85) } })
+      expect(status()).toBeEmptyDOMElement()
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'a'.repeat(92) } })
+      expect(status()).toHaveTextContent('8 characters left')
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'a'.repeat(99) } })
+      expect(status()).toHaveTextContent('1 character left')
+    })
+
+    it('says nothing without a limit', () => {
+      render(<Textarea aria-label="Bio" defaultValue="Hello" showCount />)
+      expect(status()).toBeEmptyDOMElement()
+    })
+
+    it('uses another text for the count and for what is left', () => {
+      render(
+        <Textarea
+          aria-label="Bio"
+          defaultValue={'a'.repeat(95)}
+          formatCount={(n, max) => `${n} de ${max}`}
+          formatRemaining={(left) => `Quedan ${left}`}
+          maxLength={100}
+          showCount
+        />,
+      )
+      expect(count()).toHaveTextContent('95 de 100')
+      expect(status()).toHaveTextContent('Quedan 5')
+    })
+
+    it('forwards the ref to the textarea', () => {
+      const ref = createRef<HTMLTextAreaElement>()
+      render(<Textarea aria-label="Bio" ref={ref} showCount />)
+      expect(ref.current).toBe(screen.getByRole('textbox'))
+    })
+
+    it('keeps the classes of the textarea', () => {
+      render(<Textarea aria-label="Bio" className="mine" showCount />)
+      expect(screen.getByRole('textbox')).toHaveClass('base', 'outline', 'mine')
+    })
+
+    it('styles the count, and drops its class when it is unstyled', () => {
+      const { rerender } = render(<Textarea aria-label="Bio" countClassName="my-count" showCount />)
+      expect(count()).toHaveClass('count', 'my-count')
+      rerender(<Textarea aria-label="Bio" countClassName="my-count" showCount variant="unstyled" />)
+      expect(count()).toHaveAttribute('class', 'my-count')
+      rerender(<Textarea aria-label="Bio" showCount variant="unstyled" />)
+      expect(count()).not.toHaveAttribute('class')
+    })
+
+    it('composes with Field', () => {
+      render(
+        <Field helperText="Short is fine" label="Bio">
+          <Textarea maxLength={50} showCount />
+        </Field>,
+      )
+      const described = screen.getByLabelText('Bio').getAttribute('aria-describedby') ?? ''
+      expect(described.split(' ')).toContain(count().id)
+      expect(described).toContain('helper')
+    })
   })
 })

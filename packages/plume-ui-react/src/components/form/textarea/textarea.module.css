@@ -110,3 +110,26 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+:global(:where([data-plume-textarea-group])) {
+  display: block;
+  width: 100%;
+}
+
+:global(:where([data-plume-textarea-count])) {
+  display: block;
+  text-align: end;
+}
+
+.count {
+  color: var(--plume-muted);
+  font-family: var(--plume-font-family);
+  font-size: var(--plume-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  margin-block-start: var(--plume-space-1);
+}
+
+.count[data-limit] {
+  color: var(--plume-color-error-text);
+  font-weight: var(--plume-font-weight-semibold);
+}

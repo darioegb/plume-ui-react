@@ -12,6 +12,12 @@
   width: auto;
 }
 
+:global(:where(dialog[data-plume-dialog][data-placement])) {
+  max-height: var(--plume-available-height, none);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .content {
   background-color: var(--plume-surface);
   border-radius: var(--plume-radius-4);

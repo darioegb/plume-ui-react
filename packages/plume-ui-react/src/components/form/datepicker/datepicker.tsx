@@ -8,11 +8,12 @@ import type {
   ReactNode,
   Ref,
 } from 'react'
-import { forwardRef, useEffect, useRef, useReducer } from 'react'
+import { forwardRef, useCallback, useEffect, useRef, useReducer, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { getDateFormatByLanguage } from '../../../utils/dates'
 import { Button } from '../../interaction/button'
 import { useClickOutside } from '../../../hooks/use-click-outside'
+import { usePosition } from '../../../overlay/use-position'
 import { DatePickerContext } from './use-datepicker'
 import {
   DEFAULT_DATE_PICKER_VALUE,
@@ -101,7 +102,7 @@ function FooterActions({
 }: FooterActionsProps): ReactNode {
   return (
     <div className={styles.footerActions}>
-      <Button className={styles.footerButton} label={cancel} onClick={onCancel} variant='ghost' />
+      <Button className={styles.footerButton} label={cancel} onClick={onCancel} variant="ghost" />
       <Button
         className={styles.footerButtonApply}
         colorScheme={colorScheme}
@@ -158,13 +159,10 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       apply: config?.footer?.apply ?? DEFAULT_FOOTER_LABELS.apply,
       cancel: config?.footer?.cancel ?? DEFAULT_FOOTER_LABELS.cancel,
     }
-    const [state, dispatch] = useReducer(
-      datePickerReducer,
-      value,
-      (initialValue?: DateRange) =>
-        initialValue
-          ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })
-          : DATE_PICKER_INITIAL_STATE,
+    const [state, dispatch] = useReducer(datePickerReducer, value, (initialValue?: DateRange) =>
+      initialValue
+        ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })
+        : DATE_PICKER_INITIAL_STATE,
     )
     const isFirstRender = useRef(true)
     const rootRef = useClickOutside({
@@ -172,11 +170,24 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         dispatch({ type: 'CLOSE_MODAL' })
       },
     })
-    const setRootRef = (node: HTMLDivElement | null): void => {
-      rootRef.current = node
-      if (typeof ref === 'function') ref(node)
-      else if (ref) ref.current = node
-    }
+    const [anchor, setAnchor] = useState<HTMLDivElement | null>(null)
+    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
+    const setRootRef = useCallback(
+      (node: HTMLDivElement | null): void => {
+        rootRef.current = node
+        setAnchor(node)
+        if (typeof ref === 'function') ref(node)
+        else if (ref) ref.current = node
+      },
+      [ref, rootRef],
+    )
+    const position = usePosition({
+      anchor,
+      enabled: !isCalendar && state.modalOpen,
+      floating: panel,
+      offset: 8,
+      placement: 'bottom-start',
+    })
 
     const {
       size = variant !== 'unstyled' ? 'md' : undefined,
@@ -355,9 +366,15 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           )}
           {isCalendar || state.modalOpen ? (
             <div
-              aria-label='Calendar'
+              aria-label="Calendar"
               className={styles.datePickerModal}
-              role='dialog'
+              ref={setPanel}
+              role="dialog"
+              style={
+                isCalendar
+                  ? undefined
+                  : { ...position.style, margin: 0, opacity: position.isPositioned ? undefined : 0 }
+              }
             >
               <div className={isRange ? styles.calendarContainerDouble : styles.calendarContainer}>
                 <Calendar

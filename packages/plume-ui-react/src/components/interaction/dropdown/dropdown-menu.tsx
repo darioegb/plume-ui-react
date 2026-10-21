@@ -106,6 +106,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           {...rest}
           className={classes}
           data-placement={position.placement}
+          data-plume-menu=""
           id={menuId}
           onKeyDown={handleKeyDown}
           ref={mergeRefs<HTMLDivElement>(setPanel, ref)}

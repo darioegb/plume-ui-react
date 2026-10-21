@@ -107,7 +107,7 @@ function Example({
  * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `removeLabel`, `clearLabel`, `aria-label`, `aria-labelledby`, `classNames`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button; `classNames` styles its parts (`field`, `trigger`, `chip`, `chipRemove`, `clear` and `chevron`); the chips are `Chip` components, and `chip` and `chipRemove` go to the chip and to its remove button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. |
  * | `SelectValue` | `placeholder`, `children`. What the button of the trigger shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectTrigger` renders one by default; use your own to render the value yourself with a function of the chosen options. |
  * | `SelectContent` | `emptyText`, `searchLabel`, `searchPlaceholder`, `aria-label`, `classNames`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. `classNames` styles its parts (`search`, `searchInput`, `list` and `empty`). |
- * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `classNames`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). `classNames` styles `icon`, `description`, `checkbox` and `check`. The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
+ * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `classNames`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). `classNames` styles `icon`, `description` and `check`, the mark at the end of a chosen option, in a single and in a `multiple` select. The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
  * | `SelectGroup` | `label`, `labelClassName`, `className`, `style`, `children`. A titled set of options. It hides itself when the search leaves it empty. |
  */
 export default {
@@ -708,7 +708,7 @@ export const Tailwind: Story = {
       {fruits.map((fruit) => (
         <SelectOption
           className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
-          classNames={{ checkbox: "flex h-4 w-4 items-center justify-center rounded border border-border text-[10px] text-emerald-700" }}
+          classNames={{ check: "text-emerald-600" }}
           key={fruit}
           value={fruit.toLowerCase()}
         >
@@ -773,8 +773,7 @@ export const Tailwind: Story = {
             <SelectOption
               className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
               classNames={{
-                checkbox:
-                  'flex h-4 w-4 items-center justify-center rounded border border-border text-[10px] text-emerald-700',
+                check: 'text-emerald-600',
               }}
               key={fruit}
               value={fruit.toLowerCase()}
@@ -834,7 +833,7 @@ export const Bootstrap: Story = {
       {fruits.map((fruit) => (
         <SelectOption
           className="dropdown-item rounded"
-          classNames={{ checkbox: "me-2 border rounded px-1" }}
+          classNames={{ check: "ms-auto text-success" }}
           key={fruit}
           value={fruit.toLowerCase()}
         >
@@ -890,7 +889,7 @@ export const Bootstrap: Story = {
           {fruits.map((fruit) => (
             <SelectOption
               className="dropdown-item rounded"
-              classNames={{ checkbox: 'me-2 border rounded px-1' }}
+              classNames={{ check: 'ms-auto text-success' }}
               key={fruit}
               value={fruit.toLowerCase()}
             >

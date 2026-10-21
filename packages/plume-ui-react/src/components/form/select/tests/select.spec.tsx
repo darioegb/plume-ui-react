@@ -1028,7 +1028,6 @@ describe('Select component', () => {
               <SelectOption
                 classNames={{
                   check: 'my-check',
-                  checkbox: 'my-checkbox',
                   description: 'my-description',
                   icon: 'my-icon',
                 }}
@@ -1072,9 +1071,28 @@ describe('Select component', () => {
       render(<Parts />)
       await userEvent.click(trigger())
       const apple = screen.getByRole('option', { name: /Apple/ })
-      expect(apple.querySelector('.my-checkbox')).not.toBeNull()
       expect(apple.querySelector('.my-icon')).not.toBeNull()
       expect(apple.querySelector('.my-description')).not.toBeNull()
+    })
+
+    it('marks a chosen option with the same check in a multiple select', async () => {
+      render(
+        <Select defaultValue={['apple']} multiple>
+          <SelectTrigger aria-label="Fruit" />
+          <SelectContent>
+            <SelectOption classNames={{ check: 'my-check' }} value="apple">
+              Apple
+            </SelectOption>
+            <SelectOption classNames={{ check: 'my-check' }} value="banana">
+              Banana
+            </SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      await userEvent.click(trigger())
+      expect(option('Apple').querySelector('.my-check')).not.toBeNull()
+      expect(option('Banana').querySelector('.my-check')).toBeNull()
+      expect(option('Apple').querySelector('input')).toBeNull()
     })
 
     it('adds a class to the check of a single option', async () => {
