@@ -19,7 +19,7 @@ export const defaultParse = (text: string): number | null => {
 }
 
 export const isPartialNumber = (text: string, precision: number | undefined): boolean => {
-  const pattern = precision === 0 ? /^[+-]?\d*$/ : /^[+-]?\d*[.,]?\d*$/
+  const pattern = precision === 0 ? /^[+-]?\d*$/ : /^[+-]?\d*(?:[.,]\d*)?$/
   return pattern.test(text)
 }
 

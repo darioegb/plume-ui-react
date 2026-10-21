@@ -42,6 +42,11 @@ type RatingRootAttributes = Pick<
 
 export type RatingProps = Omit<ComponentProps, 'index'> & RatingRootAttributes & RatingOwnProps
 
+const halfOf = (allowHalf: boolean, option: number, position: number): string | undefined => {
+  if (!allowHalf) return undefined
+  return option === position ? 'end' : 'start'
+}
+
 const defaultItemLabel = (value: number): string => `${value} ${value === 1 ? 'star' : 'stars'}`
 
 const defaultReadOnlyLabel = (value: number, max: number): string => `${value} out of ${max}`
@@ -92,7 +97,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
     const fieldLabel = field?.controlId === rest.id ? field?.labelId : undefined
     const labelledBy = rest['aria-labelledby'] ?? (rest['aria-label'] ? undefined : fieldLabel)
     const filledIcon = icon ?? <StarIcon filled />
-    const outlineIcon = emptyIcon ?? (icon ? icon : <StarIcon filled={false} />)
+    const outlineIcon = emptyIcon ?? icon ?? <StarIcon filled={false} />
     const step = allowHalf ? 0.5 : 1
     const positions = [...new Array(max).keys()].map((index) => index + 1)
     const classes = joinClasses(
@@ -162,7 +167,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
                 aria-label={getItemLabel(option, max)}
                 checked={rating.value === option}
                 className={isStyled ? styles.radio : undefined}
-                data-half={allowHalf ? (option === position ? 'end' : 'start') : undefined}
+                data-half={halfOf(allowHalf, option, position)}
                 data-plume-rating-radio=""
                 key={option}
                 name={name ?? generatedName}
