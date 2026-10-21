@@ -245,11 +245,16 @@ export const Sizes: Story = {
 export const Placements: Story = {
   parameters: { docs: { story: { inline: false, iframeHeight: 460 } } },
   render: () => (
-    <div className="grid grid-cols-3 gap-4 p-12">
+    <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 sm:gap-4 sm:p-12">
       {placements.map((placement) => (
         <Dropdown key={placement} placement={placement}>
           <DropdownTrigger>
-            <Button label={placement} size="sm" variant="outline" />
+            <Button
+              className="w-full whitespace-nowrap"
+              label={placement}
+              size="sm"
+              variant="outline"
+            />
           </DropdownTrigger>
           <DropdownMenu aria-label={placement}>
             <DropdownItem>Profile</DropdownItem>
@@ -478,11 +483,7 @@ export const Bootstrap: Story = {
   render: () => (
     <Dropdown variant="unstyled">
       <DropdownTrigger>
-        <Button
-          className="btn btn-primary dropdown-toggle"
-          label="Account"
-          variant="unstyled"
-        />
+        <Button className="btn btn-primary dropdown-toggle" label="Account" variant="unstyled" />
       </DropdownTrigger>
       <DropdownMenu className="dropdown-menu show">
         <DropdownLabel className="dropdown-header text-body-secondary">

@@ -8,7 +8,7 @@ import type { ComponentProps } from '../../../theme'
 import { useSelectContext, type SelectOptionRecord } from './select-context'
 import styles from './select.module.css'
 
-export type SelectOptionPart = 'check' | 'checkbox' | 'description' | 'icon'
+export type SelectOptionPart = 'check' | 'description' | 'icon'
 
 export interface SelectOptionOwnProps {
   children?: ReactNode
@@ -110,7 +110,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     const id = useId()
     const descriptionId = useId()
     const textId = useId()
-    const { isStyled, multiple, query, register, select, setActiveId } = context
+    const { isStyled, query, register, select, setActiveId } = context
     const { resolved, textRef } = useOptionRecord(
       { children, disabled, icon, label, value },
       register,
@@ -157,12 +157,6 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         tabIndex={-1}
       >
         <OptionMark
-          className={joinClasses(isStyled && styles.checkbox, classNames?.checkbox)}
-          show={multiple}
-        >
-          {selected ? <CheckIcon /> : null}
-        </OptionMark>
-        <OptionMark
           className={joinClasses(isStyled && styles.optionIcon, classNames?.icon)}
           show={Boolean(icon)}
         >
@@ -181,7 +175,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
         </span>
         <OptionMark
           className={joinClasses(isStyled && styles.check, classNames?.check)}
-          show={!multiple && selected}
+          show={selected}
         >
           <CheckIcon />
         </OptionMark>

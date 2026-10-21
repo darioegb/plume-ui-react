@@ -22,16 +22,18 @@ const positions: ToastPosition[] = [
 ]
 
 function Fire({
+  className,
   label,
   make,
   variant = 'solid',
 }: Readonly<{
+  className?: string
   label: string
   make: (api: ToastApi) => void
   variant?: 'ghost' | 'outline' | 'solid'
 }>): React.ReactNode {
   const api = useToast()
-  return <Button label={label} onClick={() => make(api)} variant={variant} />
+  return <Button className={className} label={label} onClick={() => make(api)} variant={variant} />
 }
 
 function Demo({
@@ -326,10 +328,15 @@ export const Icons: Story = {
  */
 export const Positions: Story = {
   render: () => (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {positions.map((position) => (
         <ToastProvider key={position} position={position} regionLabel={`${position} notifications`}>
-          <Fire label={position} make={(api) => api.info({ title: position })} variant="outline" />
+          <Fire
+            className="w-full whitespace-nowrap"
+            label={position}
+            make={(api) => api.info({ title: position })}
+            variant="outline"
+          />
         </ToastProvider>
       ))}
     </div>

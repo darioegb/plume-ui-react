@@ -30,6 +30,8 @@ export interface PositionResult {
   y: number
   placement: Placement
   side: Side
+  maxHeight: number
+  maxWidth: number
 }
 
 const opposites: Record<Side, Side> = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }
@@ -85,6 +87,23 @@ function overflow(
 const clamp = (value: number, min: number, max: number): number =>
   Math.max(min, Math.min(value, max))
 
+function availableSpace(
+  side: Side,
+  anchor: Rect,
+  viewport: Size,
+  offset: number,
+  padding: number,
+): Size {
+  const across = { height: viewport.height - padding * 2, width: viewport.width - padding * 2 }
+  const space = (value: number): number => Math.max(0, value - offset - padding)
+  if (side === 'top') return { ...across, height: space(anchor.y) }
+  if (side === 'bottom') {
+    return { ...across, height: space(viewport.height - anchor.y - anchor.height) }
+  }
+  if (side === 'left') return { ...across, width: space(anchor.x) }
+  return { ...across, width: space(viewport.width - anchor.x - anchor.width) }
+}
+
 export function computePosition({
   anchor,
   floating,
@@ -111,16 +130,25 @@ export function computePosition({
     }
   }
 
+  const available = availableSpace(side, anchor, viewport, offset, padding)
+  const size = {
+    height: Math.min(floating.height, available.height),
+    width: Math.min(floating.width, available.width),
+  }
+  point = coordinates(side, align, anchor, size, offset)
+
   if (shift) {
     const horizontal = side === 'top' || side === 'bottom'
     point = horizontal
-      ? { x: clamp(point.x, padding, viewport.width - padding - floating.width), y: point.y }
-      : { x: point.x, y: clamp(point.y, padding, viewport.height - padding - floating.height) }
+      ? { x: clamp(point.x, padding, viewport.width - padding - size.width), y: point.y }
+      : { x: point.x, y: clamp(point.y, padding, viewport.height - padding - size.height) }
   }
 
   return {
     x: point.x,
     y: point.y,
+    maxHeight: available.height,
+    maxWidth: available.width,
     side,
     placement: align === 'center' && !placement.includes('-') ? side : `${side}-${align}`,
   }

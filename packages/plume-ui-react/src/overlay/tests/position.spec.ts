@@ -6,11 +6,60 @@ const floating = { width: 200, height: 100 }
 
 describe('computePosition', () => {
   it('places the floating element below and centered by default', () => {
-    expect(computePosition({ anchor, floating, viewport })).toEqual({
+    expect(computePosition({ anchor, floating, viewport })).toMatchObject({
       x: 350,
       y: 348,
       side: 'bottom',
       placement: 'bottom',
+    })
+  })
+
+  describe('available space', () => {
+    it('reports the room on the side the floating element opens to', () => {
+      const below = computePosition({ anchor, floating, viewport, placement: 'bottom' })
+      expect(below.maxHeight).toBe(800 - 340 - 8 - 8)
+      expect(below.maxWidth).toBe(1000 - 16)
+      const above = computePosition({ anchor, floating, viewport, placement: 'top' })
+      expect(above.maxHeight).toBe(300 - 8 - 8)
+      const left = computePosition({ anchor, floating, viewport, placement: 'left' })
+      expect(left.maxWidth).toBe(400 - 8 - 8)
+      expect(left.maxHeight).toBe(800 - 16)
+      const right = computePosition({ anchor, floating, viewport, placement: 'right' })
+      expect(right.maxWidth).toBe(1000 - 500 - 8 - 8)
+    })
+
+    it('keeps a tall element inside the screen by using the room it has', () => {
+      const tall = { width: 200, height: 900 }
+      const result = computePosition({ anchor, floating: tall, viewport, placement: 'bottom' })
+      expect(result.maxHeight).toBe(444)
+      expect(result.y).toBe(348)
+      expect(result.y + result.maxHeight).toBeLessThanOrEqual(800 - 8)
+    })
+
+    it('places a tall element above the anchor next to it, not off the top of the screen', () => {
+      const nearBottom = { ...anchor, y: 700 }
+      const tall = { width: 200, height: 900 }
+      const result = computePosition({
+        anchor: nearBottom,
+        floating: tall,
+        viewport,
+        placement: 'bottom',
+      })
+      expect(result.side).toBe('top')
+      expect(result.maxHeight).toBe(684)
+      expect(result.y).toBe(8)
+    })
+
+    it('never reports a negative room', () => {
+      const edge = { ...anchor, y: 795 }
+      const result = computePosition({
+        anchor: edge,
+        floating,
+        viewport,
+        placement: 'bottom',
+        flip: false,
+      })
+      expect(result.maxHeight).toBe(0)
     })
   })
 

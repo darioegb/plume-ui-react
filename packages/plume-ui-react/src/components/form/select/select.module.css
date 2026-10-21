@@ -47,7 +47,7 @@
 :global(:where([data-plume-select-panel]:not([hidden]))) {
   display: flex;
   flex-direction: column;
-  max-height: min(22rem, calc(100vh - 1rem));
+  max-height: min(22rem, var(--plume-available-height, calc(100vh - 1rem)));
   overflow: hidden;
 }
 
@@ -70,6 +70,7 @@
 
 :global(:where([data-plume-select-list])) {
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .control {
@@ -245,7 +246,7 @@
   font-family: var(--plume-font-family);
   font-size: var(--plume-font-size-sm);
   line-height: var(--plume-line-height-normal);
-  max-height: min(22rem, calc(100vh - var(--plume-space-4)));
+  max-height: min(22rem, var(--plume-available-height, calc(100vh - var(--plume-space-4))));
   max-width: calc(100vw - var(--plume-space-4));
   overflow: hidden;
   z-index: var(--plume-z-8);
@@ -329,25 +330,6 @@
   color: var(--plume-color-primary-text);
   display: inline-flex;
   flex: none;
-}
-
-.checkbox {
-  align-items: center;
-  border: 1px solid var(--plume-border-strong);
-  border-radius: var(--plume-radius-2);
-  box-sizing: border-box;
-  display: inline-flex;
-  flex: none;
-  font-size: 0.8em;
-  height: 1.25em;
-  justify-content: center;
-  width: 1.25em;
-}
-
-.option[aria-selected='true'] .checkbox {
-  background-color: var(--plume-color-primary-solid);
-  border-color: var(--plume-color-primary-solid);
-  color: var(--plume-color-primary-solid-contrast);
 }
 
 .group:not(:has([role='option']:not([hidden]))) {

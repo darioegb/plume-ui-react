@@ -25,6 +25,8 @@ export interface UsePositionResult {
 interface PositionState {
   x: number
   y: number
+  maxHeight: number
+  maxWidth: number
   placement: Placement
   isPositioned: boolean
 }
@@ -39,7 +41,14 @@ export function usePosition({
   flip,
   shift,
 }: UsePositionOptions): UsePositionResult {
-  const [state, setState] = useState<PositionState>({ x: 0, y: 0, placement, isPositioned: false })
+  const [state, setState] = useState<PositionState>({
+    x: 0,
+    y: 0,
+    maxHeight: Number.POSITIVE_INFINITY,
+    maxWidth: Number.POSITIVE_INFINITY,
+    placement,
+    isPositioned: false,
+  })
 
   const update = useCallback(() => {
     if (!anchor || !floating) return
@@ -68,9 +77,18 @@ export function usePosition({
       current.isPositioned &&
       current.x === result.x &&
       current.y === result.y &&
+      current.maxHeight === result.maxHeight &&
+      current.maxWidth === result.maxWidth &&
       current.placement === result.placement
         ? current
-        : { x: result.x, y: result.y, placement: result.placement, isPositioned: true },
+        : {
+            x: result.x,
+            y: result.y,
+            maxHeight: result.maxHeight,
+            maxWidth: result.maxWidth,
+            placement: result.placement,
+            isPositioned: true,
+          },
     )
   }, [anchor, floating, placement, offset, padding, flip, shift])
 
@@ -97,6 +115,14 @@ export function usePosition({
   return {
     placement: state.placement,
     isPositioned: state.isPositioned,
-    style: { position: 'fixed', top: state.y, left: state.x },
+    style: {
+      position: 'fixed',
+      top: state.y,
+      left: state.x,
+      ...(Number.isFinite(state.maxHeight) && {
+        '--plume-available-height': `${state.maxHeight}px`,
+        '--plume-available-width': `${state.maxWidth}px`,
+      }),
+    },
   }
 }

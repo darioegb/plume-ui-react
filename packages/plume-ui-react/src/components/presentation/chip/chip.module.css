@@ -52,10 +52,17 @@
 
 .remove {
   border-radius: var(--plume-radius-full);
+  position: relative;
   height: 1.25em;
   justify-content: center;
   margin-inline-end: calc(var(--plume-space-1) * -1);
   width: 1.25em;
+}
+
+.remove::after {
+  content: '';
+  inset: -0.4rem;
+  position: absolute;
 }
 
 .remove:hover:not(:disabled) {
