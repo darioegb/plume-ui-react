@@ -236,28 +236,19 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to pick a color from the theme. It colors the active item, and the whole bar in the
- * `solid` variant. Every scheme is shown in the `filled` and the `solid` variants.
+ * `solid` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
-        <div className="flex flex-col gap-2" key={scheme}>
-          <Navbar
-            aria-label={scheme}
-            colorScheme={scheme as keyof typeof defaultTheme.colors}
-            variant="filled"
-          >
-            <Parts />
-          </Navbar>
-          <Navbar
-            aria-label={`${scheme} solid`}
-            colorScheme={scheme as keyof typeof defaultTheme.colors}
-            variant="solid"
-          >
-            <Parts />
-          </Navbar>
-        </div>
+        <Navbar
+          aria-label={scheme}
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          key={scheme}
+        >
+          <Parts />
+        </Navbar>
       ))}
     </div>
   ),

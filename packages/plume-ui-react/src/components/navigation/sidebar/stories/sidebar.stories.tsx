@@ -81,7 +81,11 @@ function Shell({
         {caption ? <p className="text-sm font-semibold">{caption}</p> : null}
         <div
           className="flex overflow-hidden rounded border border-gray-300"
-          style={{ height: compact ? '13rem' : '20rem', width: '100%' }}
+          style={{
+            height: compact ? undefined : '20rem',
+            minHeight: compact ? '13rem' : undefined,
+            width: '100%',
+          }}
         >
           <Sidebar
             aria-label="Application"
@@ -310,7 +314,7 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to pick a color from the theme. It colors the active item, and the whole sidebar in the
- * `solid` variant, which is the one shown here.
+ * `solid` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
   render: () => (
@@ -324,7 +328,6 @@ export const Colors: Story = {
           sidebar={{
             colorScheme: scheme as keyof typeof defaultTheme.colors,
             size: 'sm',
-            variant: 'solid',
           }}
         />
       ))}

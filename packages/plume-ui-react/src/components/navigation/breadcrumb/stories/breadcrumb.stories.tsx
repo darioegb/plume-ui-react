@@ -211,7 +211,7 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to pick a color from the theme. It colors the links, and the current page in the
- * `filled` variant.
+ * `filled` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
   render: () => (
@@ -221,7 +221,6 @@ export const Colors: Story = {
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           key={scheme}
-          variant="filled"
         >
           <Trail />
         </Breadcrumb>
