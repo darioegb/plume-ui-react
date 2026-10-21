@@ -2,14 +2,14 @@
 
 import { useCallback, useState } from 'react'
 
-export interface UseSelectValueOptions {
+export interface UseSelectionStateOptions {
   defaultValue?: string | string[]
   multiple: boolean
   onValueChange?: (value: never) => void
   value?: string | string[]
 }
 
-export interface SelectValueState {
+export interface SelectionState {
   commit: (next: string[]) => void
   selected: readonly string[]
 }
@@ -19,12 +19,12 @@ const toArray = (value: string | string[] | undefined): string[] => {
   return value ? [value] : []
 }
 
-export function useSelectValue({
+export function useSelectionState({
   defaultValue,
   multiple,
   onValueChange,
   value,
-}: UseSelectValueOptions): SelectValueState {
+}: UseSelectionStateOptions): SelectionState {
   const [internal, setInternal] = useState<string[]>(() => toArray(defaultValue))
   const isControlled = value !== undefined
   const selected = isControlled ? toArray(value) : internal
