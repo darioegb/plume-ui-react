@@ -402,6 +402,10 @@ export const AddonsAndElements: Story = {
       <Input addonAfter=".com" addonBefore="https://" placeholder="your-site" />
       <Input elementBefore={userIcon} placeholder="Username" />
       <Input elementAfter={searchIcon} placeholder="Search" />
+      <Input addonBefore="$" elementAfter={searchIcon} placeholder="Amount" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="filled" variant="filled" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="underline" variant="underline" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="pill" shape="pill" />
     </div>
   ),
 }

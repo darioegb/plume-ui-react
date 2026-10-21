@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { InputPin } from '..'
+import { PinInput } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -23,8 +23,8 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * focus to the first box when its label is clicked.
  */
 export default {
-  title: 'Components/InputPin',
-  component: InputPin,
+  title: 'Components/PinInput',
+  component: PinInput,
   tags: ['autodocs'],
   parameters: {
     docs: {
@@ -50,7 +50,7 @@ export default {
     style: {
       control: false,
       description:
-        'Inline styles for the group. They are applied after the color variables, so they can override them (e.g. `--inputpin-color`).',
+        'Inline styles for the group. They are applied after the color variables, so they can override them (e.g. `--pininput-color`).',
       table: { type: { summary: 'CSSProperties' } },
     },
     length: {
@@ -82,7 +82,7 @@ export default {
     value: {
       control: false,
       description:
-        'The code. Makes the InputPin controlled: pass `onValueChange` to update it. The characters are always one after another, with no empty box in between.',
+        'The code. Makes the PinInput controlled: pass `onValueChange` to update it. The characters are always one after another, with no empty box in between.',
       table: { type: { summary: 'string' } },
     },
     defaultValue: {
@@ -216,12 +216,12 @@ export default {
   args: {
     'aria-label': 'Verification code',
   },
-} satisfies Meta<typeof InputPin>
+} satisfies Meta<typeof PinInput>
 
-type Story = StoryObj<typeof InputPin>
+type Story = StoryObj<typeof PinInput>
 
 /**
- * This is the default InputPin: six digits. Type, or paste a code.
+ * This is the default PinInput: six digits. Type, or paste a code.
  */
 export const Default: Story = {}
 
@@ -232,10 +232,10 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      <InputPin aria-label="Outline" length={4} variant="outline" />
-      <InputPin aria-label="Filled" length={4} variant="filled" />
-      <InputPin aria-label="Underline" length={4} variant="underline" />
-      <InputPin
+      <PinInput aria-label="Outline" length={4} variant="outline" />
+      <PinInput aria-label="Filled" length={4} variant="filled" />
+      <PinInput aria-label="Underline" length={4} variant="underline" />
+      <PinInput
         aria-label="Unstyled"
         className="gap-2"
         inputClassName="h-10 w-10 rounded border border-gray-400"
@@ -253,7 +253,7 @@ export const Sizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <InputPin aria-label={size} key={size} length={4} size={size} />
+        <PinInput aria-label={size} key={size} length={4} size={size} />
       ))}
     </div>
   ),
@@ -266,7 +266,7 @@ export const Colors: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.slice(0, 5).map((scheme) => (
-        <InputPin
+        <PinInput
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           key={scheme}
@@ -283,8 +283,8 @@ export const Colors: Story = {
 export const Shapes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      <InputPin aria-label="Rounded" length={4} shape="rounded" />
-      <InputPin aria-label="Pill" length={4} shape="pill" />
+      <PinInput aria-label="Rounded" length={4} shape="rounded" />
+      <PinInput aria-label="Pill" length={4} shape="pill" />
     </div>
   ),
 }
@@ -296,8 +296,8 @@ export const Shapes: Story = {
 export const LengthAndType: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      <InputPin aria-label="Four digits" length={4} />
-      <InputPin aria-label="Licence code" length={5} type="alphanumeric" />
+      <PinInput aria-label="Four digits" length={4} />
+      <PinInput aria-label="Licence code" length={5} type="alphanumeric" />
     </div>
   ),
 }
@@ -315,7 +315,7 @@ function OtpExample(): React.ReactNode {
   const [done, setDone] = useState<string | null>(null)
   return (
     <div className="flex flex-col items-start gap-3">
-      <InputPin
+      <PinInput
         aria-label="One-time code"
         focusOnMount
         onComplete={setDone}
@@ -354,9 +354,9 @@ export const Controlled: Story = {
 export const States: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      <InputPin aria-label="Disabled" defaultValue="123456" disabled />
-      <InputPin aria-label="Read only" defaultValue="123456" readOnly />
-      <InputPin aria-invalid aria-label="Invalid" defaultValue="123456" />
+      <PinInput aria-label="Disabled" defaultValue="123456" disabled />
+      <PinInput aria-label="Read only" defaultValue="123456" readOnly />
+      <PinInput aria-invalid aria-label="Invalid" defaultValue="123456" />
     </div>
   ),
 }
@@ -374,7 +374,7 @@ export const InAForm: Story = {
         window.alert(`code = "${typeof code === 'string' ? code : ''}"`)
       }}
     >
-      <InputPin aria-label="Verification code" length={4} name="code" />
+      <PinInput aria-label="Verification code" length={4} name="code" />
       <button className="rounded border border-gray-400 px-3 py-1 text-sm" type="submit">
         Verify
       </button>
@@ -383,7 +383,7 @@ export const InAForm: Story = {
 }
 
 /**
- * Wrap the InputPin in a `Field` to give it a label, a helper text and an error message. The Field names the
+ * Wrap the PinInput in a `Field` to give it a label, a helper text and an error message. The Field names the
  * group, links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`; clicking the label gives
  * the focus to the first box.
  */
@@ -391,17 +391,17 @@ export const WithField: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <Field helperText="We sent it by SMS." label="Verification code">
-        <InputPin length={4} />
+        <PinInput length={4} />
       </Field>
       <Field errorText="That code is not right." invalid label="Verification code" required>
-        <InputPin defaultValue="1234" length={4} />
+        <PinInput defaultValue="1234" length={4} />
       </Field>
     </div>
   ),
 }
 
 /**
- * Some examples of InputPin with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
+ * Some examples of PinInput with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
  * classes: `className` styles the group, `inputClassName` every box, and a filled one has `data-filled`, so
  * `data-[filled]:` styles it.
  */
@@ -409,7 +409,7 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<InputPin
+        code: `<PinInput
   aria-label="Verification code"
   className="gap-2"
   inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
@@ -420,7 +420,7 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <InputPin
+    <PinInput
       aria-label="Verification code"
       className="gap-2"
       inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
@@ -431,14 +431,14 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of InputPin with Bootstrap classes: `d-flex gap-2` for the group and `form-control text-center`
+ * Some examples of PinInput with Bootstrap classes: `d-flex gap-2` for the group and `form-control text-center`
  * for the boxes. Bootstrap makes a `form-control` as wide as its container, so the group has a width and the six boxes share it.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<InputPin
+        code: `<PinInput
   aria-label="Verification code"
   className="d-flex gap-2"
   inputClassName="form-control form-control-lg text-center px-0"
@@ -450,7 +450,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <InputPin
+    <PinInput
       aria-label="Verification code"
       className="d-flex gap-2"
       inputClassName="form-control form-control-lg text-center px-0"

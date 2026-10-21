@@ -5,13 +5,13 @@ import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
-import type { InputPinType } from './pin-utils'
-import styles from './inputpin.module.css'
-import { useInputPin } from './use-input-pin'
+import type { PinInputType } from './pin-utils'
+import styles from './pininput.module.css'
+import { usePinInput } from './use-pin-input'
 
-export type InputPinVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
+export type PinInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
-export interface InputPinOwnProps {
+export interface PinInputOwnProps {
   autoComplete?: string
   focusOnMount?: boolean
   colorScheme?: ColorScheme
@@ -26,12 +26,12 @@ export interface InputPinOwnProps {
   placeholder?: string
   shape?: Shape
   size?: Size
-  type?: InputPinType
+  type?: PinInputType
   value?: string
-  variant?: InputPinVariant
+  variant?: PinInputVariant
 }
 
-type InputPinRootAttributes = Pick<
+type PinInputRootAttributes = Pick<
   InputHTMLAttributes<HTMLFieldSetElement>,
   | 'aria-describedby'
   | 'aria-invalid'
@@ -45,16 +45,16 @@ type InputPinRootAttributes = Pick<
   | 'title'
 >
 
-export type InputPinProps = Omit<ComponentProps, 'index'> &
-  InputPinRootAttributes &
-  InputPinOwnProps
+export type PinInputProps = Omit<ComponentProps, 'index'> &
+  PinInputRootAttributes &
+  PinInputOwnProps
 
 const defaultLabel =
-  (type: InputPinType) =>
+  (type: PinInputType) =>
   (index: number, length: number): string =>
     `${type === 'numeric' ? 'Digit' : 'Character'} ${index} of ${length}`
 
-export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
+export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
   (
     {
       'aria-describedby': describedBy,
@@ -85,11 +85,11 @@ export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
       value,
       variant = 'outline',
       ...rest
-    }: InputPinProps,
+    }: PinInputProps,
     ref: ForwardedRef<HTMLFieldSetElement>,
   ): ReactNode => {
     const field = useFieldContext()
-    const pin = useInputPin({
+    const pin = usePinInput({
       focusOnMount,
       defaultValue,
       length,
@@ -105,7 +105,7 @@ export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
     const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
     const label = getInputLabel ?? defaultLabel(type)
     const colorVars = {
-      '--inputpin-color': `var(--plume-color-${invalid ? 'error' : colorScheme}-text)`,
+      '--pininput-color': `var(--plume-color-${invalid ? 'error' : colorScheme}-text)`,
       ...style,
     } as CSSProperties
     const classes = joinClasses(
@@ -123,7 +123,7 @@ export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
         aria-label={ariaLabel}
         aria-labelledby={labelledBy}
         className={classes}
-        data-plume-inputpin=""
+        data-plume-pininput=""
         disabled={disabled}
         ref={ref}
         style={colorVars}
@@ -137,7 +137,7 @@ export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
             autoComplete={autoComplete}
             className={joinClasses(isStyled && styles.cell, inputClassName)}
             data-filled={pin.value[index] ? '' : undefined}
-            data-plume-inputpin-cell=""
+            data-plume-pininput-cell=""
             disabled={disabled}
             id={index === 0 ? id : undefined}
             inputMode={type === 'numeric' ? 'numeric' : 'text'}
@@ -162,4 +162,4 @@ export const InputPin = forwardRef<HTMLFieldSetElement, InputPinProps>(
   },
 )
 
-InputPin.displayName = 'InputPin'
+PinInput.displayName = 'PinInput'

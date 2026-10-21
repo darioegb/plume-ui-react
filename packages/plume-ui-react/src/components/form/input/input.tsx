@@ -146,32 +146,44 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         data-plume-input-group=""
         style={inputStyle}
       >
-        {addonBefore ? <span className={isStyled ? styles.addOn : ''}>{addonBefore}</span> : null}
-        {elementBefore ? (
-          <span className={isStyled ? styles.element : ''}>{elementBefore}</span>
+        {addonBefore ? (
+          <span className={isStyled ? `${styles.addOn} ${styles.addOnBefore}` : undefined}>
+            {addonBefore}
+          </span>
         ) : null}
-        <input
-          className={inputClasses}
-          disabled={disabled}
-          readOnly={readOnly}
-          ref={ref}
-          type={inputType}
-          {...valueProps}
-          {...rest}
-        />
-        {addonAfter ? <span className={isStyled ? styles.addOn : ''}>{addonAfter}</span> : null}
-        {elementAfter ? (
-          <span className={afterElementClass(isStyled, canReveal)}>{elementAfter}</span>
-        ) : null}
-        {canReveal ? (
-          <InputReveal
-            className={revealClassName}
+        <div className={isStyled ? styles.control : undefined} data-plume-input-control="">
+          {elementBefore ? (
+            <span className={isStyled ? `${styles.element} ${styles.elementBefore}` : undefined}>
+              {elementBefore}
+            </span>
+          ) : null}
+          <input
+            className={inputClasses}
             disabled={disabled}
-            isStyled={isStyled}
-            label={revealLabel}
-            onToggle={toggle}
-            visible={revealed}
+            readOnly={readOnly}
+            ref={ref}
+            type={inputType}
+            {...valueProps}
+            {...rest}
           />
+          {elementAfter ? (
+            <span className={afterElementClass(isStyled, canReveal)}>{elementAfter}</span>
+          ) : null}
+          {canReveal ? (
+            <InputReveal
+              className={revealClassName}
+              disabled={disabled}
+              isStyled={isStyled}
+              label={revealLabel}
+              onToggle={toggle}
+              visible={revealed}
+            />
+          ) : null}
+        </div>
+        {addonAfter ? (
+          <span className={isStyled ? `${styles.addOn} ${styles.addOnAfter}` : undefined}>
+            {addonAfter}
+          </span>
         ) : null}
       </div>
     )

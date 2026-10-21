@@ -24,7 +24,7 @@ export function InputReveal({
   visible,
 }: Readonly<InputRevealProps>): ReactNode {
   return (
-    <span className={isStyled ? `${styles.element} ${styles.reveal}` : undefined}>
+    <span className={isStyled ? `${styles.element} ${styles.elementAfter}` : undefined}>
       <button
         aria-label={label}
         aria-pressed={visible}
@@ -63,5 +63,6 @@ export function usePasswordReveal(
 
 export const afterElementClass = (isStyled: boolean, canReveal: boolean): string => {
   if (!isStyled) return ''
-  return canReveal ? `${styles.element} ${styles.beforeReveal}` : styles.element
+  const base = `${styles.element} ${styles.elementAfter}`
+  return canReveal ? `${base} ${styles.beforeReveal}` : base
 }

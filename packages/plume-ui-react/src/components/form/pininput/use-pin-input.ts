@@ -3,20 +3,20 @@
 import type { ClipboardEvent, KeyboardEvent, RefObject } from 'react'
 import { useEffect, useRef } from 'react'
 import { useControllableState } from '../../../overlay/use-controllable-state'
-import { extractTyped, insertAt, removeAt, sanitize, type InputPinType } from './pin-utils'
+import { extractTyped, insertAt, removeAt, sanitize, type PinInputType } from './pin-utils'
 
-export interface UseInputPinOptions {
+export interface UsePinInputOptions {
   focusOnMount?: boolean
   defaultValue?: string
   length: number
   onComplete?: (value: string) => void
   onValueChange?: (value: string) => void
   readOnly: boolean
-  type: InputPinType
+  type: PinInputType
   value?: string
 }
 
-export interface InputPinState {
+export interface PinInputState {
   cells: RefObject<(HTMLInputElement | null)[]>
   onChange: (index: number, text: string) => void
   onKeyDown: (index: number, event: KeyboardEvent<HTMLInputElement>) => void
@@ -25,7 +25,7 @@ export interface InputPinState {
   value: string
 }
 
-export function useInputPin({
+export function usePinInput({
   focusOnMount = false,
   defaultValue = '',
   length,
@@ -34,7 +34,7 @@ export function useInputPin({
   readOnly,
   type,
   value: valueProp,
-}: UseInputPinOptions): InputPinState {
+}: UsePinInputOptions): PinInputState {
   const cells = useRef<(HTMLInputElement | null)[]>([])
   const [value, setValue] = useControllableState<string>({
     defaultValue: defaultValue.slice(0, length),

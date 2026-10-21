@@ -1,12 +1,12 @@
-export type InputPinType = 'numeric' | 'alphanumeric' | 'text'
+export type PinInputType = 'numeric' | 'alphanumeric' | 'text'
 
-const filters: Record<InputPinType, RegExp> = {
+const filters: Record<PinInputType, RegExp> = {
   alphanumeric: /[^a-z0-9]/gi,
   numeric: /\D/g,
   text: /\s/g,
 }
 
-export const sanitize = (text: string, type: InputPinType): string =>
+export const sanitize = (text: string, type: PinInputType): string =>
   text.replace(filters[type], '')
 
 export const extractTyped = (previous: string, text: string): string => {
