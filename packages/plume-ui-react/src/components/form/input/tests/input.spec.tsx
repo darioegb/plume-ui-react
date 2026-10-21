@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { Input } from '..'
 
 describe('Input component', () => {
@@ -56,9 +57,7 @@ describe('Input component', () => {
 
   it('lets the style prop override the color variables', () => {
     render(<Input placeholder="x" style={{ '--input-color': 'hotpink' } as React.CSSProperties} />)
-    expect(screen.getByPlaceholderText('x').style.getPropertyValue('--input-color')).toBe(
-      'hotpink',
-    )
+    expect(screen.getByPlaceholderText('x').style.getPropertyValue('--input-color')).toBe('hotpink')
   })
 
   it('calls onChange when typing', () => {
@@ -183,6 +182,85 @@ describe('Input component', () => {
       fireEvent.change(input, { target: { value: '1234' } })
 
       expect(input).toHaveValue('12-34')
+    })
+  })
+  describe('revealable password', () => {
+    const toggle = (): HTMLElement => screen.getByRole('button', { name: 'Show password' })
+
+    it('has no button by default', () => {
+      render(<Input placeholder="Secret" type="password" />)
+      expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    })
+
+    it('adds a toggle button to a revealable password', () => {
+      render(<Input placeholder="Secret" revealable type="password" />)
+      expect(toggle()).toHaveAttribute('aria-pressed', 'false')
+      expect(screen.getByPlaceholderText('Secret')).toHaveAttribute('type', 'password')
+    })
+
+    it('shows and hides the password', async () => {
+      render(<Input placeholder="Secret" revealable type="password" />)
+      await userEvent.click(toggle())
+      expect(screen.getByPlaceholderText('Secret')).toHaveAttribute('type', 'text')
+      expect(toggle()).toHaveAttribute('aria-pressed', 'true')
+      await userEvent.click(toggle())
+      expect(screen.getByPlaceholderText('Secret')).toHaveAttribute('type', 'password')
+    })
+
+    it('keeps the text and the focus order when it toggles', async () => {
+      render(<Input defaultValue="abc" placeholder="Secret" revealable type="password" />)
+      await userEvent.click(toggle())
+      expect(screen.getByPlaceholderText('Secret')).toHaveValue('abc')
+    })
+
+    it('uses another label for the button', () => {
+      render(<Input placeholder="Secret" revealLabel="Mostrar" revealable type="password" />)
+      expect(screen.getByRole('button', { name: 'Mostrar' })).toBeInTheDocument()
+    })
+
+    it('ignores revealable on any other type', () => {
+      render(<Input placeholder="Mail" revealable type="email" />)
+      expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    })
+
+    it('disables the button with the input', () => {
+      render(<Input disabled placeholder="Secret" revealable type="password" />)
+      expect(toggle()).toBeDisabled()
+    })
+
+    it('puts an elementAfter before the button', () => {
+      render(
+        <Input elementAfter={<span>after</span>} placeholder="Secret" revealable type="password" />,
+      )
+      expect(screen.getByText('after').parentElement).toHaveClass('element', 'beforeReveal')
+      expect(toggle()).toBeInTheDocument()
+    })
+
+    it('adds the class of the button in every variant', () => {
+      render(<Input placeholder="Secret" revealClassName="eye" revealable type="password" />)
+      expect(toggle()).toHaveClass('revealButton', 'eye')
+    })
+
+    it('drops the Plume classes of the button when it is unstyled', () => {
+      render(
+        <Input
+          placeholder="Secret"
+          revealClassName="eye"
+          revealable
+          type="password"
+          variant="unstyled"
+        />,
+      )
+      expect(toggle()).toHaveAttribute('class', 'eye')
+      expect(toggle().closest('[data-plume-input-group]')).not.toHaveAttribute('class')
+    })
+
+    it('forwards autoComplete', () => {
+      render(<Input autoComplete="current-password" placeholder="Secret" type="password" />)
+      expect(screen.getByPlaceholderText('Secret')).toHaveAttribute(
+        'autocomplete',
+        'current-password',
+      )
     })
   })
 })

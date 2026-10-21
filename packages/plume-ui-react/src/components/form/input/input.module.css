@@ -207,3 +207,54 @@
 .addOn {
   padding: 0 0.75rem;
 }
+
+:global(:where([data-plume-input-group])) {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+:global(:where([data-plume-input-group] > input)) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+:global(:where([data-plume-input-reveal])) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+  padding: 0;
+}
+
+.revealButton {
+  border-radius: var(--plume-radius-3);
+  color: var(--plume-muted);
+  height: var(--plume-space-8);
+  width: var(--plume-space-8);
+}
+
+.revealButton:hover:enabled {
+  color: var(--plume-foreground);
+}
+
+.revealButton:focus-visible {
+  outline: 2px solid var(--input-color);
+  outline-offset: 1px;
+}
+
+.revealButton:disabled {
+  cursor: not-allowed;
+}
+
+.beforeReveal {
+  right: 2.5rem;
+}
+
+.inputGroup:has(.beforeReveal) > .input {
+  padding-inline-end: 5rem;
+}

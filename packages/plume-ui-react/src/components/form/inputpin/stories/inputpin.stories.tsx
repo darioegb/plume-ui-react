@@ -1,0 +1,462 @@
+import type { StoryObj, Meta } from '@storybook/react-vite'
+import { useState } from 'react'
+import { defaultTheme } from '../../../../theme'
+import { Field } from '../../field'
+import { InputPin } from '..'
+
+const colorSchemes = Object.keys(defaultTheme.colors)
+
+/**
+ * A row of one-character boxes for a code the user types or pastes: a one-time password, a verification code, a
+ * PIN. Use it when the length is fixed and short.
+ *
+ * Typing a character moves to the next box, <kbd>Backspace</kbd> removes it and goes back, and <kbd>←</kbd>,
+ * <kbd>→</kbd>, <kbd>Home</kbd> and <kbd>End</kbd> move between the boxes. Pasting a code fills the boxes from the
+ * one that has the focus, and the whole code that arrives in one box (the autofill of a one-time code on a phone)
+ * is spread over them. Only the characters of the `type` are accepted: digits, letters and digits, or anything
+ * but spaces.
+ *
+ * It is a `<fieldset>` with one input for each character. Every box has its own name (`Digit 1 of 6`), the group
+ * takes the name you give it, and there is a single tab stop, on the next box to fill, so a screen reader or a
+ * keyboard user does not walk through six empty boxes. `onComplete` runs when the last box is filled. With a
+ * `name` the code is submitted in a hidden input. It composes with `Field`, which names the group and gives the
+ * focus to the first box when its label is clicked.
+ */
+export default {
+  title: 'Components/InputPin',
+  component: InputPin,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      toc: {
+        title: 'On this page',
+        disable: false,
+      },
+    },
+    layout: 'centered',
+  },
+  argTypes: {
+    className: {
+      control: 'text',
+      description: 'Custom CSS class for the group (the `<fieldset>`). `style` goes there too.',
+      table: { type: { summary: 'string' } },
+    },
+    inputClassName: {
+      control: 'text',
+      description:
+        'Custom CSS class for every box, in every variant. With `variant="unstyled"` it is the only class the boxes have.',
+      table: { type: { summary: 'string' } },
+    },
+    style: {
+      control: false,
+      description:
+        'Inline styles for the group. They are applied after the color variables, so they can override them (e.g. `--inputpin-color`).',
+      table: { type: { summary: 'CSSProperties' } },
+    },
+    length: {
+      control: { type: 'number', min: 1, max: 10 },
+      description: 'How many boxes, that is, how many characters the code has.',
+      table: { type: { summary: 'number' }, defaultValue: { summary: '6' } },
+    },
+    type: {
+      control: 'radio',
+      description:
+        'What the boxes accept: `numeric` digits (and asks the phone for the numeric keyboard), `alphanumeric` letters and digits, or `text` anything but spaces.',
+      options: ['numeric', 'alphanumeric', 'text'],
+      table: {
+        type: { summary: `"numeric" | "alphanumeric" | "text"` },
+        defaultValue: { summary: 'numeric' },
+      },
+    },
+    mask: {
+      control: 'boolean',
+      description:
+        'Hides what is typed, as a password does. Use it for a PIN, not for a code that is sent to the user.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    placeholder: {
+      control: 'text',
+      description: 'A character shown in the empty boxes, like `○`.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    value: {
+      control: false,
+      description:
+        'The code. Makes the InputPin controlled: pass `onValueChange` to update it. The characters are always one after another, with no empty box in between.',
+      table: { type: { summary: 'string' } },
+    },
+    defaultValue: {
+      control: 'text',
+      description: 'The code the boxes start with, when it is not controlled.',
+      table: { type: { summary: 'string' } },
+    },
+    onValueChange: {
+      control: false,
+      description: 'Called with the code every time it changes, complete or not.',
+      table: { category: 'Events', type: { summary: '(value: string) => void' } },
+    },
+    onComplete: {
+      control: false,
+      description: 'Called with the code when the last box is filled.',
+      table: { category: 'Events', type: { summary: '(value: string) => void' } },
+    },
+    getInputLabel: {
+      control: false,
+      description:
+        'The accessible name of a box, from its position (counting from 1) and the length. The default says `Digit 1 of 6`, or `Character` when the type is not numeric. Use it to translate it.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: '(index: number, length: number) => string' },
+      },
+    },
+    colorScheme: {
+      control: 'select',
+      description:
+        'Color scheme for the focus ring, from the theme palette (custom schemes included).',
+      options: colorSchemes,
+      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
+    },
+    size: {
+      control: 'radio',
+      description: 'Size of the boxes.',
+      options: ['sm', 'md', 'lg'],
+      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
+    },
+    shape: {
+      control: 'radio',
+      description: 'Corners of the boxes.',
+      options: ['rounded', 'pill'],
+      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
+    },
+    variant: {
+      control: 'radio',
+      description:
+        'Visual variant of the boxes, the same as the `Input`. `unstyled` drops the Plume styles so you can bring your own; the row stays.',
+      options: ['outline', 'filled', 'underline', 'unstyled'],
+      table: {
+        type: { summary: `"outline" | "filled" | "underline" | "unstyled"` },
+        defaultValue: { summary: 'outline' },
+      },
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables every box.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    readOnly: {
+      control: 'boolean',
+      description: 'The code can be read and focused but not changed, typed or pasted.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    focusOnMount: {
+      control: 'boolean',
+      description:
+        'Gives the focus to the first box when the component mounts. It is `autoFocus` with another name: moving the focus on its own is only right on a screen that exists to enter the code.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    autoComplete: {
+      control: 'text',
+      description:
+        'Native `autocomplete` of the boxes. `one-time-code` lets a phone suggest the code from an SMS; use `off` for a PIN.',
+      table: {
+        category: 'HTML attributes',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'one-time-code' },
+      },
+    },
+    name: {
+      control: 'text',
+      description:
+        'Name of the code in a form. It is submitted in a hidden input; the boxes have no name.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    required: {
+      control: 'boolean',
+      description: 'Marks the boxes as required (`aria-required`).',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
+    },
+    id: {
+      control: false,
+      description:
+        'Id of the first box. A `<label htmlFor>` pointing to it gives the focus to the code.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    title: {
+      control: 'text',
+      description: 'Native tooltip of the group.',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
+    hidden: {
+      control: false,
+      description: 'Hides the group.',
+      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
+    },
+    'aria-label': {
+      control: 'text',
+      description:
+        'Accessible name of the group. It needs this, an `aria-labelledby` or a `Field` label.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-labelledby': {
+      control: false,
+      description: 'Id of the element that names the group.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-describedby': {
+      control: false,
+      description: 'Id of the element that describes the group.',
+      table: { category: 'Accessibility', type: { summary: 'string' } },
+    },
+    'aria-invalid': {
+      control: 'boolean',
+      description: 'Marks the boxes as invalid.',
+      table: { category: 'Accessibility', type: { summary: 'boolean' } },
+    },
+  },
+  args: {
+    'aria-label': 'Verification code',
+  },
+} satisfies Meta<typeof InputPin>
+
+type Story = StoryObj<typeof InputPin>
+
+/**
+ * This is the default InputPin: six digits. Type, or paste a code.
+ */
+export const Default: Story = {}
+
+/**
+ * Use the **variant** prop to pick how the boxes look, the same ones as the `Input`. `unstyled` drops the Plume
+ * styles so you can style them yourself.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <InputPin aria-label="Outline" length={4} variant="outline" />
+      <InputPin aria-label="Filled" length={4} variant="filled" />
+      <InputPin aria-label="Underline" length={4} variant="underline" />
+      <InputPin
+        aria-label="Unstyled"
+        className="gap-2"
+        inputClassName="h-10 w-10 rounded border border-gray-400"
+        length={4}
+        variant="unstyled"
+      />
+    </div>
+  ),
+}
+
+/**
+ * Use the **size** prop to change the size of the boxes.
+ */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <InputPin aria-label={size} key={size} length={4} size={size} />
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **colorScheme** prop to pick the color of the focus ring from the theme.
+ */
+export const Colors: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {colorSchemes.slice(0, 5).map((scheme) => (
+        <InputPin
+          aria-label={scheme}
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          key={scheme}
+          length={4}
+        />
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **shape** prop for rounded or pill boxes.
+ */
+export const Shapes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <InputPin aria-label="Rounded" length={4} shape="rounded" />
+      <InputPin aria-label="Pill" length={4} shape="pill" />
+    </div>
+  ),
+}
+
+/**
+ * **length** is the number of boxes, and **type** what they accept: `numeric` (the default), `alphanumeric` or
+ * `text`. A character that doesn't fit is not typed, and a pasted code drops what doesn't fit.
+ */
+export const LengthAndType: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <InputPin aria-label="Four digits" length={4} />
+      <InputPin aria-label="Licence code" length={5} type="alphanumeric" />
+    </div>
+  ),
+}
+
+/**
+ * **mask** hides what is typed, for a PIN. Pair it with `autoComplete="off"` so the browser doesn't offer to save
+ * it, and with a **placeholder** if you want to show the empty boxes.
+ */
+export const Masked: Story = {
+  args: { 'aria-label': 'PIN', autoComplete: 'off', length: 4, mask: true, placeholder: '○' },
+}
+
+function OtpExample(): React.ReactNode {
+  const [value, setValue] = useState('')
+  const [done, setDone] = useState<string | null>(null)
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <InputPin
+        aria-label="One-time code"
+        focusOnMount
+        onComplete={setDone}
+        onValueChange={(next) => {
+          setValue(next)
+          setDone(null)
+        }}
+        value={value}
+      />
+      <p className="text-sm">
+        {done ? `Code entered: ${done}` : `Typed: ${value || 'nothing yet'}`}
+      </p>
+      <button
+        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        onClick={() => setValue('')}
+        type="button"
+      >
+        Clear
+      </button>
+    </div>
+  )
+}
+
+/**
+ * Pass **value** and **onValueChange** to control the code, and **onComplete** to react when the last box is
+ * filled, for example to verify it. The component has `focusOnMount` here, so the first box is ready to type.
+ */
+export const Controlled: Story = {
+  render: () => <OtpExample />,
+}
+
+/**
+ * A pin can be disabled, read only or invalid. A read only code stays readable and focusable, but it can't be
+ * typed, pasted or deleted.
+ */
+export const States: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <InputPin aria-label="Disabled" defaultValue="123456" disabled />
+      <InputPin aria-label="Read only" defaultValue="123456" readOnly />
+      <InputPin aria-invalid aria-label="Invalid" defaultValue="123456" />
+    </div>
+  ),
+}
+
+/**
+ * With a **name** the code takes part in a form: it is submitted in a hidden input, as one string.
+ */
+export const InAForm: Story = {
+  render: () => (
+    <form
+      className="flex flex-col items-start gap-3"
+      onSubmit={(event) => {
+        event.preventDefault()
+        const code = new FormData(event.currentTarget).get('code')
+        window.alert(`code = "${typeof code === 'string' ? code : ''}"`)
+      }}
+    >
+      <InputPin aria-label="Verification code" length={4} name="code" />
+      <button className="rounded border border-gray-400 px-3 py-1 text-sm" type="submit">
+        Verify
+      </button>
+    </form>
+  ),
+}
+
+/**
+ * Wrap the InputPin in a `Field` to give it a label, a helper text and an error message. The Field names the
+ * group, links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`; clicking the label gives
+ * the focus to the first box.
+ */
+export const WithField: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Field helperText="We sent it by SMS." label="Verification code">
+        <InputPin length={4} />
+      </Field>
+      <Field errorText="That code is not right." invalid label="Verification code" required>
+        <InputPin defaultValue="1234" length={4} />
+      </Field>
+    </div>
+  ),
+}
+
+/**
+ * Some examples of InputPin with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
+ * classes: `className` styles the group, `inputClassName` every box, and a filled one has `data-filled`, so
+ * `data-[filled]:` styles it.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<InputPin
+  aria-label="Verification code"
+  className="gap-2"
+  inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+  length={6}
+  variant="unstyled"
+/>`,
+      },
+    },
+  },
+  render: () => (
+    <InputPin
+      aria-label="Verification code"
+      className="gap-2"
+      inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+      length={6}
+      variant="unstyled"
+    />
+  ),
+}
+
+/**
+ * Some examples of InputPin with Bootstrap classes: `d-flex gap-2` for the group and `form-control text-center`
+ * for the boxes. Bootstrap makes a `form-control` as wide as its container, so the group has a width and the six boxes share it.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<InputPin
+  aria-label="Verification code"
+  className="d-flex gap-2"
+  inputClassName="form-control form-control-lg text-center px-0"
+  length={6}
+  style={{ width: "20rem" }}
+  variant="unstyled"
+/>`,
+      },
+    },
+  },
+  render: () => (
+    <InputPin
+      aria-label="Verification code"
+      className="d-flex gap-2"
+      inputClassName="form-control form-control-lg text-center px-0"
+      length={6}
+      style={{ width: '20rem' }}
+      variant="unstyled"
+    />
+  ),
+}
