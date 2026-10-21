@@ -258,7 +258,6 @@ export const Colors: Story = {
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           key={scheme}
           style={{ width: '9rem' }}
-          variant="bordered"
         >
           <ListItem>
             <ListItemButton selected>{scheme}</ListItemButton>
