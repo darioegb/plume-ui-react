@@ -1,0 +1,97 @@
+@value pininput-border-color: var(--plume-border-strong);
+@value pininput-background-color: var(--plume-surface-muted);
+
+:global(:where([data-plume-pininput])) {
+  border: 0;
+  display: flex;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+:global(:where([data-plume-pininput-cell])) {
+  background: transparent;
+  box-sizing: border-box;
+  color: inherit;
+  font: inherit;
+  min-width: 0;
+  text-align: center;
+}
+
+.pin {
+  font-family: var(--plume-font-family);
+  gap: var(--plume-space-2);
+}
+
+.cell {
+  border-radius: var(--plume-radius-4);
+  color: var(--plume-foreground);
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  padding: 0;
+  width: var(--plume-space-10);
+}
+
+.sm .cell {
+  font-size: var(--plume-font-size-sm);
+  height: var(--plume-space-10);
+  width: var(--plume-space-8);
+}
+
+.lg .cell {
+  font-size: var(--plume-font-size-xl);
+  height: var(--plume-space-16);
+  width: var(--plume-space-12);
+}
+
+.cell::placeholder {
+  color: var(--plume-muted);
+}
+
+.outline .cell {
+  border: 1px solid pininput-border-color;
+}
+
+.filled .cell {
+  background-color: pininput-background-color;
+  border: 0;
+  border-block-end: 1px solid pininput-border-color;
+  border-end-end-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.underline .cell {
+  border: 0;
+  border-block-end: 1px solid pininput-border-color;
+  border-radius: 0;
+}
+
+.pill .cell {
+  border-radius: var(--plume-radius-full);
+}
+
+.outline .cell:enabled:focus {
+  border-color: var(--pininput-color);
+  outline-color: var(--pininput-color);
+}
+
+:is(.filled, .underline) .cell:enabled:focus {
+  border-block-end: 2px solid var(--pininput-color);
+}
+
+.invalid .cell {
+  border-color: var(--plume-color-error-text);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (forced-colors: active) {
+  .cell {
+    border: 1px solid CanvasText;
+  }
+}

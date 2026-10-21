@@ -149,6 +149,34 @@ export default {
         type: { summary: 'string' },
       },
     },
+    revealable: {
+      control: 'boolean',
+      description:
+        'With `type="password"`, adds a button that shows or hides the password. It is a toggle button (`aria-pressed`) inside the Input, in the place of `elementAfter`; an `elementAfter` goes to its left. It has no effect with another type.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    revealLabel: {
+      control: 'text',
+      description:
+        'Accessible name of the reveal button. It stays the same while the password is shown, `aria-pressed` tells the state, so use a label that makes sense for both: `Show password`.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Show password' },
+      },
+    },
+    revealClassName: {
+      control: 'text',
+      description:
+        'Custom CSS class for the reveal button, in every variant. With `variant="unstyled"` it is the only class the button has, and the Input and the button sit in a row.',
+      table: { type: { summary: 'string' } },
+    },
+    autoComplete: {
+      control: 'text',
+      description:
+        'Native `autocomplete`. Use `current-password` or `new-password` on a password, `email`, `one-time-code`...',
+      table: { category: 'HTML attributes', type: { summary: 'string' } },
+    },
     mask: {
       control: 'text',
       description:
@@ -215,7 +243,8 @@ export default {
       table: { category: 'HTML attributes', type: { summary: 'number | string' } },
     },
     onChange: {
-      description: 'Called when the value changes. With a `mask`, `event.target.value` is already formatted.',
+      description:
+        'Called when the value changes. With a `mask`, `event.target.value` is already formatted.',
       action: 'changed',
       table: { category: 'Events', type: { summary: '(event: ChangeEvent) => void' } },
     },
@@ -255,11 +284,11 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
-      <Input placeholder='Outline Input' variant='outline' />
-      <Input placeholder='Underline Input' variant='underline' />
-      <Input placeholder='Filled Input' variant='filled' />
-      <Input placeholder='Unstyled Input' variant='unstyled' />
+    <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
+      <Input placeholder="Outline Input" variant="outline" />
+      <Input placeholder="Underline Input" variant="underline" />
+      <Input placeholder="Filled Input" variant="filled" />
+      <Input placeholder="Unstyled Input" variant="unstyled" />
     </div>
   ),
 }
@@ -280,10 +309,10 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <div className='flex flex-wrap justify-center items-center gap-4'>
-      <Input placeholder='Small Input' size='sm' />
-      <Input placeholder='Medium Input' size='md' />
-      <Input placeholder='Large Input' size='lg' />
+    <div className="flex flex-wrap justify-center items-center gap-4">
+      <Input placeholder="Small Input" size="sm" />
+      <Input placeholder="Medium Input" size="md" />
+      <Input placeholder="Large Input" size="lg" />
     </div>
   ),
 }
@@ -307,48 +336,48 @@ export const Colors: Story = {
     },
   },
   render: () => (
-    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
-      <Input colorScheme='primary' placeholder='Primary Input' />
-      <Input colorScheme='secondary' placeholder='Secondary Input' />
-      <Input colorScheme='info' placeholder='Info Input' />
-      <Input colorScheme='warning' placeholder='Warning Input' />
-      <Input colorScheme='error' placeholder='Error Input' />
-      <Input colorScheme='success' placeholder='Success Input' />
+    <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
+      <Input colorScheme="primary" placeholder="Primary Input" />
+      <Input colorScheme="secondary" placeholder="Secondary Input" />
+      <Input colorScheme="info" placeholder="Info Input" />
+      <Input colorScheme="warning" placeholder="Warning Input" />
+      <Input colorScheme="error" placeholder="Error Input" />
+      <Input colorScheme="success" placeholder="Success Input" />
     </div>
   ),
 }
 
 const userIcon = (
   <svg
-    aria-hidden='true'
-    fill='none'
-    height='16'
-    stroke='currentColor'
-    strokeLinecap='round'
-    strokeLinejoin='round'
-    strokeWidth='2'
-    viewBox='0 0 24 24'
-    width='16'
+    aria-hidden="true"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    width="16"
   >
-    <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2' />
-    <circle cx='12' cy='7' r='4' />
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
   </svg>
 )
 
 const searchIcon = (
   <svg
-    aria-hidden='true'
-    fill='none'
-    height='16'
-    stroke='currentColor'
-    strokeLinecap='round'
-    strokeLinejoin='round'
-    strokeWidth='2'
-    viewBox='0 0 24 24'
-    width='16'
+    aria-hidden="true"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    width="16"
   >
-    <circle cx='11' cy='11' r='8' />
-    <path d='m21 21-4.3-4.3' />
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.3-4.3" />
   </svg>
 )
 
@@ -369,10 +398,41 @@ export const AddonsAndElements: Story = {
     },
   },
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Input addonAfter='.com' addonBefore='https://' placeholder='your-site' />
-      <Input elementBefore={userIcon} placeholder='Username' />
-      <Input elementAfter={searchIcon} placeholder='Search' />
+    <div className="flex flex-col gap-4">
+      <Input addonAfter=".com" addonBefore="https://" placeholder="your-site" />
+      <Input elementBefore={userIcon} placeholder="Username" />
+      <Input elementAfter={searchIcon} placeholder="Search" />
+      <Input addonBefore="$" elementAfter={searchIcon} placeholder="Amount" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="filled" variant="filled" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="underline" variant="underline" />
+      <Input addonAfter=".com" addonBefore="https://" placeholder="pill" shape="pill" />
+    </div>
+  ),
+}
+
+/**
+ * **type** is passed to the `<input>`, so `email`, `search`, `tel` and `url` work as they do natively, with the
+ * right keyboard on mobile. With `type="password"`, **revealable** adds a button to show or hide the text.
+ */
+export const Types: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input autoComplete="email" placeholder="Email" type="email" />
+<Input placeholder="Search" type="search" />
+<Input autoComplete="tel" placeholder="Phone" type="tel" />
+<Input placeholder="Website" type="url" />
+<Input autoComplete="current-password" placeholder="Password" revealable type="password" />`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Input autoComplete="email" placeholder="Email" type="email" />
+      <Input placeholder="Search" type="search" />
+      <Input autoComplete="tel" placeholder="Phone" type="tel" />
+      <Input placeholder="Website" type="url" />
+      <Input autoComplete="current-password" placeholder="Password" revealable type="password" />
     </div>
   ),
 }
@@ -397,7 +457,7 @@ export const ControlledInput: Story = {
         onChange={(e) => {
           setValue(e.target.value)
         }}
-        placeholder='Controlled Input'
+        placeholder="Controlled Input"
         value={value}
       />
     )
@@ -423,13 +483,13 @@ export const Masked: Story = {
     },
   },
   render: () => (
-    <div className='flex flex-col gap-4'>
-      <Input mask='##/##/####' placeholder='dd/mm/yyyy' />
-      <Input mask='(###) ###-####' placeholder='(###) ###-####' />
-      <Input mask='#### #### #### ####' placeholder='Card number' />
-      <Input mask='##:##' placeholder='hh:mm' />
-      <Input mask='AA-####' placeholder='Letters, then digits' />
-      <Input mask='***-***' placeholder='Letters or digits' />
+    <div className="flex flex-col gap-4">
+      <Input mask="##/##/####" placeholder="dd/mm/yyyy" />
+      <Input mask="(###) ###-####" placeholder="(###) ###-####" />
+      <Input mask="#### #### #### ####" placeholder="Card number" />
+      <Input mask="##:##" placeholder="hh:mm" />
+      <Input mask="AA-####" placeholder="Letters, then digits" />
+      <Input mask="***-***" placeholder="Letters or digits" />
     </div>
   ),
 }
@@ -462,32 +522,48 @@ export const Tailwind: Story = {
   placeholder="Error Input"
   defaultValue="Invalid value"
   className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
+/>
+<Input
+  variant="unstyled"
+  type="password"
+  placeholder="Password"
+  revealable
+  className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  revealClassName="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white"
 />`,
       },
     },
   },
   render: () => (
-    <div className='flex flex-col gap-4 w-72 max-w-full'>
+    <div className="flex flex-col gap-4 w-72 max-w-full">
       <Input
-        className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
-        placeholder='Default Input'
-        variant='unstyled'
+        className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        placeholder="Default Input"
+        variant="unstyled"
       />
       <Input
-        className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
-        placeholder='Pill Input'
-        variant='unstyled'
+        className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        placeholder="Pill Input"
+        variant="unstyled"
       />
       <Input
-        className='block w-full rounded-lg border border-transparent bg-gray-100 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:bg-white dark:bg-gray-700 dark:text-white'
-        placeholder='Filled Input'
-        variant='unstyled'
+        className="block w-full rounded-lg border border-transparent bg-gray-100 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:bg-white dark:bg-gray-700 dark:text-white"
+        placeholder="Filled Input"
+        variant="unstyled"
       />
       <Input
-        className='block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400'
-        defaultValue='Invalid value'
-        placeholder='Error Input'
-        variant='unstyled'
+        className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
+        defaultValue="Invalid value"
+        placeholder="Error Input"
+        variant="unstyled"
+      />
+      <Input
+        className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        placeholder="Password"
+        revealClassName="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white"
+        revealable
+        type="password"
+        variant="unstyled"
       />
     </div>
   ),
@@ -510,23 +586,31 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
-      <Input className='form-control' placeholder='Default Input' variant='unstyled' />
-      <Input className='form-control form-control-lg' placeholder='Large Input' variant='unstyled' />
-      <Input className='form-control form-control-sm' placeholder='Small Input' variant='unstyled' />
+    <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+      <Input className="form-control" placeholder="Default Input" variant="unstyled" />
       <Input
-        className='form-control is-valid'
-        defaultValue='Valid value'
-        placeholder='Valid Input'
-        style={{ backgroundImage: 'none' }}
-        variant='unstyled'
+        className="form-control form-control-lg"
+        placeholder="Large Input"
+        variant="unstyled"
       />
       <Input
-        className='form-control is-invalid'
-        defaultValue='Invalid value'
-        placeholder='Invalid Input'
+        className="form-control form-control-sm"
+        placeholder="Small Input"
+        variant="unstyled"
+      />
+      <Input
+        className="form-control is-valid"
+        defaultValue="Valid value"
+        placeholder="Valid Input"
         style={{ backgroundImage: 'none' }}
-        variant='unstyled'
+        variant="unstyled"
+      />
+      <Input
+        className="form-control is-invalid"
+        defaultValue="Invalid value"
+        placeholder="Invalid Input"
+        style={{ backgroundImage: 'none' }}
+        variant="unstyled"
       />
     </div>
   ),

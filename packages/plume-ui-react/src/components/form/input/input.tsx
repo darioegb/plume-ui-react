@@ -4,6 +4,7 @@ import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
+import { afterElementClass, InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
 
 export interface InputOwnProps {
@@ -13,6 +14,9 @@ export interface InputOwnProps {
   elementAfter?: ReactNode
   colorScheme?: ColorScheme
   mask?: string
+  revealClassName?: string
+  revealLabel?: string
+  revealable?: boolean
   shape?: Shape
   size?: Size
   variant?: InputVariant
@@ -22,6 +26,7 @@ type InputRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
   | 'aria-describedby'
   | 'aria-invalid'
+  | 'autoComplete'
   | 'defaultValue'
   | 'disabled'
   | 'id'
@@ -79,6 +84,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       colorScheme = 'secondary',
       disabled = false,
       readOnly = false,
+      revealClassName,
+      revealLabel = 'Show password',
+      revealable = false,
       shape = 'rounded',
       size = 'md',
       type = 'text',
@@ -92,6 +100,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
+    const { canReveal, inputType, revealed, toggle } = usePasswordReveal(type, revealable)
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
     const inputClasses = generateInputClasses(
       className,
@@ -103,7 +112,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant,
     )
     const inputStyle = { ...inputColorVars(isInvalid ? 'error' : colorScheme), ...style }
-    const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter
+    const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter || canReveal
     const { value: maskedValue, onChange: maskedOnChange } = useMask({
       mask,
       value: typeof value === 'string' ? value : undefined,
@@ -124,7 +133,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           readOnly={readOnly}
           ref={ref}
           style={inputStyle}
-          type={type}
+          type={inputType}
           {...valueProps}
           {...rest}
         />
@@ -133,25 +142,48 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div
-        className={isStyled ? styles.inputGroup : ''}
+        className={isStyled ? styles.inputGroup : undefined}
+        data-plume-input-group=""
         style={inputStyle}
       >
-        {addonBefore ? <span className={isStyled ? styles.addOn : ''}>{addonBefore}</span> : null}
-        {elementBefore ? (
-          <span className={isStyled ? styles.element : ''}>{elementBefore}</span>
+        {addonBefore ? (
+          <span className={isStyled ? `${styles.addOn} ${styles.addOnBefore}` : undefined}>
+            {addonBefore}
+          </span>
         ) : null}
-        <input
-          className={inputClasses}
-          disabled={disabled}
-          readOnly={readOnly}
-          ref={ref}
-          type={type}
-          {...valueProps}
-          {...rest}
-        />
-        {addonAfter ? <span className={isStyled ? styles.addOn : ''}>{addonAfter}</span> : null}
-        {elementAfter ? (
-          <span className={isStyled ? styles.element : ''}>{elementAfter}</span>
+        <div className={isStyled ? styles.control : undefined} data-plume-input-control="">
+          {elementBefore ? (
+            <span className={isStyled ? `${styles.element} ${styles.elementBefore}` : undefined}>
+              {elementBefore}
+            </span>
+          ) : null}
+          <input
+            className={inputClasses}
+            disabled={disabled}
+            readOnly={readOnly}
+            ref={ref}
+            type={inputType}
+            {...valueProps}
+            {...rest}
+          />
+          {elementAfter ? (
+            <span className={afterElementClass(isStyled, canReveal)}>{elementAfter}</span>
+          ) : null}
+          {canReveal ? (
+            <InputReveal
+              className={revealClassName}
+              disabled={disabled}
+              isStyled={isStyled}
+              label={revealLabel}
+              onToggle={toggle}
+              visible={revealed}
+            />
+          ) : null}
+        </div>
+        {addonAfter ? (
+          <span className={isStyled ? `${styles.addOn} ${styles.addOnAfter}` : undefined}>
+            {addonAfter}
+          </span>
         ) : null}
       </div>
     )

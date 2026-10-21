@@ -106,19 +106,38 @@
 /*  ###################### */
 
 .inputGroup {
-  position: relative;
-  display: flex;
+  align-items: stretch;
   border-radius: input-border-radius;
+  display: flex;
   min-width: min(18rem, 100%);
+  position: relative;
 }
 
-.inputGroup > .input {
+.control {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  position: relative;
+}
+
+.control > .input {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-.inputGroup > .addOn {
+.addOn,
+.element {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.addOn {
+  box-sizing: border-box;
+  color: input-color;
   flex-shrink: 0;
+  font-size: var(--plume-font-size-sm);
+  padding-inline: 0.75rem;
   white-space: nowrap;
 }
 
@@ -130,80 +149,137 @@
   border: 1px solid input-border-color;
 }
 
-.inputGroup:has(.filled) > .addOn {
+.inputGroup:has(.filled, .underline) > .addOn {
   border-block-end: 1px solid input-border-color;
 }
 
-.inputGroup:has(.outline, .filled) > .addOn:first-child {
-  border-top-left-radius: input-border-radius;
+.addOnBefore {
+  border-end-start-radius: input-border-radius;
+  border-start-start-radius: input-border-radius;
 }
 
-.inputGroup:has(.outline) > .addOn:first-child {
-  border-bottom-left-radius: input-border-radius;
+.addOnAfter {
+  border-end-end-radius: input-border-radius;
+  border-start-end-radius: input-border-radius;
 }
 
-.inputGroup:has(.outline, .filled) > .addOn:first-child + .input {
-  border-top-left-radius: 0;
-  border-top-right-radius: input-border-radius;
+.inputGroup:has(.pill) {
+  border-radius: var(--plume-radius-full);
 }
 
-.inputGroup:has(.outline) > .addOn:first-child + .input {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: input-border-radius;
+.inputGroup:has(.pill) > .addOnBefore {
+  border-end-start-radius: var(--plume-radius-full);
+  border-start-start-radius: var(--plume-radius-full);
+  padding-inline-start: var(--plume-space-4);
 }
 
-.inputGroup:has(.addOn) > .input:is(.outline, .filled) {
-  border-top-right-radius: 0;
+.inputGroup:has(.pill) > .addOnAfter {
+  border-end-end-radius: var(--plume-radius-full);
+  border-start-end-radius: var(--plume-radius-full);
+  padding-inline-end: var(--plume-space-4);
 }
 
-.inputGroup:has(.addOn) > .input:is(.outline) {
-  border-bottom-right-radius: 0;
+.inputGroup:has(.underline) > :is(.addOnBefore, .addOnAfter) {
+  border-radius: 0;
 }
 
-.inputGroup:has(.outline, .filled) > .addOn:last-child {
-  border-top-right-radius: input-border-radius;
+.inputGroup:has(.outline) > .addOnBefore {
+  border-inline-end: 0;
+}
+
+.inputGroup:has(.outline) > .addOnAfter {
   border-inline-start: 0;
 }
 
-.inputGroup:has(.outline) > .addOn:last-child {
-  border-bottom-right-radius: input-border-radius;
+.inputGroup:has(.addOnBefore) .input {
+  border-end-start-radius: 0;
+  border-start-start-radius: 0;
 }
 
-.inputGroup:has(.underline) > .addOn {
-  border-block-end: 1px solid input-border-color;
-}
-
-.inputGroup:has(.element:first-child) > .input {
-  padding-inline-start: 2.5rem;
-}
-
-.inputGroup:has(.element:last-child) > .input {
-  padding-inline-end: 2.5rem;
-}
-
-.element,
-.addOn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.element:first-child {
-  left: 0;
-}
-
-.element:last-child {
-  right: 0;
+.inputGroup:has(.addOnAfter) .input {
+  border-end-end-radius: 0;
+  border-start-end-radius: 0;
 }
 
 .element {
+  height: 100%;
   position: absolute;
   top: 0;
-  height: 2.5rem;
   width: 2.5rem;
   z-index: 2;
 }
 
-.addOn {
-  padding: 0 0.75rem;
+.elementBefore {
+  inset-inline-start: 0;
+}
+
+.elementAfter {
+  inset-inline-end: 0;
+}
+
+.control:has(.elementBefore) > .input {
+  padding-inline-start: 2.5rem;
+}
+
+.control:has(.elementAfter) > .input {
+  padding-inline-end: 2.5rem;
+}
+
+:global(:where([data-plume-input-group])) {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+:global(:where([data-plume-input-control])) {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  position: relative;
+}
+
+:global(:where([data-plume-input-control] > input)) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+:global(:where([data-plume-input-reveal])) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+  padding: 0;
+}
+
+.revealButton {
+  border-radius: var(--plume-radius-3);
+  color: var(--plume-muted);
+  height: var(--plume-space-8);
+  width: var(--plume-space-8);
+}
+
+.revealButton:hover:enabled {
+  color: var(--plume-foreground);
+}
+
+.revealButton:focus-visible {
+  outline: 2px solid var(--input-color);
+  outline-offset: 1px;
+}
+
+.revealButton:disabled {
+  cursor: not-allowed;
+}
+
+.beforeReveal {
+  inset-inline-end: 2.5rem;
+}
+
+.control:has(.beforeReveal) > .input {
+  padding-inline-end: 5rem;
 }

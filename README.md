@@ -82,10 +82,13 @@ export function App() {
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | List | [List](https://darioegb.github.io/plume-ui-react/?path=/docs/components-list--docs) |
 | Modal | [Modal](https://darioegb.github.io/plume-ui-react/?path=/docs/components-modal--docs) |
+| NumberInput | [NumberInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-numberinput--docs) |
+| PinInput | [PinInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-pininput--docs) |
 | Popover | [Popover](https://darioegb.github.io/plume-ui-react/?path=/docs/components-popover--docs) |
 | ProgressBar | [ProgressBar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-progressbar--docs) |
 | Radio | [Radio](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radio--docs) |
 | RadioGroup | [RadioGroup](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radiogroup--docs) |
+| Rating | [Rating](https://darioegb.github.io/plume-ui-react/?path=/docs/components-rating--docs) |
 | Select | [Select](https://darioegb.github.io/plume-ui-react/?path=/docs/components-select--docs) |
 | Skeleton | [Skeleton](https://darioegb.github.io/plume-ui-react/?path=/docs/components-skeleton--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |

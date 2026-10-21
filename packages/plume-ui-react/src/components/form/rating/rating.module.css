@@ -1,0 +1,118 @@
+:global(:where([data-plume-rating])) {
+  align-items: center;
+  border: 0;
+  display: inline-flex;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+:global(:where([data-plume-rating-item])) {
+  display: inline-flex;
+  position: relative;
+}
+
+:global(:where([data-plume-rating-filled])) {
+  display: inline-flex;
+  inline-size: 0;
+  inset-block: 0;
+  inset-inline-start: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+:global(:where([data-plume-rating-item][data-state='full'] [data-plume-rating-filled])) {
+  inline-size: 100%;
+}
+
+:global(:where([data-plume-rating-item][data-state='half'] [data-plume-rating-filled])) {
+  inline-size: 50%;
+}
+
+:global(:where([data-plume-rating-radio])) {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: inherit;
+  inset-block: 0;
+  inset-inline: 0;
+  margin: 0;
+  opacity: 0;
+  padding: 0;
+  position: absolute;
+}
+
+:global(:where([data-plume-rating-radio][data-half='start'])) {
+  inset-inline-end: 50%;
+}
+
+:global(:where([data-plume-rating-radio][data-half='end'])) {
+  inset-inline-start: 50%;
+}
+
+.rating {
+  font-family: var(--plume-font-family);
+  gap: var(--plume-space-1);
+  line-height: 1;
+}
+
+.sm {
+  font-size: var(--plume-font-size-base);
+}
+
+.md {
+  font-size: var(--plume-font-size-2xl);
+}
+
+.lg {
+  font-size: 2.5rem;
+}
+
+.empty {
+  color: var(--rating-empty);
+  display: inline-flex;
+}
+
+.filled {
+  color: var(--rating-solid);
+}
+
+.filled > * {
+  flex: none;
+}
+
+.interactive {
+  cursor: pointer;
+}
+
+.item:has(:focus-visible) {
+  border-radius: var(--plume-radius-3);
+  outline: 2px solid var(--rating-solid);
+  outline-offset: 2px;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .interactive .item {
+    transition: transform 0.1s ease;
+  }
+
+  .interactive .item:hover {
+    transform: scale(1.1);
+  }
+}
+
+@media (forced-colors: active) {
+  .filled {
+    color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .empty {
+    color: GrayText;
+  }
+}
