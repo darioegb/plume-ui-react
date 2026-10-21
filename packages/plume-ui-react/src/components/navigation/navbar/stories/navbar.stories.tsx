@@ -141,10 +141,10 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `plain` has a line under the bar and underlines the active item, `outline` a border all around with rounded corners, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the layout and the folding keep working.',
-      options: ['plain', 'outline', 'filled', 'solid', 'unstyled'],
+        'Visual variant. `plain` has a line under the bar and underlines the active item, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the layout and the folding keep working.',
+      options: ['plain', 'filled', 'solid', 'unstyled'],
       table: {
-        type: { summary: `"plain" | "outline" | "filled" | "solid" | "unstyled"` },
+        type: { summary: `"plain" | "filled" | "solid" | "unstyled"` },
         defaultValue: { summary: 'plain' },
       },
     },
@@ -194,7 +194,7 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
-      {(['plain', 'outline', 'filled', 'solid'] as const).map((variant) => (
+      {(['plain', 'filled', 'solid'] as const).map((variant) => (
         <div className="flex flex-col gap-2" key={variant}>
           <p className="text-sm font-semibold">{variant}</p>
           <Navbar aria-label={variant} variant={variant}>

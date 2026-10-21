@@ -299,12 +299,6 @@
   border-inline-start: 1px solid var(--plume-border);
 }
 
-.outline {
-  background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border);
-  border-radius: var(--plume-radius-4);
-}
-
 .filled {
   background-color: var(--plume-surface-muted);
 }
@@ -426,8 +420,7 @@
 }
 
 @media (forced-colors: active) {
-  .plain,
-  .outline {
+  .plain {
     border-color: CanvasText;
   }
 }

@@ -203,10 +203,10 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `plain` has a line on the edge next to the page, `outline` a border all around with rounded corners, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the collapsing and the off-canvas behavior keep working.',
-      options: ['plain', 'outline', 'filled', 'solid', 'unstyled'],
+        'Visual variant. `plain` has a line on the edge next to the page, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the collapsing and the off-canvas behavior keep working.',
+      options: ['plain', 'filled', 'solid', 'unstyled'],
       table: {
-        type: { summary: `"plain" | "outline" | "filled" | "solid" | "unstyled"` },
+        type: { summary: `"plain" | "filled" | "solid" | "unstyled"` },
         defaultValue: { summary: 'plain' },
       },
     },
@@ -260,7 +260,7 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
-      {(['plain', 'outline', 'filled', 'solid'] as const).map((variant) => (
+      {(['plain', 'filled', 'solid'] as const).map((variant) => (
         <Shell
           caption={variant}
           compact

@@ -3,7 +3,7 @@
 import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
 
-export type SidebarVariant = 'plain' | 'outline' | 'filled' | 'solid' | 'unstyled'
+export type SidebarVariant = 'plain' | 'filled' | 'solid' | 'unstyled'
 export type SidebarBreakpoint = 'sm' | 'md' | 'lg' | 'never'
 export type SidebarSide = 'left' | 'right'
 

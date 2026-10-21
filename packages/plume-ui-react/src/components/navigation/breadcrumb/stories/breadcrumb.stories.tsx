@@ -104,7 +104,7 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `plain` is text, `filled` puts every item on a muted background. `unstyled` drops the Plume styles so you can bring your own; the list and the hidden last separator keep working.',
+        'Visual variant. `plain` is text with underlined links, `filled` puts every item on a muted background. `unstyled` drops the Plume styles so you can bring your own; the list and the hidden last separator keep working.',
       options: ['plain', 'filled', 'unstyled'],
       table: {
         type: { summary: `"plain" | "filled" | "unstyled"` },
@@ -151,7 +151,7 @@ export default {
 type Story = StoryObj<typeof Breadcrumb>
 
 /**
- * This is the default Breadcrumb: plain links with a slash between them, and the current page in bold.
+ * This is the default Breadcrumb: underlined links with a slash between them, and the current page in bold.
  */
 export const Default: Story = {}
 

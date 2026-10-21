@@ -356,7 +356,7 @@ describe('Sidebar component', () => {
       expect(panel()).toHaveClass('sidebar', 'plain', 'md')
     })
 
-    it.each(['outline', 'filled', 'solid'] as const)('applies the %s variant', (variant) => {
+    it.each(['filled', 'solid'] as const)('applies the %s variant', (variant) => {
       render(<Demo sidebar={{ variant }} />)
       expect(panel()).toHaveClass('sidebar', variant)
     })

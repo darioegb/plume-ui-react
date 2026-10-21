@@ -11,6 +11,14 @@ const steps = [
   { description: 'Check everything', title: 'Review' },
 ]
 
+const stack = (gap: string): React.CSSProperties => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap,
+  maxWidth: '100%',
+  width: '36rem',
+})
+
 function renderSteps(withDescription = true): React.ReactNode {
   return steps.map(({ description, title }) => (
     <Step key={title}>
@@ -182,7 +190,7 @@ export const Default: Story = {}
  */
 export const Variants: Story = {
   render: () => (
-    <div className="flex flex-col gap-8" style={{ width: '36rem', maxWidth: '100%' }}>
+    <div style={stack('2rem')}>
       <Stepper activeStep={1} aria-label="Solid" variant="solid">
         {renderSteps(false)}
       </Stepper>
@@ -206,7 +214,7 @@ export const Variants: Story = {
  */
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-8" style={{ width: '36rem', maxWidth: '100%' }}>
+    <div style={stack('2rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <Stepper activeStep={1} aria-label={`Size ${size}`} key={size} size={size}>
           {renderSteps(false)}
@@ -221,7 +229,7 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className="flex flex-col gap-6" style={{ width: '36rem', maxWidth: '100%' }}>
+    <div style={stack('1.5rem')}>
       {colorSchemes.map((scheme) => (
         <Stepper
           activeStep={1}
@@ -252,7 +260,7 @@ export const Vertical: Story = {
  */
 export const Progress: Story = {
   render: () => (
-    <div className="flex flex-col gap-8" style={{ width: '36rem', maxWidth: '100%' }}>
+    <div style={stack('2rem')}>
       {[0, 1, 2, 3].map((activeStep) => (
         <Stepper activeStep={activeStep} aria-label={`Step ${activeStep}`} key={activeStep}>
           {renderSteps(false)}
@@ -297,7 +305,7 @@ export const StatusLabels: Story = {
 function InteractiveStepper(): React.ReactNode {
   const [active, setActive] = useState(0)
   return (
-    <div className="flex flex-col gap-6" style={{ width: '36rem', maxWidth: '100%' }}>
+    <div style={stack('1.5rem')}>
       <Stepper activeStep={active} aria-label="Sign up progress">
         {renderSteps(false)}
       </Stepper>

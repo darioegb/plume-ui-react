@@ -280,7 +280,8 @@ describe('Navbar component', () => {
       expect(screen.getByRole('navigation')).toHaveClass('navbar', 'solid', 'lg')
     })
 
-    it.each(['outline', 'filled'] as const)('applies the %s variant', (variant) => {
+    it('applies the filled variant', () => {
+      const variant = 'filled'
       render(<Demo variant={variant} />)
       expect(screen.getByRole('navigation')).toHaveClass('navbar', variant)
     })

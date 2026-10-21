@@ -3,7 +3,7 @@
 import type { Ref } from 'react'
 import { createContext, useContext } from 'react'
 
-export type NavbarVariant = 'plain' | 'outline' | 'filled' | 'solid' | 'unstyled'
+export type NavbarVariant = 'plain' | 'filled' | 'solid' | 'unstyled'
 export type NavbarBreakpoint = 'sm' | 'md' | 'lg' | 'never'
 
 export interface NavbarContextValue {
