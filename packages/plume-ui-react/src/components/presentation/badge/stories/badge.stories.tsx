@@ -149,19 +149,11 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className="flex flex-col items-center gap-4">
-      {(['solid', 'subtle', 'outline'] as const).map((variant) => (
-        <div className="flex flex-wrap justify-center items-center gap-4" key={variant}>
-          {colorSchemes.map((scheme) => (
-            <Badge
-              colorScheme={scheme as keyof typeof defaultTheme.colors}
-              key={scheme}
-              variant={variant}
-            >
-              {scheme}
-            </Badge>
-          ))}
-        </div>
+    <div className="flex flex-wrap justify-center items-center gap-4">
+      {colorSchemes.map((scheme) => (
+        <Badge colorScheme={scheme as keyof typeof defaultTheme.colors} key={scheme}>
+          {scheme}
+        </Badge>
       ))}
     </div>
   ),

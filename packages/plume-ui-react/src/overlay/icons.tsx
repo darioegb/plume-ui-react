@@ -68,3 +68,11 @@ export function MinusIcon(): ReactNode {
     </svg>
   )
 }
+
+export function MenuIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  )
+}

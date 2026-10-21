@@ -1,8 +1,9 @@
 'use client'
 
-import type { CSSProperties, ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
+import type { ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
 import { forwardRef, useId, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { visuallyHidden } from '../../../overlay/visually-hidden'
 import styles from './textarea.module.css'
 
 interface TextareaCounterProps {
@@ -18,18 +19,6 @@ const defaultFormatCount = (count: number, max: number | undefined): string =>
 
 const defaultFormatRemaining = (remaining: number): string =>
   `${remaining} ${remaining === 1 ? 'character' : 'characters'} left`
-
-const srOnly: CSSProperties = {
-  border: 0,
-  clip: 'rect(0 0 0 0)',
-  height: 1,
-  margin: -1,
-  overflow: 'hidden',
-  padding: 0,
-  position: 'absolute',
-  whiteSpace: 'nowrap',
-  width: 1,
-}
 
 const isNearLimit = (remaining: number, max: number): boolean =>
   remaining <= Math.max(10, Math.ceil(max / 10))
@@ -75,7 +64,7 @@ export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterPr
         >
           {formatCount(count, maxLength)}
         </span>
-        <output style={srOnly}>{announcement}</output>
+        <output style={visuallyHidden}>{announcement}</output>
       </div>
     )
   },

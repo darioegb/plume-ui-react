@@ -3,6 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
 import { StarIcon } from './rating-icons'
@@ -50,18 +51,6 @@ const halfOf = (allowHalf: boolean, option: number, position: number): string | 
 const defaultItemLabel = (value: number): string => `${value} ${value === 1 ? 'star' : 'stars'}`
 
 const defaultReadOnlyLabel = (value: number, max: number): string => `${value} out of ${max}`
-
-const srOnly: CSSProperties = {
-  border: 0,
-  clip: 'rect(0 0 0 0)',
-  height: 1,
-  margin: -1,
-  overflow: 'hidden',
-  padding: 0,
-  position: 'absolute',
-  whiteSpace: 'nowrap',
-  width: 1,
-}
 
 export const Rating = forwardRef<HTMLElement, RatingProps>(
   (
@@ -125,7 +114,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
           aria-label={undefined}
           aria-labelledby={undefined}
         >
-          <span style={srOnly}>{readOnlyLabel(rating.value, max)}</span>
+          <span style={visuallyHidden}>{readOnlyLabel(rating.value, max)}</span>
           {positions.map((position) => (
             <RatingItem
               classNames={classNames}

@@ -187,19 +187,11 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className="flex flex-col gap-3">
-      {(['subtle', 'solid', 'outline'] as const).map((variant) => (
-        <div className="flex flex-wrap items-center gap-3" key={variant}>
-          {['primary', 'success', 'warning', 'error'].map((colorScheme) => (
-            <Chip
-              colorScheme={colorScheme as keyof typeof defaultTheme.colors}
-              key={colorScheme}
-              variant={variant}
-            >
-              {colorScheme}
-            </Chip>
-          ))}
-        </div>
+    <div className="flex flex-wrap items-center gap-3">
+      {['primary', 'success', 'warning', 'error'].map((colorScheme) => (
+        <Chip colorScheme={colorScheme as keyof typeof defaultTheme.colors} key={colorScheme}>
+          {colorScheme}
+        </Chip>
       ))}
     </div>
   ),

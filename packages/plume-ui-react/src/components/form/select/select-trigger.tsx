@@ -5,6 +5,7 @@ import { forwardRef, useEffect, useRef } from 'react'
 import { ChevronDownIcon, CloseIcon } from '../../../overlay/icons'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
+import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ComponentProps } from '../../../theme'
 import { Chip } from '../../presentation/chip'
 import { useFieldContext } from '../field/field-context'
@@ -27,18 +28,6 @@ export interface SelectTriggerOwnProps {
 }
 
 export type SelectTriggerProps = Omit<ComponentProps, 'index'> & SelectTriggerOwnProps
-
-const srOnly: CSSProperties = {
-  border: 0,
-  clip: 'rect(0 0 0 0)',
-  height: 1,
-  margin: -1,
-  overflow: 'hidden',
-  padding: 0,
-  position: 'absolute',
-  whiteSpace: 'nowrap',
-  width: 1,
-}
 
 function Chips({
   classNames,
@@ -145,7 +134,7 @@ const ComboboxButton = forwardRef<HTMLButtonElement, ComboboxButtonProps>(
             {hasValue ? null : (
               <span className={isStyled ? styles.placeholder : undefined}>{placeholder}</span>
             )}
-            {hasValue ? <span style={srOnly}>{chipLabels}</span> : null}
+            {hasValue ? <span style={visuallyHidden}>{chipLabels}</span> : null}
           </>
         ) : (
           (children ?? <SelectValue placeholder={placeholder} />)
