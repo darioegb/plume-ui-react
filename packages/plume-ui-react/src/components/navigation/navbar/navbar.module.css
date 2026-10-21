@@ -55,13 +55,13 @@
   text-decoration: none;
 }
 
-:global(:where([data-plume-navbar][data-breakpoint='never'] [data-plume-navbar-toggle])) {
-  display: none !important;
+:global([data-plume-navbar][data-breakpoint='never'] [data-plume-navbar-toggle]) {
+  display: none;
 }
 
 @media (width >= 40rem) {
-  :global(:where([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-toggle])) {
-    display: none !important;
+  :global([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-toggle]) {
+    display: none;
   }
 }
 
@@ -79,13 +79,13 @@
   :global(
     :where([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-content]:not([data-open]))
   ) {
-    display: none !important;
+    display: none;
   }
 }
 
 @media (width >= 48rem) {
-  :global(:where([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-toggle])) {
-    display: none !important;
+  :global([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-toggle]) {
+    display: none;
   }
 }
 
@@ -103,13 +103,13 @@
   :global(
     :where([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-content]:not([data-open]))
   ) {
-    display: none !important;
+    display: none;
   }
 }
 
 @media (width >= 64rem) {
-  :global(:where([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-toggle])) {
-    display: none !important;
+  :global([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-toggle]) {
+    display: none;
   }
 }
 
@@ -127,7 +127,7 @@
   :global(
     :where([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-content]:not([data-open]))
   ) {
-    display: none !important;
+    display: none;
   }
 }
 
