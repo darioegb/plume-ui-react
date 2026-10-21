@@ -34,6 +34,10 @@ export type SidebarProps = Omit<ComponentProps, 'index'> & SidebarRootAttributes
 
 const sidebarColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
+    '--sidebar-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
+    '--sidebar-solid': `var(--plume-color-${colorScheme}-solid)`,
+    '--sidebar-solid-active': `var(--plume-color-${colorScheme}-solid-active)`,
+    '--sidebar-solid-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
     '--sidebar-text': `var(--plume-color-${colorScheme}-text)`,
     '--sidebar-tint': `var(--plume-color-${colorScheme}-tint)`,
     '--sidebar-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
@@ -52,7 +56,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       side = 'left',
       size = 'md',
       style,
-      variant = 'outline',
+      variant = 'plain',
       ...rest
     }: SidebarProps,
     ref: ForwardedRef<HTMLDivElement>,

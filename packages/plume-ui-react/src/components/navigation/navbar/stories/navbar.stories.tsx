@@ -141,11 +141,11 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `outline` has a line under the bar, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the layout and the folding keep working.',
-      options: ['outline', 'filled', 'solid', 'unstyled'],
+        'Visual variant. `plain` has a line under the bar and underlines the active item, `outline` a border all around with rounded corners, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the layout and the folding keep working.',
+      options: ['plain', 'outline', 'filled', 'solid', 'unstyled'],
       table: {
-        type: { summary: `"outline" | "filled" | "solid" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
+        type: { summary: `"plain" | "outline" | "filled" | "solid" | "unstyled"` },
+        defaultValue: { summary: 'plain' },
       },
     },
     id: {
@@ -194,18 +194,27 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
-      {(['outline', 'filled', 'solid'] as const).map((variant) => (
-        <Navbar aria-label={variant} key={variant} variant={variant}>
-          <Parts />
-        </Navbar>
+      {(['plain', 'outline', 'filled', 'solid'] as const).map((variant) => (
+        <div className="flex flex-col gap-2" key={variant}>
+          <p className="text-sm font-semibold">{variant}</p>
+          <Navbar aria-label={variant} variant={variant}>
+            <Parts />
+          </Navbar>
+        </div>
       ))}
-      <Navbar
-        aria-label="unstyled"
-        className="gap-4 border-b border-border px-4 py-2 text-foreground"
-        variant="unstyled"
-      >
-        <Parts contentClassName="gap-4" itemClassName="hover:underline data-[active]:font-bold" />
-      </Navbar>
+      <div className="flex flex-col gap-2">
+        <p className="text-sm font-semibold">unstyled, with Tailwind classes</p>
+        <Navbar
+          aria-label="unstyled"
+          className="gap-4 rounded-xl bg-slate-900 px-4 py-2 text-slate-100"
+          variant="unstyled"
+        >
+          <Parts
+            contentClassName="gap-2"
+            itemClassName="rounded-lg px-3 py-1 hover:bg-slate-700 data-[active]:bg-slate-700 data-[active]:font-bold"
+          />
+        </Navbar>
+      </div>
     </div>
   ),
 }
@@ -227,7 +236,7 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to pick a color from the theme. It colors the active item, and the whole bar in the
- * `solid` variant.
+ * `solid` variant. Every scheme is shown in the `filled` and the `solid` variants.
  */
 export const Colors: Story = {
   render: () => (
@@ -237,7 +246,7 @@ export const Colors: Story = {
           <Navbar
             aria-label={scheme}
             colorScheme={scheme as keyof typeof defaultTheme.colors}
-            variant="outline"
+            variant="filled"
           >
             <Parts />
           </Navbar>

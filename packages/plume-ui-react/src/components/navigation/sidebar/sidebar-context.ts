@@ -3,14 +3,15 @@
 import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
 
-export type SidebarVariant = 'outline' | 'filled' | 'unstyled'
-export type SidebarBreakpoint = 'sm' | 'md' | 'lg'
+export type SidebarVariant = 'plain' | 'outline' | 'filled' | 'solid' | 'unstyled'
+export type SidebarBreakpoint = 'sm' | 'md' | 'lg' | 'never'
 export type SidebarSide = 'left' | 'right'
 
 export const sidebarQueries: Record<SidebarBreakpoint, string> = {
   sm: '(width < 40rem)',
   md: '(width < 48rem)',
   lg: '(width < 64rem)',
+  never: 'not all',
 }
 
 export interface SidebarContextValue {

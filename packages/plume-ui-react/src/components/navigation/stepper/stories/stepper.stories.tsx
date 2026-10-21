@@ -37,9 +37,8 @@ function renderSteps(withDescription = true): React.ReactNode {
  * where it is: a `Step` can be wrapped in a component of your own that renders a single one, but a component that
  * renders several counts as one, so map the steps inline instead.
  *
- * With `orientation="horizontal"` (the default) the steps share the width. On a screen narrower than 640px only
- * the current step keeps its title and description visible (the others stay for screen readers), so the row fits;
- * `vertical` has room for all of them.
+ * With `orientation="horizontal"` (the default) the steps share the width. On a screen narrower than 640px the titles and descriptions are hidden (screen readers still read them),
+ * so the row of indicators fits; `vertical` has room for the text.
  *
  * ### Subcomponents
  *

@@ -54,7 +54,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       size = 'md',
       sticky = false,
       style,
-      variant = 'outline',
+      variant = 'plain',
       ...rest
     }: NavbarProps,
     ref: ForwardedRef<HTMLElement>,

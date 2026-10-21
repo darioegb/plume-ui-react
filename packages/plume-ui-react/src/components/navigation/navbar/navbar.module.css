@@ -151,9 +151,15 @@
   --navbar-item-padding: var(--plume-space-2) var(--plume-space-4);
 }
 
-.outline {
+.plain {
   background-color: var(--plume-surface);
   border-block-end: 1px solid var(--plume-border);
+}
+
+.outline {
+  background-color: var(--plume-surface);
+  border: 1px solid var(--plume-border);
+  border-radius: var(--plume-radius-4);
 }
 
 .filled {
@@ -189,6 +195,13 @@
   background-color: var(--navbar-tint);
   color: var(--navbar-tint-text);
   font-weight: var(--plume-font-weight-semibold);
+}
+
+.plain .item[data-active] {
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: inset 0 -2px 0 var(--navbar-text);
+  color: var(--navbar-text);
 }
 
 .solid .item:hover:not(:disabled, [aria-disabled='true']) {
@@ -230,6 +243,7 @@
 }
 
 @media (forced-colors: active) {
+  .plain,
   .outline,
   .filled,
   .solid {

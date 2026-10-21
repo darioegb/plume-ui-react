@@ -12,7 +12,7 @@ beforeEach(() => {
   listeners.clear()
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({
     addEventListener: (_: string, listener: () => void) => listeners.add(listener),
-    matches: mobile,
+    matches: query === 'not all' ? false : mobile,
     media: query,
     removeEventListener: (_: string, listener: () => void) => listeners.delete(listener),
   }))
@@ -324,6 +324,17 @@ describe('Sidebar component', () => {
     })
   })
 
+  describe('docked at every width', () => {
+    it('never becomes an off-canvas dialog', async () => {
+      mobile = true
+      render(<Demo breakpoint="never" />)
+      expect(panel()).toHaveAttribute('data-breakpoint', 'never')
+      await userEvent.click(toggle())
+      expect(panel()).toHaveAttribute('data-collapsed')
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
+  })
+
   describe('without matchMedia', () => {
     it('behaves as a wide screen', async () => {
       Reflect.deleteProperty(window, 'matchMedia')
@@ -340,14 +351,20 @@ describe('Sidebar component', () => {
       expect(backdrop()).toHaveClass('backdrop')
     })
 
-    it('defaults to an outlined, medium sidebar', () => {
+    it('defaults to a plain, medium sidebar', () => {
       render(<Demo />)
-      expect(panel()).toHaveClass('sidebar', 'outline', 'md')
+      expect(panel()).toHaveClass('sidebar', 'plain', 'md')
+    })
+
+    it.each(['outline', 'filled', 'solid'] as const)('applies the %s variant', (variant) => {
+      render(<Demo sidebar={{ variant }} />)
+      expect(panel()).toHaveClass('sidebar', variant)
     })
 
     it('exposes the color scheme as CSS variables', () => {
       render(<Demo sidebar={{ colorScheme: 'success' }} />)
       expect(panel()).toHaveStyle('--sidebar-tint: var(--plume-color-success-tint)')
+      expect(panel()).toHaveStyle('--sidebar-solid: var(--plume-color-success-solid)')
     })
 
     it('lets style override a variable', () => {

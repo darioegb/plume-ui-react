@@ -280,9 +280,14 @@ describe('Navbar component', () => {
       expect(screen.getByRole('navigation')).toHaveClass('navbar', 'solid', 'lg')
     })
 
-    it('defaults to an outlined, medium navbar', () => {
+    it.each(['outline', 'filled'] as const)('applies the %s variant', (variant) => {
+      render(<Demo variant={variant} />)
+      expect(screen.getByRole('navigation')).toHaveClass('navbar', variant)
+    })
+
+    it('defaults to a plain, medium navbar', () => {
       render(<Demo />)
-      expect(screen.getByRole('navigation')).toHaveClass('navbar', 'outline', 'md')
+      expect(screen.getByRole('navigation')).toHaveClass('navbar', 'plain', 'md')
     })
 
     it('exposes the color scheme as CSS variables', () => {

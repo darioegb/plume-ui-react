@@ -218,12 +218,8 @@
 }
 
 @media (width < 40rem) {
-  .stepper[data-orientation='horizontal'] .step:not([aria-current]) {
-    flex: none;
-  }
-
-  .stepper[data-orientation='horizontal'] .step:not([aria-current]) .title,
-  .stepper[data-orientation='horizontal'] .step:not([aria-current]) .description {
+  .stepper[data-orientation='horizontal'] .title,
+  .stepper[data-orientation='horizontal'] .description {
     block-size: 1px;
     clip-path: inset(50%);
     inline-size: 1px;

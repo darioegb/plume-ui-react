@@ -61,31 +61,51 @@ function Items({ disabled }: Readonly<{ disabled?: string }>): React.ReactNode {
 }
 
 function Shell({
+  caption,
   children,
+  compact = false,
   label = 'Pages',
   sidebar,
   ...provider
 }: Readonly<
-  SidebarProviderProps & { label?: string; sidebar?: Partial<SidebarProps> }
+  SidebarProviderProps & {
+    caption?: string
+    compact?: boolean
+    label?: string
+    sidebar?: Partial<SidebarProps>
+  }
 >): React.ReactNode {
   return (
-    <SidebarProvider {...provider}>
-      <div
-        className="flex overflow-hidden rounded border border-gray-300"
-        style={{ height: '20rem', width: '100%' }}
-      >
-        <Sidebar aria-label="Application" {...sidebar}>
-          {children ?? (
-            <SidebarContent aria-label={label}>
-              <Items />
-            </SidebarContent>
-          )}
-        </Sidebar>
-        <div className="flex flex-1 flex-col gap-2 p-4" style={{ minWidth: 0 }}>
-          <div>
-            <SidebarToggle />
+    <SidebarProvider {...provider} breakpoint={compact ? 'never' : provider.breakpoint}>
+      <div className="flex flex-col gap-2" style={{ width: '100%' }}>
+        {caption ? <p className="text-sm font-semibold">{caption}</p> : null}
+        <div
+          className="flex overflow-hidden rounded border border-gray-300"
+          style={{ height: compact ? '13rem' : '20rem', width: '100%' }}
+        >
+          <Sidebar
+            aria-label="Application"
+            {...sidebar}
+            style={
+              compact
+                ? ({ '--sidebar-width': '11rem', ...sidebar?.style } as React.CSSProperties)
+                : sidebar?.style
+            }
+          >
+            {children ?? (
+              <SidebarContent aria-label={label}>
+                <Items />
+              </SidebarContent>
+            )}
+          </Sidebar>
+          <div className="flex flex-1 flex-col gap-2 p-4" style={{ minWidth: 0 }}>
+            <div>
+              <SidebarToggle />
+            </div>
+            <p className="text-sm">
+              {compact ? 'The page.' : 'The page. Use the button to open or collapse the sidebar.'}
+            </p>
           </div>
-          <p className="text-sm">The page. Use the button to open or collapse the sidebar.</p>
         </div>
       </div>
     </SidebarProvider>
@@ -104,7 +124,7 @@ function Shell({
  * `onCollapsedChange`). The labels of the items stay in the page for screen readers, and the toggle has
  * `aria-expanded`. Give an icon to every item, because it is all that shows in the rail.
  *
- * **Small screens.** Below the **breakpoint** (`sm` 640px, `md` 768px, the default, or `lg` 1024px) the sidebar is
+ * **Small screens.** Below the **breakpoint** (`sm` 640px, `md` 768px, the default, or `lg` 1024px; `never` keeps it always docked) the sidebar is
  * hidden, and the toggle opens it (`open`, `defaultOpen` and `onOpenChange`). Then it is a modal dialog: the focus
  * moves into it and stays there, the page behind doesn't scroll, and <kbd>Esc</kbd> or a press on the backdrop
  * closes it and gives the focus back to the toggle. The hiding is done in CSS, so the server renders it closed.
@@ -170,7 +190,7 @@ export default {
     colorScheme: {
       control: 'select',
       description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the active item.',
+        'Color scheme from the theme palette, including custom schemes added to it. It colors the active item, and the whole sidebar in the `solid` variant.',
       options: colorSchemes,
       table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
@@ -183,11 +203,11 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `outline` has a line on the edge, `filled` a muted background. `unstyled` drops the Plume styles so you can bring your own; the collapsing and the off-canvas behavior keep working.',
-      options: ['outline', 'filled', 'unstyled'],
+        'Visual variant. `plain` has a line on the edge next to the page, `outline` a border all around with rounded corners, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the collapsing and the off-canvas behavior keep working.',
+      options: ['plain', 'outline', 'filled', 'solid', 'unstyled'],
       table: {
-        type: { summary: `"outline" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
+        type: { summary: `"plain" | "outline" | "filled" | "solid" | "unstyled"` },
+        defaultValue: { summary: 'plain' },
       },
     },
     title: {
@@ -240,13 +260,21 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
-      {(['outline', 'filled'] as const).map((variant) => (
-        <Shell key={variant} label={`Pages ${variant}`} sidebar={{ variant }} />
+      {(['plain', 'outline', 'filled', 'solid'] as const).map((variant) => (
+        <Shell
+          caption={variant}
+          compact
+          key={variant}
+          label={`Pages ${variant}`}
+          sidebar={{ variant }}
+        />
       ))}
       <Shell
+        caption="unstyled, with Tailwind classes"
+        compact
         label="Pages unstyled"
         sidebar={{
-          className: 'border-r-4 border-border bg-surface-muted p-2 text-foreground',
+          className: 'rounded-r-2xl bg-slate-900 p-3 text-slate-100',
           variant: 'unstyled',
         }}
       >
@@ -254,7 +282,7 @@ export const Variants: Story = {
           {pages.map(({ href, label }, index) => (
             <SidebarItem
               active={index === 0}
-              className="rounded px-3 py-2 hover:bg-surface data-[active]:font-bold"
+              className="rounded-lg px-3 py-2 hover:bg-slate-700 data-[active]:bg-slate-700 data-[active]:font-bold"
               href={href}
               key={label}
             >
@@ -274,23 +302,30 @@ export const Sizes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Shell key={size} label={`Pages ${size}`} sidebar={{ size }} />
+        <Shell caption={size} compact key={size} label={`Pages ${size}`} sidebar={{ size }} />
       ))}
     </div>
   ),
 }
 
 /**
- * Use the **colorScheme** prop to pick a color from the theme. It colors the active item.
+ * Use the **colorScheme** prop to pick a color from the theme. It colors the active item, and the whole sidebar in the
+ * `solid` variant, which is the one shown here.
  */
 export const Colors: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
         <Shell
+          caption={scheme}
+          compact
           key={scheme}
           label={`Pages ${scheme}`}
-          sidebar={{ colorScheme: scheme as keyof typeof defaultTheme.colors, size: 'sm' }}
+          sidebar={{
+            colorScheme: scheme as keyof typeof defaultTheme.colors,
+            size: 'sm',
+            variant: 'solid',
+          }}
         />
       ))}
     </div>
@@ -301,7 +336,7 @@ export const Colors: Story = {
  * With **defaultCollapsed** it starts as a rail of icons. The labels are still read by screen readers.
  */
 export const Collapsed: Story = {
-  render: () => <Shell defaultCollapsed />,
+  render: () => <Shell compact defaultCollapsed />,
 }
 
 /**
@@ -337,7 +372,7 @@ export const Right: Story = {
  */
 export const Disabled: Story = {
   render: () => (
-    <Shell>
+    <Shell compact>
       <SidebarContent aria-label="Pages">
         <Items disabled="Team" />
         <SidebarItem icon={<Glyph path="M5 12h14M12 5l7 7-7 7" />} onClick={() => undefined}>
@@ -352,7 +387,7 @@ function ControlledSidebar(): React.ReactNode {
   const [collapsed, setCollapsed] = useState(false)
   return (
     <div className="flex flex-col gap-3">
-      <Shell collapsed={collapsed} onCollapsedChange={setCollapsed} />
+      <Shell collapsed={collapsed} compact onCollapsedChange={setCollapsed} />
       <label className="text-sm">
         <input
           checked={collapsed}
