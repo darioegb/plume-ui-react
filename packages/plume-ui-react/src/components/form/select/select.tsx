@@ -4,11 +4,11 @@ import type { ReactNode } from 'react'
 import { useCallback, useId, useMemo, useState } from 'react'
 import type { Placement } from '../../../overlay'
 import { useOpenState } from '../../../overlay/use-open-state'
+import { useSelectionState } from '../../../overlay/use-selection-state'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { SelectContext, type SelectLabelling, type SelectVariant } from './select-context'
 import { useSelectKeyboard } from './use-select-keyboard'
 import { useSelectRegistry } from './use-select-registry'
-import { useSelectValue } from './use-select-value'
 
 interface SelectBaseProps {
   'aria-describedby'?: string
@@ -98,7 +98,7 @@ export function Select({
     onOpenChange,
     open: openProp,
   })
-  const { commit, selected } = useSelectValue({
+  const { commit, selected } = useSelectionState({
     defaultValue,
     multiple,
     onValueChange,

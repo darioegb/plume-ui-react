@@ -3,6 +3,10 @@ import * as plume from '..'
 describe('plume-ui-react', () => {
   it('exports the components, theme, hooks and utilities from a single entry', () => {
     expect(Object.keys(plume).sort()).toEqual([
+      'Accordion',
+      'AccordionContent',
+      'AccordionItem',
+      'AccordionTrigger',
       'Badge',
       'Button',
       'Card',
@@ -39,6 +43,7 @@ describe('plume-ui-react', () => {
       'PopoverClose',
       'PopoverContent',
       'PopoverTrigger',
+      'ProgressBar',
       'Radio',
       'RadioGroup',
       'Select',
@@ -47,6 +52,7 @@ describe('plume-ui-react', () => {
       'SelectOption',
       'SelectTrigger',
       'SelectValue',
+      'Skeleton',
       'Spinner',
       'Tab',
       'TabList',
