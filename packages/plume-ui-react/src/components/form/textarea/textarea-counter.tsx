@@ -75,9 +75,7 @@ export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterPr
         >
           {formatCount(count, maxLength)}
         </span>
-        <span role="status" style={srOnly}>
-          {announcement}
-        </span>
+        <output style={srOnly}>{announcement}</output>
       </div>
     )
   },

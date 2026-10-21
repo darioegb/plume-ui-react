@@ -104,6 +104,24 @@ function availableSpace(
   return { ...across, width: space(viewport.width - anchor.x - anchor.width) }
 }
 
+function chooseSide(
+  preferred: Side,
+  align: Align,
+  anchor: Rect,
+  floating: Size,
+  viewport: Size,
+  offset: number,
+  padding: number,
+): Side {
+  const point = coordinates(preferred, align, anchor, floating, offset)
+  const preferredOverflow = overflow(preferred, point, floating, viewport, padding)
+  if (preferredOverflow <= 0) return preferred
+  const opposite = opposites[preferred]
+  const oppositePoint = coordinates(opposite, align, anchor, floating, offset)
+  const oppositeOverflow = overflow(opposite, oppositePoint, floating, viewport, padding)
+  return oppositeOverflow < preferredOverflow ? opposite : preferred
+}
+
 export function computePosition({
   anchor,
   floating,
@@ -115,27 +133,16 @@ export function computePosition({
   shift = true,
 }: ComputePositionOptions): PositionResult {
   const { side: preferred, align } = parsePlacement(placement)
-  let side = preferred
-  let point = coordinates(side, align, anchor, floating, offset)
-
-  if (flip) {
-    const preferredOverflow = overflow(side, point, floating, viewport, padding)
-    if (preferredOverflow > 0) {
-      const opposite = opposites[side]
-      const oppositePoint = coordinates(opposite, align, anchor, floating, offset)
-      if (overflow(opposite, oppositePoint, floating, viewport, padding) < preferredOverflow) {
-        side = opposite
-        point = oppositePoint
-      }
-    }
-  }
+  const side = flip
+    ? chooseSide(preferred, align, anchor, floating, viewport, offset, padding)
+    : preferred
 
   const available = availableSpace(side, anchor, viewport, offset, padding)
   const size = {
     height: Math.min(floating.height, available.height),
     width: Math.min(floating.width, available.width),
   }
-  point = coordinates(side, align, anchor, size, offset)
+  let point = coordinates(side, align, anchor, size, offset)
 
   if (shift) {
     const horizontal = side === 'top' || side === 'bottom'
