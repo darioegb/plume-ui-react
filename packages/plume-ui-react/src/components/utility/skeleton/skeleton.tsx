@@ -62,7 +62,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
           style={box}
           {...rest}
         >
-          {[...Array(count).keys()].map((line) => (
+          {[...new Array(count).keys()].map((line) => (
             <span
               className={look(
                 joinClasses(
