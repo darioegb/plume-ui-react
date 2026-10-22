@@ -1,5 +1,13 @@
 # plume-ui-react
 
+## 0.13.0
+
+### Minor Changes
+
+- [#110](https://github.com/darioegb/plume-ui-react/pull/110) [`8b065b8a912bec517085f5fad49b0d520909ad7f`](https://github.com/darioegb/plume-ui-react/commit/8b065b8a912bec517085f5fad49b0d520909ad7f) Thanks [@darioegb](https://github.com/darioegb)! - Adds `EmptyState`, for when a list, a table or a page has nothing to show: an icon, a title, a description and an action, all optional. `TableEmpty` uses it, so it takes the same `title`, `description`, `icon` and `action`.
+
+- [#110](https://github.com/darioegb/plume-ui-react/pull/110) [`5f9a27dcfa0c55c7fd95ff734a131dc923ef1d13`](https://github.com/darioegb/plume-ui-react/commit/5f9a27dcfa0c55c7fd95ff734a131dc923ef1d13) Thanks [@darioegb](https://github.com/darioegb)! - Adds `useTableState`, a hook that keeps the sort, the filters, the page and the selection of a `Table`. In client mode it returns the rows of the current page already filtered and sorted. With `manual` (server side) it only keeps the params to send and takes the rows and the total from you. `getSortProps(column)` gives the props for a `TableHead`, and the page, `pageCount` and `setPage` feed a `Paginator`. `Table` also gets a `loading` prop (`aria-busy`, a translucent veil and a `Spinner` named by `loadingLabel`) and a `TableEmpty` row for when there is nothing to show.
+
 ## 0.12.0
 
 ### Minor Changes
