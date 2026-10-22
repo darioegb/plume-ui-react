@@ -1,0 +1,198 @@
+:global(:where([data-plume-carousel])) {
+  box-sizing: border-box;
+  position: relative;
+}
+
+:global(:where([data-plume-carousel-slides])) {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+:global(:where([data-plume-carousel-slides]::-webkit-scrollbar)) {
+  display: none;
+}
+
+:global(:where([data-plume-carousel-slide])) {
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+:global(:where([data-plume-carousel-arrow], [data-plume-carousel-play-pause])) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+}
+
+:global(:where([data-plume-carousel-dots])) {
+  display: flex;
+  justify-content: center;
+}
+
+:global(:where([data-plume-carousel-dot])) {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+.carousel {
+  color: var(--plume-foreground);
+  display: grid;
+  font-family: var(--plume-font-family);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sm {
+  --carousel-control: 1.75rem;
+  --carousel-dot: 0.5rem;
+}
+
+.md {
+  --carousel-control: 2.25rem;
+  --carousel-dot: 0.625rem;
+}
+
+.lg {
+  --carousel-control: 2.75rem;
+  --carousel-dot: 0.75rem;
+}
+
+.slides {
+  border-radius: var(--plume-radius-4);
+  grid-area: 1 / 1;
+}
+
+.slides:focus-visible {
+  outline: 2px solid var(--carousel-text);
+  outline-offset: 2px;
+}
+
+.arrow {
+  block-size: var(--carousel-control);
+  border-radius: var(--plume-radius-full);
+  font-size: calc(var(--carousel-control) * 0.55);
+  inline-size: var(--carousel-control);
+}
+
+.prev,
+.next {
+  align-self: center;
+  grid-area: 1 / 1;
+  z-index: 1;
+}
+
+.prev {
+  justify-self: start;
+  margin-inline-start: var(--plume-space-3);
+}
+
+.next {
+  justify-self: end;
+  margin-inline-end: var(--plume-space-3);
+}
+
+.solid .arrow {
+  background-color: var(--carousel-solid);
+  color: var(--carousel-contrast);
+}
+
+.solid .arrow:hover:not(:disabled) {
+  background-color: var(--carousel-hover);
+}
+
+.outline .arrow {
+  background-color: var(--plume-surface);
+  border: 1px solid var(--plume-border-strong, var(--plume-border));
+  color: var(--plume-foreground);
+}
+
+.outline .arrow:hover:not(:disabled) {
+  background-color: var(--plume-surface-muted);
+}
+
+.ghost .arrow {
+  background-color: transparent;
+  color: var(--carousel-text);
+}
+
+.ghost .arrow:hover:not(:disabled) {
+  background-color: var(--carousel-tint);
+}
+
+.overlay .arrow {
+  background-color: color-mix(in srgb, black 55%, transparent);
+  color: white;
+}
+
+.overlay .arrow:hover:not(:disabled) {
+  background-color: color-mix(in srgb, black 75%, transparent);
+}
+
+.arrow:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.arrow:focus-visible,
+.dot:focus-visible {
+  outline: 2px solid var(--carousel-text);
+  outline-offset: 2px;
+}
+
+.playPause {
+  margin-inline: auto;
+}
+
+.dots {
+  gap: var(--plume-space-2);
+  padding-block: var(--plume-space-3);
+}
+
+.dot {
+  background-color: var(--plume-border);
+  block-size: var(--carousel-dot);
+  border-radius: var(--plume-radius-full);
+  inline-size: var(--carousel-dot);
+  position: relative;
+}
+
+.dot::after {
+  content: '';
+  inset: -0.5rem -0.2rem;
+  position: absolute;
+}
+
+.dot[data-active] {
+  background-color: var(--carousel-solid);
+  inline-size: calc(var(--carousel-dot) * 2.2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dot {
+    transition:
+      background-color 0.2s ease,
+      inline-size 0.2s ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .arrow,
+  .dot {
+    border: 1px solid CanvasText;
+  }
+
+  .dot[data-active] {
+    background-color: Highlight;
+  }
+}

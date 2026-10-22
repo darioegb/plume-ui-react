@@ -66,6 +66,25 @@ const useColorMode = (globalMode: ColorMode): ColorMode => {
   return docsMode ?? globalMode
 }
 
+const storyLink = (event: MouseEvent): HTMLAnchorElement | null => {
+  const link = event.target instanceof Element ? event.target.closest('a[href]') : null
+  return link instanceof HTMLAnchorElement && link.closest('div[data-plume-color-mode]')
+    ? link
+    : null
+}
+
+// The links of an example must not leave the page: they would take the docs or the canvas to another URL.
+const useBlockStoryLinks = (): void => {
+  React.useEffect(() => {
+    const block = (event: MouseEvent): void => {
+      const link = storyLink(event)
+      if (link && link.target !== '_blank') event.preventDefault()
+    }
+    document.addEventListener('click', block)
+    return () => document.removeEventListener('click', block)
+  }, [])
+}
+
 const StoryFrame = ({
   children,
   globalMode,
@@ -74,6 +93,7 @@ const StoryFrame = ({
   globalMode: ColorMode
 }): React.ReactElement => {
   const colorMode = useColorMode(globalMode)
+  useBlockStoryLinks()
   React.useEffect(() => {
     document.documentElement.setAttribute('data-plume-color-mode', colorMode)
     document.documentElement.setAttribute('data-bs-theme', colorMode)

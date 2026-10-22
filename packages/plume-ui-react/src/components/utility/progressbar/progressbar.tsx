@@ -9,12 +9,15 @@ export type ProgressBarVariant = 'solid' | 'striped' | 'unstyled'
 export interface ProgressBarOwnProps {
   animated?: boolean
   colorScheme?: ColorScheme
+  formatValue?: (value: number, max: number) => string
   indeterminate?: boolean
   indicatorClassName?: string
   max?: number
   shape?: Shape
+  showValue?: boolean
   size?: Size
   value?: number
+  valueClassName?: string
   valueText?: string
   variant?: ProgressBarVariant
 }
@@ -34,6 +37,9 @@ const progressBarColorVars = (colorScheme: ColorScheme, style?: CSSProperties): 
     ...style,
   }) as CSSProperties
 
+const defaultFormatValue = (value: number, max: number): string =>
+  `${Math.round((value / max) * 100)}%`
+
 const clamp = (value: number, max: number): number => Math.min(Math.max(value, 0), max)
 
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
@@ -42,13 +48,16 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       animated = false,
       className,
       colorScheme = 'primary',
+      formatValue = defaultFormatValue,
       indeterminate = false,
       indicatorClassName,
       max = 100,
       shape = 'pill',
+      showValue = false,
       size = 'md',
       style,
       value = 0,
+      valueClassName,
       valueText,
       variant = 'solid',
       ...rest
@@ -72,7 +81,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       indicatorClassName,
     )
 
-    return (
+    const bar = (
       <div
         aria-valuemax={total}
         aria-valuemin={0}
@@ -91,6 +100,21 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
           data-plume-progressbar-indicator=""
           style={indeterminate ? undefined : { inlineSize: `${percent}%` }}
         />
+      </div>
+    )
+
+    if (!showValue || indeterminate) return bar
+
+    return (
+      <div data-plume-progressbar-field="">
+        {bar}
+        <span
+          aria-hidden="true"
+          className={joinClasses(isStyled && styles.value, valueClassName)}
+          data-plume-progressbar-value=""
+        >
+          {formatValue(current, total)}
+        </span>
       </div>
     )
   },

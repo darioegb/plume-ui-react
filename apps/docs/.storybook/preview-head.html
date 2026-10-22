@@ -1,4 +1,12 @@
 <style>
+  /* The boxes that center an example are flex items that can't shrink below their content,
+     so on a narrow screen a width such as `36rem; max-width: 100%` overflows and is cut. */
+  .docs-story > div > div,
+  .sb-main-centered #storybook-root {
+    max-width: 100%;
+    min-width: 0;
+  }
+
   /* Dark-mode overrides for Storybook docs blocks that the DocsContainer theme
      prop leaves white, plus the body text color Bootstrap forces to #212529. */
   html[data-plume-color-mode='dark'] body {

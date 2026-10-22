@@ -68,6 +68,26 @@ export default {
       description: 'Moves the stripes. It only applies to the `striped` variant.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
+    showValue: {
+      control: 'boolean',
+      description:
+        'Shows the percentage next to the bar. The text is hidden from screen readers, who already get the value from the progress bar. An indeterminate bar has no text.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    formatValue: {
+      control: false,
+      description:
+        'Returns the text that **showValue** shows, from the value (kept between 0 and `max`) and the `max`.',
+      table: {
+        type: { summary: '(value: number, max: number) => string' },
+        defaultValue: { summary: '(v, max) => `${Math.round((v / max) * 100)}%`' },
+      },
+    },
+    valueClassName: {
+      control: 'text',
+      description: 'Custom CSS class for the text of **showValue**.',
+      table: { type: { summary: 'string' } },
+    },
     valueText: {
       control: 'text',
       description: 'A text for the value, when the number is not enough: `3 of 10 files`.',
@@ -215,6 +235,26 @@ export const WithMax: Story = {
     value: 3,
     valueText: '3 of 10 files',
   },
+}
+
+/**
+ * Use **showValue** to write the percentage next to the bar, and **formatValue** to say it in another way, for
+ * example "3 of 10". The text is for the eyes only: screen readers read the value of the progress bar.
+ */
+export const ShowValue: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3" style={{ maxWidth: '100%', width: '20rem' }}>
+      <ProgressBar aria-label="Upload" showValue value={65} />
+      <ProgressBar
+        aria-label="Files uploaded"
+        formatValue={(value, max) => `${value} of ${max}`}
+        max={10}
+        showValue
+        value={3}
+        valueText="3 of 10 files"
+      />
+    </div>
+  ),
 }
 
 /**

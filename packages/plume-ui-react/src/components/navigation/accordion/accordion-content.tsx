@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
+import { Collapse } from '../../utility/collapse'
 import { useAccordionContext, useAccordionItemContext } from './accordion-context'
 import styles from './accordion.module.css'
 
@@ -26,20 +27,21 @@ export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
     const item = useAccordionItemContext('AccordionContent')
 
     return (
-      <section
+      <Collapse
         aria-labelledby={item.triggerId}
-        className={joinClasses(isStyled && styles.content, className)}
-        data-open={item.open ? '' : undefined}
+        as="section"
+        bodyClassName={joinClasses(isStyled && styles.body, bodyClassName)}
+        className={className}
         data-plume-accordion-content=""
         id={item.contentId}
+        open={item.open}
         ref={ref}
         style={style}
+        variant="unstyled"
         {...rest}
       >
-        <div data-plume-accordion-clip="">
-          <div className={joinClasses(isStyled && styles.body, bodyClassName)}>{children}</div>
-        </div>
-      </section>
+        {children}
+      </Collapse>
     )
   },
 )

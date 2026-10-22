@@ -76,3 +76,35 @@ export function MenuIcon(): ReactNode {
     </svg>
   )
 }
+
+export function ChevronLeftIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="m15 6-6 6 6 6" />
+    </svg>
+  )
+}
+
+export function ChevronRightIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="m9 6 6 6-6 6" />
+    </svg>
+  )
+}
+
+export function PlayIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} fill="currentColor" strokeWidth="2">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  )
+}
+
+export function PauseIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} fill="currentColor" strokeWidth="2">
+      <path d="M7 5h3v14H7zM14 5h3v14h-3z" />
+    </svg>
+  )
+}

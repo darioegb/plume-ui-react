@@ -24,22 +24,6 @@
   flex: none;
 }
 
-:global(:where([data-plume-accordion-content])) {
-  display: grid;
-  grid-template-rows: 0fr;
-  visibility: hidden;
-}
-
-:global(:where([data-plume-accordion-content][data-open])) {
-  grid-template-rows: 1fr;
-  visibility: visible;
-}
-
-:global(:where([data-plume-accordion-clip])) {
-  min-height: 0;
-  overflow: hidden;
-}
-
 .accordion {
   box-sizing: border-box;
   color: var(--plume-foreground);
@@ -129,16 +113,6 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .content {
-    transition:
-      grid-template-rows 0.2s ease,
-      visibility 0s linear 0.2s;
-  }
-
-  .content[data-open] {
-    transition-delay: 0s;
-  }
-
   .icon {
     transition: transform 0.2s ease;
   }
