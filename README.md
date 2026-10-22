@@ -74,11 +74,14 @@ export function App() {
 | Breadcrumb | [Breadcrumb](https://darioegb.github.io/plume-ui-react/?path=/docs/components-breadcrumb--docs) |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
 | Card | [Card](https://darioegb.github.io/plume-ui-react/?path=/docs/components-card--docs) |
+| Carousel | [Carousel](https://darioegb.github.io/plume-ui-react/?path=/docs/components-carousel--docs) |
 | Checkbox | [Checkbox](https://darioegb.github.io/plume-ui-react/?path=/docs/components-checkbox--docs) |
 | Chip | [Chip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-chip--docs) |
+| Collapse | [Collapse](https://darioegb.github.io/plume-ui-react/?path=/docs/components-collapse--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
 | Dropdown | [Dropdown](https://darioegb.github.io/plume-ui-react/?path=/docs/components-dropdown--docs) |
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
+| FileUpload | [FileUpload](https://darioegb.github.io/plume-ui-react/?path=/docs/components-fileupload--docs) |
 | Icon | [Icon](https://darioegb.github.io/plume-ui-react/?path=/docs/components-icon--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | List | [List](https://darioegb.github.io/plume-ui-react/?path=/docs/components-list--docs) |
@@ -96,6 +99,7 @@ export function App() {
 | Skeleton | [Skeleton](https://darioegb.github.io/plume-ui-react/?path=/docs/components-skeleton--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Stepper | [Stepper](https://darioegb.github.io/plume-ui-react/?path=/docs/components-stepper--docs) |
+| Table | [Table](https://darioegb.github.io/plume-ui-react/?path=/docs/components-table--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |

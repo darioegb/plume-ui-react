@@ -1,0 +1,8 @@
+export { Table, type TableOwnProps, type TableProps, type TableVariant } from './table'
+export { TableBody, type TableBodyProps } from './table-body'
+export { TableCaption, type TableCaptionProps } from './table-caption'
+export { TableCell, type TableCellProps } from './table-cell'
+export { TableFooter, type TableFooterProps } from './table-footer'
+export { TableHead, type TableHeadProps, type TableSortDirection } from './table-head'
+export { TableHeader, type TableHeaderProps } from './table-header'
+export { TableRow, type TableRowProps } from './table-row'

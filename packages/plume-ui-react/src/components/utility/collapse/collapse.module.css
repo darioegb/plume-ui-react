@@ -1,0 +1,27 @@
+:global(:where([data-plume-collapse])) {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+
+:global(:where([data-plume-collapse][data-open])) {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+:global(:where([data-plume-collapse-clip])) {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .collapse {
+    transition:
+      grid-template-rows 0.2s ease,
+      visibility 0s linear 0.2s;
+  }
+
+  .collapse[data-open] {
+    transition-delay: 0s;
+  }
+}
