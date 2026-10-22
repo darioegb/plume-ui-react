@@ -19,6 +19,7 @@ export interface ButtonOwnProps {
 type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'ghost' | 'unstyled'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
+  | 'aria-current'
   | 'aria-expanded'
   | 'aria-haspopup'
   | 'aria-label'

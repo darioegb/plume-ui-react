@@ -1,0 +1,112 @@
+:global(:where([data-plume-tree-label])) {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+}
+
+:global(:where([data-plume-tree-chevron])) {
+  block-size: 1em;
+  display: inline-flex;
+  flex: none;
+  inline-size: 1em;
+}
+
+.tree {
+  color: var(--plume-foreground);
+  font-family: var(--plume-font-family);
+  line-height: var(--plume-line-height-normal);
+  --tree-indent: 1.25rem;
+}
+
+.sm {
+  font-size: var(--plume-font-size-xs);
+  --tree-row: var(--plume-space-1);
+}
+
+.md {
+  font-size: var(--plume-font-size-sm);
+  --tree-row: var(--plume-space-2);
+}
+
+.lg {
+  font-size: var(--plume-font-size-base);
+  --tree-row: var(--plume-space-3);
+}
+
+.item {
+  outline: none;
+}
+
+.label {
+  border-inline-start: 3px solid transparent;
+  border-radius: var(--plume-radius-3);
+  cursor: pointer;
+  gap: var(--plume-space-2);
+  padding-block: var(--tree-row);
+  padding-inline: calc(var(--plume-space-2) + (var(--tree-level) - 1) * var(--tree-indent))
+    var(--plume-space-2);
+  user-select: none;
+}
+
+.label:hover {
+  background-color: var(--plume-surface-muted);
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+}
+
+.item[aria-expanded='true'] > .label .chevron {
+  transform: rotate(90deg);
+}
+
+.item:focus-visible > .label {
+  outline: 2px solid var(--tree-text);
+  outline-offset: -2px;
+}
+
+.item[aria-disabled='true'] > .label {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.item[aria-disabled='true'] > .label:hover {
+  background-color: transparent;
+}
+
+.solid .item[aria-selected='true'] > .label {
+  background-color: var(--tree-solid);
+  color: var(--tree-contrast);
+}
+
+.solid .item[aria-selected='true'] > .label:hover {
+  background-color: var(--tree-hover);
+}
+
+.ghost .item[aria-selected='true'] > .label {
+  background-color: var(--tree-tint);
+  color: var(--tree-tint-text);
+}
+
+.accent .item[aria-selected='true'] > .label {
+  border-inline-start-color: var(--tree-solid);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  color: var(--tree-text);
+  font-weight: var(--plume-font-weight-semibold);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chevron {
+    transition: transform 0.15s ease;
+  }
+}
+
+@media (forced-colors: active) {
+  .item[aria-selected='true'] > .label {
+    background-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}
