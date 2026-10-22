@@ -111,6 +111,71 @@ describe('ProgressBar component', () => {
     })
   })
 
+  describe('value text', () => {
+    const value = (): HTMLElement | null => document.querySelector('[data-plume-progressbar-value]')
+
+    it('shows no text by default and keeps the bar as the root', () => {
+      const { container } = render(<ProgressBar aria-label="Upload" value={40} />)
+      expect(value()).not.toBeInTheDocument()
+      expect(container.firstChild).toBe(screen.getByRole('progressbar'))
+    })
+
+    it('shows the percentage next to the bar with showValue', () => {
+      render(<ProgressBar aria-label="Upload" showValue value={40} />)
+      expect(value()).toHaveTextContent('40%')
+      expect(value()).toHaveAttribute('aria-hidden', 'true')
+      expect(screen.getByRole('progressbar').parentElement).toHaveAttribute(
+        'data-plume-progressbar-field',
+      )
+    })
+
+    it('rounds the percentage and uses the max', () => {
+      render(<ProgressBar aria-label="Upload" max={3} showValue value={1} />)
+      expect(value()).toHaveTextContent('33%')
+    })
+
+    it('keeps the percentage between 0 and 100', () => {
+      render(<ProgressBar aria-label="Upload" showValue value={250} />)
+      expect(value()).toHaveTextContent('100%')
+    })
+
+    it('formats the text with formatValue', () => {
+      render(
+        <ProgressBar
+          aria-label="Upload"
+          formatValue={(current, max) => `${current} / ${max}`}
+          max={10}
+          showValue
+          value={3}
+        />,
+      )
+      expect(value()).toHaveTextContent('3 / 10')
+    })
+
+    it('shows no text when it is indeterminate', () => {
+      render(<ProgressBar aria-label="Upload" indeterminate showValue />)
+      expect(value()).not.toBeInTheDocument()
+    })
+
+    it('adds the Plume class and the class of the user to the text', () => {
+      render(<ProgressBar aria-label="Upload" showValue value={40} valueClassName="mine" />)
+      expect(value()).toHaveClass('value', 'mine')
+    })
+
+    it('drops the Plume class of the text when it is unstyled', () => {
+      render(
+        <ProgressBar
+          aria-label="Upload"
+          showValue
+          value={40}
+          valueClassName="mine"
+          variant="unstyled"
+        />,
+      )
+      expect(value()).toHaveAttribute('class', 'mine')
+    })
+  })
+
   describe('indeterminate', () => {
     it('drops the value and the width', () => {
       render(<ProgressBar aria-label="Upload" indeterminate value={30} valueText="30%" />)

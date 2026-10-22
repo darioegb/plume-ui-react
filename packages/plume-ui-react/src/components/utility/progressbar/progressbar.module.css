@@ -5,12 +5,38 @@
   width: 100%;
 }
 
+:global(:where([data-plume-progressbar-field])) {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+:global(:where([data-plume-progressbar-field] > [data-plume-progressbar])) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+:global(:where([data-plume-progressbar-value])) {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  min-inline-size: 4ch;
+  text-align: end;
+}
+
 :global(:where([data-plume-progressbar-indicator])) {
   block-size: 100%;
 }
 
 :global(:where([data-plume-progressbar][data-indeterminate] [data-plume-progressbar-indicator])) {
   inline-size: 40%;
+}
+
+.value {
+  color: var(--plume-foreground);
+  font-family: var(--plume-font-family);
+  font-size: var(--plume-font-size-sm);
 }
 
 .progressbar {

@@ -31,7 +31,11 @@
   flex-wrap: wrap;
 }
 
-:global(:where([data-plume-fileupload-file] > [data-plume-progressbar])) {
+:global(
+  :where(
+    [data-plume-fileupload-file] > :is([data-plume-progressbar], [data-plume-progressbar-field])
+  )
+) {
   flex: 0 0 100%;
 }
 

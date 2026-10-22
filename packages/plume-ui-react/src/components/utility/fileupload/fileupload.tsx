@@ -104,6 +104,7 @@ function FileProgress({
       className={className}
       colorScheme={value >= 100 ? 'success' : colorScheme}
       indicatorClassName={indicatorClassName}
+      showValue
       size="sm"
       value={value}
       variant={isStyled ? 'solid' : 'unstyled'}

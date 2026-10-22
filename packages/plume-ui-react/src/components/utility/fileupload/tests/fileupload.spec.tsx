@@ -406,6 +406,11 @@ describe('FileUpload component', () => {
       expect(screen.getByRole('progressbar', { name: 'Subiendo big.zip' })).toBeInTheDocument()
     })
 
+    it('writes the percentage next to the bar', () => {
+      render(<Demo defaultValue={[uploading]} progress={() => 40} />)
+      expect(document.querySelector('[data-plume-progressbar-value]')).toHaveTextContent('40%')
+    })
+
     it('keeps the value between 0 and 100', () => {
       const { rerender } = render(<Demo defaultValue={[uploading]} progress={() => 150} />)
       expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
