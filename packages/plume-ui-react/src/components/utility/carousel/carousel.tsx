@@ -40,6 +40,7 @@ const carouselColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSS
     '--carousel-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
     '--carousel-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
     '--carousel-text': `var(--plume-color-${colorScheme}-text)`,
+    '--carousel-tint': `var(--plume-color-${colorScheme}-tint)`,
     ...style,
   }) as CSSProperties
 

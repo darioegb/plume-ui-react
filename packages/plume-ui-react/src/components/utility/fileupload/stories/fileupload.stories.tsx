@@ -1,5 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../../form/field'
 import { FileUpload, type FileRejection } from '..'
@@ -7,6 +7,12 @@ import { FileUpload, type FileRejection } from '..'
 const colorSchemes = Object.keys(defaultTheme.colors)
 
 const frame = { maxWidth: '100%', width: '26rem' }
+
+const sizes = [2048, 524288, 3145728]
+
+const sampleFile = (name: string, size: number): File => new File([new Uint8Array(size)], name)
+
+const fileKey = (file: File): string => `${file.name}-${file.size}`
 
 const stack = (gap: string): React.CSSProperties => ({
   display: 'flex',
@@ -30,7 +36,8 @@ const stack = (gap: string): React.CSSProperties => ({
  * a `Field`. The files are kept in the `value` / `defaultValue`, and the input holds the same files, so it also
  * works inside a plain `<form>`.
  *
- * It uploads nothing: take the files from **onValueChange** and send them where you need.
+ * It uploads nothing: take the files from **onValueChange** and send them where you need. While you do, pass
+ * **progress** (a function that gives a percentage from 0 to 100 for each file) and every file shows a bar.
  */
 export default {
   title: 'Components/FileUpload',
@@ -62,7 +69,7 @@ export default {
     classNames: {
       control: false,
       description:
-        'Custom CSS classes for the parts: `dropzone`, `list`, `file`, `remove` and `error`.',
+        'Custom CSS classes for the parts: `dropzone`, `list`, `file`, `progress`, `progressIndicator`, `remove` and `error`.',
       table: { type: { summary: 'Partial<Record<FileUploadPart, string>>' } },
     },
     style: {
@@ -121,6 +128,20 @@ export default {
         defaultValue: { summary: '"name: file is too large"' },
       },
     },
+    progress: {
+      control: false,
+      description:
+        'Returns the progress of the upload of a file, from 0 to 100, or `undefined` for a file that has no bar. The file shows a `ProgressBar`, in the color scheme of the FileUpload, and it turns to `success` at 100. Return `undefined` once you no longer want the bar.',
+      table: { type: { summary: '(file: File) => number | undefined' } },
+    },
+    progressLabel: {
+      control: false,
+      description: 'Returns the accessible name of the progress bar of a file.',
+      table: {
+        type: { summary: '(file: File) => string' },
+        defaultValue: { summary: '"Uploading name"' },
+      },
+    },
     removeLabel: {
       control: false,
       description: 'Returns the accessible name of the button that removes a file.',
@@ -164,10 +185,10 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `outline` draws a dashed border and `filled` a muted background. `unstyled` drops the Plume styles so you can bring your own; the dropzone and the list keep working.',
-      options: ['outline', 'filled', 'unstyled'],
+        'Visual variant. `outline` draws a dashed border, `bordered` a continuous line and `filled` a muted background. `unstyled` drops the Plume styles so you can bring your own; the dropzone and the list keep working.',
+      options: ['outline', 'bordered', 'filled', 'unstyled'],
       table: {
-        type: { summary: `"outline" | "filled" | "unstyled"` },
+        type: { summary: `"outline" | "bordered" | "filled" | "unstyled"` },
         defaultValue: { summary: 'outline' },
       },
     },
@@ -232,7 +253,7 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div style={stack('1.5rem')}>
-      {(['outline', 'filled'] as const).map((variant) => (
+      {(['outline', 'bordered', 'filled'] as const).map((variant) => (
         <FileUpload aria-label={variant} key={variant} variant={variant}>
           {variant}
         </FileUpload>
@@ -340,6 +361,60 @@ export const Translated: Story = {
   ),
 }
 
+function UploadingFiles(): React.ReactNode {
+  const [files, setFiles] = useState<File[]>([])
+  const [progress, setProgress] = useState<Record<string, number>>({})
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((current) => {
+        const next = { ...current }
+        for (const file of files) {
+          next[fileKey(file)] = Math.min(100, (next[fileKey(file)] ?? 0) + 6 + Math.random() * 14)
+        }
+        return next
+      })
+    }, 500)
+    return () => clearInterval(timer)
+  }, [files])
+  return (
+    <div style={frame}>
+      <FileUpload
+        aria-label="Attachments"
+        multiple
+        onValueChange={setFiles}
+        progress={(file) => progress[fileKey(file)] ?? 0}
+        value={files}
+      />
+    </div>
+  )
+}
+
+/**
+ * Give **progress** a function that returns the percentage of the upload of each file, from your own state, and the
+ * list shows a bar under each name. It turns green at 100, and the remove button works as a cancel. Here the
+ * progress is simulated: choose some files to see it move.
+ */
+export const Progress: Story = {
+  render: () => <UploadingFiles />,
+}
+
+/**
+ * The bar of each file has its own name for screen readers, from **progressLabel**. A file that **progress** gives
+ * `undefined` has no bar.
+ */
+export const ProgressStates: Story = {
+  args: {
+    defaultValue: [
+      sampleFile('queued.pdf', sizes[0] ?? 0),
+      sampleFile('uploading.zip', sizes[1] ?? 0),
+      sampleFile('done.png', sizes[2] ?? 0),
+    ],
+    multiple: true,
+    progress: (file) => ({ 'done.png': 100, 'uploading.zip': 45 })[file.name],
+    style: frame,
+  },
+}
+
 function ControlledUpload(): React.ReactNode {
   const [files, setFiles] = useState<File[]>([])
   return (
@@ -422,9 +497,12 @@ export const Tailwind: Story = {
     dropzone: "rounded-lg border-2 border-dashed border-border p-6 text-center text-muted group-data-[dragging]:border-primary-solid",
     file: "mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2",
     list: "mt-2",
+    progress: "h-1.5 overflow-hidden rounded-full bg-border",
+    progressIndicator: "h-full bg-primary-solid",
     remove: "rounded-full p-1 hover:bg-border",
   }}
   multiple
+  progress={(file) => progress[file.name]}
   variant="unstyled"
 >
   Drop files here
@@ -442,9 +520,13 @@ export const Tailwind: Story = {
         error: 'mt-2 text-error-text',
         file: 'mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2',
         list: 'mt-2',
+        progress: 'h-1.5 overflow-hidden rounded-full bg-border',
+        progressIndicator: 'h-full bg-primary-solid',
         remove: 'rounded-full p-1 hover:bg-border',
       }}
+      defaultValue={[sampleFile('report.pdf', sizes[1] ?? 0)]}
       multiple
+      progress={() => 60}
       style={frame}
       variant="unstyled"
     >
@@ -467,9 +549,12 @@ export const Bootstrap: Story = {
     dropzone: "border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary",
     file: "list-group-item d-flex align-items-center gap-2",
     list: "list-group mt-2",
+    progress: "progress",
+    progressIndicator: "progress-bar",
     remove: "btn btn-sm btn-outline-secondary border-0",
   }}
   multiple
+  progress={(file) => progress[file.name]}
   variant="unstyled"
 >
   Drop files here
@@ -486,9 +571,13 @@ export const Bootstrap: Story = {
         error: 'mt-2 text-danger',
         file: 'list-group-item d-flex align-items-center gap-2',
         list: 'list-group mt-2',
+        progress: 'progress',
+        progressIndicator: 'progress-bar',
         remove: 'btn btn-sm btn-outline-secondary border-0',
       }}
+      defaultValue={[sampleFile('report.pdf', sizes[1] ?? 0)]}
       multiple
+      progress={() => 60}
       style={frame}
       variant="unstyled"
     >

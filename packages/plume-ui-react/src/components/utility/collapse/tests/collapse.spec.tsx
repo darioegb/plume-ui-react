@@ -32,14 +32,74 @@ describe('Collapse component', () => {
     expect(ref.current).toBe(container.firstChild)
   })
 
-  it('applies the base class and keeps the class of the user', () => {
+  it('puts the class of the user on the root', () => {
     const { container } = render(<Collapse className="mine">Text</Collapse>)
-    expect(container.firstChild).toHaveClass('collapse', 'mine')
+    expect(container.firstChild).toHaveAttribute('class', 'mine')
+  })
+
+  it('renders a section when it is asked to', () => {
+    const { container } = render(
+      <Collapse aria-label="Details" as="section">
+        Text
+      </Collapse>,
+    )
+    expect(container.firstChild?.nodeName).toBe('SECTION')
+  })
+
+  it('renders a div by default', () => {
+    const { container } = render(<Collapse>Text</Collapse>)
+    expect(container.firstChild?.nodeName).toBe('DIV')
   })
 
   it('puts bodyClassName on the box that holds the content', () => {
-    render(<Collapse bodyClassName="body">Text</Collapse>)
-    expect(screen.getByText('Text')).toHaveClass('body')
+    render(<Collapse bodyClassName="mine">Text</Collapse>)
+    expect(screen.getByText('Text')).toHaveClass('body', 'mine')
+  })
+
+  it('is filled and medium by default', () => {
+    render(<Collapse>Text</Collapse>)
+    expect(screen.getByText('Text')).toHaveClass('body', 'filled', 'md')
+  })
+
+  it.each(['accent', 'filled', 'outline'] as const)('applies the %s variant', (variant) => {
+    render(<Collapse variant={variant}>Text</Collapse>)
+    expect(screen.getByText('Text')).toHaveClass(variant)
+  })
+
+  it.each(['sm', 'md', 'lg'] as const)('applies the %s size', (size) => {
+    render(<Collapse size={size}>Text</Collapse>)
+    expect(screen.getByText('Text')).toHaveClass(size)
+  })
+
+  it('drops the Plume classes of the body when it is unstyled', () => {
+    render(
+      <Collapse bodyClassName="mine" variant="unstyled">
+        Text
+      </Collapse>,
+    )
+    const body = screen.getByText('Text')
+    expect(body).toHaveAttribute('class', 'mine')
+  })
+
+  it('sets the color variables from colorScheme and lets the style override them', () => {
+    const { container } = render(
+      <Collapse colorScheme="success" style={{ '--collapse-tint': 'red' } as React.CSSProperties}>
+        Text
+      </Collapse>,
+    )
+    const root = container.firstChild as HTMLElement
+    expect(root.style.getPropertyValue('--collapse-solid')).toBe('var(--plume-color-success-solid)')
+    expect(root.style.getPropertyValue('--collapse-tint-text')).toBe(
+      'var(--plume-color-success-tint-text)',
+    )
+    expect(root.style.getPropertyValue('--collapse-tint')).toBe('red')
+  })
+
+  it('sets no color variables without a colorScheme', () => {
+    const { container } = render(<Collapse>Text</Collapse>)
+    expect((container.firstChild as HTMLElement).style.getPropertyValue('--collapse-solid')).toBe(
+      '',
+    )
   })
 
   it('forwards the style, the id, the role and the accessible name', () => {

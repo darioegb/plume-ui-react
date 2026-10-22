@@ -45,8 +45,8 @@ function renderSteps(withDescription = true): React.ReactNode {
  * where it is: a `Step` can be wrapped in a component of your own that renders a single one, but a component that
  * renders several counts as one, so map the steps inline instead.
  *
- * With `orientation="horizontal"` (the default) the steps share the width. On a screen narrower than 640px the titles and descriptions are hidden (screen readers still read them),
- * so the row of indicators fits; `vertical` has room for the text.
+ * With `orientation="horizontal"` (the default) the steps share the width. On a screen narrower than 640px only the title of the current step is shown, and the descriptions are hidden (screen readers still read them all),
+ * so the row fits; `vertical` has room for the text.
  *
  * ### Subcomponents
  *
@@ -197,9 +197,14 @@ export const Variants: Story = {
       <Stepper activeStep={1} aria-label="Outline" variant="outline">
         {renderSteps(false)}
       </Stepper>
-      <Stepper activeStep={1} aria-label="Unstyled" variant="unstyled">
+      <Stepper
+        activeStep={1}
+        aria-label="Unstyled"
+        className="flex-wrap gap-x-6 gap-y-2"
+        variant="unstyled"
+      >
         {steps.map(({ title }) => (
-          <Step className="flex-1" key={title}>
+          <Step className="flex-none" key={title}>
             <StepIndicator className="mr-2 font-bold data-[state=completed]:text-green-600" />
             <StepTitle className="data-[state=current]:font-bold">{title}</StepTitle>
           </Step>
@@ -353,19 +358,19 @@ export const Tailwind: Story = {
     docs: {
       source: {
         code: `<Stepper activeStep={1} aria-label="Sign up progress" className="w-[36rem] max-w-full text-sm text-foreground" variant="unstyled">
-  <Step className="gap-x-3">
+  <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="font-medium data-[state=upcoming]:text-muted">Account</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Account</StepTitle>
     <StepSeparator className="h-0.5 bg-border data-[state=completed]:bg-primary-solid" />
   </Step>
-  <Step className="gap-x-3">
+  <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="font-medium data-[state=upcoming]:text-muted">Profile</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Profile</StepTitle>
     <StepSeparator className="h-0.5 bg-border data-[state=completed]:bg-primary-solid" />
   </Step>
-  <Step className="gap-x-3">
+  <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="font-medium data-[state=upcoming]:text-muted">Review</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Review</StepTitle>
   </Step>
 </Stepper>`,
       },
@@ -379,9 +384,11 @@ export const Tailwind: Story = {
       variant="unstyled"
     >
       {steps.map(({ title }, index) => (
-        <Step className="gap-x-3" key={title}>
+        <Step className="gap-x-2 sm:gap-x-3" key={title}>
           <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-          <StepTitle className="font-medium data-[state=upcoming]:text-muted">{title}</StepTitle>
+          <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">
+            {title}
+          </StepTitle>
           {index < steps.length - 1 ? (
             <StepSeparator className="h-0.5 bg-border data-[state=completed]:bg-primary-solid" />
           ) : null}
@@ -411,7 +418,9 @@ function BootstrapStepper(): React.ReactNode {
               className={`rounded-circle d-flex align-items-center justify-content-center ${badge}`}
               style={{ height: '2rem', width: '2rem' }}
             />
-            <StepTitle className={index > active ? 'text-body-secondary' : 'fw-semibold'}>
+            <StepTitle
+              className={`d-sm-block ${index === active ? 'fw-semibold' : 'd-none'} ${index > active ? 'text-body-secondary' : ''}`}
+            >
               {title}
             </StepTitle>
             {index < steps.length - 1 ? (
@@ -438,17 +447,17 @@ export const Bootstrap: Story = {
 <Stepper activeStep={active} aria-label="Sign up progress" className="d-flex" variant="unstyled">
   <Step className="flex-fill align-items-center gap-2">
     <StepIndicator className="rounded-circle d-flex align-items-center justify-content-center bg-success text-white" style={{ height: "2rem", width: "2rem" }} />
-    <StepTitle className="fw-semibold">Account</StepTitle>
+    <StepTitle className="d-none d-sm-block">Account</StepTitle>
     <StepSeparator className="border-top border-success" />
   </Step>
   <Step className="flex-fill align-items-center gap-2">
     <StepIndicator className="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white" style={{ height: "2rem", width: "2rem" }} />
-    <StepTitle className="fw-semibold">Profile</StepTitle>
+    <StepTitle className="d-sm-block fw-semibold">Profile</StepTitle>
     <StepSeparator className="border-top" />
   </Step>
   <Step className="flex-fill align-items-center gap-2">
     <StepIndicator className="rounded-circle d-flex align-items-center justify-content-center bg-secondary-subtle text-secondary-emphasis" style={{ height: "2rem", width: "2rem" }} />
-    <StepTitle className="text-body-secondary">Review</StepTitle>
+    <StepTitle className="d-none d-sm-block text-body-secondary">Review</StepTitle>
   </Step>
 </Stepper>`,
       },

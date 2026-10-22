@@ -20,11 +20,13 @@ import {
   formatBytes,
   selectFiles,
 } from './file-utils'
+import { ProgressBar } from '../progressbar'
 import styles from './fileupload.module.css'
 
-export type FileUploadVariant = 'outline' | 'filled' | 'unstyled'
+export type FileUploadVariant = 'bordered' | 'filled' | 'outline' | 'unstyled'
 
-export type FileUploadPart = 'dropzone' | 'error' | 'file' | 'list' | 'remove'
+export type FileUploadPart =
+  'dropzone' | 'error' | 'file' | 'list' | 'progress' | 'progressIndicator' | 'remove'
 
 export interface FileUploadOwnProps {
   accept?: string
@@ -38,6 +40,8 @@ export interface FileUploadOwnProps {
   name?: string
   onReject?: (rejections: FileRejection[]) => void
   onValueChange?: (files: File[]) => void
+  progress?: (file: File) => number | undefined
+  progressLabel?: (file: File) => string
   removeLabel?: (file: File) => string
   size?: Size
   value?: File[]
@@ -73,6 +77,39 @@ const defaultFormatRejection = ({ file, reason }: FileRejection): string =>
   `${file.name}: ${rejectionTexts[reason]}`
 
 const defaultRemoveLabel = (file: File): string => `Remove ${file.name}`
+
+const defaultProgressLabel = (file: File): string => `Uploading ${file.name}`
+
+interface FileProgressProps {
+  className?: string
+  colorScheme: ColorScheme
+  indicatorClassName?: string
+  isStyled: boolean
+  label: string
+  value?: number
+}
+
+function FileProgress({
+  className,
+  colorScheme,
+  indicatorClassName,
+  isStyled,
+  label,
+  value,
+}: Readonly<FileProgressProps>): ReactNode {
+  if (value === undefined) return null
+  return (
+    <ProgressBar
+      aria-label={label}
+      className={className}
+      colorScheme={value >= 100 ? 'success' : colorScheme}
+      indicatorClassName={indicatorClassName}
+      size="sm"
+      value={value}
+      variant={isStyled ? 'solid' : 'unstyled'}
+    />
+  )
+}
 
 const fileUploadColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
@@ -111,6 +148,8 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       multiple = false,
       onReject,
       onValueChange,
+      progress,
+      progressLabel = defaultProgressLabel,
       readOnly = false,
       removeLabel = defaultRemoveLabel,
       required = false,
@@ -235,6 +274,14 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                     <CloseIcon />
                   </button>
                 )}
+                <FileProgress
+                  className={classNames?.progress}
+                  colorScheme={colorScheme}
+                  indicatorClassName={classNames?.progressIndicator}
+                  isStyled={isStyled}
+                  label={progressLabel(file)}
+                  value={progress?.(file)}
+                />
               </li>
             ))}
           </ul>

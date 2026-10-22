@@ -483,6 +483,11 @@ describe('Carousel component', () => {
   })
 
   describe('appearance', () => {
+    it.each(['ghost', 'overlay', 'solid'] as const)('applies the %s variant', (variant) => {
+      render(<Demo variant={variant} />)
+      expect(document.querySelector('[data-plume-carousel]')).toHaveClass(variant)
+    })
+
     it('applies the base, variant and size classes', () => {
       render(<Demo size="lg" variant="outline" />)
       expect(screen.getByRole('region')).toHaveClass('carousel', 'outline', 'lg')

@@ -1,29 +1,42 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useId, useState } from 'react'
-import { Collapse } from '..'
+import { defaultTheme } from '../../../../theme'
+import { Collapse, type CollapseProps } from '..'
+
+const colorSchemes = Object.keys(defaultTheme.colors)
 
 const text =
   'Plume is a set of accessible React components that you can use with its own styles or with Tailwind and Bootstrap classes. Every component has an unstyled variant that keeps the structure and drops the looks.'
 
+const frame = { maxWidth: '100%', width: '26rem' }
+
 function Toggle({
   children,
   defaultOpen = false,
-}: Readonly<{ children?: React.ReactNode; defaultOpen?: boolean }>): React.ReactNode {
+  label = 'details',
+  ...collapse
+}: Readonly<
+  Pick<CollapseProps, 'colorScheme' | 'size' | 'variant'> & {
+    children?: React.ReactNode
+    defaultOpen?: boolean
+    label?: string
+  }
+>): React.ReactNode {
   const [open, setOpen] = useState(defaultOpen)
   const id = useId()
   return (
-    <div style={{ maxWidth: '100%', width: '26rem' }}>
+    <div style={frame}>
       <button
         aria-controls={id}
         aria-expanded={open}
-        className="rounded border border-gray-400 px-3 py-1 text-sm"
+        className="mb-2 rounded border border-gray-400 px-3 py-1 text-sm"
         onClick={() => setOpen(!open)}
         type="button"
       >
-        {open ? 'Hide' : 'Show'} details
+        {open ? 'Hide' : 'Show'} {label}
       </button>
-      <Collapse id={id} open={open}>
-        {children ?? <p className="pt-3 text-sm">{text}</p>}
+      <Collapse id={id} open={open} {...collapse}>
+        {children ?? text}
       </Collapse>
     </div>
   )
@@ -39,8 +52,9 @@ function Toggle({
  * While it is closed, the content is hidden from assistive technology and can't be focused, and the animation
  * is turned off with `prefers-reduced-motion`.
  *
- * It has no variants because it draws nothing: it is only the height animation. Give it a `className` and a
- * `bodyClassName` (the box with the content, which is where the padding goes) to style it.
+ * The content sits in a box that takes the **variant**: `filled` is the default, `outline` draws a border and
+ * `accent` adds a bar at the start, like a note. They take a **colorScheme** and a **size** (the padding), and
+ * `unstyled` draws nothing: it is only the height animation, and you style the box with `bodyClassName`.
  */
 export default {
   title: 'Components/Collapse',
@@ -70,6 +84,29 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the box with the content, where the padding goes.',
       table: { type: { summary: 'string' } },
+    },
+    variant: {
+      control: 'radio',
+      description:
+        'Visual variant of the box with the content. `filled` gives it a background, `outline` a border and `accent` a bar at the start. `unstyled` drops the Plume styles so you can bring your own; the height animation keeps working.',
+      options: ['filled', 'outline', 'accent', 'unstyled'],
+      table: {
+        type: { summary: `"filled" | "outline" | "accent" | "unstyled"` },
+        defaultValue: { summary: 'filled' },
+      },
+    },
+    colorScheme: {
+      control: 'select',
+      description:
+        'Color scheme from the theme palette, including custom schemes added to it. Without it the box is neutral. It tints the background of `filled` and `accent`, and colors the border of `outline` and `accent`.',
+      options: [undefined, ...colorSchemes],
+      table: { type: { summary: 'ColorScheme' } },
+    },
+    size: {
+      control: 'radio',
+      description: 'Size of the text and of the padding of the box.',
+      options: ['sm', 'md', 'lg'],
+      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     style: {
       control: false,
@@ -114,9 +151,9 @@ export default {
     },
   },
   args: {
-    children: <p className="text-sm">{text}</p>,
+    children: text,
     open: true,
-    style: { maxWidth: '100%', width: '26rem' },
+    style: frame,
   },
 } satisfies Meta<typeof Collapse>
 
@@ -128,10 +165,79 @@ type Story = StoryObj<typeof Collapse>
 export const Default: Story = {}
 
 /**
+ * Use the **variant** prop to pick how the box looks. `unstyled` drops the Plume styles: it keeps the animation and
+ * leaves the box to you.
+ */
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4" style={frame}>
+      {(['filled', 'outline', 'accent'] as const).map((variant) => (
+        <Collapse key={variant} open variant={variant}>
+          {variant}: {text}
+        </Collapse>
+      ))}
+      <Collapse
+        bodyClassName="rounded-lg bg-gray-900 p-3 text-sm text-gray-100"
+        open
+        variant="unstyled"
+      >
+        unstyled: {text}
+      </Collapse>
+    </div>
+  ),
+}
+
+/**
+ * Use the **size** prop to change the text and the padding of the box.
+ */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4" style={frame}>
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Collapse key={size} open size={size}>
+          {size}: {text}
+        </Collapse>
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **colorScheme** prop to pick a color from the theme. It tints the box.
+ */
+export const Colors: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3" style={frame}>
+      {colorSchemes.map((scheme) => (
+        <Collapse
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          key={scheme}
+          open
+          size="sm"
+        >
+          {scheme}: {text}
+        </Collapse>
+      ))}
+    </div>
+  ),
+}
+
+/**
  * Keep the state next to the button that controls it, and link them with `aria-expanded` and `aria-controls`.
  */
 export const WithButton: Story = {
   render: () => <Toggle />,
+}
+
+/**
+ * Any variant can be the box of a "show more", with its own **colorScheme**.
+ */
+export const Accent: Story = {
+  render: () => (
+    <Toggle colorScheme="warning" defaultOpen label="warning" variant="accent">
+      This action cannot be undone. Check the details before you go on.
+    </Toggle>
+  ),
 }
 
 /**
@@ -159,8 +265,8 @@ export const Nested: Story = {
           >
             Outer
           </button>
-          <Collapse open={outer}>
-            <div className="flex flex-col gap-2 pt-2 text-sm">
+          <Collapse open={outer} variant="outline">
+            <div className="flex flex-col gap-2">
               <p>{text}</p>
               <button
                 aria-expanded={inner}
@@ -170,11 +276,7 @@ export const Nested: Story = {
               >
                 Inner
               </button>
-              <Collapse open={inner}>
-                <p className="rounded bg-gray-100 p-3 text-gray-900">
-                  Content of the inner Collapse.
-                </p>
-              </Collapse>
+              <Collapse open={inner}>Content of the inner Collapse.</Collapse>
             </div>
           </Collapse>
         </div>
@@ -198,7 +300,7 @@ export const Tailwind: Story = {
 <button aria-controls="more" aria-expanded={open} className="rounded bg-primary-solid px-3 py-1 text-sm text-primary-on-solid" onClick={() => setOpen(!open)} type="button">
   Details
 </button>
-<Collapse bodyClassName="mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground" id="more" open={open}>
+<Collapse bodyClassName="mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground" id="more" open={open} variant="unstyled">
   Content
 </Collapse>`,
       },
@@ -222,6 +324,7 @@ export const Tailwind: Story = {
             bodyClassName="mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground"
             id="tailwind-more"
             open={open}
+            variant="unstyled"
           >
             {text}
           </Collapse>
@@ -245,7 +348,7 @@ export const Bootstrap: Story = {
 <button aria-controls="more" aria-expanded={open} className="btn btn-primary btn-sm" onClick={() => setOpen(!open)} type="button">
   Details
 </button>
-<Collapse id="more" open={open}>
+<Collapse id="more" open={open} variant="unstyled">
   <div className="card card-body mt-2">Content</div>
 </Collapse>`,
       },
@@ -265,7 +368,7 @@ export const Bootstrap: Story = {
           >
             Details
           </button>
-          <Collapse id="bootstrap-more" open={open}>
+          <Collapse id="bootstrap-more" open={open} variant="unstyled">
             <div className="card card-body mt-2">{text}</div>
           </Collapse>
         </div>

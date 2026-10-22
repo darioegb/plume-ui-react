@@ -13,34 +13,42 @@ import {
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
+const gradient = (from: string, to: string): string =>
+  `linear-gradient(135deg, var(--plume-color-${from}-solid), var(--plume-color-${to}-solid))`
+
 const slides = [
-  { background: 'var(--plume-color-primary-solid)', title: 'Mountains' },
-  { background: 'var(--plume-color-success-solid)', title: 'Forest' },
-  { background: 'var(--plume-color-warning-solid)', title: 'Desert' },
-  { background: 'var(--plume-color-error-solid)', title: 'Canyon' },
+  { background: gradient('primary', 'purple'), caption: 'Above the clouds', title: 'Mountains' },
+  { background: gradient('success', 'teal'), caption: 'A walk under the trees', title: 'Forest' },
+  { background: gradient('error', 'brown'), caption: 'Sand, heat and wind', title: 'Desert' },
+  { background: gradient('pink', 'purple'), caption: 'Cut by a river', title: 'Canyon' },
 ]
 
 const frame = { maxWidth: '100%', width: '28rem' }
 
-function Panels({ className }: Readonly<{ className?: string }>): React.ReactNode {
+function Panels({
+  className,
+  light = false,
+}: Readonly<{ className?: string; light?: boolean }>): React.ReactNode {
   return (
     <CarouselSlides>
-      {slides.map(({ background, title }) => (
+      {slides.map(({ background, caption, title }) => (
         <CarouselSlide className={className} key={title}>
           <div
             style={{
-              alignItems: 'center',
-              background,
-              color: '#fff',
+              alignItems: 'flex-start',
+              background: light ? 'var(--plume-surface-muted)' : background,
+              boxSizing: 'border-box',
+              color: light ? 'var(--plume-foreground)' : '#fff',
               display: 'flex',
-              fontSize: '1.25rem',
-              fontWeight: 600,
-              height: '10rem',
-              justifyContent: 'center',
-              textShadow: '0 1px 2px rgb(0 0 0 / 50%)',
+              flexDirection: 'column',
+              height: '11rem',
+              justifyContent: 'flex-end',
+              padding: '1rem 3.5rem',
+              textShadow: light ? undefined : '0 1px 2px rgb(0 0 0 / 50%)',
             }}
           >
-            {title}
+            <strong style={{ fontSize: '1.25rem' }}>{title}</strong>
+            <span style={{ fontSize: '0.875rem', opacity: 0.9 }}>{caption}</span>
           </div>
         </CarouselSlide>
       ))}
@@ -78,6 +86,10 @@ function Controls(): React.ReactNode {
  * back to the first slide after the last. It pauses while the pointer is over it or the focus is inside, and it
  * doesn't run at all with `prefers-reduced-motion`. Moving content has to be stoppable, so always add a
  * `CarouselPlayPause` button. While it runs, the slides are not announced by screen readers.
+ *
+ * The slides have no background or text of their own: what is inside a `CarouselSlide` is yours, usually an image or
+ * a card. The colors in these examples come from the examples themselves, each slide is a `div` with a gradient of
+ * two theme colors. The **colorScheme** only colors the buttons and the active dot.
  *
  * Each slide takes the full width. Give a `CarouselSlide` a width (`className` or `style`, like `flex-basis: 50%`)
  * to show several at once.
@@ -186,10 +198,10 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant of the buttons. `solid` fills them with the color, `outline` draws a border on a neutral background. `unstyled` drops the Plume styles so you can bring your own; the scrolling and the snapping keep working.',
-      options: ['solid', 'outline', 'unstyled'],
+        'Visual variant of the buttons. `solid` fills them with the color, `outline` draws a border on a neutral background, `ghost` has no background until it is hovered, and `overlay` puts a dark translucent circle behind a white arrow, to read over a photo. `unstyled` drops the Plume styles so you can bring your own; the scrolling and the snapping keep working.',
+      options: ['solid', 'outline', 'ghost', 'overlay', 'unstyled'],
       table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
+        type: { summary: `"solid" | "outline" | "ghost" | "overlay" | "unstyled"` },
         defaultValue: { summary: 'solid' },
       },
     },
@@ -245,9 +257,9 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
-      {(['solid', 'outline'] as const).map((variant) => (
+      {(['solid', 'outline', 'ghost', 'overlay'] as const).map((variant) => (
         <Carousel aria-label={variant} key={variant} variant={variant}>
-          <Panels />
+          <Panels light={variant === 'outline' || variant === 'ghost'} />
           <Controls />
         </Carousel>
       ))}
@@ -475,18 +487,18 @@ export const Tailwind: Story = {
 /**
  * Some examples of Carousel with Bootstrap classes: `btn` for the buttons and `card` for the slides. Bootstrap's
  * own carousel needs its JavaScript and a different structure, so the story composes its utilities and keeps the
- * behavior of the component. Bootstrap can't style a dot from its `data-active` attribute, so the story adds that one rule.
+ * behavior of the component. Bootstrap can't style a dot from its `data-active` attribute, so the story adds that one rule, scoped to its own class.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Carousel aria-label="Featured places" variant="unstyled">
+        code: `<Carousel aria-label="Featured places" className="bs-carousel" variant="unstyled">
   <CarouselSlides>
     <CarouselSlide><div className="card text-bg-primary p-5 text-center">Mountains</div></CarouselSlide>
     <CarouselSlide><div className="card text-bg-success p-5 text-center">Forest</div></CarouselSlide>
   </CarouselSlides>
-  <style>{'[data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
+  <style>{'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
   <div className="d-flex align-items-center justify-content-between mt-2">
     <CarouselPrev className="btn btn-outline-secondary btn-sm" />
     <CarouselDots className="d-flex gap-2" dotClassName="rounded-circle bg-secondary-subtle p-1 border-0" />
@@ -497,7 +509,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <Carousel aria-label="Featured places" style={frame} variant="unstyled">
+    <Carousel aria-label="Featured places" className="bs-carousel" style={frame} variant="unstyled">
       <CarouselSlides>
         {slides.slice(0, 3).map(({ title }, position) => (
           <CarouselSlide key={title}>
@@ -509,7 +521,9 @@ export const Bootstrap: Story = {
           </CarouselSlide>
         ))}
       </CarouselSlides>
-      <style>{'[data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
+      <style>
+        {'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}
+      </style>
       <div className="d-flex align-items-center justify-content-between mt-2">
         <CarouselPrev className="btn btn-outline-secondary btn-sm" />
         <CarouselDots

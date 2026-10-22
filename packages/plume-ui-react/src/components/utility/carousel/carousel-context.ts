@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react'
 
-export type CarouselVariant = 'solid' | 'outline' | 'unstyled'
+export type CarouselVariant = 'ghost' | 'outline' | 'overlay' | 'solid' | 'unstyled'
 
 export interface CarouselContextValue {
   baseId: string

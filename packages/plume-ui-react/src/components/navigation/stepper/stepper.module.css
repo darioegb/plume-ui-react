@@ -218,7 +218,16 @@
 }
 
 @media (width < 40rem) {
-  .stepper[data-orientation='horizontal'] .title,
+  .stepper[data-orientation='horizontal'] .step {
+    column-gap: 0.5rem;
+    flex: 1 1 auto;
+  }
+
+  .stepper[data-orientation='horizontal'] .step:last-child {
+    flex: none;
+  }
+
+  .stepper[data-orientation='horizontal'] .title:not([data-state='current']),
   .stepper[data-orientation='horizontal'] .description {
     block-size: 1px;
     clip-path: inset(50%);

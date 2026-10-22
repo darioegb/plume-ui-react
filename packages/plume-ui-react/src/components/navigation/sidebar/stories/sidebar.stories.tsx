@@ -84,6 +84,7 @@ function Shell({
           style={{
             height: compact ? undefined : '20rem',
             minHeight: compact ? '13rem' : undefined,
+            transform: 'translateZ(0)',
             width: '100%',
           }}
         >

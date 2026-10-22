@@ -1,1 +1,6 @@
-export { Collapse, type CollapseOwnProps, type CollapseProps } from './collapse'
+export {
+  Collapse,
+  type CollapseOwnProps,
+  type CollapseProps,
+  type CollapseVariant,
+} from './collapse'

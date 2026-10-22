@@ -293,6 +293,11 @@ describe('FileUpload component', () => {
       expect(dropzone()).toHaveClass('dropzone')
     })
 
+    it('applies the bordered variant', () => {
+      const { container } = render(<Demo variant="bordered" />)
+      expect(container.firstChild).toHaveClass('bordered')
+    })
+
     it('defaults to an outlined, medium upload', () => {
       const { container } = render(<Demo />)
       expect(container.firstChild).toHaveClass('fileupload', 'outline', 'md')
@@ -327,9 +332,18 @@ describe('FileUpload component', () => {
       const { container } = render(
         <Demo
           accept="image/*"
-          classNames={{ dropzone: 'dz', error: 'err', file: 'fl', list: 'ls', remove: 'rm' }}
+          classNames={{
+            dropzone: 'dz',
+            error: 'err',
+            file: 'fl',
+            list: 'ls',
+            progress: 'pg',
+            progressIndicator: 'pi',
+            remove: 'rm',
+          }}
           className="root"
           defaultValue={[file('a.png', 'image/png')]}
+          progress={() => 40}
         />,
       )
       choose([file('b.txt', 'text/plain')])
@@ -339,6 +353,8 @@ describe('FileUpload component', () => {
       expect(screen.getByText('a.png').closest('li')).toHaveClass('fl')
       expect(screen.getByRole('button')).toHaveClass('rm')
       expect(screen.getByRole('alert')).toHaveClass('err')
+      expect(screen.getByRole('progressbar')).toHaveClass('progressbar', 'pg')
+      expect(screen.getByRole('progressbar').firstElementChild).toHaveClass('pi')
     })
 
     it('drops the Plume classes when it is unstyled and keeps the user classes', () => {
@@ -353,6 +369,66 @@ describe('FileUpload component', () => {
       expect(container.firstChild).toHaveAttribute('class', 'root')
       expect(dropzone()).toHaveAttribute('class', 'dz')
       expect(screen.getByRole('list')).not.toHaveAttribute('class')
+    })
+  })
+
+  describe('progress', () => {
+    const uploading = file('big.zip')
+
+    it('shows no progress bar without the progress prop', () => {
+      render(<Demo defaultValue={[uploading]} />)
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+    })
+
+    it('shows a progress bar for the files that have a value', () => {
+      render(
+        <Demo
+          defaultValue={[uploading, file('done.txt')]}
+          progress={(current) => (current === uploading ? 40 : undefined)}
+        />,
+      )
+      const bars = screen.getAllByRole('progressbar')
+      expect(bars).toHaveLength(1)
+      expect(bars[0]).toHaveAttribute('aria-valuenow', '40')
+      expect(bars[0]).toHaveAttribute('aria-valuemax', '100')
+    })
+
+    it('names the bar after the file and lets progressLabel translate it', () => {
+      const { rerender } = render(<Demo defaultValue={[uploading]} progress={() => 10} />)
+      expect(screen.getByRole('progressbar', { name: 'Uploading big.zip' })).toBeInTheDocument()
+      rerender(
+        <Demo
+          defaultValue={[uploading]}
+          progress={() => 10}
+          progressLabel={(current) => `Subiendo ${current.name}`}
+        />,
+      )
+      expect(screen.getByRole('progressbar', { name: 'Subiendo big.zip' })).toBeInTheDocument()
+    })
+
+    it('keeps the value between 0 and 100', () => {
+      const { rerender } = render(<Demo defaultValue={[uploading]} progress={() => 150} />)
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100')
+      rerender(<Demo defaultValue={[uploading]} progress={() => -20} />)
+      expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0')
+    })
+
+    it('colors the bar with the color scheme and turns it to success at 100', () => {
+      const { rerender } = render(
+        <Demo colorScheme="warning" defaultValue={[uploading]} progress={() => 99} />,
+      )
+      expect(screen.getByRole('progressbar')).toHaveStyle(
+        '--progressbar-solid: var(--plume-color-warning-solid)',
+      )
+      rerender(<Demo colorScheme="warning" defaultValue={[uploading]} progress={() => 100} />)
+      expect(screen.getByRole('progressbar')).toHaveStyle(
+        '--progressbar-solid: var(--plume-color-success-solid)',
+      )
+    })
+
+    it('has no Plume class when it is unstyled', () => {
+      render(<Demo defaultValue={[uploading]} progress={() => 50} variant="unstyled" />)
+      expect(screen.getByRole('progressbar')).not.toHaveClass('progressbar')
     })
   })
 })

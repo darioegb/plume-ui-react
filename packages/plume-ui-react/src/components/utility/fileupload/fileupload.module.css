@@ -28,6 +28,11 @@
 :global(:where([data-plume-fileupload-file])) {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+}
+
+:global(:where([data-plume-fileupload-file] > [data-plume-progressbar])) {
+  flex: 0 0 100%;
 }
 
 :global(:where([data-plume-fileupload-name])) {
@@ -83,6 +88,10 @@
   justify-content: center;
   padding: var(--fileupload-padding);
   text-align: center;
+}
+
+.bordered .dropzone {
+  border-style: solid;
 }
 
 .filled .dropzone {
