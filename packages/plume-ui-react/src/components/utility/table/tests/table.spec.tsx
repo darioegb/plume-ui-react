@@ -6,6 +6,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableEmpty,
   TableFooter,
   TableHead,
   TableHeader,
@@ -331,6 +332,50 @@ describe('Table component', () => {
       width = 100
       act(() => observe?.())
       expect(container.firstChild).not.toHaveAttribute('tabindex')
+    })
+  })
+
+  describe('loading', () => {
+    it('is not busy by default', () => {
+      render(<Demo />)
+      expect(screen.getByRole('table')).not.toHaveAttribute('aria-busy')
+      expect(screen.getByRole('table')).not.toHaveAttribute('data-loading')
+    })
+
+    it('marks the table as busy', () => {
+      render(<Demo loading />)
+      expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
+      expect(screen.getByRole('table')).toHaveAttribute('data-loading')
+    })
+  })
+
+  describe('TableEmpty', () => {
+    it('renders a row with one cell as wide as asked', () => {
+      const ref = createRef<HTMLTableCellElement>()
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty className="custom" colSpan={3} ref={ref} title="Nothing">
+              Nobody here
+            </TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      const cell = screen.getByRole('cell', { name: 'Nobody here' })
+      expect(cell).toHaveAttribute('colspan', '3')
+      expect(cell).toHaveClass('custom')
+      expect(ref.current).toBe(cell)
+    })
+
+    it('spans every column by default', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty>Nobody here</TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByRole('cell')).toHaveAttribute('colspan', '100')
     })
   })
 
