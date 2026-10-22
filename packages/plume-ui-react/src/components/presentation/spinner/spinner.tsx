@@ -13,7 +13,10 @@ export interface SpinnerOwnProps {
 }
 
 type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
-type SpinnerRootAttributes = Pick<HtmlHTMLAttributes<HTMLSpanElement>, 'hidden' | 'id' | 'tabIndex'>
+type SpinnerRootAttributes = Pick<
+  HtmlHTMLAttributes<HTMLSpanElement>,
+  'aria-label' | 'hidden' | 'id' | 'tabIndex'
+>
 type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
   Pick<ComponentProps, 'style'> & { color: ColorShade }
 export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps

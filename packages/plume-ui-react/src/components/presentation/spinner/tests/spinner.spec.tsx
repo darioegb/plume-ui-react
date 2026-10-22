@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Spinner } from '..'
 
 describe('Spinner component', () => {
@@ -12,6 +12,13 @@ describe('Spinner component', () => {
     const { container } = render(<Spinner size="lg" />)
     const spinnerElement = container.querySelector('.solid')
     expect(spinnerElement).toHaveClass('lg solid')
+  })
+
+  it('is named loading by default and takes another name', () => {
+    const { rerender } = render(<Spinner />)
+    expect(screen.getByLabelText('loading')).toBeInTheDocument()
+    rerender(<Spinner aria-label="Cargando" />)
+    expect(screen.getByLabelText('Cargando')).toBeInTheDocument()
   })
 
   it('keeps the size out of the DOM attributes', () => {

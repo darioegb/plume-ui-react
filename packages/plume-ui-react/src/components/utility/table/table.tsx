@@ -4,7 +4,7 @@ import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps, Size } from '../../../theme'
-import { ProgressBar } from '../progressbar'
+import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
 
 export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
@@ -88,12 +88,10 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       >
         {loading ? (
           <div data-plume-table-loading="">
-            <ProgressBar
+            <Spinner
               aria-label={loadingLabel}
               className={loadingClassName}
-              indeterminate
-              shape="rounded"
-              size="md"
+              color="primary"
               variant={isStyled ? 'solid' : 'unstyled'}
             />
           </div>

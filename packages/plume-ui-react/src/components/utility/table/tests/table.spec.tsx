@@ -348,22 +348,22 @@ describe('Table component', () => {
       expect(screen.getByRole('table')).toHaveAttribute('data-loading')
     })
 
-    it('shows a progress bar named by loadingLabel', () => {
+    it('shows a spinner named by loadingLabel', () => {
       const { rerender } = render(<Demo loading />)
-      expect(screen.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument()
+      expect(screen.getByLabelText('Loading')).toBeInTheDocument()
       rerender(<Demo loading loadingLabel="Cargando" />)
-      expect(screen.getByRole('progressbar', { name: 'Cargando' })).toBeInTheDocument()
+      expect(screen.getByLabelText('Cargando')).toBeInTheDocument()
     })
 
-    it('has no progress bar when it is not loading', () => {
+    it('has no spinner when it is not loading', () => {
       render(<Demo />)
-      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
     })
 
-    it('drops the Plume styles of the progress bar when unstyled', () => {
+    it('drops the Plume styles of the spinner when unstyled', () => {
       render(<Demo loading loadingClassName="custom" variant="unstyled" />)
-      expect(screen.getByRole('progressbar')).toHaveClass('custom')
-      expect(screen.getByRole('progressbar')).not.toHaveClass('progressbar')
+      expect(screen.getByLabelText('Loading')).toHaveClass('custom')
+      expect(screen.getByLabelText('Loading')).not.toHaveClass('solid')
     })
   })
 

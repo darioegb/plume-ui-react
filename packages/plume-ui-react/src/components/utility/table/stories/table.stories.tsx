@@ -69,7 +69,7 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * and the selection, use the `useTableState` hook, which works without a Table and can feed a `Paginator`. The
  * filters are yours to build with `Field`, `Input`, `Select` or any other control: the hook only keeps their values.
  *
- * **Loading and empty.** **loading** sets `aria-busy`, dims the body and shows a `ProgressBar` while you wait for the data. When there
+ * **Loading and empty.** **loading** sets `aria-busy`, covers the body with a veil and a `Spinner` while you wait for the data. When there
  * are no rows, put a `TableEmpty` in the body with the message, or a `title`, a `description` and an `action` such as clearing the filters.
  *
  * **Wide tables.** The table scrolls inside its own box instead of the page. When it doesn't fit, the box becomes
@@ -168,17 +168,17 @@ export default {
     loading: {
       control: 'boolean',
       description:
-        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, dims the body and shows an indeterminate `ProgressBar` over the header.',
+        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, covers the body with a translucent veil and shows a `Spinner` in the middle.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     loadingLabel: {
       control: 'text',
-      description: 'Accessible name of the progress bar shown while the table is loading.',
+      description: 'Accessible name of the spinner shown while the table is loading.',
       table: { type: { summary: 'string' }, defaultValue: { summary: 'Loading' } },
     },
     loadingClassName: {
       control: 'text',
-      description: 'Custom CSS class for the progress bar shown while the table is loading.',
+      description: 'Custom CSS class for the spinner shown while the table is loading.',
       table: { type: { summary: 'string' } },
     },
     maxHeight: {
@@ -762,9 +762,9 @@ export const Selectable: Story = {
 }
 
 /**
- * **loading** marks the table as busy while the data is on its way: it sets `aria-busy`, dims the body and shows
- * an indeterminate `ProgressBar` over the header, named by **loadingLabel**. The rows stay in place so the table
- * doesn't jump when the new data arrives.
+ * **loading** marks the table as busy while the data is on its way: it sets `aria-busy`, covers the body with a translucent veil and shows
+ * a `Spinner` in the middle, named by **loadingLabel**. The rows stay in place so the table doesn't jump when the
+ * new data arrives.
  */
 export const Loading: Story = {
   render: () => (
