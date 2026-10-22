@@ -628,7 +628,7 @@ describe('Tree component', () => {
   })
 
   describe('checkbox selection', () => {
-    function Permissions(props: Readonly<Partial<TreeProps>>) {
+    function CheckboxTree(props: Readonly<Partial<TreeProps>>) {
       return (
         <Tree
           aria-label="Permissions"
@@ -664,7 +664,7 @@ describe('Tree component', () => {
     const checked = (value: string): string | null => item(value).getAttribute('aria-checked')
 
     it('uses aria-checked on every item and not aria-selected', () => {
-      render(<Permissions />)
+      render(<CheckboxTree />)
       expect(checked('users')).toBe('false')
       expect(checked('read')).toBe('false')
       expect(item('read')).not.toHaveAttribute('aria-selected')
@@ -672,7 +672,7 @@ describe('Tree component', () => {
     })
 
     it('shows a checkbox that is hidden from assistive technology', () => {
-      render(<Permissions defaultValue={['read']} />)
+      render(<CheckboxTree defaultValue={['read']} />)
       const box = item('read').querySelector('[data-plume-tree-checkbox]')
       expect(box).toHaveAttribute('aria-hidden', 'true')
       expect(box).toHaveAttribute('data-state', 'checked')
@@ -684,7 +684,7 @@ describe('Tree component', () => {
 
     it('checks and unchecks an item and reports the list', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions onValueChange={onValueChange} />)
+      render(<CheckboxTree onValueChange={onValueChange} />)
       await userEvent.click(label('read'))
       expect(checked('read')).toBe('true')
       expect(onValueChange).toHaveBeenLastCalledWith(['read'])
@@ -695,7 +695,7 @@ describe('Tree component', () => {
 
     it('checks every enabled item under a branch, and the branch', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions onValueChange={onValueChange} />)
+      render(<CheckboxTree onValueChange={onValueChange} />)
       await userEvent.click(label('users'))
       expect(checked('read')).toBe('true')
       expect(checked('write')).toBe('true')
@@ -705,7 +705,7 @@ describe('Tree component', () => {
     })
 
     it('is mixed while only some items are checked, and checked when all are', async () => {
-      render(<Permissions defaultValue={['delete']} />)
+      render(<CheckboxTree defaultValue={['delete']} />)
       await userEvent.click(label('read'))
       expect(checked('users')).toBe('mixed')
       await userEvent.click(label('write'))
@@ -717,7 +717,7 @@ describe('Tree component', () => {
     })
 
     it('shows the mixed state with its own icon', async () => {
-      render(<Permissions />)
+      render(<CheckboxTree />)
       await userEvent.click(label('read'))
       expect(item('users').querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
         'data-state',
@@ -728,7 +728,7 @@ describe('Tree component', () => {
 
     it('puts a branch in the list only when everything under it is checked', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions defaultValue={['delete']} onValueChange={onValueChange} />)
+      render(<CheckboxTree defaultValue={['delete']} onValueChange={onValueChange} />)
       await userEvent.click(label('read'))
       expect(onValueChange).toHaveBeenLastCalledWith(['delete', 'read'])
       await userEvent.click(label('write'))
@@ -738,7 +738,7 @@ describe('Tree component', () => {
     })
 
     it('unchecks everything under a checked branch except what is disabled', async () => {
-      render(<Permissions defaultValue={['users']} />)
+      render(<CheckboxTree defaultValue={['users']} />)
       expect(checked('users')).toBe('true')
       await userEvent.click(label('users'))
       expect(checked('read')).toBe('false')
@@ -748,7 +748,7 @@ describe('Tree component', () => {
     })
 
     it('unchecks a branch that is mixed only because of a disabled item', async () => {
-      render(<Permissions defaultValue={['read', 'write']} />)
+      render(<CheckboxTree defaultValue={['read', 'write']} />)
       expect(checked('users')).toBe('mixed')
       await userEvent.click(label('users'))
       expect(checked('read')).toBe('false')
@@ -757,20 +757,20 @@ describe('Tree component', () => {
     })
 
     it('treats a branch in the value as everything under it', () => {
-      render(<Permissions defaultValue={['users']} />)
+      render(<CheckboxTree defaultValue={['users']} />)
       expect(checked('read')).toBe('true')
       expect(checked('delete')).toBe('true')
     })
 
     it('derives a branch from the items under it', () => {
-      render(<Permissions defaultValue={['read', 'write', 'delete']} />)
+      render(<CheckboxTree defaultValue={['read', 'write', 'delete']} />)
       expect(checked('users')).toBe('true')
       expect(checked('billing')).toBe('false')
     })
 
     it('follows value when it is controlled', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions onValueChange={onValueChange} value={['invoices']} />)
+      render(<CheckboxTree onValueChange={onValueChange} value={['invoices']} />)
       expect(checked('billing')).toBe('true')
       await userEvent.click(label('read'))
       expect(onValueChange).toHaveBeenCalledWith(
@@ -781,7 +781,7 @@ describe('Tree component', () => {
 
     it('does not cascade when cascade is off', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions cascade={false} onValueChange={onValueChange} />)
+      render(<CheckboxTree cascade={false} onValueChange={onValueChange} />)
       await userEvent.click(label('users'))
       expect(checked('users')).toBe('true')
       expect(checked('read')).toBe('false')
@@ -793,20 +793,20 @@ describe('Tree component', () => {
 
     it('does not check a disabled item', async () => {
       const onValueChange = vi.fn()
-      render(<Permissions onValueChange={onValueChange} />)
+      render(<CheckboxTree onValueChange={onValueChange} />)
       await userEvent.click(label('delete'))
       expect(onValueChange).not.toHaveBeenCalled()
     })
 
     it('does not open or close a branch when it is checked from its label', async () => {
-      render(<Permissions defaultExpanded={[]} />)
+      render(<CheckboxTree defaultExpanded={[]} />)
       await userEvent.click(label('users'))
       expect(isOpen('users')).toBe(false)
       expect(checked('users')).toBe('mixed')
     })
 
     it('opens and closes a branch from its chevron without checking it', async () => {
-      render(<Permissions defaultExpanded={[]} />)
+      render(<CheckboxTree defaultExpanded={[]} />)
       const chevron = item('users').querySelector('[data-plume-tree-chevron]') as HTMLElement
       await userEvent.click(chevron)
       expect(isOpen('users')).toBe(true)
@@ -816,7 +816,7 @@ describe('Tree component', () => {
     })
 
     it('checks with Space and with Enter', async () => {
-      render(<Permissions />)
+      render(<CheckboxTree />)
       item('users').focus()
       await userEvent.keyboard('{ArrowDown} ')
       expect(checked('read')).toBe('true')
@@ -825,7 +825,7 @@ describe('Tree component', () => {
     })
 
     it('does not open a branch with Enter, only with the arrows', async () => {
-      render(<Permissions defaultExpanded={[]} />)
+      render(<CheckboxTree defaultExpanded={[]} />)
       item('users').focus()
       await userEvent.keyboard('{Enter}')
       expect(isOpen('users')).toBe(false)
@@ -871,7 +871,7 @@ describe('Tree component', () => {
     })
 
     it('exposes the state for styling', async () => {
-      render(<Permissions />)
+      render(<CheckboxTree />)
       await userEvent.click(label('read'))
       expect(item('read')).toHaveAttribute('data-checked', 'true')
       expect(item('users')).toHaveAttribute('data-checked', 'mixed')
@@ -879,7 +879,7 @@ describe('Tree component', () => {
     })
 
     it('drops the Plume class of the checkbox when it is unstyled', () => {
-      render(<Permissions variant="unstyled" />)
+      render(<CheckboxTree variant="unstyled" />)
       expect(item('read').querySelector('[data-plume-tree-checkbox]')).not.toHaveAttribute('class')
     })
 

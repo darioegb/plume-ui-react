@@ -359,7 +359,7 @@ export const NoSelection: Story = {
   args: { defaultValue: undefined, selection: 'none' },
 }
 
-const permissions = [
+const sections = [
   { actions: ['Read', 'Create', 'Edit', 'Delete'], name: 'Users' },
   { actions: ['View invoices', 'Issue refunds'], name: 'Billing' },
   { actions: ['Read', 'Export'], name: 'Reports' },
@@ -367,7 +367,7 @@ const permissions = [
 
 const slug = (text: string): string => text.toLowerCase().replace(/ /g, '-')
 
-function PermissionsTree({
+function CheckboxTree({
   cascade = true,
   defaultValue = [],
 }: Readonly<{ cascade?: boolean; defaultValue?: string[] }>): React.ReactNode {
@@ -375,14 +375,14 @@ function PermissionsTree({
   return (
     <div style={stack('0.75rem')}>
       <Tree
-        aria-label="Permissions"
+        aria-label="Sections"
         cascade={cascade}
         defaultExpanded={['users', 'billing']}
         onValueChange={setValue}
         selection="checkbox"
         value={value}
       >
-        {permissions.map(({ actions, name }) => (
+        {sections.map(({ actions, name }) => (
           <TreeItem key={name} value={slug(name)}>
             <TreeItemLabel>{name}</TreeItemLabel>
             <TreeItemGroup>
@@ -405,13 +405,13 @@ function PermissionsTree({
 }
 
 /**
- * With `selection="checkbox"` every item has a checkbox, which suits a list of permissions. Checking a branch
- * checks everything under it, and a branch shows the mixed state while only some of its items are checked. An item
- * that is disabled (here, "Delete" of Users) keeps its state when its branch is toggled. The chevron opens and
- * closes a branch without changing its checkbox.
+ * With `selection="checkbox"` every item has a checkbox, which suits a list of permissions, categories or
+ * filters. Checking a branch checks everything under it, and a branch shows the mixed state while only some of
+ * its items are checked. An item that is disabled (here, "Delete" of Users) keeps its state when its branch is
+ * toggled. The chevron opens and closes a branch without changing its checkbox.
  */
-export const Permissions: Story = {
-  render: () => <PermissionsTree defaultValue={['users:read', 'reports']} />,
+export const Checkboxes: Story = {
+  render: () => <CheckboxTree defaultValue={['users:read', 'reports']} />,
 }
 
 /**
@@ -419,7 +419,7 @@ export const Permissions: Story = {
  * a branch does not show the mixed state.
  */
 export const IndependentCheckboxes: Story = {
-  render: () => <PermissionsTree cascade={false} defaultValue={['users']} />,
+  render: () => <CheckboxTree cascade={false} defaultValue={['users']} />,
 }
 
 function ControlledTree(): React.ReactNode {
