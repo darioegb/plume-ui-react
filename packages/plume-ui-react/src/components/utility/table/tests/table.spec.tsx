@@ -347,6 +347,24 @@ describe('Table component', () => {
       expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
       expect(screen.getByRole('table')).toHaveAttribute('data-loading')
     })
+
+    it('shows a progress bar named by loadingLabel', () => {
+      const { rerender } = render(<Demo loading />)
+      expect(screen.getByRole('progressbar', { name: 'Loading' })).toBeInTheDocument()
+      rerender(<Demo loading loadingLabel="Cargando" />)
+      expect(screen.getByRole('progressbar', { name: 'Cargando' })).toBeInTheDocument()
+    })
+
+    it('has no progress bar when it is not loading', () => {
+      render(<Demo />)
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+    })
+
+    it('drops the Plume styles of the progress bar when unstyled', () => {
+      render(<Demo loading loadingClassName="custom" variant="unstyled" />)
+      expect(screen.getByRole('progressbar')).toHaveClass('custom')
+      expect(screen.getByRole('progressbar')).not.toHaveClass('progressbar')
+    })
   })
 
   describe('TableEmpty', () => {

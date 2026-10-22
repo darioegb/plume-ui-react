@@ -7,6 +7,18 @@
   width: 100%;
 }
 
+:global(:where([data-plume-table-loading])) {
+  block-size: 0;
+  inset-block-start: 0;
+  position: sticky;
+  z-index: 2;
+}
+
+:global(:where([data-plume-table-loading] > [data-plume-progressbar])) {
+  inset: 0 0 auto;
+  position: absolute;
+}
+
 :global(:where([data-plume-table-caption][data-side='top'])) {
   caption-side: top;
 }

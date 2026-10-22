@@ -69,7 +69,7 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * and the selection, use the `useTableState` hook, which works without a Table and can feed a `Paginator`. The
  * filters are yours to build with `Field`, `Input`, `Select` or any other control: the hook only keeps their values.
  *
- * **Loading and empty.** **loading** sets `aria-busy` and dims the body while you wait for the data. When there
+ * **Loading and empty.** **loading** sets `aria-busy`, dims the body and shows a `ProgressBar` while you wait for the data. When there
  * are no rows, put a `TableEmpty` in the body with the message, or a `title`, a `description` and an `action` such as clearing the filters.
  *
  * **Wide tables.** The table scrolls inside its own box instead of the page. When it doesn't fit, the box becomes
@@ -168,8 +168,18 @@ export default {
     loading: {
       control: 'boolean',
       description:
-        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, and dims the body.',
+        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, dims the body and shows an indeterminate `ProgressBar` over the header.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    loadingLabel: {
+      control: 'text',
+      description: 'Accessible name of the progress bar shown while the table is loading.',
+      table: { type: { summary: 'string' }, defaultValue: { summary: 'Loading' } },
+    },
+    loadingClassName: {
+      control: 'text',
+      description: 'Custom CSS class for the progress bar shown while the table is loading.',
+      table: { type: { summary: 'string' } },
     },
     maxHeight: {
       control: 'text',
@@ -752,32 +762,40 @@ export const Selectable: Story = {
 }
 
 /**
- * **loading** marks the table as busy and dims the body. When there are no rows, a `TableEmpty` gives the reason
- * instead of leaving the table blank.
+ * **loading** marks the table as busy while the data is on its way: it sets `aria-busy`, dims the body and shows
+ * an indeterminate `ProgressBar` over the header, named by **loadingLabel**. The rows stay in place so the table
+ * doesn't jump when the new data arrives.
  */
-export const LoadingAndEmpty: Story = {
+export const Loading: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <Table aria-label="Loading" loading style={{ minWidth: '28rem' }}>
-        <Content />
-      </Table>
-      <Table aria-label="Empty" style={{ minWidth: '28rem' }}>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead align="end">Age</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableEmpty
-            colSpan={3}
-            description="People you invite will show up here."
-            title="There is nobody here yet"
-          />
-        </TableBody>
-      </Table>
-    </div>
+    <Table aria-label="Loading people" loading style={{ minWidth: '28rem' }}>
+      <Content />
+    </Table>
+  ),
+}
+
+/**
+ * When there are no rows, a `TableEmpty` gives the reason instead of leaving the table blank. It holds an
+ * `EmptyState`, so it can have a title, a description, an icon and an action.
+ */
+export const Empty: Story = {
+  render: () => (
+    <Table aria-label="Empty people" style={{ minWidth: '28rem' }}>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead align="end">Age</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableEmpty
+          colSpan={3}
+          description="People you invite will show up here."
+          title="There is nobody here yet"
+        />
+      </TableBody>
+    </Table>
   ),
 }
 
