@@ -1,6 +1,6 @@
 'use client'
 
-import type { MutableRefObject, PointerEvent } from 'react'
+import type { PointerEvent, RefObject } from 'react'
 import { useRef } from 'react'
 import { clamp } from './slider-math'
 import type { SliderOrientation } from './slider'
@@ -8,7 +8,7 @@ import type { SliderOrientation } from './slider'
 interface TrackPressOptions {
   commit: () => void
   disabled: boolean
-  inputs: MutableRefObject<(HTMLInputElement | null)[]>
+  inputs: RefObject<(HTMLInputElement | null)[]>
   isRange: boolean
   max: number
   min: number

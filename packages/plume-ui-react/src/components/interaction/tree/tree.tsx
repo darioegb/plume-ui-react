@@ -6,12 +6,12 @@ import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useSelectionState } from '../../../overlay/use-selection-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { TreeContext, type TreeSelection, type TreeVariant } from './tree-context'
+import { TreeContext, type TreeVariant } from './tree-context'
 import { visibleItems } from './tree-navigation'
 import styles from './tree.module.css'
 import { useTreeKeyboard } from './use-tree-keyboard'
 
-export type { TreeSelection, TreeVariant }
+export type { TreeSelection, TreeVariant } from './tree-context'
 
 interface TreeBaseProps {
   colorScheme?: ColorScheme
@@ -77,7 +77,7 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const root = useRef<HTMLDivElement | null>(null)
-    const [activeValue, setActive] = useState<string | undefined>(undefined)
+    const [activeValue, setActiveValue] = useState<string | undefined>(undefined)
     const isStyled = variant !== 'unstyled'
     const { commit: commitExpanded, selected: expanded } = useSelectionState({
       defaultValue: defaultExpanded,
@@ -128,11 +128,11 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
 
     useEffect(() => {
       const items = visibleItems(root.current)
-      const values = items.map((item) => item.getAttribute('data-plume-tree-value'))
+      const values = items.map((item) => item.dataset.plumeTreeValue)
       if (activeValue !== undefined && values.includes(activeValue)) return
       const fallback =
         items.find((item) => item.getAttribute('aria-selected') === 'true') ?? items[0]
-      setActive(fallback?.getAttribute('data-plume-tree-value') ?? undefined)
+      setActiveValue(fallback?.dataset.plumeTreeValue)
     }, [activeValue, children, expanded, selected])
 
     const context = useMemo(
@@ -145,7 +145,7 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
         select,
         selected,
         selection,
-        setActive,
+        setActive: setActiveValue,
         size,
       }),
       [activate, activeValue, expanded, isStyled, onItemKeyDown, select, selected, selection, size],

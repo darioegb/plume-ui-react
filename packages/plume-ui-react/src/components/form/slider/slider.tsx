@@ -114,15 +114,12 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
     const fractions = values.map((current) => fractionOf(current, min, max))
     const Root = isRange ? 'fieldset' : 'div'
 
+    const limitsOf = (index: number): [number, number] =>
+      index === 0 ? [min, values[1] ?? max] : [values[0] ?? min, max]
+
     const update = (index: number, requested: number): void => {
       const next = snap(requested, min, max, step)
-      const bounded = isRange
-        ? clamp(
-            next,
-            index === 0 ? min : (values[0] ?? min),
-            index === 0 ? (values[1] ?? max) : max,
-          )
-        : next
+      const bounded = isRange ? clamp(next, ...limitsOf(index)) : next
       if (bounded === values[index]) return
       const result = values.map((current, position) => (position === index ? bounded : current))
       setValue(isRange ? ([result[0] ?? min, result[1] ?? max] as [number, number]) : bounded)
@@ -218,7 +215,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
               data-plume-slider-thumb=""
               disabled={disabled}
               id={index === 0 ? firstId : `${firstId}-${index}`}
-              key={index}
+              key={index === 0 ? 'start' : 'end'}
               max={max}
               min={min}
               name={name}
