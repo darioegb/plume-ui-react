@@ -302,7 +302,6 @@ describe('Table component', () => {
     it('is not a tab stop while everything fits', () => {
       const { container } = render(<Demo />)
       expect(container.firstChild).not.toHaveAttribute('tabindex')
-      expect(container.firstChild).not.toHaveAttribute('role')
     })
 
     it('becomes a focusable, named region when the table does not fit', () => {

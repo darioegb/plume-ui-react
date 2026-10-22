@@ -5,6 +5,16 @@
   position: relative;
 }
 
+:global(:where([data-plume-fileupload-input])) {
+  block-size: 100%;
+  cursor: inherit;
+  inline-size: 100%;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+}
+
 :global(:where([data-plume-fileupload][data-disabled] [data-plume-fileupload-dropzone])) {
   cursor: not-allowed;
 }

@@ -64,21 +64,20 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
     ref: ForwardedRef<HTMLTableElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const [container, setContainer] = useState<HTMLDivElement | null>(null)
+    const [container, setContainer] = useState<HTMLElement | null>(null)
     const scrollable = useOverflow(container)
     const containerStyle: CSSProperties | undefined =
       maxHeight === undefined ? undefined : { maxHeight }
 
     return (
-      <div
+      <section
         aria-label={scrollable ? ariaLabel : undefined}
         aria-labelledby={scrollable ? ariaLabelledBy : undefined}
         className={joinClasses(isStyled && styles.container, containerClassName)}
         data-plume-table-container=""
         ref={setContainer}
-        role={scrollable ? 'region' : undefined}
         style={containerStyle}
-        tabIndex={scrollable ? 0 : undefined}
+        {...(scrollable && { tabIndex: 0 })}
       >
         <table
           aria-label={ariaLabel}
@@ -98,7 +97,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
         >
           {children}
         </table>
-      </div>
+      </section>
     )
   },
 )

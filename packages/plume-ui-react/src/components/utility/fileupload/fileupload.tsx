@@ -13,7 +13,6 @@ import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
-import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import {
   type FileRejection,
@@ -189,14 +188,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         <div
           className={joinClasses(isStyled && styles.dropzone, classNames?.dropzone)}
           data-plume-fileupload-dropzone=""
-          onClick={() => {
-            if (!inactive) input.current?.click()
-          }}
           onDragEnter={handleDragOver}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          role="presentation"
         >
           <input
             {...rest}
@@ -206,13 +201,12 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             disabled={disabled}
             multiple={multiple}
             onChange={handleChange}
+            data-plume-fileupload-input=""
             onClick={(event) => {
-              event.stopPropagation()
               if (readOnly) event.preventDefault()
             }}
             ref={mergeRefs(ref, input)}
             required={required}
-            style={visuallyHidden}
             type="file"
           />
           <span id={promptId}>{children ?? 'Drag files here, or press to choose them'}</span>
