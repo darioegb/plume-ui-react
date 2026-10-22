@@ -6,6 +6,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableEmpty,
   TableFooter,
   TableHead,
   TableHeader,
@@ -331,6 +332,98 @@ describe('Table component', () => {
       width = 100
       act(() => observe?.())
       expect(container.firstChild).not.toHaveAttribute('tabindex')
+    })
+  })
+
+  describe('loading', () => {
+    it('is not busy by default', () => {
+      render(<Demo />)
+      expect(screen.getByRole('table')).not.toHaveAttribute('aria-busy')
+      expect(screen.getByRole('table')).not.toHaveAttribute('data-loading')
+    })
+
+    it('marks the table as busy', () => {
+      render(<Demo loading />)
+      expect(screen.getByRole('table')).toHaveAttribute('aria-busy', 'true')
+      expect(screen.getByRole('table')).toHaveAttribute('data-loading')
+    })
+
+    it('shows a spinner named by loadingLabel', () => {
+      const { rerender } = render(<Demo loading />)
+      expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+      rerender(<Demo loading loadingLabel="Cargando" />)
+      expect(screen.getByLabelText('Cargando')).toBeInTheDocument()
+    })
+
+    it('has no spinner when it is not loading', () => {
+      render(<Demo />)
+      expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+    })
+
+    it('drops the Plume styles of the spinner when unstyled', () => {
+      render(<Demo loading loadingClassName="custom" variant="unstyled" />)
+      expect(screen.getByLabelText('Loading')).toHaveClass('custom')
+      expect(screen.getByLabelText('Loading')).not.toHaveClass('solid')
+    })
+  })
+
+  describe('TableEmpty', () => {
+    it('renders a row with one cell as wide as asked', () => {
+      const ref = createRef<HTMLTableCellElement>()
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty className="custom" colSpan={3} ref={ref}>
+              Nobody here
+            </TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      const cell = screen.getByRole('cell', { name: 'Nobody here' })
+      expect(cell).toHaveAttribute('colspan', '3')
+      expect(cell).toHaveClass('custom')
+      expect(ref.current).toBe(cell)
+    })
+
+    it('shows an icon, a description and an action', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty
+              action={<button type="button">Clear filters</button>}
+              description="Try other filters."
+              icon={<svg data-testid="icon" />}
+              title="No results"
+            />
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByText('No results')).toBeInTheDocument()
+      expect(screen.getByText('Try other filters.')).toBeInTheDocument()
+      expect(screen.getByTestId('icon')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument()
+    })
+
+    it('announces its message as a status', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty>Nobody here</TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByRole('status')).toHaveTextContent('Nobody here')
+    })
+
+    it('spans every column by default', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty>Nobody here</TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByRole('cell')).toHaveAttribute('colspan', '100')
     })
   })
 

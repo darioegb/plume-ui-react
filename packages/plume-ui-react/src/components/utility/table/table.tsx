@@ -4,6 +4,7 @@ import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps, Size } from '../../../theme'
+import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
 
 export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
@@ -11,6 +12,9 @@ export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 export interface TableOwnProps {
   containerClassName?: string
   hoverable?: boolean
+  loading?: boolean
+  loadingClassName?: string
+  loadingLabel?: string
   maxHeight?: number | string
   size?: Size
   stickyHeader?: boolean
@@ -54,6 +58,9 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       className,
       containerClassName,
       hoverable = false,
+      loading = false,
+      loadingClassName,
+      loadingLabel = 'Loading',
       maxHeight,
       size = 'md',
       stickyHeader = false,
@@ -79,7 +86,18 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
         style={containerStyle}
         {...(scrollable && { tabIndex: 0 })}
       >
+        {loading ? (
+          <div data-plume-table-loading="">
+            <Spinner
+              aria-label={loadingLabel}
+              className={loadingClassName}
+              color="primary"
+              variant={isStyled ? 'solid' : 'unstyled'}
+            />
+          </div>
+        ) : null}
         <table
+          aria-busy={loading ? true : undefined}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           className={joinClasses(
@@ -89,6 +107,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
             className,
           )}
           data-hoverable={hoverable ? '' : undefined}
+          data-loading={loading ? '' : undefined}
           data-plume-table=""
           data-sticky={stickyHeader ? '' : undefined}
           ref={ref}

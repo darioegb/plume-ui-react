@@ -1,10 +1,20 @@
 :global(:where([data-plume-table-container])) {
   overflow: auto;
+  position: relative;
 }
 
 :global(:where([data-plume-table])) {
   border-collapse: collapse;
   width: 100%;
+}
+
+:global(:where([data-plume-table-loading])) {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+  z-index: 2;
 }
 
 :global(:where([data-plume-table-caption][data-side='top'])) {
@@ -164,6 +174,14 @@
 
 .table[data-hoverable] tbody tr:hover {
   background-color: color-mix(in srgb, currentcolor 7%, transparent);
+}
+
+.container > [data-plume-table-loading] {
+  background-color: color-mix(in srgb, var(--plume-surface) 75%, transparent);
+}
+
+.table [data-plume-table-empty-cell] {
+  padding: 0;
 }
 
 .table tr[data-selected] {
