@@ -76,6 +76,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const statusText = status ? (statusLabel ?? defaultStatusLabels[status]) : undefined
     const label = [alt ?? name, statusText].filter(Boolean).join(', ')
     const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'] ?? label)
+    const role = isNamed ? 'img' : undefined
     const content = fallback ?? (getInitials(name) || <UserIcon />)
 
     return (
@@ -91,7 +92,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
         data-plume-avatar=""
         data-status={status}
         ref={ref}
-        role={isNamed ? 'img' : undefined}
+        role={role}
         style={tagColorVars('avatar', resolvedScheme, style)}
         {...rest}
       >

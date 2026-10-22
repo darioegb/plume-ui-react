@@ -26,6 +26,8 @@ export type AvatarGroupProps = Omit<ComponentProps, 'index'> &
   AvatarGroupRootAttributes &
   AvatarGroupOwnProps
 
+const groupRole = 'group'
+
 const defaultOverflowLabel = (hidden: number): string => `${hidden} more`
 
 export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
@@ -57,7 +59,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
           className={joinClasses(variant !== 'unstyled' && styles.group, className)}
           data-plume-avatar-group=""
           ref={ref}
-          role="group"
+          role={groupRole}
           {...rest}
         >
           {avatars.slice(0, limit)}
