@@ -88,6 +88,7 @@ export function App() {
 | Modal | [Modal](https://darioegb.github.io/plume-ui-react/?path=/docs/components-modal--docs) |
 | Navbar | [Navbar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-navbar--docs) |
 | NumberInput | [NumberInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-numberinput--docs) |
+| Paginator | [Paginator](https://darioegb.github.io/plume-ui-react/?path=/docs/components-paginator--docs) |
 | PinInput | [PinInput](https://darioegb.github.io/plume-ui-react/?path=/docs/components-pininput--docs) |
 | Popover | [Popover](https://darioegb.github.io/plume-ui-react/?path=/docs/components-popover--docs) |
 | ProgressBar | [ProgressBar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-progressbar--docs) |
@@ -97,6 +98,7 @@ export function App() {
 | Select | [Select](https://darioegb.github.io/plume-ui-react/?path=/docs/components-select--docs) |
 | Sidebar | [Sidebar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-sidebar--docs) |
 | Skeleton | [Skeleton](https://darioegb.github.io/plume-ui-react/?path=/docs/components-skeleton--docs) |
+| Slider | [Slider](https://darioegb.github.io/plume-ui-react/?path=/docs/components-slider--docs) |
 | Spinner | [Spinner](https://darioegb.github.io/plume-ui-react/?path=/docs/components-spinner--docs) |
 | Stepper | [Stepper](https://darioegb.github.io/plume-ui-react/?path=/docs/components-stepper--docs) |
 | Table | [Table](https://darioegb.github.io/plume-ui-react/?path=/docs/components-table--docs) |
@@ -105,6 +107,7 @@ export function App() {
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |
 | Toggle | [Toggle](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toggle--docs) |
 | Tooltip | [Tooltip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tooltip--docs) |
+| Tree | [Tree](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tree--docs) |
 
 Coming from the `@plume-ui-react/*` packages? See the [migration guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-migration--docs).
 

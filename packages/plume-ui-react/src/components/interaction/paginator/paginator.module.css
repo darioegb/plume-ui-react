@@ -1,0 +1,48 @@
+:global(:where([data-plume-paginator-list])) {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.paginator {
+  color: var(--plume-foreground);
+  font-family: var(--plume-font-family);
+}
+
+.sm {
+  --paginator-box: var(--plume-space-8);
+}
+
+.md {
+  --paginator-box: var(--plume-space-10);
+}
+
+.lg {
+  --paginator-box: var(--plume-space-12);
+}
+
+.list {
+  gap: var(--plume-space-1);
+}
+
+.page,
+.edge {
+  min-inline-size: var(--paginator-box);
+  padding-inline: var(--plume-space-2);
+}
+
+.ellipsis {
+  align-items: center;
+  color: var(--plume-muted);
+  display: inline-flex;
+  justify-content: center;
+  min-inline-size: var(--paginator-box);
+}
+
+.outline .page[data-current],
+.ghost .page[data-current] {
+  background-color: var(--button-hover-alt-color);
+}

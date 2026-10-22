@@ -93,6 +93,22 @@ export function ChevronRightIcon(): ReactNode {
   )
 }
 
+export function ChevronsLeftIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="m11 17-5-5 5-5M18 17l-5-5 5-5" />
+    </svg>
+  )
+}
+
+export function ChevronsRightIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="m6 17 5-5-5-5M13 17l5-5-5-5" />
+    </svg>
+  )
+}
+
 export function PlayIcon(): ReactNode {
   return (
     <svg {...strokeProps} fill="currentColor" strokeWidth="2">
