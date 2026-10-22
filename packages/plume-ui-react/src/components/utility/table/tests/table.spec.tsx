@@ -355,7 +355,7 @@ describe('Table component', () => {
       render(
         <Table aria-label="Empty">
           <TableBody>
-            <TableEmpty className="custom" colSpan={3} ref={ref} title="Nothing">
+            <TableEmpty className="custom" colSpan={3} ref={ref}>
               Nobody here
             </TableEmpty>
           </TableBody>
@@ -365,6 +365,36 @@ describe('Table component', () => {
       expect(cell).toHaveAttribute('colspan', '3')
       expect(cell).toHaveClass('custom')
       expect(ref.current).toBe(cell)
+    })
+
+    it('shows an icon, a description and an action', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty
+              action={<button type="button">Clear filters</button>}
+              description="Try other filters."
+              icon={<svg data-testid="icon" />}
+              title="No results"
+            />
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByText('No results')).toBeInTheDocument()
+      expect(screen.getByText('Try other filters.')).toBeInTheDocument()
+      expect(screen.getByTestId('icon')).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Clear filters' })).toBeInTheDocument()
+    })
+
+    it('announces its message as a status', () => {
+      render(
+        <Table aria-label="Empty">
+          <TableBody>
+            <TableEmpty>Nobody here</TableEmpty>
+          </TableBody>
+        </Table>,
+      )
+      expect(screen.getByRole('status')).toHaveTextContent('Nobody here')
     })
 
     it('spans every column by default', () => {

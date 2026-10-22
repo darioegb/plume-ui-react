@@ -34,6 +34,7 @@ describe('plume-ui-react', () => {
       'DropdownMenu',
       'DropdownSeparator',
       'DropdownTrigger',
+      'EmptyState',
       'Field',
       'FileUpload',
       'Icon',

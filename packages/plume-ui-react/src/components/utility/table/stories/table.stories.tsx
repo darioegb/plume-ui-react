@@ -70,7 +70,7 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * filters are yours to build with `Field`, `Input`, `Select` or any other control: the hook only keeps their values.
  *
  * **Loading and empty.** **loading** sets `aria-busy` and dims the body while you wait for the data. When there
- * are no rows, put a `TableEmpty` in the body with the message.
+ * are no rows, put a `TableEmpty` in the body with the message, or a `title`, a `description` and an `action` such as clearing the filters.
  *
  * **Wide tables.** The table scrolls inside its own box instead of the page. When it doesn't fit, the box becomes
  * a focusable region named like the table, so the keyboard can scroll it. Set **maxHeight** to limit the height,
@@ -85,7 +85,7 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * | `TableCaption` | `side`, `id`, `title`, `className`, `style`, `children`. The name of the table. `side` is `top` (the default) or `bottom`. |
  * | `TableHeader`, `TableBody`, `TableFooter` | `id`, `title`, `hidden`, `className`, `style`, `children`. The `<thead>`, `<tbody>` and `<tfoot>`. |
  * | `TableRow` | `selected`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<tr>`. `selected` sets `aria-selected` and `data-selected`. |
- * | `TableEmpty` | `colSpan`, `id`, `title`, `hidden`, `className`, `style`, `children`. A row with one cell, for when there is nothing to show. Give it a `colSpan` as wide as the table. |
+ * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `classNames`, `emptyStateClassName`, `id`, `hidden`, `className`, `style`, `children`. A row with one cell that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. |
  * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `sortClassName`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a button, and `sortClassName` styles it. |
  * | `TableCell` | `align`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<td>`. |
  *
@@ -478,8 +478,24 @@ function Filters({
   )
 }
 
-function MembersRows({ rows }: Readonly<{ rows: Member[] }>): React.ReactNode {
-  if (rows.length === 0) return <TableEmpty colSpan={3}>No members match the filters.</TableEmpty>
+function MembersRows({
+  onReset,
+  rows,
+}: Readonly<{ onReset: () => void; rows: Member[] }>): React.ReactNode {
+  if (rows.length === 0) {
+    return (
+      <TableEmpty
+        action={
+          <Button onClick={onReset} size="sm" variant="outline">
+            Clear filters
+          </Button>
+        }
+        colSpan={3}
+        description="Try other words or another role."
+        title="No members match the filters"
+      />
+    )
+  }
   return rows.map(({ age, id, name, role }) => (
     <TableRow key={id}>
       <TableCell>{name}</TableCell>
@@ -520,7 +536,7 @@ function FilteredTable(): React.ReactNode {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <MembersRows rows={state.rows} />
+          <MembersRows onReset={state.resetFilters} rows={state.rows} />
         </TableBody>
       </Table>
       <Paginator
@@ -536,7 +552,7 @@ function FilteredTable(): React.ReactNode {
 /**
  * In client mode `useTableState` sorts, filters and pages the rows you give it. The filters are ordinary controls
  * that call `setFilter(column, value)`: a text matches anywhere in the cell and a value must be equal. The
- * `Paginator` gets its `page` and `count` from the hook, and `TableEmpty` shows a message when no row matches.
+ * `Paginator` gets its `page` and `count` from the hook, and `TableEmpty` offers to clear the filters when no row matches.
  */
 export const Filtered: Story = {
   parameters: { layout: 'padded' },
@@ -622,7 +638,9 @@ function ServerSideTable(): React.ReactNode {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {loading && state.rows.length === 0 ? null : <MembersRows rows={state.rows} />}
+          {loading && state.rows.length === 0 ? null : (
+            <MembersRows onReset={state.resetFilters} rows={state.rows} />
+          )}
         </TableBody>
       </Table>
       <Paginator
@@ -752,7 +770,11 @@ export const LoadingAndEmpty: Story = {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableEmpty colSpan={3}>There is nobody here yet.</TableEmpty>
+          <TableEmpty
+            colSpan={3}
+            description="People you invite will show up here."
+            title="There is nobody here yet"
+          />
         </TableBody>
       </Table>
     </div>

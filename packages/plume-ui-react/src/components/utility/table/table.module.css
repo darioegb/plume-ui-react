@@ -173,9 +173,7 @@
 }
 
 .table [data-plume-table-empty-cell] {
-  color: var(--plume-muted);
-  padding-block: var(--plume-space-6);
-  text-align: center;
+  padding: 0;
 }
 
 .table tr[data-selected] {
