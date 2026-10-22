@@ -3,14 +3,16 @@
 import type { KeyboardEvent } from 'react'
 import { createContext, useContext } from 'react'
 import type { Size } from '../../../theme'
+import type { TreeCheckState } from './tree-checks'
 
-export type TreeSelection = 'multiple' | 'none' | 'single'
+export type TreeSelection = 'checkbox' | 'multiple' | 'none' | 'single'
 
 export type TreeVariant = 'accent' | 'ghost' | 'solid' | 'unstyled'
 
 export interface TreeContextValue {
   activate: (value: string, hasChildren: boolean) => void
   activeValue: string | undefined
+  checkState: (value: string) => TreeCheckState | undefined
   expanded: readonly string[]
   isStyled: boolean
   onItemKeyDown: (event: KeyboardEvent<HTMLElement>, value: string, hasChildren: boolean) => void
@@ -19,6 +21,7 @@ export interface TreeContextValue {
   selection: TreeSelection
   setActive: (value: string) => void
   size: Size
+  toggleExpanded: (value: string) => void
 }
 
 export const TreeContext = createContext<TreeContextValue | undefined>(undefined)
@@ -30,6 +33,7 @@ export function useTreeContext(part: string): TreeContextValue {
 }
 
 export interface TreeItemContextValue {
+  checked: TreeCheckState | undefined
   disabled: boolean
   expanded: boolean
   groupId: string

@@ -4,16 +4,17 @@ import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
-import { useSelectionState } from '../../../overlay/use-selection-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { TreeContext, type TreeVariant } from './tree-context'
 import { visibleItems } from './tree-navigation'
 import styles from './tree.module.css'
 import { useTreeKeyboard } from './use-tree-keyboard'
+import { useTreeState } from './use-tree-state'
 
 export type { TreeSelection, TreeVariant } from './tree-context'
 
 interface TreeBaseProps {
+  cascade?: boolean
   colorScheme?: ColorScheme
   defaultExpanded?: string[]
   expanded?: string[]
@@ -32,7 +33,7 @@ interface TreeSingleProps {
 interface TreeMultipleProps {
   defaultValue?: string[]
   onValueChange?: (value: string[]) => void
-  selection: 'multiple'
+  selection: 'checkbox' | 'multiple'
   value?: string[]
 }
 
@@ -59,6 +60,7 @@ const treeColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProp
 export const Tree = forwardRef<HTMLDivElement, TreeProps>(
   (
     {
+      cascade = true,
       children,
       className,
       colorScheme = 'primary',
@@ -79,49 +81,21 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
     const root = useRef<HTMLDivElement | null>(null)
     const [activeValue, setActiveValue] = useState<string | undefined>(undefined)
     const isStyled = variant !== 'unstyled'
-    const { commit: commitExpanded, selected: expanded } = useSelectionState({
-      defaultValue: defaultExpanded,
-      multiple: true,
-      onValueChange: onExpandedChange,
-      value: expandedProp,
-    })
-    const { commit: commitSelected, selected } = useSelectionState({
+    const { activate, checkState, expanded, select, selected, toggleExpanded } = useTreeState({
+      cascade,
+      children,
+      defaultExpanded,
       defaultValue,
-      multiple: selection === 'multiple',
+      expanded: expandedProp,
+      onExpandedChange,
       onValueChange,
+      root,
+      selection,
       value,
     })
-
-    const toggleExpanded = useCallback(
-      (item: string, expand: boolean): void => {
-        const open = expanded.includes(item)
-        if (expand === open) return
-        commitExpanded(
-          expand ? [...expanded, item] : expanded.filter((current) => current !== item),
-        )
-      },
-      [commitExpanded, expanded],
-    )
-
-    const select = useCallback(
-      (item: string): void => {
-        const isSelected = selected.includes(item)
-        if (selection === 'single' && !isSelected) commitSelected([item])
-        else if (selection === 'multiple') {
-          commitSelected(
-            isSelected ? selected.filter((current) => current !== item) : [...selected, item],
-          )
-        }
-      },
-      [commitSelected, selected, selection],
-    )
-
-    const activate = useCallback(
-      (item: string, hasChildren: boolean): void => {
-        select(item)
-        if (hasChildren) toggleExpanded(item, !expanded.includes(item))
-      },
-      [expanded, select, toggleExpanded],
+    const toggleItem = useCallback(
+      (item: string): void => toggleExpanded(item, !expanded.includes(item)),
+      [expanded, toggleExpanded],
     )
 
     const onItemKeyDown = useTreeKeyboard({ activate, expanded, root, select, toggleExpanded })
@@ -139,6 +113,7 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
       () => ({
         activate,
         activeValue,
+        checkState,
         expanded,
         isStyled,
         onItemKeyDown,
@@ -147,8 +122,21 @@ export const Tree = forwardRef<HTMLDivElement, TreeProps>(
         selection,
         setActive: setActiveValue,
         size,
+        toggleExpanded: toggleItem,
       }),
-      [activate, activeValue, expanded, isStyled, onItemKeyDown, select, selected, selection, size],
+      [
+        activate,
+        activeValue,
+        checkState,
+        expanded,
+        isStyled,
+        onItemKeyDown,
+        select,
+        selected,
+        selection,
+        size,
+        toggleItem,
+      ],
     )
 
     return (

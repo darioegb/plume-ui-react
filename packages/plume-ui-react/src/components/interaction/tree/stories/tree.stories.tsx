@@ -108,6 +108,15 @@ function Files(
  * `selection="none"` nothing is selected and the tree only opens and closes, for navigation. **expanded** /
  * **defaultExpanded** hold the list of open branches.
  *
+ * **Checkboxes.** With `selection="checkbox"` every item has a checkbox and the tree uses `aria-checked` (true,
+ * false or `mixed`) instead of `aria-selected`, which suits a list of permissions or categories. By default it
+ * **cascades**: checking a branch checks everything under it (except the items that are disabled), a branch shows
+ * the mixed state while only some of its items are checked, and it is checked when all are. **value** is the list of
+ * checked items, and a branch is in it only when everything under it is checked; a branch you put in the list counts
+ * as everything under it. Pressing the label or <kbd>Space</kbd> or <kbd>Enter</kbd> toggles the checkbox, and the
+ * chevron or the <kbd>←</kbd> <kbd>→</kbd> keys open and close the branches. Pass `cascade={false}` to check every
+ * item on its own.
+ *
  * ### Subcomponents
  *
  * | Component | Props |
@@ -150,17 +159,23 @@ export default {
     selection: {
       control: 'radio',
       description:
-        'How many items can be selected. `single` selects one, `multiple` any number, and `none` nothing: the tree only opens and closes.',
-      options: ['single', 'multiple', 'none'],
+        'How the items are picked. `single` selects one, `multiple` any number, `checkbox` shows a checkbox on every item (with `aria-checked`), and `none` selects nothing: the tree only opens and closes.',
+      options: ['single', 'multiple', 'checkbox', 'none'],
       table: {
-        type: { summary: `"single" | "multiple" | "none"` },
+        type: { summary: `"single" | "multiple" | "checkbox" | "none"` },
         defaultValue: { summary: 'single' },
       },
+    },
+    cascade: {
+      control: 'boolean',
+      description:
+        'Only with `selection="checkbox"`. Checking a branch checks everything under it, and a branch is checked, unchecked or mixed from the items under it. Items that are disabled keep their state.',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
     },
     value: {
       control: false,
       description:
-        'The `value` of the selected item, or a list of them with `selection="multiple"`. Makes the selection controlled: pass `onValueChange` to update it.',
+        'The `value` of the selected item, or a list of them with `selection="multiple"` or `"checkbox"`. Makes the selection controlled: pass `onValueChange` to update it.',
       table: { type: { summary: 'string | string[]' } },
     },
     defaultValue: {
@@ -171,7 +186,7 @@ export default {
     onValueChange: {
       control: false,
       description:
-        'Called with the new selection: a `value`, or a list of them with `selection="multiple"`.',
+        'Called with the new selection: a `value`, or a list of them with `selection="multiple"` or `"checkbox"`.',
       table: { category: 'Events', type: { summary: '(value: string | string[]) => void' } },
     },
     expanded: {
@@ -342,6 +357,69 @@ export const MultipleSelection: Story = {
  */
 export const NoSelection: Story = {
   args: { defaultValue: undefined, selection: 'none' },
+}
+
+const permissions = [
+  { actions: ['Read', 'Create', 'Edit', 'Delete'], name: 'Users' },
+  { actions: ['View invoices', 'Issue refunds'], name: 'Billing' },
+  { actions: ['Read', 'Export'], name: 'Reports' },
+]
+
+const slug = (text: string): string => text.toLowerCase().replace(/ /g, '-')
+
+function PermissionsTree({
+  cascade = true,
+  defaultValue = [],
+}: Readonly<{ cascade?: boolean; defaultValue?: string[] }>): React.ReactNode {
+  const [value, setValue] = useState<string[]>(defaultValue)
+  return (
+    <div style={stack('0.75rem')}>
+      <Tree
+        aria-label="Permissions"
+        cascade={cascade}
+        defaultExpanded={['users', 'billing']}
+        onValueChange={setValue}
+        selection="checkbox"
+        value={value}
+      >
+        {permissions.map(({ actions, name }) => (
+          <TreeItem key={name} value={slug(name)}>
+            <TreeItemLabel>{name}</TreeItemLabel>
+            <TreeItemGroup>
+              {actions.map((action) => (
+                <TreeItem
+                  disabled={name === 'Users' && action === 'Delete'}
+                  key={action}
+                  value={`${slug(name)}:${slug(action)}`}
+                >
+                  <TreeItemLabel>{action}</TreeItemLabel>
+                </TreeItem>
+              ))}
+            </TreeItemGroup>
+          </TreeItem>
+        ))}
+      </Tree>
+      <p className="text-sm">Checked: {value.join(', ') || 'nothing'}</p>
+    </div>
+  )
+}
+
+/**
+ * With `selection="checkbox"` every item has a checkbox, which suits a list of permissions. Checking a branch
+ * checks everything under it, and a branch shows the mixed state while only some of its items are checked. An item
+ * that is disabled (here, "Delete" of Users) keeps its state when its branch is toggled. The chevron opens and
+ * closes a branch without changing its checkbox.
+ */
+export const Permissions: Story = {
+  render: () => <PermissionsTree defaultValue={['users:read', 'reports']} />,
+}
+
+/**
+ * With `cascade={false}` every checkbox is independent: checking a branch does not check what is under it, and
+ * a branch does not show the mixed state.
+ */
+export const IndependentCheckboxes: Story = {
+  render: () => <PermissionsTree cascade={false} defaultValue={['users']} />,
 }
 
 function ControlledTree(): React.ReactNode {

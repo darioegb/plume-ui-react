@@ -22,6 +22,9 @@ export type TreeItemProps = Omit<ComponentProps, 'index'> &
   TreeItemRootAttributes &
   TreeItemOwnProps
 
+const hasSelectedState = (selection: string): boolean =>
+  selection === 'single' || selection === 'multiple'
+
 const isGroup = (child: ReactNode): boolean => isValidElement(child) && child.type === TreeItemGroup
 
 export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
@@ -46,10 +49,11 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
     const hasChildren = group !== undefined
     const expanded = hasChildren && tree.expanded.includes(value)
     const selected = tree.selected.includes(value)
+    const checked = tree.checkState(value)
 
     const context = useMemo(
-      () => ({ disabled, expanded, groupId, hasChildren, labelId, level }),
-      [disabled, expanded, groupId, hasChildren, labelId, level],
+      () => ({ checked, disabled, expanded, groupId, hasChildren, labelId, level }),
+      [checked, disabled, expanded, groupId, hasChildren, labelId, level],
     )
 
     return (
@@ -57,20 +61,26 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
         <div data-plume-tree-node="">
           <div
             {...rest}
+            aria-checked={checked}
             aria-disabled={disabled || undefined}
             aria-expanded={hasChildren ? expanded : undefined}
             aria-label={ariaLabel}
             aria-labelledby={ariaLabel ? undefined : labelId}
             aria-level={level}
             aria-owns={hasChildren ? groupId : undefined}
-            aria-selected={tree.selection === 'none' ? undefined : selected}
+            aria-selected={hasSelectedState(tree.selection) ? selected : undefined}
             className={joinClasses(tree.isStyled && styles.item, className)}
+            data-checked={checked === undefined ? undefined : String(checked)}
             data-expanded={expanded ? '' : undefined}
             data-plume-tree-item=""
             data-plume-tree-value={value}
             data-selected={selected ? '' : undefined}
-            onClick={() => {
-              if (!disabled) tree.activate(value, hasChildren)
+            onClick={(event) => {
+              if (disabled) return
+              const onChevron = (event.target as HTMLElement).closest('[data-plume-tree-chevron]')
+              if (onChevron && hasChildren && tree.selection === 'checkbox')
+                tree.toggleExpanded(value)
+              else tree.activate(value, hasChildren)
             }}
             onFocus={(event) => {
               if (event.target === event.currentTarget) tree.setActive(value)

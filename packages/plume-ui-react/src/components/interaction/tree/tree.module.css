@@ -11,6 +11,14 @@
   inline-size: 1em;
 }
 
+:global(:where([data-plume-tree-checkbox])) {
+  align-items: center;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+}
+
 .tree {
   color: var(--plume-foreground);
   font-family: var(--plume-font-family);
@@ -50,6 +58,27 @@
 
 .label:hover {
   background-color: var(--plume-surface-muted);
+}
+
+.checkbox {
+  background-color: var(--plume-surface);
+  block-size: 1.125em;
+  border: 2px solid var(--plume-border-strong, var(--plume-border));
+  border-radius: var(--plume-radius-2);
+  color: var(--tree-contrast);
+  font-size: 0.875em;
+  inline-size: 1.125em;
+}
+
+.checkbox[data-state='checked'],
+.checkbox[data-state='mixed'] {
+  background-color: var(--tree-solid);
+  border-color: var(--tree-solid);
+}
+
+.checkbox svg {
+  block-size: 100%;
+  inline-size: 100%;
 }
 
 .icon {
