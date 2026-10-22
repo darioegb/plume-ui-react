@@ -75,8 +75,10 @@ export function useTableState<Row>({
 }: UseTableStateOptions<Row> = {}): UseTableStateResult<Row> {
   const [filters, setFilters] = useState<TableFilters>(defaultFilters ?? NO_FUNCTIONS)
   const [requestedPage, setRequestedPage] = useState(defaultPage)
-  const [pageSize, setPageSizeState] = useState(defaultPageSize)
-  const [sort, setSortState] = useState<TableSort | null>(defaultSort)
+  const [currentPageSize, setCurrentPageSize] = useState(defaultPageSize)
+  const pageSize = currentPageSize
+  const [currentSort, setCurrentSort] = useState<TableSort | null>(defaultSort)
+  const sort = currentSort
   const [selected, setSelected] = useState<string[]>([])
 
   const processed = useMemo(
@@ -96,11 +98,11 @@ export function useTableState<Row>({
 
   const setPage = useCallback((next: number) => setRequestedPage(Math.max(1, next)), [])
   const setPageSize = useCallback((next: number) => {
-    setPageSizeState(Math.max(1, next))
+    setCurrentPageSize(Math.max(1, next))
     setRequestedPage(1)
   }, [])
   const setSort = useCallback((next: TableSort | null) => {
-    setSortState(next)
+    setCurrentSort(next)
     setRequestedPage(1)
   }, [])
   const toggleSort = useCallback(
