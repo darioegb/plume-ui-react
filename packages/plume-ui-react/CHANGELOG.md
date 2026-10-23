@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.18.0
+
+### Minor Changes
+
+- [#127](https://github.com/darioegb/plume-ui-react/pull/127) [`de918fae9f4c494e2c7473ccdf8275dc2501b0f7`](https://github.com/darioegb/plume-ui-react/commit/de918fae9f4c494e2c7473ccdf8275dc2501b0f7) Thanks [@darioegb](https://github.com/darioegb)! - Removes what was left as an alias or deprecated before 1.0. The loose class props of the parts are gone in favor of `classNames`: `inputClassName`, `labelClassName`, `revealClassName`, `countClassName`, `panelClassName`, `backdropClassName`, `bodyClassName`, `listClassName`, `separatorClassName`, `toastClassName`, `lineClassName`, `indicatorClassName`, `valueClassName`, `dotClassName`, `containerClassName`, `loadingClassName`, `sortClassName` and `emptyStateClassName`. The `useClickOutside` hook is removed. The docs have an "Upgrading to 1.0" guide with the equivalences, instead of the migration guide from the `@plume-ui-react/*` packages.
+
 ## 0.17.0
 
 ### Minor Changes
