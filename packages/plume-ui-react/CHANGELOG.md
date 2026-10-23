@@ -1,5 +1,21 @@
 # plume-ui-react
 
+## 0.15.0
+
+### Minor Changes
+
+- [#116](https://github.com/darioegb/plume-ui-react/pull/116) [`ef595db4d821ee71388b2d47323a46bd6f1d7a6b`](https://github.com/darioegb/plume-ui-react/commit/ef595db4d821ee71388b2d47323a46bd6f1d7a6b) Thanks [@darioegb](https://github.com/darioegb)! - `DatePicker` is now a compound component. On its own it works as before, and it also takes `DatePickerInput` (the field and the button that open the calendar) and `DatePickerCalendar` (the calendar) as children to choose what it shows and in which order. The calendar closes with `useDismiss`: with Escape from anywhere, which gives the focus back to the input, and with a press outside (`pointerdown` instead of `mousedown`). `config.labels` sets the name of the calendar and of the button that opens it. `useClickOutside` is marked as deprecated.
+
+- [#116](https://github.com/darioegb/plume-ui-react/pull/116) [`72e74e65eb56f6133fda1ed92dd75cf4b9a94a80`](https://github.com/darioegb/plume-ui-react/commit/72e74e65eb56f6133fda1ed92dd75cf4b9a94a80) Thanks [@darioegb](https://github.com/darioegb)! - The `variant`, `size` and `shape` of the `DatePicker` now go on the `DatePicker` itself, also when it has children, and style the input and the calendar together: `outline` has a bordered calendar, `filled` a tinted one with an accent line, `underline` a square one with an accent line, `unstyled` none of them, and `size` scales the days. The always visible calendar (`isCalendar`) now stays in the page flow and shrinks to the width of its container. New `TimePicker`: a field and a popup with lists of hours and minutes (optionally `hour12` with AM/PM and a `minuteStep`) whose value is a `HH:mm` string, with `variant`, `size`, `shape`, `colorScheme` and `config.labels`. The calendar and the time list now open in a portal, so they no longer open away from the input inside a transformed container, and the hover of their options adapts to the dark mode. A date typed in the `DatePicker` input now calls `onChange`.
+
+- [#116](https://github.com/darioegb/plume-ui-react/pull/116) [`551b61fafde8ed643f4adf367bff1b923061a03e`](https://github.com/darioegb/plume-ui-react/commit/551b61fafde8ed643f4adf367bff1b923061a03e) Thanks [@darioegb](https://github.com/darioegb)! - Adds `Divider`, a line that separates two groups of content, horizontal or vertical, solid, dashed or dotted, with an optional label between two lines. `ListDivider` and `DropdownSeparator` now use it.
+
+- [#116](https://github.com/darioegb/plume-ui-react/pull/116) [`4addc90990c850277caea8bf9a46d996e1191909`](https://github.com/darioegb/plume-ui-react/commit/4addc90990c850277caea8bf9a46d996e1191909) Thanks [@darioegb](https://github.com/darioegb)! - `Tab` and `TabPanel` now get their position from context instead of having it injected into their props, so a tab or a panel wrapped by another component (a tooltip, for example) keeps working, and a conditional tab doesn't shift the ones after it. Pass `index` to each tab or panel when one wrapper holds several of them. The internal `isActive` prop of `Tab` is gone: the active tab is the one at the `index` of `Tabs`.
+
+### Patch Changes
+
+- [#116](https://github.com/darioegb/plume-ui-react/pull/116) [`551b61fafde8ed643f4adf367bff1b923061a03e`](https://github.com/darioegb/plume-ui-react/commit/551b61fafde8ed643f4adf367bff1b923061a03e) Thanks [@darioegb](https://github.com/darioegb)! - Cleans up what SonarCloud reported: CSS Modules `@value` declarations are replaced by the values they held, the unused loader styles of `Spinner` are gone, and `Input`, `ThemeProvider`, the focus trap and a few utilities follow the rules Sonar flagged. No behavior changes.
+
 ## 0.14.0
 
 ### Minor Changes
