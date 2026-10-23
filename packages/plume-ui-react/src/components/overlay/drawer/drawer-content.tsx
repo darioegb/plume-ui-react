@@ -15,7 +15,7 @@ export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
     { backdropClassName, className, ...rest }: DrawerContentProps,
     ref: ForwardedRef<HTMLDialogElement>,
   ): ReactNode => {
-    const { side } = useDrawerContext('DrawerContent')
+    const { side, variant } = useDrawerContext('DrawerContent')
     const { isStyled, size } = useModalContext('DrawerContent')
 
     return (
@@ -24,12 +24,14 @@ export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
         backdropClassName={joinClasses(
           isStyled && styles.backdrop,
           isStyled && styles[`${side}Backdrop`],
+          variant === 'floating' && styles.floatingBackdrop,
           backdropClassName,
         )}
         className={joinClasses(
           isStyled && styles.drawer,
           isStyled && styles[side],
           isStyled && styles[size],
+          variant === 'floating' && styles.floating,
           className,
         )}
         data-plume-drawer=""
