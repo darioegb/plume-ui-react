@@ -54,7 +54,7 @@ function Items({ disabled }: Readonly<{ disabled?: string }>): React.ReactNode {
  * | --- | --- |
  * | `AccordionItem` | `value`, `disabled`, `id`, `title`, `hidden`, `className`, `style`, `children`. One section. `value` identifies it and is required. It has `data-open` and `data-disabled` to style it. |
  * | `AccordionTrigger` | `headingLevel`, `icon`, `classNames`, `title`, `className`, `style`, `children`. The button that toggles the item. `headingLevel` (`1` to `6`, `3` by default) is the heading around it, so choose the one that fits your page. `icon` replaces the chevron, and `null` removes it. `className` goes to the button and `classNames` styles its parts, `heading` and `icon`. The button has `data-open` while its item is open. |
- * | `AccordionContent` | `bodyClassName`, `title`, `className`, `style`, `children`. The panel, a `<section>`. `className` goes to the panel, which only animates its height, and `bodyClassName` to the box with the content, which is where the padding goes. |
+ * | `AccordionContent` | `classNames.body`, `title`, `className`, `style`, `children`. The panel, a `<section>`. `className` goes to the panel, which only animates its height, and `classNames.body` to the box with the content, which is where the padding goes. |
  */
 export default {
   title: 'Components/Accordion',
@@ -201,7 +201,7 @@ export const Variants: Story = {
         {questions.map(({ answer, title }) => (
           <AccordionItem className="border-b border-gray-300" key={title} value={title}>
             <AccordionTrigger className="py-2 text-left font-bold">{title}</AccordionTrigger>
-            <AccordionContent bodyClassName="pb-2">{answer}</AccordionContent>
+            <AccordionContent classNames={{ body: 'pb-2' }}>{answer}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
@@ -360,7 +360,7 @@ export const Tailwind: Story = {
     >
       How do I install it?
     </AccordionTrigger>
-    <AccordionContent bodyClassName="px-4 pb-4" className="transition-[grid-template-rows] duration-200">
+    <AccordionContent classNames={{ body: 'px-4 pb-4' }} className="transition-[grid-template-rows] duration-200">
       Run pnpm add plume-ui-react.
     </AccordionContent>
   </AccordionItem>
@@ -371,7 +371,7 @@ export const Tailwind: Story = {
     >
       Can I use Tailwind?
     </AccordionTrigger>
-    <AccordionContent bodyClassName="px-4 pb-4" className="transition-[grid-template-rows] duration-200">
+    <AccordionContent classNames={{ body: 'px-4 pb-4' }} className="transition-[grid-template-rows] duration-200">
       Yes, that is what this is.
     </AccordionContent>
   </AccordionItem>
@@ -393,8 +393,8 @@ export const Tailwind: Story = {
           >
             {title}
           </AccordionTrigger>
-          <AccordionContent
-            bodyClassName="px-4 pb-4"
+          <AccordionContent classNames={{ body: 'px-4 pb-4' }}
+           
             className="transition-[grid-template-rows] duration-200"
           >
             {answer}
@@ -424,7 +424,7 @@ function BootstrapAccordion(): React.ReactNode {
           >
             {title}
           </AccordionTrigger>
-          <AccordionContent bodyClassName="accordion-body">{answer}</AccordionContent>
+          <AccordionContent classNames={{ body: 'accordion-body' }}>{answer}</AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>
@@ -452,7 +452,7 @@ export const Bootstrap: Story = {
     >
       How do I install it?
     </AccordionTrigger>
-    <AccordionContent bodyClassName="accordion-body">Run pnpm add plume-ui-react.</AccordionContent>
+    <AccordionContent classNames={{ body: 'accordion-body' }}>Run pnpm add plume-ui-react.</AccordionContent>
   </AccordionItem>
 </Accordion>`,
       },

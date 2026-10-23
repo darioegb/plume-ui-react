@@ -30,11 +30,11 @@ export default {
       description: 'Custom CSS class for the Skeleton.',
       table: { type: { summary: 'string' } },
     },
-    lineClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for every line when `lines` is more than one. With `variant="unstyled"` it is the only class the lines have.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `line` (every line). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<SkeletonPart, string>>' } },
     },
     style: {
       control: false,
@@ -157,7 +157,7 @@ export const Loading: Story = {
 
 /**
  * Some examples of Skeleton with Tailwind classes. With `variant="unstyled"` the Skeleton keeps its width and height
- * and has no color or animation of its own: `className` brings them, and `lineClassName` styles every line.
+ * and has no color or animation of its own: `className` brings them, and `classNames.line` styles every line.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -167,9 +167,9 @@ export const Tailwind: Story = {
   <Skeleton className="animate-pulse rounded-full bg-surface-muted" height={48} variant="unstyled" width={48} />
   <div className="flex flex-1 flex-col gap-2">
     <Skeleton className="animate-pulse rounded bg-surface-muted" height={16} variant="unstyled" width="60%" />
-    <Skeleton
+    <Skeleton classNames={{ line: 'h-3 animate-pulse rounded bg-surface-muted' }}
       className="flex flex-col gap-2"
-      lineClassName="h-3 animate-pulse rounded bg-surface-muted"
+     
       lines={3}
       variant="unstyled"
     />
@@ -196,9 +196,9 @@ export const Tailwind: Story = {
           variant="unstyled"
           width="60%"
         />
-        <Skeleton
+        <Skeleton classNames={{ line: 'h-3 animate-pulse rounded bg-surface-muted' }}
           className="flex flex-col gap-2"
-          lineClassName="h-3 animate-pulse rounded bg-surface-muted"
+         
           lines={3}
           variant="unstyled"
         />
@@ -219,9 +219,9 @@ export const Bootstrap: Story = {
         code: `<div aria-busy="true" className="card placeholder-glow" style={{ width: "18rem" }}>
   <div className="card-body">
     <Skeleton className="placeholder d-block col-6 mb-3" height={20} variant="unstyled" />
-    <Skeleton
+    <Skeleton classNames={{ line: 'placeholder d-block col-12' }}
       className="d-flex flex-column gap-2"
-      lineClassName="placeholder d-block col-12"
+     
       lines={3}
       variant="unstyled"
     />
@@ -234,9 +234,9 @@ export const Bootstrap: Story = {
     <div aria-busy="true" className="card placeholder-glow" style={{ width: '18rem' }}>
       <div className="card-body">
         <Skeleton className="placeholder d-block col-6 mb-3" height={20} variant="unstyled" />
-        <Skeleton
+        <Skeleton classNames={{ line: 'placeholder d-block col-12' }}
           className="d-flex flex-column gap-2"
-          lineClassName="placeholder d-block col-12"
+         
           lines={3}
           variant="unstyled"
         />

@@ -7,12 +7,17 @@ import type { ComponentProps, Size } from '../../../theme'
 import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
 
+export type TablePart = 'container' | 'loading'
+
 export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 
 export interface TableOwnProps {
+  classNames?: Partial<Record<TablePart, string>>
+  /** @deprecated Use `classNames.container`. */
   containerClassName?: string
   hoverable?: boolean
   loading?: boolean
+  /** @deprecated Use `classNames.loading`. */
   loadingClassName?: string
   loadingLabel?: string
   maxHeight?: number | string
@@ -56,6 +61,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       'aria-labelledby': ariaLabelledBy,
       children,
       className,
+      classNames,
       containerClassName,
       hoverable = false,
       loading = false,
@@ -80,7 +86,11 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       <section
         aria-label={scrollable ? ariaLabel : undefined}
         aria-labelledby={scrollable ? ariaLabelledBy : undefined}
-        className={joinClasses(isStyled && styles.container, containerClassName)}
+        className={joinClasses(
+          isStyled && styles.container,
+          containerClassName,
+          classNames?.container,
+        )}
         data-plume-table-container=""
         ref={setContainer}
         style={containerStyle}
@@ -90,7 +100,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
           <div data-plume-table-loading="">
             <Spinner
               aria-label={loadingLabel}
-              className={loadingClassName}
+              className={joinClasses(loadingClassName, classNames?.loading)}
               color="primary"
               variant={isStyled ? 'solid' : 'unstyled'}
             />

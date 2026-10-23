@@ -180,10 +180,11 @@ export default {
         'Inline styles for the Sidebar panel. They are applied after the color variables, so they can override them. `--sidebar-width` and `--sidebar-collapsed-width` set its widths.',
       table: { type: { summary: 'CSSProperties' } },
     },
-    backdropClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the backdrop shown behind the sidebar on a small screen.',
-      table: { type: { summary: 'string' } },
+    classNames: {
+      control: false,
+      description:
+        'Custom CSS classes for the parts, in every variant: `backdrop` (the backdrop of the mobile drawer). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<SidebarPart, string>>' } },
     },
     side: {
       control: 'radio',
@@ -423,9 +424,9 @@ export const Tailwind: Story = {
       source: {
         code: `<SidebarProvider>
   <div className="flex">
-    <Sidebar
+    <Sidebar classNames={{ backdrop: 'bg-black/50' }}
       aria-label="Application"
-      backdropClassName="bg-black/50"
+     
       className="border-r border-border bg-surface p-3 text-sm text-foreground max-md:shadow-xl"
       variant="unstyled"
     >
@@ -454,7 +455,7 @@ export const Tailwind: Story = {
   render: () => (
     <Shell
       sidebar={{
-        backdropClassName: 'bg-black/50',
+        classNames: { backdrop: 'bg-black/50' },
         className: 'border-r border-border bg-surface p-3 text-sm text-foreground max-md:shadow-xl',
         variant: 'unstyled',
       }}

@@ -12,8 +12,13 @@ import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './toggle.module.css'
 
+export type TogglePart = 'input' | 'label'
+
 export interface ToggleOwnProps {
+  classNames?: Partial<Record<TogglePart, string>>
+  /** @deprecated Use `classNames.input`. */
   inputClassName?: string
+  /** @deprecated Use `classNames.label`. */
   labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
@@ -57,6 +62,7 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
     {
       children,
       className = '',
+      classNames,
       inputClassName = '',
       labelClassName = '',
       colorScheme = 'primary',
@@ -92,6 +98,7 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
         isStyled && styles[variant],
         isStyled && isInvalid && styles.invalid,
         inputClassName,
+        classNames?.input,
       ]
         .filter(Boolean)
         .join(' ') || undefined
@@ -124,7 +131,9 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+              [isStyled && styles.label, labelClassName, classNames?.label]
+                .filter(Boolean)
+                .join(' ') || undefined
             }
             id={textId}
           >

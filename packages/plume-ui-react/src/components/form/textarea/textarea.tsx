@@ -3,9 +3,14 @@ import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { TextareaCounter } from './textarea-counter'
 import styles from './textarea.module.css'
+import { joinClasses } from '../../../overlay/class-names'
+
+export type TextareaPart = 'count'
 
 export interface TextareaOwnProps {
   colorScheme?: ColorScheme
+  classNames?: Partial<Record<TextareaPart, string>>
+  /** @deprecated Use `classNames.count`. */
   countClassName?: string
   formatCount?: (count: number, max: number | undefined) => string
   formatRemaining?: (remaining: number) => string
@@ -58,6 +63,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     {
       className = '',
       colorScheme = 'secondary',
+      classNames,
       countClassName,
       disabled = false,
       formatCount,
@@ -95,7 +101,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <TextareaCounter
-        countClassName={countClassName}
+        countClassName={joinClasses(countClassName, classNames?.count)}
         formatCount={formatCount}
         formatRemaining={formatRemaining}
         isStyled={isStyled}

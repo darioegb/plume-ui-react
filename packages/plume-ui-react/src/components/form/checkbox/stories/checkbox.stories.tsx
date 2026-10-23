@@ -35,16 +35,11 @@ export default {
       description: 'Custom CSS class for the label that wraps the input.',
       table: { type: { summary: 'string' } },
     },
-    inputClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the `<input>`, in every variant. With `variant="unstyled"` it is the only class of the input, so it is how Tailwind or Bootstrap style the control itself.',
-      table: { type: { summary: 'string' } },
-    },
-    labelClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the text of the label, in every variant.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`), `label` (the text of the label). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<CheckboxPart, string>>' } },
     },
     style: {
       control: false,
@@ -336,33 +331,33 @@ export const WithField: Story = {
 }
 
 /**
- * Some examples of Checkbox with Tailwind classes. With `variant="unstyled"` the Plume classes are gone: `className` styles the label that wraps the input, `inputClassName` the input and `labelClassName` the text. A native checkbox takes its color from `accent-*`.
+ * Some examples of Checkbox with Tailwind classes. With `variant="unstyled"` the Plume classes are gone: `className` styles the label that wraps the input, `classNames.input` the input and `classNames.label` the text. A native checkbox takes its color from `accent-*`.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="flex flex-col gap-3">
-  <Checkbox
+  <Checkbox classNames={{ input: 'h-4 w-4 rounded accent-blue-600' }}
     className="inline-flex items-center gap-2 text-sm"
-    inputClassName="h-4 w-4 rounded accent-blue-600"
+   
     variant="unstyled"
   >
     Accept the terms
   </Checkbox>
-  <Checkbox
+  <Checkbox classNames={{ input: 'h-5 w-5 accent-emerald-600', label: 'font-semibold' }}
     className="inline-flex items-center gap-2 text-sm"
     defaultChecked
-    inputClassName="h-5 w-5 accent-emerald-600"
-    labelClassName="font-semibold"
+   
+   
     variant="unstyled"
   >
     Subscribe to the newsletter
   </Checkbox>
-  <Checkbox
+  <Checkbox classNames={{ input: 'h-4 w-4 accent-blue-600' }}
     className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
     disabled
-    inputClassName="h-4 w-4 accent-blue-600"
+   
     variant="unstyled"
   >
     Disabled
@@ -373,26 +368,26 @@ export const Tailwind: Story = {
   },
   render: () => (
     <div className="flex flex-col gap-3">
-      <Checkbox
+      <Checkbox classNames={{ input: 'h-4 w-4 rounded accent-blue-600' }}
         className="inline-flex items-center gap-2 text-sm"
-        inputClassName="h-4 w-4 rounded accent-blue-600"
+       
         variant="unstyled"
       >
         Accept the terms
       </Checkbox>
-      <Checkbox
+      <Checkbox classNames={{ input: 'h-5 w-5 accent-emerald-600', label: 'font-semibold' }}
         className="inline-flex items-center gap-2 text-sm"
         defaultChecked
-        inputClassName="h-5 w-5 accent-emerald-600"
-        labelClassName="font-semibold"
+       
+       
         variant="unstyled"
       >
         Subscribe to the newsletter
       </Checkbox>
-      <Checkbox
+      <Checkbox classNames={{ input: 'h-4 w-4 accent-blue-600' }}
         className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
         disabled
-        inputClassName="h-4 w-4 accent-blue-600"
+       
         variant="unstyled"
       >
         Disabled
@@ -402,35 +397,35 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of Checkbox with Bootstrap classes. `className` goes to the label that wraps the input, so it takes `form-check`, while `inputClassName` takes `form-check-input` and `labelClassName` `form-check-label`.
+ * Some examples of Checkbox with Bootstrap classes. `className` goes to the label that wraps the input, so it takes `form-check`, while `classNames.input` takes `form-check-input` and `classNames.label` `form-check-label`.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="d-flex flex-column gap-2">
-  <Checkbox
+  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     variant="unstyled"
   >
     Accept the terms
   </Checkbox>
-  <Checkbox
+  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
     defaultChecked
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     variant="unstyled"
   >
     Subscribe to the newsletter
   </Checkbox>
-  <Checkbox
+  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
     disabled
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     variant="unstyled"
   >
     Disabled
@@ -441,28 +436,28 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className="d-flex flex-column gap-2">
-      <Checkbox
+      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         variant="unstyled"
       >
         Accept the terms
       </Checkbox>
-      <Checkbox
+      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
         defaultChecked
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         variant="unstyled"
       >
         Subscribe to the newsletter
       </Checkbox>
-      <Checkbox
+      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
         disabled
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         variant="unstyled"
       >
         Disabled

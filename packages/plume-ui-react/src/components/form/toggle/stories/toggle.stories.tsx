@@ -34,16 +34,11 @@ export default {
       description: 'Custom CSS class for the label that wraps the input.',
       table: { type: { summary: 'string' } },
     },
-    inputClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the `<input>`, in every variant. With `variant="unstyled"` it is the only class of the input, so it is how Tailwind or Bootstrap style the control itself.',
-      table: { type: { summary: 'string' } },
-    },
-    labelClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the text of the label, in every variant.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`), `label` (the text of the label). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<TogglePart, string>>' } },
     },
     style: {
       control: false,
@@ -278,17 +273,17 @@ export const Tailwind: Story = {
     docs: {
       source: {
         code: `<div className="flex flex-col gap-3">
-  <Toggle
+  <Toggle classNames={{ input: "relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" }}
     className="inline-flex items-center gap-3 text-sm"
-    inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+   
     variant="unstyled"
   >
     Email notifications
   </Toggle>
-  <Toggle
+  <Toggle classNames={{ input: "relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" }}
     className="inline-flex items-center gap-3 text-sm"
     defaultChecked
-    inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+   
     variant="unstyled"
   >
     Dark mode
@@ -299,17 +294,17 @@ export const Tailwind: Story = {
   },
   render: () => (
     <div className="flex flex-col gap-3">
-      <Toggle
+      <Toggle classNames={{ input: "relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600" }}
         className="inline-flex items-center gap-3 text-sm"
-        inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-emerald-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+       
         variant="unstyled"
       >
         Email notifications
       </Toggle>
-      <Toggle
+      <Toggle classNames={{ input: "relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" }}
         className="inline-flex items-center gap-3 text-sm"
         defaultChecked
-        inputClassName="relative h-6 w-11 cursor-pointer appearance-none rounded-full bg-gray-500 transition-colors before:absolute before:left-0.5 before:top-0.5 before:h-5 before:w-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] checked:bg-blue-600 checked:before:translate-x-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+       
         variant="unstyled"
       >
         Dark mode
@@ -326,19 +321,19 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<div className="d-flex flex-column gap-2">
-  <Toggle
+  <Toggle classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check form-switch"
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     variant="unstyled"
   >
     Email notifications
   </Toggle>
-  <Toggle
+  <Toggle classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check form-switch"
     defaultChecked
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     variant="unstyled"
   >
     Dark mode
@@ -349,19 +344,19 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className="d-flex flex-column gap-2">
-      <Toggle
+      <Toggle classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check form-switch"
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         variant="unstyled"
       >
         Email notifications
       </Toggle>
-      <Toggle
+      <Toggle classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check form-switch"
         defaultChecked
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         variant="unstyled"
       >
         Dark mode

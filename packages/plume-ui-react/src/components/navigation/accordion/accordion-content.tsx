@@ -8,7 +8,11 @@ import { Collapse } from '../../utility/collapse'
 import { useAccordionContext, useAccordionItemContext } from './accordion-context'
 import styles from './accordion.module.css'
 
+export type AccordionContentPart = 'body'
+
 export interface AccordionContentOwnProps {
+  classNames?: Partial<Record<AccordionContentPart, string>>
+  /** @deprecated Use `classNames.body`. */
   bodyClassName?: string
 }
 
@@ -20,7 +24,7 @@ export type AccordionContentProps = Omit<ComponentProps, 'index'> &
 
 export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
   (
-    { bodyClassName, children, className, style, ...rest }: AccordionContentProps,
+    { bodyClassName, children, className, classNames, style, ...rest }: AccordionContentProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
     const { isStyled } = useAccordionContext('AccordionContent')
@@ -30,7 +34,7 @@ export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
       <Collapse
         aria-labelledby={item.triggerId}
         as="section"
-        bodyClassName={joinClasses(isStyled && styles.body, bodyClassName)}
+        bodyClassName={joinClasses(isStyled && styles.body, bodyClassName, classNames?.body)}
         className={className}
         data-plume-accordion-content=""
         id={item.contentId}

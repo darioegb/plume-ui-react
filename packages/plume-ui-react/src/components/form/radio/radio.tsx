@@ -13,8 +13,13 @@ import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
+export type RadioPart = 'input' | 'label'
+
 export interface RadioOwnProps {
+  classNames?: Partial<Record<RadioPart, string>>
+  /** @deprecated Use `classNames.input`. */
   inputClassName?: string
+  /** @deprecated Use `classNames.label`. */
   labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
@@ -59,6 +64,7 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
       checked,
       children,
       className = '',
+      classNames,
       inputClassName = '',
       labelClassName = '',
       colorScheme,
@@ -105,6 +111,7 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
         isStyled && styles[resolvedVariant],
         isStyled && isInvalid && styles.invalid,
         inputClassName,
+        classNames?.input,
       ]
         .filter(Boolean)
         .join(' ') || undefined
@@ -147,7 +154,9 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+              [isStyled && styles.label, labelClassName, classNames?.label]
+                .filter(Boolean)
+                .join(' ') || undefined
             }
             id={textId}
           >

@@ -60,10 +60,11 @@ export default {
       description: 'Custom CSS class for the input.',
       table: { type: { summary: 'string' } },
     },
-    panelClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the popup.',
-      table: { type: { summary: 'string' } },
+    classNames: {
+      control: false,
+      description:
+        'Custom CSS classes for the parts, in every variant: `panel` (the popup with the lists). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<TimePickerPart, string>>' } },
     },
     value: {
       control: 'text',

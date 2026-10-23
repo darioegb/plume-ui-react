@@ -4,10 +4,14 @@ import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import styles from './collapse.module.css'
 
+export type CollapsePart = 'body'
+
 export type CollapseVariant = 'accent' | 'filled' | 'outline' | 'unstyled'
 
 export interface CollapseOwnProps {
   as?: 'div' | 'section'
+  classNames?: Partial<Record<CollapsePart, string>>
+  /** @deprecated Use `classNames.body`. */
   bodyClassName?: string
   colorScheme?: ColorScheme
   open?: boolean
@@ -41,6 +45,7 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
   (
     {
       as: tag = 'div',
+      classNames,
       bodyClassName,
       children,
       className,
@@ -71,6 +76,7 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
               isStyled && styles[variant],
               isStyled && styles[size],
               bodyClassName,
+              classNames?.body,
             )}
           >
             {children}

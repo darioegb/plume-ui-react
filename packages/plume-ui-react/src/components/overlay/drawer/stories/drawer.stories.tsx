@@ -64,7 +64,7 @@ function Example({
  * | Component | Props |
  * | --- | --- |
  * | `DrawerTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes. With text, it renders a plain `<button>`. |
- * | `DrawerContent` | `className`, `backdropClassName`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The panel. It is named by the `DrawerHeader`, or by `aria-label` when there is none. `backdropClassName` styles the layer behind it. |
+ * | `DrawerContent` | `className`, `classNames.backdrop`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The panel. It is named by the `DrawerHeader`, or by `aria-label` when there is none. `classNames.backdrop` styles the layer behind it. |
  * | `DrawerHeader` | `as` (`h1` to `h6`, `h2` by default), `className`, `style`, `children`. The title, which names the panel. |
  * | `DrawerBody` | `className`, `style`, `children`. The content. It scrolls when it is taller than the screen. |
  * | `DrawerFooter` | `className`, `style`, `children`. A row for the actions. |
@@ -300,8 +300,8 @@ export const Tailwind: Story = {
       variant="unstyled"
     />
   </DrawerTrigger>
-  <DrawerContent
-    backdropClassName="flex justify-end bg-black/50"
+  <DrawerContent classNames={{ backdrop: 'flex justify-end bg-black/50' }}
+   
     className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
   >
     <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
@@ -333,8 +333,8 @@ export const Tailwind: Story = {
           variant="unstyled"
         />
       </DrawerTrigger>
-      <DrawerContent
-        backdropClassName="flex justify-end bg-black/50"
+      <DrawerContent classNames={{ backdrop: 'flex justify-end bg-black/50' }}
+       
         className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
       >
         <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
@@ -368,8 +368,8 @@ export const Bootstrap: Story = {
   <DrawerTrigger>
     <Button className="btn btn-primary" label="Open drawer" variant="unstyled" />
   </DrawerTrigger>
-  <DrawerContent
-    backdropClassName="d-flex justify-content-end bg-black bg-opacity-50"
+  <DrawerContent classNames={{ backdrop: 'd-flex justify-content-end bg-black bg-opacity-50' }}
+   
     className="d-flex flex-column h-100 bg-body shadow"
     style={{ width: '20rem', maxWidth: '100%' }}
   >
@@ -390,8 +390,8 @@ export const Bootstrap: Story = {
       <DrawerTrigger>
         <Button className="btn btn-primary" label="Open drawer" variant="unstyled" />
       </DrawerTrigger>
-      <DrawerContent
-        backdropClassName="d-flex justify-content-end bg-black bg-opacity-50"
+      <DrawerContent classNames={{ backdrop: 'd-flex justify-content-end bg-black bg-opacity-50' }}
+       
         className="d-flex flex-column h-100 bg-body shadow"
         style={{ width: '20rem', maxWidth: '100%' }}
       >

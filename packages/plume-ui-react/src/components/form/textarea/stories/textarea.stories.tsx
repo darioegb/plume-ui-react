@@ -68,11 +68,11 @@ export default {
         'Shows how many characters there are under the Textarea, as `12` or, with `maxLength`, as `12 / 200`. The count describes the textarea (`aria-describedby`), and near the limit a polite message says how many characters are left. The count turns red at the limit.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    countClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the count, in every variant. With `variant="unstyled"` it is the only class the count has.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `count` (the character counter). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<TextareaPart, string>>' } },
     },
     formatCount: {
       control: false,
@@ -371,9 +371,9 @@ export const Tailwind: Story = {
     rows={4}
     variant="unstyled"
   />
-  <Textarea
+  <Textarea classNames={{ count: 'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600' }}
     className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-    countClassName="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600"
+   
     aria-label="With a count"
     maxLength={80}
     placeholder="With a count"
@@ -397,9 +397,9 @@ export const Tailwind: Story = {
         rows={4}
         variant="unstyled"
       />
-      <Textarea
+      <Textarea classNames={{ count: 'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600' }}
         className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-        countClassName="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600"
+       
         aria-label="With a count"
         maxLength={80}
         placeholder="With a count"
@@ -431,9 +431,9 @@ export const Bootstrap: Story = {
     style={{ backgroundImage: 'none' }}
     variant="unstyled"
   />
-  <Textarea
+  <Textarea classNames={{ count: 'form-text text-end' }}
     className="form-control"
-    countClassName="form-text text-end"
+   
     aria-label="With a count"
     maxLength={80}
     placeholder="With a count"
@@ -459,9 +459,9 @@ export const Bootstrap: Story = {
         style={{ backgroundImage: 'none' }}
         variant="unstyled"
       />
-      <Textarea
+      <Textarea classNames={{ count: 'form-text text-end' }}
         className="form-control"
-        countClassName="form-text text-end"
+       
         aria-label="With a count"
         maxLength={80}
         placeholder="With a count"
