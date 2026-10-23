@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.14.0
+
+### Minor Changes
+
+- [#113](https://github.com/darioegb/plume-ui-react/pull/113) [`c1d060cab1145c6b6b076fb4666d186d69d7a393`](https://github.com/darioegb/plume-ui-react/commit/c1d060cab1145c6b6b076fb4666d186d69d7a393) Thanks [@darioegb](https://github.com/darioegb)! - Adds `Avatar` (with `AvatarGroup`), `Alert` (with `AlertTitle` and `AlertDescription`) and `Drawer` (with `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerBody`, `DrawerFooter` and `DrawerClose`). `Avatar` shows an image, the initials of a name or an icon, a presence status and a stacked group with a counter. `Alert` is the inline message with `info`, `success`, `warning` and `error` statuses, an action and a dismiss button. `Drawer` is a `Modal` that slides in from the left, the right, the top or the bottom, with rounded or square corners. `Spinner` accepts an `aria-label`.
+
 ## 0.13.0
 
 ### Minor Changes
