@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import type { ColorScheme } from '../../../theme'
 
 export const tagColorVars = (
-  name: 'badge' | 'chip',
+  name: 'alert' | 'avatar' | 'badge' | 'chip',
   colorScheme: ColorScheme,
   style?: CSSProperties,
 ): CSSProperties =>

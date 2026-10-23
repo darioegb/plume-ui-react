@@ -174,7 +174,7 @@ export default {
   },
   args: {
     'aria-label': 'Files',
-    style: { width: '18rem' },
+    style: { maxWidth: '100%', width: '18rem' },
   },
   render: (args) => (
     <List {...args}>
@@ -201,7 +201,12 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       {(['plain', 'bordered', 'filled'] as const).map((variant) => (
-        <List aria-label={variant} key={variant} style={{ width: '14rem' }} variant={variant}>
+        <List
+          aria-label={variant}
+          key={variant}
+          style={{ maxWidth: '100%', width: '14rem' }}
+          variant={variant}
+        >
           {files.map((file) => (
             <ListItem key={file}>{file}</ListItem>
           ))}
@@ -210,7 +215,7 @@ export const Variants: Story = {
       <List
         aria-label="unstyled"
         className="border border-gray-400 rounded divide-y divide-gray-300"
-        style={{ width: '14rem' }}
+        style={{ maxWidth: '100%', width: '14rem' }}
         variant="unstyled"
       >
         {files.map((file) => (
@@ -234,7 +239,7 @@ export const Sizes: Story = {
           aria-label={size}
           key={size}
           size={size}
-          style={{ width: '14rem' }}
+          style={{ maxWidth: '100%', width: '14rem' }}
           variant="bordered"
         >
           {files.map((file) => (
@@ -257,7 +262,7 @@ export const Colors: Story = {
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           key={scheme}
-          style={{ width: '9rem' }}
+          style={{ maxWidth: '100%', width: '9rem' }}
         >
           <ListItem>
             <ListItemButton selected>{scheme}</ListItemButton>
@@ -296,7 +301,7 @@ export const Markers: Story = {
 export const Dividers: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
-      <List aria-label="Divided" divided style={{ width: '14rem' }}>
+      <List aria-label="Divided" divided style={{ maxWidth: '100%', width: '14rem' }}>
         {files.map((file) => (
           <ListItem key={file}>{file}</ListItem>
         ))}
@@ -304,7 +309,7 @@ export const Dividers: Story = {
       <List
         aria-label="Bordered without dividers"
         divided={false}
-        style={{ width: '14rem' }}
+        style={{ maxWidth: '100%', width: '14rem' }}
         variant="bordered"
       >
         {files.map((file) => (
@@ -321,7 +326,7 @@ export const Dividers: Story = {
  */
 export const IconsAndText: Story = {
   render: () => (
-    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
       <ListItem>
         <ListItemIcon>{inboxIcon}</ListItemIcon>
         <ListItemText primary="Inbox" secondary="12 unread messages" />
@@ -343,7 +348,7 @@ export const IconsAndText: Story = {
  */
 export const TrailingContent: Story = {
   render: () => (
-    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
       <ListItem>
         <ListItemIcon>{inboxIcon}</ListItemIcon>
         <ListItemText primary="Inbox" />
@@ -372,7 +377,7 @@ export const TrailingContent: Story = {
  */
 export const Interactive: Story = {
   render: () => (
-    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
       <ListItem>
         <ListItemButton selected>
           <ListItemIcon>{inboxIcon}</ListItemIcon>
@@ -403,7 +408,7 @@ function SelectableMailbox(): React.ReactNode {
     { id: 'trash', icon: trashIcon, label: 'Trash' },
   ]
   return (
-    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
       {boxes.map((box) => (
         <ListItem key={box.id}>
           <ListItemButton onClick={() => setSelected(box.id)} selected={selected === box.id}>
@@ -428,7 +433,7 @@ export const Selectable: Story = {
  */
 export const Sections: Story = {
   render: () => (
-    <List aria-label="Mailbox" style={{ width: '20rem' }} variant="bordered">
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
       <ListSubheader>Folders</ListSubheader>
       <ListItem>
         <ListItemButton>

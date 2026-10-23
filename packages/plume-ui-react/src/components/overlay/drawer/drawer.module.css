@@ -1,0 +1,154 @@
+:global(:where(dialog[data-plume-dialog]))[data-side='left'],
+:global(:where(dialog[data-plume-dialog]))[data-side='right'] {
+  align-self: stretch;
+}
+
+:global(:where(dialog[data-plume-dialog]))[data-side='right'] {
+  margin-inline-start: auto;
+}
+
+:global(:where(dialog[data-plume-dialog]))[data-side='bottom'],
+:global(:where(dialog[data-plume-dialog]))[data-side='top'] {
+  align-self: auto;
+  width: 100%;
+}
+
+.backdrop[data-plume-modal-backdrop] {
+  padding: 0;
+}
+
+.leftBackdrop[data-plume-modal-backdrop] {
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.rightBackdrop[data-plume-modal-backdrop] {
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.topBackdrop[data-plume-modal-backdrop] {
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.bottomBackdrop[data-plume-modal-backdrop] {
+  align-items: flex-end;
+  justify-content: stretch;
+}
+
+.drawer[data-plume-dialog] {
+  border-radius: 0;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.left.sm,
+.right.sm {
+  --drawer-size: 20rem;
+}
+
+.left.md,
+.right.md {
+  --drawer-size: 28rem;
+}
+
+.left.lg,
+.right.lg {
+  --drawer-size: 40rem;
+}
+
+.top.sm,
+.bottom.sm {
+  --drawer-size: 30vh;
+}
+
+.top.md,
+.bottom.md {
+  --drawer-size: 50vh;
+}
+
+.top.lg,
+.bottom.lg {
+  --drawer-size: 80vh;
+}
+
+.left.drawer[data-plume-dialog],
+.right.drawer[data-plume-dialog] {
+  max-height: none;
+  max-width: calc(100% - var(--plume-space-12));
+  width: var(--drawer-size);
+}
+
+.top.drawer[data-plume-dialog],
+.bottom.drawer[data-plume-dialog] {
+  max-height: var(--drawer-size);
+  max-width: none;
+  width: 100%;
+}
+
+.left.drawer[data-plume-dialog] {
+  border-start-end-radius: var(--plume-radius-6);
+  border-end-end-radius: var(--plume-radius-6);
+}
+
+.right.drawer[data-plume-dialog] {
+  border-start-start-radius: var(--plume-radius-6);
+  border-end-start-radius: var(--plume-radius-6);
+}
+
+.top.drawer[data-plume-dialog] {
+  border-end-start-radius: var(--plume-radius-6);
+  border-end-end-radius: var(--plume-radius-6);
+}
+
+.bottom.drawer[data-plume-dialog] {
+  border-start-start-radius: var(--plume-radius-6);
+  border-start-end-radius: var(--plume-radius-6);
+}
+
+.square.drawer[data-plume-dialog] {
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .left.drawer[data-plume-dialog] {
+    animation: drawer-in-left 0.22s ease-out;
+  }
+
+  .right.drawer[data-plume-dialog] {
+    animation: drawer-in-right 0.22s ease-out;
+  }
+
+  .top.drawer[data-plume-dialog] {
+    animation: drawer-in-top 0.22s ease-out;
+  }
+
+  .bottom.drawer[data-plume-dialog] {
+    animation: drawer-in-bottom 0.22s ease-out;
+  }
+}
+
+@keyframes drawer-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes drawer-in-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes drawer-in-top {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes drawer-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+}

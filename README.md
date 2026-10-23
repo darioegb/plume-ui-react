@@ -70,6 +70,8 @@ export function App() {
 | Component | Docs |
 | --- | --- |
 | Accordion | [Accordion](https://darioegb.github.io/plume-ui-react/?path=/docs/components-accordion--docs) |
+| Alert | [Alert](https://darioegb.github.io/plume-ui-react/?path=/docs/components-alert--docs) |
+| Avatar | [Avatar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-avatar--docs) |
 | Badge | [Badge](https://darioegb.github.io/plume-ui-react/?path=/docs/components-badge--docs) |
 | Breadcrumb | [Breadcrumb](https://darioegb.github.io/plume-ui-react/?path=/docs/components-breadcrumb--docs) |
 | Button | [Button](https://darioegb.github.io/plume-ui-react/?path=/docs/components-button--docs) |
@@ -79,6 +81,7 @@ export function App() {
 | Chip | [Chip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-chip--docs) |
 | Collapse | [Collapse](https://darioegb.github.io/plume-ui-react/?path=/docs/components-collapse--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
+| Drawer | [Drawer](https://darioegb.github.io/plume-ui-react/?path=/docs/components-drawer--docs) |
 | Dropdown | [Dropdown](https://darioegb.github.io/plume-ui-react/?path=/docs/components-dropdown--docs) |
 | EmptyState | [EmptyState](https://darioegb.github.io/plume-ui-react/?path=/docs/components-emptystate--docs) |
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |

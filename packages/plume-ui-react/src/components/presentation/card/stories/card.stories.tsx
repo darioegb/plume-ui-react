@@ -106,7 +106,7 @@ export default {
     },
   },
   args: {
-    style: { width: '20rem' },
+    style: { maxWidth: '100%', width: '20rem' },
   },
   render: (args) => <Card {...args}>{sample}</Card>,
 } satisfies Meta<typeof Card>
@@ -127,14 +127,14 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       {(['elevated', 'outline', 'filled'] as const).map((variant) => (
-        <Card key={variant} style={{ width: '16rem' }} variant={variant}>
+        <Card key={variant} style={{ maxWidth: '100%', width: '16rem' }} variant={variant}>
           <CardHeader>{variant[0].toUpperCase() + variant.slice(1)}</CardHeader>
           <CardBody>A card with the {variant} variant.</CardBody>
         </Card>
       ))}
       <Card
         className="border border-gray-400 rounded-lg"
-        style={{ width: '16rem' }}
+        style={{ maxWidth: '100%', width: '16rem' }}
         variant="unstyled"
       >
         <CardHeader className="p-4 font-bold">Unstyled</CardHeader>
@@ -151,7 +151,7 @@ export const Sizes: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-start gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Card key={size} size={size} style={{ width: '16rem' }} variant="outline">
+        <Card key={size} size={size} style={{ maxWidth: '100%', width: '16rem' }} variant="outline">
           <CardHeader>Size {size}</CardHeader>
           <CardBody>The padding and the text follow the size.</CardBody>
         </Card>
@@ -166,14 +166,14 @@ export const Sizes: Story = {
 export const Parts: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-start gap-6">
-      <Card style={{ width: '16rem' }} variant="outline">
+      <Card style={{ maxWidth: '100%', width: '16rem' }} variant="outline">
         <CardBody>Only a body.</CardBody>
       </Card>
-      <Card style={{ width: '16rem' }} variant="outline">
+      <Card style={{ maxWidth: '100%', width: '16rem' }} variant="outline">
         <CardHeader>Header and body</CardHeader>
         <CardBody>No footer.</CardBody>
       </Card>
-      <Card style={{ width: '16rem' }} variant="outline">
+      <Card style={{ maxWidth: '100%', width: '16rem' }} variant="outline">
         <CardBody>Body and footer.</CardBody>
         <CardFooter>
           <Button label="Cancel" size="sm" variant="ghost" />
@@ -191,7 +191,7 @@ export const Parts: Story = {
  */
 export const Clickable: Story = {
   render: () => (
-    <Card style={{ position: 'relative', width: '20rem' }} variant="outline">
+    <Card style={{ maxWidth: '100%', position: 'relative', width: '20rem' }} variant="outline">
       <CardHeader>
         <a className="after:absolute after:inset-0 hover:underline" href="#report">
           Weekly report
