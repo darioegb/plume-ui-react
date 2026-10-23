@@ -16,6 +16,7 @@ button.trigger {
 }
 
 .panel {
+  --timepicker-fill: color-mix(in srgb, var(--plume-foreground) 8%, transparent);
   display: flex;
   gap: var(--plume-space-1);
   margin: 0;
@@ -55,10 +56,6 @@ button.trigger {
 .option:focus-visible {
   outline: 2px solid var(--picker-scheme);
   outline-offset: 1px;
-}
-
-.panel {
-  --timepicker-fill: color-mix(in srgb, var(--plume-foreground) 8%, transparent);
 }
 
 .variantFilled .option:not(.selected) {
