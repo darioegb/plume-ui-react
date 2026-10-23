@@ -3,6 +3,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { joinClasses } from '../../../overlay/class-names'
+import { Portal } from '../../../overlay'
 import { Button } from '../../interaction/button'
 import { pickerPanelClasses } from '../shared/picker-panel'
 import { Calendar } from './calendar'
@@ -14,6 +15,12 @@ export type DatePickerCalendarProps = Omit<ComponentProps, 'index'> & {
 }
 
 const dialogRole = 'dialog'
+
+const VARIANT_CLASS = {
+  filled: 'variantFilled',
+  outline: 'variantOutline',
+  underline: 'variantUnderline',
+} as const
 
 function FooterActions(): ReactNode {
   const {
@@ -58,6 +65,7 @@ export function DatePickerCalendar({
     onSecondMonthChange,
     onSecondYearChange,
     onSelectDate,
+    panelVars,
     position,
     setPanel,
     shape,
@@ -71,14 +79,15 @@ export function DatePickerCalendar({
 
   const floatingStyle: CSSProperties | undefined = isCalendar
     ? undefined
-    : { ...position.style, margin: 0, opacity: position.isPositioned ? undefined : 0 }
+    : { ...panelVars, ...position.style, margin: 0, opacity: position.isPositioned ? undefined : 0 }
 
-  return (
+  const calendar = (
     <div
       aria-label={ariaLabel ?? labels.calendar}
       className={joinClasses(
         styles.datePickerModal,
         pickerPanelClasses(variant, size, shape),
+        variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
         isCalendar && styles.inline,
         size === 'sm' && styles.daySm,
         size === 'lg' && styles.dayLg,
@@ -114,4 +123,6 @@ export function DatePickerCalendar({
       {showFooter ? <FooterActions /> : null}
     </div>
   )
+
+  return isCalendar ? calendar : <Portal>{calendar}</Portal>
 }

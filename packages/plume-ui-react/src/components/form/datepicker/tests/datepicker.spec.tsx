@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react'
+import { useState } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
 import type { DateRange } from '../datepicker'
@@ -322,6 +324,58 @@ describe('DatePicker component', () => {
 
       expect(dayButton(15, 2)).toHaveAttribute('aria-pressed', 'true')
       expect(selector('month')).toHaveTextContent('March')
+    })
+
+    it('calls onChange once with the typed date', () => {
+      const onChange = vi.fn()
+      function Controlled(): React.ReactNode {
+        const [value, setValue] = useState<DateRange>({ startDate: null, endDate: null })
+        return (
+          <DatePicker
+            onChange={(next) => {
+              onChange(next)
+              setValue(next)
+            }}
+            value={value}
+          />
+        )
+      }
+      render(<Controlled />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '03152025' } })
+
+      act(() => {
+        vi.advanceTimersByTime(2000)
+      })
+
+      expect(onChange).toHaveBeenCalledTimes(1)
+      expect(onChange).toHaveBeenCalledWith({ startDate: new Date(2025, 2, 15), endDate: null })
+    })
+
+    it('calls onChange with the typed range', () => {
+      const onChange = vi.fn()
+      render(<DatePicker isRange onChange={onChange} />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '0315202504202025' } })
+
+      act(() => {
+        vi.advanceTimersByTime(600)
+      })
+
+      expect(onChange).toHaveBeenCalledWith({
+        startDate: new Date(2025, 2, 15),
+        endDate: new Date(2025, 3, 20),
+      })
+    })
+
+    it('does not call onChange for an invalid typed date', () => {
+      const onChange = vi.fn()
+      render(<DatePicker onChange={onChange} />)
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '99992025' } })
+
+      act(() => {
+        vi.advanceTimersByTime(600)
+      })
+
+      expect(onChange).not.toHaveBeenCalled()
     })
 
     it('ignores an invalid typed date', () => {
@@ -719,7 +773,7 @@ describe('DatePicker component', () => {
       expect(screen.getByRole('dialog', { name: 'Calendar' })).toBeInTheDocument()
     })
 
-    it('takes its parts as children, in the order they are given', () => {
+    it('takes its parts as children and opens the calendar outside of the DatePicker', () => {
       const { container } = render(
         <DatePicker onChange={vi.fn()}>
           <DatePickerCalendar className="mine" />
@@ -732,8 +786,32 @@ describe('DatePicker component', () => {
       openCalendar()
 
       const root = container.firstChild as HTMLElement
-      expect(root.firstElementChild).toBe(screen.getByRole('dialog'))
+      expect(root.contains(screen.getByRole('dialog'))).toBe(false)
       expect(screen.getByRole('dialog')).toHaveClass('mine')
+    })
+
+    it('gives the popup the color variables, including the ones in style', () => {
+      render(
+        <DatePicker
+          colorScheme="primary"
+          onChange={vi.fn()}
+          style={{ '--datepicker-solid': 'red', width: '10rem' } as CSSProperties}
+        />,
+      )
+      openCalendar()
+      const { style } = screen.getByRole('dialog')
+      expect(style.getPropertyValue('--datepicker-scheme')).toBe('var(--plume-color-primary-text)')
+      expect(style.getPropertyValue('--datepicker-solid')).toBe('red')
+      expect(style.width).toBe('')
+    })
+
+    it('stays open while the focus moves into the popup', () => {
+      render(<DatePicker onChange={vi.fn()} />)
+      openCalendar()
+      fireEvent.blur(screen.getByRole('textbox'), {
+        relatedTarget: screen.getByRole('dialog').querySelector('[data-date]'),
+      })
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
 
     it('can have a calendar without an input', () => {

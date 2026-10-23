@@ -1,6 +1,7 @@
 'use client'
 
 import type { CSSProperties, ReactNode } from 'react'
+import { Portal } from '../../../overlay'
 import { TimeColumn } from './time-column'
 import { parseTime, range, toTwelveHour, type Period } from './time-utils'
 import type { TimePickerLabels } from './timepicker-types'
@@ -46,36 +47,38 @@ export function TimePanel({
   const period = parts ? toTwelveHour(parts.hours).period : undefined
 
   return (
-    <div
-      aria-label={labels.timePicker}
-      className={className}
-      ref={panelRef}
-      role={dialogRole}
-      style={style}
-    >
-      <TimeColumn
-        label={labels.hours}
-        onSelect={onPickHours}
-        options={toOptions(hour12 ? range(12, 1, 1) : range(24))}
-        selected={selectedHour(parts?.hours, hour12)}
-      />
-      <TimeColumn
-        label={labels.minutes}
-        onSelect={onPickMinutes}
-        options={toOptions(range(60, minuteStep))}
-        selected={parts?.minutes}
-      />
-      {hour12 ? (
+    <Portal>
+      <div
+        aria-label={labels.timePicker}
+        className={className}
+        ref={panelRef}
+        role={dialogRole}
+        style={style}
+      >
         <TimeColumn
-          label={labels.period}
-          onSelect={onPickPeriod}
-          options={[
-            { label: labels.am, value: 'am' as const },
-            { label: labels.pm, value: 'pm' as const },
-          ]}
-          selected={period}
+          label={labels.hours}
+          onSelect={onPickHours}
+          options={toOptions(hour12 ? range(12, 1, 1) : range(24))}
+          selected={selectedHour(parts?.hours, hour12)}
         />
-      ) : null}
-    </div>
+        <TimeColumn
+          label={labels.minutes}
+          onSelect={onPickMinutes}
+          options={toOptions(range(60, minuteStep))}
+          selected={parts?.minutes}
+        />
+        {hour12 ? (
+          <TimeColumn
+            label={labels.period}
+            onSelect={onPickPeriod}
+            options={[
+              { label: labels.am, value: 'am' as const },
+              { label: labels.pm, value: 'pm' as const },
+            ]}
+            selected={period}
+          />
+        ) : null}
+      </div>
+    </Portal>
   )
 }

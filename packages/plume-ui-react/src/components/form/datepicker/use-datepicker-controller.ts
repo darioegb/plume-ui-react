@@ -1,6 +1,6 @@
 'use client'
 
-import type { FocusEvent } from 'react'
+import type { CSSProperties, FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useDismiss } from '../../../overlay/use-dismiss'
@@ -32,6 +32,7 @@ interface DatePickerControllerOptions {
   maxDate?: Date
   minDate?: Date
   onChange: (value: DateRange) => void
+  panelVars: CSSProperties
   root: HTMLDivElement | null
   shape?: Shape
   showFooter: boolean
@@ -66,6 +67,7 @@ export function useDatePickerController({
   maxDate,
   minDate,
   onChange,
+  panelVars,
   root,
   shape,
   showFooter,
@@ -100,7 +102,7 @@ export function useDatePickerController({
   }, [root])
 
   useDismiss({
-    elements: [root],
+    elements: [root, panel],
     enabled: popoverOpen,
     onDismiss: (reason) => {
       dispatch({ type: 'CLOSE_MODAL' })
@@ -126,8 +128,18 @@ export function useDatePickerController({
 
   useEffect(() => {
     if (!modalOpen) return
-    root?.querySelector<HTMLButtonElement>('[role="dialog"] [data-date][tabindex="0"]')?.focus()
-  }, [modalOpen, root])
+    panel?.querySelector<HTMLButtonElement>('[data-date][tabindex="0"]')?.focus()
+  }, [modalOpen, panel])
+
+  const latestOnChange = useRef(onChange)
+  useEffect(() => {
+    latestOnChange.current = onChange
+  })
+
+  const commitTypedValue = useCallback((typed: DateRange): void => {
+    dispatch({ type: 'SET_VALUE', payload: typed })
+    latestOnChange.current(typed)
+  }, [])
 
   const toggle = useCallback((): void => dispatch({ type: 'TOGGLE_MODAL' }), [])
 
@@ -137,12 +149,15 @@ export function useDatePickerController({
     focusInput()
   }, [focusInput, isCalendar])
 
-  const handleBlur = useCallback((event: FocusEvent<HTMLDivElement>): void => {
-    const next = event.relatedTarget
-    if (next && !event.currentTarget.contains(next)) {
-      dispatch({ type: 'CLOSE_MODAL' })
-    }
-  }, [])
+  const handleBlur = useCallback(
+    (event: FocusEvent<HTMLDivElement>): void => {
+      const next = event.relatedTarget as Node | null
+      if (next && !event.currentTarget.contains(next) && !panel?.contains(next)) {
+        dispatch({ type: 'CLOSE_MODAL' })
+      }
+    },
+    [panel],
+  )
 
   const showMonths = useCallback((first: number, second: number): void => {
     dispatch({ type: 'SET_YEAR', payload: Math.floor(first / 12) })
@@ -238,6 +253,7 @@ export function useDatePickerController({
   const context = useMemo<DatePickerContextProps>(
     () => ({
       closeAndRestoreFocus,
+      commitTypedValue,
       colorScheme,
       dispatch,
       displayFormat,
@@ -254,6 +270,7 @@ export function useDatePickerController({
       onSecondMonthChange,
       onSecondYearChange,
       onSelectDate,
+      panelVars,
       position,
       setPanel,
       shape,
@@ -265,6 +282,7 @@ export function useDatePickerController({
     }),
     [
       closeAndRestoreFocus,
+      commitTypedValue,
       colorScheme,
       displayFormat,
       footerApply,
@@ -282,6 +300,7 @@ export function useDatePickerController({
       onSecondMonthChange,
       onSecondYearChange,
       onSelectDate,
+      panelVars,
       position,
       shape,
       showFooter,

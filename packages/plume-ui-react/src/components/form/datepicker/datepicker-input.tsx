@@ -42,6 +42,8 @@ const generateDatePickerInputClasses = (
     ${disabledClass} ${invalidClass} ${className}`.trim()
 }
 
+const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
+
 export function DatePickerInput({
   className = '',
   disabled = false,
@@ -56,7 +58,7 @@ export function DatePickerInput({
       modalOpen,
       value: { startDate, endDate },
     },
-    dispatch,
+    commitTypedValue,
     displayFormat,
     isCalendar,
     isRange,
@@ -89,6 +91,14 @@ export function DatePickerInput({
     [inputRef],
   )
 
+  const commitIfChanged = useCallback(
+    (typed: DateRange): void => {
+      if (sameTime(typed.startDate, startDate) && sameTime(typed.endDate, endDate)) return
+      commitTypedValue(typed)
+    },
+    [commitTypedValue, endDate, startDate],
+  )
+
   useEffect(() => {
     if (![10, 23].includes(debouncedValue.length) || isButtonClick) {
       return
@@ -100,29 +110,19 @@ export function DatePickerInput({
       !isRange &&
       validateFormatDate(debouncedValue, language, displayFormat)
     ) {
-      const newStartDate = getDateFromDateString(debouncedValue, format)
-      dispatch({
-        type: 'SET_VALUE',
-        payload: {
-          startDate: newStartDate,
-          endDate: null,
-        },
-      })
+      commitIfChanged({ startDate: getDateFromDateString(debouncedValue, format), endDate: null })
     } else if (
       debouncedValue.length === 23 &&
       validateFormatDate(debouncedValue.split(' - ')[0], language, displayFormat) &&
       validateFormatDate(debouncedValue.split(' - ')[1], language, displayFormat)
     ) {
       const [startDateString, endDateString] = debouncedValue.split(' - ')
-      dispatch({
-        type: 'SET_VALUE',
-        payload: {
-          startDate: getDateFromDateString(startDateString, format),
-          endDate: getDateFromDateString(endDateString, format),
-        },
+      commitIfChanged({
+        startDate: getDateFromDateString(startDateString, format),
+        endDate: getDateFromDateString(endDateString, format),
       })
     }
-  }, [debouncedValue, dispatch, displayFormat, isButtonClick, isRange, language])
+  }, [commitIfChanged, debouncedValue, displayFormat, isButtonClick, isRange, language])
 
   useEffect(() => {
     setInputValue(

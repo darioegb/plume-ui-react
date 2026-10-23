@@ -133,6 +133,7 @@ input + .inputButton {
 .datePickerModal {
   --datepicker-day: var(--plume-space-10);
   --datepicker-calendar-width: calc(var(--datepicker-day) * 7 + 3.5rem);
+  --datepicker-fill: color-mix(in srgb, var(--plume-foreground) 8%, transparent);
   margin-top: var(--plume-space-2);
   display: flex;
   flex-direction: column;
@@ -143,6 +144,32 @@ input + .inputButton {
   overscroll-behavior: contain;
   position: absolute;
   z-index: var(--plume-z-1);
+}
+
+.variantOutline :is(.month, .year),
+.variantOutline .monthYearSelectors button:not([class*='icon']) {
+  border: 1px solid var(--plume-border-strong);
+}
+
+.variantFilled
+  :is(.month, .year, .day:not(.disabledDay), .monthYearSelectors button:not([class*='icon'])):not(
+    .selected
+  ) {
+  background-image: linear-gradient(var(--datepicker-fill), var(--datepicker-fill));
+}
+
+.variantUnderline :is(.month, .year, .day),
+.variantUnderline .monthYearSelectors button:not([class*='icon']) {
+  border-radius: 0;
+}
+
+.variantUnderline :is(.month, .year),
+.variantUnderline .monthYearSelectors button:not([class*='icon']) {
+  border-block-end: 1px solid var(--plume-border-strong);
+}
+
+.variantUnderline :is(.month, .year, .day).selected {
+  border-block-end: 2px solid var(--datepicker-scheme);
 }
 
 .inline {

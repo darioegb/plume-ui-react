@@ -7,6 +7,12 @@
     min-width: 0;
   }
 
+  /* The identity transform of the zoom box makes it the containing block of the fixed popups, which
+     would open far from their trigger. */
+  .docs-story > div > div {
+    transform: none !important;
+  }
+
   /* Bootstrap paints kbd as a tall inline box that runs into the lines around it and touches its
      neighbours, so the keys in the descriptions get their own box, like the inline code. */
   .sbdocs kbd {

@@ -223,7 +223,7 @@ export default {
     onChange: {
       action: 'changed',
       description:
-        'Called with the new `{ startDate, endDate }` when a date is picked, when a range is complete, or on Apply when `showFooter` is set.',
+        'Called with the new `{ startDate, endDate }` when a date is picked or typed, when a range is complete, or on Apply when `showFooter` is set.',
       table: { category: 'Events', type: { summary: '(value: DateRange) => void' } },
     },
     onBlur: {
@@ -271,6 +271,7 @@ export const Default: Story = {
 /**
  * This is a list of DatePicker with different variants.
  * Just adding the **variant** prop in one of these values **outline**, **underline**, **filled** and **unstyled**.
+ * The **variant**, **size** and **shape** go on the `DatePicker` and style the input and the calendar together, so open them to see the calendar of each one.
  */
 export const Variants: Story = {
   parameters: {
@@ -320,45 +321,6 @@ export const Variants: Story = {
           value={value}
           variant='unstyled'
         />
-      </div>
-    )
-  },
-}
-
-/**
- * The **variant**, **size** and **shape** go on the `DatePicker` and style the input and the calendar together.
- * Here the calendars are always visible (`isCalendar`) to compare them: `outline` has a bordered calendar,
- * `filled` a tinted one with an accent line, `underline` a square one with an accent line and `unstyled` keeps
- * only the structure. The **size** also scales the days of the calendar.
- */
-export const CalendarVariants: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<DatePicker isCalendar variant="outline" value={value} onChange={handleValueChange} />
-<DatePicker isCalendar variant="filled" value={value} onChange={handleValueChange} />
-<DatePicker isCalendar variant="underline" value={value} onChange={handleValueChange} />
-<DatePicker isCalendar variant="unstyled" value={value} onChange={handleValueChange} />
-<DatePicker isCalendar size="sm" value={value} onChange={handleValueChange} />
-<DatePicker isCalendar size="lg" value={value} onChange={handleValueChange} />
-          `,
-      },
-    },
-  },
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
-    const [value, setValue] = useState<DateRange>({ startDate: null, endDate: null })
-    const variants = ['outline', 'filled', 'underline', 'unstyled'] as const
-    const sizes = ['sm', 'lg'] as const
-
-    return (
-      <div className='flex flex-wrap gap-6'>
-        {variants.map((variant) => (
-          <DatePicker isCalendar key={variant} onChange={setValue} value={value} variant={variant} />
-        ))}
-        {sizes.map((size) => (
-          <DatePicker isCalendar key={size} onChange={setValue} size={size} value={value} />
-        ))}
       </div>
     )
   },

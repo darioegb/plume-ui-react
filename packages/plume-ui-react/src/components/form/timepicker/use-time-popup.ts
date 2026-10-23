@@ -35,7 +35,7 @@ export function useTimePopup({ input, root }: Readonly<UseTimePopupOptions>): Us
   }, [open, panel])
 
   useDismiss({
-    elements: [root],
+    elements: [root, panel],
     enabled: open,
     onDismiss: (reason) => {
       setOpen(false)
@@ -46,10 +46,13 @@ export function useTimePopup({ input, root }: Readonly<UseTimePopupOptions>): Us
   const close = useCallback((): void => setOpen(false), [])
   const toggle = useCallback((): void => setOpen((isOpen) => !isOpen), [])
 
-  const handleBlur = useCallback((event: FocusEvent<HTMLDivElement>): void => {
-    const next = event.relatedTarget
-    if (next && !event.currentTarget.contains(next)) setOpen(false)
-  }, [])
+  const handleBlur = useCallback(
+    (event: FocusEvent<HTMLDivElement>): void => {
+      const next = event.relatedTarget as Node | null
+      if (next && !event.currentTarget.contains(next) && !panel?.contains(next)) setOpen(false)
+    },
+    [panel],
+  )
 
   return {
     close,

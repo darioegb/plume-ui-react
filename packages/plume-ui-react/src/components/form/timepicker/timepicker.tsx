@@ -9,7 +9,7 @@ import { useControllableState } from '../../../overlay/use-controllable-state'
 import { mergeRefs } from '../../../overlay/trigger'
 import { Button } from '../../interaction/button'
 import { Input } from '../input'
-import { pickerPanelClasses, type PickerVariant } from '../shared/picker-panel'
+import { customProperties, pickerPanelClasses, type PickerVariant } from '../shared/picker-panel'
 import { TimePanel } from './time-panel'
 import { useTimePicks } from './use-time-picks'
 import { useTimePopup } from './use-time-popup'
@@ -61,17 +61,22 @@ export type TimePickerProps = Omit<ComponentProps, 'index'> &
   TimePickerRootAttributes &
   TimePickerOwnProps
 
-const timePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
+const timePickerColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
     '--picker-scheme': `var(--plume-color-${colorScheme}-text)`,
     '--timepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--timepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--timepicker-hover': `var(--plume-color-${colorScheme}-100)`,
+    '--timepicker-hover': `color-mix(in srgb, var(--plume-color-${colorScheme}-solid) 18%, transparent)`,
     '--timepicker-selected-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
-    ...style,
   }) as CSSProperties
 
 const TIME_MASK = '##:##'
+
+const VARIANT_CLASS = {
+  filled: 'variantFilled',
+  outline: 'variantOutline',
+  underline: 'variantUnderline',
+} as const
 
 const defaultPlaceholder = (hour12: boolean, am: string): string =>
   hour12 ? `hh:mm ${am}` : 'hh:mm'
@@ -110,6 +115,8 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
   ) => {
     const labels = { ...DEFAULT_LABELS, ...config?.labels }
     const { shape, size } = resolveLook(variant, shapeProp, sizeProp)
+    const colorVars = timePickerColorVars(colorScheme)
+    const panelVars = { ...colorVars, ...customProperties(style) }
     const [value, setValue] = useControllableState({
       defaultValue,
       onChange,
@@ -144,7 +151,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
         className={styles.timePicker}
         onBlur={popup.handleBlur}
         ref={setRootRef}
-        style={timePickerColorVars(colorScheme, style)}
+        style={{ ...colorVars, ...style }}
       >
         <Input
           {...inputProps}
@@ -156,6 +163,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
               aria-expanded={popup.open}
               aria-haspopup="dialog"
               aria-label={labels.openTimePicker}
+              className={styles.trigger}
               disabled={disabled || readOnly}
               onClick={popup.toggle}
               shape="pill"
@@ -185,6 +193,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
             className={joinClasses(
               styles.panel,
               pickerPanelClasses(variant, size, shape),
+              variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
               panelClassName,
             )}
             hour12={hour12}
@@ -194,7 +203,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
             onPickMinutes={pickMinutes}
             onPickPeriod={pickPeriod}
             panelRef={popup.setPanel}
-            style={popup.panelStyle}
+            style={{ ...panelVars, ...popup.panelStyle }}
             value={value}
           />
         ) : null}

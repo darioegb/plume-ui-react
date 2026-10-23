@@ -4,6 +4,7 @@ import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { mergeRefs } from '../../../overlay/trigger'
+import { customProperties } from '../shared/picker-panel'
 import { DatePickerCalendar } from './datepicker-calendar'
 import { DatePickerInput, type DatePickerInputProps } from './datepicker-input'
 import type { DatePickerConfig, DatePickerVariant, DateRange } from './datepicker-types'
@@ -49,7 +50,7 @@ const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): C
     '--datepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
     '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-200)`,
     '--datepicker-range-item-text': `var(--plume-color-${colorScheme}-900)`,
-    '--datepicker-hover-color': `var(--plume-color-${colorScheme}-100)`,
+    '--datepicker-hover-color': `color-mix(in srgb, var(--plume-color-${colorScheme}-solid) 18%, transparent)`,
     '--datepicker-selected-hover-color': `var(--plume-color-${colorScheme}-solid-hover)`,
     ...style,
   }) as CSSProperties
@@ -81,6 +82,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       (node: HTMLDivElement | null): void => mergeRefs<HTMLDivElement>(setRoot, ref)(node),
       [ref],
     )
+    const colorVars = datePickerColorVars(colorScheme, customProperties(style))
     const { context, handleBlur } = useDatePickerController({
       colorScheme,
       config,
@@ -90,6 +92,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       maxDate,
       minDate,
       onChange,
+      panelVars: colorVars,
       root,
       shape: shape ?? (variant === 'unstyled' ? undefined : 'rounded'),
       showFooter,
@@ -104,7 +107,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
           className={styles.datePicker}
           onBlur={handleBlur}
           ref={setRootRef}
-          style={datePickerColorVars(colorScheme, style)}
+          style={{ ...colorVars, ...style }}
         >
           {children ?? (
             <>

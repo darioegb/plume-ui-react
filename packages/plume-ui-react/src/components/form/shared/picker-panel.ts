@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { Shape, Size } from '../../../theme'
 import { joinClasses } from '../../../overlay/class-names'
 import styles from './picker-panel.module.css'
@@ -22,3 +23,6 @@ export const pickerPanelClasses = (
     size === 'lg' && styles.panelLg,
     shape === 'pill' && styles.panelPill,
   )
+
+export const customProperties = (style?: CSSProperties): CSSProperties =>
+  Object.fromEntries(Object.entries(style ?? {}).filter(([name]) => name.startsWith('--')))

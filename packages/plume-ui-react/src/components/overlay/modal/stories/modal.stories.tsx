@@ -352,16 +352,16 @@ export const Tailwind: Story = {
     />
   </ModalTrigger>
   <ModalContent
-    backdropClassName="bg-black/50 p-4"
+    backdropClassName="bg-black/50 p-[1rem]"
     className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
   >
-    <ModalHeader className="border-b border-border px-5 py-4 text-lg font-semibold">
+    <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
       Delete project
     </ModalHeader>
-    <ModalBody className="px-5 py-4 text-sm">
+    <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
       Deleting a project removes its files, its history and its members. This cannot be undone.
     </ModalBody>
-    <ModalFooter className="flex justify-end gap-2 border-t border-border px-5 py-3">
+    <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
       <ModalClose>
         <Button
           className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
@@ -392,16 +392,16 @@ export const Tailwind: Story = {
         />
       </ModalTrigger>
       <ModalContent
-        backdropClassName="bg-black/50 p-4"
+        backdropClassName="bg-black/50 p-[1rem]"
         className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
       >
-        <ModalHeader className="border-b border-border px-5 py-4 text-lg font-semibold">
+        <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
           Delete project
         </ModalHeader>
-        <ModalBody className="px-5 py-4 text-sm">
+        <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
           Deleting a project removes its files, its history and its members. This cannot be undone.
         </ModalBody>
-        <ModalFooter className="flex justify-end gap-2 border-t border-border px-5 py-3">
+        <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
           <ModalClose>
             <Button
               className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
