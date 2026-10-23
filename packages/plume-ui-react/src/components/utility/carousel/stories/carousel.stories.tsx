@@ -101,7 +101,7 @@ function Controls(): React.ReactNode {
  * | `CarouselSlides` | `id`, `title`, `className`, `style`, `children`. The strip that holds and scrolls the slides. Each child is one slide. |
  * | `CarouselSlide` | `aria-label`, `title`, `hidden`, `className`, `style`, `children`. One slide. It has `data-active` while it is the visible one. |
  * | `CarouselPrev`, `CarouselNext` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The buttons that go to the previous and the next slide. `label` is the accessible name (`"Previous slide"`, `"Next slide"`), `icon` replaces the arrow and `children` replaces all of its content. |
- * | `CarouselDots` | `dotLabel`, `dotClassName`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`. One dot per slide, as a tab list. `dotLabel` is the name of each (`"Slide 1 of 4"`). A dot has `data-active` while its slide is the visible one. |
+ * | `CarouselDots` | `dotLabel`, `classNames.dot`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`. One dot per slide, as a tab list. `dotLabel` is the name of each (`"Slide 1 of 4"`). A dot has `data-active` while its slide is the visible one. |
  * | `CarouselPlayPause` | `pauseLabel`, `playLabel`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. |
  */
 export default {
@@ -272,9 +272,9 @@ export const Variants: Story = {
           >
             Back
           </CarouselPrev>
-          <CarouselDots
+          <CarouselDots classNames={{ dot: 'size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800' }}
             className="flex gap-2"
-            dotClassName="size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800"
+           
           />
           <CarouselNext
             className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
@@ -456,7 +456,7 @@ export const Tailwind: Story = {
   </CarouselSlides>
   <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
   <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-  <CarouselDots className="mt-3 gap-2" dotClassName="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid" />
+  <CarouselDots classNames={{ dot: 'size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid' }} className="mt-3 gap-2" />
 </Carousel>`,
       },
     },
@@ -476,9 +476,9 @@ export const Tailwind: Story = {
       </CarouselSlides>
       <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
       <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-      <CarouselDots
+      <CarouselDots classNames={{ dot: 'size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid' }}
         className="mt-3 gap-2"
-        dotClassName="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid"
+       
       />
     </Carousel>
   ),
@@ -501,7 +501,7 @@ export const Bootstrap: Story = {
   <style>{'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
   <div className="d-flex align-items-center justify-content-between mt-2">
     <CarouselPrev className="btn btn-outline-secondary btn-sm" />
-    <CarouselDots className="d-flex gap-2" dotClassName="rounded-circle bg-secondary-subtle p-1 border-0" />
+    <CarouselDots classNames={{ dot: 'rounded-circle bg-secondary-subtle p-1 border-0' }} className="d-flex gap-2" />
     <CarouselNext className="btn btn-outline-secondary btn-sm" />
   </div>
 </Carousel>`,
@@ -526,9 +526,9 @@ export const Bootstrap: Story = {
       </style>
       <div className="d-flex align-items-center justify-content-between mt-2">
         <CarouselPrev className="btn btn-outline-secondary btn-sm" />
-        <CarouselDots
+        <CarouselDots classNames={{ dot: 'rounded-circle bg-secondary p-1 border-0' }}
           className="d-flex gap-2"
-          dotClassName="rounded-circle bg-secondary p-1 border-0"
+         
         />
         <CarouselNext className="btn btn-outline-secondary btn-sm" />
       </div>

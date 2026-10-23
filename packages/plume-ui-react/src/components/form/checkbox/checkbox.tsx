@@ -12,8 +12,13 @@ import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useControlLabelledBy } from '../field/use-control-labelled-by'
 import styles from './checkbox.module.css'
 
+export type CheckboxPart = 'input' | 'label'
+
 export interface CheckboxOwnProps {
+  classNames?: Partial<Record<CheckboxPart, string>>
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
   colorScheme?: ColorScheme
   indeterminate?: boolean
@@ -60,6 +65,7 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
     {
       children,
       className = '',
+      classNames,
       inputClassName = '',
       labelClassName = '',
       colorScheme = 'primary',
@@ -104,6 +110,7 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
         isStyled && styles[variant],
         isStyled && isInvalid && styles.invalid,
         inputClassName,
+        classNames?.input,
       ]
         .filter(Boolean)
         .join(' ') || undefined
@@ -135,7 +142,9 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName].filter(Boolean).join(' ') || undefined
+              [isStyled && styles.label, labelClassName, classNames?.label]
+                .filter(Boolean)
+                .join(' ') || undefined
             }
             id={textId}
           >

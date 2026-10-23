@@ -6,9 +6,13 @@ import type { ComponentProps } from '../../../theme'
 import { useSelectContext } from './select-context'
 import styles from './select.module.css'
 
+export type SelectGroupPart = 'label'
+
 export interface SelectGroupOwnProps {
   children?: ReactNode
   label: ReactNode
+  classNames?: Partial<Record<SelectGroupPart, string>>
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
 }
 
@@ -16,7 +20,7 @@ export type SelectGroupProps = Omit<ComponentProps, 'index'> & SelectGroupOwnPro
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   (
-    { children, className = '', label, labelClassName = '', style }: SelectGroupProps,
+    { children, className = '', classNames, label, labelClassName = '', style }: SelectGroupProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const { isStyled } = useSelectContext('SelectGroup')
@@ -33,7 +37,9 @@ export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
       >
         <div
           className={
-            [isStyled && styles.groupLabel, labelClassName].filter(Boolean).join(' ') || undefined
+            [isStyled && styles.groupLabel, labelClassName, classNames?.label]
+              .filter(Boolean)
+              .join(' ') || undefined
           }
           id={labelId}
         >

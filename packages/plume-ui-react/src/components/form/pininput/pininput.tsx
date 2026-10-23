@@ -9,6 +9,8 @@ import type { PinInputType } from './pin-utils'
 import styles from './pininput.module.css'
 import { usePinInput } from './use-pin-input'
 
+export type PinInputPart = 'input'
+
 export type PinInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface PinInputOwnProps {
@@ -17,6 +19,8 @@ export interface PinInputOwnProps {
   colorScheme?: ColorScheme
   defaultValue?: string
   getInputLabel?: (index: number, length: number) => string
+  classNames?: Partial<Record<PinInputPart, string>>
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
   length?: number
   mask?: boolean
@@ -69,6 +73,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       disabled = false,
       getInputLabel,
       id,
+      classNames,
       inputClassName,
       length = 6,
       mask = false,
@@ -135,7 +140,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
             aria-label={label(index + 1, length)}
             aria-required={required || undefined}
             autoComplete={autoComplete}
-            className={joinClasses(isStyled && styles.cell, inputClassName)}
+            className={joinClasses(isStyled && styles.cell, inputClassName, classNames?.input)}
             data-filled={pin.value[index] ? '' : undefined}
             data-plume-pininput-cell=""
             disabled={disabled}

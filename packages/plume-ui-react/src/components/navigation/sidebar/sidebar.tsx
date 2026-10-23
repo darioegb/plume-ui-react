@@ -17,7 +17,11 @@ import {
 } from './sidebar-context'
 import styles from './sidebar.module.css'
 
+export type SidebarPart = 'backdrop'
+
 export interface SidebarOwnProps {
+  classNames?: Partial<Record<SidebarPart, string>>
+  /** Alias of `classNames.backdrop`, kept until the next major. */
   backdropClassName?: string
   colorScheme?: ColorScheme
   side?: SidebarSide
@@ -49,6 +53,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
+      classNames,
       backdropClassName,
       children,
       className,
@@ -92,7 +97,11 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       <SidebarStyleContext.Provider value={styleContext}>
         <div
           aria-hidden="true"
-          className={joinClasses(isStyled && styles.backdrop, backdropClassName)}
+          className={joinClasses(
+            isStyled && styles.backdrop,
+            backdropClassName,
+            classNames?.backdrop,
+          )}
           data-breakpoint={breakpoint}
           data-open={open ? '' : undefined}
           data-plume-sidebar-backdrop=""

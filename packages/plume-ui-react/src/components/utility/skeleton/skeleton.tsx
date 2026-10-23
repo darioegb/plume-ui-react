@@ -4,12 +4,16 @@ import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import styles from './skeleton.module.css'
 
+export type SkeletonPart = 'line'
+
 export type SkeletonShape = 'text' | 'rect' | 'circle'
 
 export type SkeletonVariant = 'pulse' | 'wave' | 'unstyled'
 
 export interface SkeletonOwnProps {
   height?: number | string
+  classNames?: Partial<Record<SkeletonPart, string>>
+  /** Alias of `classNames.line`, kept until the next major. */
   lineClassName?: string
   lines?: number
   shape?: SkeletonShape
@@ -31,6 +35,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
     {
       className,
       height,
+      classNames,
       lineClassName,
       lines = 1,
       shape = 'text',
@@ -69,6 +74,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
                   isStyled && styles.text,
                   isStyled && line === count - 1 && styles.last,
                   lineClassName,
+                  classNames?.line,
                 ),
               )}
               data-plume-skeleton=""

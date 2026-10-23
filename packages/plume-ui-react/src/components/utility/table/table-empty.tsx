@@ -2,10 +2,15 @@ import type { ForwardedRef, ReactNode, TdHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { EmptyState } from '../../presentation/emptystate'
-import type { EmptyStateProps } from '../../presentation/emptystate'
+import type { EmptyStatePart, EmptyStateProps } from '../../presentation/emptystate'
+import { joinClasses } from '../../../overlay/class-names'
+
+export type TableEmptyPart = EmptyStatePart | 'emptyState'
 
 export interface TableEmptyOwnProps {
+  classNames?: Partial<Record<TableEmptyPart, string>>
   colSpan?: number
+  /** Alias of `classNames.emptyState`, kept until the next major. */
   emptyStateClassName?: string
 }
 
@@ -18,7 +23,7 @@ export type TableEmptyProps = Omit<ComponentProps, 'index'> &
   TableEmptyRootAttributes &
   Pick<
     EmptyStateProps,
-    'action' | 'classNames' | 'description' | 'icon' | 'size' | 'title' | 'titleAs' | 'variant'
+    'action' | 'description' | 'icon' | 'size' | 'title' | 'titleAs' | 'variant'
   > &
   TableEmptyOwnProps
 
@@ -53,7 +58,7 @@ export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
       >
         <EmptyState
           action={action}
-          className={emptyStateClassName}
+          className={joinClasses(emptyStateClassName, classNames?.emptyState)}
           classNames={classNames}
           description={description}
           icon={icon}

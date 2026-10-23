@@ -72,21 +72,17 @@ export default {
         'Inline styles for the `<nav>`. They are applied after the color variables, so they can override them (e.g. `--breadcrumb-text`).',
       table: { type: { summary: 'CSSProperties' } },
     },
-    listClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the `<ol>`.',
-      table: { type: { summary: 'string' } },
+    classNames: {
+      control: false,
+      description:
+        'Custom CSS classes for the parts, in every variant: `list` (the `<ol>`), `separator` (every separator). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<BreadcrumbPart, string>>' } },
     },
     separator: {
       control: 'text',
       description:
         'What goes between the items. It can be any node, like an icon. An item can use its own.',
       table: { type: { summary: 'ReactNode' }, defaultValue: { summary: '"/"' } },
-    },
-    separatorClassName: {
-      control: 'text',
-      description: 'Custom CSS class for every separator.',
-      table: { type: { summary: 'string' } },
     },
     colorScheme: {
       control: 'select',
@@ -168,10 +164,10 @@ export const Variants: Story = {
       <Breadcrumb aria-label="Filled" variant="filled">
         <Trail />
       </Breadcrumb>
-      <Breadcrumb
+      <Breadcrumb classNames={{ separator: 'mx-2 text-gray-400' }}
         aria-label="Unstyled"
         className="text-sm"
-        separatorClassName="mx-2 text-gray-400"
+       
         variant="unstyled"
       >
         <BreadcrumbItem>
@@ -281,17 +277,17 @@ export const Long: Story = {
 /**
  * Some examples of Breadcrumb with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
  * structure stays (the list is a wrapping row and the last separator is hidden). Style the parts with their own
- * classes: `separatorClassName` for the separators and `data-[current]:` on the link for the current page.
+ * classes: `classNames.separator` for the separators and `data-[current]:` on the link for the current page.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Breadcrumb
+        code: `<Breadcrumb classNames={{ list: 'gap-y-1', separator: 'mx-2 opacity-50' }}
   className="text-sm text-foreground"
-  listClassName="gap-y-1"
+ 
   separator="/"
-  separatorClassName="mx-2 opacity-50"
+ 
   variant="unstyled"
 >
   <BreadcrumbItem>
@@ -308,11 +304,11 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <Breadcrumb
+    <Breadcrumb classNames={{ list: 'gap-y-1', separator: 'mx-2 opacity-50' }}
       className="text-sm text-foreground"
-      listClassName="gap-y-1"
+     
       separator="/"
-      separatorClassName="mx-2 opacity-50"
+     
       variant="unstyled"
     >
       <BreadcrumbItem>
@@ -343,7 +339,7 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Breadcrumb listClassName="breadcrumb mb-0" variant="unstyled">
+        code: `<Breadcrumb classNames={{ list: 'breadcrumb mb-0' }} variant="unstyled">
   <BreadcrumbItem className="breadcrumb-item" separator={null}>
     <BreadcrumbLink href="/">Home</BreadcrumbLink>
   </BreadcrumbItem>
@@ -358,7 +354,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <Breadcrumb listClassName="breadcrumb mb-0" variant="unstyled">
+    <Breadcrumb classNames={{ list: 'breadcrumb mb-0' }} variant="unstyled">
       <BreadcrumbItem className="breadcrumb-item" separator={null}>
         <BreadcrumbLink href="#home">Home</BreadcrumbLink>
       </BreadcrumbItem>

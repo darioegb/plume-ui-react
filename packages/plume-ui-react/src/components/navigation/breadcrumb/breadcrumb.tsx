@@ -7,10 +7,15 @@ import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { BreadcrumbContext, type BreadcrumbVariant } from './breadcrumb-context'
 import styles from './breadcrumb.module.css'
 
+export type BreadcrumbPart = 'list' | 'separator'
+
 export interface BreadcrumbOwnProps {
   colorScheme?: ColorScheme
+  classNames?: Partial<Record<BreadcrumbPart, string>>
+  /** Alias of `classNames.list`, kept until the next major. */
   listClassName?: string
   separator?: ReactNode
+  /** Alias of `classNames.separator`, kept until the next major. */
   separatorClassName?: string
   size?: Size
   variant?: BreadcrumbVariant
@@ -42,6 +47,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       children,
       className,
       colorScheme = 'primary',
+      classNames,
       listClassName,
       separator = '/',
       separatorClassName,
@@ -54,8 +60,12 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   ) => {
     const isStyled = variant !== 'unstyled'
     const context = useMemo(
-      () => ({ isStyled, separator, separatorClassName }),
-      [isStyled, separator, separatorClassName],
+      () => ({
+        isStyled,
+        separator,
+        separatorClassName: joinClasses(separatorClassName, classNames?.separator),
+      }),
+      [classNames?.separator, isStyled, separator, separatorClassName],
     )
 
     return (
@@ -75,7 +85,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
           {...rest}
         >
           <ol
-            className={joinClasses(isStyled && styles.list, listClassName)}
+            className={joinClasses(isStyled && styles.list, listClassName, classNames?.list)}
             data-plume-breadcrumb-list=""
           >
             {children}

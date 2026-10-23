@@ -7,6 +7,9 @@ import { useMask } from '../../../hooks/use-mask'
 import { InputGroup } from './input-group'
 import { InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
+import { joinClasses } from '../../../overlay/class-names'
+
+export type InputPart = 'reveal'
 
 export interface InputOwnProps {
   addonBefore?: ReactNode
@@ -15,6 +18,8 @@ export interface InputOwnProps {
   elementAfter?: ReactNode
   colorScheme?: ColorScheme
   mask?: string
+  classNames?: Partial<Record<InputPart, string>>
+  /** Alias of `classNames.reveal`, kept until the next major. */
   revealClassName?: string
   revealLabel?: string
   revealable?: boolean
@@ -85,6 +90,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       colorScheme = 'secondary',
       disabled = false,
       readOnly = false,
+      classNames,
       revealClassName,
       revealLabel = 'Show password',
       revealable = false,
@@ -152,7 +158,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         reveal={
           canReveal ? (
             <InputReveal
-              className={revealClassName}
+              className={joinClasses(revealClassName, classNames?.reveal)}
               disabled={disabled}
               isStyled={isStyled}
               label={revealLabel}

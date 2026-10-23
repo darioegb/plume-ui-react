@@ -34,11 +34,11 @@ export default {
       description: 'Custom CSS class for the track, the box that holds the bar.',
       table: { type: { summary: 'string' } },
     },
-    indicatorClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the bar that fills the track, in every variant. With `variant="unstyled"` it is the only class the bar has; its width is set for you.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `indicator` (the bar), `value` (the text with the value). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<ProgressBarPart, string>>' } },
     },
     style: {
       control: false,
@@ -82,11 +82,6 @@ export default {
         type: { summary: '(value: number, max: number) => string' },
         defaultValue: { summary: '(v, max) => `${Math.round((v / max) * 100)}%`' },
       },
-    },
-    valueClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the text of **showValue**.',
-      table: { type: { summary: 'string' } },
     },
     valueText: {
       control: 'text',
@@ -170,10 +165,10 @@ export const Variants: Story = {
     <div className="flex flex-col gap-4" style={{ width: '20rem' }}>
       <ProgressBar aria-label="Solid" value={60} variant="solid" />
       <ProgressBar aria-label="Striped" value={60} variant="striped" />
-      <ProgressBar
+      <ProgressBar classNames={{ indicator: 'rounded bg-black' }}
         aria-label="Unstyled"
         className="h-2 rounded bg-gray-200"
-        indicatorClassName="rounded bg-black"
+       
         value={60}
         variant="unstyled"
       />
@@ -304,24 +299,24 @@ export const Live: Story = {
 /**
  * Some examples of ProgressBar with Tailwind classes. With `variant="unstyled"` the track and the bar have none of
  * the Plume classes and keep their structure: the bar fills the track and its width follows the value. `className`
- * styles the track and `indicatorClassName` the bar.
+ * styles the track and `classNames.indicator` the bar.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="flex w-80 flex-col gap-4">
-  <ProgressBar
+  <ProgressBar classNames={{ indicator: 'rounded-full bg-primary-solid' }}
     aria-label="Storage"
     className="h-2 rounded-full bg-surface-muted"
-    indicatorClassName="rounded-full bg-primary-solid"
+   
     value={70}
     variant="unstyled"
   />
-  <ProgressBar
+  <ProgressBar classNames={{ indicator: 'bg-emerald-500' }}
     aria-label="Quota"
     className="h-4 rounded-md border border-border bg-surface"
-    indicatorClassName="bg-emerald-500"
+   
     value={35}
     variant="unstyled"
   />
@@ -331,17 +326,17 @@ export const Tailwind: Story = {
   },
   render: () => (
     <div className="flex w-80 flex-col gap-4">
-      <ProgressBar
+      <ProgressBar classNames={{ indicator: 'rounded-full bg-primary-solid' }}
         aria-label="Storage"
         className="h-2 rounded-full bg-surface-muted"
-        indicatorClassName="rounded-full bg-primary-solid"
+       
         value={70}
         variant="unstyled"
       />
-      <ProgressBar
+      <ProgressBar classNames={{ indicator: 'bg-emerald-500' }}
         aria-label="Quota"
         className="h-4 rounded-md border border-border bg-surface"
-        indicatorClassName="bg-emerald-500"
+       
         value={35}
         variant="unstyled"
       />
@@ -358,11 +353,11 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<div className="d-flex flex-column gap-3" style={{ width: "20rem" }}>
-  <ProgressBar aria-label="Storage" className="progress" indicatorClassName="progress-bar" value={70} variant="unstyled" />
-  <ProgressBar
+  <ProgressBar classNames={{ indicator: 'progress-bar' }} aria-label="Storage" className="progress" value={70} variant="unstyled" />
+  <ProgressBar classNames={{ indicator: 'progress-bar bg-success progress-bar-striped progress-bar-animated' }}
     aria-label="Quota"
     className="progress"
-    indicatorClassName="progress-bar bg-success progress-bar-striped progress-bar-animated"
+   
     value={35}
     variant="unstyled"
   />
@@ -372,17 +367,17 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className="d-flex flex-column gap-3" style={{ width: '20rem' }}>
-      <ProgressBar
+      <ProgressBar classNames={{ indicator: 'progress-bar' }}
         aria-label="Storage"
         className="progress"
-        indicatorClassName="progress-bar"
+       
         value={70}
         variant="unstyled"
       />
-      <ProgressBar
+      <ProgressBar classNames={{ indicator: 'progress-bar bg-success progress-bar-striped progress-bar-animated' }}
         aria-label="Quota"
         className="progress"
-        indicatorClassName="progress-bar bg-success progress-bar-striped progress-bar-animated"
+       
         value={35}
         variant="unstyled"
       />

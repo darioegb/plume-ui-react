@@ -41,11 +41,11 @@ export default {
       description: 'Custom CSS class for the group (the `<fieldset>`). `style` goes there too.',
       table: { type: { summary: 'string' } },
     },
-    inputClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for every box, in every variant. With `variant="unstyled"` it is the only class the boxes have.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `input` (every box). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<PinInputPart, string>>' } },
     },
     style: {
       control: false,
@@ -235,10 +235,10 @@ export const Variants: Story = {
       <PinInput aria-label="Outline" length={4} variant="outline" />
       <PinInput aria-label="Filled" length={4} variant="filled" />
       <PinInput aria-label="Underline" length={4} variant="underline" />
-      <PinInput
+      <PinInput classNames={{ input: 'h-10 w-10 rounded border border-gray-400' }}
         aria-label="Unstyled"
         className="gap-2"
-        inputClassName="h-10 w-10 rounded border border-gray-400"
+       
         length={4}
         variant="unstyled"
       />
@@ -402,17 +402,17 @@ export const WithField: Story = {
 
 /**
  * Some examples of PinInput with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
- * classes: `className` styles the group, `inputClassName` every box, and a filled one has `data-filled`, so
+ * classes: `className` styles the group, `classNames.input` every box, and a filled one has `data-filled`, so
  * `data-[filled]:` styles it.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<PinInput
+        code: `<PinInput classNames={{ input: 'h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500' }}
   aria-label="Verification code"
   className="gap-2"
-  inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+ 
   length={6}
   variant="unstyled"
 />`,
@@ -420,10 +420,10 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <PinInput
+    <PinInput classNames={{ input: 'h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500' }}
       aria-label="Verification code"
       className="gap-2"
-      inputClassName="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+     
       length={6}
       variant="unstyled"
     />
@@ -438,10 +438,10 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<PinInput
+        code: `<PinInput classNames={{ input: 'form-control form-control-lg text-center px-0' }}
   aria-label="Verification code"
   className="d-flex gap-2"
-  inputClassName="form-control form-control-lg text-center px-0"
+ 
   length={6}
   style={{ maxWidth: "100%", width: "20rem" }}
   variant="unstyled"
@@ -450,10 +450,10 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <PinInput
+    <PinInput classNames={{ input: 'form-control form-control-lg text-center px-0' }}
       aria-label="Verification code"
       className="d-flex gap-2"
-      inputClassName="form-control form-control-lg text-center px-0"
+     
       length={6}
       style={{ maxWidth: '100%', width: '20rem' }}
       variant="unstyled"

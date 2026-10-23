@@ -1,1 +1,1 @@
-export { Checkbox, type CheckboxProps } from './checkbox'
+export { Checkbox, type CheckboxPart, type CheckboxProps } from './checkbox'

@@ -4,6 +4,8 @@ import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import styles from './progressbar.module.css'
 
+export type ProgressBarPart = 'indicator' | 'value'
+
 export type ProgressBarVariant = 'solid' | 'striped' | 'unstyled'
 
 export interface ProgressBarOwnProps {
@@ -11,12 +13,15 @@ export interface ProgressBarOwnProps {
   colorScheme?: ColorScheme
   formatValue?: (value: number, max: number) => string
   indeterminate?: boolean
+  classNames?: Partial<Record<ProgressBarPart, string>>
+  /** Alias of `classNames.indicator`, kept until the next major. */
   indicatorClassName?: string
   max?: number
   shape?: Shape
   showValue?: boolean
   size?: Size
   value?: number
+  /** Alias of `classNames.value`, kept until the next major. */
   valueClassName?: string
   valueText?: string
   variant?: ProgressBarVariant
@@ -50,6 +55,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       colorScheme = 'primary',
       formatValue = defaultFormatValue,
       indeterminate = false,
+      classNames,
       indicatorClassName,
       max = 100,
       shape = 'pill',
@@ -79,6 +85,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       isStyled && variant === 'striped' && styles.striped,
       isStyled && variant === 'striped' && animated && styles.animated,
       indicatorClassName,
+      classNames?.indicator,
     )
 
     const bar = (
@@ -110,7 +117,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
         {bar}
         <span
           aria-hidden="true"
-          className={joinClasses(isStyled && styles.value, valueClassName)}
+          className={joinClasses(isStyled && styles.value, valueClassName, classNames?.value)}
           data-plume-progressbar-value=""
         >
           {formatValue(current, total)}

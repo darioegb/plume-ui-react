@@ -85,8 +85,8 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * | `TableCaption` | `side`, `id`, `title`, `className`, `style`, `children`. The name of the table. `side` is `top` (the default) or `bottom`. |
  * | `TableHeader`, `TableBody`, `TableFooter` | `id`, `title`, `hidden`, `className`, `style`, `children`. The `<thead>`, `<tbody>` and `<tfoot>`. |
  * | `TableRow` | `selected`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<tr>`. `selected` sets `aria-selected` and `data-selected`. |
- * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `classNames`, `emptyStateClassName`, `id`, `hidden`, `className`, `style`, `children`. A row with one cell that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. |
- * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `sortClassName`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a button, and `sortClassName` styles it. |
+ * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `classNames`, `id`, `hidden`, `className`, `style`, `children`. A row with one cell that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. |
+ * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `classNames.sort`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a button, and `classNames.sort` styles it. |
  * | `TableCell` | `align`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<td>`. |
  *
  * ### useTableState
@@ -155,10 +155,11 @@ export default {
       description: 'Inline styles for the `<table>`.',
       table: { type: { summary: 'CSSProperties' } },
     },
-    containerClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the box that scrolls around the `<table>`.',
-      table: { type: { summary: 'string' } },
+    classNames: {
+      control: false,
+      description:
+        'Custom CSS classes for the parts, in every variant: `container` (the box that scrolls around the `<table>`), `loading` (the spinner shown while it loads). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<TablePart, string>>' } },
     },
     hoverable: {
       control: 'boolean',
@@ -175,11 +176,6 @@ export default {
       control: 'text',
       description: 'Accessible name of the spinner shown while the table is loading.',
       table: { type: { summary: 'string' }, defaultValue: { summary: 'Loading' } },
-    },
-    loadingClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the spinner shown while the table is loading.',
-      table: { type: { summary: 'string' } },
     },
     maxHeight: {
       control: 'text',
@@ -866,7 +862,7 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Table aria-label="People" className="w-full text-left text-sm text-foreground" containerClassName="overflow-hidden rounded-lg border border-border" variant="unstyled">
+        code: `<Table classNames={{ container: 'overflow-hidden rounded-lg border border-border' }} aria-label="People" className="w-full text-left text-sm text-foreground" variant="unstyled">
   <TableHeader className="bg-surface-muted">
     <TableRow>
       <TableHead className="px-4 py-2 font-semibold">Name</TableHead>
@@ -886,10 +882,10 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <Table
+    <Table classNames={{ container: 'overflow-hidden rounded-lg border border-border' }}
       aria-label="People"
       className="w-full text-left text-sm text-foreground"
-      containerClassName="overflow-hidden rounded-lg border border-border"
+     
       style={{ minWidth: '28rem' }}
       variant="unstyled"
     >
@@ -929,7 +925,7 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Table aria-label="People" className="table table-striped table-hover caption-top" containerClassName="table-responsive" variant="unstyled">
+        code: `<Table classNames={{ container: 'table-responsive' }} aria-label="People" className="table table-striped table-hover caption-top" variant="unstyled">
   <TableCaption>People of the team</TableCaption>
   <TableHeader>
     <TableRow>
@@ -955,10 +951,10 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <Table
+    <Table classNames={{ container: 'table-responsive' }}
       aria-label="People"
       className="table table-striped table-hover caption-top"
-      containerClassName="table-responsive"
+     
       style={{ minWidth: '28rem' }}
       variant="unstyled"
     >

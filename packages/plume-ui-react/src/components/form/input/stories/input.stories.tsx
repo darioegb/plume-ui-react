@@ -165,11 +165,11 @@ export default {
         defaultValue: { summary: 'Show password' },
       },
     },
-    revealClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the reveal button, in every variant. With `variant="unstyled"` it is the only class the button has, and the Input and the button sit in a row.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `reveal` (the button that shows the password). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<InputPart, string>>' } },
     },
     autoComplete: {
       control: 'text',
@@ -523,13 +523,13 @@ export const Tailwind: Story = {
   defaultValue="Invalid value"
   className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
 />
-<Input
+<Input classNames={{ reveal: '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white' }}
   variant="unstyled"
   type="password"
   placeholder="Password"
   revealable
   className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-  revealClassName="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white"
+ 
 />`,
       },
     },
@@ -557,10 +557,10 @@ export const Tailwind: Story = {
         placeholder="Error Input"
         variant="unstyled"
       />
-      <Input
+      <Input classNames={{ reveal: '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white' }}
         className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         placeholder="Password"
-        revealClassName="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white"
+       
         revealable
         type="password"
         variant="unstyled"

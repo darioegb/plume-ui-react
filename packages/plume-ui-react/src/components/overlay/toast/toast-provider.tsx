@@ -12,6 +12,7 @@ import {
   type ToastStatus,
 } from './toast-context'
 import { ToastItem, type ToastData } from './toast-item'
+import { joinClasses } from '../../../overlay/class-names'
 import styles from './toast.module.css'
 
 export type ToastPosition =
@@ -27,7 +28,8 @@ export type ToastPosition =
 
 export type ToastVariant = 'solid' | 'subtle' | 'outline' | 'unstyled'
 
-export type ToastPart = 'action' | 'content' | 'description' | 'dismiss' | 'icon' | 'title'
+export type ToastPart =
+  'action' | 'content' | 'description' | 'dismiss' | 'icon' | 'title' | 'toast'
 
 export interface ToastProviderProps {
   children: ReactNode
@@ -39,6 +41,7 @@ export interface ToastProviderProps {
   max?: number
   position?: ToastPosition
   regionLabel?: string
+  /** Alias of `classNames.toast`, kept until the next major. */
   toastClassName?: string
   variant?: ToastVariant
 }
@@ -140,7 +143,7 @@ export function ToastProvider({
           {toasts.map((toast) => (
             <ToastItem
               dismissLabel={dismissLabel}
-              className={toastClassName}
+              className={joinClasses(toastClassName, classNames?.toast) ?? ''}
               classNames={classNames}
               icons={icons}
               isStyled={isStyled}

@@ -52,7 +52,7 @@ function Example(props: Readonly<Omit<ModalProps, 'children'>>): React.ReactNode
  * | Component | Props |
  * | --- | --- |
  * | `ModalTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes. With text, it renders a plain `<button>`. |
- * | `ModalContent` | `className`, `backdropClassName`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. `backdropClassName` styles the layer behind it, which covers the screen and centers the dialog. |
+ * | `ModalContent` | `className`, `classNames.backdrop`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. `classNames.backdrop` styles the layer behind it, which covers the screen and centers the dialog. |
  * | `ModalHeader` | `as` (`h1` to `h6`, `h2` by default), `className`, `style`, `children`. The title, which names the dialog. |
  * | `ModalBody` | `className`, `style`, `children`. The content. It scrolls when it is taller than the screen. |
  * | `ModalFooter` | `className`, `style`, `children`. A row for the actions. |
@@ -337,7 +337,7 @@ export const Nested: Story = {
 }
 
 /**
- * Some examples of Modal with Tailwind classes. With `variant="unstyled"` every part is yours: `backdropClassName` styles the layer behind the dialog (it is centered and covers the screen, nothing else), and each part takes its own `className`.
+ * Some examples of Modal with Tailwind classes. With `variant="unstyled"` every part is yours: `classNames.backdrop` styles the layer behind the dialog (it is centered and covers the screen, nothing else), and each part takes its own `className`.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -351,8 +351,8 @@ export const Tailwind: Story = {
       variant="unstyled"
     />
   </ModalTrigger>
-  <ModalContent
-    backdropClassName="bg-black/50 p-[1rem]"
+  <ModalContent classNames={{ backdrop: 'bg-black/50 p-[1rem]' }}
+   
     className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
   >
     <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
@@ -391,8 +391,8 @@ export const Tailwind: Story = {
           variant="unstyled"
         />
       </ModalTrigger>
-      <ModalContent
-        backdropClassName="bg-black/50 p-[1rem]"
+      <ModalContent classNames={{ backdrop: 'bg-black/50 p-[1rem]' }}
+       
         className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
       >
         <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
@@ -433,8 +433,8 @@ export const Bootstrap: Story = {
   <ModalTrigger>
     <Button className="btn btn-primary" label="Open modal" variant="unstyled" />
   </ModalTrigger>
-  <ModalContent
-    backdropClassName="modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3"
+  <ModalContent classNames={{ backdrop: 'modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3' }}
+   
     className="modal-content"
     style={{ maxWidth: '32rem' }}
   >
@@ -460,8 +460,8 @@ export const Bootstrap: Story = {
       <ModalTrigger>
         <Button className="btn btn-primary" label="Open modal" variant="unstyled" />
       </ModalTrigger>
-      <ModalContent
-        backdropClassName="modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3"
+      <ModalContent classNames={{ backdrop: 'modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3' }}
+       
         className="modal-content"
         style={{ maxWidth: '32rem' }}
       >

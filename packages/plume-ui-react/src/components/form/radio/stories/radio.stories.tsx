@@ -53,16 +53,11 @@ export default {
       description: 'Custom CSS class for the label that wraps the input.',
       table: { type: { summary: 'string' } },
     },
-    inputClassName: {
-      control: 'text',
+    classNames: {
+      control: false,
       description:
-        'Custom CSS class for the `<input>`, in every variant. With `variant="unstyled"` it is the only class of the input, so it is how Tailwind or Bootstrap style the control itself.',
-      table: { type: { summary: 'string' } },
-    },
-    labelClassName: {
-      control: 'text',
-      description: 'Custom CSS class for the text of the label, in every variant.',
-      table: { type: { summary: 'string' } },
+        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`), `label` (the text of the label). With `variant="unstyled"` they are the only classes the parts have.',
+      table: { type: { summary: 'Partial<Record<RadioPart, string>>' } },
     },
     style: {
       control: false,
@@ -437,31 +432,31 @@ export const GroupWithField: Story = {
 }
 
 /**
- * Some examples of Radio with Tailwind classes. Give `variant="unstyled"` to the `RadioGroup` and its radios follow. `className` styles the label that wraps each radio, `inputClassName` the input and `labelClassName` the text.
+ * Some examples of Radio with Tailwind classes. Give `variant="unstyled"` to the `RadioGroup` and its radios follow. `className` styles the label that wraps each radio, `classNames.input` the input and `classNames.label` the text.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<RadioGroup aria-label="Plan" className="flex flex-col gap-2" defaultValue="team" variant="unstyled">
-  <Radio
+  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
     className="inline-flex items-center gap-2 text-sm"
-    inputClassName="h-4 w-4 accent-blue-600"
+   
     value="solo"
   >
     Solo
   </Radio>
-  <Radio
+  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600', label: 'font-semibold' }}
     className="inline-flex items-center gap-2 text-sm"
-    inputClassName="h-4 w-4 accent-blue-600"
-    labelClassName="font-semibold"
+   
+   
     value="team"
   >
     Team
   </Radio>
-  <Radio
+  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
     className="inline-flex items-center gap-2 text-sm"
-    inputClassName="h-4 w-4 accent-blue-600"
+   
     value="company"
   >
     Company
@@ -477,24 +472,24 @@ export const Tailwind: Story = {
       defaultValue="team"
       variant="unstyled"
     >
-      <Radio
+      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
         className="inline-flex items-center gap-2 text-sm"
-        inputClassName="h-4 w-4 accent-blue-600"
+       
         value="solo"
       >
         Solo
       </Radio>
-      <Radio
+      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600', label: 'font-semibold' }}
         className="inline-flex items-center gap-2 text-sm"
-        inputClassName="h-4 w-4 accent-blue-600"
-        labelClassName="font-semibold"
+       
+       
         value="team"
       >
         Team
       </Radio>
-      <Radio
+      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
         className="inline-flex items-center gap-2 text-sm"
-        inputClassName="h-4 w-4 accent-blue-600"
+       
         value="company"
       >
         Company
@@ -511,26 +506,26 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<RadioGroup aria-label="Plan" defaultValue="team" variant="unstyled">
-  <Radio
+  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     value="solo"
   >
     Solo
   </Radio>
-  <Radio
+  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     value="team"
   >
     Team
   </Radio>
-  <Radio
+  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
     className="form-check"
-    inputClassName="form-check-input"
-    labelClassName="form-check-label"
+   
+   
     value="company"
   >
     Company
@@ -541,26 +536,26 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <RadioGroup aria-label="Plan" defaultValue="team" variant="unstyled">
-      <Radio
+      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         value="solo"
       >
         Solo
       </Radio>
-      <Radio
+      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         value="team"
       >
         Team
       </Radio>
-      <Radio
+      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
         className="form-check"
-        inputClassName="form-check-input"
-        labelClassName="form-check-label"
+       
+       
         value="company"
       >
         Company
