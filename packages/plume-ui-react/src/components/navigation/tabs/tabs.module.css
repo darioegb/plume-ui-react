@@ -1,8 +1,4 @@
 /* tabs.module.css */
-@value tabs-padding: var(--plume-space-2) var(--plume-space-3);
-@value tabs-border-width: 2px;
-@value tabs-border-radius: var(--plume-radius-4);
-
 .tabs {
   display: flex;
   flex-direction: column;
@@ -34,7 +30,7 @@
 }
 
 .md {
-  padding: tabs-padding;
+  padding: var(--plume-space-2) var(--plume-space-3);
 }
 
 .lg {
@@ -80,27 +76,27 @@
 }
 
 :is(.rounded, .segment) .tab {
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 .vertical .underline .tab {
-  border-inline-end: tabs-border-width solid transparent;
+  border-inline-end: 2px solid transparent;
   border-block-end: none;
   transition: border-inline-end 0.2s;
 }
 
 .underline .tab {
-  border-block-end: tabs-border-width solid transparent;
+  border-block-end: 2px solid transparent;
   transition: border-block-end 0.2s;
 }
 
 .vertical .underline .tab.active {
-  border-inline-end: tabs-border-width solid var(--tabs-scheme);
+  border-inline-end: 2px solid var(--tabs-scheme);
   border-block-end: none;
 }
 
 .underline .tab.active {
-  border-block-end: tabs-border-width solid var(--tabs-scheme);
+  border-block-end: 2px solid var(--tabs-scheme);
   color: var(--tabs-scheme);
   transition: color 0.2s;
 }
@@ -108,7 +104,7 @@
 .rounded .tab.active {
   background-color: var(--tabs-solid);
   color: var(--tabs-text-color);
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
   transition: color 0.2s;
 }
 
@@ -123,7 +119,7 @@
 
 .vertical .enclosed .tab.active {
   border: 1px solid var(--tabs-scheme);
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
   border-inline-end: none;
   border-end-end-radius: 0;
   border-start-end-radius: 0;
@@ -133,7 +129,7 @@
 
 .enclosed .tab.active {
   border: 1px solid var(--tabs-scheme);
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
   background: var(--plume-surface);
   border-block-end: none;
   border-bottom-left-radius: 0;
@@ -149,13 +145,13 @@
   gap: var(--plume-space-1);
   padding: var(--plume-space-3) var(--plume-space-4);
   transition: background-color 0.2s;
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 .segment .tab.active {
   background-color: var(--tabs-solid-active);
   color: var(--tabs-text-color);
-  border-radius: tabs-border-radius;
+  border-radius: var(--plume-radius-4);
   transition: color 0.2s;
 }
 

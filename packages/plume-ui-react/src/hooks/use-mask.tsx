@@ -18,9 +18,9 @@ export interface UseMaskResult {
 }
 
 const SLOT_TESTS: Record<string, RegExp> = {
-  '#': /^[0-9]$/,
+  '#': /^\d$/,
   A: /^\p{L}$/u,
-  '*': /^[\p{L}0-9]$/u,
+  '*': /^[\p{L}\d]$/u,
 }
 
 type MaskToken = { slot: RegExp } | { literal: string }

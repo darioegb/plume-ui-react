@@ -1,11 +1,5 @@
 /* input.module.css */
 
-@value input-padding: var(--plume-space-4);
-@value input-border-radius: var(--plume-radius-4);
-@value input-color: var(--plume-foreground);
-@value input-border-color: var(--plume-border-strong);
-@value input-background-color: var(--plume-surface-muted);
-
 :where(.base) {
   background: transparent;
   border: none;
@@ -14,13 +8,13 @@
 }
 
 .input {
-  border-radius: input-border-radius;
+  border-radius: var(--plume-radius-4);
   box-sizing: border-box;
-  color: input-color;
+  color: var(--plume-foreground);
   display: block;
   height: var(--plume-space-10);
   min-width: min(18rem, 100%);
-  padding-inline: input-padding;
+  padding-inline: var(--plume-space-4);
   position: relative;
   width: 100%;
 }
@@ -37,7 +31,7 @@
 
 .md {
   height: var(--plume-space-10);
-  padding-inline: input-padding;
+  padding-inline: var(--plume-space-4);
 }
 
 .lg {
@@ -47,7 +41,7 @@
 }
 
 .rounded {
-  border-radius: input-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 :is(.outline).pill {
@@ -56,13 +50,13 @@
 
 .outline {
   composes: input;
-  border: 1px solid input-border-color;
+  border: 1px solid var(--plume-border-strong);
 }
 
 .filled {
   composes: input;
-  background-color: input-background-color;
-  border-block-end: 1px solid input-border-color;
+  background-color: var(--plume-surface-muted);
+  border-block-end: 1px solid var(--plume-border-strong);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -70,11 +64,11 @@
 .underline {
   composes: input;
   border-radius: 0;
-  border-block-end: 1px solid input-border-color;
+  border-block-end: 1px solid var(--plume-border-strong);
 }
 
 :is(.outline, .filled, .underline):enabled:hover {
-  border-color: color-mix(in hsl, input-border-color, black 10%);
+  border-color: color-mix(in hsl, var(--plume-border-strong), black 10%);
 }
 
 :is(.outline, .filled, .underline).invalid,
@@ -83,7 +77,7 @@
 }
 
 .filled:enabled:hover {
-  background-color: color-mix(in hsl, input-background-color, black 2%);
+  background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
 }
 
 :not(.inputGroup) > .outline:enabled:focus,
@@ -107,7 +101,7 @@
 
 .inputGroup {
   align-items: stretch;
-  border-radius: input-border-radius;
+  border-radius: var(--plume-radius-4);
   display: flex;
   min-width: min(18rem, 100%);
   position: relative;
@@ -134,7 +128,7 @@
 
 .addOn {
   box-sizing: border-box;
-  color: input-color;
+  color: var(--plume-foreground);
   flex-shrink: 0;
   font-size: var(--plume-font-size-sm);
   padding-inline: 0.75rem;
@@ -142,25 +136,25 @@
 }
 
 .inputGroup:has(.outline, .filled) > .addOn {
-  background-color: input-background-color;
+  background-color: var(--plume-surface-muted);
 }
 
 .inputGroup:has(.outline) > .addOn {
-  border: 1px solid input-border-color;
+  border: 1px solid var(--plume-border-strong);
 }
 
 .inputGroup:has(.filled, .underline) > .addOn {
-  border-block-end: 1px solid input-border-color;
+  border-block-end: 1px solid var(--plume-border-strong);
 }
 
 .addOnBefore {
-  border-end-start-radius: input-border-radius;
-  border-start-start-radius: input-border-radius;
+  border-end-start-radius: var(--plume-radius-4);
+  border-start-start-radius: var(--plume-radius-4);
 }
 
 .addOnAfter {
-  border-end-end-radius: input-border-radius;
-  border-start-end-radius: input-border-radius;
+  border-end-end-radius: var(--plume-radius-4);
+  border-start-end-radius: var(--plume-radius-4);
 }
 
 .inputGroup:has(.pill) {

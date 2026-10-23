@@ -1,7 +1,11 @@
 function getRgbFromColor(color: string): number[] {
   const hexMatch = getHexMatch(color)?.groups
   return color.startsWith('#') && hexMatch
-    ? [parseInt(hexMatch.red, 16), parseInt(hexMatch.green, 16), parseInt(hexMatch.blue, 16)]
+    ? [
+        Number.parseInt(hexMatch.red, 16),
+        Number.parseInt(hexMatch.green, 16),
+        Number.parseInt(hexMatch.blue, 16),
+      ]
     : getRgbMatch(color)?.map(Number) || []
 }
 

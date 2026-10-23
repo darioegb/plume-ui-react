@@ -1,28 +1,22 @@
 /* datepicker.module.css */
 
-@value date-picker-padding: var(--plume-space-4);
-@value date-picker-border-radius: var(--plume-radius-4);
-@value date-picker-color: var(--plume-muted);
-@value date-picker-border-color: var(--plume-border);
-@value date-picker-control-border-color: var(--plume-border-strong);
-
 .datePicker {
   position: relative;
 }
 
 .datePickerInputText {
   border: none;
-  border-radius: date-picker-border-radius;
+  border-radius: var(--plume-radius-4);
   box-sizing: border-box;
   min-width: min(18rem, 100%);
   width: 100%;
   height: var(--plume-space-10);
-  padding: 0 date-picker-padding;
+  padding: 0 var(--plume-space-4);
   position: relative;
   display: block;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  color: date-picker-color;
+  color: var(--plume-muted);
   background: none;
 }
 
@@ -45,7 +39,7 @@ input + .inputButton {
 .inputButtonIcon {
   height: var(--plume-space-5);
   width: var(--plume-space-5);
-  fill: date-picker-color;
+  fill: var(--plume-muted);
 }
 
 .sm {
@@ -56,7 +50,7 @@ input + .inputButton {
 
 .md {
   height: var(--plume-space-10);
-  padding: 0 date-picker-padding;
+  padding: 0 var(--plume-space-4);
 }
 
 .lg {
@@ -84,7 +78,7 @@ input + .inputButton {
 }
 
 .rounded {
-  border-radius: date-picker-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 :is(.outline).pill {
@@ -93,13 +87,13 @@ input + .inputButton {
 
 .outline {
   composes: datePickerInputText;
-  border: 1px solid date-picker-control-border-color;
+  border: 1px solid var(--plume-border-strong);
 }
 
 .filled {
   composes: datePickerInputText;
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid date-picker-control-border-color;
+  border-block-end: 1px solid var(--plume-border-strong);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -107,11 +101,11 @@ input + .inputButton {
 .underline {
   composes: datePickerInputText;
   border-radius: 0;
-  border-block-end: 1px solid date-picker-control-border-color;
+  border-block-end: 1px solid var(--plume-border-strong);
 }
 
 :is(.outline, .filled, .underline):enabled:hover {
-  border-color: color-mix(in hsl, date-picker-control-border-color, black 10%);
+  border-color: color-mix(in hsl, var(--plume-border-strong), black 10%);
 }
 
 :is(.outline, .filled, .underline).invalid,
@@ -143,7 +137,7 @@ input + .inputButton {
   display: flex;
   flex-direction: column;
   background-color: var(--plume-surface);
-  border: 1px solid date-picker-border-color;
+  border: 1px solid var(--plume-border);
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -214,7 +208,7 @@ input + .inputButton {
 
 .monthYearSelectors button:not([class*='icon']) {
   padding: var(--plume-space-2) var(--plume-space-4);
-  border-radius: date-picker-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 .monthYearSelectors button[class*='icon'] {
@@ -242,7 +236,7 @@ input + .inputButton {
   display: inline-flex;
   justify-content: center;
   padding: var(--plume-space-2) var(--plume-space-4);
-  border-radius: date-picker-border-radius;
+  border-radius: var(--plume-radius-4);
 }
 
 .year:not(.selected):hover,
@@ -318,7 +312,7 @@ input + .inputButton {
 }
 
 .disabledDay {
-  color: date-picker-color;
+  color: var(--plume-muted);
   cursor: not-allowed;
 }
 
@@ -330,7 +324,7 @@ input + .inputButton {
   display: flex;
   justify-content: flex-end;
   padding: var(--plume-space-3);
-  border-top: 1px solid date-picker-border-color;
+  border-top: 1px solid var(--plume-border);
 }
 
 button.footerButton {

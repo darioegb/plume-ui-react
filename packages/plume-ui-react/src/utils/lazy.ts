@@ -6,10 +6,5 @@ export interface LazyLoadedComponent {
 }
 
 export function lazyLoadContent(content: ReactNode): LazyExoticComponent<() => ReactNode> {
-  return lazy(
-    () =>
-      new Promise<LazyLoadedComponent>((resolve) => {
-        resolve({ default: () => content })
-      }),
-  )
+  return lazy(() => Promise.resolve<LazyLoadedComponent>({ default: () => content }))
 }

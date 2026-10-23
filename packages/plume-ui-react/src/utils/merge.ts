@@ -4,11 +4,11 @@
  * Later sources win; nested plain objects are merged recursively, everything
  * else (primitives, arrays) is replaced.
  */
-export function deepMerge<T>(target: T, ...sources: (Partial<T> | undefined)[]): T {
-  function isObject(item: unknown): item is Record<string, unknown> {
-    return item !== null && typeof item === 'object' && !Array.isArray(item)
-  }
+function isObject(item: unknown): item is Record<string, unknown> {
+  return item !== null && typeof item === 'object' && !Array.isArray(item)
+}
 
+export function deepMerge<T>(target: T, ...sources: (Partial<T> | undefined)[]): T {
   function merge(base: unknown, override: unknown): unknown {
     if (!isObject(base) || !isObject(override)) return override
 
