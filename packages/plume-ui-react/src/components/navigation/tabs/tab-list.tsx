@@ -1,7 +1,8 @@
 'use client'
 
-import type { Attributes, HTMLAttributes, Ref } from 'react'
-import { Children, cloneElement, forwardRef, isValidElement } from 'react'
+import type { HTMLAttributes, Ref } from 'react'
+import { Children, forwardRef } from 'react'
+import { TabIndexContext } from './tab-index-context'
 import styles from './tabs.module.css'
 import { useTabs } from './use-tabs'
 
@@ -12,7 +13,7 @@ export type TabListProps = Pick<
 
 export const TabList = forwardRef<HTMLDivElement, TabListProps>(
   ({ children, ...rest }: TabListProps, ref: Ref<HTMLDivElement>) => {
-    const { index, alignmentClass, isStyled, orientation, variantClass } = useTabs()
+    const { alignmentClass, isStyled, orientation, variantClass } = useTabs()
 
     return (
       <div
@@ -22,12 +23,9 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(
         role="tablist"
         {...rest}
       >
-        {Children.map(children, (child, i) => {
-          if (isValidElement(child)) {
-            return cloneElement(child, { index: i, isActive: i === index } as Attributes)
-          }
-          return child
-        })}
+        {Children.map(Children.toArray(children), (child, i) => (
+          <TabIndexContext.Provider value={i}>{child}</TabIndexContext.Provider>
+        ))}
       </div>
     )
   },

@@ -32,7 +32,7 @@ const commonTabs = (
 
 /**
  * Tabs split related content into panels and show one at a time.
- * Compose them with `TabList`, `Tab`, `TabPanels` and `TabPanel`; tabs and panels are linked by position.
+ * Compose them with `TabList`, `Tab`, `TabPanels` and `TabPanel`; tabs and panels are linked by position, and a `Tab` or a `TabPanel` can be wrapped by another component (a tooltip, for example) and keep its position. If a wrapper holds more than one `Tab`, give each one its `index`.
  *
  * ### Keyboard
  *
@@ -46,9 +46,9 @@ const commonTabs = (
  * | Component | Props |
  * | --- | --- |
  * | `TabList` | `aria-label`, `aria-labelledby`, `className`, `id`, `children` (the `Tab` items) |
- * | `Tab` | `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `children` |
+ * | `Tab` | `index` (its position, which it only needs when a wrapper holds several tabs), `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `children` |
  * | `TabPanels` | `className`, `id`, `children` (one `TabPanel` per `Tab`, in the same order) |
- * | `TabPanel` | `className`, `children` |
+ * | `TabPanel` | `index` (its position, only needed inside a wrapper that holds several panels), `className`, `children` |
  *
  * Tab and panel ids are generated, and derive from the `Tabs` `id` when you set one (`settings` → `settings-tab-0`, `settings-panel-0`).
  */

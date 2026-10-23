@@ -1,7 +1,8 @@
 'use client'
 
-import { Children, cloneElement, forwardRef, isValidElement } from 'react'
-import type { Attributes, HTMLAttributes, Ref } from 'react'
+import { Children, forwardRef } from 'react'
+import type { HTMLAttributes, Ref } from 'react'
+import { TabIndexContext } from './tab-index-context'
 import { useTabs } from './use-tabs'
 
 export type TabPanelsProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'>
@@ -12,10 +13,11 @@ export const TabPanels = forwardRef(
 
     return (
       <div ref={ref} {...rest}>
-        {Children.map(children, (child, i) => {
-          if (i !== index) return null
-          return isValidElement(child) ? cloneElement(child, { index: i } as Attributes) : child
-        })}
+        {Children.map(Children.toArray(children), (child, i) =>
+          i === index ? (
+            <TabIndexContext.Provider value={i}>{child}</TabIndexContext.Provider>
+          ) : null,
+        )}
       </div>
     )
   },

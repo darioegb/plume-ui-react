@@ -5,11 +5,11 @@ import type { ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'rea
 import { Button } from '../../interaction/button'
 import type { ComponentProps } from '../../../theme'
 import styles from './tabs.module.css'
+import { useTabIndex } from './tab-index-context'
 import { getPanelId, getTabId, useTabs } from './use-tabs'
 
 export interface TabOwnProps {
   label?: string
-  isActive?: boolean
   disabled?: boolean
   extraContentLeft?: ReactNode
   extraContentRight?: ReactNode
@@ -23,18 +23,27 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
   (
     {
       label,
-      isActive,
       disabled,
       extraContentLeft,
       extraContentRight,
-      index = 0,
+      index: indexProp,
       children,
       className = '',
     }: TabProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
-    const { alignmentClass, baseId, isStyled, orientation, sizeClass, setActiveTabIndex, onChange } =
-      useTabs()
+    const {
+      alignmentClass,
+      baseId,
+      index: activeIndex,
+      isStyled,
+      orientation,
+      sizeClass,
+      setActiveTabIndex,
+      onChange,
+    } = useTabs()
+    const index = useTabIndex(indexProp)
+    const isActive = index === activeIndex
     const [prevKey, nextKey] =
       orientation === 'vertical' ? ['ArrowUp', 'ArrowDown'] : ['ArrowLeft', 'ArrowRight']
 

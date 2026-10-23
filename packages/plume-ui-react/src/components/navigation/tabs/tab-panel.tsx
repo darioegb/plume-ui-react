@@ -6,14 +6,16 @@ import { Spinner } from '../../presentation/spinner'
 import { lazyLoadContent } from '../../../utils/lazy'
 import type { ComponentProps } from '../../../theme'
 import styles from './tabs.module.css'
+import { useTabIndex } from './tab-index-context'
 import { getPanelId, getTabId, useTabs } from './use-tabs'
 
 export type TabPanelProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'children'> &
   Pick<ComponentProps, 'index'>
 
 export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
-  ({ children, className = '', index = 0 }, ref) => {
+  ({ children, className = '', index: indexProp }, ref) => {
     const { baseId, colorScheme, isLazy, isStyled } = useTabs()
+    const index = useTabIndex(indexProp)
 
     const tabContent = isLazy ? lazyLoadContent(children) : children
 

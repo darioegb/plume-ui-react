@@ -233,6 +233,87 @@ describe('Tabs Component', () => {
     })
   })
 
+  describe('position of tabs and panels', () => {
+    function Labelled({ children }: Readonly<{ children: React.ReactNode }>): React.ReactNode {
+      return <span title="wrapper">{children}</span>
+    }
+
+    it('keeps working when a tab and a panel are wrapped by another component', () => {
+      render(
+        <Tabs>
+          <TabList aria-label="Wrapped">
+            <Labelled>
+              <Tab>One</Tab>
+            </Labelled>
+            <Labelled>
+              <Tab>Two</Tab>
+            </Labelled>
+          </TabList>
+          <TabPanels>
+            <Labelled>
+              <TabPanel>First</TabPanel>
+            </Labelled>
+            <Labelled>
+              <TabPanel>Second</TabPanel>
+            </Labelled>
+          </TabPanels>
+        </Tabs>,
+      )
+      expect(screen.getByRole('tab', { name: 'One' })).toHaveAttribute('aria-selected', 'true')
+      expect(screen.getByRole('tabpanel')).toHaveTextContent('First')
+
+      fireEvent.click(screen.getByRole('tab', { name: 'Two' }))
+      expect(screen.getByRole('tab', { name: 'Two' })).toHaveAttribute('aria-selected', 'true')
+      expect(screen.getByRole('tab', { name: 'One' })).toHaveAttribute('aria-selected', 'false')
+      expect(screen.getByRole('tabpanel')).toHaveTextContent('Second')
+      expect(screen.getByRole('tabpanel')).toHaveAttribute(
+        'aria-labelledby',
+        screen.getByRole('tab', { name: 'Two' }).id,
+      )
+    })
+
+    it('takes the position a tab and a panel are given', () => {
+      render(
+        <Tabs index={1}>
+          <TabList aria-label="Explicit">
+            <div>
+              <Tab index={0}>One</Tab>
+              <Tab index={1}>Two</Tab>
+            </div>
+          </TabList>
+          <TabPanels>
+            <TabPanel index={0}>First</TabPanel>
+            <TabPanel index={1}>Second</TabPanel>
+          </TabPanels>
+        </Tabs>,
+      )
+      expect(screen.getByRole('tab', { name: 'Two' })).toHaveAttribute('aria-selected', 'true')
+      expect(screen.getByRole('tab', { name: 'One' })).toHaveAttribute('aria-selected', 'false')
+      expect(screen.getByRole('tabpanel')).toHaveAttribute(
+        'aria-labelledby',
+        screen.getByRole('tab', { name: 'Two' }).id,
+      )
+    })
+
+    it('ignores the texts between the tabs when it counts them', () => {
+      render(
+        <Tabs>
+          <TabList aria-label="With text">
+            <Tab>One</Tab>
+            {false}
+            <Tab>Two</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>First</TabPanel>
+            <TabPanel>Second</TabPanel>
+          </TabPanels>
+        </Tabs>,
+      )
+      fireEvent.click(screen.getByRole('tab', { name: 'Two' }))
+      expect(screen.getByRole('tabpanel')).toHaveTextContent('Second')
+    })
+  })
+
   it('Unknown action does not modify state', () => {
     const initialState = {
       index: 0,
