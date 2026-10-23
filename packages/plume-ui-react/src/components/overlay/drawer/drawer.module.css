@@ -107,6 +107,10 @@
   border-start-end-radius: var(--plume-radius-6);
 }
 
+.square.drawer[data-plume-dialog] {
+  border-radius: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .left.drawer[data-plume-dialog] {
     animation: drawer-in-left 0.22s ease-out;

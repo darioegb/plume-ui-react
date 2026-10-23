@@ -103,6 +103,15 @@ describe('Drawer component', () => {
     expect(dialog()).toHaveClass(size)
   })
 
+  it('has rounded corners by default and can be square', () => {
+    const { unmount } = render(<Example defaultOpen />)
+    expect(dialog()).not.toHaveClass('square')
+    unmount()
+
+    render(<Example defaultOpen shape="square" />)
+    expect(dialog()).toHaveClass('square')
+  })
+
   it('drops the Plume classes when unstyled but keeps the side', () => {
     render(<Example defaultOpen side="left" variant="unstyled" />)
     expect(dialog()).not.toHaveClass('drawer')

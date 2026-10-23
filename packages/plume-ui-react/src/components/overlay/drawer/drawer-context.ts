@@ -4,7 +4,10 @@ import { createContext, useContext } from 'react'
 
 export type DrawerSide = 'bottom' | 'left' | 'right' | 'top'
 
+export type DrawerShape = 'rounded' | 'square'
+
 export interface DrawerContextValue {
+  shape: DrawerShape
   side: DrawerSide
 }
 

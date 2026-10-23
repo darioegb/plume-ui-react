@@ -57,7 +57,7 @@ function Example({
  * navigation of the app and stays on the page.
  *
  * Compose it with `DrawerTrigger`, `DrawerContent` and the parts you need. The `Drawer` itself renders nothing: it
- * keeps the state and shares it with its parts. Its props, apart from **side**, are the ones of `Modal`.
+ * keeps the state and shares it with its parts. Its props, apart from **side** and **shape**, are the ones of `Modal`.
  *
  * ### Subcomponents
  *
@@ -110,6 +110,13 @@ export default {
         type: { summary: `"left" | "right" | "top" | "bottom"` },
         defaultValue: { summary: 'right' },
       },
+    },
+    shape: {
+      control: 'radio',
+      description:
+        'Corners of the panel: `rounded` rounds the ones that face the page and `square` leaves them sharp.',
+      options: ['rounded', 'square'],
+      table: { type: { summary: `"rounded" | "square"` }, defaultValue: { summary: 'rounded' } },
     },
     size: {
       control: 'radio',
@@ -180,6 +187,19 @@ export const Sides: Story = {
     <div className="flex flex-wrap justify-center gap-3">
       {(['left', 'right', 'top', 'bottom'] as const).map((side) => (
         <Example key={side} label={`From the ${side}`} side={side} />
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **shape** prop to choose between `rounded` corners, which is the default, and `square` ones.
+ */
+export const Shapes: Story = {
+  render: () => (
+    <div className="flex flex-wrap justify-center gap-3">
+      {(['rounded', 'square'] as const).map((shape) => (
+        <Example key={shape} label={`Shape ${shape}`} shape={shape} />
       ))}
     </div>
   ),
