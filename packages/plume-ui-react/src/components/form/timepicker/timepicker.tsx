@@ -1,28 +1,19 @@
 'use client'
 
-import type { ChangeEvent, CSSProperties, ForwardedRef, InputHTMLAttributes, Ref } from 'react'
-import { forwardRef, useCallback, useEffect, useState } from 'react'
+import type { CSSProperties, ForwardedRef, InputHTMLAttributes, Ref } from 'react'
+import { forwardRef, useCallback, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { joinClasses } from '../../../overlay/class-names'
 import { ClockIcon } from '../../../overlay/icons'
 import { useControllableState } from '../../../overlay/use-controllable-state'
-import { useDismiss } from '../../../overlay/use-dismiss'
-import { usePosition } from '../../../overlay/use-position'
 import { mergeRefs } from '../../../overlay/trigger'
 import { Button } from '../../interaction/button'
 import { Input } from '../input'
 import { pickerPanelClasses, type PickerVariant } from '../shared/picker-panel'
-import { TimeColumn } from './time-column'
-import {
-  displayTime,
-  formatTime,
-  fromTwelveHour,
-  parseDisplayTime,
-  parseTime,
-  range,
-  toTwelveHour,
-  type Period,
-} from './time-utils'
+import { TimePanel } from './time-panel'
+import { useTimePicks } from './use-time-picks'
+import { useTimePopup } from './use-time-popup'
+import { useTimeText } from './use-time-text'
 import type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
 import styles from './timepicker.module.css'
 
@@ -80,7 +71,17 @@ const timePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): C
     ...style,
   }) as CSSProperties
 
-const pad = (value: number): string => String(value).padStart(2, '0')
+const TIME_MASK = '##:##'
+
+const defaultPlaceholder = (hour12: boolean, am: string): string =>
+  hour12 ? `hh:mm ${am}` : 'hh:mm'
+
+const resolveLook = (
+  variant: PickerVariant,
+  shape?: Shape,
+  size?: Size,
+): { shape?: Shape; size?: Size } =>
+  variant === 'unstyled' ? { shape, size } : { shape: shape ?? 'rounded', size: size ?? 'md' }
 
 export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
   (
@@ -101,23 +102,21 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       style,
       value: valueProp,
       variant = 'outline',
-      shape = variant === 'unstyled' ? undefined : 'rounded',
-      size = variant === 'unstyled' ? undefined : 'md',
+      shape: shapeProp,
+      size: sizeProp,
       ...inputProps
     }: TimePickerProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const labels = { ...DEFAULT_LABELS, ...config?.labels }
+    const { shape, size } = resolveLook(variant, shapeProp, sizeProp)
     const [value, setValue] = useControllableState({
       defaultValue,
       onChange,
       value: valueProp,
     })
-    const display = displayTime(value, hour12, labels)
-    const [text, setText] = useState(display)
-    const [open, setOpen] = useState(false)
+    const { commit, handleChange, text } = useTimeText({ hour12, labels, setValue, value })
     const [root, setRoot] = useState<HTMLDivElement | null>(null)
-    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
     const [input, setInput] = useState<HTMLInputElement | null>(null)
     const setRootRef = useCallback(
       (node: HTMLDivElement | null): void => mergeRefs<HTMLDivElement>(setRoot, ref)(node),
@@ -128,78 +127,22 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
         mergeRefs<HTMLInputElement>(setInput, inputRef)(node),
       [inputRef],
     )
-    const position = usePosition({
-      anchor: root,
-      enabled: open,
-      floating: panel,
-      offset: 8,
-      placement: 'bottom-start',
-    })
-
-    useEffect(() => {
-      setText(display)
-    }, [display])
-
-    useEffect(() => {
-      if (open) panel?.querySelector<HTMLElement>('[role="option"][tabindex="0"]')?.focus()
-    }, [open, panel])
-
-    useDismiss({
-      elements: [root],
-      enabled: open,
-      onDismiss: (reason) => {
-        setOpen(false)
-        if (reason === 'escape') input?.focus()
+    const popup = useTimePopup({ input, root })
+    const { close } = popup
+    const { pickHours, pickMinutes, pickPeriod } = useTimePicks({
+      hour12,
+      onMinutesPicked: () => {
+        close()
+        input?.focus()
       },
+      setValue,
+      value,
     })
-
-    const commit = (typed: string): string => {
-      if (!typed.trim()) {
-        setValue('')
-        return ''
-      }
-      const parsed = parseDisplayTime(typed, hour12, labels)
-      if (parsed === null) {
-        setText(display)
-        return value
-      }
-      setValue(parsed)
-      setText(displayTime(parsed, hour12, labels))
-      return parsed
-    }
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-      setText(event.target.value)
-      if (hour12) return
-      const parsed = parseDisplayTime(event.target.value, false, labels)
-      if (parsed) setValue(parsed)
-    }
-
-    const current = parseTime(value) ?? { hours: 0, minutes: 0 }
-    const { hour, period } = toTwelveHour(current.hours)
-    const pickHours = (hours: number): void => {
-      setValue(formatTime({ ...current, hours }))
-    }
-    const pickMinutes = (minutes: number): void => {
-      setValue(formatTime({ ...current, minutes }))
-      setOpen(false)
-      input?.focus()
-    }
-    const pickPeriod = (next: Period): void => {
-      pickHours(fromTwelveHour(hour, next))
-    }
-
-    const hourOptions = hour12 ? range(12, 1, 1) : range(24)
-    const hourValue = parseTime(value) ? (hour12 ? hour : current.hours) : undefined
-    const singleMask = '##:##'
 
     return (
       <div
         className={styles.timePicker}
-        onBlur={(event) => {
-          const next = event.relatedTarget
-          if (next && !event.currentTarget.contains(next)) setOpen(false)
-        }}
+        onBlur={popup.handleBlur}
         ref={setRootRef}
         style={timePickerColorVars(colorScheme, style)}
       >
@@ -210,13 +153,11 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
           disabled={disabled}
           elementAfter={
             <Button
-              aria-expanded={open}
+              aria-expanded={popup.open}
               aria-haspopup="dialog"
               aria-label={labels.openTimePicker}
               disabled={disabled || readOnly}
-              onClick={() => {
-                setOpen((isOpen) => !isOpen)
-              }}
+              onClick={popup.toggle}
               shape="pill"
               variant="icon"
             >
@@ -224,13 +165,13 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
             </Button>
           }
           inputMode="numeric"
-          mask={hour12 ? undefined : singleMask}
+          mask={hour12 ? undefined : TIME_MASK}
           onBlur={() => {
-            const committed = commit(text)
+            const committed = commit()
             onBlur?.(committed)
           }}
           onChange={handleChange}
-          placeholder={placeholder ?? (hour12 ? `hh:mm ${labels.am}` : 'hh:mm')}
+          placeholder={placeholder ?? defaultPlaceholder(hour12, labels.am)}
           readOnly={readOnly}
           ref={setInputRef}
           shape={shape}
@@ -239,53 +180,23 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
           value={text}
           variant={variant}
         />
-        {open ? (
-          <div
-            aria-label={labels.timePicker}
+        {popup.open ? (
+          <TimePanel
             className={joinClasses(
               styles.panel,
               pickerPanelClasses(variant, size, shape),
               panelClassName,
             )}
-            ref={setPanel}
-            role="dialog"
-            style={{
-              ...position.style,
-              opacity: position.isPositioned ? undefined : 0,
-            }}
-          >
-            <TimeColumn
-              label={labels.hours}
-              onSelect={(selectedHour: number) => {
-                pickHours(hour12 ? fromTwelveHour(selectedHour, period) : selectedHour)
-              }}
-              options={hourOptions.map((option) => ({
-                label: pad(option),
-                value: option,
-              }))}
-              selected={hourValue}
-            />
-            <TimeColumn
-              label={labels.minutes}
-              onSelect={pickMinutes}
-              options={range(60, minuteStep).map((option) => ({
-                label: pad(option),
-                value: option,
-              }))}
-              selected={parseTime(value)?.minutes}
-            />
-            {hour12 ? (
-              <TimeColumn
-                label={labels.period}
-                onSelect={pickPeriod}
-                options={[
-                  { label: labels.am, value: 'am' },
-                  { label: labels.pm, value: 'pm' },
-                ]}
-                selected={parseTime(value) ? period : undefined}
-              />
-            ) : null}
-          </div>
+            hour12={hour12}
+            labels={labels}
+            minuteStep={minuteStep}
+            onPickHours={pickHours}
+            onPickMinutes={pickMinutes}
+            onPickPeriod={pickPeriod}
+            panelRef={popup.setPanel}
+            style={popup.panelStyle}
+            value={value}
+          />
         ) : null}
       </div>
     )

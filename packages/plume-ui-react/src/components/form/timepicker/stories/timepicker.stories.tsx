@@ -29,7 +29,7 @@ export default {
   title: 'Components/TimePicker',
   component: TimePicker,
   tags: ['autodocs'],
-  decorators: [(Story) => <div className='w-72 max-w-full pb-[18rem]'>{Story()}</div>],
+  decorators: [(Story) => <div className="w-72 max-w-full pb-[18rem]">{Story()}</div>],
   parameters: {
     docs: {
       importNames: ['TimePicker'],
@@ -70,7 +70,8 @@ export default {
     },
     minuteStep: {
       control: 'number',
-      description: 'Distance between the minutes of the list (for example `15` lists 00, 15, 30 and 45).',
+      description:
+        'Distance between the minutes of the list (for example `15` lists 00, 15, 30 and 45).',
       table: { defaultValue: { summary: '1' }, type: { summary: 'number' } },
     },
     colorScheme: {
@@ -221,11 +222,11 @@ export const Variants: Story = {
     },
   },
   render: () => (
-    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]'>
-      <TimePicker defaultValue='09:30' variant='outline' />
-      <TimePicker defaultValue='09:30' variant='underline' />
-      <TimePicker defaultValue='09:30' variant='filled' />
-      <TimePicker defaultValue='09:30' variant='unstyled' />
+    <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
+      <TimePicker defaultValue="09:30" variant="outline" />
+      <TimePicker defaultValue="09:30" variant="underline" />
+      <TimePicker defaultValue="09:30" variant="filled" />
+      <TimePicker defaultValue="09:30" variant="unstyled" />
     </div>
   ),
 }
@@ -245,10 +246,10 @@ export const Sizes: Story = {
     },
   },
   render: () => (
-    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]'>
-      <TimePicker defaultValue='09:30' size='sm' />
-      <TimePicker defaultValue='09:30' size='md' />
-      <TimePicker defaultValue='09:30' size='lg' />
+    <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
+      <TimePicker defaultValue="09:30" size="sm" />
+      <TimePicker defaultValue="09:30" size="md" />
+      <TimePicker defaultValue="09:30" size="lg" />
     </div>
   ),
 }
@@ -268,9 +269,9 @@ export const Colors: Story = {
     },
   },
   render: () => (
-    <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]'>
+    <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
       {colorSchemes.map((colorScheme) => (
-        <TimePicker colorScheme={colorScheme} defaultValue='09:30' key={colorScheme} />
+        <TimePicker colorScheme={colorScheme} defaultValue="09:30" key={colorScheme} />
       ))}
     </div>
   ),
@@ -305,9 +306,9 @@ export const Controlled: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
     const [value, setValue] = useState('')
     return (
-      <div className='flex flex-col gap-2'>
+      <div className="flex flex-col gap-2">
         <TimePicker onChange={setValue} value={value} />
-        <span className='text-sm'>Value: {value ? `"${value}"` : '(empty)'}</span>
+        <span className="text-sm">Value: {value ? `"${value}"` : '(empty)'}</span>
       </div>
     )
   },
@@ -317,21 +318,23 @@ export const Controlled: Story = {
  * To pick a date and a time, put a `DatePicker` and a `TimePicker` together and join their values.
  */
 export const WithDatePicker: Story = {
-  decorators: [(Story) => <div className='w-[28rem] max-w-full pb-[24rem]'>{Story()}</div>],
+  decorators: [(Story) => <div className="w-[28rem] max-w-full pb-[24rem]">{Story()}</div>],
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
     const [date, setDate] = useState<DateRange>({ startDate: null, endDate: null })
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
     const [time, setTime] = useState('')
     const { startDate } = date
-    const label = startDate ? `${startDate.toDateString()}${time ? ` at ${time}` : ''}` : '(no date)'
+    const label = startDate
+      ? `${startDate.toDateString()}${time ? ` at ${time}` : ''}`
+      : '(no date)'
     return (
-      <div className='flex flex-col gap-3'>
-        <div className='grid gap-3 grid-cols-[3fr_2fr]'>
+      <div className="flex flex-col gap-3">
+        <div className="grid gap-3 grid-cols-[3fr_2fr]">
           <DatePicker onChange={setDate} value={date} />
           <TimePicker onChange={setTime} value={time} />
         </div>
-        <span className='text-sm'>Date and time: {label}</span>
+        <span className="text-sm">Date and time: {label}</span>
       </div>
     )
   },
@@ -362,17 +365,17 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <div className='flex flex-col gap-4 w-72 max-w-full'>
+    <div className="flex flex-col gap-4 w-72 max-w-full">
       <TimePicker
-        className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
-        defaultValue='09:30'
-        variant='unstyled'
+        className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        defaultValue="09:30"
+        variant="unstyled"
       />
       <TimePicker
-        className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
-        defaultValue='15:30'
+        className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        defaultValue="15:30"
         hour12
-        variant='unstyled'
+        variant="unstyled"
       />
     </div>
   ),
@@ -392,9 +395,13 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
-      <TimePicker className='form-control' defaultValue='09:30' variant='unstyled' />
-      <TimePicker className='form-control form-control-lg' defaultValue='09:30' variant='unstyled' />
+    <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+      <TimePicker className="form-control" defaultValue="09:30" variant="unstyled" />
+      <TimePicker
+        className="form-control form-control-lg"
+        defaultValue="09:30"
+        variant="unstyled"
+      />
     </div>
   ),
 }

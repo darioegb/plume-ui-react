@@ -52,7 +52,7 @@ export const parseDisplayTime = (
     return parts ? formatTime(parts) : null
   }
   const pattern = new RegExp(
-    `^(\\d{1,2}):(\\d{2})\\s*(${escapeRegExp(labels.am)}|${escapeRegExp(labels.pm)})$`,
+    String.raw`^(\d{1,2}):(\d{2})\s*(${escapeRegExp(labels.am)}|${escapeRegExp(labels.pm)})$`,
     'i',
   )
   const match = pattern.exec(text.trim())
