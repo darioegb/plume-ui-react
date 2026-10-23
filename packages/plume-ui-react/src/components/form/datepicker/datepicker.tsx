@@ -3,6 +3,7 @@
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { customProperties } from '../shared/picker-panel'
 import { DatePickerCalendar } from './datepicker-calendar'
@@ -21,8 +22,11 @@ export type {
   FooterLabels,
 } from './datepicker-types'
 
+export type DatePickerPart = 'calendar' | 'input'
+
 export interface DatePickerOwnProps {
   children?: ReactNode
+  classNames?: Partial<Record<DatePickerPart, string>>
   colorScheme?: ColorScheme
   config?: DatePickerConfig
   displayFormat?: string
@@ -39,7 +43,7 @@ export interface DatePickerOwnProps {
 }
 
 export type DatePickerProps = Omit<ComponentProps, 'index'> &
-  Omit<DatePickerInputProps, 'style'> &
+  Omit<DatePickerInputProps, 'classNames' | 'style'> &
   DatePickerOwnProps
 
 const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
@@ -59,6 +63,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   (
     {
       children,
+      className,
+      classNames,
       colorScheme = 'secondary',
       config,
       displayFormat,
@@ -104,15 +110,15 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     return (
       <DatePickerContext.Provider value={context}>
         <div
-          className={styles.datePicker}
+          className={joinClasses(styles.datePicker, className)}
           onBlur={handleBlur}
           ref={setRootRef}
           style={{ ...colorVars, ...style }}
         >
           {children ?? (
             <>
-              <DatePickerInput {...inputProps} />
-              <DatePickerCalendar />
+              <DatePickerInput classNames={{ input: classNames?.input }} {...inputProps} />
+              <DatePickerCalendar className={classNames?.calendar} />
             </>
           )}
         </div>

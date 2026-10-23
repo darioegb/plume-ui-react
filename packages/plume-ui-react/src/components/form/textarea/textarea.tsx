@@ -1,10 +1,11 @@
 import type { CSSProperties, ForwardedRef, TextareaHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { joinClasses } from '../../../overlay/class-names'
 import { TextareaCounter } from './textarea-counter'
 import styles from './textarea.module.css'
 
-export type TextareaPart = 'count'
+export type TextareaPart = 'count' | 'input'
 
 export interface TextareaOwnProps {
   colorScheme?: ColorScheme
@@ -58,7 +59,7 @@ const textareaColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSS
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
-      className = '',
+      className,
       colorScheme = 'secondary',
       classNames,
       disabled = false,
@@ -77,27 +78,30 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) => {
     const isStyled = variant !== 'unstyled'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
-    const classes = `${
-      isStyled
-        ? `${styles.base} ${styles[variant]} ${styles[size]} ${styles[shape]} ${styles[resize]}`
-        : ''
-    } ${isInvalid && isStyled ? styles.invalid : ''} ${disabled ? styles.disabled : ''} ${className}`
-      .replace(/\s+/g, ' ')
-      .trim()
+    const classes = joinClasses(
+      isStyled &&
+        `${styles.base} ${styles[variant]} ${styles[size]} ${styles[shape]} ${styles[resize]}`,
+      isInvalid && isStyled && styles.invalid,
+      disabled && styles.disabled,
+      !showCount && className,
+      classNames?.input,
+    )
+    const colorVars = textareaColorVars(isInvalid ? 'error' : colorScheme, style)
 
     const textareaProps = {
       className: classes,
       disabled,
       rows,
-      style: textareaColorVars(isInvalid ? 'error' : colorScheme, style),
       ...rest,
     }
 
-    if (!showCount) return <textarea ref={ref} {...textareaProps} />
+    if (!showCount) return <textarea ref={ref} style={colorVars} {...textareaProps} />
 
     return (
       <TextareaCounter
+        className={className}
         countClassName={classNames?.count}
+        style={colorVars}
         formatCount={formatCount}
         formatRemaining={formatRemaining}
         isStyled={isStyled}

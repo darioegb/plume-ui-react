@@ -225,13 +225,13 @@ describe('TimePicker', () => {
 
   it('passes the field attributes to the input', () => {
     render(
-      <TimePicker classNames={{ panel: 'panel-mine' }}
+      <TimePicker
         aria-invalid
+        className="mine"
+        classNames={{ input: 'input-mine', panel: 'panel-mine' }}
         id="start"
         name="start"
         required
-        className="mine"
-       
       />,
     )
     const input = screen.getByRole('textbox')
@@ -239,7 +239,8 @@ describe('TimePicker', () => {
     expect(input).toHaveAttribute('name', 'start')
     expect(input).toBeRequired()
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveClass('mine')
+    expect(input).toHaveClass('input-mine')
+    expect(input).not.toHaveClass('mine')
     openPicker()
     expect(screen.getByRole('dialog')).toHaveClass('panel-mine')
   })

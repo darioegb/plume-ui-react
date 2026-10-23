@@ -15,6 +15,7 @@ import {
   CarouselSlides,
 } from '../components/utility/carousel'
 import { Checkbox } from '../components/form/checkbox'
+import { DatePicker } from '../components/form/datepicker'
 import { Collapse } from '../components/utility/collapse'
 import { Input } from '../components/form/input'
 import { Modal, ModalContent } from '../components/overlay/modal'
@@ -69,12 +70,26 @@ const cases: Record<string, Case> = {
     element: () => <PinInput aria-label="Code" length={2} classNames={{ input: 'a-input' }} />,
   },
   Input: {
-    classes: ['a-reveal'],
-    element: () => <Input revealable type="password" classNames={{ reveal: 'a-reveal' }} />,
+    classes: ['a-input', 'a-reveal'],
+    element: () => (
+      <Input revealable type="password" classNames={{ input: 'a-input', reveal: 'a-reveal' }} />
+    ),
   },
   Textarea: {
-    classes: ['a-count'],
-    element: () => <Textarea aria-label="Bio" showCount classNames={{ count: 'a-count' }} />,
+    classes: ['a-count', 'a-input'],
+    element: () => (
+      <Textarea aria-label="Bio" showCount classNames={{ count: 'a-count', input: 'a-input' }} />
+    ),
+  },
+  DatePicker: {
+    classes: ['a-input', 'a-calendar'],
+    element: () => (
+      <DatePicker
+        onChange={() => undefined}
+        classNames={{ calendar: 'a-calendar', input: 'a-input' }}
+      />
+    ),
+    open: () => fireEvent.click(screen.getByRole('button', { name: 'Open calendar' })),
   },
   SelectGroup: {
     classes: ['a-label'],
@@ -90,8 +105,8 @@ const cases: Record<string, Case> = {
     ),
   },
   TimePicker: {
-    classes: ['a-panel'],
-    element: () => <TimePicker classNames={{ panel: 'a-panel' }} />,
+    classes: ['a-input', 'a-panel'],
+    element: () => <TimePicker classNames={{ input: 'a-input', panel: 'a-panel' }} />,
     open: () => fireEvent.click(screen.getByRole('button', { name: 'Open time picker' })),
   },
   Sidebar: {
@@ -215,6 +230,25 @@ describe('classNames of the parts', () => {
       for (const name of classes) {
         expect(document.querySelector(`.${name}`)).not.toBeNull()
       }
+    })
+  })
+
+  describe.each<[string, () => ReactElement]>([
+    ['Checkbox', () => <Checkbox className="a-root">Accept</Checkbox>],
+    ['DatePicker', () => <DatePicker className="a-root" onChange={() => undefined} />],
+    ['Input with a group', () => <Input className="a-root" elementAfter={<span />} />],
+    ['Input', () => <Input className="a-root" />],
+    ['PinInput', () => <PinInput aria-label="Code" className="a-root" length={2} />],
+    ['Radio', () => <Radio className="a-root" value="x" />],
+    ['Textarea with a counter', () => <Textarea aria-label="Bio" className="a-root" showCount />],
+    ['Textarea', () => <Textarea aria-label="Bio" className="a-root" />],
+    ['TimePicker', () => <TimePicker className="a-root" />],
+    ['Toggle', () => <Toggle className="a-root">Dark</Toggle>],
+  ])('className of %s', (_name, element) => {
+    it('goes to the outermost element', () => {
+      const { container } = render(element())
+      expect(container.firstElementChild).toHaveClass('a-root')
+      expect(container.querySelectorAll('.a-root')).toHaveLength(1)
     })
   })
 

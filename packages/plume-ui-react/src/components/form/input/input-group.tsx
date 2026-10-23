@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import { afterElementClass } from './input-reveal'
 import styles from './input.module.css'
 
@@ -6,6 +7,7 @@ interface InputGroupProps {
   addonAfter?: ReactNode
   addonBefore?: ReactNode
   canReveal: boolean
+  className?: string
   children: ReactNode
   elementAfter?: ReactNode
   elementBefore?: ReactNode
@@ -22,6 +24,7 @@ export function InputGroup({
   addonBefore,
   canReveal,
   children,
+  className,
   elementAfter,
   elementBefore,
   isStyled,
@@ -29,7 +32,11 @@ export function InputGroup({
   style,
 }: Readonly<InputGroupProps>): ReactNode {
   return (
-    <div className={slot(isStyled, styles.inputGroup)} data-plume-input-group="" style={style}>
+    <div
+      className={joinClasses(isStyled && styles.inputGroup, className)}
+      data-plume-input-group=""
+      style={style}
+    >
       {addonBefore ? (
         <span className={slot(isStyled, styles.addOn, styles.addOnBefore)}>{addonBefore}</span>
       ) : null}

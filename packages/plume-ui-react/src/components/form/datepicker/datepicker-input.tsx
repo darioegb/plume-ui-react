@@ -17,6 +17,7 @@ import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
 import { useDatePicker } from './use-datepicker'
 
 export interface DatePickerInputOwnProps {
+  classNames?: Partial<Record<'input', string>>
   inputRef?: Ref<HTMLInputElement>
   onBlur?: (value?: DateRange) => void
 }
@@ -28,7 +29,8 @@ export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
 const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
 export function DatePickerInput({
-  className = '',
+  className,
+  classNames,
   disabled = false,
   inputRef,
   onBlur,
@@ -140,6 +142,7 @@ export function DatePickerInput({
   return (
     <Input
       className={className}
+      classNames={classNames}
       colorScheme={colorScheme}
       disabled={disabled}
       elementAfter={

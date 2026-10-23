@@ -847,10 +847,12 @@ describe('DatePicker component', () => {
     it('styles the input with its own props and the look of the DatePicker', () => {
       render(
         <DatePicker onChange={vi.fn()} shape="pill" size="lg" variant="filled">
-          <DatePickerInput className="mine" disabled />
+          <DatePickerInput className="mine" classNames={{ input: 'inner' }} disabled />
         </DatePicker>,
       )
-      expect(screen.getByRole('textbox')).toHaveClass('mine', 'lg', 'pill', 'filled', 'disabled')
+      const input = screen.getByRole('textbox')
+      expect(input).toHaveClass('inner', 'lg', 'pill', 'filled', 'disabled')
+      expect(input.closest('[data-plume-input-group]')).toHaveClass('mine')
       expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
     })
 

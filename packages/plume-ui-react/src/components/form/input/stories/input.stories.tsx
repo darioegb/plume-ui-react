@@ -28,7 +28,8 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Input.',
+      description:
+        'Custom CSS class for the outermost element: the `<input>`, or the group around it when there are addons, elements or a reveal button.',
       table: {
         type: { summary: 'string' },
       },
@@ -168,7 +169,7 @@ export default {
     classNames: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `reveal` (the button that shows the password). With `variant="unstyled"` they are the only classes the parts have.',
+        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`) and `reveal` (the button that shows the password). With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: 'Partial<Record<InputPart, string>>' } },
     },
     autoComplete: {
@@ -557,10 +558,14 @@ export const Tailwind: Story = {
         placeholder="Error Input"
         variant="unstyled"
       />
-      <Input classNames={{ reveal: '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white' }}
+      <Input
+        classNames={{
+          reveal:
+            '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white',
+        }}
         className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         placeholder="Password"
-       
+
         revealable
         type="password"
         variant="unstyled"
