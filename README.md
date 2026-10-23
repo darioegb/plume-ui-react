@@ -109,6 +109,7 @@ export function App() {
 | Table | [Table](https://darioegb.github.io/plume-ui-react/?path=/docs/components-table--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
+| TimePicker | [TimePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-timepicker--docs) |
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |
 | Toggle | [Toggle](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toggle--docs) |
 | Tooltip | [Tooltip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tooltip--docs) |

@@ -120,6 +120,7 @@ describe('plume-ui-react', () => {
       'Tabs',
       'Textarea',
       'ThemeProvider',
+      'TimePicker',
       'ToastProvider',
       'Toggle',
       'Tooltip',

@@ -1,0 +1,54 @@
+.timePicker {
+  position: relative;
+}
+
+.panel {
+  display: flex;
+  gap: var(--plume-space-1);
+  margin: 0;
+  max-width: calc(100vw - var(--plume-space-4));
+  padding: var(--plume-space-2);
+  position: absolute;
+  z-index: var(--plume-z-1);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--plume-space-1);
+  max-height: 14rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-inline: var(--plume-space-1);
+  position: relative;
+}
+
+.option {
+  background: transparent;
+  border: 0;
+  border-radius: var(--plume-radius-4);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-width: 3rem;
+  padding: var(--plume-space-2) var(--plume-space-3);
+  text-align: center;
+}
+
+.option:hover {
+  background-color: var(--timepicker-hover);
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--picker-scheme);
+  outline-offset: 1px;
+}
+
+.selected {
+  background-color: var(--timepicker-solid);
+  color: var(--timepicker-contrast);
+}
+
+.selected:hover {
+  background-color: var(--timepicker-selected-hover);
+}
