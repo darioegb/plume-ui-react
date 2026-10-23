@@ -9,14 +9,14 @@ function getLocale(language?: string): string {
 
 function formatDateRegex(displayFormat: string): RegExp {
   const formatMap: Record<string, string> = {
-    dd: '\\d{2}',
-    mm: '\\d{2}',
-    yyyy: '\\d{4}',
+    dd: String.raw`\d{2}`,
+    mm: String.raw`\d{2}`,
+    yyyy: String.raw`\d{4}`,
   }
 
   const regexFormat = displayFormat
     .toLowerCase()
-    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)
     .replace(/dd|mm|yyyy/g, (match) => formatMap[match])
 
   return new RegExp(`^${regexFormat}$`)

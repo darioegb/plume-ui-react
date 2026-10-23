@@ -1,5 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
+import { Divider } from '../../divider'
 import { Card, CardBody, CardFooter, CardHeader } from '..'
 
 const sample = (
@@ -181,6 +182,25 @@ export const Parts: Story = {
         </CardFooter>
       </Card>
     </div>
+  ),
+}
+
+/**
+ * To separate sections inside a `CardBody`, put a `Divider` between them. A `Divider` with a label also works
+ * to split the content of a Card in two.
+ */
+export const Sections: Story = {
+  render: () => (
+    <Card style={{ maxWidth: '100%', width: '20rem' }} variant="outline">
+      <CardHeader>Billing</CardHeader>
+      <CardBody>
+        <p>Plan: Team, billed monthly.</p>
+        <Divider spacing="md" />
+        <p>Next invoice: 1 November.</p>
+        <Divider spacing="md">Payment</Divider>
+        <p>Card ending in 4242.</p>
+      </CardBody>
+    </Card>
   ),
 }
 

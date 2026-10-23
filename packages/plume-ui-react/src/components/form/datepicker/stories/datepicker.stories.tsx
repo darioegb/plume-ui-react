@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { DatePicker } from '..'
+import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
 import type { DateRange } from '../datepicker'
 
 const defaultDateRangeValue = { startDate: null, endDate: null }
@@ -12,6 +12,26 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
  * It supports single and range selection modes, configurable color schemes, and localization options.
+ *
+ * On its own it shows an input with a button that opens the calendar. To change what it shows or the order, give
+ * it its parts as children: `DatePickerInput` is the field with the button, and `DatePickerCalendar` the calendar
+ * (a popup under the input, or always visible with `isCalendar`). The `DatePicker` keeps the value and the state
+ * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
+ * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
+ * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
+ * `DatePicker`, because it styles the input and the calendar together.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className`. The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `config.labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
+ *
+ * ### Closing
+ *
+ * The popup closes with <kbd>Esc</kbd> (the focus goes back to the input), with a press outside of the
+ * DatePicker and when the focus leaves it.
  *
  * ### Keyboard
  *
@@ -27,6 +47,7 @@ export default {
   decorators: [(Story) => <div className='w-72 max-w-full pb-[22rem]'>{Story()}</div>],
   parameters: {
     docs: {
+      importNames: ['DatePicker', 'DatePickerInput', 'DatePickerCalendar'],
       toc: {
         title: 'On this page',
         disable: false,
@@ -117,15 +138,17 @@ export default {
     config: {
       control: false,
       description:
-        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the button labels. Every key is optional and falls back to its default.',
+        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the labels of the Cancel and Apply buttons; `labels` sets the name of the calendar and of the button that opens it. Every key is optional and falls back to its default.',
       table: {
         defaultValue: {
           summary: 'object',
-          detail: "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' } }",
+          detail:
+            "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' }, labels: { calendar: 'Calendar', openCalendar: 'Open calendar' } }",
         },
         type: {
           summary: 'DatePickerConfig',
-          detail: '{ language?: string; footer?: { apply?: string; cancel?: string } }',
+          detail:
+            '{ language?: string; footer?: { apply?: string; cancel?: string }; labels?: { calendar?: string; openCalendar?: string } }',
         },
       },
     },
@@ -139,7 +162,8 @@ export default {
     },
     shape: {
       control: 'inline-radio',
-      description: 'Shape style of the DatePicker. `pill` only applies to the `outline` variant.',
+      description:
+        'Shape style of the DatePicker. `pill` rounds the `outline` input and the corners of the calendar.',
       options: ['pill', 'rounded'],
       table: {
         defaultValue: { summary: 'rounded' },
@@ -148,7 +172,7 @@ export default {
     },
     size: {
       control: 'radio',
-      description: 'Size of the DatePicker.',
+      description: 'Size of the input and of the calendar days.',
       options: ['sm', 'md', 'lg'],
       table: {
         defaultValue: { summary: 'md' },
@@ -157,7 +181,8 @@ export default {
     },
     variant: {
       control: 'select',
-      description: 'Visual style variant of the DatePicker.',
+      description:
+        'Visual style variant of the input and of the calendar. `outline` has a bordered calendar, `filled` a tinted one with an accent line, `underline` a square one with an accent line and `unstyled` none of them.',
       options: ['outline', 'underline', 'filled', 'unstyled'],
       table: {
         type: { summary: `"outline" | "underline" | "filled" | "unstyled"` },
@@ -198,7 +223,7 @@ export default {
     onChange: {
       action: 'changed',
       description:
-        'Called with the new `{ startDate, endDate }` when a date is picked, when a range is complete, or on Apply when `showFooter` is set.',
+        'Called with the new `{ startDate, endDate }` when a date is picked or typed, when a range is complete, or on Apply when `showFooter` is set.',
       table: { category: 'Events', type: { summary: '(value: DateRange) => void' } },
     },
     onBlur: {
@@ -246,6 +271,7 @@ export const Default: Story = {
 /**
  * This is a list of DatePicker with different variants.
  * Just adding the **variant** prop in one of these values **outline**, **underline**, **filled** and **unstyled**.
+ * The **variant**, **size** and **shape** go on the `DatePicker` and style the input and the calendar together, so open them to see the calendar of each one.
  */
 export const Variants: Story = {
   parameters: {
@@ -505,6 +531,26 @@ export const CustomConfiguration: Story = {
 }
 
 /**
+ * Give the `DatePicker` its parts to choose what it shows and in which order. The props of the field, here its
+ * placeholder, go on the `DatePickerInput`, the look (here small and filled) on the `DatePicker`, and the
+ * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
+ */
+export const Compound: Story = {
+  render: ({ onChange }) => (
+    <DatePicker
+      config={{ language: 'en' }}
+      onChange={onChange}
+      size='sm'
+      value={defaultDateRangeValue}
+      variant='filled'
+    >
+      <DatePickerInput placeholder='Pick a day' />
+      <DatePickerCalendar />
+    </DatePicker>
+  ),
+}
+
+/**
  * The calendar popup is themed through CSS variables, so you can restyle it
  * independently of the input trigger — even when `variant="unstyled"`. Override any
  * of these on the `style` prop (they default to your `colorScheme`):
@@ -586,8 +632,8 @@ export const Disabled: Story = {
  * Some examples of DatePicker with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
  *
- * Note: `variant` and `className` only restyle the **input trigger**. The calendar
- * popup keeps its structural styles and is themed through `colorScheme` and the
+ * Note: `className` only restyles the **input trigger**, and with `variant="unstyled"` the calendar
+ * keeps just its structural styles. It is themed through `colorScheme` and the
  * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
 export const Tailwind: Story = {

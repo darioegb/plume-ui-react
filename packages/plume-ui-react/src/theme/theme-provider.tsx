@@ -46,11 +46,8 @@ export function ThemeProvider({
   applyToBody = true,
   className = '',
   style,
-}: ThemeProviderProps): ReactNode {
-  const lightTheme = useMemo(
-    () => deepMerge<Theme>(defaultTheme, (theme ?? {}) as Theme),
-    [theme],
-  )
+}: Readonly<ThemeProviderProps>): ReactNode {
+  const lightTheme = useMemo(() => deepMerge<Theme>(defaultTheme, (theme ?? {}) as Theme), [theme])
   const resolvedDarkTheme = useMemo(
     () =>
       deepMerge<Theme>(
@@ -62,9 +59,10 @@ export function ThemeProvider({
 
   const [setting, setSetting] = useState<ColorModeSetting>(defaultColorMode)
   const [root, setRoot] = useState<HTMLDivElement | null>(null)
-  const [colorMode, setResolvedMode] = useState<ColorMode>(
+  const [resolvedMode, setResolvedMode] = useState<ColorMode>(
     defaultColorMode === 'system' ? 'light' : defaultColorMode,
   )
+  const colorMode = resolvedMode
 
   // 'system' is resolved on the client to keep server render deterministic.
   useEffect(() => {
@@ -85,15 +83,15 @@ export function ThemeProvider({
   useEffect(() => {
     if (!applyToBody || typeof document === 'undefined') return
     const { documentElement: html, body } = document
-    const prevMode = html.getAttribute('data-plume-color-mode')
+    const prevMode = html.dataset.plumeColorMode
     const prevBackground = body.style.backgroundColor
     const prevColor = body.style.color
-    html.setAttribute('data-plume-color-mode', colorMode)
+    html.dataset.plumeColorMode = colorMode
     body.style.backgroundColor = activeTheme.semantic.background
     body.style.color = activeTheme.semantic.foreground
     return () => {
-      if (prevMode === null) html.removeAttribute('data-plume-color-mode')
-      else html.setAttribute('data-plume-color-mode', prevMode)
+      if (prevMode === undefined) delete html.dataset.plumeColorMode
+      else html.dataset.plumeColorMode = prevMode
       body.style.backgroundColor = prevBackground
       body.style.color = prevColor
     }

@@ -30,7 +30,7 @@ const createSpinnerStyles = ({
   '--spinner-scheme': colorVar(color),
   ...(thickness && { '--spinner-border-width': `${thickness}px` }),
   '--spinner-animation-duration': speed?.length ? speed : '1s',
-  ...(style ?? {}),
+  ...style,
 })
 
 export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(

@@ -4,7 +4,8 @@ import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
-import { afterElementClass, InputReveal, usePasswordReveal } from './input-reveal'
+import { InputGroup } from './input-group'
+import { InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
 
 export interface InputOwnProps {
@@ -141,35 +142,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div
-        className={isStyled ? styles.inputGroup : undefined}
-        data-plume-input-group=""
-        style={inputStyle}
-      >
-        {addonBefore ? (
-          <span className={isStyled ? `${styles.addOn} ${styles.addOnBefore}` : undefined}>
-            {addonBefore}
-          </span>
-        ) : null}
-        <div className={isStyled ? styles.control : undefined} data-plume-input-control="">
-          {elementBefore ? (
-            <span className={isStyled ? `${styles.element} ${styles.elementBefore}` : undefined}>
-              {elementBefore}
-            </span>
-          ) : null}
-          <input
-            className={inputClasses}
-            disabled={disabled}
-            readOnly={readOnly}
-            ref={ref}
-            type={inputType}
-            {...valueProps}
-            {...rest}
-          />
-          {elementAfter ? (
-            <span className={afterElementClass(isStyled, canReveal)}>{elementAfter}</span>
-          ) : null}
-          {canReveal ? (
+      <InputGroup
+        addonAfter={addonAfter}
+        addonBefore={addonBefore}
+        canReveal={canReveal}
+        elementAfter={elementAfter}
+        elementBefore={elementBefore}
+        isStyled={isStyled}
+        reveal={
+          canReveal ? (
             <InputReveal
               className={revealClassName}
               disabled={disabled}
@@ -178,14 +159,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onToggle={toggle}
               visible={revealed}
             />
-          ) : null}
-        </div>
-        {addonAfter ? (
-          <span className={isStyled ? `${styles.addOn} ${styles.addOnAfter}` : undefined}>
-            {addonAfter}
-          </span>
-        ) : null}
-      </div>
+          ) : null
+        }
+        style={inputStyle}
+      >
+        <input
+          className={inputClasses}
+          disabled={disabled}
+          readOnly={readOnly}
+          ref={ref}
+          type={inputType}
+          {...valueProps}
+          {...rest}
+        />
+      </InputGroup>
     )
   },
 )

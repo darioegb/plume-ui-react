@@ -30,7 +30,7 @@ const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProp
     '--tabs-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--tabs-solid-active': `var(--plume-color-${colorScheme}-solid-active)`,
     '--tabs-text-color': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    ...(style ?? {}),
+    ...style,
   }) as CSSProperties
 
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(

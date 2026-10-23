@@ -1,8 +1,8 @@
 'use client'
 
-import type { ReactNode, Ref } from 'react'
+import type { ChangeEvent, ReactNode, Ref } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { ComponentProps } from '../../../theme'
+import type { ComponentProps, Shape, Size } from '../../../theme'
 import { Button } from '../../interaction/button'
 import { Input } from '../input'
 import {
@@ -12,39 +12,63 @@ import {
   validateFormatDate,
 } from '../../../utils/dates'
 import { useDebounce } from '../../../hooks/use-debounce'
-import type { DatePickerRootAttributes, DateRange } from './datepicker'
+import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
-interface DatePickerInputOwnProps {
+export interface DatePickerInputOwnProps {
   inputRef?: Ref<HTMLInputElement>
-  onClick: () => void
-  isRange: boolean
-  language: string
-  displayFormat?: string
   onBlur?: (value?: DateRange) => void
 }
 
-type DatePickerInputProps = ComponentProps & DatePickerRootAttributes & DatePickerInputOwnProps
+export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
+  DatePickerRootAttributes &
+  DatePickerInputOwnProps
+
+const generateDatePickerInputClasses = (
+  className: string,
+  disabled: boolean,
+  isInvalid: boolean,
+  variant: string,
+  shape?: Shape,
+  size?: Size,
+): string => {
+  const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
+  const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
+  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
+  const disabledClass = disabled ? styles.disabled : ''
+  const invalidClass = isInvalid && variant !== 'unstyled' ? styles.invalid : ''
+  return `${sizeClass} ${shapeClass} ${variantClass} 
+    ${disabledClass} ${invalidClass} ${className}`.trim()
+}
+
+const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
 export function DatePickerInput({
-  disabled,
-  displayFormat,
+  className = '',
+  disabled = false,
   inputRef,
-  isRange,
-  language,
-  onClick,
   onBlur,
+  placeholder,
   readOnly,
   ...rest
-}: DatePickerInputProps): ReactNode {
+}: Readonly<DatePickerInputProps>): ReactNode {
   const {
     state: {
       modalOpen,
       value: { startDate, endDate },
     },
-    dispatch,
-  } = useDatePicker()
+    commitTypedValue,
+    displayFormat,
+    isCalendar,
+    isRange,
+    labels,
+    language,
+    shape,
+    size,
+    toggle,
+    variant,
+  } = useDatePicker('DatePickerInput')
   const [inputValue, setInputValue] = useState<string>(
     getDateStringByLanguage({
       displayFormat,
@@ -67,6 +91,14 @@ export function DatePickerInput({
     [inputRef],
   )
 
+  const commitIfChanged = useCallback(
+    (typed: DateRange): void => {
+      if (sameTime(typed.startDate, startDate) && sameTime(typed.endDate, endDate)) return
+      commitTypedValue(typed)
+    },
+    [commitTypedValue, endDate, startDate],
+  )
+
   useEffect(() => {
     if (![10, 23].includes(debouncedValue.length) || isButtonClick) {
       return
@@ -78,29 +110,19 @@ export function DatePickerInput({
       !isRange &&
       validateFormatDate(debouncedValue, language, displayFormat)
     ) {
-      const newStartDate = getDateFromDateString(debouncedValue, format)
-      dispatch({
-        type: 'SET_VALUE',
-        payload: {
-          startDate: newStartDate,
-          endDate: null,
-        },
-      })
+      commitIfChanged({ startDate: getDateFromDateString(debouncedValue, format), endDate: null })
     } else if (
       debouncedValue.length === 23 &&
       validateFormatDate(debouncedValue.split(' - ')[0], language, displayFormat) &&
       validateFormatDate(debouncedValue.split(' - ')[1], language, displayFormat)
     ) {
       const [startDateString, endDateString] = debouncedValue.split(' - ')
-      dispatch({
-        type: 'SET_VALUE',
-        payload: {
-          startDate: getDateFromDateString(startDateString, format),
-          endDate: getDateFromDateString(endDateString, format),
-        },
+      commitIfChanged({
+        startDate: getDateFromDateString(startDateString, format),
+        endDate: getDateFromDateString(endDateString, format),
       })
     }
-  }, [debouncedValue, dispatch, displayFormat, isButtonClick, isRange, language])
+  }, [commitIfChanged, debouncedValue, displayFormat, isButtonClick, isRange, language])
 
   useEffect(() => {
     setInputValue(
@@ -117,51 +139,68 @@ export function DatePickerInput({
   const handleButtonClick = (): void => {
     setIsButtonClick(true)
     ref.current?.focus()
-    onClick()
+    toggle()
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setIsButtonClick(false)
     setInputValue(e.target.value)
   }
 
   const singleMask = (displayFormat ?? getDateFormatByLanguage(language)).replace(/[a-zA-Z]/g, '#')
   const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
+  const currentFormat = displayFormat ?? getDateFormatByLanguage(language)
+  const inputClasses = generateDatePickerInputClasses(
+    className,
+    disabled,
+    rest['aria-invalid'] === true || rest['aria-invalid'] === 'true',
+    variant,
+    shape,
+    size,
+  )
+
+  if (isCalendar) return null
 
   return (
     <>
       <Input
+        className={inputClasses}
         disabled={disabled}
-        inputMode='numeric'
+        inputMode="numeric"
         mask={mask}
         onBlur={() => {
           onBlur?.({ startDate, endDate })
         }}
         onChange={handleChange}
+        placeholder={
+          placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)
+        }
         readOnly={readOnly}
         ref={setRef}
-        type='text'
+        type="text"
         value={inputValue}
-        variant='unstyled'
+        variant="unstyled"
         {...rest}
       />
 
       <Button
         aria-expanded={modalOpen}
-        aria-haspopup='dialog'
-        aria-label='Open calendar'
+        aria-haspopup="dialog"
+        aria-label={labels.openCalendar}
         className={styles.inputButton}
         disabled={disabled || readOnly}
         onClick={handleButtonClick}
-        shape='pill'
-        variant='icon'
+        shape="pill"
+        variant="icon"
       >
         <svg
+          aria-hidden="true"
           className={styles.inputButtonIcon}
-          viewBox='0 -960 960 960'
-          xmlns='http://www.w3.org/2000/svg'
+          focusable="false"
+          viewBox="0 -960 960 960"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <path d='M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z' />
+          <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z" />
         </svg>
       </Button>
     </>

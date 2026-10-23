@@ -81,6 +81,7 @@ export function App() {
 | Chip | [Chip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-chip--docs) |
 | Collapse | [Collapse](https://darioegb.github.io/plume-ui-react/?path=/docs/components-collapse--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
+| Divider | [Divider](https://darioegb.github.io/plume-ui-react/?path=/docs/components-divider--docs) |
 | Drawer | [Drawer](https://darioegb.github.io/plume-ui-react/?path=/docs/components-drawer--docs) |
 | Dropdown | [Dropdown](https://darioegb.github.io/plume-ui-react/?path=/docs/components-dropdown--docs) |
 | EmptyState | [EmptyState](https://darioegb.github.io/plume-ui-react/?path=/docs/components-emptystate--docs) |
@@ -108,6 +109,7 @@ export function App() {
 | Table | [Table](https://darioegb.github.io/plume-ui-react/?path=/docs/components-table--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
+| TimePicker | [TimePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-timepicker--docs) |
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |
 | Toggle | [Toggle](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toggle--docs) |
 | Tooltip | [Tooltip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tooltip--docs) |

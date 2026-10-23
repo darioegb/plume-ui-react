@@ -75,13 +75,11 @@ export function useFocusTrap(
       const first = tabbables[0]
       const last = tabbables[tabbables.length - 1]
       const current = document.activeElement
-      if (!container.contains(current)) {
-        event.preventDefault()
-        first.focus()
-      } else if (event.shiftKey && (current === first || current === container)) {
+      const inside = container.contains(current)
+      if (inside && event.shiftKey && (current === first || current === container)) {
         event.preventDefault()
         last.focus()
-      } else if (!event.shiftKey && current === last) {
+      } else if (!inside || (!event.shiftKey && current === last)) {
         event.preventDefault()
         first.focus()
       }

@@ -1,6 +1,6 @@
-import type { DateRange } from './datepicker'
+import type { DateRange } from './datepicker-types'
 
- export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
+export const DEFAULT_DATE_PICKER_VALUE = { startDate: null, endDate: null }
 
 const nextMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
 
@@ -48,8 +48,7 @@ export const datePickerReducer = (
       const month = startDate?.getMonth() ?? state.month
       const secondYear = endDate?.getFullYear() ?? state.secondYear
       const secondMonth =
-        endDate &&
-        (endDate.getMonth() > state.secondMonth || (startDate && startDate.getMonth() === 11))
+        endDate && (endDate.getMonth() > state.secondMonth || startDate?.getMonth() === 11)
           ? endDate.getMonth()
           : state.secondMonth
 
