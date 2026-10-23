@@ -1,10 +1,9 @@
 'use client'
 
 import type { CSSProperties, FocusEvent } from 'react'
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import { useDismiss } from '../../../overlay/use-dismiss'
-import { usePosition } from '../../../overlay/use-position'
+import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import type { DatePickerContextProps } from './use-datepicker'
 import {
   DATE_PICKER_INITIAL_STATE,
@@ -85,29 +84,22 @@ export function useDatePickerController({
       ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })
       : DATE_PICKER_INITIAL_STATE,
   )
-  const [panel, setPanel] = useState<HTMLDivElement | null>(null)
   const isFirstRender = useRef(true)
   const popoverOpen = !isCalendar && state.modalOpen
-
-  const position = usePosition({
-    anchor: root,
-    enabled: popoverOpen,
-    floating: panel,
-    offset: 8,
-    placement: 'bottom-start',
-  })
 
   const focusInput = useCallback((): void => {
     root?.querySelector('input')?.focus()
   }, [root])
 
-  useDismiss({
-    elements: [root, panel],
+  const { panel, position, setPanel } = useFloatingPanel({
+    anchor: root,
     enabled: popoverOpen,
+    offset: 8,
     onDismiss: (reason) => {
       dispatch({ type: 'CLOSE_MODAL' })
       if (reason === 'escape') focusInput()
     },
+    placement: 'bottom-start',
   })
 
   const { modalOpen, tempValue } = state
@@ -302,6 +294,7 @@ export function useDatePickerController({
       onSelectDate,
       panelVars,
       position,
+      setPanel,
       shape,
       showFooter,
       size,

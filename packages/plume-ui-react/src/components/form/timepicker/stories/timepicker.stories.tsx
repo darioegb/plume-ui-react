@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { DatePicker, type DateRange } from '../../datepicker'
-import { TimePicker } from '..'
+import { TimePicker, TimePickerInput, TimePickerPanel } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -18,6 +18,20 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  *
  * The `variant`, `size` and `shape` style the input and the popup together, like in the `DatePicker`.
  *
+ * On its own it shows an input with a button that opens the popup. To change what it shows or the order, give it
+ * its parts as children: `TimePickerInput` is the field with the button, and `TimePickerPanel` the lists of hours
+ * and minutes (a popup under the input, or always visible with `isPanel`). The `TimePicker` keeps the value and
+ * shares it with its parts. With children, the props of the field (`placeholder`, `disabled`, `readOnly`,
+ * `inputRef`, `onBlur`, `id`, `name`, `required` and `className`) go on the `TimePickerInput`, and the look
+ * (`variant`, `size` and `shape`) always on the `TimePicker`.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className`. The field and the button that opens the panel. It renders nothing when the `TimePicker` is `isPanel`. |
+ * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `config.labels.timePicker`), `className`, `style`. The lists of hours and minutes. It is a popup that opens under the input, or the page content when the `TimePicker` is `isPanel`. |
+ *
  * ### Keyboard
  *
  * Opening the popup moves the focus to the selected hour. <kbd>↑</kbd> <kbd>↓</kbd> move through the options of
@@ -32,7 +46,7 @@ export default {
   decorators: [(Story) => <div className="w-72 max-w-full pb-[18rem]">{Story()}</div>],
   parameters: {
     docs: {
-      importNames: ['TimePicker'],
+      importNames: ['TimePicker', 'TimePickerInput', 'TimePickerPanel'],
       toc: {
         title: 'On this page',
         disable: false,
@@ -61,6 +75,11 @@ export default {
       control: 'text',
       description: 'Initial time of the uncontrolled component.',
       table: { defaultValue: { summary: '""' }, type: { summary: 'string' } },
+    },
+    isPanel: {
+      control: 'boolean',
+      description: 'Renders only the lists of hours and minutes, always visible, without the input.',
+      table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
     hour12: {
       control: 'boolean',
@@ -295,6 +314,38 @@ export const CustomLabels: Story = {
     },
     defaultValue: '16:45',
     hour12: true,
+  },
+}
+
+/**
+ * Give the `TimePicker` its parts to choose what it shows and in which order. The props of the field, here its
+ * placeholder, go on the `TimePickerInput`, the look (here small and filled) on the `TimePicker`, and the
+ * `TimePickerPanel` opens under it.
+ */
+export const Compound: Story = {
+  render: () => (
+    <TimePicker defaultValue='09:30' size='sm' variant='filled'>
+      <TimePickerInput placeholder='Pick a time' />
+      <TimePickerPanel />
+    </TimePicker>
+  ),
+}
+
+/**
+ * With **isPanel** only the lists of hours and minutes are shown, always visible, to put them in the page
+ * (a booking form, a side panel). Picking a minute doesn't hide them.
+ */
+export const Panel: Story = {
+  decorators: [(Story) => <div className='w-72 max-w-full'>{Story()}</div>],
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
+    const [value, setValue] = useState('09:30')
+    return (
+      <div className='flex flex-col gap-2'>
+        <TimePicker isPanel onChange={setValue} value={value} />
+        <span className='text-sm'>Value: {value}</span>
+      </div>
+    )
   },
 }
 
