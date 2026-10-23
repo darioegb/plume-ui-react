@@ -34,7 +34,7 @@ const prefersDark = (): boolean =>
 // The toggle lives in the header so it stays visible when the production build hides the toolbar.
 addons.register('plume/theme-sync', (api) => {
   const channel = api.getChannel()
-  let colorMode: 'light' | 'dark' = 'light'
+  let colorMode: 'light' | 'dark' = getStoredMode() ?? (prefersDark() ? 'dark' : 'light')
 
   const renderToggle = (): void => {
     const toggle = document.querySelector<HTMLButtonElement>('.plume-theme-toggle')
@@ -138,7 +138,7 @@ addons.register('plume/theme-sync', (api) => {
 })
 
 addons.setConfig({
-  theme: lightTheme,
+  theme: (getStoredMode() ?? (prefersDark() ? 'dark' : 'light')) === 'dark' ? darkTheme : lightTheme,
   ...(isProd && {
     enableShortcuts: false,
     showToolbar: false,

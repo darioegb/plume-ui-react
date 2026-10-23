@@ -1,7 +1,22 @@
 <!-- Relative URLs: the site is served from a sub-path on GitHub Pages (/plume-ui-react/). -->
 <link rel="icon" href="./favicon.ico" sizes="any" />
 <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+<script>
+  // Same for the manager: set the mode and the dark canvas before the first paint.
+  try {
+    var mode = localStorage.getItem('plume-colormode')
+    if (mode !== 'dark' && mode !== 'light') {
+      mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    document.documentElement.setAttribute('data-plume-mode', mode)
+    document.documentElement.style.colorScheme = mode
+  } catch (error) {}
+</script>
 <style>
+  html[data-plume-mode='dark'] body {
+    background-color: #18181b;
+  }
+
   /* Overwrite storybook styles */
   body {
     margin: 0;
