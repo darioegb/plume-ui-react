@@ -12,11 +12,7 @@ export type BreadcrumbPart = 'list' | 'separator'
 export interface BreadcrumbOwnProps {
   colorScheme?: ColorScheme
   classNames?: Partial<Record<BreadcrumbPart, string>>
-  /** Alias of `classNames.list`, kept until the next major. */
-  listClassName?: string
   separator?: ReactNode
-  /** Alias of `classNames.separator`, kept until the next major. */
-  separatorClassName?: string
   size?: Size
   variant?: BreadcrumbVariant
 }
@@ -48,9 +44,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       className,
       colorScheme = 'primary',
       classNames,
-      listClassName,
       separator = '/',
-      separatorClassName,
       size = 'md',
       style,
       variant = 'plain',
@@ -63,9 +57,9 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       () => ({
         isStyled,
         separator,
-        separatorClassName: joinClasses(separatorClassName, classNames?.separator),
+        separatorClassName: classNames?.separator,
       }),
-      [classNames?.separator, isStyled, separator, separatorClassName],
+      [classNames?.separator, isStyled, separator],
     )
 
     return (
@@ -85,7 +79,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
           {...rest}
         >
           <ol
-            className={joinClasses(isStyled && styles.list, listClassName, classNames?.list)}
+            className={joinClasses(isStyled && styles.list, classNames?.list)}
             data-plume-breadcrumb-list=""
           >
             {children}

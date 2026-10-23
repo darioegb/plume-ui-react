@@ -103,7 +103,7 @@ function FileProgress({
       aria-label={label}
       className={className}
       colorScheme={value >= 100 ? 'success' : colorScheme}
-      indicatorClassName={indicatorClassName}
+      classNames={{ indicator: indicatorClassName }}
       showValue
       size="sm"
       value={value}

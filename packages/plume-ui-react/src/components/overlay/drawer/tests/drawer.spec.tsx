@@ -122,7 +122,7 @@ describe('Drawer component', () => {
   it('takes the classes of the dialog and the backdrop', () => {
     render(
       <Drawer defaultOpen>
-        <DrawerContent backdropClassName="my-backdrop" className="my-drawer">
+        <DrawerContent classNames={{ backdrop: 'my-backdrop' }} className="my-drawer">
           <DrawerHeader>Title</DrawerHeader>
         </DrawerContent>
       </Drawer>,

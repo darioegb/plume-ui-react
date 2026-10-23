@@ -422,14 +422,14 @@ describe('ToastProvider component', () => {
     })
 
     it('keeps the className of the region and of the toasts', () => {
-      setup({ className: 'mine', toastClassName: 'toast-mine' })
+      setup({ className: 'mine', classNames: { toast: 'toast-mine' } })
       run(() => api.toast('Saved'))
       expect(region()).toHaveClass('region', 'mine')
       expect(screen.getByRole('status')).toHaveClass('toast', 'toast-mine')
     })
 
     it('leaves the classes to the user when unstyled', () => {
-      setup({ className: 'mine', toastClassName: 'toast-mine', variant: 'unstyled' })
+      setup({ className: 'mine', classNames: { toast: 'toast-mine' }, variant: 'unstyled' })
       run(() => api.toast('Saved'))
       expect(region()).toHaveAttribute('class', 'mine')
       expect(screen.getByRole('status')).toHaveAttribute('class', 'toast-mine')

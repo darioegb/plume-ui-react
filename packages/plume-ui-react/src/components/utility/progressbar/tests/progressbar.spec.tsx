@@ -158,17 +158,17 @@ describe('ProgressBar component', () => {
     })
 
     it('adds the Plume class and the class of the user to the text', () => {
-      render(<ProgressBar aria-label="Upload" showValue value={40} valueClassName="mine" />)
+      render(<ProgressBar classNames={{ value: 'mine' }} aria-label="Upload" showValue value={40} />)
       expect(value()).toHaveClass('value', 'mine')
     })
 
     it('drops the Plume class of the text when it is unstyled', () => {
       render(
-        <ProgressBar
+        <ProgressBar classNames={{ value: 'mine' }}
           aria-label="Upload"
           showValue
           value={40}
-          valueClassName="mine"
+         
           variant="unstyled"
         />,
       )
@@ -195,10 +195,10 @@ describe('ProgressBar component', () => {
   describe('unstyled', () => {
     it('drops every Plume class and keeps the user ones', () => {
       render(
-        <ProgressBar
+        <ProgressBar classNames={{ indicator: 'bar' }}
           aria-label="Upload"
           className="track"
-          indicatorClassName="bar"
+         
           value={40}
           variant="unstyled"
         />,
@@ -216,7 +216,7 @@ describe('ProgressBar component', () => {
   })
 
   it('adds the class of the indicator in every variant', () => {
-    render(<ProgressBar aria-label="Upload" indicatorClassName="bar" />)
+    render(<ProgressBar classNames={{ indicator: 'bar' }} aria-label="Upload" />)
     expect(indicator()).toHaveClass('indicator', 'bar')
   })
 })

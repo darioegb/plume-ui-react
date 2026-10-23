@@ -376,7 +376,7 @@ describe('Sidebar component', () => {
       render(
         <SidebarProvider>
           <SidebarToggle className="toggle" variant="unstyled" />
-          <Sidebar backdropClassName="back" className="root" variant="unstyled">
+          <Sidebar classNames={{ backdrop: 'back' }} className="root" variant="unstyled">
             <SidebarContent className="content">
               <SidebarItem className="item" icon={<i>i</i>}>
                 Name

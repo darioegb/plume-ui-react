@@ -234,9 +234,9 @@ describe('Radio component', () => {
   })
 
   describe('classes of the parts', () => {
-    it('adds inputClassName to the input and labelClassName to the text', () => {
+    it('adds classNames.input to the input and classNames.label to the text', () => {
       render(
-        <Radio inputClassName="my-input" labelClassName="my-label" value="x">
+        <Radio classNames={{ input: 'my-input', label: 'my-label' }} value="x">
           Label
         </Radio>,
       )
@@ -246,7 +246,7 @@ describe('Radio component', () => {
 
     it('keeps them next to the Plume classes', () => {
       render(
-        <Radio inputClassName="my-input" labelClassName="my-label" value="x">
+        <Radio classNames={{ input: 'my-input', label: 'my-label' }} value="x">
           Label
         </Radio>,
       )
@@ -256,7 +256,7 @@ describe('Radio component', () => {
 
     it('is the only class of the input and the text when unstyled', () => {
       render(
-        <Radio inputClassName="my-input" labelClassName="my-label" variant="unstyled" value="x">
+        <Radio classNames={{ input: 'my-input', label: 'my-label' }} variant="unstyled" value="x">
           Label
         </Radio>,
       )

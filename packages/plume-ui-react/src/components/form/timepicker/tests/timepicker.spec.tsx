@@ -225,13 +225,13 @@ describe('TimePicker', () => {
 
   it('passes the field attributes to the input', () => {
     render(
-      <TimePicker
+      <TimePicker classNames={{ panel: 'panel-mine' }}
         aria-invalid
         id="start"
         name="start"
         required
         className="mine"
-        panelClassName="panel-mine"
+       
       />,
     )
     const input = screen.getByRole('textbox')

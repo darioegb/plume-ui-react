@@ -147,7 +147,6 @@ describe('plume-ui-react', () => {
       'getMonthsByLanguage',
       'lazyLoadContent',
       'themeToCssVars',
-      'useClickOutside',
       'useDebounce',
       'useMask',
       'useTableState',

@@ -233,9 +233,9 @@ describe('Textarea component', () => {
     })
 
     it('styles the count, and drops its class when it is unstyled', () => {
-      const { rerender } = render(<Textarea aria-label="Bio" countClassName="my-count" showCount />)
+      const { rerender } = render(<Textarea classNames={{ count: 'my-count' }} aria-label="Bio" showCount />)
       expect(count()).toHaveClass('count', 'my-count')
-      rerender(<Textarea aria-label="Bio" countClassName="my-count" showCount variant="unstyled" />)
+      rerender(<Textarea classNames={{ count: 'my-count' }} aria-label="Bio" showCount variant="unstyled" />)
       expect(count()).toHaveAttribute('class', 'my-count')
       rerender(<Textarea aria-label="Bio" showCount variant="unstyled" />)
       expect(count()).not.toHaveAttribute('class')

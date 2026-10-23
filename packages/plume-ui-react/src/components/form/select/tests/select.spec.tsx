@@ -1024,7 +1024,7 @@ describe('Select component', () => {
               searchInput: 'my-search-input',
             }}
           >
-            <SelectGroup label="Fruits" labelClassName="my-group-label">
+            <SelectGroup classNames={{ label: 'my-group-label' }} label="Fruits">
               <SelectOption
                 classNames={{
                   check: 'my-check',

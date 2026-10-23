@@ -4,7 +4,6 @@ import type { ForwardedRef, MouseEventHandler, ReactNode, ThHTMLAttributes } fro
 import { forwardRef } from 'react'
 import { ChevronDownIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
-import { joinClasses } from '../../../overlay/class-names'
 
 export type TableHeadPart = 'sort'
 
@@ -15,8 +14,6 @@ export interface TableHeadOwnProps {
   onSort?: MouseEventHandler<HTMLButtonElement>
   sort?: TableSortDirection
   classNames?: Partial<Record<TableHeadPart, string>>
-  /** Alias of `classNames.sort`, kept until the next major. */
-  sortClassName?: string
 }
 
 type TableHeadRootAttributes = Pick<
@@ -38,7 +35,6 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       scope = 'col',
       sort,
       classNames,
-      sortClassName,
       style,
       ...rest
     }: TableHeadProps,
@@ -57,7 +53,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
     >
       {onSort ? (
         <button
-          className={joinClasses(sortClassName, classNames?.sort)}
+          className={classNames?.sort}
           data-plume-table-sort=""
           onClick={onSort}
           type="button"

@@ -11,7 +11,6 @@ import { TimePickerContext } from './use-timepicker'
 import { timePickerColorVars, useTimePickerController } from './use-timepicker-controller'
 import type { TimePickerConfig } from './timepicker-types'
 import styles from './timepicker.module.css'
-import { joinClasses } from '../../../overlay/class-names'
 
 export type TimePickerPart = 'panel'
 
@@ -27,8 +26,6 @@ export interface TimePickerOwnProps {
   minuteStep?: number
   onChange?: (value: string) => void
   classNames?: Partial<Record<TimePickerPart, string>>
-  /** Alias of `classNames.panel`, kept until the next major. */
-  panelClassName?: string
   shape?: Shape
   size?: Size
   value?: string
@@ -51,7 +48,6 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       minuteStep = 1,
       onChange,
       classNames,
-      panelClassName,
       shape,
       size,
       style,
@@ -93,7 +89,7 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
           {children ?? (
             <>
               <TimePickerInput {...inputProps} />
-              <TimePickerPanel className={joinClasses(panelClassName, classNames?.panel)} />
+              <TimePickerPanel className={classNames?.panel} />
             </>
           )}
         </div>
