@@ -23,6 +23,7 @@ export type TimePickerRootAttributes = Pick<
 >
 
 export interface TimePickerInputOwnProps {
+  classNames?: Partial<Record<'input', string>>
   inputRef?: Ref<HTMLInputElement>
   onBlur?: (value: string) => void
 }
@@ -38,6 +39,7 @@ const defaultPlaceholder = (hour12: boolean, am: string): string =>
 
 export function TimePickerInput({
   className,
+  classNames,
   disabled = false,
   inputRef,
   onBlur,
@@ -71,6 +73,7 @@ export function TimePickerInput({
     <Input
       {...rest}
       className={className}
+      classNames={classNames}
       colorScheme={colorScheme}
       disabled={disabled}
       elementAfter={

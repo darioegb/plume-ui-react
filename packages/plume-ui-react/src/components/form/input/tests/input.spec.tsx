@@ -237,15 +237,18 @@ describe('Input component', () => {
     })
 
     it('adds the class of the button in every variant', () => {
-      render(<Input classNames={{ reveal: 'eye' }} placeholder="Secret" revealable type="password" />)
+      render(
+        <Input classNames={{ reveal: 'eye' }} placeholder="Secret" revealable type="password" />,
+      )
       expect(toggle()).toHaveClass('revealButton', 'eye')
     })
 
     it('drops the Plume classes of the button when it is unstyled', () => {
       render(
-        <Input classNames={{ reveal: 'eye' }}
+        <Input
+          classNames={{ reveal: 'eye' }}
           placeholder="Secret"
-         
+
           revealable
           type="password"
           variant="unstyled"

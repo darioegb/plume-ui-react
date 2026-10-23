@@ -26,7 +26,8 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Textarea.',
+      description:
+        'Custom CSS class for the outermost element: the `<textarea>`, or the wrapper around it when `showCount` is on.',
       table: { type: { summary: 'string' } },
     },
     style: {
@@ -71,7 +72,7 @@ export default {
     classNames: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `count` (the character counter). With `variant="unstyled"` they are the only classes the parts have.',
+        'Custom CSS classes for the parts, in every variant: `input` (the `<textarea>`) and `count` (the character counter). With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: 'Partial<Record<TextareaPart, string>>' } },
     },
     formatCount: {
@@ -397,9 +398,13 @@ export const Tailwind: Story = {
         rows={4}
         variant="unstyled"
       />
-      <Textarea classNames={{ count: 'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600' }}
+      <Textarea
+        classNames={{
+          count:
+            'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600',
+        }}
         className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-       
+
         aria-label="With a count"
         maxLength={80}
         placeholder="With a count"
@@ -459,9 +464,10 @@ export const Bootstrap: Story = {
         style={{ backgroundImage: 'none' }}
         variant="unstyled"
       />
-      <Textarea classNames={{ count: 'form-text text-end' }}
+      <Textarea
+        classNames={{ count: 'form-text text-end' }}
         className="form-control"
-       
+
         aria-label="With a count"
         maxLength={80}
         placeholder="With a count"

@@ -3,6 +3,7 @@
 import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { PickerVariant } from '../shared/picker-panel'
 import { TimePickerInput, type TimePickerInputProps } from './timepicker-input'
@@ -12,7 +13,7 @@ import { timePickerColorVars, useTimePickerController } from './use-timepicker-c
 import type { TimePickerConfig } from './timepicker-types'
 import styles from './timepicker.module.css'
 
-export type TimePickerPart = 'panel'
+export type TimePickerPart = 'input' | 'panel'
 
 export type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
 
@@ -33,13 +34,15 @@ export interface TimePickerOwnProps {
 }
 
 export type TimePickerProps = Omit<ComponentProps, 'index'> &
-  Omit<TimePickerInputProps, 'style'> &
+  Omit<TimePickerInputProps, 'classNames' | 'style'> &
   TimePickerOwnProps
 
 export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
   (
     {
       children,
+      className,
+      classNames,
       colorScheme = 'secondary',
       config,
       defaultValue = '',
@@ -47,7 +50,6 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       isPanel = false,
       minuteStep = 1,
       onChange,
-      classNames,
       shape,
       size,
       style,
@@ -81,14 +83,14 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
     return (
       <TimePickerContext.Provider value={context}>
         <div
-          className={styles.timePicker}
+          className={joinClasses(styles.timePicker, className)}
           onBlur={handleBlur}
           ref={setRootRef}
           style={{ ...timePickerColorVars(colorScheme), ...style }}
         >
           {children ?? (
             <>
-              <TimePickerInput {...inputProps} />
+              <TimePickerInput classNames={{ input: classNames?.input }} {...inputProps} />
               <TimePickerPanel className={classNames?.panel} />
             </>
           )}

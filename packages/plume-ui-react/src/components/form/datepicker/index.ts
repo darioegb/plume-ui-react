@@ -1,4 +1,9 @@
-export { DatePicker, type DatePickerOwnProps, type DatePickerProps } from './datepicker'
+export {
+  DatePicker,
+  type DatePickerOwnProps,
+  type DatePickerPart,
+  type DatePickerProps,
+} from './datepicker'
 export { DatePickerCalendar, type DatePickerCalendarProps } from './datepicker-calendar'
 export {
   DatePickerInput,

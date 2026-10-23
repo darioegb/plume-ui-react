@@ -4,11 +4,12 @@ import type { CSSProperties, InputHTMLAttributes, ForwardedRef, ReactNode } from
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
+import { joinClasses } from '../../../overlay/class-names'
 import { InputGroup } from './input-group'
 import { InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
 
-export type InputPart = 'reveal'
+export type InputPart = 'input' | 'reveal'
 
 export interface InputOwnProps {
   addonBefore?: ReactNode
@@ -53,7 +54,7 @@ export type InputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export type InputProps = ComponentProps & InputRootAttributes & InputOwnProps
 
 const generateInputClasses = (
-  className: string,
+  className: string | undefined,
   disabled: boolean,
   isInvalid: boolean,
   isStyled: boolean,
@@ -67,7 +68,7 @@ const generateInputClasses = (
   const sizeClass = isStyled ? styles[size] : ''
   const variantClass = isStyled ? styles[variant] : ''
   return `${styles.base} ${sizeClass} ${shapeClass} ${variantClass}
-      ${disabledClass} ${invalidClass} ${className}`.trim()
+      ${disabledClass} ${invalidClass} ${className ?? ''}`.trim()
 }
 
 const inputColorVars = (colorScheme: ColorScheme): CSSProperties =>
@@ -83,7 +84,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       elementBefore,
       elementAfter,
       style,
-      className = '',
+      className,
       colorScheme = 'secondary',
       disabled = false,
       readOnly = false,
@@ -105,8 +106,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const isStyled = variant !== 'unstyled'
     const { canReveal, inputType, revealed, toggle } = usePasswordReveal(type, revealable)
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
+    const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter || canReveal
     const inputClasses = generateInputClasses(
-      className,
+      joinClasses(!hasInputGroup && className, classNames?.input),
       disabled,
       isInvalid,
       isStyled,
@@ -115,7 +117,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant,
     )
     const inputStyle = { ...inputColorVars(isInvalid ? 'error' : colorScheme), ...style }
-    const hasInputGroup = addonBefore || addonAfter || elementBefore || elementAfter || canReveal
     const { value: maskedValue, onChange: maskedOnChange } = useMask({
       mask,
       value: typeof value === 'string' ? value : undefined,
@@ -148,6 +149,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         addonAfter={addonAfter}
         addonBefore={addonBefore}
         canReveal={canReveal}
+        className={className}
         elementAfter={elementAfter}
         elementBefore={elementBefore}
         isStyled={isStyled}

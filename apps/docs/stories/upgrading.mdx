@@ -68,6 +68,34 @@ longer on the `DatePickerInput`.
 </DatePicker>
 ```
 
+## `className` goes to the outermost element
+
+`className` and `style` always land on the outermost element a component renders, and `classNames.input` reaches the
+native control. It changes for the components that wrap their `<input>` or `<textarea>`:
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Input</code> with addons, elements or <code>revealable</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the group, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
+    <tr><td><code>Textarea</code> with <code>showCount</code></td><td><code>className</code> on the <code>&lt;textarea&gt;</code></td><td><code>className</code> on the wrapper, <code>classNames.input</code> on the <code>&lt;textarea&gt;</code></td></tr>
+    <tr><td><code>DatePicker</code>, <code>TimePicker</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the root, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
+    <tr><td><code>DatePickerInput</code>, <code>TimePickerInput</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the field with its button, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
+  </tbody>
+</table>
+
+```tsx
+// Before
+<DatePicker onChange={onChange} variant='unstyled' className='form-control' />
+
+// After
+<DatePicker onChange={onChange} variant='unstyled' classNames={{ input: 'form-control' }} />
+```
+
+An `Input` or a `Textarea` with nothing around it keeps `className` on the native element, because it is the
+outermost one.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

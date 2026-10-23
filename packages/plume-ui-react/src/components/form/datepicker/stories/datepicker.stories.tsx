@@ -18,14 +18,14 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  * (a popup under the input, or always visible with `isCalendar`). The `DatePicker` keeps the value and the state
  * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
  * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
- * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
+ * `required`, `className` and `classNames.input`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
  * `DatePicker`, because it styles the input and the calendar together.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className`. The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
  * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `config.labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
  *
  * ### Closing
@@ -58,9 +58,16 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the DatePicker.',
+      description: 'Custom CSS class for the root element of the DatePicker.',
       table: {
         type: { summary: 'string' },
+      },
+    },
+    classNames: {
+      control: false,
+      description: 'Custom CSS classes for the parts: `input` (the `<input>`) and `calendar`.',
+      table: {
+        type: { summary: "Partial<Record<'calendar' | 'input', string>>" },
       },
     },
     value: {
@@ -632,7 +639,7 @@ export const Disabled: Story = {
  * Some examples of DatePicker with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
  *
- * Note: `className` only restyles the **input trigger**, and with `variant="unstyled"` the calendar
+ * Note: `classNames.input` only restyles the **input**, and with `variant="unstyled"` the calendar
  * keeps just its structural styles. It is themed through `colorScheme` and the
  * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
@@ -645,14 +652,14 @@ export const Tailwind: Story = {
   placeholder="Pick a date"
   value={value}
   onChange={handleValueChange}
-  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
 />
 <DatePicker
   variant="unstyled"
   placeholder="Pill date"
   value={value}
   onChange={handleValueChange}
-  className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
 />`,
       },
     },
@@ -670,14 +677,14 @@ export const Tailwind: Story = {
     return (
       <div className='flex flex-col gap-4 w-72 max-w-full'>
         <DatePicker
-          className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+          classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
           onChange={handleValueChange}
           placeholder='Pick a date'
           value={value}
           variant='unstyled'
         />
         <DatePicker
-          className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white'
+          classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
           onChange={handleValueChange}
           placeholder='Pill date'
           value={value}
@@ -692,7 +699,7 @@ export const Tailwind: Story = {
  * Some examples of DatePicker with custom classes from bootstrap.
  * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
  *
- * Note: `variant` and `className` only restyle the **input trigger**. The calendar
+ * Note: `variant` and `classNames.input` only restyle the **input**. The calendar
  * popup keeps its structural styles and is themed through `colorScheme` and the
  * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
@@ -702,14 +709,14 @@ export const Bootstrap: Story = {
       source: {
         code: `<DatePicker
   variant="unstyled"
-  className="form-control"
+  classNames={{ input: 'form-control' }}
   placeholder="Default date"
   value={value}
   onChange={handleValueChange}
 />
 <DatePicker
   variant="unstyled"
-  className="form-control form-control-lg"
+  classNames={{ input: 'form-control form-control-lg' }}
   placeholder="Large date"
   value={value}
   onChange={handleValueChange}
@@ -730,14 +737,14 @@ export const Bootstrap: Story = {
     return (
       <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
         <DatePicker
-          className='form-control'
+          classNames={{ input: 'form-control' }}
           onChange={handleValueChange}
           placeholder='Default date'
           value={value}
           variant='unstyled'
         />
         <DatePicker
-          className='form-control form-control-lg'
+          classNames={{ input: 'form-control form-control-lg' }}
           onChange={handleValueChange}
           placeholder='Large date'
           value={value}

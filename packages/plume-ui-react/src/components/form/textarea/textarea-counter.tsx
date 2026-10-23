@@ -1,16 +1,18 @@
 'use client'
 
-import type { ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
+import type { CSSProperties, ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
 import { forwardRef, useId, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
 import styles from './textarea.module.css'
 
 interface TextareaCounterProps {
+  className?: string
   countClassName?: string
   formatCount?: (count: number, max: number | undefined) => string
   formatRemaining?: (remaining: number) => string
   isStyled: boolean
+  style: CSSProperties
   textareaProps: TextareaHTMLAttributes<HTMLTextAreaElement>
 }
 
@@ -26,10 +28,12 @@ const isNearLimit = (remaining: number, max: number): boolean =>
 export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterProps>(
   (
     {
+      className,
       countClassName,
       formatCount = defaultFormatCount,
       formatRemaining = defaultFormatRemaining,
       isStyled,
+      style,
       textareaProps,
     }: TextareaCounterProps,
     ref: ForwardedRef<HTMLTextAreaElement>,
@@ -46,7 +50,7 @@ export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterPr
     const describedBy = [textareaProps['aria-describedby'], countId].filter(Boolean).join(' ')
 
     return (
-      <div data-plume-textarea-group="">
+      <div className={className} data-plume-textarea-group="" style={style}>
         <textarea
           {...textareaProps}
           aria-describedby={describedBy}

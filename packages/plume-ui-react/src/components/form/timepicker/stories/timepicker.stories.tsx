@@ -22,14 +22,14 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * its parts as children: `TimePickerInput` is the field with the button, and `TimePickerPanel` the lists of hours
  * and minutes (a popup under the input, or always visible with `isPanel`). The `TimePicker` keeps the value and
  * shares it with its parts. With children, the props of the field (`placeholder`, `disabled`, `readOnly`,
- * `inputRef`, `onBlur`, `id`, `name`, `required` and `className`) go on the `TimePickerInput`, and the look
+ * `inputRef`, `onBlur`, `id`, `name`, `required`, `className` and `classNames.input`) go on the `TimePickerInput`, and the look
  * (`variant`, `size` and `shape`) always on the `TimePicker`.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className`. The field and the button that opens the panel. It renders nothing when the `TimePicker` is `isPanel`. |
+ * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the panel. It renders nothing when the `TimePicker` is `isPanel`. |
  * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `config.labels.timePicker`), `className`, `style`. The lists of hours and minutes. It is a popup that opens under the input, or the page content when the `TimePicker` is `isPanel`. |
  *
  * ### Keyboard
@@ -57,13 +57,13 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the input.',
+      description: 'Custom CSS class for the root element of the TimePicker.',
       table: { type: { summary: 'string' } },
     },
     classNames: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `panel` (the popup with the lists). With `variant="unstyled"` they are the only classes the parts have.',
+        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`) and `panel` (the popup with the lists). With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: 'Partial<Record<TimePickerPart, string>>' } },
     },
     value: {
@@ -402,7 +402,7 @@ export const Disabled: Story = {
 /**
  * Some examples of TimePicker with custom classes from Tailwind.
  * Set **variant="unstyled"** so Plume styles don't override the Tailwind classes.
- * The `className` restyles the input; the popup keeps its structure and follows `colorScheme`.
+ * The `classNames.input` restyles the input; the popup keeps its structure and follows `colorScheme`.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -411,7 +411,7 @@ export const Tailwind: Story = {
         code: `<TimePicker
   variant="unstyled"
   defaultValue="09:30"
-  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
 />`,
       },
     },
@@ -419,12 +419,12 @@ export const Tailwind: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-72 max-w-full">
       <TimePicker
-        className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
         defaultValue="09:30"
         variant="unstyled"
       />
       <TimePicker
-        className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
         defaultValue="15:30"
         hour12
         variant="unstyled"
@@ -441,16 +441,16 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker variant="unstyled" className="form-control" defaultValue="09:30" />
-<TimePicker variant="unstyled" className="form-control form-control-lg" defaultValue="09:30" />`,
+        code: `<TimePicker variant="unstyled" classNames={{ input: 'form-control' }} defaultValue="09:30" />
+<TimePicker variant="unstyled" classNames={{ input: 'form-control form-control-lg' }} defaultValue="09:30" />`,
       },
     },
   },
   render: () => (
     <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
-      <TimePicker className="form-control" defaultValue="09:30" variant="unstyled" />
+      <TimePicker classNames={{ input: 'form-control' }} defaultValue="09:30" variant="unstyled" />
       <TimePicker
-        className="form-control form-control-lg"
+        classNames={{ input: 'form-control form-control-lg' }}
         defaultValue="09:30"
         variant="unstyled"
       />
