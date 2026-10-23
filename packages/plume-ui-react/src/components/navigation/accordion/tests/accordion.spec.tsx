@@ -355,7 +355,7 @@ describe('Accordion component', () => {
             <AccordionTrigger className="trigger" classNames={{ heading: 'heading', icon: 'icon' }}>
               Alpha
             </AccordionTrigger>
-            <AccordionContent bodyClassName="body" className="content">
+            <AccordionContent classNames={{ body: 'body' }} className="content">
               Alpha content
             </AccordionContent>
           </AccordionItem>
@@ -393,7 +393,7 @@ describe('Accordion component', () => {
             <AccordionTrigger classNames={{ heading: 'heading', icon: 'icon' }}>
               Alpha
             </AccordionTrigger>
-            <AccordionContent bodyClassName="body">Alpha content</AccordionContent>
+            <AccordionContent classNames={{ body: 'body' }}>Alpha content</AccordionContent>
           </AccordionItem>
         </Accordion>,
       )

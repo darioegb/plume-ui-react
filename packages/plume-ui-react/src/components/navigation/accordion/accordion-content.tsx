@@ -12,8 +12,6 @@ export type AccordionContentPart = 'body'
 
 export interface AccordionContentOwnProps {
   classNames?: Partial<Record<AccordionContentPart, string>>
-  /** Alias of `classNames.body`, kept until the next major. */
-  bodyClassName?: string
 }
 
 type AccordionContentRootAttributes = Pick<HTMLAttributes<HTMLElement>, 'children' | 'title'>
@@ -24,7 +22,7 @@ export type AccordionContentProps = Omit<ComponentProps, 'index'> &
 
 export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
   (
-    { bodyClassName, children, className, classNames, style, ...rest }: AccordionContentProps,
+    { children, className, classNames, style, ...rest }: AccordionContentProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
     const { isStyled } = useAccordionContext('AccordionContent')
@@ -34,8 +32,8 @@ export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
       <Collapse
         aria-labelledby={item.triggerId}
         as="section"
-        bodyClassName={joinClasses(isStyled && styles.body, bodyClassName, classNames?.body)}
         className={className}
+        classNames={{ body: joinClasses(isStyled && styles.body, classNames?.body) }}
         data-plume-accordion-content=""
         id={item.contentId}
         open={item.open}

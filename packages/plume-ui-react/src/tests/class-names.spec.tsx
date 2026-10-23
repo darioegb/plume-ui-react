@@ -41,101 +41,48 @@ import { Textarea } from '../components/form/textarea'
 import { TimePicker } from '../components/form/timepicker'
 import { Toggle } from '../components/form/toggle'
 
-type Mode = 'alias' | 'classNames'
-
 interface Case {
   classes: string[]
-  element: (mode: Mode) => ReactElement
+  element: () => ReactElement
   open?: () => void
 }
-
-const pick = <T extends object>(mode: Mode, alias: T, parts: Record<string, string>): object =>
-  mode === 'alias' ? alias : { classNames: parts }
 
 const cases: Record<string, Case> = {
   Checkbox: {
     classes: ['a-input', 'a-label'],
-    element: (mode) => (
-      <Checkbox
-        {...pick(
-          mode,
-          { inputClassName: 'a-input', labelClassName: 'a-label' },
-          { input: 'a-input', label: 'a-label' },
-        )}
-      >
-        Accept
-      </Checkbox>
-    ),
+    element: () => <Checkbox classNames={{ input: 'a-input', label: 'a-label' }}>Accept</Checkbox>,
   },
   Radio: {
     classes: ['a-input', 'a-label'],
-    element: (mode) => (
-      <Radio
-        value="x"
-        {...pick(
-          mode,
-          { inputClassName: 'a-input', labelClassName: 'a-label' },
-          { input: 'a-input', label: 'a-label' },
-        )}
-      >
+    element: () => (
+      <Radio value="x" classNames={{ input: 'a-input', label: 'a-label' }}>
         Option
       </Radio>
     ),
   },
   Toggle: {
     classes: ['a-input', 'a-label'],
-    element: (mode) => (
-      <Toggle
-        {...pick(
-          mode,
-          { inputClassName: 'a-input', labelClassName: 'a-label' },
-          { input: 'a-input', label: 'a-label' },
-        )}
-      >
-        Notify
-      </Toggle>
-    ),
+    element: () => <Toggle classNames={{ input: 'a-input', label: 'a-label' }}>Notify</Toggle>,
   },
   PinInput: {
     classes: ['a-input'],
-    element: (mode) => (
-      <PinInput
-        aria-label="Code"
-        length={2}
-        {...pick(mode, { inputClassName: 'a-input' }, { input: 'a-input' })}
-      />
-    ),
+    element: () => <PinInput aria-label="Code" length={2} classNames={{ input: 'a-input' }} />,
   },
   Input: {
     classes: ['a-reveal'],
-    element: (mode) => (
-      <Input
-        revealable
-        type="password"
-        {...pick(mode, { revealClassName: 'a-reveal' }, { reveal: 'a-reveal' })}
-      />
-    ),
+    element: () => <Input revealable type="password" classNames={{ reveal: 'a-reveal' }} />,
   },
   Textarea: {
     classes: ['a-count'],
-    element: (mode) => (
-      <Textarea
-        aria-label="Bio"
-        showCount
-        {...pick(mode, { countClassName: 'a-count' }, { count: 'a-count' })}
-      />
-    ),
+    element: () => <Textarea aria-label="Bio" showCount classNames={{ count: 'a-count' }} />,
   },
   SelectGroup: {
     classes: ['a-label'],
-    element: (mode) => (
+    element: () => (
       <Select aria-label="Fruit">
         <SelectTrigger />
         <SelectContent>
-          <SelectGroup
-            label="Fruits"
-            {...pick(mode, { labelClassName: 'a-label' }, { label: 'a-label' })}
-          >
+          <SelectGroup label="Fruits" classNames={{ label: 'a-label' }}>
             <SelectOption value="apple">Apple</SelectOption>
           </SelectGroup>
         </SelectContent>
@@ -144,16 +91,14 @@ const cases: Record<string, Case> = {
   },
   TimePicker: {
     classes: ['a-panel'],
-    element: (mode) => (
-      <TimePicker {...pick(mode, { panelClassName: 'a-panel' }, { panel: 'a-panel' })} />
-    ),
+    element: () => <TimePicker classNames={{ panel: 'a-panel' }} />,
     open: () => fireEvent.click(screen.getByRole('button', { name: 'Open time picker' })),
   },
   Sidebar: {
     classes: ['a-backdrop'],
-    element: (mode) => (
+    element: () => (
       <SidebarProvider>
-        <Sidebar {...pick(mode, { backdropClassName: 'a-backdrop' }, { backdrop: 'a-backdrop' })}>
+        <Sidebar classNames={{ backdrop: 'a-backdrop' }}>
           <SidebarContent>Content</SidebarContent>
         </Sidebar>
       </SidebarProvider>
@@ -161,42 +106,31 @@ const cases: Record<string, Case> = {
   },
   AccordionContent: {
     classes: ['a-body'],
-    element: (mode) => (
+    element: () => (
       <Accordion>
         <AccordionItem value="a">
           <AccordionTrigger>Alpha</AccordionTrigger>
-          <AccordionContent {...pick(mode, { bodyClassName: 'a-body' }, { body: 'a-body' })}>
-            Content
-          </AccordionContent>
+          <AccordionContent classNames={{ body: 'a-body' }}>Content</AccordionContent>
         </AccordionItem>
       </Accordion>
     ),
   },
   Breadcrumb: {
     classes: ['a-list', 'a-separator'],
-    element: (mode) => (
-      <Breadcrumb
-        {...pick(
-          mode,
-          { listClassName: 'a-list', separatorClassName: 'a-separator' },
-          { list: 'a-list', separator: 'a-separator' },
-        )}
-      >
+    element: () => (
+      <Breadcrumb classNames={{ list: 'a-list', separator: 'a-separator' }}>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbItem current>Page</BreadcrumbItem>
+        <BreadcrumbItem>Page</BreadcrumbItem>
       </Breadcrumb>
     ),
   },
   ModalContent: {
     classes: ['a-backdrop'],
-    element: (mode) => (
+    element: () => (
       <Modal defaultOpen>
-        <ModalContent
-          aria-label="Name"
-          {...pick(mode, { backdropClassName: 'a-backdrop' }, { backdrop: 'a-backdrop' })}
-        >
+        <ModalContent aria-label="Name" classNames={{ backdrop: 'a-backdrop' }}>
           Body
         </ModalContent>
       </Modal>
@@ -204,55 +138,39 @@ const cases: Record<string, Case> = {
   },
   Skeleton: {
     classes: ['a-line'],
-    element: (mode) => (
-      <Skeleton lines={2} {...pick(mode, { lineClassName: 'a-line' }, { line: 'a-line' })} />
-    ),
+    element: () => <Skeleton lines={2} classNames={{ line: 'a-line' }} />,
   },
   Collapse: {
     classes: ['a-body'],
-    element: (mode) => (
-      <Collapse {...pick(mode, { bodyClassName: 'a-body' }, { body: 'a-body' })}>Text</Collapse>
-    ),
+    element: () => <Collapse classNames={{ body: 'a-body' }}>Text</Collapse>,
   },
   ProgressBar: {
     classes: ['a-indicator', 'a-value'],
-    element: (mode) => (
+    element: () => (
       <ProgressBar
         aria-label="Upload"
         showValue
         value={40}
-        {...pick(
-          mode,
-          { indicatorClassName: 'a-indicator', valueClassName: 'a-value' },
-          { indicator: 'a-indicator', value: 'a-value' },
-        )}
+        classNames={{ indicator: 'a-indicator', value: 'a-value' }}
       />
     ),
   },
   CarouselDots: {
     classes: ['a-dot'],
-    element: (mode) => (
+    element: () => (
       <Carousel aria-label="x">
         <CarouselSlides>
           <CarouselSlide>A</CarouselSlide>
           <CarouselSlide>B</CarouselSlide>
         </CarouselSlides>
-        <CarouselDots {...pick(mode, { dotClassName: 'a-dot' }, { dot: 'a-dot' })} />
+        <CarouselDots classNames={{ dot: 'a-dot' }} />
       </Carousel>
     ),
   },
   Table: {
     classes: ['a-container', 'a-loading'],
-    element: (mode) => (
-      <Table
-        aria-label="t"
-        loading
-        {...pick(
-          mode,
-          { containerClassName: 'a-container', loadingClassName: 'a-loading' },
-          { container: 'a-container', loading: 'a-loading' },
-        )}
-      >
+    element: () => (
+      <Table aria-label="t" loading classNames={{ container: 'a-container', loading: 'a-loading' }}>
         <TableBody>
           <TableRow>
             <TableEmpty>Nothing</TableEmpty>
@@ -263,15 +181,11 @@ const cases: Record<string, Case> = {
   },
   TableHead: {
     classes: ['a-sort'],
-    element: (mode) => (
+    element: () => (
       <Table aria-label="t">
         <TableHeader>
           <TableRow>
-            <TableHead
-              onSort={() => undefined}
-              sort="none"
-              {...pick(mode, { sortClassName: 'a-sort' }, { sort: 'a-sort' })}
-            >
+            <TableHead onSort={() => undefined} sort="none" classNames={{ sort: 'a-sort' }}>
               Name
             </TableHead>
           </TableRow>
@@ -281,16 +195,11 @@ const cases: Record<string, Case> = {
   },
   TableEmpty: {
     classes: ['a-state', 'a-title'],
-    element: (mode) => (
+    element: () => (
       <Table aria-label="t">
         <TableBody>
           <TableRow>
-            <TableEmpty
-              title="Nothing"
-              {...(mode === 'alias'
-                ? { classNames: { title: 'a-title' }, emptyStateClassName: 'a-state' }
-                : { classNames: { emptyState: 'a-state', title: 'a-title' } })}
-            />
+            <TableEmpty title="Nothing" classNames={{ emptyState: 'a-state', title: 'a-title' }} />
           </TableRow>
         </TableBody>
       </Table>
@@ -300,8 +209,8 @@ const cases: Record<string, Case> = {
 
 describe('classNames of the parts', () => {
   describe.each(Object.entries(cases))('%s', (_name, { classes, element, open }) => {
-    it.each(['classNames', 'alias'] as const)('puts the classes of the parts with %s', (mode) => {
-      render(element(mode))
+    it('puts the classes of the parts', () => {
+      render(element())
       open?.()
       for (const name of classes) {
         expect(document.querySelector(`.${name}`)).not.toBeNull()

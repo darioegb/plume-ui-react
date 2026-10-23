@@ -16,10 +16,6 @@ export type CheckboxPart = 'input' | 'label'
 
 export interface CheckboxOwnProps {
   classNames?: Partial<Record<CheckboxPart, string>>
-  /** Alias of `classNames.input`, kept until the next major. */
-  inputClassName?: string
-  /** Alias of `classNames.label`, kept until the next major. */
-  labelClassName?: string
   colorScheme?: ColorScheme
   indeterminate?: boolean
   readOnly?: boolean
@@ -66,8 +62,6 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
       children,
       className = '',
       classNames,
-      inputClassName = '',
-      labelClassName = '',
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -109,7 +103,6 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
         isStyled && styles.checkbox,
         isStyled && styles[variant],
         isStyled && isInvalid && styles.invalid,
-        inputClassName,
         classNames?.input,
       ]
         .filter(Boolean)
@@ -142,7 +135,7 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName, classNames?.label]
+              [isStyled && styles.label, classNames?.label]
                 .filter(Boolean)
                 .join(' ') || undefined
             }

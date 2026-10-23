@@ -166,9 +166,9 @@ describe('Toggle component', () => {
   })
 
   describe('classes of the parts', () => {
-    it('adds inputClassName to the input and labelClassName to the text', () => {
+    it('adds classNames.input to the input and classNames.label to the text', () => {
       render(
-        <Toggle inputClassName="my-input" labelClassName="my-label">
+        <Toggle classNames={{ input: 'my-input', label: 'my-label' }}>
           Label
         </Toggle>,
       )
@@ -178,7 +178,7 @@ describe('Toggle component', () => {
 
     it('keeps them next to the Plume classes', () => {
       render(
-        <Toggle inputClassName="my-input" labelClassName="my-label">
+        <Toggle classNames={{ input: 'my-input', label: 'my-label' }}>
           Label
         </Toggle>,
       )
@@ -188,7 +188,7 @@ describe('Toggle component', () => {
 
     it('is the only class of the input and the text when unstyled', () => {
       render(
-        <Toggle inputClassName="my-input" labelClassName="my-label" variant="unstyled">
+        <Toggle classNames={{ input: 'my-input', label: 'my-label' }} variant="unstyled">
           Label
         </Toggle>,
       )

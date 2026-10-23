@@ -3,15 +3,12 @@ import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { EmptyState } from '../../presentation/emptystate'
 import type { EmptyStatePart, EmptyStateProps } from '../../presentation/emptystate'
-import { joinClasses } from '../../../overlay/class-names'
 
 export type TableEmptyPart = EmptyStatePart | 'emptyState'
 
 export interface TableEmptyOwnProps {
   classNames?: Partial<Record<TableEmptyPart, string>>
   colSpan?: number
-  /** Alias of `classNames.emptyState`, kept until the next major. */
-  emptyStateClassName?: string
 }
 
 type TableEmptyRootAttributes = Pick<
@@ -36,7 +33,6 @@ export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
       classNames,
       colSpan = 100,
       description,
-      emptyStateClassName,
       icon,
       size,
       style,
@@ -58,7 +54,7 @@ export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
       >
         <EmptyState
           action={action}
-          className={joinClasses(emptyStateClassName, classNames?.emptyState)}
+          className={classNames?.emptyState}
           classNames={classNames}
           description={description}
           icon={icon}

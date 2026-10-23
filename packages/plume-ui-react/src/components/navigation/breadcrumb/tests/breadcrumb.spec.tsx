@@ -216,7 +216,7 @@ describe('Breadcrumb component', () => {
 
     it('adds the classes of the user to every part', () => {
       render(
-        <Breadcrumb className="root" listClassName="list" separatorClassName="sep">
+        <Breadcrumb classNames={{ list: 'list', separator: 'sep' }} className="root">
           <BreadcrumbItem className="item">
             <BreadcrumbLink className="link" href="/">
               Home
@@ -233,10 +233,10 @@ describe('Breadcrumb component', () => {
 
     it('drops the Plume classes when it is unstyled and keeps the structure attributes', () => {
       render(
-        <Breadcrumb
+        <Breadcrumb classNames={{ list: 'list', separator: 'sep' }}
           className="root"
-          listClassName="list"
-          separatorClassName="sep"
+         
+         
           variant="unstyled"
         >
           <BreadcrumbItem className="item">

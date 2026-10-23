@@ -13,8 +13,6 @@ export type SkeletonVariant = 'pulse' | 'wave' | 'unstyled'
 export interface SkeletonOwnProps {
   height?: number | string
   classNames?: Partial<Record<SkeletonPart, string>>
-  /** Alias of `classNames.line`, kept until the next major. */
-  lineClassName?: string
   lines?: number
   shape?: SkeletonShape
   variant?: SkeletonVariant
@@ -36,7 +34,6 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
       className,
       height,
       classNames,
-      lineClassName,
       lines = 1,
       shape = 'text',
       style,
@@ -73,7 +70,6 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
                 joinClasses(
                   isStyled && styles.text,
                   isStyled && line === count - 1 && styles.last,
-                  lineClassName,
                   classNames?.line,
                 ),
               )}

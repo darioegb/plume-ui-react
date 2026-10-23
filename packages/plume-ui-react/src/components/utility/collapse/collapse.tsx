@@ -11,8 +11,6 @@ export type CollapseVariant = 'accent' | 'filled' | 'outline' | 'unstyled'
 export interface CollapseOwnProps {
   as?: 'div' | 'section'
   classNames?: Partial<Record<CollapsePart, string>>
-  /** Alias of `classNames.body`, kept until the next major. */
-  bodyClassName?: string
   colorScheme?: ColorScheme
   open?: boolean
   size?: Size
@@ -46,7 +44,6 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
     {
       as: tag = 'div',
       classNames,
-      bodyClassName,
       children,
       className,
       colorScheme,
@@ -75,7 +72,6 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
               isStyled && styles.body,
               isStyled && styles[variant],
               isStyled && styles[size],
-              bodyClassName,
               classNames?.body,
             )}
           >

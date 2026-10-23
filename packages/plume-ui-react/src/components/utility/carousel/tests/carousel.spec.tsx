@@ -274,10 +274,10 @@ describe('Carousel component', () => {
             <CarouselSlide>A</CarouselSlide>
             <CarouselSlide>B</CarouselSlide>
           </CarouselSlides>
-          <CarouselDots
+          <CarouselDots classNames={{ dot: 'dot-mine' }}
             aria-label="Elegir"
             dotLabel={(i) => `Ir a ${i + 1}`}
-            dotClassName="dot-mine"
+           
           />
         </Carousel>,
       )

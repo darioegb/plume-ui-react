@@ -445,10 +445,10 @@ describe('PinInput component', () => {
   describe('unstyled', () => {
     it('drops every Plume class and keeps the user ones', () => {
       render(
-        <PinInput
+        <PinInput classNames={{ input: 'cell' }}
           aria-label="Code"
           className="root"
-          inputClassName="cell"
+         
           length={2}
           variant="unstyled"
         />,
@@ -464,7 +464,7 @@ describe('PinInput component', () => {
     })
 
     it('adds the class of the cells in every variant', () => {
-      render(<PinInput aria-label="Code" inputClassName="mine" length={2} />)
+      render(<PinInput classNames={{ input: 'mine' }} aria-label="Code" length={2} />)
       expect(cells()[0]).toHaveClass('cell', 'mine')
     })
   })

@@ -18,8 +18,6 @@ export type ModalContentPart = 'backdrop'
 
 export interface ModalContentOwnProps {
   classNames?: Partial<Record<ModalContentPart, string>>
-  /** Alias of `classNames.backdrop`, kept until the next major. */
-  backdropClassName?: string
 }
 
 export type ModalContentProps = Omit<ComponentProps, 'index'> &
@@ -29,7 +27,6 @@ export type ModalContentProps = Omit<ComponentProps, 'index'> &
 export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
   (
     {
-      backdropClassName = '',
       children,
       className = '',
       classNames,
@@ -72,7 +69,6 @@ export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
         <div
           className={joinClasses(
             isStyled && styles.backdrop,
-            backdropClassName,
             classNames?.backdrop,
           )}
           data-plume-modal-backdrop=""

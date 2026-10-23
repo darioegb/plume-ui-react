@@ -11,8 +11,6 @@ export type CarouselDotsPart = 'dot'
 
 export interface CarouselDotsOwnProps {
   classNames?: Partial<Record<CarouselDotsPart, string>>
-  /** Alias of `classNames.dot`, kept until the next major. */
-  dotClassName?: string
   dotLabel?: (index: number, count: number) => string
 }
 
@@ -40,7 +38,6 @@ export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
       'aria-label': ariaLabel = 'Choose a slide',
       className,
       classNames,
-      dotClassName,
       dotLabel = defaultDotLabel,
       style,
       ...rest
@@ -73,7 +70,7 @@ export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
             aria-controls={getSlideId(baseId, position)}
             aria-label={dotLabel(position, count)}
             aria-selected={position === index}
-            className={joinClasses(isStyled && styles.dot, dotClassName, classNames?.dot)}
+            className={joinClasses(isStyled && styles.dot, classNames?.dot)}
             data-active={position === index ? '' : undefined}
             data-plume-carousel-dot=""
             key={position}

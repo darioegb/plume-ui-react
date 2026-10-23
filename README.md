@@ -115,7 +115,7 @@ export function App() {
 | Tooltip | [Tooltip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tooltip--docs) |
 | Tree | [Tree](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tree--docs) |
 
-Coming from the `@plume-ui-react/*` packages? See the [migration guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-migration--docs).
+Coming from a 0.x version? See the [upgrading guide](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-upgrading-to-1-0--docs).
 
 ## Examples
 
@@ -161,7 +161,7 @@ packages/
   plume-ui-react/            The published package
     src/components/<category>/<name>/   One folder per component, with its stories and tests
     src/theme/               ThemeProvider, design tokens and shared types
-    src/hooks/               Shared hooks (use-mask, use-debounce, use-click-outside)
+    src/hooks/               Shared hooks (use-mask, use-debounce)
     src/utils/               Shared utilities (color, date, lazy, merge)
   tailwind-config/           Tailwind preset that maps the design tokens to utilities
   eslint-config-custom/      Shared ESLint config

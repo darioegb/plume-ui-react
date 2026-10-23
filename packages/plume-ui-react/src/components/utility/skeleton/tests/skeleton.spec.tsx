@@ -85,7 +85,7 @@ describe('Skeleton component', () => {
     })
 
     it('puts the line class on every line', () => {
-      const { container } = render(<Skeleton lineClassName="line" lines={2} variant="unstyled" />)
+      const { container } = render(<Skeleton classNames={{ line: 'line' }} lines={2} variant="unstyled" />)
       const lines = container.querySelectorAll('[data-plume-skeleton]')
       expect(lines[0]).toHaveAttribute('class', 'line')
       expect(lines[1]).toHaveAttribute('class', 'line')
@@ -94,7 +94,7 @@ describe('Skeleton component', () => {
   })
 
   it('adds the line class in every variant', () => {
-    const { container } = render(<Skeleton lineClassName="line" lines={2} />)
+    const { container } = render(<Skeleton classNames={{ line: 'line' }} lines={2} />)
     expect(container.querySelectorAll('[data-plume-skeleton]')[0]).toHaveClass('skeleton', 'line')
   })
 })

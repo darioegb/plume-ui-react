@@ -51,8 +51,8 @@ describe('Collapse component', () => {
     expect(container.firstChild?.nodeName).toBe('DIV')
   })
 
-  it('puts bodyClassName on the box that holds the content', () => {
-    render(<Collapse bodyClassName="mine">Text</Collapse>)
+  it('puts classNames.body on the box that holds the content', () => {
+    render(<Collapse classNames={{ body: 'mine' }}>Text</Collapse>)
     expect(screen.getByText('Text')).toHaveClass('body', 'mine')
   })
 
@@ -73,7 +73,7 @@ describe('Collapse component', () => {
 
   it('drops the Plume classes of the body when it is unstyled', () => {
     render(
-      <Collapse bodyClassName="mine" variant="unstyled">
+      <Collapse classNames={{ body: 'mine' }} variant="unstyled">
         Text
       </Collapse>,
     )

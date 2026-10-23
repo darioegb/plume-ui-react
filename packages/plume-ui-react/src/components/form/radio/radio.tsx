@@ -17,10 +17,6 @@ export type RadioPart = 'input' | 'label'
 
 export interface RadioOwnProps {
   classNames?: Partial<Record<RadioPart, string>>
-  /** Alias of `classNames.input`, kept until the next major. */
-  inputClassName?: string
-  /** Alias of `classNames.label`, kept until the next major. */
-  labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -65,8 +61,6 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
       children,
       className = '',
       classNames,
-      inputClassName = '',
-      labelClassName = '',
       colorScheme,
       defaultChecked,
       disabled = false,
@@ -110,7 +104,6 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
         isStyled && styles.radio,
         isStyled && styles[resolvedVariant],
         isStyled && isInvalid && styles.invalid,
-        inputClassName,
         classNames?.input,
       ]
         .filter(Boolean)
@@ -154,7 +147,7 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName, classNames?.label]
+              [isStyled && styles.label, classNames?.label]
                 .filter(Boolean)
                 .join(' ') || undefined
             }

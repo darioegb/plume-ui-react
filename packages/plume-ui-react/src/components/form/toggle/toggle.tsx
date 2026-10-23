@@ -16,10 +16,6 @@ export type TogglePart = 'input' | 'label'
 
 export interface ToggleOwnProps {
   classNames?: Partial<Record<TogglePart, string>>
-  /** Alias of `classNames.input`, kept until the next major. */
-  inputClassName?: string
-  /** Alias of `classNames.label`, kept until the next major. */
-  labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -63,8 +59,6 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
       children,
       className = '',
       classNames,
-      inputClassName = '',
-      labelClassName = '',
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -97,7 +91,6 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
         isStyled && styles.toggle,
         isStyled && styles[variant],
         isStyled && isInvalid && styles.invalid,
-        inputClassName,
         classNames?.input,
       ]
         .filter(Boolean)
@@ -131,7 +124,7 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
         {children ? (
           <span
             className={
-              [isStyled && styles.label, labelClassName, classNames?.label]
+              [isStyled && styles.label, classNames?.label]
                 .filter(Boolean)
                 .join(' ') || undefined
             }

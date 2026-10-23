@@ -20,8 +20,6 @@ export interface PinInputOwnProps {
   defaultValue?: string
   getInputLabel?: (index: number, length: number) => string
   classNames?: Partial<Record<PinInputPart, string>>
-  /** Alias of `classNames.input`, kept until the next major. */
-  inputClassName?: string
   length?: number
   mask?: boolean
   name?: string
@@ -74,7 +72,6 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       getInputLabel,
       id,
       classNames,
-      inputClassName,
       length = 6,
       mask = false,
       name,
@@ -140,7 +137,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
             aria-label={label(index + 1, length)}
             aria-required={required || undefined}
             autoComplete={autoComplete}
-            className={joinClasses(isStyled && styles.cell, inputClassName, classNames?.input)}
+            className={joinClasses(isStyled && styles.cell, classNames?.input)}
             data-filled={pin.value[index] ? '' : undefined}
             data-plume-pininput-cell=""
             disabled={disabled}

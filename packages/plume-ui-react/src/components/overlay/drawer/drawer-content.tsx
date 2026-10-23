@@ -12,7 +12,7 @@ export type DrawerContentProps = ModalContentProps
 
 export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
   (
-    { backdropClassName, className, ...rest }: DrawerContentProps,
+    { className, classNames, ...rest }: DrawerContentProps,
     ref: ForwardedRef<HTMLDialogElement>,
   ): ReactNode => {
     const { shape, side } = useDrawerContext('DrawerContent')
@@ -21,11 +21,14 @@ export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
     return (
       <ModalContent
         {...rest}
-        backdropClassName={joinClasses(
-          isStyled && styles.backdrop,
-          isStyled && styles[`${side}Backdrop`],
-          backdropClassName,
-        )}
+        classNames={{
+          ...classNames,
+          backdrop: joinClasses(
+            isStyled && styles.backdrop,
+            isStyled && styles[`${side}Backdrop`],
+            classNames?.backdrop,
+          ),
+        }}
         className={joinClasses(
           isStyled && styles.drawer,
           isStyled && styles[side],

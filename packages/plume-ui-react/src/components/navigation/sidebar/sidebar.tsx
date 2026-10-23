@@ -21,8 +21,6 @@ export type SidebarPart = 'backdrop'
 
 export interface SidebarOwnProps {
   classNames?: Partial<Record<SidebarPart, string>>
-  /** Alias of `classNames.backdrop`, kept until the next major. */
-  backdropClassName?: string
   colorScheme?: ColorScheme
   side?: SidebarSide
   size?: Size
@@ -54,7 +52,6 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
       classNames,
-      backdropClassName,
       children,
       className,
       colorScheme = 'primary',
@@ -99,7 +96,6 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
           aria-hidden="true"
           className={joinClasses(
             isStyled && styles.backdrop,
-            backdropClassName,
             classNames?.backdrop,
           )}
           data-breakpoint={breakpoint}

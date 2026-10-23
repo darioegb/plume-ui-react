@@ -14,15 +14,11 @@ export interface ProgressBarOwnProps {
   formatValue?: (value: number, max: number) => string
   indeterminate?: boolean
   classNames?: Partial<Record<ProgressBarPart, string>>
-  /** Alias of `classNames.indicator`, kept until the next major. */
-  indicatorClassName?: string
   max?: number
   shape?: Shape
   showValue?: boolean
   size?: Size
   value?: number
-  /** Alias of `classNames.value`, kept until the next major. */
-  valueClassName?: string
   valueText?: string
   variant?: ProgressBarVariant
 }
@@ -56,14 +52,12 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       formatValue = defaultFormatValue,
       indeterminate = false,
       classNames,
-      indicatorClassName,
       max = 100,
       shape = 'pill',
       showValue = false,
       size = 'md',
       style,
       value = 0,
-      valueClassName,
       valueText,
       variant = 'solid',
       ...rest
@@ -84,7 +78,6 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       isStyled && styles.indicator,
       isStyled && variant === 'striped' && styles.striped,
       isStyled && variant === 'striped' && animated && styles.animated,
-      indicatorClassName,
       classNames?.indicator,
     )
 
@@ -117,7 +110,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
         {bar}
         <span
           aria-hidden="true"
-          className={joinClasses(isStyled && styles.value, valueClassName, classNames?.value)}
+          className={joinClasses(isStyled && styles.value, classNames?.value)}
           data-plume-progressbar-value=""
         >
           {formatValue(current, total)}

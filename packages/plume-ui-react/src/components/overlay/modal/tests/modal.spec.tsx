@@ -481,7 +481,7 @@ describe('Modal component', () => {
     it('takes a class next to the Plume one', () => {
       render(
         <Modal defaultOpen>
-          <ModalContent aria-label="Name" backdropClassName="my-backdrop">
+          <ModalContent classNames={{ backdrop: 'my-backdrop' }} aria-label="Name">
             Body
           </ModalContent>
         </Modal>,
@@ -494,7 +494,7 @@ describe('Modal component', () => {
     it('has only the class of the user when unstyled', () => {
       render(
         <Modal defaultOpen variant="unstyled">
-          <ModalContent aria-label="Name" backdropClassName="my-backdrop">
+          <ModalContent classNames={{ backdrop: 'my-backdrop' }} aria-label="Name">
             Body
           </ModalContent>
         </Modal>,

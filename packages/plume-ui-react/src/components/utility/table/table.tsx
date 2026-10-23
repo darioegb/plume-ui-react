@@ -13,12 +13,8 @@ export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 
 export interface TableOwnProps {
   classNames?: Partial<Record<TablePart, string>>
-  /** Alias of `classNames.container`, kept until the next major. */
-  containerClassName?: string
   hoverable?: boolean
   loading?: boolean
-  /** Alias of `classNames.loading`, kept until the next major. */
-  loadingClassName?: string
   loadingLabel?: string
   maxHeight?: number | string
   size?: Size
@@ -62,10 +58,8 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       children,
       className,
       classNames,
-      containerClassName,
       hoverable = false,
       loading = false,
-      loadingClassName,
       loadingLabel = 'Loading',
       maxHeight,
       size = 'md',
@@ -88,7 +82,6 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
         aria-labelledby={scrollable ? ariaLabelledBy : undefined}
         className={joinClasses(
           isStyled && styles.container,
-          containerClassName,
           classNames?.container,
         )}
         data-plume-table-container=""
@@ -100,7 +93,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
           <div data-plume-table-loading="">
             <Spinner
               aria-label={loadingLabel}
-              className={joinClasses(loadingClassName, classNames?.loading)}
+              className={classNames?.loading}
               color="primary"
               variant={isStyled ? 'solid' : 'unstyled'}
             />

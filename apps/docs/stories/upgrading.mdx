@@ -1,0 +1,84 @@
+{/* upgrading.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Upgrading to 1.0' />
+
+# Upgrading to 1.0
+
+This page lists what changed for someone who comes from the 0.x versions of `plume-ui-react`. From 1.0 on, the
+public API follows semver: a breaking change only arrives in a major version, and this page will list it.
+
+## One prop for the classes of the parts
+
+A component that has inner parts takes a single `classNames` prop, a record keyed by part. The loose props that
+existed in 0.x are gone. `classNames` adds its class in every variant, next to the Plume classes, and with
+`variant="unstyled"` it is the only class a part has.
+
+```tsx
+// Before
+<Checkbox inputClassName='h-4 w-4' labelClassName='font-semibold'>Accept</Checkbox>
+
+// After
+<Checkbox classNames={{ input: 'h-4 w-4', label: 'font-semibold' }}>Accept</Checkbox>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Checkbox</code>, <code>Radio</code>, <code>Toggle</code></td><td><code>inputClassName</code>, <code>labelClassName</code></td><td><code>classNames.input</code>, <code>classNames.label</code></td></tr>
+    <tr><td><code>PinInput</code></td><td><code>inputClassName</code></td><td><code>classNames.input</code></td></tr>
+    <tr><td><code>Input</code></td><td><code>revealClassName</code></td><td><code>classNames.reveal</code></td></tr>
+    <tr><td><code>Textarea</code></td><td><code>countClassName</code></td><td><code>classNames.count</code></td></tr>
+    <tr><td><code>SelectGroup</code></td><td><code>labelClassName</code></td><td><code>classNames.label</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>panelClassName</code></td><td><code>classNames.panel</code></td></tr>
+    <tr><td><code>Sidebar</code>, <code>ModalContent</code>, <code>DrawerContent</code></td><td><code>backdropClassName</code></td><td><code>classNames.backdrop</code></td></tr>
+    <tr><td><code>AccordionContent</code>, <code>Collapse</code></td><td><code>bodyClassName</code></td><td><code>classNames.body</code></td></tr>
+    <tr><td><code>Breadcrumb</code></td><td><code>listClassName</code>, <code>separatorClassName</code></td><td><code>classNames.list</code>, <code>classNames.separator</code></td></tr>
+    <tr><td><code>ToastProvider</code></td><td><code>toastClassName</code></td><td><code>classNames.toast</code></td></tr>
+    <tr><td><code>Skeleton</code></td><td><code>lineClassName</code></td><td><code>classNames.line</code></td></tr>
+    <tr><td><code>ProgressBar</code></td><td><code>indicatorClassName</code>, <code>valueClassName</code></td><td><code>classNames.indicator</code>, <code>classNames.value</code></td></tr>
+    <tr><td><code>CarouselDots</code></td><td><code>dotClassName</code></td><td><code>classNames.dot</code></td></tr>
+    <tr><td><code>Table</code></td><td><code>containerClassName</code>, <code>loadingClassName</code></td><td><code>classNames.container</code>, <code>classNames.loading</code></td></tr>
+    <tr><td><code>TableHead</code></td><td><code>sortClassName</code></td><td><code>classNames.sort</code></td></tr>
+    <tr><td><code>TableEmpty</code></td><td><code>emptyStateClassName</code></td><td><code>classNames.emptyState</code></td></tr>
+  </tbody>
+</table>
+
+Every component exports its `<Name>Part` type, for example `CheckboxPart`, with the keys it accepts.
+
+## The look of the `DatePicker` goes on the `DatePicker`
+
+`variant`, `size` and `shape` style the input and the calendar together, so they go on the `DatePicker` and no
+longer on the `DatePickerInput`.
+
+```tsx
+// Before
+<DatePicker onChange={onChange}>
+  <DatePickerInput variant='filled' size='sm' />
+  <DatePickerCalendar />
+</DatePicker>
+
+// After
+<DatePicker onChange={onChange} variant='filled' size='sm'>
+  <DatePickerInput />
+  <DatePickerCalendar />
+</DatePicker>
+```
+
+## `useClickOutside` is removed
+
+The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for
+something else, a `pointerdown` listener does the same:
+
+```tsx
+useEffect(() => {
+  const close = (event: PointerEvent): void => {
+    if (ref.current && !ref.current.contains(event.target as Node)) onClose()
+  }
+  document.addEventListener('pointerdown', close)
+  return () => document.removeEventListener('pointerdown', close)
+}, [onClose])
+```

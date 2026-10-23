@@ -195,7 +195,7 @@ describe('Table component', () => {
         <Table aria-label="t">
           <TableHeader>
             <TableRow>
-              <TableHead onSort={onSort} sort="none" sortClassName="mine">
+              <TableHead classNames={{ sort: 'mine' }} onSort={onSort} sort="none">
                 Name
               </TableHead>
             </TableRow>
@@ -262,14 +262,14 @@ describe('Table component', () => {
 
     it('drops the Plume classes when it is unstyled and keeps the user classes', () => {
       const { container } = render(
-        <Demo className="root" containerClassName="box" variant="unstyled" />,
+        <Demo classNames={{ container: 'box' }} className="root" variant="unstyled" />,
       )
       expect(screen.getByRole('table')).toHaveAttribute('class', 'root')
       expect(container.firstChild).toHaveAttribute('class', 'box')
     })
 
     it('styles the container', () => {
-      const { container } = render(<Demo containerClassName="box" />)
+      const { container } = render(<Demo classNames={{ container: 'box' }} />)
       expect(container.firstChild).toHaveClass('container', 'box')
     })
   })
@@ -361,7 +361,7 @@ describe('Table component', () => {
     })
 
     it('drops the Plume styles of the spinner when unstyled', () => {
-      render(<Demo loading loadingClassName="custom" variant="unstyled" />)
+      render(<Demo classNames={{ loading: 'custom' }} loading variant="unstyled" />)
       expect(screen.getByLabelText('Loading')).toHaveClass('custom')
       expect(screen.getByLabelText('Loading')).not.toHaveClass('solid')
     })
