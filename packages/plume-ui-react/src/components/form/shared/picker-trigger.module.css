@@ -1,14 +1,12 @@
 button.trigger {
+  align-self: center;
   aspect-ratio: 1;
-  height: calc(100% - 0.5rem);
-  margin: 0.25rem;
+  flex: none;
+  height: min(calc(100% - 0.5rem), 2rem);
+  margin: 0 0.25rem;
   min-width: 0;
   padding: 0;
   width: auto;
-}
-
-.trigger {
-  display: block;
 }
 
 button.floating {
