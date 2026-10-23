@@ -55,7 +55,7 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description: 'The instructions in the dropzone.',
+      description: 'The instructions in the dropzone. It wins over `labels.prompt`.',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: '"Drag files here, or press to choose them"' },
@@ -120,12 +120,16 @@ export default {
       description: 'Called with the files that were left out and why: `type`, `size` or `count`.',
       table: { category: 'Events', type: { summary: '(rejections: FileRejection[]) => void' } },
     },
-    formatRejection: {
+    labels: {
       control: false,
-      description: 'Returns the text of a rejection. Use it to translate the messages.',
+      description:
+        'The texts of the FileUpload, to translate it: `prompt` (the instructions in the dropzone), `rejection(rejection)` (the message of a file that was left out), `remove(file)` and `progress(file)` (the accessible names of the button and the bar of a file) and `fileSize(bytes)` (the size shown next to each file).',
       table: {
-        type: { summary: '(rejection: FileRejection) => string' },
-        defaultValue: { summary: '"name: file is too large"' },
+        type: { summary: 'Partial<FileUploadLabels>' },
+        defaultValue: {
+          summary:
+            "{ prompt: 'Drag files here, or press to choose them', rejection: ({ file }) => `${file.name}: file is too large`, remove: (file) => `Remove ${file.name}`, progress: (file) => `Uploading ${file.name}`, fileSize: formatBytes }",
+        },
       },
     },
     progress: {
@@ -133,22 +137,6 @@ export default {
       description:
         'Returns the progress of the upload of a file, from 0 to 100, or `undefined` for a file that has no bar. The file shows a `ProgressBar`, in the color scheme of the FileUpload, and it turns to `success` at 100. Return `undefined` once you no longer want the bar.',
       table: { type: { summary: '(file: File) => number | undefined' } },
-    },
-    progressLabel: {
-      control: false,
-      description: 'Returns the accessible name of the progress bar of a file.',
-      table: {
-        type: { summary: '(file: File) => string' },
-        defaultValue: { summary: '"Uploading name"' },
-      },
-    },
-    removeLabel: {
-      control: false,
-      description: 'Returns the accessible name of the button that removes a file.',
-      table: {
-        type: { summary: '(file: File) => string' },
-        defaultValue: { summary: '"Remove name"' },
-      },
     },
     disabled: {
       control: 'boolean',
@@ -341,7 +329,7 @@ export const Restrictions: Story = {
 }
 
 /**
- * Use **formatRejection**, **removeLabel** and the text of the dropzone to translate the component.
+ * Use **labels** to translate the component.
  */
 export const Translated: Story = {
   render: () => (
@@ -349,15 +337,16 @@ export const Translated: Story = {
       accept=".pdf"
       aria-label="Documentos"
       defaultValue={[new File(['x'], 'contrato.pdf', { type: 'application/pdf' })]}
-      formatRejection={({ file, reason }) =>
-        `${file.name}: ${reason === 'type' ? 'solo se admiten PDF' : 'no se admite'}`
-      }
+      labels={{
+        progress: (file) => `Subiendo ${file.name}`,
+        prompt: 'Arrastra archivos aquí, o pulsa para elegirlos',
+        rejection: ({ file, reason }) =>
+          `${file.name}: ${reason === 'type' ? 'solo se admiten PDF' : 'no se admite'}`,
+        remove: (file) => `Quitar ${file.name}`,
+      }}
       multiple
-      removeLabel={(file) => `Quitar ${file.name}`}
       style={frame}
-    >
-      Arrastra archivos aquí, o pulsa para elegirlos
-    </FileUpload>
+    />
   ),
 }
 
@@ -399,7 +388,7 @@ export const Progress: Story = {
 }
 
 /**
- * The bar of each file has its own name for screen readers, from **progressLabel**. A file that **progress** gives
+ * The bar of each file has its own name for screen readers, from **labels.progress**. A file that **progress** gives
  * `undefined` has no bar.
  */
 export const ProgressStates: Story = {

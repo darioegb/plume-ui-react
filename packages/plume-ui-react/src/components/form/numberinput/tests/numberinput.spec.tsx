@@ -374,7 +374,9 @@ describe('NumberInput component', () => {
     })
 
     it('uses other labels', () => {
-      render(<NumberInput aria-label="Quantity" decrementLabel="Menos" incrementLabel="Más" />)
+      render(
+        <NumberInput aria-label="Quantity" labels={{ decrement: 'Menos', increment: 'Más' }} />,
+      )
       expect(screen.getByRole('button', { name: 'Más' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Menos' })).toBeInTheDocument()
     })

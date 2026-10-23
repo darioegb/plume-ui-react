@@ -3,10 +3,11 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useEffect, useId, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useMediaQuery } from '../../../overlay/use-media-query'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { CarouselContext, type CarouselVariant } from './carousel-context'
+import { CarouselContext, type CarouselLabels, type CarouselVariant } from './carousel-context'
 import styles from './carousel.module.css'
 
 export interface CarouselOwnProps {
@@ -14,10 +15,10 @@ export interface CarouselOwnProps {
   colorScheme?: ColorScheme
   defaultIndex?: number
   index?: number
+  labels?: Partial<CarouselLabels>
   loop?: boolean
   onIndexChange?: (index: number) => void
   size?: Size
-  slideLabel?: (index: number, count: number) => string
   variant?: CarouselVariant
 }
 
@@ -30,7 +31,15 @@ export type CarouselProps = Omit<ComponentProps, 'index'> &
   CarouselRootAttributes &
   CarouselOwnProps
 
-const defaultSlideLabel = (index: number, count: number): string => `${index + 1} of ${count}`
+const DEFAULT_LABELS: CarouselLabels = {
+  dot: (index, count) => `Slide ${index + 1} of ${count}`,
+  dots: 'Choose a slide',
+  next: 'Next slide',
+  pause: 'Pause the slideshow',
+  play: 'Start the slideshow',
+  previous: 'Previous slide',
+  slide: (index, count) => `${index + 1} of ${count}`,
+}
 
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
 
@@ -54,10 +63,10 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
       defaultIndex = 0,
       id,
       index: indexProp,
+      labels,
       loop = false,
       onIndexChange,
       size = 'md',
-      slideLabel = defaultSlideLabel,
       style,
       variant = 'solid',
       ...rest
@@ -97,12 +106,14 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
       return () => clearInterval(timer)
     }, [autoplay, count, index, running, setIndex])
 
+    const resolvedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
     const context = useMemo(
       () => ({
         baseId,
         count,
         index,
         isStyled,
+        labels: resolvedLabels,
         loop,
         next,
         playing: playingNow,
@@ -110,9 +121,8 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
         setCount,
         setIndex: go,
         setPlaying,
-        slideLabel,
       }),
-      [baseId, count, go, index, isStyled, loop, next, playingNow, prev, slideLabel],
+      [baseId, count, go, index, isStyled, loop, next, playingNow, prev, resolvedLabels],
     )
 
     return (

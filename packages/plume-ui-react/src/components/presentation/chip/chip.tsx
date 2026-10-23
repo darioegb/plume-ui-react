@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
@@ -13,13 +14,17 @@ export type ChipPart = 'icon' | 'label' | 'remove'
 
 export type ChipVariant = 'solid' | 'outline' | 'subtle' | 'unstyled'
 
+export interface ChipLabels {
+  remove: string
+}
+
 export interface ChipOwnProps {
   classNames?: Partial<Record<ChipPart, string>>
   colorScheme?: ColorScheme
   disabled?: boolean
   icon?: ReactNode
+  labels?: Partial<ChipLabels>
   onRemove?: (event: MouseEvent<HTMLButtonElement>) => void
-  removeLabel?: string
   shape?: Shape
   size?: Size
   variant?: ChipVariant
@@ -32,6 +37,8 @@ type ChipRootAttributes = Pick<
 
 export type ChipProps = Omit<ComponentProps, 'index'> & ChipRootAttributes & ChipOwnProps
 
+const DEFAULT_LABELS: ChipLabels = { remove: 'Remove' }
+
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   (
     {
@@ -41,8 +48,8 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
       colorScheme = 'secondary',
       disabled = false,
       icon,
+      labels,
       onRemove,
-      removeLabel,
       shape = 'pill',
       size = 'md',
       style,
@@ -84,8 +91,8 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
         </span>
         {onRemove ? (
           <button
-            aria-label={removeLabel ?? 'Remove'}
-            aria-labelledby={removeLabel ? undefined : `${removeId} ${labelId}`}
+            aria-label={mergeLabels(DEFAULT_LABELS, labels).remove}
+            aria-labelledby={labels?.remove ? undefined : `${removeId} ${labelId}`}
             className={joinClasses(isStyled && styles.remove, classNames?.remove)}
             data-plume-chip-remove=""
             disabled={disabled}

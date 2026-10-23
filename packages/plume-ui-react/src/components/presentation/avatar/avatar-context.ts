@@ -2,10 +2,11 @@
 
 import { createContext, useContext } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import type { AvatarVariant } from './avatar'
+import type { AvatarLabels, AvatarVariant } from './avatar'
 
 export interface AvatarGroupContextValue {
   colorScheme?: ColorScheme
+  labels?: Partial<AvatarLabels>
   shape?: Shape
   size?: Size
   variant?: AvatarVariant

@@ -11,6 +11,7 @@ import type {
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
+import { mergeLabels } from '../../../overlay/labels'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -28,12 +29,20 @@ export type FileUploadVariant = 'bordered' | 'filled' | 'outline' | 'unstyled'
 export type FileUploadPart =
   'dropzone' | 'error' | 'file' | 'list' | 'progress' | 'progressIndicator' | 'remove'
 
+export interface FileUploadLabels {
+  fileSize: (bytes: number) => string
+  progress: (file: File) => string
+  prompt: string
+  rejection: (rejection: FileRejection) => string
+  remove: (file: File) => string
+}
+
 export interface FileUploadOwnProps {
   accept?: string
   classNames?: Partial<Record<FileUploadPart, string>>
   colorScheme?: ColorScheme
   defaultValue?: File[]
-  formatRejection?: (rejection: FileRejection) => string
+  labels?: Partial<FileUploadLabels>
   maxFiles?: number
   maxSize?: number
   multiple?: boolean
@@ -41,8 +50,6 @@ export interface FileUploadOwnProps {
   onReject?: (rejections: FileRejection[]) => void
   onValueChange?: (files: File[]) => void
   progress?: (file: File) => number | undefined
-  progressLabel?: (file: File) => string
-  removeLabel?: (file: File) => string
   size?: Size
   value?: File[]
   variant?: FileUploadVariant
@@ -73,12 +80,13 @@ const rejectionTexts: Record<FileRejectionReason, string> = {
   type: 'file type is not accepted',
 }
 
-const defaultFormatRejection = ({ file, reason }: FileRejection): string =>
-  `${file.name}: ${rejectionTexts[reason]}`
-
-const defaultRemoveLabel = (file: File): string => `Remove ${file.name}`
-
-const defaultProgressLabel = (file: File): string => `Uploading ${file.name}`
+const DEFAULT_LABELS: FileUploadLabels = {
+  fileSize: formatBytes,
+  progress: (file) => `Uploading ${file.name}`,
+  prompt: 'Drag files here, or press to choose them',
+  rejection: ({ file, reason }) => `${file.name}: ${rejectionTexts[reason]}`,
+  remove: (file) => `Remove ${file.name}`,
+}
 
 interface FileProgressProps {
   className?: string
@@ -143,16 +151,14 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       colorScheme = 'primary',
       defaultValue = [],
       disabled = false,
-      formatRejection = defaultFormatRejection,
+      labels,
       maxFiles,
       maxSize,
       multiple = false,
       onReject,
       onValueChange,
       progress,
-      progressLabel = defaultProgressLabel,
       readOnly = false,
-      removeLabel = defaultRemoveLabel,
       required = false,
       size = 'md',
       style,
@@ -162,6 +168,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     }: FileUploadProps,
     ref: ForwardedRef<HTMLInputElement>,
   ): ReactNode => {
+    const text = mergeLabels(DEFAULT_LABELS, labels)
     const promptId = useId()
     const input = useRef<HTMLInputElement | null>(null)
     const [files, setFiles] = useControllableState({
@@ -249,7 +256,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             required={required}
             type="file"
           />
-          <span id={promptId}>{children ?? 'Drag files here, or press to choose them'}</span>
+          <span id={promptId}>{children ?? text.prompt}</span>
         </div>
         {files.length > 0 ? (
           <ul
@@ -263,10 +270,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                 key={`${file.name}-${file.size}-${position}`}
               >
                 <span data-plume-fileupload-name="">{file.name}</span>
-                <span data-plume-fileupload-size="">{formatBytes(file.size)}</span>
+                <span data-plume-fileupload-size="">{text.fileSize(file.size)}</span>
                 {inactive ? null : (
                   <button
-                    aria-label={removeLabel(file)}
+                    aria-label={text.remove(file)}
                     className={joinClasses(isStyled && styles.remove, classNames?.remove)}
                     data-plume-fileupload-remove=""
                     onClick={() => remove(file)}
@@ -280,7 +287,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                   colorScheme={colorScheme}
                   indicatorClassName={classNames?.progressIndicator}
                   isStyled={isStyled}
-                  label={progressLabel(file)}
+                  label={text.progress(file)}
                   value={progress?.(file)}
                 />
               </li>
@@ -294,7 +301,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             role="alert"
           >
             {rejections.map((rejection, position) => (
-              <li key={`${rejection.file.name}-${position}`}>{formatRejection(rejection)}</li>
+              <li key={`${rejection.file.name}-${position}`}>{text.rejection(rejection)}</li>
             ))}
           </ul>
         ) : null}

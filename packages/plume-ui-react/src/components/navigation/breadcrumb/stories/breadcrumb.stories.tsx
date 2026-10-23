@@ -24,7 +24,7 @@ function Trail(): React.ReactNode {
  * The path of the current page inside the site, as a row of links. Use it to show where the reader is and to let
  * them go back up one level.
  *
- * It follows the WAI-ARIA breadcrumb pattern: a `<nav>` named "Breadcrumb" (change it with `aria-label`) with an
+ * It follows the WAI-ARIA breadcrumb pattern: a `<nav>` named "Breadcrumb" (change it with `labels.breadcrumb`, or with `aria-label`) with an
  * ordered list inside, and `aria-current="page"` on the item that is the current page. The separators are drawn
  * by the component, hidden from screen readers, and the last one is not shown.
  *
@@ -78,6 +78,15 @@ export default {
         'Custom CSS classes for the parts, in every variant: `list` (the `<ol>`), `separator` (every separator). With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: 'Partial<Record<BreadcrumbPart, string>>' } },
     },
+    labels: {
+      control: false,
+      description:
+        'The texts the Breadcrumb adds. `breadcrumb` is the accessible name of the navigation when there is no `aria-label` or `aria-labelledby`.',
+      table: {
+        type: { summary: 'Partial<BreadcrumbLabels>' },
+        defaultValue: { summary: '{ breadcrumb: "Breadcrumb" }' },
+      },
+    },
     separator: {
       control: 'text',
       description:
@@ -125,7 +134,7 @@ export default {
     'aria-label': {
       control: 'text',
       description:
-        'Accessible name of the navigation. Use it to translate it, or to tell two breadcrumbs of a page apart.',
+        'Accessible name of the navigation. It wins over `labels.breadcrumb`; use it to tell two breadcrumbs of a page apart.',
       table: {
         category: 'Accessibility',
         type: { summary: 'string' },

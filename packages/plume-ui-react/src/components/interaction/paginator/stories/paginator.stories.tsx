@@ -172,50 +172,17 @@ export default {
       description: 'Id of the element that names the nav.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
-    previousLabel: {
-      control: 'text',
-      description: 'Accessible name of the button that goes to the previous page.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"Previous page"' },
-      },
-    },
-    nextLabel: {
-      control: 'text',
-      description: 'Accessible name of the button that goes to the next page.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"Next page"' },
-      },
-    },
-    firstLabel: {
-      control: 'text',
-      description: 'Accessible name of the button that goes to the first page.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"First page"' },
-      },
-    },
-    lastLabel: {
-      control: 'text',
-      description: 'Accessible name of the button that goes to the last page.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"Last page"' },
-      },
-    },
-    getPageLabel: {
+    labels: {
       control: false,
       description:
-        'Returns the accessible name of a page button, from the page and whether it is the current one.',
+        'The texts the Paginator adds, to translate them: `previous`, `next`, `first` and `last` name the buttons of the edges, `page(page, current)` names a page button and `pagination` names the navigation when there is no `aria-label` or `aria-labelledby`. Pass only the ones you want to change.',
       table: {
         category: 'Accessibility',
-        type: { summary: '(page: number, current: boolean) => string' },
-        defaultValue: { summary: '"Page 3" / "Page 3, current page"' },
+        type: { summary: 'Partial<PaginatorLabels>' },
+        defaultValue: {
+          summary:
+            '{ first: "First page", last: "Last page", next: "Next page", page: "Page 3" / "Page 3, current page", pagination: "Pagination", previous: "Previous page" }',
+        },
       },
     },
   },
@@ -370,18 +337,20 @@ export const Controlled: Story = {
 }
 
 /**
- * Use the label props and **getPageLabel** to translate what a screen reader says. The numbers stay as they are.
+ * Use **labels** to translate what a screen reader says. The numbers stay as they are.
  */
 export const Translated: Story = {
   args: {
     'aria-label': 'Paginación',
     defaultPage: 4,
-    firstLabel: 'Primera página',
-    getPageLabel: (page: number, current: boolean) =>
-      current ? `Página ${page}, página actual` : `Página ${page}`,
-    lastLabel: 'Última página',
-    nextLabel: 'Página siguiente',
-    previousLabel: 'Página anterior',
+    labels: {
+      first: 'Primera página',
+      last: 'Última página',
+      next: 'Página siguiente',
+      page: (page: number, current: boolean) =>
+        current ? `Página ${page}, página actual` : `Página ${page}`,
+      previous: 'Página anterior',
+    },
     showEdges: true,
   },
 }

@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { UserIcon } from '../../../overlay/icons'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
@@ -15,6 +16,13 @@ export type AvatarStatus = 'away' | 'busy' | 'offline' | 'online'
 
 export type AvatarVariant = 'outline' | 'solid' | 'subtle' | 'unstyled'
 
+export interface AvatarLabels {
+  away: string
+  busy: string
+  offline: string
+  online: string
+}
+
 export type AvatarPart = 'fallback' | 'image' | 'status'
 
 export interface AvatarOwnProps {
@@ -22,12 +30,12 @@ export interface AvatarOwnProps {
   classNames?: Partial<Record<AvatarPart, string>>
   colorScheme?: ColorScheme
   fallback?: ReactNode
+  labels?: Partial<AvatarLabels>
   name?: string
   shape?: Shape
   size?: Size
   src?: string
   status?: AvatarStatus
-  statusLabel?: string
   variant?: AvatarVariant
 }
 
@@ -38,7 +46,7 @@ type AvatarRootAttributes = Pick<
 
 export type AvatarProps = Omit<ComponentProps, 'index'> & AvatarRootAttributes & AvatarOwnProps
 
-const defaultStatusLabels: Record<AvatarStatus, string> = {
+const DEFAULT_LABELS: AvatarLabels = {
   away: 'Away',
   busy: 'Busy',
   offline: 'Offline',
@@ -53,12 +61,12 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
       classNames,
       colorScheme,
       fallback,
+      labels,
       name,
       shape,
       size,
       src,
       status,
-      statusLabel,
       style,
       variant,
       ...rest
@@ -73,7 +81,9 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const isStyled = resolvedVariant !== 'unstyled'
     const [failedSrc, setFailedSrc] = useState<string>()
     const showImage = Boolean(src) && failedSrc !== src
-    const statusText = status ? (statusLabel ?? defaultStatusLabels[status]) : undefined
+    const statusText = status
+      ? mergeLabels(DEFAULT_LABELS, { ...group?.labels, ...labels })[status]
+      : undefined
     const label = [alt ?? name, statusText].filter(Boolean).join(', ')
     const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'] ?? label)
     const role = isNamed ? 'img' : undefined

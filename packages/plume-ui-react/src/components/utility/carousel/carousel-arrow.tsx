@@ -51,7 +51,7 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
     return (
       <button
         aria-controls={`${carousel.baseId}-slides`}
-        aria-label={label ?? (isNext ? 'Next slide' : 'Previous slide')}
+        aria-label={label ?? (isNext ? carousel.labels.next : carousel.labels.previous)}
         className={joinClasses(
           carousel.isStyled && styles.arrow,
           carousel.isStyled && styles[direction],

@@ -41,6 +41,11 @@ describe('Breadcrumb component', () => {
       expect(screen.getByRole('navigation', { name: 'You are here' })).toBeInTheDocument()
     })
 
+    it('uses the label of the navigation given in labels', () => {
+      render(<Demo labels={{ breadcrumb: 'Ruta' }} />)
+      expect(screen.getByRole('navigation', { name: 'Ruta' })).toBeInTheDocument()
+    })
+
     it('does not add its label when it is labelled by another element', () => {
       render(
         <>

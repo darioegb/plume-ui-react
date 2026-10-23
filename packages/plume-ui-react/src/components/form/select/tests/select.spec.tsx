@@ -455,10 +455,10 @@ describe('Select component', () => {
       expect(chips()).toEqual([])
     })
 
-    it('names the remove buttons with removeLabel', () => {
+    it('names the remove buttons with labels.remove', () => {
       render(
-        <Select defaultValue={['a']} multiple>
-          <SelectTrigger aria-label="Letters" removeLabel={(label) => `Quitar ${label}`} />
+        <Select defaultValue={['a']} labels={{ remove: (label) => `Quitar ${label}` }} multiple>
+          <SelectTrigger aria-label="Letters" />
           <SelectContent>
             <SelectOption value="a">A</SelectOption>
           </SelectContent>
@@ -552,8 +552,8 @@ describe('Select component', () => {
 
     it('names the clear button', () => {
       render(
-        <Select clearable defaultValue="apple">
-          <SelectTrigger aria-label="Fruit" clearLabel="Remove the fruit" />
+        <Select clearable defaultValue="apple" labels={{ clear: 'Remove the fruit' }}>
+          <SelectTrigger aria-label="Fruit" />
           <SelectContent>
             <SelectOption value="apple">Apple</SelectOption>
           </SelectContent>
@@ -627,9 +627,9 @@ describe('Select component', () => {
 
     it('uses its own empty text, label and placeholder', async () => {
       render(
-        <Select searchable>
+        <Select labels={{ empty: 'Nothing', search: 'Find' }} searchable>
           <SelectTrigger aria-label="Fruit" />
-          <SelectContent emptyText="Nothing" searchLabel="Find" searchPlaceholder="Type…">
+          <SelectContent searchPlaceholder="Type…">
             <SelectOption value="apple">Apple</SelectOption>
           </SelectContent>
         </Select>,

@@ -128,22 +128,13 @@ export default {
         'Shows the buttons to subtract and add. The keyboard keeps working without them.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
     },
-    incrementLabel: {
-      control: 'text',
-      description: 'Accessible name of the increase button.',
+    labels: {
+      control: false,
+      description:
+        'The texts of the NumberInput, for other languages: `increment` and `decrement` are the accessible names of the buttons (`Increase` and `Decrease` by default).',
       table: {
         category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Increase' },
-      },
-    },
-    decrementLabel: {
-      control: 'text',
-      description: 'Accessible name of the decrease button.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Decrease' },
+        type: { summary: 'Partial<NumberInputLabels>' },
       },
     },
     colorScheme: {

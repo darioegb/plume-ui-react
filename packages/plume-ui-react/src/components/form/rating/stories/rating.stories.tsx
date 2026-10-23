@@ -126,22 +126,13 @@ export default {
         'The icon of an empty star. By default it is an outline of the star, or of your `icon`.',
       table: { type: { summary: 'ReactNode' } },
     },
-    getItemLabel: {
+    labels: {
       control: false,
       description:
-        'The accessible name of a star, from its score and the max. The default says `3 stars`. Use it to translate it or to name the scores: `Good`.',
+        'The texts of the Rating, for other languages. `item(value, max)` is the accessible name of a star, from its score and the max; the default says `3 stars`, and it can also name the scores: `Good`. `readOnly(value, max)` is the text a read only Rating says; the default says `3 out of 5`.',
       table: {
         category: 'Accessibility',
-        type: { summary: '(value: number, max: number) => string' },
-      },
-    },
-    readOnlyLabel: {
-      control: false,
-      description:
-        'The text a read only Rating says, from its score and the max. The default says `3 out of 5`.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: '(value: number, max: number) => string' },
+        type: { summary: 'Partial<RatingLabels>' },
       },
     },
     colorScheme: {
@@ -319,17 +310,17 @@ export const CustomIcon: Story = {
 }
 
 /**
- * **getItemLabel** names every star for a screen reader. The default says `3 stars`; here the scores have names.
+ * **labels.item** names every star for a screen reader. The default says `3 stars`; here the scores have names.
  */
 export const CustomLabels: Story = {
   args: {
-    getItemLabel: (value) => ['Terrible', 'Bad', 'Fine', 'Good', 'Great'][value - 1],
+    labels: { item: (value) => ['Terrible', 'Bad', 'Fine', 'Good', 'Great'][value - 1] },
   },
 }
 
 /**
  * A **read only** Rating shows a score. It is text (`3.5 out of 5`) with the stars hidden from assistive
- * technology, so it is not a control that can't be used. Use **readOnlyLabel** to say it another way.
+ * technology, so it is not a control that can't be used. Use **labels.readOnly** to say it another way.
  */
 export const ReadOnly: Story = {
   render: () => (

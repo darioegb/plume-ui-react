@@ -95,7 +95,7 @@ describe('Alert component', () => {
 
   it('takes another name for the dismiss button', () => {
     render(
-      <Alert dismissLabel="Cerrar aviso" dismissible>
+      <Alert dismissible labels={{ dismiss: 'Cerrar aviso' }}>
         Text
       </Alert>,
     )

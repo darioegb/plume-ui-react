@@ -6,6 +6,7 @@ import styles from './spinner.module.css'
 
 export interface SpinnerOwnProps {
   color?: ColorShade
+  label?: string
   size?: Size
   speed?: string
   thickness?: number
@@ -15,7 +16,7 @@ export interface SpinnerOwnProps {
 type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
 type SpinnerRootAttributes = Pick<
   HtmlHTMLAttributes<HTMLSpanElement>,
-  'aria-label' | 'hidden' | 'id' | 'tabIndex'
+  'hidden' | 'id' | 'tabIndex'
 >
 type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
   Pick<ComponentProps, 'style'> & { color: ColorShade }
@@ -37,6 +38,7 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
       color = `secondary.900`,
+      label = 'Loading',
       style,
       speed,
       className = '',
@@ -57,7 +59,7 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
 
     return (
       <output
-        aria-label="loading"
+        aria-label={label}
         className={spinnerClass}
         ref={ref}
         style={createSpinnerStyles({

@@ -23,17 +23,17 @@ const people = [
  *
  * It is an image for assistive technology, named by the **alt** or the **name** and followed by the status
  * (`Ada Lovelace, Online`). With neither a name nor a status it is decorative and is hidden. Use **alt** when the
- * image says something more than the name, and **statusLabel** to translate the status.
+ * image says something more than the name, and **labels** to translate the status.
  *
  * `AvatarGroup` stacks several avatars. With **max** it shows that many and a counter with the rest, named by
- * **overflowLabel**. The group gives its **size**, **shape**, **colorScheme** and **variant** to the avatars that
+ * **labels.overflow**. The group gives its **size**, **shape**, **colorScheme** and **variant** to the avatars that
  * don't set their own.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `AvatarGroup` | `max`, `overflowLabel` (`(hidden) => string`, `N more` by default), `size`, `shape`, `colorScheme`, `variant`, `aria-label`, `aria-labelledby`, `id`, `title`, `className`, `style`, `children`. A `role="group"` that stacks the avatars. Name it with `aria-label` (`Team members`). |
+ * | `AvatarGroup` | `max`, `labels` (`overflow` is `(hidden) => string`, `N more` by default, and the texts of the status, which the avatars of the group inherit), `size`, `shape`, `colorScheme`, `variant`, `aria-label`, `aria-labelledby`, `id`, `title`, `className`, `style`, `children`. A `role="group"` that stacks the avatars. Name it with `aria-label` (`Team members`). |
  */
 export default {
   title: 'Components/Avatar',
@@ -79,11 +79,17 @@ export default {
       options: [undefined, 'online', 'busy', 'away', 'offline'],
       table: { type: { summary: `"online" | "busy" | "away" | "offline"` } },
     },
-    statusLabel: {
-      control: 'text',
+    labels: {
+      control: false,
       description:
-        'Text of the status for assistive technology. By default `Online`, `Busy`, `Away` or `Offline`. Change it to translate it.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
+        'The texts of the status for assistive technology, to translate them: `online`, `busy`, `away` and `offline`.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'Partial<AvatarLabels>' },
+        defaultValue: {
+          summary: "{ online: 'Online', busy: 'Busy', away: 'Away', offline: 'Offline' }",
+        },
+      },
     },
     className: {
       control: 'text',
@@ -259,7 +265,7 @@ export const Colors: Story = {
 
 /**
  * **status** adds a dot with the presence of the person. It is also read by assistive technology after the name,
- * so the color is not the only way to tell it. Change the text with **statusLabel**.
+ * so the color is not the only way to tell it. Change the text with **labels**.
  */
 export const Status: Story = {
   render: () => (
@@ -276,7 +282,7 @@ export const Status: Story = {
           status={status}
         />
       ))}
-      <Avatar name="Ada Lovelace" status="online" statusLabel="En línea" />
+      <Avatar labels={{ online: 'En línea' }} name="Ada Lovelace" status="online" />
     </div>
   ),
 }
@@ -309,7 +315,11 @@ export const Group: Story = {
           <Avatar key={name} name={name} />
         ))}
       </AvatarGroup>
-      <AvatarGroup aria-label="Con imágenes" max={3} overflowLabel={(hidden) => `${hidden} más`}>
+      <AvatarGroup
+        aria-label="Con imágenes"
+        labels={{ overflow: (hidden) => `${hidden} más` }}
+        max={3}
+      >
         <Avatar name="Ada Lovelace" src={portrait} />
         <Avatar name="Grace Hopper" />
         <Avatar name="Margaret Hamilton" src={portrait} />

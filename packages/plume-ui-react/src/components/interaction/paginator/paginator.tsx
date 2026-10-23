@@ -9,6 +9,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../../../overlay/icons'
+import { mergeLabels } from '../../../overlay/labels'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { Button } from '../button'
@@ -20,6 +21,15 @@ export type PaginatorVariant = 'ghost' | 'outline' | 'solid' | 'unstyled'
 export type PaginatorPart =
   'ellipsis' | 'first' | 'item' | 'last' | 'list' | 'next' | 'page' | 'previous'
 
+export interface PaginatorLabels {
+  first: string
+  last: string
+  next: string
+  page: (page: number, current: boolean) => string
+  pagination: string
+  previous: string
+}
+
 export interface PaginatorOwnProps {
   boundaryCount?: number
   classNames?: Partial<Record<PaginatorPart, string>>
@@ -27,14 +37,10 @@ export interface PaginatorOwnProps {
   count?: number
   defaultPage?: number
   disabled?: boolean
-  firstLabel?: string
-  getPageLabel?: (page: number, current: boolean) => string
-  lastLabel?: string
-  nextLabel?: string
+  labels?: Partial<PaginatorLabels>
   onPageChange?: (page: number) => void
   page?: number
   pageSize?: number
-  previousLabel?: string
   shape?: Shape
   showEdges?: boolean
   siblingCount?: number
@@ -52,8 +58,14 @@ export type PaginatorProps = Omit<ComponentProps, 'children' | 'index'> &
   PaginatorRootAttributes &
   PaginatorOwnProps
 
-const defaultPageLabel = (page: number, current: boolean): string =>
-  current ? `Page ${page}, current page` : `Page ${page}`
+const DEFAULT_LABELS: PaginatorLabels = {
+  first: 'First page',
+  last: 'Last page',
+  next: 'Next page',
+  page: (page, current) => (current ? `Page ${page}, current page` : `Page ${page}`),
+  pagination: 'Pagination',
+  previous: 'Previous page',
+}
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max)
@@ -97,14 +109,10 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       count,
       defaultPage = 1,
       disabled = false,
-      firstLabel = 'First page',
-      getPageLabel = defaultPageLabel,
-      lastLabel = 'Last page',
-      nextLabel = 'Next page',
+      labels,
       onPageChange,
       page: pageProp,
       pageSize = 10,
-      previousLabel = 'Previous page',
       shape = 'rounded',
       showEdges = false,
       siblingCount = 1,
@@ -124,6 +132,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     const isStyled = variant !== 'unstyled'
     const current = clamp(page, 1, Math.max(pages, 1))
     const variants = buttonVariants[variant]
+    const text = mergeLabels(DEFAULT_LABELS, labels)
 
     if (pages < 1) return null
 
@@ -156,7 +165,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
 
     return (
       <nav
-        aria-label={ariaLabel ?? (labelledBy ? undefined : 'Pagination')}
+        aria-label={ariaLabel ?? (labelledBy ? undefined : text.pagination)}
         aria-labelledby={labelledBy}
         className={joinClasses(
           isStyled && styles.paginator,
@@ -172,15 +181,15 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
           className={joinClasses(isStyled && styles.list, classNames?.list)}
           data-plume-paginator-list=""
         >
-          {showEdges ? edge('first', firstLabel, 1, current === 1, <ChevronsLeftIcon />) : null}
-          {edge('previous', previousLabel, current - 1, current === 1, <ChevronLeftIcon />)}
+          {showEdges ? edge('first', text.first, 1, current === 1, <ChevronsLeftIcon />) : null}
+          {edge('previous', text.previous, current - 1, current === 1, <ChevronLeftIcon />)}
           {getPaginatorItems({ boundaryCount, count: pages, page: current, siblingCount }).map(
             (item) =>
               typeof item === 'number' ? (
                 <PaginatorListItem className={classNames?.item} isStyled={isStyled} key={item}>
                   <Button
                     aria-current={item === current ? 'page' : undefined}
-                    aria-label={getPageLabel(item, item === current)}
+                    aria-label={text.page(item, item === current)}
                     className={joinClasses(isStyled && styles.page, classNames?.page)}
                     colorScheme={item === current ? colorScheme : 'secondary'}
                     data-current={item === current ? '' : undefined}
@@ -206,9 +215,9 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
                 </PaginatorListItem>
               ),
           )}
-          {edge('next', nextLabel, current + 1, current === pages, <ChevronRightIcon />)}
+          {edge('next', text.next, current + 1, current === pages, <ChevronRightIcon />)}
           {showEdges
-            ? edge('last', lastLabel, pages, current === pages, <ChevronsRightIcon />)
+            ? edge('last', text.last, pages, current === pages, <ChevronsRightIcon />)
             : null}
         </ul>
       </nav>

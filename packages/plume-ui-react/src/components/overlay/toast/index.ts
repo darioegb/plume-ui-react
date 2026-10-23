@@ -1,5 +1,6 @@
 export {
   ToastProvider,
+  type ToastLabels,
   type ToastPart,
   type ToastPosition,
   type ToastProviderProps,

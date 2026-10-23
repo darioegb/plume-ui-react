@@ -37,7 +37,7 @@ describe('ToastProvider component', () => {
     })
 
     it('lets the label be set', () => {
-      setup({ regionLabel: 'Avisos' })
+      setup({ labels: { region: 'Avisos' } })
       expect(screen.getByRole('region', { name: 'Avisos' })).toBeInTheDocument()
     })
 
@@ -258,7 +258,7 @@ describe('ToastProvider component', () => {
     })
 
     it('lets the name of the button be set', () => {
-      setup({ dismissLabel: 'Cerrar' })
+      setup({ labels: { dismiss: 'Cerrar' } })
       run(() => api.toast('Saved'))
       expect(screen.getByRole('button', { name: 'Cerrar' })).toBeInTheDocument()
     })

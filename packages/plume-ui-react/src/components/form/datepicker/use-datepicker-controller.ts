@@ -3,6 +3,7 @@
 import type { CSSProperties, FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
+import { mergeLabels } from '../../../overlay/labels'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import type { DatePickerContextProps } from './use-datepicker'
 import {
@@ -15,12 +16,19 @@ import type {
   DateRange,
   DatePickerLabels,
   DatePickerVariant,
-  FooterLabels,
 } from './datepicker-types'
 
 const DEFAULT_LANGUAGE = 'en'
-const DEFAULT_FOOTER_LABELS: FooterLabels = { apply: 'Apply', cancel: 'Cancel' }
-const DEFAULT_LABELS: DatePickerLabels = { calendar: 'Calendar', openCalendar: 'Open calendar' }
+const DEFAULT_LABELS: DatePickerLabels = {
+  apply: 'Apply',
+  calendar: 'Calendar',
+  cancel: 'Cancel',
+  nextMonth: 'Next month',
+  nextYears: 'Next years',
+  openCalendar: 'Open calendar',
+  previousMonth: 'Previous month',
+  previousYears: 'Previous years',
+}
 
 interface DatePickerControllerOptions {
   colorScheme: ColorScheme
@@ -28,6 +36,7 @@ interface DatePickerControllerOptions {
   displayFormat?: string
   isCalendar: boolean
   isRange: boolean
+  labels?: Partial<DatePickerLabels>
   maxDate?: Date
   minDate?: Date
   onChange: (value: DateRange) => void
@@ -63,6 +72,7 @@ export function useDatePickerController({
   displayFormat,
   isCalendar,
   isRange,
+  labels,
   maxDate,
   minDate,
   onChange,
@@ -75,10 +85,7 @@ export function useDatePickerController({
   variant,
 }: Readonly<DatePickerControllerOptions>): DatePickerController {
   const language = config?.language ?? DEFAULT_LANGUAGE
-  const footerApply = config?.footer?.apply ?? DEFAULT_FOOTER_LABELS.apply
-  const footerCancel = config?.footer?.cancel ?? DEFAULT_FOOTER_LABELS.cancel
-  const labelCalendar = config?.labels?.calendar ?? DEFAULT_LABELS.calendar
-  const labelOpenCalendar = config?.labels?.openCalendar ?? DEFAULT_LABELS.openCalendar
+  const mergedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
   const [state, dispatch] = useReducer(datePickerReducer, value, (initialValue?: DateRange) =>
     initialValue
       ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })
@@ -249,10 +256,9 @@ export function useDatePickerController({
       colorScheme,
       dispatch,
       displayFormat,
-      footerLabels: { apply: footerApply, cancel: footerCancel },
       isCalendar,
       isRange,
-      labels: { calendar: labelCalendar, openCalendar: labelOpenCalendar },
+      labels: mergedLabels,
       language,
       maxDate,
       minDate,
@@ -277,12 +283,9 @@ export function useDatePickerController({
       commitTypedValue,
       colorScheme,
       displayFormat,
-      footerApply,
-      footerCancel,
       isCalendar,
       isRange,
-      labelCalendar,
-      labelOpenCalendar,
+      mergedLabels,
       language,
       maxDate,
       minDate,

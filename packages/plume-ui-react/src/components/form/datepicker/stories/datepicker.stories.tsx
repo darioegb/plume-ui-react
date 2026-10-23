@@ -26,7 +26,7 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  * | Component | Props |
  * | --- | --- |
  * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
- * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `config.labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
  *
  * ### Closing
  *
@@ -145,17 +145,26 @@ export default {
     config: {
       control: false,
       description:
-        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the labels of the Cancel and Apply buttons; `labels` sets the name of the calendar and of the button that opens it. Every key is optional and falls back to its default.',
+        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers. It is optional and falls back to `en`.',
+      table: {
+        defaultValue: { summary: 'object', detail: "{ language: 'en' }" },
+        type: { summary: 'DatePickerConfig', detail: '{ language?: string }' },
+      },
+    },
+    labels: {
+      control: false,
+      description:
+        '`labels` sets every text the component shows or announces: the buttons of the footer (`apply`, `cancel`), the name of the calendar (`calendar`) and of the button that opens it (`openCalendar`), and the navigation buttons (`previousMonth`, `nextMonth`, `previousYears`, `nextYears`). Every key is optional and falls back to its default.',
       table: {
         defaultValue: {
           summary: 'object',
           detail:
-            "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' }, labels: { calendar: 'Calendar', openCalendar: 'Open calendar' } }",
+            "{ apply: 'Apply', calendar: 'Calendar', cancel: 'Cancel', nextMonth: 'Next month', nextYears: 'Next years', openCalendar: 'Open calendar', previousMonth: 'Previous month', previousYears: 'Previous years' }",
         },
         type: {
-          summary: 'DatePickerConfig',
+          summary: 'Partial<DatePickerLabels>',
           detail:
-            '{ language?: string; footer?: { apply?: string; cancel?: string }; labels?: { calendar?: string; openCalendar?: string } }',
+            '{ apply?: string; calendar?: string; cancel?: string; nextMonth?: string; nextYears?: string; openCalendar?: string; previousMonth?: string; previousYears?: string }',
         },
       },
     },
@@ -519,9 +528,9 @@ export const WithFooterActions: Story = {
 }
 
 /**
- * DatePicker localized to Spanish through **config**.
- * Every key is optional: `language` alone localizes the month and weekday names and the date format,
- * and `footer` only needs the labels you want to change.
+ * DatePicker localized to Spanish through **config** and **labels**.
+ * Every key is optional: `config.language` alone localizes the month and weekday names and the date format,
+ * and `labels` only needs the texts you want to change.
  */
 export const CustomConfiguration: Story = {
   args: {
@@ -529,10 +538,16 @@ export const CustomConfiguration: Story = {
     showFooter: true,
     config: {
       language: 'es',
-      footer: {
-        cancel: 'Cancelar',
-        apply: 'Aplicar',
-      },
+    },
+    labels: {
+      apply: 'Aplicar',
+      calendar: 'Calendario',
+      cancel: 'Cancelar',
+      nextMonth: 'Mes siguiente',
+      nextYears: 'Años siguientes',
+      openCalendar: 'Abrir calendario',
+      previousMonth: 'Mes anterior',
+      previousYears: 'Años anteriores',
     },
   },
 }

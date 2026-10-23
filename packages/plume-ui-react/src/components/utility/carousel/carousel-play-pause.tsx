@@ -8,19 +8,13 @@ import type { ComponentProps } from '../../../theme'
 import { useCarouselContext } from './carousel-context'
 import styles from './carousel.module.css'
 
-export interface CarouselPlayPauseOwnProps {
-  pauseLabel?: string
-  playLabel?: string
-}
-
 type CarouselPlayPauseRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'children' | 'disabled' | 'id' | 'onClick' | 'title'
 >
 
 export type CarouselPlayPauseProps = Omit<ComponentProps, 'index'> &
-  CarouselPlayPauseRootAttributes &
-  CarouselPlayPauseOwnProps
+  CarouselPlayPauseRootAttributes
 
 export const CarouselPlayPause = forwardRef<HTMLButtonElement, CarouselPlayPauseProps>(
   (
@@ -28,18 +22,16 @@ export const CarouselPlayPause = forwardRef<HTMLButtonElement, CarouselPlayPause
       children,
       className,
       onClick,
-      pauseLabel = 'Pause the slideshow',
-      playLabel = 'Start the slideshow',
       style,
       ...rest
     }: CarouselPlayPauseProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { isStyled, playing, setPlaying } = useCarouselContext('CarouselPlayPause')
+    const { isStyled, labels, playing, setPlaying } = useCarouselContext('CarouselPlayPause')
 
     return (
       <button
-        aria-label={playing ? pauseLabel : playLabel}
+        aria-label={playing ? labels.pause : labels.play}
         className={joinClasses(isStyled && styles.arrow, isStyled && styles.playPause, className)}
         data-playing={playing ? '' : undefined}
         data-plume-carousel-play-pause=""

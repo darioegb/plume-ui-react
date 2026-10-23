@@ -1,5 +1,6 @@
 export {
   FileUpload,
+  type FileUploadLabels,
   type FileUploadOwnProps,
   type FileUploadPart,
   type FileUploadProps,

@@ -72,7 +72,7 @@ function Controls(): React.ReactNode {
  *
  * It follows the WAI-ARIA carousel pattern: the root is a `region` with `aria-roledescription="carousel"` (give
  * it an `aria-label`), and every slide is a tab panel with `aria-roledescription="slide"` named "1 of 4", as in the tabbed variant of the pattern, so the dots are its tabs (change the
- * text with **slideLabel**). Only the visible slide can be reached, and it takes the focus to be scrolled with the
+ * text with **labels.slide**). Only the visible slide can be reached, and it takes the focus to be scrolled with the
  * keyboard: the others are `inert`. The previous and next
  * buttons say what they do and are disabled at the ends unless there is a **loop**, and the dots are a tab list
  * where <kbd>←</kbd> and <kbd>→</kbd> move between them and <kbd>Home</kbd> and <kbd>End</kbd> go to the first
@@ -101,8 +101,8 @@ function Controls(): React.ReactNode {
  * | `CarouselSlides` | `id`, `title`, `className`, `style`, `children`. The strip that holds and scrolls the slides. Each child is one slide. |
  * | `CarouselSlide` | `aria-label`, `title`, `hidden`, `className`, `style`, `children`. One slide. It has `data-active` while it is the visible one. |
  * | `CarouselPrev`, `CarouselNext` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The buttons that go to the previous and the next slide. `label` is the accessible name (`"Previous slide"`, `"Next slide"`), `icon` replaces the arrow and `children` replaces all of its content. |
- * | `CarouselDots` | `dotLabel`, `classNames.dot`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`. One dot per slide, as a tab list. `dotLabel` is the name of each (`"Slide 1 of 4"`). A dot has `data-active` while its slide is the visible one. |
- * | `CarouselPlayPause` | `pauseLabel`, `playLabel`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. |
+ * | `CarouselDots` | `classNames.dot`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`. One dot per slide, as a tab list. The name of each dot comes from `labels.dot` (`"Slide 1 of 4"`). A dot has `data-active` while its slide is the visible one. |
+ * | `CarouselPlayPause` | `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. |
  */
 export default {
   title: 'Components/Carousel',
@@ -173,13 +173,16 @@ export default {
         'Time in milliseconds between slides. Without it the Carousel only moves when the user asks. It pauses on hover and focus and never runs with `prefers-reduced-motion`.',
       table: { type: { summary: 'number | false' }, defaultValue: { summary: 'false' } },
     },
-    slideLabel: {
+    labels: {
       control: false,
       description:
-        'Returns the accessible name of a slide, from its index and the number of slides.',
+        'The texts the Carousel shows to assistive technology: `slide(index, count)` and `dot(index, count)` name each slide and dot, `dots` names the group of dots, `previous` and `next` name the arrows, `play` and `pause` name the autoplay button. The `label` of an arrow and the `aria-label` of a dots group or slide win over these.',
       table: {
-        type: { summary: '(index: number, count: number) => string' },
-        defaultValue: { summary: '(i, n) => `${i + 1} of ${n}`' },
+        type: { summary: 'Partial<CarouselLabels>' },
+        defaultValue: {
+          summary:
+            "{ slide: (i, n) => `${i + 1} of ${n}`, dot: (i, n) => `Slide ${i + 1} of ${n}`, dots: 'Choose a slide', previous: 'Previous slide', next: 'Next slide', play: 'Start the slideshow', pause: 'Pause the slideshow' }",
+        },
       },
     },
     colorScheme: {
@@ -420,22 +423,25 @@ export const Controlled: Story = {
 }
 
 /**
- * Use **slideLabel** and the label props to translate what a screen reader says.
+ * Use **labels** to translate what a screen reader says.
  */
 export const Translated: Story = {
   render: () => (
     <Carousel
       aria-label="Lugares destacados"
-      slideLabel={(index, count) => `${index + 1} de ${count}`}
+      labels={{
+        dot: (index, count) => `Diapositiva ${index + 1} de ${count}`,
+        dots: 'Elegir una diapositiva',
+        next: 'Siguiente',
+        previous: 'Anterior',
+        slide: (index, count) => `${index + 1} de ${count}`,
+      }}
       style={frame}
     >
       <Panels />
-      <CarouselPrev label="Anterior" />
-      <CarouselNext label="Siguiente" />
-      <CarouselDots
-        aria-label="Elegir una diapositiva"
-        dotLabel={(index, count) => `Diapositiva ${index + 1} de ${count}`}
-      />
+      <CarouselPrev />
+      <CarouselNext />
+      <CarouselDots />
     </Carousel>
   ),
 }

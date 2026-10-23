@@ -1,6 +1,6 @@
 export { Select, type SelectProps } from './select'
 export { SelectContent, type SelectContentPart, type SelectContentProps } from './select-content'
-export type { SelectedOption, SelectVariant } from './select-context'
+export type { SelectedOption, SelectLabels, SelectVariant } from './select-context'
 export { SelectGroup, type SelectGroupPart, type SelectGroupProps } from './select-group'
 export { SelectOption, type SelectOptionPart, type SelectOptionProps } from './select-option'
 export { SelectTrigger, type SelectTriggerPart, type SelectTriggerProps } from './select-trigger'

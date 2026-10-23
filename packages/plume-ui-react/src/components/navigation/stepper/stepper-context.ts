@@ -5,11 +5,12 @@ import { createContext, useContext } from 'react'
 export type StepperVariant = 'solid' | 'outline' | 'unstyled'
 export type StepperOrientation = 'horizontal' | 'vertical'
 export type StepStatus = 'completed' | 'current' | 'upcoming'
+export type StepperLabels = Record<StepStatus, string>
 
 export interface StepperContextValue {
   activeStep: number
   isStyled: boolean
-  statusLabels: Partial<Record<StepStatus, string>>
+  labels: StepperLabels
 }
 
 export interface StepContextValue {

@@ -142,22 +142,16 @@ export default {
         'Custom CSS classes for the parts of every toast, in every variant: `toast` (the toast itself), `icon`, `content`, `title`, `description`, `action` and `dismiss`. With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: `Partial<Record<ToastPart, string>>` } },
     },
-    regionLabel: {
-      control: 'text',
-      description: 'Accessible name of the region that holds the toasts.',
+    labels: {
+      control: false,
+      description:
+        'The texts the provider adds, to translate them: `region` is the accessible name of the region that holds the toasts, and `dismiss` the one of the dismiss button of each toast.',
       table: {
         category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Notifications' },
-      },
-    },
-    dismissLabel: {
-      control: 'text',
-      description: 'Accessible name of the dismiss button of each toast.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Dismiss notification' },
+        type: { summary: 'Partial<ToastLabels>' },
+        defaultValue: {
+          summary: '{ dismiss: "Dismiss notification", region: "Notifications" }',
+        },
       },
     },
   },
@@ -175,7 +169,7 @@ export const Default: Story = {}
  * Use the **variant** prop of the provider to pick how the toasts look: `solid` fills them with the color of
  * their status, `subtle` tints them, `outline` draws their border with an accent, and `unstyled` drops the
  * Plume styles so you can style them yourself. Each button below has its own provider and position, and its own
- * `regionLabel`: with several providers on a page, each region needs a name of its own.
+ * `labels.region`: with several providers on a page, each region needs a name of its own.
  */
 export const Variants: Story = {
   render: () => (
@@ -190,7 +184,7 @@ export const Variants: Story = {
         <ToastProvider
           key={variant}
           position={position}
-          regionLabel={`${variant} notifications`}
+          labels={{ region: `${variant} notifications` }}
           variant={variant}
         >
           <Fire
@@ -202,7 +196,7 @@ export const Variants: Story = {
       ))}
       <ToastProvider classNames={{ toast: 'flex items-center gap-3 rounded bg-black px-4 py-2 text-white' }}
         className="fixed bottom-4 right-4 flex flex-col gap-2"
-        regionLabel="unstyled notifications"
+        labels={{ region: 'unstyled notifications' }}
        
         variant="unstyled"
       >
@@ -285,7 +279,7 @@ const bell = (
 export const Icons: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
-      <ToastProvider icons={false} regionLabel="no icons notifications" position="top-start">
+      <ToastProvider icons={false} labels={{ region: 'no icons notifications' }} position="top-start">
         <Fire
           label="No icons"
           make={(api) => api.success({ description: 'Your changes were saved.', title: 'Saved' })}
@@ -295,7 +289,7 @@ export const Icons: Story = {
       <ToastProvider
         icons={{ neutral: bell, success: <span>🎉</span> }}
         position="bottom"
-        regionLabel="custom icons notifications"
+        labels={{ region: 'custom icons notifications' }}
       >
         <Fire
           label="Custom icons"
@@ -306,7 +300,7 @@ export const Icons: Story = {
           variant="outline"
         />
       </ToastProvider>
-      <Demo position="top-end" regionLabel="one icon notifications">
+      <Demo position="top-end" labels={{ region: 'one icon notifications' }}>
         <Fire
           label="One toast"
           make={(api) => api.info({ icon: bell, title: 'This toast has its own icon' })}
@@ -325,7 +319,7 @@ export const Positions: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {positions.map((position) => (
-        <ToastProvider key={position} position={position} regionLabel={`${position} notifications`}>
+        <ToastProvider key={position} position={position} labels={{ region: `${position} notifications` }}>
           <Fire
             className="w-full whitespace-nowrap"
             label={position}
@@ -465,7 +459,7 @@ export const Tailwind: Story = {
         dismiss: 'rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted',
         icon: 'mt-0.5 text-emerald-600',
         title: 'block font-semibold', toast: 'flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg' }}
-      regionLabel="Tailwind notifications"
+      labels={{ region: 'Tailwind notifications' }}
      
       variant="unstyled"
     >
@@ -516,7 +510,7 @@ export const Bootstrap: Story = {
         dismiss: 'btn btn-sm btn-light border-0 m-2 align-self-start',
         icon: 'ms-3 mt-3 text-success',
         title: 'd-block fw-semibold', toast: 'toast show d-flex align-items-start' }}
-      regionLabel="Bootstrap notifications"
+      labels={{ region: 'Bootstrap notifications' }}
      
       variant="unstyled"
     >

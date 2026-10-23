@@ -3,49 +3,42 @@
 import type { CSSProperties, ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
 import { forwardRef, useId, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
+import type { TextareaLabels } from './textarea'
 import styles from './textarea.module.css'
 
 interface TextareaCounterProps {
   className?: string
   countClassName?: string
-  formatCount?: (count: number, max: number | undefined) => string
-  formatRemaining?: (remaining: number) => string
+  labels?: Partial<TextareaLabels>
   isStyled: boolean
   style: CSSProperties
   textareaProps: TextareaHTMLAttributes<HTMLTextAreaElement>
 }
 
-const defaultFormatCount = (count: number, max: number | undefined): string =>
-  max === undefined ? String(count) : `${count} / ${max}`
-
-const defaultFormatRemaining = (remaining: number): string =>
-  `${remaining} ${remaining === 1 ? 'character' : 'characters'} left`
+const DEFAULT_LABELS: TextareaLabels = {
+  count: (count, max) => (max === undefined ? String(count) : `${count} / ${max}`),
+  remaining: (remaining) => `${remaining} ${remaining === 1 ? 'character' : 'characters'} left`,
+}
 
 const isNearLimit = (remaining: number, max: number): boolean =>
   remaining <= Math.max(10, Math.ceil(max / 10))
 
 export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterProps>(
   (
-    {
-      className,
-      countClassName,
-      formatCount = defaultFormatCount,
-      formatRemaining = defaultFormatRemaining,
-      isStyled,
-      style,
-      textareaProps,
-    }: TextareaCounterProps,
+    { className, countClassName, labels, isStyled, style, textareaProps }: TextareaCounterProps,
     ref: ForwardedRef<HTMLTextAreaElement>,
   ): ReactNode => {
     const { defaultValue, maxLength, onChange, value } = textareaProps
+    const text = mergeLabels(DEFAULT_LABELS, labels)
     const countId = useId()
     const [typed, setTyped] = useState(String(defaultValue ?? '').length)
     const count = value === undefined ? typed : String(value).length
     const remaining = maxLength === undefined ? undefined : maxLength - count
     const announcement =
       maxLength !== undefined && remaining !== undefined && isNearLimit(remaining, maxLength)
-        ? formatRemaining(Math.max(remaining, 0))
+        ? text.remaining(Math.max(remaining, 0))
         : ''
     const describedBy = [textareaProps['aria-describedby'], countId].filter(Boolean).join(' ')
 
@@ -66,7 +59,7 @@ export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterPr
           data-plume-textarea-count=""
           id={countId}
         >
-          {formatCount(count, maxLength)}
+          {text.count(count, maxLength)}
         </span>
         <output style={visuallyHidden}>{announcement}</output>
       </div>

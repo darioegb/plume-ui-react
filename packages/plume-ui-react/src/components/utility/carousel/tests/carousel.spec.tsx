@@ -73,7 +73,7 @@ describe('Carousel component', () => {
 
     it('uses another label for the slides, and lets a slide set its own', () => {
       render(
-        <Carousel aria-label="Photos" slideLabel={(i, n) => `Foto ${i + 1}/${n}`}>
+        <Carousel aria-label="Photos" labels={{ slide: (i, n) => `Foto ${i + 1}/${n}` }}>
           <CarouselSlides>
             <CarouselSlide>One</CarouselSlide>
             <CarouselSlide aria-label="Custom">Two</CarouselSlide>
@@ -269,16 +269,12 @@ describe('Carousel component', () => {
 
     it('uses another label for the group and for the dots', () => {
       render(
-        <Carousel aria-label="x">
+        <Carousel aria-label="x" labels={{ dot: (i) => `Ir a ${i + 1}`, dots: 'Elegir' }}>
           <CarouselSlides>
             <CarouselSlide>A</CarouselSlide>
             <CarouselSlide>B</CarouselSlide>
           </CarouselSlides>
-          <CarouselDots classNames={{ dot: 'dot-mine' }}
-            aria-label="Elegir"
-            dotLabel={(i) => `Ir a ${i + 1}`}
-           
-          />
+          <CarouselDots classNames={{ dot: 'dot-mine' }} />
         </Carousel>,
       )
       expect(screen.getByRole('tablist', { name: 'Elegir' })).toBeInTheDocument()
@@ -421,18 +417,12 @@ describe('Carousel component', () => {
 
     it('uses other labels and content for the button, and lets the click be prevented', () => {
       render(
-        <Carousel aria-label="x" autoplay={1000}>
+        <Carousel aria-label="x" autoplay={1000} labels={{ pause: 'Parar', play: 'Seguir' }}>
           <CarouselSlides>
             <CarouselSlide>A</CarouselSlide>
             <CarouselSlide>B</CarouselSlide>
           </CarouselSlides>
-          <CarouselPlayPause
-            onClick={(event) => event.preventDefault()}
-            pauseLabel="Parar"
-            playLabel="Seguir"
-          >
-            toggle
-          </CarouselPlayPause>
+          <CarouselPlayPause onClick={(event) => event.preventDefault()}>toggle</CarouselPlayPause>
         </Carousel>,
       )
       const button = screen.getByRole('button', { name: 'Parar' })
@@ -443,6 +433,21 @@ describe('Carousel component', () => {
   })
 
   describe('arrows', () => {
+    it('takes the names of the arrows from the labels of the carousel', () => {
+      render(
+        <Carousel aria-label="x" labels={{ next: 'Siguiente', previous: 'Anterior' }}>
+          <CarouselSlides>
+            <CarouselSlide>A</CarouselSlide>
+            <CarouselSlide>B</CarouselSlide>
+          </CarouselSlides>
+          <CarouselPrev />
+          <CarouselNext />
+        </Carousel>,
+      )
+      expect(screen.getByRole('button', { name: 'Anterior' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Siguiente' })).toBeInTheDocument()
+    })
+
     it('uses other labels, icons or content, and lets the click be prevented', async () => {
       render(
         <Carousel aria-label="x">

@@ -57,7 +57,11 @@ describe('PinInput component', () => {
 
     it('uses another name for the cells', () => {
       render(
-        <PinInput aria-label="Code" getInputLabel={(i, n) => `Cifra ${i} de ${n}`} length={2} />,
+        <PinInput
+          aria-label="Code"
+          labels={{ input: (i, n) => `Cifra ${i} de ${n}` }}
+          length={2}
+        />,
       )
       expect(cells()[1]).toHaveAttribute('aria-label', 'Cifra 2 de 2')
     })

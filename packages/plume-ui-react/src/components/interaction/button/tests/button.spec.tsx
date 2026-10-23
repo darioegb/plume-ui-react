@@ -98,9 +98,14 @@ describe('Button component', () => {
       </Button>,
     )
     const buttonElement = getByText('Busy Button')
-    const busyIcon = getByLabelText('loading')
+    const busyIcon = getByLabelText('Loading')
     expect(buttonElement).toBeInTheDocument()
     expect(busyIcon).toBeInTheDocument()
+  })
+
+  it('names the spinner with labels.busy', () => {
+    const { getByLabelText } = render(<Button isBusy labels={{ busy: 'Cargando' }} label="Save" />)
+    expect(getByLabelText('Cargando')).toBeInTheDocument()
   })
 
   it('renders busy button without busy text', () => {

@@ -1,5 +1,6 @@
 export {
   Breadcrumb,
+  type BreadcrumbLabels,
   type BreadcrumbOwnProps,
   type BreadcrumbPart,
   type BreadcrumbProps,

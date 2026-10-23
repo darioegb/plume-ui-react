@@ -20,7 +20,7 @@ export const CarouselSlide = forwardRef<HTMLDivElement, CarouselSlideProps>(
     { 'aria-label': ariaLabel, children, className, style, ...rest }: CarouselSlideProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { baseId, count, index, isStyled, slideLabel } = useCarouselContext('CarouselSlide')
+    const { baseId, count, index, isStyled, labels } = useCarouselContext('CarouselSlide')
     const position = useContext(CarouselSlideIndexContext)
     if (position === undefined)
       throw new Error('CarouselSlide must be used within a <CarouselSlides>')
@@ -33,7 +33,7 @@ export const CarouselSlide = forwardRef<HTMLDivElement, CarouselSlideProps>(
 
     return (
       <div
-        aria-label={ariaLabel ?? slideLabel(position, count)}
+        aria-label={ariaLabel ?? labels.slide(position, count)}
         aria-roledescription="slide"
         className={joinClasses(isStyled && styles.slide, className)}
         data-active={active ? '' : undefined}

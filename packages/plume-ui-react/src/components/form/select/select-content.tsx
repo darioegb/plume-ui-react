@@ -16,8 +16,6 @@ export type SelectContentPart = 'empty' | 'list' | 'search' | 'searchInput'
 
 export interface SelectContentOwnProps {
   classNames?: Partial<Record<SelectContentPart, string>>
-  emptyText?: ReactNode
-  searchLabel?: string
   searchPlaceholder?: string
 }
 
@@ -32,8 +30,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       children,
       className = '',
       classNames,
-      emptyText = 'No results',
-      searchLabel = 'Search',
       searchPlaceholder,
       style,
     }: SelectContentProps,
@@ -100,7 +96,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 aria-autocomplete="list"
                 aria-controls={context.listboxId}
                 aria-expanded={open}
-                aria-label={searchLabel}
+                aria-label={context.labels.search}
                 autoComplete="off"
                 className={joinClasses(isStyled && styles.searchInput, classNames?.searchInput)}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -130,7 +126,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           </div>
           {query && !hasMatches ? (
             <div className={joinClasses(isStyled && styles.empty, classNames?.empty)}>
-              {emptyText}
+              {context.labels.empty}
             </div>
           ) : null}
         </div>

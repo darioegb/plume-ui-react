@@ -113,6 +113,16 @@ export default {
         type: { summary: 'string' },
       },
     },
+    labels: {
+      control: false,
+      description:
+        'The texts the Button adds, to translate them: `busy` is the accessible name of the spinner shown while `isBusy` is set.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'Partial<ButtonLabels>' },
+        defaultValue: { summary: '{ busy: "Loading" }' },
+      },
+    },
     shape: {
       control: 'inline-radio',
       description: 'Shape style of the Button.',

@@ -203,7 +203,7 @@ describe('FileUpload component', () => {
     })
 
     it('uses another text for the rejections', () => {
-      render(<Demo accept=".pdf" formatRejection={({ file: item }) => `No: ${item.name}`} />)
+      render(<Demo accept=".pdf" labels={{ rejection: ({ file: item }) => `No: ${item.name}` }} />)
       choose([file('a.txt')])
       expect(screen.getByRole('alert')).toHaveTextContent('No: a.txt')
     })
@@ -240,8 +240,19 @@ describe('FileUpload component', () => {
       expect(input()).toHaveFocus()
     })
 
+    it('uses another text for the prompt and for the size of the files', () => {
+      render(
+        <Demo
+          defaultValue={[file('a.txt')]}
+          labels={{ fileSize: (bytes) => `${bytes} octetos`, prompt: 'Suelta aquí' }}
+        />,
+      )
+      expect(input()).toHaveAccessibleDescription('Suelta aquí')
+      expect(document.querySelector('[data-plume-fileupload-size]')).toHaveTextContent('octetos')
+    })
+
     it('uses another label for the buttons', () => {
-      render(<Demo defaultValue={[file('a.txt')]} removeLabel={(item) => `Quitar ${item.name}`} />)
+      render(<Demo defaultValue={[file('a.txt')]} labels={{ remove: (item) => `Quitar ${item.name}` }} />)
       expect(screen.getByRole('button', { name: 'Quitar a.txt' })).toBeInTheDocument()
     })
 
@@ -393,14 +404,14 @@ describe('FileUpload component', () => {
       expect(bars[0]).toHaveAttribute('aria-valuemax', '100')
     })
 
-    it('names the bar after the file and lets progressLabel translate it', () => {
+    it('names the bar after the file and lets labels.progress translate it', () => {
       const { rerender } = render(<Demo defaultValue={[uploading]} progress={() => 10} />)
       expect(screen.getByRole('progressbar', { name: 'Uploading big.zip' })).toBeInTheDocument()
       rerender(
         <Demo
           defaultValue={[uploading]}
           progress={() => 10}
-          progressLabel={(current) => `Subiendo ${current.name}`}
+          labels={{ progress: (current) => `Subiendo ${current.name}` }}
         />,
       )
       expect(screen.getByRole('progressbar', { name: 'Subiendo big.zip' })).toBeInTheDocument()

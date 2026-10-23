@@ -4,11 +4,22 @@ import { createContext, useContext } from 'react'
 
 export type CarouselVariant = 'ghost' | 'outline' | 'overlay' | 'solid' | 'unstyled'
 
+export interface CarouselLabels {
+  dot: (index: number, count: number) => string
+  dots: string
+  next: string
+  pause: string
+  play: string
+  previous: string
+  slide: (index: number, count: number) => string
+}
+
 export interface CarouselContextValue {
   baseId: string
   count: number
   index: number
   isStyled: boolean
+  labels: CarouselLabels
   loop: boolean
   next: () => void
   playing: boolean
@@ -16,7 +27,6 @@ export interface CarouselContextValue {
   setCount: (count: number) => void
   setIndex: (index: number) => void
   setPlaying: (playing: boolean) => void
-  slideLabel: (index: number, count: number) => string
 }
 
 export const CarouselContext = createContext<CarouselContextValue | undefined>(undefined)

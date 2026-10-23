@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
+import { mergeLabels } from '../../../overlay/labels'
 import { StatusIcon } from '../../../overlay/status-icon'
 import type { ComponentProps, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
@@ -16,12 +17,16 @@ export type AlertVariant = 'outline' | 'solid' | 'subtle' | 'unstyled'
 
 export type AlertPart = 'action' | 'content' | 'dismiss' | 'icon'
 
+export interface AlertLabels {
+  dismiss: string
+}
+
 export interface AlertOwnProps {
   action?: ReactNode
   classNames?: Partial<Record<AlertPart, string>>
-  dismissLabel?: string
   dismissible?: boolean
   icon?: ReactNode | false
+  labels?: Partial<AlertLabels>
   onDismiss?: () => void
   size?: Size
   status?: AlertStatus
@@ -35,6 +40,8 @@ type AlertRootAttributes = Pick<
 
 export type AlertProps = Omit<ComponentProps, 'index'> & AlertRootAttributes & AlertOwnProps
 
+const DEFAULT_LABELS: AlertLabels = { dismiss: 'Dismiss' }
+
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   (
     {
@@ -42,9 +49,9 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
       children,
       className,
       classNames,
-      dismissLabel = 'Dismiss',
       dismissible = false,
       icon,
+      labels,
       onDismiss,
       role,
       size = 'md',
@@ -106,7 +113,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
         ) : null}
         {dismissible ? (
           <button
-            aria-label={dismissLabel}
+            aria-label={mergeLabels(DEFAULT_LABELS, labels).dismiss}
             className={joinClasses(isStyled && styles.dismiss, classNames?.dismiss)}
             data-plume-alert-dismiss=""
             onClick={dismiss}

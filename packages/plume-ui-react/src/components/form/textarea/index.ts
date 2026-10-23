@@ -1,1 +1,1 @@
-export { Textarea, type TextareaPart, type TextareaProps } from './textarea'
+export { Textarea, type TextareaLabels, type TextareaPart, type TextareaProps } from './textarea'

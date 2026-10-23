@@ -7,6 +7,13 @@ import type { ColorScheme, Shape, Size } from '../../../theme'
 
 export type SelectVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
+export interface SelectLabels {
+  clear: string
+  empty: ReactNode
+  remove: (label: string) => string
+  search: string
+}
+
 export interface SelectedOption {
   icon?: ReactNode
   label: string
@@ -33,6 +40,7 @@ export interface SelectContextValue {
   disabled: boolean
   flip: boolean
   invalid: boolean
+  labels: SelectLabels
   isSelected: (value: string) => boolean
   isStyled: boolean
   labelling: SelectLabelling

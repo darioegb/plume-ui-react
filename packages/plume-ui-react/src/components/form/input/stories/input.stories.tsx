@@ -156,14 +156,13 @@ export default {
         'With `type="password"`, adds a button that shows or hides the password. It is a toggle button (`aria-pressed`) inside the Input, in the place of `elementAfter`; an `elementAfter` goes to its left. It has no effect with another type.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    revealLabel: {
-      control: 'text',
+    labels: {
+      control: false,
       description:
-        'Accessible name of the reveal button. It stays the same while the password is shown, `aria-pressed` tells the state, so use a label that makes sense for both: `Show password`.',
+        'The texts of the Input, for other languages: `reveal` is the accessible name of the reveal button (`Show password` by default). It stays the same while the password is shown, `aria-pressed` tells the state, so use a label that makes sense for both.',
       table: {
         category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Show password' },
+        type: { summary: 'Partial<InputLabels>' },
       },
     },
     classNames: {

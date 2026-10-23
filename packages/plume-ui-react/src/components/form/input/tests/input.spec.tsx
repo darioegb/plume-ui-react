@@ -214,7 +214,9 @@ describe('Input component', () => {
     })
 
     it('uses another label for the button', () => {
-      render(<Input placeholder="Secret" revealLabel="Mostrar" revealable type="password" />)
+      render(
+        <Input labels={{ reveal: 'Mostrar' }} placeholder="Secret" revealable type="password" />,
+      )
       expect(screen.getByRole('button', { name: 'Mostrar' })).toBeInTheDocument()
     })
 

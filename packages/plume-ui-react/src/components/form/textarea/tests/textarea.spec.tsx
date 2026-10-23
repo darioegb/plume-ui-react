@@ -211,8 +211,10 @@ describe('Textarea component', () => {
         <Textarea
           aria-label="Bio"
           defaultValue={'a'.repeat(95)}
-          formatCount={(n, max) => `${n} de ${max}`}
-          formatRemaining={(left) => `Quedan ${left}`}
+          labels={{
+            count: (n, max) => `${n} de ${max}`,
+            remaining: (left) => `Quedan ${left}`,
+          }}
           maxLength={100}
           showCount
         />,

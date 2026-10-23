@@ -1,5 +1,6 @@
 export {
   Table,
+  type TableLabels,
   type TableOwnProps,
   type TablePart,
   type TableProps,
