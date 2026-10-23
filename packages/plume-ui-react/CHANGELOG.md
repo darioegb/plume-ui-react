@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.17.0
+
+### Minor Changes
+
+- [#124](https://github.com/darioegb/plume-ui-react/pull/124) [`86776c2250fbd1286bee7e8acad1b0adde49903f`](https://github.com/darioegb/plume-ui-react/commit/86776c2250fbd1286bee7e8acad1b0adde49903f) Thanks [@darioegb](https://github.com/darioegb)! - Every component now styles its inner parts through one prop, `classNames`, a record keyed by part (`Partial<Record<<Name>Part, string>>`, with the `<Name>Part` type exported). It is available in `Checkbox`, `Radio`, `Toggle`, `PinInput`, `Input`, `Textarea`, `SelectGroup`, `TimePicker`, `Sidebar`, `AccordionContent`, `Breadcrumb`, `ModalContent` (and `DrawerContent`), `ToastProvider`, `Skeleton`, `Collapse`, `ProgressBar`, `CarouselDots`, `Table`, `TableHead` and `TableEmpty`, next to the ones that already had it. The loose props they replace are deprecated and still work: `inputClassName`, `labelClassName`, `revealClassName`, `countClassName`, `panelClassName`, `backdropClassName`, `bodyClassName`, `listClassName`, `separatorClassName`, `toastClassName`, `lineClassName`, `indicatorClassName`, `valueClassName`, `dotClassName`, `containerClassName`, `loadingClassName`, `sortClassName` and `emptyStateClassName`.
+
 ## 0.16.0
 
 ### Minor Changes
