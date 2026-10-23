@@ -10,7 +10,7 @@ export type TextareaPart = 'count'
 export interface TextareaOwnProps {
   colorScheme?: ColorScheme
   classNames?: Partial<Record<TextareaPart, string>>
-  /** @deprecated Use `classNames.count`. */
+  /** Alias of `classNames.count`, kept until the next major. */
   countClassName?: string
   formatCount?: (count: number, max: number | undefined) => string
   formatRemaining?: (remaining: number) => string

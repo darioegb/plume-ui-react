@@ -16,9 +16,9 @@ export type TogglePart = 'input' | 'label'
 
 export interface ToggleOwnProps {
   classNames?: Partial<Record<TogglePart, string>>
-  /** @deprecated Use `classNames.input`. */
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
-  /** @deprecated Use `classNames.label`. */
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean

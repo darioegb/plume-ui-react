@@ -19,7 +19,7 @@ export interface InputOwnProps {
   colorScheme?: ColorScheme
   mask?: string
   classNames?: Partial<Record<InputPart, string>>
-  /** @deprecated Use `classNames.reveal`. */
+  /** Alias of `classNames.reveal`, kept until the next major. */
   revealClassName?: string
   revealLabel?: string
   revealable?: boolean

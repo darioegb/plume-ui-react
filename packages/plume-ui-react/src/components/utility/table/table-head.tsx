@@ -15,7 +15,7 @@ export interface TableHeadOwnProps {
   onSort?: MouseEventHandler<HTMLButtonElement>
   sort?: TableSortDirection
   classNames?: Partial<Record<TableHeadPart, string>>
-  /** @deprecated Use `classNames.sort`. */
+  /** Alias of `classNames.sort`, kept until the next major. */
   sortClassName?: string
 }
 

@@ -27,7 +27,7 @@ export interface TimePickerOwnProps {
   minuteStep?: number
   onChange?: (value: string) => void
   classNames?: Partial<Record<TimePickerPart, string>>
-  /** @deprecated Use `classNames.panel`. */
+  /** Alias of `classNames.panel`, kept until the next major. */
   panelClassName?: string
   shape?: Shape
   size?: Size

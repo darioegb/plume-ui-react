@@ -16,9 +16,9 @@ export type CheckboxPart = 'input' | 'label'
 
 export interface CheckboxOwnProps {
   classNames?: Partial<Record<CheckboxPart, string>>
-  /** @deprecated Use `classNames.input`. */
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
-  /** @deprecated Use `classNames.label`. */
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
   colorScheme?: ColorScheme
   indeterminate?: boolean

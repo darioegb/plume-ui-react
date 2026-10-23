@@ -13,11 +13,11 @@ export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 
 export interface TableOwnProps {
   classNames?: Partial<Record<TablePart, string>>
-  /** @deprecated Use `classNames.container`. */
+  /** Alias of `classNames.container`, kept until the next major. */
   containerClassName?: string
   hoverable?: boolean
   loading?: boolean
-  /** @deprecated Use `classNames.loading`. */
+  /** Alias of `classNames.loading`, kept until the next major. */
   loadingClassName?: string
   loadingLabel?: string
   maxHeight?: number | string

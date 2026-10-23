@@ -14,14 +14,14 @@ export interface ProgressBarOwnProps {
   formatValue?: (value: number, max: number) => string
   indeterminate?: boolean
   classNames?: Partial<Record<ProgressBarPart, string>>
-  /** @deprecated Use `classNames.indicator`. */
+  /** Alias of `classNames.indicator`, kept until the next major. */
   indicatorClassName?: string
   max?: number
   shape?: Shape
   showValue?: boolean
   size?: Size
   value?: number
-  /** @deprecated Use `classNames.value`. */
+  /** Alias of `classNames.value`, kept until the next major. */
   valueClassName?: string
   valueText?: string
   variant?: ProgressBarVariant

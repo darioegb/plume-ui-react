@@ -20,7 +20,7 @@ export interface PinInputOwnProps {
   defaultValue?: string
   getInputLabel?: (index: number, length: number) => string
   classNames?: Partial<Record<PinInputPart, string>>
-  /** @deprecated Use `classNames.input`. */
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
   length?: number
   mask?: boolean

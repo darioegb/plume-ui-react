@@ -13,7 +13,7 @@ export type SkeletonVariant = 'pulse' | 'wave' | 'unstyled'
 export interface SkeletonOwnProps {
   height?: number | string
   classNames?: Partial<Record<SkeletonPart, string>>
-  /** @deprecated Use `classNames.line`. */
+  /** Alias of `classNames.line`, kept until the next major. */
   lineClassName?: string
   lines?: number
   shape?: SkeletonShape

@@ -11,7 +11,7 @@ export type CollapseVariant = 'accent' | 'filled' | 'outline' | 'unstyled'
 export interface CollapseOwnProps {
   as?: 'div' | 'section'
   classNames?: Partial<Record<CollapsePart, string>>
-  /** @deprecated Use `classNames.body`. */
+  /** Alias of `classNames.body`, kept until the next major. */
   bodyClassName?: string
   colorScheme?: ColorScheme
   open?: boolean

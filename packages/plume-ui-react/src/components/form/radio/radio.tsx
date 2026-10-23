@@ -17,9 +17,9 @@ export type RadioPart = 'input' | 'label'
 
 export interface RadioOwnProps {
   classNames?: Partial<Record<RadioPart, string>>
-  /** @deprecated Use `classNames.input`. */
+  /** Alias of `classNames.input`, kept until the next major. */
   inputClassName?: string
-  /** @deprecated Use `classNames.label`. */
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
   colorScheme?: ColorScheme
   readOnly?: boolean

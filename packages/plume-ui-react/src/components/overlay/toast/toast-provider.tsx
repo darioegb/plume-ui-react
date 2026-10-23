@@ -41,7 +41,7 @@ export interface ToastProviderProps {
   max?: number
   position?: ToastPosition
   regionLabel?: string
-  /** @deprecated Use `classNames.toast`. */
+  /** Alias of `classNames.toast`, kept until the next major. */
   toastClassName?: string
   variant?: ToastVariant
 }

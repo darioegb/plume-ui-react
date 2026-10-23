@@ -18,7 +18,7 @@ export type ModalContentPart = 'backdrop'
 
 export interface ModalContentOwnProps {
   classNames?: Partial<Record<ModalContentPart, string>>
-  /** @deprecated Use `classNames.backdrop`. */
+  /** Alias of `classNames.backdrop`, kept until the next major. */
   backdropClassName?: string
 }
 

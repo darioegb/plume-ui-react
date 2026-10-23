@@ -10,7 +10,7 @@ export type TableEmptyPart = EmptyStatePart | 'emptyState'
 export interface TableEmptyOwnProps {
   classNames?: Partial<Record<TableEmptyPart, string>>
   colSpan?: number
-  /** @deprecated Use `classNames.emptyState`. */
+  /** Alias of `classNames.emptyState`, kept until the next major. */
   emptyStateClassName?: string
 }
 

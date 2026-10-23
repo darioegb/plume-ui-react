@@ -11,7 +11,7 @@ export type CarouselDotsPart = 'dot'
 
 export interface CarouselDotsOwnProps {
   classNames?: Partial<Record<CarouselDotsPart, string>>
-  /** @deprecated Use `classNames.dot`. */
+  /** Alias of `classNames.dot`, kept until the next major. */
   dotClassName?: string
   dotLabel?: (index: number, count: number) => string
 }

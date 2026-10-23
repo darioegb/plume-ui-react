@@ -12,7 +12,7 @@ export type AccordionContentPart = 'body'
 
 export interface AccordionContentOwnProps {
   classNames?: Partial<Record<AccordionContentPart, string>>
-  /** @deprecated Use `classNames.body`. */
+  /** Alias of `classNames.body`, kept until the next major. */
   bodyClassName?: string
 }
 

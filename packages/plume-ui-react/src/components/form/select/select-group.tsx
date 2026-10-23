@@ -12,7 +12,7 @@ export interface SelectGroupOwnProps {
   children?: ReactNode
   label: ReactNode
   classNames?: Partial<Record<SelectGroupPart, string>>
-  /** @deprecated Use `classNames.label`. */
+  /** Alias of `classNames.label`, kept until the next major. */
   labelClassName?: string
 }
 

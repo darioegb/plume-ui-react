@@ -21,7 +21,7 @@ export type SidebarPart = 'backdrop'
 
 export interface SidebarOwnProps {
   classNames?: Partial<Record<SidebarPart, string>>
-  /** @deprecated Use `classNames.backdrop`. */
+  /** Alias of `classNames.backdrop`, kept until the next major. */
   backdropClassName?: string
   colorScheme?: ColorScheme
   side?: SidebarSide

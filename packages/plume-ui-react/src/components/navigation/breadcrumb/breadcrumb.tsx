@@ -12,10 +12,10 @@ export type BreadcrumbPart = 'list' | 'separator'
 export interface BreadcrumbOwnProps {
   colorScheme?: ColorScheme
   classNames?: Partial<Record<BreadcrumbPart, string>>
-  /** @deprecated Use `classNames.list`. */
+  /** Alias of `classNames.list`, kept until the next major. */
   listClassName?: string
   separator?: ReactNode
-  /** @deprecated Use `classNames.separator`. */
+  /** Alias of `classNames.separator`, kept until the next major. */
   separatorClassName?: string
   size?: Size
   variant?: BreadcrumbVariant
