@@ -154,9 +154,7 @@
 }
 
 .list .divider {
-  border-block-start: 1px solid var(--plume-border);
-  height: 0;
-  margin-block: var(--plume-space-1);
+  list-style: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

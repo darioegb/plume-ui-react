@@ -81,6 +81,7 @@ export function App() {
 | Chip | [Chip](https://darioegb.github.io/plume-ui-react/?path=/docs/components-chip--docs) |
 | Collapse | [Collapse](https://darioegb.github.io/plume-ui-react/?path=/docs/components-collapse--docs) |
 | DatePicker | [DatePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-datepicker--docs) |
+| Divider | [Divider](https://darioegb.github.io/plume-ui-react/?path=/docs/components-divider--docs) |
 | Drawer | [Drawer](https://darioegb.github.io/plume-ui-react/?path=/docs/components-drawer--docs) |
 | Dropdown | [Dropdown](https://darioegb.github.io/plume-ui-react/?path=/docs/components-dropdown--docs) |
 | EmptyState | [EmptyState](https://darioegb.github.io/plume-ui-react/?path=/docs/components-emptystate--docs) |

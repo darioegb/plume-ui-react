@@ -1,6 +1,7 @@
 import type { ForwardedRef, LiHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
+import { Divider } from '../divider'
 import styles from './list.module.css'
 
 type ListDividerRootAttributes = Pick<LiHTMLAttributes<HTMLLIElement>, 'hidden' | 'id'>
@@ -15,7 +16,9 @@ export const ListDivider = forwardRef<HTMLLIElement, ListDividerProps>(
       ref={ref}
       style={style}
       {...rest}
-    />
+    >
+      <Divider decorative spacing="sm" />
+    </li>
   ),
 )
 

@@ -33,6 +33,7 @@ describe('plume-ui-react', () => {
       'Chip',
       'Collapse',
       'DatePicker',
+      'Divider',
       'Drawer',
       'DrawerBody',
       'DrawerClose',
