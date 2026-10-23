@@ -1,3 +1,17 @@
+<script>
+  // Applies the saved (or preferred) color mode before the first paint, so a page opened in dark mode
+  // doesn't show the light theme until React has mounted.
+  try {
+    var mode = localStorage.getItem('plume-colormode')
+    if (mode !== 'dark' && mode !== 'light') {
+      mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    var root = document.documentElement
+    root.setAttribute('data-plume-color-mode', mode)
+    root.setAttribute('data-bs-theme', mode)
+    root.style.colorScheme = mode
+  } catch (error) {}
+</script>
 <style>
   /* The boxes that center an example are flex items that can't shrink below their content,
      so on a narrow screen a width such as `36rem; max-width: 100%` overflows and is cut. */

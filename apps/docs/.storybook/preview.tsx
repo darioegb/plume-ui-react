@@ -37,6 +37,16 @@ const PlumeDocsContainer = ({
 
 type ColorMode = 'light' | 'dark'
 
+const preferredColorMode = (): ColorMode => {
+  try {
+    const stored = localStorage.getItem('plume-colormode')
+    if (stored === 'dark' || stored === 'light') return stored
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  } catch {
+    return 'light'
+  }
+}
+
 const docsColorMode = (): ColorMode | null => {
   try {
     if (window.parent === window || !window.parent.location.pathname.endsWith('iframe.html')) {
@@ -149,11 +159,11 @@ const preview: Preview = {
       },
     },
   },
+  initialGlobals: { colorMode: preferredColorMode() },
   globalTypes: {
     // Rendered as a toggle in the custom header (see manager.ts), not in the toolbar.
     colorMode: {
       description: 'Plume color mode',
-      defaultValue: 'light',
     },
   },
   decorators: [
