@@ -1,0 +1,19 @@
+button.trigger {
+  align-self: center;
+  aspect-ratio: 1;
+  flex: none;
+  height: min(calc(100% - 0.5rem), 2rem);
+  margin: 0 0.25rem;
+  min-width: 0;
+  padding: 0;
+  width: auto;
+}
+
+button.floating {
+  height: 2rem;
+  inset-block-start: 50%;
+  inset-inline-end: 0.5rem;
+  margin: 0;
+  position: absolute;
+  transform: translateY(-50%);
+}

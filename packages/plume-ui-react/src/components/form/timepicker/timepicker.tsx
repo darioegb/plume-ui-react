@@ -1,54 +1,27 @@
 'use client'
 
-import type { CSSProperties, ForwardedRef, InputHTMLAttributes, Ref } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { joinClasses } from '../../../overlay/class-names'
-import { ClockIcon } from '../../../overlay/icons'
-import { useControllableState } from '../../../overlay/use-controllable-state'
 import { mergeRefs } from '../../../overlay/trigger'
-import { Button } from '../../interaction/button'
-import { Input } from '../input'
-import { customProperties, pickerPanelClasses, type PickerVariant } from '../shared/picker-panel'
-import { TimePanel } from './time-panel'
-import { useTimePicks } from './use-time-picks'
-import { useTimePopup } from './use-time-popup'
-import { useTimeText } from './use-time-text'
-import type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
+import type { PickerVariant } from '../shared/picker-panel'
+import { TimePickerInput, type TimePickerInputProps } from './timepicker-input'
+import { TimePickerPanel } from './timepicker-panel'
+import { TimePickerContext } from './use-timepicker'
+import { timePickerColorVars, useTimePickerController } from './use-timepicker-controller'
+import type { TimePickerConfig } from './timepicker-types'
 import styles from './timepicker.module.css'
 
 export type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
 
-const DEFAULT_LABELS: TimePickerLabels = {
-  am: 'AM',
-  hours: 'Hours',
-  minutes: 'Minutes',
-  openTimePicker: 'Open time picker',
-  period: 'Period',
-  pm: 'PM',
-  timePicker: 'Time picker',
-}
-
-type TimePickerRootAttributes = Pick<
-  InputHTMLAttributes<HTMLInputElement>,
-  | 'aria-describedby'
-  | 'aria-invalid'
-  | 'disabled'
-  | 'id'
-  | 'name'
-  | 'placeholder'
-  | 'readOnly'
-  | 'required'
->
-
 export interface TimePickerOwnProps {
+  children?: ReactNode
   colorScheme?: ColorScheme
   config?: TimePickerConfig
   defaultValue?: string
   hour12?: boolean
-  inputRef?: Ref<HTMLInputElement>
+  isPanel?: boolean
   minuteStep?: number
-  onBlur?: (value: string) => void
   onChange?: (value: string) => void
   panelClassName?: string
   shape?: Shape
@@ -58,156 +31,67 @@ export interface TimePickerOwnProps {
 }
 
 export type TimePickerProps = Omit<ComponentProps, 'index'> &
-  TimePickerRootAttributes &
+  Omit<TimePickerInputProps, 'style'> &
   TimePickerOwnProps
-
-const timePickerColorVars = (colorScheme: ColorScheme): CSSProperties =>
-  ({
-    '--picker-scheme': `var(--plume-color-${colorScheme}-text)`,
-    '--timepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
-    '--timepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--timepicker-hover': `color-mix(in srgb, var(--plume-color-${colorScheme}-solid) 18%, transparent)`,
-    '--timepicker-selected-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
-  }) as CSSProperties
-
-const TIME_MASK = '##:##'
-
-const VARIANT_CLASS = {
-  filled: 'variantFilled',
-  outline: 'variantOutline',
-  underline: 'variantUnderline',
-} as const
-
-const defaultPlaceholder = (hour12: boolean, am: string): string =>
-  hour12 ? `hh:mm ${am}` : 'hh:mm'
-
-const resolveLook = (
-  variant: PickerVariant,
-  shape?: Shape,
-  size?: Size,
-): { shape?: Shape; size?: Size } =>
-  variant === 'unstyled' ? { shape, size } : { shape: shape ?? 'rounded', size: size ?? 'md' }
 
 export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
   (
     {
-      className,
+      children,
       colorScheme = 'secondary',
       config,
       defaultValue = '',
-      disabled = false,
       hour12 = false,
-      inputRef,
+      isPanel = false,
       minuteStep = 1,
-      onBlur,
       onChange,
       panelClassName,
-      placeholder,
-      readOnly,
+      shape,
+      size,
       style,
-      value: valueProp,
+      value,
       variant = 'outline',
-      shape: shapeProp,
-      size: sizeProp,
       ...inputProps
     }: TimePickerProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const labels = { ...DEFAULT_LABELS, ...config?.labels }
-    const { shape, size } = resolveLook(variant, shapeProp, sizeProp)
-    const colorVars = timePickerColorVars(colorScheme)
-    const panelVars = { ...colorVars, ...customProperties(style) }
-    const [value, setValue] = useControllableState({
-      defaultValue,
-      onChange,
-      value: valueProp,
-    })
-    const { commit, handleChange, text } = useTimeText({ hour12, labels, setValue, value })
     const [root, setRoot] = useState<HTMLDivElement | null>(null)
-    const [input, setInput] = useState<HTMLInputElement | null>(null)
     const setRootRef = useCallback(
       (node: HTMLDivElement | null): void => mergeRefs<HTMLDivElement>(setRoot, ref)(node),
       [ref],
     )
-    const setInputRef = useCallback(
-      (node: HTMLInputElement | null): void =>
-        mergeRefs<HTMLInputElement>(setInput, inputRef)(node),
-      [inputRef],
-    )
-    const popup = useTimePopup({ input, root })
-    const { close } = popup
-    const { pickHours, pickMinutes, pickPeriod } = useTimePicks({
+    const { context, handleBlur } = useTimePickerController({
+      colorScheme,
+      config,
+      defaultValue,
       hour12,
-      onMinutesPicked: () => {
-        close()
-        input?.focus()
-      },
-      setValue,
+      isPanel,
+      minuteStep,
+      onChange,
+      root,
+      shape: shape ?? (variant === 'unstyled' ? undefined : 'rounded'),
+      size: size ?? (variant === 'unstyled' ? undefined : 'md'),
+      style,
       value,
+      variant,
     })
 
     return (
-      <div
-        className={styles.timePicker}
-        onBlur={popup.handleBlur}
-        ref={setRootRef}
-        style={{ ...colorVars, ...style }}
-      >
-        <Input
-          {...inputProps}
-          className={className}
-          colorScheme={colorScheme}
-          disabled={disabled}
-          elementAfter={
-            <Button
-              aria-expanded={popup.open}
-              aria-haspopup="dialog"
-              aria-label={labels.openTimePicker}
-              className={styles.trigger}
-              disabled={disabled || readOnly}
-              onClick={popup.toggle}
-              shape="pill"
-              variant="icon"
-            >
-              <ClockIcon />
-            </Button>
-          }
-          inputMode="numeric"
-          mask={hour12 ? undefined : TIME_MASK}
-          onBlur={() => {
-            const committed = commit()
-            onBlur?.(committed)
-          }}
-          onChange={handleChange}
-          placeholder={placeholder ?? defaultPlaceholder(hour12, labels.am)}
-          readOnly={readOnly}
-          ref={setInputRef}
-          shape={shape}
-          size={size}
-          type="text"
-          value={text}
-          variant={variant}
-        />
-        {popup.open ? (
-          <TimePanel
-            className={joinClasses(
-              styles.panel,
-              pickerPanelClasses(variant, size, shape),
-              variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
-              panelClassName,
-            )}
-            hour12={hour12}
-            labels={labels}
-            minuteStep={minuteStep}
-            onPickHours={pickHours}
-            onPickMinutes={pickMinutes}
-            onPickPeriod={pickPeriod}
-            panelRef={popup.setPanel}
-            style={{ ...panelVars, ...popup.panelStyle }}
-            value={value}
-          />
-        ) : null}
-      </div>
+      <TimePickerContext.Provider value={context}>
+        <div
+          className={styles.timePicker}
+          onBlur={handleBlur}
+          ref={setRootRef}
+          style={{ ...timePickerColorVars(colorScheme), ...style }}
+        >
+          {children ?? (
+            <>
+              <TimePickerInput {...inputProps} />
+              <TimePickerPanel className={panelClassName} />
+            </>
+          )}
+        </div>
+      </TimePickerContext.Provider>
     )
   },
 )

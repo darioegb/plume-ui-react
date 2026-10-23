@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { TimePicker } from '..'
+import { TimePicker, TimePickerInput, TimePickerPanel } from '..'
+import { Modal, ModalBody, ModalContent } from '../../../overlay/modal'
 
 const openPicker = (name = 'Open time picker'): void => {
   fireEvent.click(screen.getByRole('button', { name }))
@@ -313,6 +314,74 @@ describe('TimePicker', () => {
       render(<TimePicker hour12 />)
       openPicker()
       expect(screen.getByRole('option', { name: 'AM' })).toHaveAttribute('aria-selected', 'false')
+    })
+  })
+
+  describe('as a compound component', () => {
+    it('takes its parts as children and opens the panel outside of the TimePicker', () => {
+      const { container } = render(
+        <TimePicker defaultValue="10:30">
+          <TimePickerPanel className="mine" />
+          <TimePickerInput placeholder="Start" />
+        </TimePicker>,
+      )
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByPlaceholderText('Start')).toBeInTheDocument()
+
+      openPicker()
+
+      const root = container.firstChild as HTMLElement
+      expect(root.contains(screen.getByRole('dialog'))).toBe(false)
+      expect(screen.getByRole('dialog')).toHaveClass('mine')
+    })
+
+    it('shows the panel without the input and keeps it open when a minute is picked', () => {
+      const onChange = vi.fn()
+      render(<TimePicker defaultValue="09:00" isPanel onChange={onChange} />)
+      expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+      expect(screen.getByRole('dialog', { name: 'Time picker' })).toHaveClass('inline')
+
+      pick('Hours', '11')
+      pick('Minutes', '45')
+
+      expect(onChange).toHaveBeenLastCalledWith('11:45')
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('names the panel with its own label', () => {
+      render(
+        <TimePicker isPanel>
+          <TimePickerPanel aria-label="Start time" />
+        </TimePicker>,
+      )
+      expect(screen.getByRole('dialog', { name: 'Start time' })).toBeInTheDocument()
+    })
+
+    it('closes only the panel with Escape when it is inside a modal', () => {
+      render(
+        <Modal defaultOpen>
+          <ModalContent aria-label="Booking">
+            <ModalBody>
+              <TimePicker />
+            </ModalBody>
+          </ModalContent>
+        </Modal>,
+      )
+      openPicker()
+      expect(screen.getAllByRole('dialog')).toHaveLength(2)
+
+      fireEvent.keyDown(document, { key: 'Escape' })
+
+      expect(screen.getAllByRole('dialog')).toHaveLength(1)
+      expect(screen.getByRole('dialog', { name: 'Booking' })).toBeInTheDocument()
+    })
+
+    it('throws when a part is used outside of a TimePicker', () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(<TimePickerInput />)).toThrow(
+        'TimePickerInput must be used within a <TimePicker>',
+      )
+      error.mockRestore()
     })
   })
 

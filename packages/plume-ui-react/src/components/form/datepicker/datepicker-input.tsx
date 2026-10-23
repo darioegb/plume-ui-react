@@ -2,8 +2,9 @@
 
 import type { ChangeEvent, ReactNode, Ref } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { ComponentProps, Shape, Size } from '../../../theme'
-import { Button } from '../../interaction/button'
+import type { ComponentProps } from '../../../theme'
+import { CalendarIcon } from '../../../overlay/icons'
+import { PickerTrigger } from '../shared/picker-trigger'
 import { Input } from '../input'
 import {
   getDateFormatByLanguage,
@@ -14,7 +15,6 @@ import {
 import { useDebounce } from '../../../hooks/use-debounce'
 import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
 import { useDatePicker } from './use-datepicker'
-import styles from './datepicker.module.css'
 
 export interface DatePickerInputOwnProps {
   inputRef?: Ref<HTMLInputElement>
@@ -24,23 +24,6 @@ export interface DatePickerInputOwnProps {
 export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
   DatePickerRootAttributes &
   DatePickerInputOwnProps
-
-const generateDatePickerInputClasses = (
-  className: string,
-  disabled: boolean,
-  isInvalid: boolean,
-  variant: string,
-  shape?: Shape,
-  size?: Size,
-): string => {
-  const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
-  const shapeClass = shape && (shape !== 'rounded' || variant === 'unstyled') ? styles[shape] : ''
-  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-  const disabledClass = disabled ? styles.disabled : ''
-  const invalidClass = isInvalid && variant !== 'unstyled' ? styles.invalid : ''
-  return `${sizeClass} ${shapeClass} ${variantClass} 
-    ${disabledClass} ${invalidClass} ${className}`.trim()
-}
 
 const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
@@ -61,6 +44,7 @@ export function DatePickerInput({
     commitTypedValue,
     displayFormat,
     isCalendar,
+    colorScheme,
     isRange,
     labels,
     language,
@@ -147,62 +131,42 @@ export function DatePickerInput({
     setInputValue(e.target.value)
   }
 
-  const singleMask = (displayFormat ?? getDateFormatByLanguage(language)).replace(/[a-zA-Z]/g, '#')
-  const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
   const currentFormat = displayFormat ?? getDateFormatByLanguage(language)
-  const inputClasses = generateDatePickerInputClasses(
-    className,
-    disabled,
-    rest['aria-invalid'] === true || rest['aria-invalid'] === 'true',
-    variant,
-    shape,
-    size,
-  )
+  const singleMask = currentFormat.replace(/[a-zA-Z]/g, '#')
+  const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
 
   if (isCalendar) return null
 
   return (
-    <>
-      <Input
-        className={inputClasses}
-        disabled={disabled}
-        inputMode="numeric"
-        mask={mask}
-        onBlur={() => {
-          onBlur?.({ startDate, endDate })
-        }}
-        onChange={handleChange}
-        placeholder={
-          placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)
-        }
-        readOnly={readOnly}
-        ref={setRef}
-        type="text"
-        value={inputValue}
-        variant="unstyled"
-        {...rest}
-      />
-
-      <Button
-        aria-expanded={modalOpen}
-        aria-haspopup="dialog"
-        aria-label={labels.openCalendar}
-        className={styles.inputButton}
-        disabled={disabled || readOnly}
-        onClick={handleButtonClick}
-        shape="pill"
-        variant="icon"
-      >
-        <svg
-          aria-hidden="true"
-          className={styles.inputButtonIcon}
-          focusable="false"
-          viewBox="0 -960 960 960"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z" />
-        </svg>
-      </Button>
-    </>
+    <Input
+      className={className}
+      colorScheme={colorScheme}
+      disabled={disabled}
+      elementAfter={
+        <PickerTrigger
+          disabled={disabled || Boolean(readOnly)}
+          icon={<CalendarIcon />}
+          label={labels.openCalendar}
+          onClick={handleButtonClick}
+          open={modalOpen}
+          unstyled={variant === 'unstyled'}
+        />
+      }
+      inputMode="numeric"
+      mask={mask}
+      onBlur={() => {
+        onBlur?.({ startDate, endDate })
+      }}
+      onChange={handleChange}
+      placeholder={placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)}
+      readOnly={readOnly}
+      ref={setRef}
+      shape={shape}
+      size={size}
+      type="text"
+      value={inputValue}
+      variant={variant}
+      {...rest}
+    />
   )
 }

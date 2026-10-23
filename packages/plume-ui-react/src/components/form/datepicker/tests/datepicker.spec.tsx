@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
 import type { DateRange } from '../datepicker'
+import { Modal, ModalBody, ModalContent } from '../../../overlay/modal'
 
 const openCalendar = (): void => {
   fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
@@ -803,6 +804,25 @@ describe('DatePicker component', () => {
       expect(style.getPropertyValue('--datepicker-scheme')).toBe('var(--plume-color-primary-text)')
       expect(style.getPropertyValue('--datepicker-solid')).toBe('red')
       expect(style.width).toBe('')
+    })
+
+    it('closes only the calendar with Escape when it is inside a modal', () => {
+      render(
+        <Modal defaultOpen>
+          <ModalContent aria-label="Booking">
+            <ModalBody>
+              <DatePicker onChange={vi.fn()} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>,
+      )
+      openCalendar()
+      expect(screen.getAllByRole('dialog')).toHaveLength(2)
+
+      fireEvent.keyDown(document, { key: 'Escape' })
+
+      expect(screen.getAllByRole('dialog')).toHaveLength(1)
+      expect(screen.getByRole('dialog', { name: 'Booking' })).toBeInTheDocument()
     })
 
     it('stays open while the focus moves into the popup', () => {

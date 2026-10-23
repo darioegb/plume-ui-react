@@ -121,6 +121,8 @@ describe('plume-ui-react', () => {
       'Textarea',
       'ThemeProvider',
       'TimePicker',
+      'TimePickerInput',
+      'TimePickerPanel',
       'ToastProvider',
       'Toggle',
       'Tooltip',
