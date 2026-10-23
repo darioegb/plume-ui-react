@@ -57,7 +57,7 @@ function Example({
  * navigation of the app and stays on the page.
  *
  * Compose it with `DrawerTrigger`, `DrawerContent` and the parts you need. The `Drawer` itself renders nothing: it
- * keeps the state and shares it with its parts. Its props, apart from **side** and **variant**, are the ones of `Modal`.
+ * keeps the state and shares it with its parts. Its props, apart from **side**, are the ones of `Modal`.
  *
  * ### Subcomponents
  *
@@ -121,10 +121,10 @@ export default {
     variant: {
       control: 'radio',
       description:
-        'Visual variant. `default` sticks the panel to the edge it comes from, full height or width. `floating` insets it from the edges of the screen with rounded corners. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['default', 'floating', 'unstyled'],
+        'Visual variant. `default` has the backdrop, the surface and the spacing of the parts. `unstyled` drops the Plume styles so you can bring your own.',
+      options: ['default', 'unstyled'],
       table: {
-        type: { summary: `"default" | "floating" | "unstyled"` },
+        type: { summary: `"default" | "unstyled"` },
         defaultValue: { summary: 'default' },
       },
     },
@@ -180,21 +180,6 @@ export const Sides: Story = {
     <div className="flex flex-wrap justify-center gap-3">
       {(['left', 'right', 'top', 'bottom'] as const).map((side) => (
         <Example key={side} label={`From the ${side}`} side={side} />
-      ))}
-    </div>
-  ),
-}
-
-/**
- * Use the **variant** prop to pick how the panel sits on the screen: `default` sticks it to the edge it comes
- * from, `floating` insets it from the edges with rounded corners, and `unstyled` drops the Plume styles so you
- * can style it yourself.
- */
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-wrap justify-center gap-3">
-      {(['default', 'floating'] as const).map((variant) => (
-        <Example key={variant} label={`Variant ${variant}`} variant={variant} />
       ))}
     </div>
   ),

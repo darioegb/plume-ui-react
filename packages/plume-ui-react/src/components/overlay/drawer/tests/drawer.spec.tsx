@@ -103,17 +103,6 @@ describe('Drawer component', () => {
     expect(dialog()).toHaveClass(size)
   })
 
-  it('sticks to the edge by default and floats with the floating variant', () => {
-    const { unmount } = render(<Example defaultOpen />)
-    expect(dialog()).not.toHaveClass('floating')
-    expect(dialog().parentElement).not.toHaveClass('floatingBackdrop')
-    unmount()
-
-    render(<Example defaultOpen variant="floating" />)
-    expect(dialog()).toHaveClass('drawer', 'floating')
-    expect(dialog().parentElement).toHaveClass('backdrop', 'floatingBackdrop')
-  })
-
   it('drops the Plume classes when unstyled but keeps the side', () => {
     render(<Example defaultOpen side="left" variant="unstyled" />)
     expect(dialog()).not.toHaveClass('drawer')

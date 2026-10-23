@@ -4,11 +4,8 @@ import { createContext, useContext } from 'react'
 
 export type DrawerSide = 'bottom' | 'left' | 'right' | 'top'
 
-export type DrawerVariant = 'default' | 'floating' | 'unstyled'
-
 export interface DrawerContextValue {
   side: DrawerSide
-  variant: DrawerVariant
 }
 
 export const DrawerContext = createContext<DrawerContextValue | undefined>(undefined)

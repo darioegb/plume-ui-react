@@ -1,10 +1,4 @@
-export {
-  Drawer,
-  type DrawerOwnProps,
-  type DrawerProps,
-  type DrawerSide,
-  type DrawerVariant,
-} from './drawer'
+export { Drawer, type DrawerOwnProps, type DrawerProps, type DrawerSide } from './drawer'
 export { DrawerContent, type DrawerContentProps } from './drawer-content'
 export {
   DrawerBody,
