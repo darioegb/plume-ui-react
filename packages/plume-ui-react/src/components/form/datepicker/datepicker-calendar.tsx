@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { joinClasses } from '../../../overlay/class-names'
 import { Button } from '../../interaction/button'
+import { pickerPanelClasses } from '../shared/picker-panel'
 import { Calendar } from './calendar'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
@@ -59,8 +60,11 @@ export function DatePickerCalendar({
     onSelectDate,
     position,
     setPanel,
+    shape,
     showFooter,
+    size,
     state,
+    variant,
   } = useDatePicker('DatePickerCalendar')
 
   if (!isCalendar && !state.modalOpen) return null
@@ -72,7 +76,14 @@ export function DatePickerCalendar({
   return (
     <div
       aria-label={ariaLabel ?? labels.calendar}
-      className={joinClasses(styles.datePickerModal, className)}
+      className={joinClasses(
+        styles.datePickerModal,
+        pickerPanelClasses(variant, size, shape),
+        isCalendar && styles.inline,
+        size === 'sm' && styles.daySm,
+        size === 'lg' && styles.dayLg,
+        className,
+      )}
       ref={setPanel}
       role={dialogRole}
       style={{ ...floatingStyle, ...style }}

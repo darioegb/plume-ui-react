@@ -32,10 +32,7 @@ describe('DatePicker component', () => {
 
   it('shows a range placeholder in range mode', () => {
     render(<DatePicker isRange onChange={vi.fn()} />)
-    expect(screen.getByRole('textbox')).toHaveAttribute(
-      'placeholder',
-      'mm/dd/yyyy - mm/dd/yyyy',
-    )
+    expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'mm/dd/yyyy - mm/dd/yyyy')
   })
 
   it('disables the input and the calendar button', () => {
@@ -77,7 +74,13 @@ describe('DatePicker component', () => {
   })
 
   it('lists the weekday headers Monday to Sunday', () => {
-    render(<DatePicker isCalendar config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }} onChange={vi.fn()} />)
+    render(
+      <DatePicker
+        isCalendar
+        config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }}
+        onChange={vi.fn()}
+      />,
+    )
     const headers = document.querySelector('[class*="daysOfWeek"]') as HTMLElement
     expect(headers.textContent).toBe('MonTueWedThuFriSatSun')
   })
@@ -743,14 +746,43 @@ describe('DatePicker component', () => {
       expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
     })
 
-    it('styles the input with its own props', () => {
+    it('styles the input with its own props and the look of the DatePicker', () => {
       render(
-        <DatePicker onChange={vi.fn()}>
-          <DatePickerInput className="mine" disabled shape="pill" size="lg" variant="filled" />
+        <DatePicker onChange={vi.fn()} shape="pill" size="lg" variant="filled">
+          <DatePickerInput className="mine" disabled />
         </DatePicker>,
       )
       expect(screen.getByRole('textbox')).toHaveClass('mine', 'lg', 'pill', 'filled', 'disabled')
       expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
+    })
+
+    it.each([
+      ['outline', 'panelOutline'],
+      ['filled', 'panelFilled'],
+      ['underline', 'panelUnderline'],
+    ] as const)('gives the calendar the %s look', (variant, expected) => {
+      render(<DatePicker isCalendar onChange={vi.fn()} variant={variant} />)
+      expect(screen.getByRole('dialog')).toHaveClass('panel', expected)
+    })
+
+    it('leaves the calendar unstyled with the unstyled variant', () => {
+      render(<DatePicker isCalendar onChange={vi.fn()} variant="unstyled" />)
+      expect(screen.getByRole('dialog').className).not.toMatch(/panel(Outline|Filled|Underline)/)
+    })
+
+    it('scales and rounds the calendar with the size and the shape', () => {
+      render(<DatePicker isCalendar onChange={vi.fn()} shape="pill" size="sm" />)
+      expect(screen.getByRole('dialog')).toHaveClass('panelSm', 'panelPill', 'daySm')
+    })
+
+    it('keeps the always visible calendar in the flow', () => {
+      render(<DatePicker isCalendar onChange={vi.fn()} />)
+      expect(screen.getByRole('dialog')).toHaveClass('inline')
+    })
+
+    it('gives the calendar the large size', () => {
+      render(<DatePicker isCalendar onChange={vi.fn()} size="lg" />)
+      expect(screen.getByRole('dialog')).toHaveClass('panelLg', 'dayLg')
     })
 
     it('names the calendar and the button with the labels it is given', () => {
@@ -786,5 +818,4 @@ describe('DatePicker component', () => {
       error.mockRestore()
     })
   })
-
 })

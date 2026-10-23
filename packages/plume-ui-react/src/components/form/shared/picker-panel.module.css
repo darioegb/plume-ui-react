@@ -1,0 +1,38 @@
+.panel {
+  background-color: var(--plume-surface);
+}
+
+.panelOutline,
+.panelFilled,
+.panelUnderline {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: var(--plume-radius-6);
+}
+
+.panelOutline {
+  border: 1px solid var(--plume-border-strong);
+}
+
+.panelFilled {
+  background-color: var(--plume-surface-muted);
+  border-block-end: 2px solid var(--picker-scheme);
+}
+
+.panelUnderline {
+  border-radius: 0;
+  border-block-end: 2px solid var(--picker-scheme);
+}
+
+.panelPill:is(.panelOutline, .panelFilled) {
+  border-radius: 1.5rem;
+}
+
+.panelSm {
+  font-size: var(--plume-font-size-xs);
+}
+
+.panelLg {
+  font-size: var(--plume-font-size-lg);
+}

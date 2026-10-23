@@ -2,10 +2,10 @@
 
 import type { Dispatch } from 'react'
 import { createContext, useContext } from 'react'
-import type { ColorScheme } from '../../../theme'
+import type { ColorScheme, Shape, Size } from '../../../theme'
 import type { UsePositionResult } from '../../../overlay/use-position'
 import type { DatePickerAction, DatePickerState } from './datepicker-reducer'
-import type { DatePickerLabels, FooterLabels } from './datepicker-types'
+import type { DatePickerLabels, DatePickerVariant, FooterLabels } from './datepicker-types'
 
 export interface DatePickerContextProps {
   closeAndRestoreFocus: () => void
@@ -27,9 +27,12 @@ export interface DatePickerContextProps {
   onSelectDate: (day: number, isSecondCalendar?: boolean) => void
   position: UsePositionResult
   setPanel: (element: HTMLDivElement | null) => void
+  shape?: Shape
   showFooter: boolean
+  size?: Size
   state: DatePickerState
   toggle: () => void
+  variant: DatePickerVariant
 }
 
 export const DatePickerContext = createContext<DatePickerContextProps | undefined>(undefined)

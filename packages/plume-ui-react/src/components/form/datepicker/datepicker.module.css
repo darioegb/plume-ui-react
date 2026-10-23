@@ -1,6 +1,7 @@
 /* datepicker.module.css */
 
 .datePicker {
+  max-width: 100%;
   position: relative;
 }
 
@@ -130,15 +131,11 @@ input + .inputButton {
 }
 
 .datePickerModal {
+  --datepicker-day: var(--plume-space-10);
+  --datepicker-calendar-width: calc(var(--datepicker-day) * 7 + 3.5rem);
   margin-top: var(--plume-space-2);
   display: flex;
   flex-direction: column;
-  background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border);
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border-radius: var(--plume-radius-6);
   max-height: var(--plume-available-height, none);
   max-width: calc(100vw - var(--plume-space-4));
   overflow-x: hidden;
@@ -148,25 +145,41 @@ input + .inputButton {
   z-index: var(--plume-z-1);
 }
 
+.inline {
+  margin-top: 0;
+  max-width: 100%;
+  position: relative;
+}
+
+.daySm {
+  --datepicker-day: var(--plume-space-8);
+}
+
+.dayLg {
+  --datepicker-day: 2.75rem;
+}
+
 .calendarContainer {
   display: flex;
-  width: 21rem;
+  max-width: 100%;
+  width: var(--datepicker-calendar-width);
 }
 
 .calendarContainerDouble {
   display: flex;
-  width: 42rem;
+  width: calc(var(--datepicker-calendar-width) * 2);
 }
 
 @media (max-width: 45rem) {
   .calendarContainerDouble {
     flex-direction: column;
-    width: 21rem;
+    width: var(--datepicker-calendar-width);
   }
 }
 
 .calendar {
-  width: 21rem;
+  max-width: 100%;
+  width: var(--datepicker-calendar-width);
   padding: var(--plume-space-3);
 }
 
@@ -261,7 +274,7 @@ input + .inputButton {
 
 .dayOfWeek {
   margin: 1px;
-  width: var(--plume-space-10);
+  width: min(var(--datepicker-day), 100%);
   display: block;
   text-align: center;
   font-size: var(--plume-font-size-sm);
@@ -278,8 +291,8 @@ input + .inputButton {
   margin-left: 1px;
   margin-right: 1px;
   display: flex;
-  height: var(--plume-space-10);
-  width: var(--plume-space-10);
+  aspect-ratio: 1;
+  width: min(var(--datepicker-day), 100%);
   align-items: center;
   justify-content: center;
   border-radius: var(--plume-radius-full);

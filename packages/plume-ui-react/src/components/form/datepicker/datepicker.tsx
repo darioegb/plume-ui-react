@@ -2,11 +2,11 @@
 
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useState } from 'react'
-import type { ColorScheme, ComponentProps } from '../../../theme'
+import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { mergeRefs } from '../../../overlay/trigger'
 import { DatePickerCalendar } from './datepicker-calendar'
 import { DatePickerInput, type DatePickerInputProps } from './datepicker-input'
-import type { DatePickerConfig, DateRange } from './datepicker-types'
+import type { DatePickerConfig, DatePickerVariant, DateRange } from './datepicker-types'
 import { DatePickerContext } from './use-datepicker'
 import { useDatePickerController } from './use-datepicker-controller'
 import styles from './datepicker.module.css'
@@ -30,8 +30,11 @@ export interface DatePickerOwnProps {
   maxDate?: Date
   minDate?: Date
   onChange: (value: DateRange) => void
+  shape?: Shape
   showFooter?: boolean
+  size?: Size
   value?: DateRange
+  variant?: DatePickerVariant
 }
 
 export type DatePickerProps = Omit<ComponentProps, 'index'> &
@@ -41,6 +44,7 @@ export type DatePickerProps = Omit<ComponentProps, 'index'> &
 const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
     '--datepicker-scheme': `var(--plume-color-${colorScheme}-text)`,
+    '--picker-scheme': 'var(--datepicker-scheme)',
     '--datepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--datepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
     '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-200)`,
@@ -62,9 +66,12 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       maxDate,
       minDate,
       onChange,
+      shape,
       showFooter = false,
+      size,
       style,
       value,
+      variant = 'outline',
       ...inputProps
     }: DatePickerProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -84,8 +91,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       minDate,
       onChange,
       root,
+      shape: shape ?? (variant === 'unstyled' ? undefined : 'rounded'),
       showFooter,
+      size: size ?? (variant === 'unstyled' ? undefined : 'md'),
       value,
+      variant,
     })
 
     return (

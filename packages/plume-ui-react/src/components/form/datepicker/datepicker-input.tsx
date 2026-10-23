@@ -12,16 +12,13 @@ import {
   validateFormatDate,
 } from '../../../utils/dates'
 import { useDebounce } from '../../../hooks/use-debounce'
-import type { DatePickerRootAttributes, DatePickerVariant, DateRange } from './datepicker-types'
+import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
 export interface DatePickerInputOwnProps {
   inputRef?: Ref<HTMLInputElement>
   onBlur?: (value?: DateRange) => void
-  shape?: Shape
-  size?: Size
-  variant?: DatePickerVariant
 }
 
 export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
@@ -52,9 +49,6 @@ export function DatePickerInput({
   onBlur,
   placeholder,
   readOnly,
-  variant = 'outline',
-  shape = variant === 'unstyled' ? undefined : 'rounded',
-  size = variant === 'unstyled' ? undefined : 'md',
   ...rest
 }: Readonly<DatePickerInputProps>): ReactNode {
   const {
@@ -68,7 +62,10 @@ export function DatePickerInput({
     isRange,
     labels,
     language,
+    shape,
+    size,
     toggle,
+    variant,
   } = useDatePicker('DatePickerInput')
   const [inputValue, setInputValue] = useState<string>(
     getDateStringByLanguage({

@@ -2,7 +2,7 @@
 
 import type { FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
-import type { ColorScheme } from '../../../theme'
+import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useDismiss } from '../../../overlay/use-dismiss'
 import { usePosition } from '../../../overlay/use-position'
 import type { DatePickerContextProps } from './use-datepicker'
@@ -15,6 +15,7 @@ import type {
   DatePickerConfig,
   DateRange,
   DatePickerLabels,
+  DatePickerVariant,
   FooterLabels,
 } from './datepicker-types'
 
@@ -32,8 +33,11 @@ interface DatePickerControllerOptions {
   minDate?: Date
   onChange: (value: DateRange) => void
   root: HTMLDivElement | null
+  shape?: Shape
   showFooter: boolean
+  size?: Size
   value?: DateRange
+  variant: DatePickerVariant
 }
 
 interface DatePickerController {
@@ -63,8 +67,11 @@ export function useDatePickerController({
   minDate,
   onChange,
   root,
+  shape,
   showFooter,
+  size,
   value,
+  variant,
 }: Readonly<DatePickerControllerOptions>): DatePickerController {
   const language = config?.language ?? DEFAULT_LANGUAGE
   const footerApply = config?.footer?.apply ?? DEFAULT_FOOTER_LABELS.apply
@@ -249,9 +256,12 @@ export function useDatePickerController({
       onSelectDate,
       position,
       setPanel,
+      shape,
       showFooter,
+      size,
       state,
       toggle,
+      variant,
     }),
     [
       closeAndRestoreFocus,
@@ -273,9 +283,12 @@ export function useDatePickerController({
       onSecondYearChange,
       onSelectDate,
       position,
+      shape,
       showFooter,
+      size,
       state,
       toggle,
+      variant,
     ],
   )
 
