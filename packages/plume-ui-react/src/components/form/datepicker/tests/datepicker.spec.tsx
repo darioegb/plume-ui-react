@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { DatePicker } from '..'
+import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
 import type { DateRange } from '../datepicker'
 
 const openCalendar = (): void => {
@@ -663,4 +663,128 @@ describe('DatePicker component', () => {
       'var(--plume-color-success-text)',
     )
   })
+  describe('closing', () => {
+    it('closes with a press outside', () => {
+      render(
+        <>
+          <DatePicker onChange={vi.fn()} />
+          <p>Outside</p>
+        </>,
+      )
+      openCalendar()
+
+      fireEvent.pointerDown(screen.getByText('Outside'))
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('stays open with a press inside', () => {
+      render(<DatePicker onChange={vi.fn()} />)
+      openCalendar()
+
+      fireEvent.pointerDown(screen.getByRole('dialog'))
+      fireEvent.pointerDown(screen.getByRole('textbox'))
+
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('closes with Escape from anywhere and gives the focus back to the input', () => {
+      render(<DatePicker onChange={vi.fn()} />)
+      openCalendar()
+
+      fireEvent.keyDown(document.body, { key: 'Escape' })
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByRole('textbox')).toHaveFocus()
+    })
+
+    it('does not listen to Escape or presses while the calendar is shown on the page', () => {
+      render(<DatePicker isCalendar onChange={vi.fn()} />)
+
+      fireEvent.keyDown(document.body, { key: 'Escape' })
+      fireEvent.pointerDown(document.body)
+
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+  })
+
+  describe('compound parts', () => {
+    it('shows the input and the calendar by itself', () => {
+      render(<DatePicker onChange={vi.fn()} />)
+      expect(screen.getByRole('textbox')).toBeInTheDocument()
+      openCalendar()
+      expect(screen.getByRole('dialog', { name: 'Calendar' })).toBeInTheDocument()
+    })
+
+    it('takes its parts as children, in the order they are given', () => {
+      const { container } = render(
+        <DatePicker onChange={vi.fn()}>
+          <DatePickerCalendar className="mine" />
+          <DatePickerInput placeholder="Pick a day" />
+        </DatePicker>,
+      )
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByPlaceholderText('Pick a day')).toBeInTheDocument()
+
+      openCalendar()
+
+      const root = container.firstChild as HTMLElement
+      expect(root.firstElementChild).toBe(screen.getByRole('dialog'))
+      expect(screen.getByRole('dialog')).toHaveClass('mine')
+    })
+
+    it('can have a calendar without an input', () => {
+      render(
+        <DatePicker isCalendar onChange={vi.fn()}>
+          <DatePickerCalendar />
+        </DatePicker>,
+      )
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+      expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    })
+
+    it('styles the input with its own props', () => {
+      render(
+        <DatePicker onChange={vi.fn()}>
+          <DatePickerInput className="mine" disabled shape="pill" size="lg" variant="filled" />
+        </DatePicker>,
+      )
+      expect(screen.getByRole('textbox')).toHaveClass('mine', 'lg', 'pill', 'filled', 'disabled')
+      expect(screen.getByRole('button', { name: 'Open calendar' })).toBeDisabled()
+    })
+
+    it('names the calendar and the button with the labels it is given', () => {
+      render(
+        <DatePicker
+          config={{ labels: { calendar: 'Calendario', openCalendar: 'Abrir calendario' } }}
+          onChange={vi.fn()}
+        />,
+      )
+      fireEvent.click(screen.getByRole('button', { name: 'Abrir calendario' }))
+      expect(screen.getByRole('dialog', { name: 'Calendario' })).toBeInTheDocument()
+    })
+
+    it('names the calendar with its own aria-label', () => {
+      render(
+        <DatePicker onChange={vi.fn()}>
+          <DatePickerInput />
+          <DatePickerCalendar aria-label="Pick a date" />
+        </DatePicker>,
+      )
+      openCalendar()
+      expect(screen.getByRole('dialog', { name: 'Pick a date' })).toBeInTheDocument()
+    })
+
+    it('needs a DatePicker around its parts', () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(<DatePickerInput />)).toThrow(
+        'DatePickerInput must be used within a <DatePicker>',
+      )
+      expect(() => render(<DatePickerCalendar />)).toThrow(
+        'DatePickerCalendar must be used within a <DatePicker>',
+      )
+      error.mockRestore()
+    })
+  })
+
 })

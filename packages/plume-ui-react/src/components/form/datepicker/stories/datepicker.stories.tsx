@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { DatePicker } from '..'
+import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
 import type { DateRange } from '../datepicker'
 
 const defaultDateRangeValue = { startDate: null, endDate: null }
@@ -12,6 +12,25 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
  * It supports single and range selection modes, configurable color schemes, and localization options.
+ *
+ * On its own it shows an input with a button that opens the calendar. To change what it shows or the order, give
+ * it its parts as children: `DatePickerInput` is the field with the button, and `DatePickerCalendar` the calendar
+ * (a popup under the input, or always visible with `isCalendar`). The `DatePicker` keeps the value and the state
+ * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
+ * children, the props of the field (`variant`, `shape`, `size`, `placeholder`, `disabled`, `readOnly`, `inputRef`,
+ * `onBlur`, `id`, `name`, `required` and `className`) go on the `DatePickerInput`.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `DatePickerInput` | `variant`, `shape`, `size`, `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className`. The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `config.labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
+ *
+ * ### Closing
+ *
+ * The popup closes with <kbd>Esc</kbd> (the focus goes back to the input), with a press outside of the
+ * DatePicker and when the focus leaves it.
  *
  * ### Keyboard
  *
@@ -27,6 +46,7 @@ export default {
   decorators: [(Story) => <div className='w-72 max-w-full pb-[22rem]'>{Story()}</div>],
   parameters: {
     docs: {
+      importNames: ['DatePicker', 'DatePickerInput', 'DatePickerCalendar'],
       toc: {
         title: 'On this page',
         disable: false,
@@ -117,15 +137,17 @@ export default {
     config: {
       control: false,
       description:
-        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the button labels. Every key is optional and falls back to its default.',
+        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers; `footer` sets the labels of the Cancel and Apply buttons; `labels` sets the name of the calendar and of the button that opens it. Every key is optional and falls back to its default.',
       table: {
         defaultValue: {
           summary: 'object',
-          detail: "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' } }",
+          detail:
+            "{ language: 'en', footer: { cancel: 'Cancel', apply: 'Apply' }, labels: { calendar: 'Calendar', openCalendar: 'Open calendar' } }",
         },
         type: {
           summary: 'DatePickerConfig',
-          detail: '{ language?: string; footer?: { apply?: string; cancel?: string } }',
+          detail:
+            '{ language?: string; footer?: { apply?: string; cancel?: string }; labels?: { calendar?: string; openCalendar?: string } }',
         },
       },
     },
@@ -502,6 +524,20 @@ export const CustomConfiguration: Story = {
       },
     },
   },
+}
+
+/**
+ * Give the `DatePicker` its parts to choose what it shows and in which order. The props of the field, here a
+ * small filled one with its own placeholder, go on the `DatePickerInput`, and the `DatePickerCalendar` opens
+ * under it. The state is shared, so picking a day in the calendar updates the field.
+ */
+export const Compound: Story = {
+  render: ({ onChange }) => (
+    <DatePicker config={{ language: 'en' }} onChange={onChange} value={defaultDateRangeValue}>
+      <DatePickerInput placeholder='Pick a day' size='sm' variant='filled' />
+      <DatePickerCalendar />
+    </DatePicker>
+  ),
 }
 
 /**

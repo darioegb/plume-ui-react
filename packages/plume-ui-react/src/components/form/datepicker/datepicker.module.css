@@ -53,17 +53,14 @@ input + .inputButton {
   padding: 0 var(--plume-space-4);
 }
 
-.lg {
-  font-size: var(--plume-font-size-lg);
-  height: var(--plume-space-12);
-  padding: 0 var(--plume-space-6);
-}
-
-:is(.datePickerInputText, .sm, .md, .lg) {
+:is(.datePickerInputText, .sm, .md) {
   padding-inline-end: 3rem;
 }
 
 .lg {
+  font-size: var(--plume-font-size-lg);
+  height: var(--plume-space-12);
+  padding: 0 var(--plume-space-6);
   padding-inline-end: 3.25rem;
 }
 

@@ -37,7 +37,7 @@ const KEY_MOVES: Record<string, (date: Date) => Date> = {
 const startOfDay = (date: Date): number =>
   new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
 
-function DayOfWeek({ day }: { day: string }): ReactNode {
+function DayOfWeek({ day }: Readonly<{ day: string }>): ReactNode {
   return <span className={styles.dayOfWeek}>{day}</span>
 }
 
@@ -47,7 +47,11 @@ interface MonthSelectorProps {
   onChange: (selectedMonth: number) => void
 }
 
-function MonthSelector({ selectedMonth, months, onChange }: MonthSelectorProps): ReactNode {
+function MonthSelector({
+  selectedMonth,
+  months,
+  onChange,
+}: Readonly<MonthSelectorProps>): ReactNode {
   const handleMonthClick = (month: number): void => {
     onChange(month)
   }
@@ -76,7 +80,11 @@ interface YearSelectorProps {
   onChange: (selectedYear: number) => void
 }
 
-function YearSelector({ selectedYear, startYear, onChange }: YearSelectorProps): ReactNode {
+function YearSelector({
+  selectedYear,
+  startYear,
+  onChange,
+}: Readonly<YearSelectorProps>): ReactNode {
   const handleYearClick = (year: number): void => {
     onChange(year)
   }
@@ -126,7 +134,7 @@ export function Calendar({
   onMonthChange,
   onSelectDate,
   onYearChange,
-}: CalendarProps): ReactNode {
+}: Readonly<CalendarProps>): ReactNode {
   const { state } = useDatePicker()
   const [selector, setSelector] = useState<SelectorType>('day')
   const [startYear, setStartYear] = useState(isSecondCalendar ? state.secondYear : state.year)
@@ -152,11 +160,12 @@ export function Calendar({
   const handleHoverEffect = (dataDate: string): void => {
     const scope = calendarRef.current?.closest('[role="dialog"]') ?? document
     const buttons = scope.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`)
-    const hoveredIndex = Array.from(buttons).findIndex(
-      (button) => button.dataset.date === dataDate,
+    const hoveredIndex = Array.from(buttons).findIndex((button) => button.dataset.date === dataDate)
+    const selectedButton = scope.querySelector<HTMLButtonElement>(
+      `.${styles.day}.${styles.selected}`,
     )
-    const selectedButton = scope.querySelector<HTMLButtonElement>(`.${styles.day}.${styles.selected}`)
-    const isRangeAndStartSelected = isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButton
+    const isRangeAndStartSelected =
+      isRange && state.tempValue.startDate && !state.tempValue.endDate && selectedButton
 
     buttons.forEach((button, index) => {
       const isSelected = button.classList.contains(styles.selected)
@@ -301,7 +310,10 @@ export function Calendar({
 
     const next = move(getDateFromDateString(current, DATA_DATE_FORMAT))
     const nextTime = next.getTime()
-    if ((minDate && nextTime < startOfDay(minDate)) || (maxDate && nextTime > startOfDay(maxDate))) {
+    if (
+      (minDate && nextTime < startOfDay(minDate)) ||
+      (maxDate && nextTime > startOfDay(maxDate))
+    ) {
       return
     }
 
