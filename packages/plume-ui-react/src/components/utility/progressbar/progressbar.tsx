@@ -1,19 +1,26 @@
-import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
-import { forwardRef } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
+'use client'
+
+import type { ForwardedRef, ReactNode } from 'react'
+import { forwardRef, useMemo } from 'react'
+import { hasPart } from '../../../overlay/has-part'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import styles from './progressbar.module.css'
+import { ProgressBarContext, progressBarColorVars } from './progressbar-context'
+import type {
+  ProgressBarContextValue,
+  ProgressBarTrackAttributes,
+  ProgressBarVariant,
+} from './progressbar-context'
+import { ProgressBarTrack } from './progressbar-track'
+import { ProgressBarValue } from './progressbar-value'
 
-export type ProgressBarPart = 'indicator' | 'value'
-
-export type ProgressBarVariant = 'solid' | 'striped' | 'unstyled'
+export type { ProgressBarVariant } from './progressbar-context'
 
 export interface ProgressBarOwnProps {
   animated?: boolean
+  children?: ReactNode
   colorScheme?: ColorScheme
   formatValue?: (value: number, max: number) => string
   indeterminate?: boolean
-  classNames?: Partial<Record<ProgressBarPart, string>>
   max?: number
   shape?: Shape
   showValue?: boolean
@@ -23,20 +30,9 @@ export interface ProgressBarOwnProps {
   variant?: ProgressBarVariant
 }
 
-type ProgressBarRootAttributes = Pick<
-  HTMLAttributes<HTMLDivElement>,
-  'aria-label' | 'aria-labelledby' | 'hidden' | 'id' | 'title'
->
-
 export type ProgressBarProps = Omit<ComponentProps, 'index'> &
-  ProgressBarRootAttributes &
+  ProgressBarTrackAttributes &
   ProgressBarOwnProps
-
-const progressBarColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
-  ({
-    '--progressbar-solid': `var(--plume-color-${colorScheme}-solid)`,
-    ...style,
-  }) as CSSProperties
 
 const defaultFormatValue = (value: number, max: number): string =>
   `${Math.round((value / max) * 100)}%`
@@ -47,11 +43,11 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     {
       animated = false,
+      children,
       className,
       colorScheme = 'primary',
       formatValue = defaultFormatValue,
       indeterminate = false,
-      classNames,
       max = 100,
       shape = 'pill',
       showValue = false,
@@ -63,59 +59,70 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       ...rest
     }: ProgressBarProps,
     ref: ForwardedRef<HTMLDivElement>,
-  ) => {
-    const isStyled = variant !== 'unstyled'
+  ): ReactNode => {
     const total = max > 0 ? max : 100
     const current = clamp(value, total)
-    const percent = (current / total) * 100
-    const classes = joinClasses(
-      isStyled && styles.progressbar,
-      isStyled && styles[size],
-      isStyled && styles[shape],
+    const context: ProgressBarContextValue = useMemo(
+      () => ({
+        animated,
+        current,
+        formatValue,
+        indeterminate,
+        isStyled: variant !== 'unstyled',
+        percent: (current / total) * 100,
+        shape,
+        size,
+        total,
+        trackProps: rest,
+        trackRef: ref,
+        valueText,
+        variant,
+      }),
+      [
+        animated,
+        current,
+        formatValue,
+        indeterminate,
+        ref,
+        rest,
+        shape,
+        size,
+        total,
+        valueText,
+        variant,
+      ],
+    )
+    const outermost = {
       className,
-    )
-    const indicator = joinClasses(
-      isStyled && styles.indicator,
-      isStyled && variant === 'striped' && styles.striped,
-      isStyled && variant === 'striped' && animated && styles.animated,
-      classNames?.indicator,
-    )
+      'data-plume-progressbar': '',
+      style: progressBarColorVars(colorScheme, style),
+    }
 
-    const bar = (
-      <div
-        aria-valuemax={total}
-        aria-valuemin={0}
-        aria-valuenow={indeterminate ? undefined : current}
-        aria-valuetext={indeterminate ? undefined : valueText}
-        className={classes}
-        data-indeterminate={indeterminate ? '' : undefined}
-        data-plume-progressbar=""
-        ref={ref}
-        role="progressbar"
-        style={progressBarColorVars(colorScheme, style)}
-        {...rest}
-      >
-        <div
-          className={indicator}
-          data-plume-progressbar-indicator=""
-          style={indeterminate ? undefined : { inlineSize: `${percent}%` }}
-        />
-      </div>
-    )
+    if (hasPart(children, [ProgressBarTrack])) {
+      return (
+        <ProgressBarContext.Provider value={context}>
+          <div data-plume-progressbar-field="" {...outermost}>
+            {children}
+          </div>
+        </ProgressBarContext.Provider>
+      )
+    }
 
-    if (!showValue || indeterminate) return bar
+    if (!showValue || indeterminate) {
+      return (
+        <ProgressBarContext.Provider value={context}>
+          <ProgressBarTrack {...outermost}>{children}</ProgressBarTrack>
+        </ProgressBarContext.Provider>
+      )
+    }
 
     return (
-      <div data-plume-progressbar-field="">
-        {bar}
-        <span
-          aria-hidden="true"
-          className={joinClasses(isStyled && styles.value, classNames?.value)}
-          data-plume-progressbar-value=""
-        >
-          {formatValue(current, total)}
-        </span>
-      </div>
+      <ProgressBarContext.Provider value={context}>
+        <div data-plume-progressbar-field="" {...outermost}>
+          <ProgressBarTrack>{children}</ProgressBarTrack>
+          <ProgressBarValue />
+        </div>
+      </ProgressBarContext.Provider>
     )
   },
 )

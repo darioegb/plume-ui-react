@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useEffect, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { ProgressBar } from '..'
+import { ProgressBar, ProgressBarIndicator, ProgressBarTrack, ProgressBarValue } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -14,6 +14,14 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * best way to say it ("3 of 10 files"). The value is kept between `0` and `max`. An indeterminate bar has no
  * `aria-valuenow`, which is how screen readers know it is busy. The transitions and the stripes stop with
  * `prefers-reduced-motion`, and an indeterminate bar then shows a still segment.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `ProgressBarTrack` | `className`, `style`, `ref`, `children`, `id`, `title`, `hidden`, `aria-label`, `aria-labelledby`. The element with `role="progressbar"` that holds the bar. It takes the `ref` and the accessible name of the ProgressBar, and without children it renders a `ProgressBarIndicator`. |
+ * | `ProgressBarIndicator` | `className`, `style`, `ref`. The bar. Its width follows the value. |
+ * | `ProgressBarValue` | `className`, `style`, `ref`, `children`. The text with the value, for the eyes only. Without children it shows the result of `formatValue`, and nothing while the bar is indeterminate. |
  */
 export default {
   title: 'Components/ProgressBar',
@@ -31,19 +39,14 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the track, the box that holds the bar.',
-      table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `indicator` (the bar), `value` (the text with the value). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<ProgressBarPart, string>>' } },
+        'Custom CSS class for the outermost element: the track, or the element that wraps the track and the text with the value.',
+      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
       description:
-        'Inline styles for the track. They are applied after the color variables, so they can override them (e.g. `--progressbar-solid`).',
+        'Inline styles for the outermost element. They are applied after the color variables, so they can override them (e.g. `--progressbar-solid`).',
       table: { type: { summary: 'CSSProperties' } },
     },
     value: {
@@ -165,13 +168,44 @@ export const Variants: Story = {
     <div className="flex flex-col gap-4" style={{ width: '20rem' }}>
       <ProgressBar aria-label="Solid" value={60} variant="solid" />
       <ProgressBar aria-label="Striped" value={60} variant="striped" />
-      <ProgressBar classNames={{ indicator: 'rounded bg-black' }}
+      <ProgressBar
         aria-label="Unstyled"
         className="h-2 rounded bg-gray-200"
-       
         value={60}
         variant="unstyled"
-      />
+      >
+        <ProgressBarIndicator className="rounded bg-black" />
+      </ProgressBar>
+    </div>
+  ),
+}
+
+/**
+ * Use the `ProgressBarTrack`, `ProgressBarIndicator` and `ProgressBarValue` parts to give each element its own
+ * class or style, or to put the text with the value before the bar. With a `ProgressBarTrack` among its children,
+ * the ProgressBar wraps them in an element that takes its `className` and `style`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ProgressBar aria-label="Upload" className="gap-3" value={65}>
+  <ProgressBarValue className="font-semibold" />
+  <ProgressBarTrack className="h-3">
+    <ProgressBarIndicator className="bg-emerald-500" />
+  </ProgressBarTrack>
+</ProgressBar>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ maxWidth: '100%', width: '20rem' }}>
+      <ProgressBar aria-label="Upload" className="gap-3" value={65}>
+        <ProgressBarValue className="font-semibold" />
+        <ProgressBarTrack className="h-3">
+          <ProgressBarIndicator className="bg-emerald-500" />
+        </ProgressBarTrack>
+      </ProgressBar>
     </div>
   ),
 }
@@ -299,47 +333,41 @@ export const Live: Story = {
 /**
  * Some examples of ProgressBar with Tailwind classes. With `variant="unstyled"` the track and the bar have none of
  * the Plume classes and keep their structure: the bar fills the track and its width follows the value. `className`
- * styles the track and `classNames.indicator` the bar.
+ * styles the track and `ProgressBarIndicator` the bar.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="flex w-80 flex-col gap-4">
-  <ProgressBar classNames={{ indicator: 'rounded-full bg-primary-solid' }}
-    aria-label="Storage"
-    className="h-2 rounded-full bg-surface-muted"
-   
-    value={70}
-    variant="unstyled"
-  />
-  <ProgressBar classNames={{ indicator: 'bg-emerald-500' }}
-    aria-label="Quota"
-    className="h-4 rounded-md border border-border bg-surface"
-   
-    value={35}
-    variant="unstyled"
-  />
+  <ProgressBar aria-label="Storage" className="h-2 rounded-full bg-surface-muted" value={70} variant="unstyled">
+    <ProgressBarIndicator className="rounded-full bg-primary-solid" />
+  </ProgressBar>
+  <ProgressBar aria-label="Quota" className="h-4 rounded-md border border-border bg-surface" value={35} variant="unstyled">
+    <ProgressBarIndicator className="bg-emerald-500" />
+  </ProgressBar>
 </div>`,
       },
     },
   },
   render: () => (
     <div className="flex w-80 flex-col gap-4">
-      <ProgressBar classNames={{ indicator: 'rounded-full bg-primary-solid' }}
+      <ProgressBar
         aria-label="Storage"
         className="h-2 rounded-full bg-surface-muted"
-       
         value={70}
         variant="unstyled"
-      />
-      <ProgressBar classNames={{ indicator: 'bg-emerald-500' }}
+      >
+        <ProgressBarIndicator className="rounded-full bg-primary-solid" />
+      </ProgressBar>
+      <ProgressBar
         aria-label="Quota"
         className="h-4 rounded-md border border-border bg-surface"
-       
         value={35}
         variant="unstyled"
-      />
+      >
+        <ProgressBarIndicator className="bg-emerald-500" />
+      </ProgressBar>
     </div>
   ),
 }
@@ -353,34 +381,24 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<div className="d-flex flex-column gap-3" style={{ width: "20rem" }}>
-  <ProgressBar classNames={{ indicator: 'progress-bar' }} aria-label="Storage" className="progress" value={70} variant="unstyled" />
-  <ProgressBar classNames={{ indicator: 'progress-bar bg-success progress-bar-striped progress-bar-animated' }}
-    aria-label="Quota"
-    className="progress"
-   
-    value={35}
-    variant="unstyled"
-  />
+  <ProgressBar aria-label="Storage" className="progress" value={70} variant="unstyled">
+    <ProgressBarIndicator className="progress-bar" />
+  </ProgressBar>
+  <ProgressBar aria-label="Quota" className="progress" value={35} variant="unstyled">
+    <ProgressBarIndicator className="progress-bar bg-success progress-bar-striped progress-bar-animated" />
+  </ProgressBar>
 </div>`,
       },
     },
   },
   render: () => (
     <div className="d-flex flex-column gap-3" style={{ width: '20rem' }}>
-      <ProgressBar classNames={{ indicator: 'progress-bar' }}
-        aria-label="Storage"
-        className="progress"
-       
-        value={70}
-        variant="unstyled"
-      />
-      <ProgressBar classNames={{ indicator: 'progress-bar bg-success progress-bar-striped progress-bar-animated' }}
-        aria-label="Quota"
-        className="progress"
-       
-        value={35}
-        variant="unstyled"
-      />
+      <ProgressBar aria-label="Storage" className="progress" value={70} variant="unstyled">
+        <ProgressBarIndicator className="progress-bar" />
+      </ProgressBar>
+      <ProgressBar aria-label="Quota" className="progress" value={35} variant="unstyled">
+        <ProgressBarIndicator className="progress-bar bg-success progress-bar-striped progress-bar-animated" />
+      </ProgressBar>
     </div>
   ),
 }

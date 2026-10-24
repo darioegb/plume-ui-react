@@ -333,6 +333,50 @@ With parts, the props that only fill the default (`icon` of a `SidebarItem`, `Dr
 `Breadcrumb` context is gone: put the class on `BreadcrumbSeparator`. The attributes `data-plume-sidebar-icon` and
 `data-plume-sidebar-label` are now `data-plume-sidebar-item-icon` and `data-plume-sidebar-item-label`.
 
+## Utilities are made of parts
+
+`Collapse`, `ProgressBar`, `Table`, `Carousel`, `Paginator` and `FileUpload` no longer take `classNames`. Every element
+they render is a part you can import, with its own `className`, `style` and `ref`. Given no parts, they render the same
+default composition as before, and the root switches to your composition when a direct child is one of its parts.
+
+```tsx
+// Before
+<ProgressBar classNames={{ indicator: 'bg-emerald-500' }} value={40} />
+
+// After
+<ProgressBar value={40}>
+  <ProgressBarIndicator className='bg-emerald-500' />
+</ProgressBar>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Collapse</code></td><td><code>classNames.body</code></td><td><code>CollapseBody</code> (inside <code>CollapseClip</code>, which clips the height animation)</td></tr>
+    <tr><td><code>ProgressBar</code></td><td><code>classNames.indicator</code>, <code>.value</code></td><td><code>ProgressBarTrack</code>, <code>ProgressBarIndicator</code>, <code>ProgressBarValue</code></td></tr>
+    <tr><td><code>Table</code></td><td><code>classNames.container</code>, <code>.loading</code></td><td><code>className</code> of the <code>Table</code>, <code>TableLoading</code></td></tr>
+    <tr><td><code>TableHead</code></td><td><code>classNames.sort</code></td><td><code>TableHeadSort</code>, <code>TableHeadSortIcon</code></td></tr>
+    <tr><td><code>TableEmpty</code></td><td><code>classNames.emptyState</code>, <code>.icon</code>, <code>.title</code>…</td><td><code>TableEmptyCell</code> with an <code>EmptyState</code> inside</td></tr>
+    <tr><td><code>Carousel</code></td><td><code>CarouselDots classNames.dot</code></td><td><code>CarouselDot</code>, one per slide: <code>&lt;CarouselDots&gt;{'{() => <CarouselDot className="x" />}'}&lt;/CarouselDots&gt;</code></td></tr>
+    <tr><td><code>Paginator</code></td><td><code>classNames.list</code>, <code>.item</code>, <code>.page</code>, <code>.ellipsis</code>, <code>.first</code>, <code>.previous</code>, <code>.next</code>, <code>.last</code></td><td><code>PaginatorList</code>, <code>PaginatorItem</code>, <code>PaginatorPages</code>, <code>PaginatorPage</code>, <code>PaginatorEllipsis</code>, <code>PaginatorFirst</code>, <code>PaginatorPrevious</code>, <code>PaginatorNext</code>, <code>PaginatorLast</code></td></tr>
+    <tr><td><code>FileUpload</code></td><td><code>classNames.dropzone</code>, <code>.list</code>, <code>.file</code>, <code>.remove</code>, <code>.progress</code>, <code>.progressIndicator</code>, <code>.error</code></td><td><code>FileUploadDropzone</code>, <code>FileUploadList</code>, <code>FileUploadItem</code>, <code>FileUploadRemove</code>, <code>FileUploadProgress</code> with a <code>ProgressBarIndicator</code>, <code>FileUploadErrors</code>; also <code>FileUploadInput</code>, <code>FileUploadPrompt</code>, <code>FileUploadName</code>, <code>FileUploadSize</code>, <code>FileUploadError</code></td></tr>
+  </tbody>
+</table>
+
+Three changes move a prop to another element, without an error:
+
+- The `className`, `style` and `id` of a `Table` go to its scrolling container, and the `<table>` is the new `TableElement`. Put the classes you had on the table in `<Table><TableElement className='…'>…</TableElement></Table>`.
+- The `className` and `ref` of a `TableEmpty` go to its `<tr>`, and the cell is `TableEmptyCell`.
+- With `showValue`, the `className` of a `ProgressBar` goes to the container of the bar and the value. Use `ProgressBarTrack` for the bar.
+
+The data-driven parts take a function: `PaginatorPages` gets each entry (a page or an ellipsis), `FileUploadList` each
+file and `FileUploadErrors` each rejection. `showEdges` of the `Paginator` only affects the default composition: when
+you compose the list, write `PaginatorFirst` and `PaginatorLast` yourself. The attributes `data-plume-fileupload-file`
+and `data-plume-paginator-part="x"` are now `data-plume-fileupload-item` and `data-plume-paginator-x`, and the
+attribute of the `<table>` is `data-plume-table-element`. `ProgressBar` is now a client component.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

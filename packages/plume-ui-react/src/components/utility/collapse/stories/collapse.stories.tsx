@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useId, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Collapse, type CollapseProps } from '..'
+import { Collapse, CollapseBody, CollapseClip, type CollapseProps } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -54,7 +54,16 @@ function Toggle({
  *
  * The content sits in a box that takes the **variant**: `filled` is the default, `outline` draws a border and
  * `accent` adds a bar at the start, like a note. They take a **colorScheme** and a **size** (the padding), and
- * `unstyled` draws nothing: it is only the height animation, and you style the box with `classNames.body`.
+ * `unstyled` draws nothing: it is only the height animation, and you style the box with `CollapseBody`.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `CollapseClip` | `className`, `style`, `ref`, `children`. The element that clips the content while the height animates. Without it, the Collapse wraps its content in one. |
+ * | `CollapseBody` | `className`, `style`, `ref`, `children`. The box that holds the content and takes the variant, the color scheme and the size. Without it, the Collapse wraps its content in one. |
+ *
+ * The parts don't read a context: they are plain elements, so a Server Component can render them.
  */
 export default {
   title: 'Components/Collapse',
@@ -79,12 +88,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the Collapse, the element that animates its height.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `body` (the box that holds the content). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<CollapsePart, string>>' } },
     },
     variant: {
       control: 'radio',
@@ -177,14 +180,41 @@ export const Variants: Story = {
           {variant}: {text}
         </Collapse>
       ))}
-      <Collapse classNames={{ body: 'rounded-lg bg-gray-900 p-3 text-sm text-gray-100' }}
-       
-        open
-        variant="unstyled"
-      >
-        unstyled: {text}
+      <Collapse open variant="unstyled">
+        <CollapseBody className="rounded-lg bg-gray-900 p-3 text-sm text-gray-100">
+          unstyled: {text}
+        </CollapseBody>
       </Collapse>
     </div>
+  ),
+}
+
+/**
+ * Use the `CollapseBody` part to give the box its own class or style, or `CollapseClip` to reach the element that
+ * clips it. Put the part inside the Collapse and it replaces the box the Collapse draws.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Collapse open>
+  <CollapseClip>
+    <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
+      Content
+    </CollapseBody>
+  </CollapseClip>
+</Collapse>`,
+      },
+    },
+  },
+  render: () => (
+    <Collapse open style={frame}>
+      <CollapseClip>
+        <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
+          {text}
+        </CollapseBody>
+      </CollapseClip>
+    </Collapse>
   ),
 }
 
@@ -289,7 +319,7 @@ export const Nested: Story = {
 
 /**
  * Some examples of Collapse with Tailwind classes. The Collapse brings the animation, so the classes only style
- * the content: `classNames.body` is the box where the padding and the background go. Use `data-[open]:` on the
+ * the content: `CollapseBody` is the box where the padding and the background go. Use `data-[open]:` on the
  * Collapse to react to its state.
  */
 export const Tailwind: Story = {
@@ -301,8 +331,10 @@ export const Tailwind: Story = {
 <button aria-controls="more" aria-expanded={open} className="rounded bg-primary-solid px-3 py-1 text-sm text-primary-on-solid" onClick={() => setOpen(!open)} type="button">
   Details
 </button>
-<Collapse classNames={{ body: 'mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground' }} id="more" open={open} variant="unstyled">
-  Content
+<Collapse id="more" open={open} variant="unstyled">
+  <CollapseBody className="mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground">
+    Content
+  </CollapseBody>
 </Collapse>`,
       },
     },
@@ -321,13 +353,10 @@ export const Tailwind: Story = {
           >
             Details
           </button>
-          <Collapse classNames={{ body: 'mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground' }}
-           
-            id="tailwind-more"
-            open={open}
-            variant="unstyled"
-          >
-            {text}
+          <Collapse id="tailwind-more" open={open} variant="unstyled">
+            <CollapseBody className="mt-2 rounded-lg border border-border bg-surface-muted p-4 text-sm text-foreground">
+              {text}
+            </CollapseBody>
           </Collapse>
         </div>
       )

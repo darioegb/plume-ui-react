@@ -25,7 +25,7 @@
   padding: 0;
 }
 
-:global(:where([data-plume-fileupload-file])) {
+:global(:where([data-plume-fileupload-item])) {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -33,7 +33,7 @@
 
 :global(
   :where(
-    [data-plume-fileupload-file] > :is([data-plume-progressbar], [data-plume-progressbar-field])
+    [data-plume-fileupload-item] > :is([data-plume-progressbar], [data-plume-progressbar-field])
   )
 ) {
   flex: 0 0 100%;
@@ -134,14 +134,14 @@
   gap: var(--plume-space-1);
 }
 
-.file {
+.item {
   background-color: var(--plume-surface-muted);
   border-radius: var(--plume-radius-3);
   gap: var(--plume-space-3);
   padding: var(--plume-space-2) var(--plume-space-3);
 }
 
-.file [data-plume-fileupload-size] {
+.fileSize {
   color: var(--plume-muted);
   flex: none;
 }

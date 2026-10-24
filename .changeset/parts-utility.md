@@ -1,0 +1,5 @@
+---
+'plume-ui-react': minor
+---
+
+`Collapse`, `ProgressBar`, `Table`, `Carousel`, `Paginator` and `FileUpload` are made of exported parts (`CollapseClip`, `CollapseBody`, `ProgressBarTrack`, `ProgressBarIndicator`, `ProgressBarValue`, `TableElement`, `TableLoading`, `TableEmptyCell`, `TableHeadSort`, `TableHeadSortIcon`, `CarouselDot`, `PaginatorList`, `PaginatorItem`, `PaginatorPages`, `PaginatorPage`, `PaginatorEllipsis`, `PaginatorFirst`, `PaginatorPrevious`, `PaginatorNext`, `PaginatorLast`, `FileUploadDropzone`, `FileUploadInput`, `FileUploadPrompt`, `FileUploadList`, `FileUploadItem`, `FileUploadName`, `FileUploadSize`, `FileUploadRemove`, `FileUploadProgress`, `FileUploadErrors`, `FileUploadError`), each with its own `className`, `style` and `ref`, and `classNames` is removed from them. The `className` and `style` of `Table` now go to its scrolling container (the `<table>` is `TableElement`), and those of `TableEmpty` go to its row. `ProgressBar` is now a client component. See "Upgrading to 1.0".

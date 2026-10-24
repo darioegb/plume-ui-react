@@ -274,11 +274,11 @@ describe('Carousel component', () => {
             <CarouselSlide>A</CarouselSlide>
             <CarouselSlide>B</CarouselSlide>
           </CarouselSlides>
-          <CarouselDots classNames={{ dot: 'dot-mine' }} />
+          <CarouselDots />
         </Carousel>,
       )
       expect(screen.getByRole('tablist', { name: 'Elegir' })).toBeInTheDocument()
-      expect(screen.getByRole('tab', { name: 'Ir a 2' })).toHaveClass('dot', 'dot-mine')
+      expect(screen.getByRole('tab', { name: 'Ir a 2' })).toHaveClass('dot')
     })
   })
 

@@ -33,6 +33,8 @@ export const CarouselContext = createContext<CarouselContextValue | undefined>(u
 
 export const CarouselSlideIndexContext = createContext<number | undefined>(undefined)
 
+export const CarouselDotIndexContext = createContext<number | undefined>(undefined)
+
 export function useCarouselContext(part: string): CarouselContextValue {
   const context = useContext(CarouselContext)
   if (!context) throw new Error(`${part} must be used within a <Carousel>`)
