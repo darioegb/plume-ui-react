@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.23.0
+
+### Minor Changes
+
+- [#141](https://github.com/darioegb/plume-ui-react/pull/141) [`b244032b281b9f8158a4925a1cf2a162d0e91ca7`](https://github.com/darioegb/plume-ui-react/commit/b244032b281b9f8158a4925a1cf2a162d0e91ca7) Thanks [@darioegb](https://github.com/darioegb)! - `Input`, `Textarea`, `NumberInput` and `PinInput` are made of exported parts (`InputField`, `InputReveal`, `InputAddon`, `InputElement`, `InputControl`, `InputGroup`, `TextareaField`, `TextareaCount`, `TextareaStatus`, `NumberInputField`, `NumberInputDecrement`, `NumberInputIncrement`, `PinInputCell`, `PinInputHidden`), each with its own `className`, `style` and `ref`, and `classNames` is removed from them. Without children the components render the same default composition as before. The `ref` of the root is always the native field. See "Upgrading to 1.0".
+
 ## 0.22.0
 
 ### Minor Changes
