@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.24.0
+
+### Minor Changes
+
+- [#144](https://github.com/darioegb/plume-ui-react/pull/144) [`fe5bfbc0f5f9f8bd60aded21611dc873758c478b`](https://github.com/darioegb/plume-ui-react/commit/fe5bfbc0f5f9f8bd60aded21611dc873758c478b) Thanks [@darioegb](https://github.com/darioegb)! - `Select`, `DatePicker` and `TimePicker` are made of exported parts (`SelectField`, `SelectCombobox`, `SelectChips`, `SelectChip`, `SelectOptionIcon`, `DatePickerField`, `DatePickerTrigger`, `DatePickerHeader`, `DatePickerGrid`, `DatePickerDay`, `DatePickerFooter`, `TimePickerHours`, `TimePickerMinutes`, `TimePickerOption`, `TimePickerTrigger`...), each with its own `className`, `style` and `ref`, and `classNames` is removed from them. Without children they render the same default composition as before, and the data-driven parts (chips, days, months, years, time options) take a render function. See "Upgrading to 1.0".
+
 ## 0.23.0
 
 ### Minor Changes
