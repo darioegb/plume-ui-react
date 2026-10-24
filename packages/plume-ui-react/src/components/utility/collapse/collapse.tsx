@@ -1,16 +1,16 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { CollapseBody } from './collapse-body'
+import { CollapseClip } from './collapse-clip'
 import styles from './collapse.module.css'
-
-export type CollapsePart = 'body'
 
 export type CollapseVariant = 'accent' | 'filled' | 'outline' | 'unstyled'
 
 export interface CollapseOwnProps {
   as?: 'div' | 'section'
-  classNames?: Partial<Record<CollapsePart, string>>
   colorScheme?: ColorScheme
   open?: boolean
   size?: Size
@@ -43,7 +43,6 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
   (
     {
       as: tag = 'div',
-      classNames,
       children,
       className,
       colorScheme,
@@ -57,27 +56,29 @@ export const Collapse = forwardRef<HTMLElement, CollapseProps>(
   ) => {
     const Root = tag as 'div'
     const isStyled = variant !== 'unstyled'
+    const content = hasPart(children, [CollapseClip]) ? (
+      children
+    ) : (
+      <CollapseClip>
+        {hasPart(children, [CollapseBody]) ? children : <CollapseBody>{children}</CollapseBody>}
+      </CollapseClip>
+    )
+
     return (
       <Root
-        className={className}
+        className={joinClasses(
+          isStyled && styles.collapse,
+          isStyled && styles[variant],
+          isStyled && styles[size],
+          className,
+        )}
         data-open={open ? '' : undefined}
         data-plume-collapse=""
         ref={ref as ForwardedRef<HTMLDivElement>}
         style={collapseColorVars(colorScheme, style)}
         {...rest}
       >
-        <div data-plume-collapse-clip="">
-          <div
-            className={joinClasses(
-              isStyled && styles.body,
-              isStyled && styles[variant],
-              isStyled && styles[size],
-              classNames?.body,
-            )}
-          >
-            {children}
-          </div>
-        </div>
+        {content}
       </Root>
     )
   },

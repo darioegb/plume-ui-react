@@ -195,7 +195,7 @@ describe('Table component', () => {
         <Table aria-label="t">
           <TableHeader>
             <TableRow>
-              <TableHead classNames={{ sort: 'mine' }} onSort={onSort} sort="none">
+              <TableHead onSort={onSort} sort="none">
                 Name
               </TableHead>
             </TableRow>
@@ -203,7 +203,6 @@ describe('Table component', () => {
         </Table>,
       )
       const button = screen.getByRole('button', { name: 'Name' })
-      expect(button).toHaveClass('mine')
       await userEvent.click(button)
       expect(onSort).toHaveBeenCalledTimes(1)
     })
@@ -255,22 +254,22 @@ describe('Table component', () => {
       )
     })
 
-    it('lets style override on the table', () => {
-      render(<Demo style={{ width: '50%' }} />)
-      expect(screen.getByRole('table')).toHaveStyle({ width: '50%' })
+    it('puts className and style on the outermost element', () => {
+      const { container } = render(<Demo className="root" style={{ width: '50%' }} />)
+      expect(container.firstChild).toHaveClass('container', 'root')
+      expect(container.firstChild).toHaveStyle({ width: '50%' })
+      expect(screen.getByRole('table')).not.toHaveClass('root')
+    })
+
+    it('lets style override the max height', () => {
+      const { container } = render(<Demo maxHeight="10rem" style={{ maxHeight: '40px' }} />)
+      expect(container.firstChild).toHaveStyle({ maxHeight: '40px' })
     })
 
     it('drops the Plume classes when it is unstyled and keeps the user classes', () => {
-      const { container } = render(
-        <Demo classNames={{ container: 'box' }} className="root" variant="unstyled" />,
-      )
-      expect(screen.getByRole('table')).toHaveAttribute('class', 'root')
-      expect(container.firstChild).toHaveAttribute('class', 'box')
-    })
-
-    it('styles the container', () => {
-      const { container } = render(<Demo classNames={{ container: 'box' }} />)
-      expect(container.firstChild).toHaveClass('container', 'box')
+      const { container } = render(<Demo className="root" variant="unstyled" />)
+      expect(container.firstChild).toHaveAttribute('class', 'root')
+      expect(screen.getByRole('table')).not.toHaveAttribute('class')
     })
   })
 
@@ -361,15 +360,14 @@ describe('Table component', () => {
     })
 
     it('drops the Plume styles of the spinner when unstyled', () => {
-      render(<Demo classNames={{ loading: 'custom' }} loading variant="unstyled" />)
-      expect(screen.getByLabelText('Loading')).toHaveClass('custom')
+      render(<Demo loading variant="unstyled" />)
       expect(screen.getByLabelText('Loading')).not.toHaveClass('solid')
     })
   })
 
   describe('TableEmpty', () => {
     it('renders a row with one cell as wide as asked', () => {
-      const ref = createRef<HTMLTableCellElement>()
+      const ref = createRef<HTMLTableRowElement>()
       render(
         <Table aria-label="Empty">
           <TableBody>
@@ -381,8 +379,8 @@ describe('Table component', () => {
       )
       const cell = screen.getByRole('cell', { name: 'Nobody here' })
       expect(cell).toHaveAttribute('colspan', '3')
-      expect(cell).toHaveClass('custom')
-      expect(ref.current).toBe(cell)
+      expect(ref.current).toBe(cell.parentElement)
+      expect(ref.current).toHaveClass('custom')
     })
 
     it('shows an icon, a description and an action', () => {

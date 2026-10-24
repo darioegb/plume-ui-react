@@ -339,47 +339,14 @@ describe('FileUpload component', () => {
       expect(container.firstChild).toHaveStyle('--fileupload-solid: red')
     })
 
-    it('adds the classes of the user to every part', () => {
+    it('drops the Plume classes when it is unstyled and keeps the class of the user', () => {
       const { container } = render(
-        <Demo
-          accept="image/*"
-          classNames={{
-            dropzone: 'dz',
-            error: 'err',
-            file: 'fl',
-            list: 'ls',
-            progress: 'pg',
-            progressIndicator: 'pi',
-            remove: 'rm',
-          }}
-          className="root"
-          defaultValue={[file('a.png', 'image/png')]}
-          progress={() => 40}
-        />,
-      )
-      choose([file('b.txt', 'text/plain')])
-      expect(container.firstChild).toHaveClass('root')
-      expect(dropzone()).toHaveClass('dz')
-      expect(screen.getByRole('list')).toHaveClass('ls')
-      expect(screen.getByText('a.png').closest('li')).toHaveClass('fl')
-      expect(screen.getByRole('button')).toHaveClass('rm')
-      expect(screen.getByRole('alert')).toHaveClass('err')
-      expect(screen.getByRole('progressbar')).toHaveClass('progressbar', 'pg')
-      expect(screen.getByRole('progressbar').firstElementChild).toHaveClass('pi')
-    })
-
-    it('drops the Plume classes when it is unstyled and keeps the user classes', () => {
-      const { container } = render(
-        <Demo
-          classNames={{ dropzone: 'dz' }}
-          className="root"
-          defaultValue={[file('a.txt')]}
-          variant="unstyled"
-        />,
+        <Demo className="root" defaultValue={[file('a.txt')]} variant="unstyled" />,
       )
       expect(container.firstChild).toHaveAttribute('class', 'root')
-      expect(dropzone()).toHaveAttribute('class', 'dz')
+      expect(dropzone()).not.toHaveAttribute('class')
       expect(screen.getByRole('list')).not.toHaveAttribute('class')
+      expect(screen.getByText('a.txt').closest('li')).not.toHaveAttribute('class')
     })
   })
 

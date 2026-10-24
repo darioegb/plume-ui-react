@@ -1,5 +1,6 @@
-import type { ForwardedRef, ReactNode, TdHTMLAttributes } from 'react'
+import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import {
   EmptyState,
@@ -9,16 +10,14 @@ import {
   EmptyStateTitle,
 } from '../../presentation/emptystate'
 import type { EmptyStateProps } from '../../presentation/emptystate'
-
-export type TableEmptyPart = 'action' | 'description' | 'emptyState' | 'icon' | 'title'
+import { TableEmptyCell } from './table-empty-cell'
 
 export interface TableEmptyOwnProps {
-  classNames?: Partial<Record<TableEmptyPart, string>>
   colSpan?: number
 }
 
 type TableEmptyRootAttributes = Pick<
-  TdHTMLAttributes<HTMLTableCellElement>,
+  HTMLAttributes<HTMLTableRowElement>,
   'children' | 'hidden' | 'id'
 >
 
@@ -30,14 +29,15 @@ export type TableEmptyProps = Omit<ComponentProps, 'index'> &
   > &
   TableEmptyOwnProps
 
-export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
+const EMPTY_PARTS = [TableEmptyCell]
+
+export const TableEmpty = forwardRef<HTMLTableRowElement, TableEmptyProps>(
   (
     {
       action,
       children,
       className,
-      classNames,
-      colSpan = 100,
+      colSpan,
       description,
       icon,
       size,
@@ -47,42 +47,24 @@ export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
       variant,
       ...rest
     }: TableEmptyProps,
-    ref: ForwardedRef<HTMLTableCellElement>,
+    ref: ForwardedRef<HTMLTableRowElement>,
   ): ReactNode => {
     const heading = title ?? children
 
     return (
-      <tr data-plume-table-empty="">
-        <td
-          className={className}
-          colSpan={colSpan}
-          data-plume-table-empty-cell=""
-          ref={ref}
-          style={style}
-          {...rest}
-        >
-          <EmptyState
-            className={classNames?.emptyState}
-            role="status"
-            size={size}
-            variant={variant}
-          >
-            {icon ? <EmptyStateIcon className={classNames?.icon}>{icon}</EmptyStateIcon> : null}
-            {heading ? (
-              <EmptyStateTitle as={titleAs} className={classNames?.title}>
-                {heading}
-              </EmptyStateTitle>
-            ) : null}
-            {description ? (
-              <EmptyStateDescription className={classNames?.description}>
-                {description}
-              </EmptyStateDescription>
-            ) : null}
-            {action ? (
-              <EmptyStateAction className={classNames?.action}>{action}</EmptyStateAction>
-            ) : null}
-          </EmptyState>
-        </td>
+      <tr className={className} data-plume-table-empty="" ref={ref} style={style} {...rest}>
+        {hasPart(children, EMPTY_PARTS) ? (
+          children
+        ) : (
+          <TableEmptyCell colSpan={colSpan}>
+            <EmptyState role="status" size={size} variant={variant}>
+              {icon ? <EmptyStateIcon>{icon}</EmptyStateIcon> : null}
+              {heading ? <EmptyStateTitle as={titleAs}>{heading}</EmptyStateTitle> : null}
+              {description ? <EmptyStateDescription>{description}</EmptyStateDescription> : null}
+              {action ? <EmptyStateAction>{action}</EmptyStateAction> : null}
+            </EmptyState>
+          </TableEmptyCell>
+        )}
       </tr>
     )
   },

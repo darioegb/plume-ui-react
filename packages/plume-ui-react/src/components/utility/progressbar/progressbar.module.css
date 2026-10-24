@@ -1,4 +1,4 @@
-:global(:where([data-plume-progressbar])) {
+:global(:where([data-plume-progressbar-track])) {
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
@@ -13,7 +13,7 @@
   width: 100%;
 }
 
-:global(:where([data-plume-progressbar-field] > [data-plume-progressbar])) {
+:global(:where([data-plume-progressbar-field] [data-plume-progressbar-track])) {
   flex: 1 1 0;
   min-width: 0;
 }
@@ -29,7 +29,9 @@
   block-size: 100%;
 }
 
-:global(:where([data-plume-progressbar][data-indeterminate] [data-plume-progressbar-indicator])) {
+:global(
+  :where([data-plume-progressbar-track][data-indeterminate] [data-plume-progressbar-indicator])
+) {
   inline-size: 40%;
 }
 

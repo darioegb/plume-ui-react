@@ -157,22 +157,14 @@ describe('ProgressBar component', () => {
       expect(value()).not.toBeInTheDocument()
     })
 
-    it('adds the Plume class and the class of the user to the text', () => {
-      render(<ProgressBar classNames={{ value: 'mine' }} aria-label="Upload" showValue value={40} />)
-      expect(value()).toHaveClass('value', 'mine')
+    it('has the Plume class on the text', () => {
+      render(<ProgressBar aria-label="Upload" showValue value={40} />)
+      expect(value()).toHaveClass('value')
     })
 
     it('drops the Plume class of the text when it is unstyled', () => {
-      render(
-        <ProgressBar classNames={{ value: 'mine' }}
-          aria-label="Upload"
-          showValue
-          value={40}
-         
-          variant="unstyled"
-        />,
-      )
-      expect(value()).toHaveAttribute('class', 'mine')
+      render(<ProgressBar aria-label="Upload" showValue value={40} variant="unstyled" />)
+      expect(value()).not.toHaveAttribute('class')
     })
   })
 
@@ -193,18 +185,10 @@ describe('ProgressBar component', () => {
   })
 
   describe('unstyled', () => {
-    it('drops every Plume class and keeps the user ones', () => {
-      render(
-        <ProgressBar classNames={{ indicator: 'bar' }}
-          aria-label="Upload"
-          className="track"
-         
-          value={40}
-          variant="unstyled"
-        />,
-      )
+    it('drops every Plume class and keeps the user one', () => {
+      render(<ProgressBar aria-label="Upload" className="track" value={40} variant="unstyled" />)
       expect(screen.getByRole('progressbar')).toHaveAttribute('class', 'track')
-      expect(indicator()).toHaveAttribute('class', 'bar')
+      expect(indicator()).not.toHaveAttribute('class')
     })
 
     it('has no class without any, and keeps the width', () => {
@@ -213,10 +197,5 @@ describe('ProgressBar component', () => {
       expect(indicator()).not.toHaveAttribute('class')
       expect(indicator()).toHaveStyle({ inlineSize: '40%' })
     })
-  })
-
-  it('adds the class of the indicator in every variant', () => {
-    render(<ProgressBar classNames={{ indicator: 'bar' }} aria-label="Upload" />)
-    expect(indicator()).toHaveClass('indicator', 'bar')
   })
 })

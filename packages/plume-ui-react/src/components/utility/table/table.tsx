@@ -1,23 +1,23 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps, Size } from '../../../theme'
-import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
+import { TableContext } from './table-context'
+import { TableElement } from './table-element'
+import { TableLoading } from './table-loading'
 
 export interface TableLabels {
   loading: string
 }
 
-export type TablePart = 'container' | 'loading'
-
 export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 
 export interface TableOwnProps {
-  classNames?: Partial<Record<TablePart, string>>
   hoverable?: boolean
   labels?: Partial<TableLabels>
   loading?: boolean
@@ -35,6 +35,8 @@ type TableRootAttributes = Pick<
 export type TableProps = Omit<ComponentProps, 'index'> & TableRootAttributes & TableOwnProps
 
 const DEFAULT_LABELS: TableLabels = { loading: 'Loading' }
+
+const TABLE_PARTS = [TableElement, TableLoading]
 
 function useOverflow(container: HTMLElement | null): boolean {
   const [overflowing, setOverflowing] = useState(false)
@@ -64,7 +66,6 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       'aria-labelledby': ariaLabelledBy,
       children,
       className,
-      classNames,
       hoverable = false,
       labels,
       loading = false,
@@ -82,52 +83,55 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
     const [container, setContainer] = useState<HTMLElement | null>(null)
     const scrollable = useOverflow(container)
     const containerStyle: CSSProperties | undefined =
-      maxHeight === undefined ? undefined : { maxHeight }
+      maxHeight === undefined ? style : { maxHeight, ...style }
+    const context = useMemo(
+      () => ({
+        ariaLabel,
+        ariaLabelledBy,
+        hoverable,
+        isStyled,
+        labels: text,
+        loading,
+        size,
+        stickyHeader,
+        tableRef: ref,
+        variant,
+      }),
+      [
+        ariaLabel,
+        ariaLabelledBy,
+        hoverable,
+        isStyled,
+        loading,
+        ref,
+        size,
+        stickyHeader,
+        text,
+        variant,
+      ],
+    )
 
     return (
-      <section
-        aria-label={scrollable ? ariaLabel : undefined}
-        aria-labelledby={scrollable ? ariaLabelledBy : undefined}
-        className={joinClasses(
-          isStyled && styles.container,
-          classNames?.container,
-        )}
-        data-plume-table-container=""
-        ref={setContainer}
-        style={containerStyle}
-        {...(scrollable && { tabIndex: 0 })}
-      >
-        {loading ? (
-          <div data-plume-table-loading="">
-            <Spinner
-              className={classNames?.loading}
-              color="primary"
-              label={text.loading}
-              variant={isStyled ? 'solid' : 'unstyled'}
-            />
-          </div>
-        ) : null}
-        <table
-          aria-busy={loading ? true : undefined}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledBy}
-          className={joinClasses(
-            isStyled && styles.table,
-            isStyled && styles[variant],
-            isStyled && styles[size],
-            className,
-          )}
-          data-hoverable={hoverable ? '' : undefined}
-          data-loading={loading ? '' : undefined}
+      <TableContext.Provider value={context}>
+        <section
+          aria-label={scrollable ? ariaLabel : undefined}
+          aria-labelledby={scrollable ? ariaLabelledBy : undefined}
+          className={joinClasses(isStyled && styles.container, className)}
           data-plume-table=""
-          data-sticky={stickyHeader ? '' : undefined}
-          ref={ref}
-          style={style}
-          {...rest}
+          ref={setContainer}
+          style={containerStyle}
+          {...(scrollable && { tabIndex: 0 })}
         >
-          {children}
-        </table>
-      </section>
+          {hasPart(children, TABLE_PARTS) ? (
+            children
+          ) : (
+            <>
+              <TableLoading />
+              <TableElement {...rest}>{children}</TableElement>
+            </>
+          )}
+        </section>
+      </TableContext.Provider>
     )
   },
 )

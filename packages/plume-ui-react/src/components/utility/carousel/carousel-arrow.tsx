@@ -59,6 +59,8 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
         )}
         data-direction={direction}
         data-plume-carousel-arrow=""
+        data-plume-carousel-next={isNext ? '' : undefined}
+        data-plume-carousel-prev={isNext ? undefined : ''}
         disabled={blocked}
         onClick={(event) => {
           onClick?.(event)

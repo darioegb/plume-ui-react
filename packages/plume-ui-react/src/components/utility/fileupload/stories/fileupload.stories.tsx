@@ -2,7 +2,22 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useEffect, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../../form/field'
-import { FileUpload, type FileRejection } from '..'
+import { ProgressBarIndicator } from '../../progressbar'
+import {
+  FileUpload,
+  FileUploadDropzone,
+  FileUploadError,
+  FileUploadErrors,
+  FileUploadInput,
+  FileUploadItem,
+  FileUploadList,
+  FileUploadName,
+  FileUploadProgress,
+  FileUploadPrompt,
+  FileUploadRemove,
+  FileUploadSize,
+  type FileRejection,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -38,6 +53,27 @@ const stack = (gap: string): React.CSSProperties => ({
  *
  * It uploads nothing: take the files from **onValueChange** and send them where you need. While you do, pass
  * **progress** (a function that gives a percentage from 0 to 100 for each file) and every file shows a bar.
+ *
+ * Every element of the FileUpload is a part you can import. Given no parts, the `FileUpload` builds the usual layout:
+ * the dropzone with the input and the prompt, the list of files and the list of errors. Give it any of the parts as
+ * direct children and it renders them as written, so you can reorder, omit or replace each one, and give it its own
+ * `className`. The list and the errors take a function as children, which gets each file or each rejection.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `FileUploadDropzone` | `className`, `style`, `ref`, `children`. The area that takes the dropped files. Without children it holds the `FileUploadInput` and the `FileUploadPrompt`. It has `data-dragging`, `data-disabled` and `data-invalid`. |
+ * | `FileUploadInput` | `aria-label`, `aria-labelledby`, `aria-describedby`, `id`, `name`, `title`, `className`, `style`, `ref`. The native `<input type="file">`, invisible over the dropzone. The `ref` of the `FileUpload` goes to it as well. |
+ * | `FileUploadPrompt` | `className`, `style`, `ref`, `children`. The instructions. They describe the input, and without children they come from **labels.prompt**. |
+ * | `FileUploadList` | `className`, `style`, `ref`, `children`. The list of the files, which is not there while there are none. Its children can be a function `(file, index) => ReactNode`. Without children it renders a `FileUploadItem` per file. |
+ * | `FileUploadItem` | `file`, `className`, `style`, `ref`, `children`. A file of the list. Without children it holds the name, the size, the remove button and the progress. |
+ * | `FileUploadName` | `className`, `style`, `ref`, `children`. The name of the file, or the children. |
+ * | `FileUploadSize` | `className`, `style`, `ref`, `children`. The size of the file, from **labels.fileSize**, or the children. |
+ * | `FileUploadRemove` | `aria-label`, `className`, `style`, `ref`, `children`. The button that removes the file. It takes its name from **labels.remove**, children replace the icon, and it is not there when the FileUpload is disabled or read only. |
+ * | `FileUploadProgress` | `aria-label`, `className`, `style`, `ref`, `children`. The `ProgressBar` of the file, from **progress**. The `className` goes to its outermost element and the `ref` to the bar. Its children, such as a `ProgressBarIndicator`, go inside the bar. It is not there when **progress** gives `undefined`. |
+ * | `FileUploadErrors` | `className`, `style`, `ref`, `children`. The list of the files that were left out, announced with `role="alert"`, which is not there while there are none. Its children can be a function `(rejection, index) => ReactNode`. |
+ * | `FileUploadError` | `rejection`, `className`, `style`, `ref`, `children`. One of the errors. The text comes from **labels.rejection**, or from the children. |
  */
 export default {
   title: 'Components/FileUpload',
@@ -45,6 +81,20 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      importNames: [
+        'FileUpload',
+        'FileUploadDropzone',
+        'FileUploadError',
+        'FileUploadErrors',
+        'FileUploadInput',
+        'FileUploadItem',
+        'FileUploadList',
+        'FileUploadName',
+        'FileUploadProgress',
+        'FileUploadPrompt',
+        'FileUploadRemove',
+        'FileUploadSize',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -55,7 +105,8 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description: 'The instructions in the dropzone. It wins over `labels.prompt`.',
+      description:
+        'The instructions in the dropzone. It wins over `labels.prompt`. Or the parts of the FileUpload, to compose it.',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: '"Drag files here, or press to choose them"' },
@@ -65,12 +116,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the root.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts: `dropzone`, `list`, `file`, `progress`, `progressIndicator`, `remove` and `error`.',
-      table: { type: { summary: 'Partial<Record<FileUploadPart, string>>' } },
     },
     style: {
       control: false,
@@ -246,12 +291,11 @@ export const Variants: Story = {
           {variant}
         </FileUpload>
       ))}
-      <FileUpload
-        aria-label="unstyled"
-        classNames={{ dropzone: 'rounded-lg bg-slate-900 p-6 text-center text-slate-100' }}
-        variant="unstyled"
-      >
-        unstyled, with Tailwind classes
+      <FileUpload aria-label="unstyled" variant="unstyled">
+        <FileUploadDropzone className="rounded-lg bg-slate-900 p-6 text-center text-slate-100">
+          <FileUploadInput />
+          <FileUploadPrompt>unstyled, with Tailwind classes</FileUploadPrompt>
+        </FileUploadDropzone>
       </FileUpload>
     </div>
   ),
@@ -471,9 +515,78 @@ export const WithField: Story = {
 }
 
 /**
+ * Every element is a part. Here the list goes above the dropzone, each file gets its own layout with the size under
+ * the name, the prompt has its own class and the errors are written by hand with a function. Omit a part and it is
+ * not there.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<FileUpload accept=".pdf" aria-label="Documents" multiple progress={(file) => progress[file.name]}>
+  <FileUploadList className="mb-2">
+    {(file) => (
+      <FileUploadItem file={file}>
+        <FileUploadName className="font-medium" />
+        <FileUploadRemove aria-label={\`Discard \${file.name}\`}>Discard</FileUploadRemove>
+        <FileUploadSize className="basis-full text-xs" />
+        <FileUploadProgress />
+      </FileUploadItem>
+    )}
+  </FileUploadList>
+  <FileUploadDropzone>
+    <FileUploadInput />
+    <FileUploadPrompt className="font-semibold">Drop your PDFs here</FileUploadPrompt>
+  </FileUploadDropzone>
+  <FileUploadErrors>
+    {(rejection) => (
+      <FileUploadError rejection={rejection}>
+        {rejection.file.name} is not a PDF
+      </FileUploadError>
+    )}
+  </FileUploadErrors>
+</FileUpload>`,
+      },
+    },
+  },
+  render: (args) => (
+    <FileUpload
+      {...args}
+      accept=".pdf"
+      defaultValue={[sampleFile('report.pdf', sizes[1] ?? 0)]}
+      multiple
+      progress={() => 45}
+    >
+      <FileUploadList style={{ marginBottom: '0.5rem' }}>
+        {(file) => (
+          <FileUploadItem file={file}>
+            <FileUploadName style={{ fontWeight: 600 }} />
+            <FileUploadRemove aria-label={`Discard ${file.name}`}>Discard</FileUploadRemove>
+            <FileUploadSize style={{ flexBasis: '100%', fontSize: '0.75rem' }} />
+            <FileUploadProgress />
+          </FileUploadItem>
+        )}
+      </FileUploadList>
+      <FileUploadDropzone>
+        <FileUploadInput />
+        <FileUploadPrompt style={{ fontWeight: 600 }}>Drop your PDFs here</FileUploadPrompt>
+      </FileUploadDropzone>
+      <FileUploadErrors>
+        {(rejection) => (
+          <FileUploadError rejection={rejection}>
+            {rejection.file.name} is not a PDF
+          </FileUploadError>
+        )}
+      </FileUploadErrors>
+    </FileUpload>
+  ),
+}
+
+/**
  * Some examples of FileUpload with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
- * structure stays: the input is still reachable, and the dropzone and the list keep working. Style the parts with
- * `classNames`, and use `data-[dragging]:` on the root.
+ * structure stays: the input is still reachable, and the dropzone and the list keep working. Give each part its
+ * `className`, and use `data-[dragging]:` on the root. The bar of a file is a `ProgressBar`: pass its
+ * `ProgressBarIndicator` as the child of the `FileUploadProgress` to give the indicator its own class.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -481,20 +594,25 @@ export const Tailwind: Story = {
       source: {
         code: `<FileUpload
   aria-label="Documents"
-  className="group w-96 max-w-full text-sm text-foreground"
-  classNames={{
-    dropzone: "rounded-lg border-2 border-dashed border-border p-6 text-center text-muted group-data-[dragging]:border-primary-solid",
-    file: "mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2",
-    list: "mt-2",
-    progress: "h-1.5 overflow-hidden rounded-full bg-border",
-    progressIndicator: "h-full bg-primary-solid",
-    remove: "rounded-full p-1 hover:bg-border",
-  }}
+  className="group text-sm text-foreground"
   multiple
   progress={(file) => progress[file.name]}
   variant="unstyled"
 >
-  Drop files here
+  <FileUploadDropzone className="rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
+  <FileUploadList className="mt-2">
+    {(file) => (
+      <FileUploadItem className="mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
+        <FileUploadName />
+        <FileUploadSize />
+        <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
+        <FileUploadProgress className="h-1.5 w-full overflow-hidden rounded-full bg-border">
+          <ProgressBarIndicator className="h-full bg-primary-solid" />
+        </FileUploadProgress>
+      </FileUploadItem>
+    )}
+  </FileUploadList>
+  <FileUploadErrors className="mt-2 text-error-text" />
 </FileUpload>`,
       },
     },
@@ -503,50 +621,55 @@ export const Tailwind: Story = {
     <FileUpload
       aria-label="Documents"
       className="group text-sm text-foreground"
-      classNames={{
-        dropzone:
-          'rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid',
-        error: 'mt-2 text-error-text',
-        file: 'mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2',
-        list: 'mt-2',
-        progress: 'h-1.5 overflow-hidden rounded-full bg-border',
-        progressIndicator: 'h-full bg-primary-solid',
-        remove: 'rounded-full p-1 hover:bg-border',
-      }}
       defaultValue={[sampleFile('report.pdf', sizes[1] ?? 0)]}
       multiple
       progress={() => 60}
       style={frame}
       variant="unstyled"
     >
-      Drop files here
+      <FileUploadDropzone className="rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
+      <FileUploadList className="mt-2">
+        {(file) => (
+          <FileUploadItem
+            className="mt-2 flex flex-wrap items-center gap-2 rounded bg-surface-muted px-3 py-2"
+            file={file}
+          >
+            <FileUploadName className="flex-1" />
+            <FileUploadSize />
+            <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
+            <FileUploadProgress className="h-1.5 w-full overflow-hidden rounded-full bg-border">
+              <ProgressBarIndicator className="h-full bg-primary-solid" />
+            </FileUploadProgress>
+          </FileUploadItem>
+        )}
+      </FileUploadList>
+      <FileUploadErrors className="mt-2 text-error-text" />
     </FileUpload>
   ),
 }
 
 /**
  * Some examples of FileUpload with Bootstrap classes: `border`, `rounded` and `list-group`. Bootstrap's own file
- * input is a plain control, so the story composes its utilities around the dropzone and the list.
+ * input is a plain control, so the story composes its utilities around the dropzone and the list. The bar of a file
+ * is a `ProgressBar`, so Bootstrap's `progress` classes don't apply to it: leave `progress` out, or keep the Plume
+ * bar.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<FileUpload
-  aria-label="Documents"
-  classNames={{
-    dropzone: "border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary",
-    file: "list-group-item d-flex align-items-center gap-2",
-    list: "list-group mt-2",
-    progress: "progress",
-    progressIndicator: "progress-bar",
-    remove: "btn btn-sm btn-outline-secondary border-0",
-  }}
-  multiple
-  progress={(file) => progress[file.name]}
-  variant="unstyled"
->
-  Drop files here
+        code: `<FileUpload aria-label="Documents" multiple variant="unstyled">
+  <FileUploadDropzone className="border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
+  <FileUploadList className="list-group mt-2">
+    {(file) => (
+      <FileUploadItem className="list-group-item d-flex flex-wrap align-items-center gap-2" file={file}>
+        <FileUploadName />
+        <FileUploadSize />
+        <FileUploadRemove className="btn btn-sm btn-outline-secondary border-0" />
+      </FileUploadItem>
+    )}
+  </FileUploadList>
+  <FileUploadErrors className="mt-2 text-danger" />
 </FileUpload>`,
       },
     },
@@ -554,23 +677,25 @@ export const Bootstrap: Story = {
   render: () => (
     <FileUpload
       aria-label="Documents"
-      classNames={{
-        dropzone:
-          'border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary',
-        error: 'mt-2 text-danger',
-        file: 'list-group-item d-flex align-items-center gap-2',
-        list: 'list-group mt-2',
-        progress: 'progress',
-        progressIndicator: 'progress-bar',
-        remove: 'btn btn-sm btn-outline-secondary border-0',
-      }}
       defaultValue={[sampleFile('report.pdf', sizes[1] ?? 0)]}
       multiple
-      progress={() => 60}
       style={frame}
       variant="unstyled"
     >
-      Drop files here
+      <FileUploadDropzone className="border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
+      <FileUploadList className="list-group mt-2">
+        {(file) => (
+          <FileUploadItem
+            className="list-group-item d-flex flex-wrap align-items-center gap-2"
+            file={file}
+          >
+            <FileUploadName className="flex-fill" />
+            <FileUploadSize />
+            <FileUploadRemove className="btn btn-sm btn-outline-secondary border-0" />
+          </FileUploadItem>
+        )}
+      </FileUploadList>
+      <FileUploadErrors className="mt-2 text-danger" />
     </FileUpload>
   ),
 }

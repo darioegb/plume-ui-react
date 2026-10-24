@@ -2,10 +2,10 @@
 
 import type { ForwardedRef, MouseEventHandler, ReactNode, ThHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
-import { ChevronDownIcon } from '../../../overlay/icons'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
-
-export type TableHeadPart = 'sort'
+import { TableHeadSort } from './table-head-sort'
+import { TableHeadSortIcon } from './table-head-sort-icon'
 
 export type TableSortDirection = 'ascending' | 'descending' | 'none'
 
@@ -13,7 +13,6 @@ export interface TableHeadOwnProps {
   align?: 'start' | 'center' | 'end'
   onSort?: MouseEventHandler<HTMLButtonElement>
   sort?: TableSortDirection
-  classNames?: Partial<Record<TableHeadPart, string>>
 }
 
 type TableHeadRootAttributes = Pick<
@@ -25,19 +24,11 @@ export type TableHeadProps = Omit<ComponentProps, 'index'> &
   TableHeadRootAttributes &
   TableHeadOwnProps
 
+const HEAD_PARTS = [TableHeadSort, TableHeadSortIcon]
+
 export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
   (
-    {
-      align,
-      children,
-      className,
-      onSort,
-      scope = 'col',
-      sort,
-      classNames,
-      style,
-      ...rest
-    }: TableHeadProps,
+    { align, children, className, onSort, scope = 'col', sort, style, ...rest }: TableHeadProps,
     ref: ForwardedRef<HTMLTableCellElement>,
   ): ReactNode => (
     <th
@@ -51,18 +42,11 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       style={style}
       {...rest}
     >
-      {onSort ? (
-        <button
-          className={classNames?.sort}
-          data-plume-table-sort=""
-          onClick={onSort}
-          type="button"
-        >
+      {onSort && !hasPart(children, HEAD_PARTS) ? (
+        <TableHeadSort onClick={onSort}>
           {children}
-          <span aria-hidden="true" data-plume-table-sort-icon="">
-            <ChevronDownIcon />
-          </span>
-        </button>
+          <TableHeadSortIcon />
+        </TableHeadSort>
       ) : (
         children
       )}
