@@ -3,10 +3,9 @@
 import type { InputHTMLAttributes, ReactNode, Ref } from 'react'
 import { useCallback } from 'react'
 import type { ComponentProps } from '../../../theme'
-import { ClockIcon } from '../../../overlay/icons'
 import { mergeRefs } from '../../../overlay/trigger'
 import { Input, InputControl, InputElement, InputField } from '../input'
-import { PickerTrigger } from '../shared/picker-trigger'
+import { TimePickerTrigger } from './timepicker-trigger'
 import { useTimePicker } from './use-timepicker'
 import { useTimeText } from './use-time-text'
 
@@ -23,7 +22,7 @@ export type TimePickerRootAttributes = Pick<
 >
 
 export interface TimePickerInputOwnProps {
-  classNames?: Partial<Record<'input', string>>
+  children?: ReactNode
   inputRef?: Ref<HTMLInputElement>
   onBlur?: (value: string) => void
 }
@@ -38,8 +37,8 @@ const defaultPlaceholder = (hour12: boolean, am: string): string =>
   hour12 ? `hh:mm ${am}` : 'hh:mm'
 
 export function TimePickerInput({
+  children,
   className,
-  classNames,
   disabled = false,
   inputRef,
   onBlur,
@@ -47,20 +46,8 @@ export function TimePickerInput({
   readOnly,
   ...rest
 }: Readonly<TimePickerInputProps>): ReactNode {
-  const {
-    colorScheme,
-    hour12,
-    isPanel,
-    labels,
-    open,
-    setInput,
-    setValue,
-    shape,
-    size,
-    toggle,
-    value,
-    variant,
-  } = useTimePicker('TimePickerInput')
+  const { colorScheme, hour12, isPanel, labels, setInput, setValue, shape, size, value, variant } =
+    useTimePicker('TimePickerInput')
   const { commit, handleChange, text } = useTimeText({ hour12, labels, setValue, value })
   const setInputRef = useCallback(
     (node: HTMLInputElement | null): void => mergeRefs<HTMLInputElement>(setInput, inputRef)(node),
@@ -84,25 +71,21 @@ export function TimePickerInput({
       onChange={handleChange}
       placeholder={placeholder ?? defaultPlaceholder(hour12, labels.am)}
       readOnly={readOnly}
+      ref={setInputRef}
       shape={shape}
       size={size}
       type="text"
       value={text}
       variant={variant}
     >
-      <InputControl>
-        <InputField className={classNames?.input} ref={setInputRef} />
-        <InputElement position="after">
-          <PickerTrigger
-            disabled={disabled || Boolean(readOnly)}
-            icon={<ClockIcon />}
-            label={labels.openTimePicker}
-            onClick={toggle}
-            open={open}
-            unstyled={variant === 'unstyled'}
-          />
-        </InputElement>
-      </InputControl>
+      {children ?? (
+        <InputControl>
+          <InputField />
+          <InputElement position="after">
+            <TimePickerTrigger />
+          </InputElement>
+        </InputControl>
+      )}
     </Input>
   )
 }

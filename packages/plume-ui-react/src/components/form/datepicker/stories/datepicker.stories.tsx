@@ -2,7 +2,25 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
+import {
+  DatePicker,
+  DatePickerApply,
+  DatePickerCalendar,
+  DatePickerCancel,
+  DatePickerField,
+  DatePickerFooter,
+  DatePickerHeader,
+  DatePickerInput,
+  DatePickerMonthButton,
+  DatePickerNav,
+  DatePickerNext,
+  DatePickerPage,
+  DatePickerPages,
+  DatePickerPrevious,
+  DatePickerTrigger,
+  DatePickerView,
+} from '..'
+import { InputControl, InputElement } from '../../input'
 import type { DateRange } from '../datepicker'
 
 const defaultDateRangeValue = { startDate: null, endDate: null }
@@ -18,15 +36,34 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  * (a popup under the input, or always visible with `isCalendar`). The `DatePicker` keeps the value and the state
  * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
  * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
- * `required`, `className` and `classNames.input`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
+ * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
  * `DatePicker`, because it styles the input and the calendar together.
+ *
+ * Every element is a part with its own `className`, `style` and `ref`, and with `data-plume-datepicker-<part>`
+ * attributes (the days also carry `data-selected`, `data-today`, `data-outside` and `data-in-range`). The cells that
+ * repeat (weekdays, days, months and years) take a function as children, like
+ * `<DatePickerGrid>{(day) => <DatePickerDay day={day} />}</DatePickerGrid>`, to render each one yourself.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the calendar. It renders nothing when the `DatePicker` is `isCalendar`. |
- * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `labels.calendar`), `className`, `style`. The calendar. It is a popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button) and `children` (the `Input` parts you want instead of the default ones). It renders nothing when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerField` | The props of `InputField`, `className`, `style`, `ref`. The `<input>` inside a `DatePickerInput`. |
+ * | `DatePickerTrigger` | `className`, `style`, `ref`, `children` (another icon). The button that opens the calendar, inside a `DatePickerInput`. |
+ * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `labels.calendar`), `className`, `style`, `ref`. The popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
+ * | `DatePickerPages` | `className`, `style`, `ref`. Holds one `DatePickerPage`, or two in a range. |
+ * | `DatePickerPage` | `second` (the second page of a range), `className`, `style`, `ref`. One month: it keeps the view (days, months or years). |
+ * | `DatePickerHeader`, `DatePickerNav` | `className`, `style`, `ref`. The top row and the row of controls inside it. |
+ * | `DatePickerPrevious`, `DatePickerNext` | `aria-label`, `className`, `style`, `ref`, `children`. Step a month, or 20 years in the year view. |
+ * | `DatePickerMonthButton`, `DatePickerYearButton` | `aria-label`, `className`, `style`, `ref`, `children`. Open the list of months or years. |
+ * | `DatePickerSeparator` | `className`, `style`, `ref`, `children`. The `/` between month and year. |
+ * | `DatePickerView` | `children`, a node or a function of the view (`day`, `month` or `year`). Renders the current view. |
+ * | `DatePickerWeekdays`, `DatePickerWeekday` | `className`, `style`, `ref`, `children` (a function of the weekday and its index, on `DatePickerWeekdays`). |
+ * | `DatePickerGrid`, `DatePickerDay` | `className`, `style`, `ref`, `children` (a function of the day on `DatePickerGrid`; the content of the day on `DatePickerDay`, which also takes `day`). |
+ * | `DatePickerMonths`, `DatePickerMonthOption` | The same, with `month` on the option. |
+ * | `DatePickerYears`, `DatePickerYearOption` | The same, with `year` on the option. |
+ * | `DatePickerFooter`, `DatePickerCancel`, `DatePickerApply` | `className`, `style`, `ref`, `children`. The actions of `showFooter`. |
  *
  * ### Closing
  *
@@ -61,13 +98,6 @@ export default {
       description: 'Custom CSS class for the root element of the DatePicker.',
       table: {
         type: { summary: 'string' },
-      },
-    },
-    classNames: {
-      control: false,
-      description: 'Custom CSS classes for the parts: `input` (the `<input>`) and `calendar`.',
-      table: {
-        type: { summary: "Partial<Record<'calendar' | 'input', string>>" },
       },
     },
     value: {
@@ -573,6 +603,64 @@ export const Compound: Story = {
 }
 
 /**
+ * Every element of the calendar is a part, so you can rebuild any piece. Here the header only has the arrows and
+ * the month, the weekdays and the days keep their default content, and the footer has its own texts and an order
+ * of its own.
+ */
+export const CustomParts: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker showFooter onChange={onChange}>
+  <DatePickerInput />
+  <DatePickerCalendar>
+    <DatePickerPages>
+      <DatePickerPage>
+        <DatePickerHeader>
+          <DatePickerNav>
+            <DatePickerPrevious>Back</DatePickerPrevious>
+            <DatePickerMonthButton />
+            <DatePickerNext>Next</DatePickerNext>
+          </DatePickerNav>
+        </DatePickerHeader>
+        <DatePickerView />
+      </DatePickerPage>
+    </DatePickerPages>
+    <DatePickerFooter>
+      <DatePickerApply>Done</DatePickerApply>
+      <DatePickerCancel>Not now</DatePickerCancel>
+    </DatePickerFooter>
+  </DatePickerCalendar>
+</DatePicker>`,
+      },
+    },
+  },
+  render: ({ onChange }) => (
+    <DatePicker config={{ language: 'en' }} onChange={onChange} showFooter value={defaultDateRangeValue}>
+      <DatePickerInput />
+      <DatePickerCalendar>
+        <DatePickerPages>
+          <DatePickerPage>
+            <DatePickerHeader>
+              <DatePickerNav>
+                <DatePickerPrevious>Back</DatePickerPrevious>
+                <DatePickerMonthButton />
+                <DatePickerNext>Next</DatePickerNext>
+              </DatePickerNav>
+            </DatePickerHeader>
+            <DatePickerView />
+          </DatePickerPage>
+        </DatePickerPages>
+        <DatePickerFooter>
+          <DatePickerApply>Done</DatePickerApply>
+          <DatePickerCancel>Not now</DatePickerCancel>
+        </DatePickerFooter>
+      </DatePickerCalendar>
+    </DatePicker>
+  ),
+}
+
+/**
  * The calendar popup is themed through CSS variables, so you can restyle it
  * independently of the input trigger — even when `variant="unstyled"`. Override any
  * of these on the `style` prop (they default to your `colorScheme`):
@@ -654,28 +742,36 @@ export const Disabled: Story = {
  * Some examples of DatePicker with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
  *
- * Note: `classNames.input` only restyles the **input**, and with `variant="unstyled"` the calendar
- * keeps just its structural styles. It is themed through `colorScheme` and the
+ * Note: the `className` of the `DatePickerField` only restyles the **input**, and with `variant="unstyled"` the
+ * calendar keeps just its structural styles. It is themed through `colorScheme` and the
  * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker
-  variant="unstyled"
-  placeholder="Pick a date"
-  value={value}
-  onChange={handleValueChange}
-  classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
-/>
-<DatePicker
-  variant="unstyled"
-  placeholder="Pill date"
-  value={value}
-  onChange={handleValueChange}
-  classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
-/>`,
+        code: `<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+  <DatePickerInput placeholder="Pick a date">
+    <InputControl>
+      <DatePickerField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      <InputElement position="after">
+        <DatePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </DatePickerInput>
+  <DatePickerCalendar />
+</DatePicker>
+<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+  <DatePickerInput placeholder="Pill date">
+    <InputControl>
+      <DatePickerField className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      <InputElement position="after">
+        <DatePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </DatePickerInput>
+  <DatePickerCalendar />
+</DatePicker>`,
       },
     },
   },
@@ -691,20 +787,28 @@ export const Tailwind: Story = {
     }
     return (
       <div className='flex flex-col gap-4 w-72 max-w-full'>
-        <DatePicker
-          classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
-          onChange={handleValueChange}
-          placeholder='Pick a date'
-          value={value}
-          variant='unstyled'
-        />
-        <DatePicker
-          classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
-          onChange={handleValueChange}
-          placeholder='Pill date'
-          value={value}
-          variant='unstyled'
-        />
+        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+          <DatePickerInput placeholder='Pick a date'>
+            <InputControl>
+              <DatePickerField className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
+              <InputElement position='after'>
+                <DatePickerTrigger />
+              </InputElement>
+            </InputControl>
+          </DatePickerInput>
+          <DatePickerCalendar />
+        </DatePicker>
+        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+          <DatePickerInput placeholder='Pill date'>
+            <InputControl>
+              <DatePickerField className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
+              <InputElement position='after'>
+                <DatePickerTrigger />
+              </InputElement>
+            </InputControl>
+          </DatePickerInput>
+          <DatePickerCalendar />
+        </DatePicker>
       </div>
     )
   },
@@ -714,7 +818,7 @@ export const Tailwind: Story = {
  * Some examples of DatePicker with custom classes from bootstrap.
  * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
  *
- * Note: `variant` and `classNames.input` only restyle the **input**. The calendar
+ * Note: `variant` and the `className` of the `DatePickerField` only restyle the **input**. The calendar
  * popup keeps its structural styles and is themed through `colorScheme` and the
  * `--datepicker-*` CSS variables (see the **Calendar Theming** story).
  */
@@ -722,20 +826,28 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker
-  variant="unstyled"
-  classNames={{ input: 'form-control' }}
-  placeholder="Default date"
-  value={value}
-  onChange={handleValueChange}
-/>
-<DatePicker
-  variant="unstyled"
-  classNames={{ input: 'form-control form-control-lg' }}
-  placeholder="Large date"
-  value={value}
-  onChange={handleValueChange}
-/>`,
+        code: `<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+  <DatePickerInput placeholder="Default date">
+    <InputControl>
+      <DatePickerField className="form-control" />
+      <InputElement position="after">
+        <DatePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </DatePickerInput>
+  <DatePickerCalendar />
+</DatePicker>
+<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+  <DatePickerInput placeholder="Large date">
+    <InputControl>
+      <DatePickerField className="form-control form-control-lg" />
+      <InputElement position="after">
+        <DatePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </DatePickerInput>
+  <DatePickerCalendar />
+</DatePicker>`,
       },
     },
   },
@@ -751,20 +863,28 @@ export const Bootstrap: Story = {
     }
     return (
       <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
-        <DatePicker
-          classNames={{ input: 'form-control' }}
-          onChange={handleValueChange}
-          placeholder='Default date'
-          value={value}
-          variant='unstyled'
-        />
-        <DatePicker
-          classNames={{ input: 'form-control form-control-lg' }}
-          onChange={handleValueChange}
-          placeholder='Large date'
-          value={value}
-          variant='unstyled'
-        />
+        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+          <DatePickerInput placeholder='Default date'>
+            <InputControl>
+              <DatePickerField className='form-control' />
+              <InputElement position='after'>
+                <DatePickerTrigger />
+              </InputElement>
+            </InputControl>
+          </DatePickerInput>
+          <DatePickerCalendar />
+        </DatePicker>
+        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+          <DatePickerInput placeholder='Large date'>
+            <InputControl>
+              <DatePickerField className='form-control form-control-lg' />
+              <InputElement position='after'>
+                <DatePickerTrigger />
+              </InputElement>
+            </InputControl>
+          </DatePickerInput>
+          <DatePickerCalendar />
+        </DatePicker>
       </div>
     )
   },

@@ -202,6 +202,45 @@ The `ref` of the root is always the native `<input>` or `<textarea>`, with or wi
 attribute of `NumberInput` is now `data-plume-numberinput-field`. Components that still take `classNames` are listed
 in each story.
 
+## `Select` and the pickers are made of parts
+
+`Select`, `DatePicker` and `TimePicker` no longer take `classNames`. Every element they render is a part you can
+import, with its own `className`, `style` and `ref`. Given no `children`, they render the same default composition as
+before, and a data-driven part (the chips of a `Select`, the days of a `DatePicker`, the options of a `TimePicker`)
+takes a render function to style or replace each item.
+
+```tsx
+// Before
+<DatePicker onChange={onChange} classNames={{ input: 'font-mono' }} />
+
+// After
+<DatePicker onChange={onChange}>
+  <DatePickerInput>
+    <InputControl>
+      <DatePickerField className='font-mono' />
+      <InputElement position='after'>
+        <DatePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </DatePickerInput>
+  <DatePickerCalendar />
+</DatePicker>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Select</code></td><td><code>classNames</code> of <code>SelectTrigger</code> (<code>field</code>, <code>trigger</code>, <code>chevron</code>, <code>clear</code>, <code>chip</code>, <code>chipRemove</code>), <code>SelectContent</code> (<code>search</code>, <code>searchInput</code>, <code>list</code>, <code>empty</code>), <code>SelectGroup</code> (<code>label</code>) and <code>SelectOption</code> (<code>icon</code>, <code>description</code>, <code>check</code>)</td><td><code>SelectField</code>, <code>SelectCombobox</code>, <code>SelectChevron</code>, <code>SelectClear</code>, <code>SelectChips</code> with <code>SelectChip</code>, <code>SelectSearch</code>, <code>SelectSearchInput</code>, <code>SelectList</code>, <code>SelectEmpty</code>, <code>SelectGroupLabel</code>, <code>SelectOptionIcon</code>, <code>SelectOptionDescription</code>, <code>SelectOptionCheck</code></td></tr>
+    <tr><td><code>DatePicker</code></td><td><code>classNames.input</code>, <code>classNames.calendar</code></td><td><code>DatePickerField</code>, <code>DatePickerTrigger</code>, and <code>className</code> on <code>DatePickerCalendar</code> plus its parts (<code>DatePickerHeader</code>, <code>DatePickerPrevious</code>, <code>DatePickerNext</code>, <code>DatePickerGrid</code>, <code>DatePickerDay</code>, <code>DatePickerFooter</code>, <code>DatePickerApply</code>, <code>DatePickerCancel</code>...)</td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>classNames.input</code>, <code>classNames.panel</code></td><td><code>InputField</code> and <code>TimePickerTrigger</code> inside <code>TimePickerInput</code>; <code>className</code> on <code>TimePickerPanel</code> plus <code>TimePickerHours</code>, <code>TimePickerMinutes</code>, <code>TimePickerPeriod</code> and <code>TimePickerOption</code></td></tr>
+  </tbody>
+</table>
+
+The `data-plume-select-trigger` attribute of the combobox is now `data-plume-select-combobox`. The `SelectChip` remove
+button is styled from the chip until `Chip` gets its own parts.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

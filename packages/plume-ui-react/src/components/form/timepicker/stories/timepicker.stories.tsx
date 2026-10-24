@@ -1,10 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { DatePicker, type DateRange } from '../../datepicker'
-import { TimePicker, TimePickerInput, TimePickerPanel } from '..'
+import { InputControl, InputElement, InputField } from '../../input'
+import {
+  TimePicker,
+  TimePickerHours,
+  TimePickerInput,
+  TimePickerMinutes,
+  TimePickerOption,
+  TimePickerPanel,
+  TimePickerTrigger,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
+
+function StyledTimePicker({
+  fieldClassName,
+  ...props
+}: Readonly<{ defaultValue: string; fieldClassName: string; hour12?: boolean }>): ReactNode {
+  return (
+    <TimePicker {...props} variant="unstyled">
+      <TimePickerInput>
+        <InputControl>
+          <InputField className={fieldClassName} />
+          <InputElement position="after">
+            <TimePickerTrigger />
+          </InputElement>
+        </InputControl>
+      </TimePickerInput>
+      <TimePickerPanel />
+    </TimePicker>
+  )
+}
 
 /**
  * TimePicker lets users type a time or pick it from lists of hours and minutes.
@@ -18,19 +46,31 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  *
  * The `variant`, `size` and `shape` style the input and the popup together, like in the `DatePicker`.
  *
- * On its own it shows an input with a button that opens the popup. To change what it shows or the order, give it
- * its parts as children: `TimePickerInput` is the field with the button, and `TimePickerPanel` the lists of hours
- * and minutes (a popup under the input, or always visible with `isPanel`). The `TimePicker` keeps the value and
- * shares it with its parts. With children, the props of the field (`placeholder`, `disabled`, `readOnly`,
- * `inputRef`, `onBlur`, `id`, `name`, `required`, `className` and `classNames.input`) go on the `TimePickerInput`, and the look
- * (`variant`, `size` and `shape`) always on the `TimePicker`.
+ * On its own it shows an input with a button that opens the popup. Every element it renders is a part you can
+ * import, with its own `className`, `style` and `ref`, so you can reorder, omit or replace it: `TimePickerInput` is
+ * the field with the button, and `TimePickerPanel` the lists of hours and minutes (a popup under the input, or
+ * always visible with `isPanel`). The `TimePicker` keeps the value and shares it with its parts. With children,
+ * the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`
+ * and `className`) go on the `TimePickerInput`, and the look (`variant`, `size` and `shape`) always on the
+ * `TimePicker`.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
- * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the panel. It renders nothing when the `TimePicker` is `isPanel`. |
- * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `labels.timePicker`), `className`, `style`. The lists of hours and minutes. It is a popup that opens under the input, or the page content when the `TimePicker` is `isPanel`. |
+ * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `children`. The field and the button that opens the panel. It is an `Input`: given children, compose `InputControl`, `InputField`, `InputElement` and `TimePickerTrigger` in any order. It renders nothing when the `TimePicker` is `isPanel`. |
+ * | `TimePickerTrigger` | `aria-label` (`Open time picker` by default, or `labels.openTimePicker`), `disabled`, `className`, `style`, `children` (another icon). The button that opens and closes the panel. It is disabled with its `TimePickerInput`, or on its own. |
+ * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `labels.timePicker`), `className`, `style`, `children`. The popup, or the page content when the `TimePicker` is `isPanel`. Given no children it holds the hours, the minutes and, with `hour12`, the period. |
+ * | `TimePickerHours`, `TimePickerMinutes`, `TimePickerPeriod` | `aria-label`, `className`, `style`, `children`. A list of options. `TimePickerPeriod` renders nothing without `hour12`. |
+ * | `TimePickerOption` | `option`, `className`, `style`, `children` (replaces the label). One option of a list; it carries the selection and the keyboard model. |
+ *
+ * The options of a list are rendered with a function as children, which receives each `option` (`{ label, value }`):
+ * `<TimePickerHours>{(option) => <TimePickerOption key={option.value} option={option} />}</TimePickerHours>`. The
+ * function can render something else than a `TimePickerOption`, but then that element has no selection or keyboard
+ * of its own.
+ *
+ * The parts expose their state as `data-*` attributes (`data-open` in the root, the trigger and the popup,
+ * `data-selected` in the options) and carry `data-plume-timepicker-<part>`, so they can be targeted from CSS.
  *
  * ### Keyboard
  *
@@ -46,7 +86,16 @@ export default {
   decorators: [(Story) => <div className="w-72 max-w-full pb-[18rem]">{Story()}</div>],
   parameters: {
     docs: {
-      importNames: ['TimePicker', 'TimePickerInput', 'TimePickerPanel'],
+      importNames: [
+        'TimePicker',
+        'TimePickerHours',
+        'TimePickerInput',
+        'TimePickerMinutes',
+        'TimePickerOption',
+        'TimePickerPanel',
+        'TimePickerPeriod',
+        'TimePickerTrigger',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -59,12 +108,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the root element of the TimePicker.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`) and `panel` (the popup with the lists). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<TimePickerPart, string>>' } },
     },
     value: {
       control: 'text',
@@ -319,13 +362,52 @@ export const CustomLabels: Story = {
 /**
  * Give the `TimePicker` its parts to choose what it shows and in which order. The props of the field, here its
  * placeholder, go on the `TimePickerInput`, the look (here small and filled) on the `TimePicker`, and the
- * `TimePickerPanel` opens under it.
+ * `TimePickerPanel` opens under it. Here the button goes before the field, the panel lists only the hours and the
+ * minutes, and the hours are rendered with a class of their own.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<TimePicker defaultValue="09:30" size="sm" variant="filled">
+  <TimePickerInput placeholder="Pick a time">
+    <InputControl>
+      <InputElement>
+        <TimePickerTrigger />
+      </InputElement>
+      <InputField />
+    </InputControl>
+  </TimePickerInput>
+  <TimePickerPanel>
+    <TimePickerHours>
+      {(option) => (
+        <TimePickerOption className="font-semibold" key={option.value} option={option} />
+      )}
+    </TimePickerHours>
+    <TimePickerMinutes />
+  </TimePickerPanel>
+</TimePicker>`,
+      },
+    },
+  },
   render: () => (
     <TimePicker defaultValue='09:30' size='sm' variant='filled'>
-      <TimePickerInput placeholder='Pick a time' />
-      <TimePickerPanel />
+      <TimePickerInput placeholder='Pick a time'>
+        <InputControl>
+          <InputElement>
+            <TimePickerTrigger />
+          </InputElement>
+          <InputField />
+        </InputControl>
+      </TimePickerInput>
+      <TimePickerPanel>
+        <TimePickerHours>
+          {(option) => (
+            <TimePickerOption className='font-semibold' key={option.value} option={option} />
+          )}
+        </TimePickerHours>
+        <TimePickerMinutes />
+      </TimePickerPanel>
     </TimePicker>
   ),
 }
@@ -400,32 +482,36 @@ export const Disabled: Story = {
 /**
  * Some examples of TimePicker with custom classes from Tailwind.
  * Set **variant="unstyled"** so Plume styles don't override the Tailwind classes.
- * The `classNames.input` restyles the input; the popup keeps its structure and follows `colorScheme`.
+ * The `className` of the `InputField` restyles the input; the popup keeps its structure and follows `colorScheme`.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker
-  variant="unstyled"
-  defaultValue="09:30"
-  classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
-/>`,
+        code: `<TimePicker variant="unstyled" defaultValue="09:30">
+  <TimePickerInput>
+    <InputControl>
+      <InputField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      <InputElement position="after">
+        <TimePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </TimePickerInput>
+  <TimePickerPanel />
+</TimePicker>`,
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-4 w-72 max-w-full">
-      <TimePicker
-        classNames={{ input: 'block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
+      <StyledTimePicker
         defaultValue="09:30"
-        variant="unstyled"
+        fieldClassName="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
       />
-      <TimePicker
-        classNames={{ input: 'block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' }}
+      <StyledTimePicker
         defaultValue="15:30"
+        fieldClassName="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         hour12
-        variant="unstyled"
       />
     </div>
   ),
@@ -439,19 +525,24 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker variant="unstyled" classNames={{ input: 'form-control' }} defaultValue="09:30" />
-<TimePicker variant="unstyled" classNames={{ input: 'form-control form-control-lg' }} defaultValue="09:30" />`,
+        code: `<TimePicker variant="unstyled" defaultValue="09:30">
+  <TimePickerInput>
+    <InputControl>
+      <InputField className="form-control" />
+      <InputElement position="after">
+        <TimePickerTrigger />
+      </InputElement>
+    </InputControl>
+  </TimePickerInput>
+  <TimePickerPanel />
+</TimePicker>`,
       },
     },
   },
   render: () => (
     <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
-      <TimePicker classNames={{ input: 'form-control' }} defaultValue="09:30" variant="unstyled" />
-      <TimePicker
-        classNames={{ input: 'form-control form-control-lg' }}
-        defaultValue="09:30"
-        variant="unstyled"
-      />
+      <StyledTimePicker defaultValue="09:30" fieldClassName="form-control" />
+      <StyledTimePicker defaultValue="09:30" fieldClassName="form-control form-control-lg" />
     </div>
   ),
 }

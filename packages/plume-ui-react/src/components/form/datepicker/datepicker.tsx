@@ -26,11 +26,8 @@ export type {
   DateRange,
 } from './datepicker-types'
 
-export type DatePickerPart = 'calendar' | 'input'
-
 export interface DatePickerOwnProps {
   children?: ReactNode
-  classNames?: Partial<Record<DatePickerPart, string>>
   colorScheme?: ColorScheme
   config?: DatePickerConfig
   displayFormat?: string
@@ -48,7 +45,7 @@ export interface DatePickerOwnProps {
 }
 
 export type DatePickerProps = Omit<ComponentProps, 'index'> &
-  Omit<DatePickerInputProps, 'classNames' | 'style'> &
+  Omit<DatePickerInputProps, 'children' | 'style'> &
   DatePickerOwnProps
 
 const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
@@ -69,7 +66,6 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     {
       children,
       className,
-      classNames,
       colorScheme = 'secondary',
       config,
       displayFormat,
@@ -124,8 +120,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         >
           {children ?? (
             <>
-              <DatePickerInput classNames={{ input: classNames?.input }} {...inputProps} />
-              <DatePickerCalendar className={classNames?.calendar} />
+              <DatePickerInput {...inputProps} />
+              <DatePickerCalendar />
             </>
           )}
         </div>

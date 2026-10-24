@@ -1,18 +1,19 @@
 'use client'
 
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
+import { forwardRef, useMemo } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { joinClasses } from '../../../overlay/class-names'
 import { Portal } from '../../../overlay'
-import { Button } from '../../interaction/button'
+import { mergeRefs } from '../../../overlay/trigger'
 import { pickerPanelClasses } from '../shared/picker-panel'
-import { Calendar } from './calendar'
+import { DatePickerFooter } from './datepicker-footer'
+import { DatePickerPages } from './datepicker-pages'
 import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
-export type DatePickerCalendarProps = Omit<ComponentProps, 'index'> & {
-  'aria-label'?: string
-}
+export type DatePickerCalendarProps = Omit<ComponentProps, 'index'> &
+  Pick<HTMLAttributes<HTMLDivElement>, 'aria-label' | 'children'>
 
 const dialogRole = 'dialog'
 
@@ -22,107 +23,65 @@ const VARIANT_CLASS = {
   underline: 'variantUnderline',
 } as const
 
-function FooterActions(): ReactNode {
-  const {
-    closeAndRestoreFocus,
-    colorScheme,
-    labels: { apply, cancel },
-    onApply,
-  } = useDatePicker('DatePickerCalendar')
+export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarProps>(
+  (
+    { 'aria-label': ariaLabel, children, className, style }: DatePickerCalendarProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ): ReactNode => {
+    const {
+      isCalendar,
+      labels,
+      panelVars,
+      position,
+      setPanel,
+      shape,
+      showFooter,
+      size,
+      state,
+      variant,
+    } = useDatePicker('DatePickerCalendar')
+    const setRef = useMemo(() => mergeRefs(setPanel, ref), [ref, setPanel])
 
-  return (
-    <div className={styles.footerActions}>
-      <Button
-        className={styles.footerButton}
-        label={cancel}
-        onClick={closeAndRestoreFocus}
-        variant="ghost"
-      />
-      <Button
-        className={styles.footerButtonApply}
-        colorScheme={colorScheme}
-        label={apply}
-        onClick={onApply}
-      />
-    </div>
-  )
-}
+    if (!isCalendar && !state.modalOpen) return null
 
-export function DatePickerCalendar({
-  'aria-label': ariaLabel,
-  className,
-  style,
-}: Readonly<DatePickerCalendarProps>): ReactNode {
-  const {
-    isCalendar,
-    isRange,
-    labels,
-    language,
-    maxDate,
-    minDate,
-    onFirstMonthChange,
-    onFirstYearChange,
-    onSecondMonthChange,
-    onSecondYearChange,
-    onSelectDate,
-    panelVars,
-    position,
-    setPanel,
-    shape,
-    showFooter,
-    size,
-    state,
-    variant,
-  } = useDatePicker('DatePickerCalendar')
+    const floatingStyle: CSSProperties | undefined = isCalendar
+      ? undefined
+      : {
+          ...panelVars,
+          ...position.style,
+          margin: 0,
+          opacity: position.isPositioned ? undefined : 0,
+        }
 
-  if (!isCalendar && !state.modalOpen) return null
-
-  const floatingStyle: CSSProperties | undefined = isCalendar
-    ? undefined
-    : { ...panelVars, ...position.style, margin: 0, opacity: position.isPositioned ? undefined : 0 }
-
-  const calendar = (
-    <div
-      aria-label={ariaLabel ?? labels.calendar}
-      className={joinClasses(
-        styles.datePickerModal,
-        pickerPanelClasses(variant, size, shape),
-        variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
-        isCalendar && styles.inline,
-        size === 'sm' && styles.daySm,
-        size === 'lg' && styles.dayLg,
-        className,
-      )}
-      ref={setPanel}
-      role={dialogRole}
-      style={{ ...floatingStyle, ...style }}
-    >
-      <div className={isRange ? styles.calendarContainerDouble : styles.calendarContainer}>
-        <Calendar
-          isRange={isRange}
-          language={language}
-          maxDate={maxDate}
-          minDate={minDate}
-          onMonthChange={onFirstMonthChange}
-          onSelectDate={onSelectDate}
-          onYearChange={onFirstYearChange}
-        />
-        {isRange ? (
-          <Calendar
-            isRange={isRange}
-            isSecondCalendar
-            language={language}
-            maxDate={maxDate}
-            minDate={minDate}
-            onMonthChange={onSecondMonthChange}
-            onSelectDate={onSelectDate}
-            onYearChange={onSecondYearChange}
-          />
-        ) : null}
+    const calendar = (
+      <div
+        aria-label={ariaLabel ?? labels.calendar}
+        className={joinClasses(
+          styles.datePickerModal,
+          pickerPanelClasses(variant, size, shape),
+          variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
+          isCalendar && styles.inline,
+          size === 'sm' && styles.daySm,
+          size === 'lg' && styles.dayLg,
+          className,
+        )}
+        data-inline={isCalendar ? '' : undefined}
+        data-plume-datepicker-calendar=""
+        ref={setRef}
+        role={dialogRole}
+        style={{ ...floatingStyle, ...style }}
+      >
+        {children ?? (
+          <>
+            <DatePickerPages />
+            {showFooter ? <DatePickerFooter /> : null}
+          </>
+        )}
       </div>
-      {showFooter ? <FooterActions /> : null}
-    </div>
-  )
+    )
 
-  return isCalendar ? calendar : <Portal>{calendar}</Portal>
-}
+    return isCalendar ? calendar : <Portal>{calendar}</Portal>
+  },
+)
+
+DatePickerCalendar.displayName = 'DatePickerCalendar'

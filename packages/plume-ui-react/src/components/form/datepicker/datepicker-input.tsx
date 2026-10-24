@@ -1,11 +1,9 @@
 'use client'
 
 import type { ChangeEvent, ReactNode, Ref } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ComponentProps } from '../../../theme'
-import { CalendarIcon } from '../../../overlay/icons'
-import { PickerTrigger } from '../shared/picker-trigger'
-import { Input, InputControl, InputElement, InputField } from '../input'
+import { Input, InputControl, InputElement } from '../input'
 import {
   getDateFormatByLanguage,
   getDateFromDateString,
@@ -14,10 +12,13 @@ import {
 } from '../../../utils/dates'
 import { useDebounce } from '../../../hooks/use-debounce'
 import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
+import { DatePickerField } from './datepicker-field'
+import { DatePickerInputContext } from './datepicker-input-context'
+import { DatePickerTrigger } from './datepicker-trigger'
 import { useDatePicker } from './use-datepicker'
 
 export interface DatePickerInputOwnProps {
-  classNames?: Partial<Record<'input', string>>
+  children?: ReactNode
   inputRef?: Ref<HTMLInputElement>
   onBlur?: (value?: DateRange) => void
 }
@@ -29,8 +30,8 @@ export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
 const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
 export function DatePickerInput({
+  children,
   className,
-  classNames,
   disabled = false,
   inputRef,
   onBlur,
@@ -40,7 +41,6 @@ export function DatePickerInput({
 }: Readonly<DatePickerInputProps>): ReactNode {
   const {
     state: {
-      modalOpen,
       value: { startDate, endDate },
     },
     commitTypedValue,
@@ -48,7 +48,6 @@ export function DatePickerInput({
     isCalendar,
     colorScheme,
     isRange,
-    labels,
     language,
     shape,
     size,
@@ -122,11 +121,11 @@ export function DatePickerInput({
     )
   }, [startDate, endDate, displayFormat, isRange, language])
 
-  const handleButtonClick = (): void => {
+  const handleButtonClick = useCallback((): void => {
     setIsButtonClick(true)
     ref.current?.focus()
     toggle()
-  }
+  }, [toggle])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setIsButtonClick(false)
@@ -137,41 +136,49 @@ export function DatePickerInput({
   const singleMask = currentFormat.replace(/[a-zA-Z]/g, '#')
   const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
 
+  const inputContext = useMemo(
+    () => ({
+      disabled: disabled || Boolean(readOnly),
+      onTriggerClick: handleButtonClick,
+      setRef,
+    }),
+    [disabled, handleButtonClick, readOnly, setRef],
+  )
+
   if (isCalendar) return null
 
   return (
-    <Input
-      className={className}
-      colorScheme={colorScheme}
-      disabled={disabled}
-      inputMode="numeric"
-      mask={mask}
-      onBlur={() => {
-        onBlur?.({ startDate, endDate })
-      }}
-      onChange={handleChange}
-      placeholder={placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)}
-      readOnly={readOnly}
-      shape={shape}
-      size={size}
-      type="text"
-      value={inputValue}
-      variant={variant}
-      {...rest}
-    >
-      <InputControl>
-        <InputField className={classNames?.input} ref={setRef} />
-        <InputElement position="after">
-          <PickerTrigger
-            disabled={disabled || Boolean(readOnly)}
-            icon={<CalendarIcon />}
-            label={labels.openCalendar}
-            onClick={handleButtonClick}
-            open={modalOpen}
-            unstyled={variant === 'unstyled'}
-          />
-        </InputElement>
-      </InputControl>
-    </Input>
+    <DatePickerInputContext.Provider value={inputContext}>
+      <Input
+        className={className}
+        colorScheme={colorScheme}
+        disabled={disabled}
+        inputMode="numeric"
+        mask={mask}
+        onBlur={() => {
+          onBlur?.({ startDate, endDate })
+        }}
+        onChange={handleChange}
+        placeholder={
+          placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)
+        }
+        readOnly={readOnly}
+        shape={shape}
+        size={size}
+        type="text"
+        value={inputValue}
+        variant={variant}
+        {...rest}
+      >
+        {children ?? (
+          <InputControl>
+            <DatePickerField />
+            <InputElement position="after">
+              <DatePickerTrigger />
+            </InputElement>
+          </InputControl>
+        )}
+      </Input>
+    </DatePickerInputContext.Provider>
   )
 }

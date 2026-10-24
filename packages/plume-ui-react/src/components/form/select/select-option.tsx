@@ -1,18 +1,29 @@
 'use client'
 
 import type { ForwardedRef, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
-import { forwardRef, useEffect, useId, useRef, useState } from 'react'
+import { forwardRef, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { CheckIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext, type SelectOptionRecord } from './select-context'
+import { SelectOptionBody } from './select-option-body'
+import { SelectOptionCheck } from './select-option-check'
+import { SelectOptionContext } from './select-option-context'
+import { SelectOptionDescription } from './select-option-description'
+import { SelectOptionIcon } from './select-option-icon'
+import { SelectOptionText } from './select-option-text'
+import { hasPart } from './select-parts'
 import styles from './select.module.css'
 
-export type SelectOptionPart = 'check' | 'description' | 'icon'
+const OPTION_PARTS = [
+  SelectOptionBody,
+  SelectOptionCheck,
+  SelectOptionDescription,
+  SelectOptionIcon,
+  SelectOptionText,
+]
 
 export interface SelectOptionOwnProps {
   children?: ReactNode
-  classNames?: Partial<Record<SelectOptionPart, string>>
   description?: ReactNode
   disabled?: boolean
   icon?: ReactNode
@@ -26,35 +37,6 @@ const matchesQuery = (label: string, query: string): boolean =>
   label.toLowerCase().includes(query.toLowerCase())
 
 const isActivationKey = (key: string): boolean => key === 'Enter' || key === ' '
-
-function OptionMark({
-  children,
-  className,
-  show,
-}: Readonly<{ children: ReactNode; className: string | undefined; show: boolean }>): ReactNode {
-  if (!show) return null
-  return (
-    <span aria-hidden="true" className={className}>
-      {children}
-    </span>
-  )
-}
-
-function OptionDescription({
-  children,
-  className,
-  id,
-}: Readonly<{ children: ReactNode; className: string | undefined; id: string }>): ReactNode {
-  if (!children) return null
-  return (
-    <>
-      {' '}
-      <span className={className} id={id}>
-        {children}
-      </span>
-    </>
-  )
-}
 
 function useOptionRecord(
   {
@@ -95,8 +77,7 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
   (
     {
       children,
-      className = '',
-      classNames,
+      className,
       description,
       disabled = false,
       icon,
@@ -118,7 +99,11 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
 
     const selected = context.isSelected(value)
     const matches = matchesQuery(resolved, query)
-    const classes = [isStyled && styles.option, className].filter(Boolean).join(' ')
+    const [described, setDescribed] = useState(Boolean(description))
+    const optionContext = useMemo(
+      () => ({ description, descriptionId, icon, selected, setDescribed, textId, textRef }),
+      [description, descriptionId, icon, selected, textId, textRef],
+    )
 
     const handlePointerMove = (): void => {
       if (!disabled && context.activeId !== id) setActiveId(id)
@@ -136,50 +121,41 @@ export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
     }
 
     return (
-      <div
-        aria-disabled={disabled || undefined}
-        aria-labelledby={description ? `${textId} ${descriptionId}` : undefined}
-        aria-selected={selected}
-        className={classes || undefined}
-        data-active={context.activeId === id ? '' : undefined}
-        data-label={resolved}
-        data-plume-select-option=""
-        data-value={value}
-        hidden={!matches}
-        id={id}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        onMouseDown={(event) => event.preventDefault()}
-        onPointerMove={handlePointerMove}
-        ref={ref}
-        role="option"
-        style={style}
-        tabIndex={-1}
-      >
-        <OptionMark
-          className={joinClasses(isStyled && styles.optionIcon, classNames?.icon)}
-          show={Boolean(icon)}
+      <SelectOptionContext.Provider value={optionContext}>
+        <div
+          aria-disabled={disabled || undefined}
+          aria-labelledby={described ? `${textId} ${descriptionId}` : undefined}
+          aria-selected={selected}
+          className={joinClasses(isStyled && styles.option, className)}
+          data-active={context.activeId === id ? '' : undefined}
+          data-label={resolved}
+          data-plume-select-option=""
+          data-value={value}
+          hidden={!matches}
+          id={id}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          onMouseDown={(event) => event.preventDefault()}
+          onPointerMove={handlePointerMove}
+          ref={ref}
+          role="option"
+          style={style}
+          tabIndex={-1}
         >
-          {icon}
-        </OptionMark>
-        <span className={isStyled ? styles.optionBody : undefined} data-plume-select-option-body="">
-          <span id={textId} ref={textRef}>
-            {children ?? label}
-          </span>
-          <OptionDescription
-            className={joinClasses(isStyled && styles.description, classNames?.description)}
-            id={descriptionId}
-          >
-            {description}
-          </OptionDescription>
-        </span>
-        <OptionMark
-          className={joinClasses(isStyled && styles.check, classNames?.check)}
-          show={selected}
-        >
-          <CheckIcon />
-        </OptionMark>
-      </div>
+          {hasPart(children, OPTION_PARTS) ? (
+            children
+          ) : (
+            <>
+              <SelectOptionIcon />
+              <SelectOptionBody>
+                <SelectOptionText>{children ?? label}</SelectOptionText>
+                <SelectOptionDescription />
+              </SelectOptionBody>
+              <SelectOptionCheck />
+            </>
+          )}
+        </div>
+      </SelectOptionContext.Provider>
     )
   },
 )

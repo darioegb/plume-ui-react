@@ -13,8 +13,6 @@ import { timePickerColorVars, useTimePickerController } from './use-timepicker-c
 import type { TimePickerLabels } from './timepicker-types'
 import styles from './timepicker.module.css'
 
-export type TimePickerPart = 'input' | 'panel'
-
 export type { TimePickerLabels } from './timepicker-types'
 
 export interface TimePickerOwnProps {
@@ -26,7 +24,6 @@ export interface TimePickerOwnProps {
   labels?: Partial<TimePickerLabels>
   minuteStep?: number
   onChange?: (value: string) => void
-  classNames?: Partial<Record<TimePickerPart, string>>
   shape?: Shape
   size?: Size
   value?: string
@@ -34,7 +31,7 @@ export interface TimePickerOwnProps {
 }
 
 export type TimePickerProps = Omit<ComponentProps, 'index'> &
-  Omit<TimePickerInputProps, 'classNames' | 'style'> &
+  Omit<TimePickerInputProps, 'children' | 'style'> &
   TimePickerOwnProps
 
 export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
@@ -42,7 +39,6 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
     {
       children,
       className,
-      classNames,
       colorScheme = 'secondary',
       defaultValue = '',
       hour12 = false,
@@ -84,14 +80,16 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       <TimePickerContext.Provider value={context}>
         <div
           className={joinClasses(styles.timePicker, className)}
+          data-open={context.open ? '' : undefined}
+          data-plume-timepicker=""
           onBlur={handleBlur}
           ref={setRootRef}
           style={{ ...timePickerColorVars(colorScheme), ...style }}
         >
           {children ?? (
             <>
-              <TimePickerInput classNames={{ input: classNames?.input }} {...inputProps} />
-              <TimePickerPanel className={classNames?.panel} />
+              <TimePickerInput {...inputProps} />
+              <TimePickerPanel />
             </>
           )}
         </div>
