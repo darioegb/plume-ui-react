@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.25.0
+
+### Minor Changes
+
+- [#149](https://github.com/darioegb/plume-ui-react/pull/149) [`63509834dbd8e6f549b242c3d8fe46d7198410d6`](https://github.com/darioegb/plume-ui-react/commit/63509834dbd8e6f549b242c3d8fe46d7198410d6) Thanks [@darioegb](https://github.com/darioegb)! - `Alert`, `Chip`, `Avatar` (with `AvatarGroup`), `EmptyState`, `Divider` and `Skeleton` are made of exported parts (`AlertIcon`, `AlertContent`, `AlertAction`, `AlertDismiss`, `ChipIcon`, `ChipLabel`, `ChipRemove`, `AvatarImage`, `AvatarFallback`, `AvatarStatusDot`, `AvatarOverflow`, `EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, `EmptyStateAction`, `DividerLabel`, `SkeletonLine`), each with its own `className`, `style` and `ref`, and `classNames` is removed from them. Without parts they render the same default composition as before. `EmptyState`, `Divider` and `Skeleton` stay Server Component safe. See "Upgrading to 1.0".
+
 ## 0.24.0
 
 ### Minor Changes
