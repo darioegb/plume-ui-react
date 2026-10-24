@@ -2,17 +2,17 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps, Size } from '../../../theme'
+import { EmptyStateAction } from './emptystate-action'
+import { EmptyStateDescription } from './emptystate-description'
+import { EmptyStateIcon } from './emptystate-icon'
+import { EmptyStateTitle, type EmptyStateTitleTag } from './emptystate-title'
 import styles from './emptystate.module.css'
 
 export type EmptyStateVariant = 'filled' | 'outline' | 'plain' | 'unstyled'
 
-export type EmptyStatePart = 'action' | 'description' | 'icon' | 'title'
-
-export type EmptyStateTitleTag = 'div' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-
 export interface EmptyStateOwnProps {
   action?: ReactNode
-  classNames?: Partial<Record<EmptyStatePart, string>>
+  children?: ReactNode
   description?: ReactNode
   icon?: ReactNode
   size?: Size
@@ -30,18 +30,20 @@ export type EmptyStateProps = Omit<ComponentProps, 'index'> &
   Omit<EmptyStateRootAttributes, 'title'> &
   EmptyStateOwnProps
 
+export type { EmptyStateTitleTag }
+
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
   (
     {
       action,
+      children,
       className,
-      classNames,
       description,
       icon,
       size = 'md',
       style,
       title,
-      titleAs: Title = 'div',
+      titleAs = 'div',
       variant = 'plain',
       ...rest
     }: EmptyStateProps,
@@ -62,39 +64,14 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
         style={style}
         {...rest}
       >
-        {icon ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.icon, classNames?.icon)}
-            data-plume-emptystate-icon=""
-          >
-            {icon}
-          </span>
-        ) : null}
-        {title ? (
-          <Title
-            className={joinClasses(isStyled && styles.title, classNames?.title)}
-            data-plume-emptystate-title=""
-          >
-            {title}
-          </Title>
-        ) : null}
-        {description ? (
-          <p
-            className={joinClasses(isStyled && styles.description, classNames?.description)}
-            data-plume-emptystate-description=""
-          >
-            {description}
-          </p>
-        ) : null}
-        {action ? (
-          <div
-            className={joinClasses(isStyled && styles.action, classNames?.action)}
-            data-plume-emptystate-action=""
-          >
-            {action}
-          </div>
-        ) : null}
+        {children ?? (
+          <>
+            {icon ? <EmptyStateIcon>{icon}</EmptyStateIcon> : null}
+            {title ? <EmptyStateTitle as={titleAs}>{title}</EmptyStateTitle> : null}
+            {description ? <EmptyStateDescription>{description}</EmptyStateDescription> : null}
+            {action ? <EmptyStateAction>{action}</EmptyStateAction> : null}
+          </>
+        )}
       </div>
     )
   },

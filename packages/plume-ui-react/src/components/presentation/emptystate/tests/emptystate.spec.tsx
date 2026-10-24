@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { createRef } from 'react'
-import { EmptyState } from '..'
+import { EmptyState, EmptyStateTitle } from '..'
 
 const icon = <svg data-testid="icon" />
 
@@ -65,55 +65,22 @@ describe('EmptyState component', () => {
     expect(container.firstChild).toHaveStyle({ width: '200px' })
   })
 
-  it('applies the classes of each part', () => {
-    const { container } = render(
-      <EmptyState
-        action="Go"
-        classNames={{
-          action: 'a-class',
-          description: 'd-class',
-          icon: 'i-class',
-          title: 't-class',
-        }}
-        description="Text"
-        icon={icon}
-        title="No projects"
-      />,
+  it('renders the parts it is given as children instead of the content props', () => {
+    render(
+      <EmptyState icon={icon} title="Ignored">
+        <EmptyStateTitle>Mine</EmptyStateTitle>
+      </EmptyState>,
     )
-    expect(container.querySelector('[data-plume-emptystate-action]')).toHaveClass(
-      'action',
-      'a-class',
-    )
-    expect(container.querySelector('[data-plume-emptystate-description]')).toHaveClass(
-      'description',
-      'd-class',
-    )
-    expect(container.querySelector('[data-plume-emptystate-icon]')).toHaveClass('icon', 'i-class')
-    expect(container.querySelector('[data-plume-emptystate-title]')).toHaveClass('title', 't-class')
+    expect(screen.getByText('Mine')).toBeInTheDocument()
+    expect(screen.queryByText('Ignored')).toBeNull()
+    expect(screen.queryByTestId('icon')).toBeNull()
   })
 
-  it('drops the Plume classes when unstyled', () => {
+  it('keeps the root class and drops the scoped look when unstyled', () => {
     const { container } = render(
-      <EmptyState
-        action="Go"
-        className="custom"
-        classNames={{ title: 't-class' }}
-        description="Text"
-        icon={icon}
-        title="No projects"
-        variant="unstyled"
-      />,
+      <EmptyState className="custom" title="No projects" variant="unstyled" />,
     )
     expect(container.firstChild).toHaveAttribute('class', 'custom')
-    expect(container.querySelector('[data-plume-emptystate-title]')).toHaveAttribute(
-      'class',
-      't-class',
-    )
-    expect(container.querySelector('[data-plume-emptystate-icon]')).not.toHaveAttribute('class')
-    expect(container.querySelector('[data-plume-emptystate-description]')).not.toHaveAttribute(
-      'class',
-    )
-    expect(container.querySelector('[data-plume-emptystate-action]')).not.toHaveAttribute('class')
   })
 
   it('passes the role, the live region and the name to the element', () => {

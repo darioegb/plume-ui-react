@@ -1,20 +1,19 @@
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps, Size } from '../../../theme'
+import { DividerLabel } from './divider-label'
 import styles from './divider.module.css'
 
 export type DividerAlign = 'center' | 'end' | 'start'
 
 export type DividerOrientation = 'horizontal' | 'vertical'
 
-export type DividerPart = 'label'
-
 export type DividerVariant = 'dashed' | 'dotted' | 'solid' | 'unstyled'
 
 export interface DividerOwnProps {
   align?: DividerAlign
-  classNames?: Partial<Record<DividerPart, string>>
   decorative?: boolean
   orientation?: DividerOrientation
   size?: Size
@@ -37,7 +36,6 @@ export const Divider = forwardRef<HTMLElement, DividerProps>(
       align = 'center',
       children,
       className,
-      classNames,
       decorative = false,
       orientation = 'horizontal',
       size = 'sm',
@@ -72,12 +70,7 @@ export const Divider = forwardRef<HTMLElement, DividerProps>(
           style={style}
           {...rest}
         >
-          <span
-            className={joinClasses(isStyled && styles.label, classNames?.label)}
-            data-plume-divider-label=""
-          >
-            {children}
-          </span>
+          {hasPart(children, [DividerLabel]) ? children : <DividerLabel>{children}</DividerLabel>}
         </div>
       )
     }

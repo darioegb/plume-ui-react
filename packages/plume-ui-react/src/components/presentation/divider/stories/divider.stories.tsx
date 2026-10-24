@@ -1,5 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import { Divider } from '..'
+import { Divider, DividerLabel } from '..'
 
 /**
  * A line that separates two groups of content. Without children it is an `<hr>`, so assistive technology
@@ -12,6 +12,17 @@ import { Divider } from '..'
  * When the line is only decoration, because the content already says where one part ends and the next begins,
  * pass **decorative** to hide it from assistive technology. `List` and `Dropdown` already use the Divider for
  * their `ListDivider` and `DropdownSeparator`.
+ *
+ * The label is a part, `DividerLabel`. A plain child is wrapped in it for you, so `<Divider>or</Divider>` and
+ * `<Divider><DividerLabel>or</DividerLabel></Divider>` render the same. Use the part when you want its own class,
+ * style or ref, or to put something else (an icon) next to the text. The Divider has no state to share, so it is
+ * a plain component that a Server Component can render.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `DividerLabel` | `className`, `style`, `ref`, `children`. The text between the two lines of a horizontal Divider. |
  */
 export default {
   title: 'Components/Divider',
@@ -30,7 +41,7 @@ export default {
     children: {
       control: 'text',
       description:
-        'A label shown between two lines. It only works with a horizontal Divider, and without it the Divider is an `<hr>`.',
+        'A label shown between two lines, as text or as a `DividerLabel`. It only works with a horizontal Divider, and without it the Divider is an `<hr>`.',
       table: { type: { summary: 'ReactNode' } },
     },
     align: {
@@ -86,11 +97,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the Divider.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description: 'Custom CSS classes for the parts: `label`.',
-      table: { type: { summary: 'Partial<Record<DividerPart, string>>' } },
     },
     style: {
       control: false,
@@ -196,6 +202,28 @@ export const WithLabel: Story = {
 }
 
 /**
+ * Use the `DividerLabel` part to give the label its own class or style, or to put something else next to the text.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Divider>
+  <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
+</Divider>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ maxWidth: '100%', width: '22rem' }}>
+      <Divider>
+        <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
+      </Divider>
+    </div>
+  ),
+}
+
+/**
  * A **vertical** Divider separates things in a row. The row needs a height, which the line stretches to.
  */
 export const Vertical: Story = {
@@ -251,11 +279,10 @@ export const Tailwind: Story = {
       source: {
         code: `<Divider className="my-[0.75rem] border-0 border-t border-dashed border-blue-700" variant="unstyled" />
 <Divider
-  classNames={{ label: 'px-[0.75rem] text-sm uppercase tracking-wide text-muted' }}
   className="flex items-center gap-[0.5rem] before:h-px before:flex-1 before:bg-blue-700 after:h-px after:flex-1 after:bg-blue-700"
   variant="unstyled"
 >
-  or
+  <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-muted">or</DividerLabel>
 </Divider>`,
       },
     },
@@ -268,10 +295,11 @@ export const Tailwind: Story = {
       />
       <Divider
         className="flex items-center gap-[0.5rem] before:h-px before:flex-1 before:bg-blue-700 after:h-px after:flex-1 after:bg-blue-700"
-        classNames={{ label: 'px-[0.75rem] text-sm uppercase tracking-wide text-muted' }}
         variant="unstyled"
       >
-        or
+        <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-muted">
+          or
+        </DividerLabel>
       </Divider>
     </div>
   ),
@@ -285,12 +313,8 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<Divider className="border-primary border-1 opacity-100 my-3" variant="unstyled" />
-<Divider
-  className="d-flex align-items-center gap-2 text-body-secondary"
-  classNames={{ label: 'small text-uppercase' }}
-  variant="unstyled"
->
-  or
+<Divider className="d-flex align-items-center gap-2 text-body-secondary" variant="unstyled">
+  <DividerLabel className="small text-uppercase">or</DividerLabel>
 </Divider>`,
       },
     },
@@ -298,12 +322,8 @@ export const Bootstrap: Story = {
   render: () => (
     <div style={{ maxWidth: '100%', width: '22rem' }}>
       <Divider className="border-primary border-1 opacity-100 my-3" variant="unstyled" />
-      <Divider
-        className="d-flex align-items-center gap-2 text-body-secondary"
-        classNames={{ label: 'small text-uppercase' }}
-        variant="unstyled"
-      >
-        or
+      <Divider className="d-flex align-items-center gap-2 text-body-secondary" variant="unstyled">
+        <DividerLabel className="small text-uppercase">or</DividerLabel>
       </Divider>
     </div>
   ),

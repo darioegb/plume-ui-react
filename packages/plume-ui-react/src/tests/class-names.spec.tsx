@@ -22,7 +22,6 @@ import { Modal, ModalContent } from '../components/overlay/modal'
 import { PinInput } from '../components/form/pininput'
 import { ProgressBar } from '../components/utility/progressbar'
 import { Radio } from '../components/form/radio'
-import { Skeleton } from '../components/utility/skeleton'
 import {
   Table,
   TableBody,
@@ -83,10 +82,6 @@ const cases: Record<string, Case> = {
         </ModalContent>
       </Modal>
     ),
-  },
-  Skeleton: {
-    classes: ['a-line'],
-    element: () => <Skeleton lines={2} classNames={{ line: 'a-line' }} />,
   },
   Collapse: {
     classes: ['a-body'],

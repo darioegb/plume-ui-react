@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { createRef } from 'react'
-import { Divider } from '..'
+import { Divider, DividerLabel } from '..'
 
 describe('Divider component', () => {
   it('is a horizontal separator by default', () => {
@@ -72,9 +72,14 @@ describe('Divider component', () => {
     expect(screen.getByRole('separator').tagName).toBe('HR')
   })
 
-  it('applies the class of the label', () => {
-    render(<Divider classNames={{ label: 'mine' }}>or</Divider>)
+  it('renders the label part as written', () => {
+    render(
+      <Divider>
+        <DividerLabel className="mine">or</DividerLabel>
+      </Divider>,
+    )
     expect(screen.getByText('or')).toHaveClass('label', 'mine')
+    expect(screen.getByText('or').parentElement).toHaveClass('divider', 'labeled')
   })
 
   it('keeps the custom className, style and attributes', () => {
@@ -90,12 +95,11 @@ describe('Divider component', () => {
     const { container, rerender } = render(<Divider className="custom" variant="unstyled" />)
     expect(container.firstChild).toHaveAttribute('class', 'custom')
     rerender(
-      <Divider className="custom" classNames={{ label: 'mine' }} variant="unstyled">
+      <Divider className="custom" variant="unstyled">
         or
       </Divider>,
     )
     expect(container.firstChild).toHaveAttribute('class', 'custom')
-    expect(screen.getByText('or')).toHaveAttribute('class', 'mine')
   })
 
   it('forwards the ref', () => {

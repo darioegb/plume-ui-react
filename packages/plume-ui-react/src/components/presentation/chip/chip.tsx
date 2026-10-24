@@ -1,25 +1,24 @@
 'use client'
 
-import type { ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
-import { forwardRef, useId } from 'react'
+import type { ElementType, ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
+import { forwardRef, useId, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { CloseIcon } from '../../../overlay/icons'
+import { hasPart } from '../../../overlay/has-part'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
+import { ChipContext, type ChipLabels } from './chip-context'
+import { ChipIcon } from './chip-icon'
+import { ChipLabel } from './chip-label'
+import { ChipRemove } from './chip-remove'
 import styles from './chip.module.css'
 
-export type ChipPart = 'icon' | 'label' | 'remove'
+export type { ChipLabels } from './chip-context'
 
 export type ChipVariant = 'solid' | 'outline' | 'subtle' | 'unstyled'
 
-export interface ChipLabels {
-  remove: string
-}
-
 export interface ChipOwnProps {
-  classNames?: Partial<Record<ChipPart, string>>
   colorScheme?: ColorScheme
   disabled?: boolean
   icon?: ReactNode
@@ -39,12 +38,13 @@ export type ChipProps = Omit<ComponentProps, 'index'> & ChipRootAttributes & Chi
 
 const DEFAULT_LABELS: ChipLabels = { remove: 'Remove' }
 
+const CHIP_PARTS: readonly ElementType[] = [ChipIcon, ChipLabel, ChipRemove]
+
 export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
   (
     {
       children,
       className = '',
-      classNames,
       colorScheme = 'secondary',
       disabled = false,
       icon,
@@ -62,6 +62,19 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
     const isStyled = variant !== 'unstyled'
     const labelId = useId()
     const removeId = useId()
+    const customRemoveLabel = Boolean(labels?.remove)
+    const context = useMemo(
+      () => ({
+        customRemoveLabel,
+        disabled,
+        isStyled,
+        labelId,
+        labels: text,
+        onRemove,
+        removeId,
+      }),
+      [customRemoveLabel, disabled, isStyled, labelId, onRemove, removeId, text],
+    )
     const classes = joinClasses(
       isStyled && styles.chip,
       isStyled && tag[size],
@@ -72,39 +85,25 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
     )
 
     return (
-      <span
-        className={classes}
-        data-plume-chip=""
-        ref={ref}
-        style={tagColorVars('chip', colorScheme, style)}
-        {...rest}
-      >
-        {icon ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.icon, classNames?.icon)}
-          >
-            {icon}
-          </span>
-        ) : null}
-        <span className={joinClasses(isStyled && styles.label, classNames?.label)} id={labelId}>
-          {children}
+      <ChipContext.Provider value={context}>
+        <span
+          className={classes}
+          data-plume-chip=""
+          ref={ref}
+          style={tagColorVars('chip', colorScheme, style)}
+          {...rest}
+        >
+          {hasPart(children, CHIP_PARTS) ? (
+            children
+          ) : (
+            <>
+              {icon ? <ChipIcon>{icon}</ChipIcon> : null}
+              <ChipLabel>{children}</ChipLabel>
+              {onRemove ? <ChipRemove /> : null}
+            </>
+          )}
         </span>
-        {onRemove ? (
-          <button
-            aria-label={text.remove}
-            aria-labelledby={labels?.remove ? undefined : `${removeId} ${labelId}`}
-            className={joinClasses(isStyled && styles.remove, classNames?.remove)}
-            data-plume-chip-remove=""
-            disabled={disabled}
-            id={removeId}
-            onClick={onRemove}
-            type="button"
-          >
-            <CloseIcon />
-          </button>
-        ) : null}
-      </span>
+      </ChipContext.Provider>
     )
   },
 )

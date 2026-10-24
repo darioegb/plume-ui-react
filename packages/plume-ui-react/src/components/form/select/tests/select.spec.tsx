@@ -1,6 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
+import { ChipLabel, ChipRemove } from '../../../presentation/chip'
 import { Field } from '../../field'
 import {
   Select,
@@ -1259,6 +1260,37 @@ describe('Select component', () => {
       expect(control().querySelector('.my-chip')).toHaveAttribute('data-plume-select-chip')
       expect(control().querySelector('.my-more')).toHaveTextContent('+1')
       expect(screen.getByRole('button', { name: 'Remove Apple' })).toBeInTheDocument()
+    })
+
+    it('composes the parts of a Chip inside a SelectChip', async () => {
+      const onValueChange = vi.fn()
+      render(
+        <Select defaultValue={['apple']} multiple onValueChange={onValueChange}>
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectChips>
+                {(chosen) => (
+                  <SelectChip option={chosen}>
+                    <ChipLabel className="my-label">
+                      <span aria-hidden="true">{chosen.label}</span>
+                    </ChipLabel>
+                    <ChipRemove className="my-remove" />
+                  </SelectChip>
+                )}
+              </SelectChips>
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const remove = screen.getByRole('button', { name: 'Remove Apple' })
+      expect(remove).toHaveClass('my-remove')
+      expect(control().querySelector('.my-label')).toHaveTextContent('Apple')
+      await userEvent.click(remove)
+      expect(onValueChange).toHaveBeenCalledWith([])
     })
 
     it('renders no chips in a single select and lets SelectChips limit them itself', () => {

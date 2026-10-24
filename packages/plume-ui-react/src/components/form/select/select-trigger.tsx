@@ -13,7 +13,7 @@ import { SelectCombobox } from './select-combobox'
 import { useSelectContext, type SelectContextValue } from './select-context'
 import { SelectField } from './select-field'
 import { SelectHidden } from './select-hidden'
-import { hasPart } from './select-parts'
+import { hasPart } from '../../../overlay/has-part'
 import { SelectTriggerContext, type SelectDisplay } from './select-trigger-context'
 import styles from './select.module.css'
 

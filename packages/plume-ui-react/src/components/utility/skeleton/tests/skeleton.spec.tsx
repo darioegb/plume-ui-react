@@ -41,8 +41,7 @@ describe('Skeleton component', () => {
     const { container } = render(<Skeleton lines={3} />)
     const lines = container.querySelectorAll('[data-plume-skeleton]')
     expect(lines).toHaveLength(3)
-    expect(lines[0]).not.toHaveClass('last')
-    expect(lines[2]).toHaveClass('last')
+    expect(lines[0]).toHaveClass('line')
     expect(container.firstChild).toHaveAttribute('aria-hidden', 'true')
     expect(container.firstChild).toHaveClass('lines')
   })
@@ -84,17 +83,9 @@ describe('Skeleton component', () => {
       expect(container.firstChild).toHaveAttribute('data-plume-skeleton')
     })
 
-    it('puts the line class on every line', () => {
-      const { container } = render(<Skeleton classNames={{ line: 'line' }} lines={2} variant="unstyled" />)
-      const lines = container.querySelectorAll('[data-plume-skeleton]')
-      expect(lines[0]).toHaveAttribute('class', 'line')
-      expect(lines[1]).toHaveAttribute('class', 'line')
+    it('keeps the lines container bare', () => {
+      const { container } = render(<Skeleton lines={2} variant="unstyled" />)
       expect(container.firstChild).not.toHaveAttribute('class')
     })
-  })
-
-  it('adds the line class in every variant', () => {
-    const { container } = render(<Skeleton classNames={{ line: 'line' }} lines={2} />)
-    expect(container.querySelectorAll('[data-plume-skeleton]')[0]).toHaveClass('skeleton', 'line')
   })
 })

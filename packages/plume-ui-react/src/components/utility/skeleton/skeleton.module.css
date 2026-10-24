@@ -25,11 +25,14 @@
   width: var(--skeleton-width, 100%);
 }
 
-.lines .text {
+:where(.lines) .line {
+  background-color: var(--plume-surface-muted);
+  border-radius: var(--plume-radius-2);
+  height: var(--skeleton-height, 1em);
   width: 100%;
 }
 
-.lines .last {
+:where(.lines) .line:last-child {
   width: 60%;
 }
 
@@ -45,11 +48,13 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .pulse {
+  .pulse,
+  :where(.linesPulse) .line {
     animation: skeleton-pulse 1.5s ease-in-out infinite;
   }
 
-  .wave {
+  .wave,
+  :where(.linesWave) .line {
     animation: skeleton-wave 1.6s linear infinite;
     background-image: linear-gradient(
       90deg,
@@ -79,7 +84,8 @@
 }
 
 @media (forced-colors: active) {
-  .skeleton {
+  .skeleton,
+  :where(.lines) .line {
     background-color: GrayText;
     forced-color-adjust: none;
     opacity: 0.4;

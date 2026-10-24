@@ -241,6 +241,44 @@ takes a render function to style or replace each item.
 The `data-plume-select-trigger` attribute of the combobox is now `data-plume-select-combobox`. The `SelectChip` remove
 button is styled from the chip until `Chip` gets its own parts.
 
+## Alert, Chip, Avatar, EmptyState, Divider and Skeleton are made of parts
+
+These components no longer take `classNames`. Every element they render is a part you can import, with its own
+`className`, `style` and `ref`. Given no parts, they render the same default composition as before; `children` keeps
+its meaning (the text of the alert, the label of the chip), and the root switches to your composition when a direct
+child is one of its parts.
+
+```tsx
+// Before
+<Alert dismissible classNames={{ dismiss: 'opacity-60' }}>Saved</Alert>
+
+// After
+<Alert>
+  <AlertIcon />
+  <AlertContent>Saved</AlertContent>
+  <AlertDismiss className='opacity-60' />
+</Alert>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Alert</code></td><td><code>classNames.icon</code>, <code>.content</code>, <code>.action</code>, <code>.dismiss</code></td><td><code>AlertIcon</code>, <code>AlertContent</code>, <code>AlertAction</code>, <code>AlertDismiss</code></td></tr>
+    <tr><td><code>Chip</code></td><td><code>classNames.icon</code>, <code>.label</code>, <code>.remove</code></td><td><code>ChipIcon</code>, <code>ChipLabel</code>, <code>ChipRemove</code></td></tr>
+    <tr><td><code>Avatar</code></td><td><code>classNames.image</code>, <code>.fallback</code>, <code>.status</code></td><td><code>AvatarImage</code>, <code>AvatarFallback</code>, <code>AvatarStatusDot</code>; the counter of an <code>AvatarGroup</code> is <code>AvatarOverflow</code></td></tr>
+    <tr><td><code>EmptyState</code></td><td><code>classNames.icon</code>, <code>.title</code>, <code>.description</code>, <code>.action</code></td><td><code>EmptyStateIcon</code>, <code>EmptyStateTitle</code>, <code>EmptyStateDescription</code>, <code>EmptyStateAction</code></td></tr>
+    <tr><td><code>Divider</code></td><td><code>classNames.label</code></td><td><code>DividerLabel</code></td></tr>
+    <tr><td><code>Skeleton</code></td><td><code>classNames.line</code> with <code>lines</code></td><td><code>SkeletonLine</code>, one per line</td></tr>
+  </tbody>
+</table>
+
+With parts, the props that only fill the default (`action` and `dismissible` of the `Alert`, `icon` and `onRemove`
+of the `Chip`, `icon`, `title`, `description` and `action` of the `EmptyState`, `lines` of the `Skeleton`) have no
+effect: compose the part instead. The `data-plume-avatar-status` attribute is now `data-plume-avatar-status-dot`.
+`SelectChip` composes `ChipRemove`, so the remove button of a select chip is styled with `className` on it.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

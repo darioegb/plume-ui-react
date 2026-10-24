@@ -1,5 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import { Skeleton } from '..'
+import { Skeleton, SkeletonLine } from '..'
 
 /**
  * A placeholder that takes the place of content that is still loading, so the page keeps its shape and does not
@@ -10,6 +10,16 @@ import { Skeleton } from '..'
  * message or a live region. It has no size or color scheme on purpose: its size comes from `width` and `height`
  * (or from its `shape`), and its color from the surface of the theme, so it follows the color mode. The pulse and
  * the wave stop with `prefers-reduced-motion`.
+ *
+ * For a paragraph, **lines** renders several lines. To set the width of each one, or to give them classes, give the
+ * Skeleton its lines as `SkeletonLine` children instead. The Skeleton has no state to share, so it is a plain
+ * component that a Server Component can render.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `SkeletonLine` | `className`, `style`, `ref`, `width`, `height`. One line of text in a Skeleton with several. The last line of a group is shorter unless you give it a `width`. |
  */
 export default {
   title: 'Components/Skeleton',
@@ -30,11 +40,11 @@ export default {
       description: 'Custom CSS class for the Skeleton.',
       table: { type: { summary: 'string' } },
     },
-    classNames: {
+    children: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `line` (every line). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<SkeletonPart, string>>' } },
+        'The lines to render, as `SkeletonLine` parts. When given, `lines` and `shape` have no effect.',
+      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
@@ -139,6 +149,33 @@ export const Lines: Story = {
 }
 
 /**
+ * Give the Skeleton its lines as `SkeletonLine` children to set the width of each one. A line without a width fills
+ * the row, and the last line of a group is shorter unless you give it one.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Skeleton>
+  <SkeletonLine />
+  <SkeletonLine width="80%" />
+  <SkeletonLine width="40%" height={20} />
+</Skeleton>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="w-72">
+      <Skeleton>
+        <SkeletonLine />
+        <SkeletonLine width="80%" />
+        <SkeletonLine height={20} width="40%" />
+      </Skeleton>
+    </div>
+  ),
+}
+
+/**
  * Put the skeletons where the content will be, mark the container with `aria-busy` and swap them for the real
  * content when it is ready. The skeleton is hidden from screen readers, so `aria-busy` is what tells them the area
  * is loading.
@@ -157,7 +194,7 @@ export const Loading: Story = {
 
 /**
  * Some examples of Skeleton with Tailwind classes. With `variant="unstyled"` the Skeleton keeps its width and height
- * and has no color or animation of its own: `className` brings them, and `classNames.line` styles every line.
+ * and has no color or animation of its own: `className` brings them, and each `SkeletonLine` takes its own classes.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -167,12 +204,11 @@ export const Tailwind: Story = {
   <Skeleton className="animate-pulse rounded-full bg-surface-muted" height={48} variant="unstyled" width={48} />
   <div className="flex flex-1 flex-col gap-2">
     <Skeleton className="animate-pulse rounded bg-surface-muted" height={16} variant="unstyled" width="60%" />
-    <Skeleton classNames={{ line: 'h-3 animate-pulse rounded bg-surface-muted' }}
-      className="flex flex-col gap-2"
-     
-      lines={3}
-      variant="unstyled"
-    />
+    <Skeleton className="flex flex-col gap-2" variant="unstyled">
+      <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
+      <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
+      <SkeletonLine className="h-3 w-3/5 animate-pulse rounded bg-surface-muted" />
+    </Skeleton>
   </div>
 </div>`,
       },
@@ -196,12 +232,11 @@ export const Tailwind: Story = {
           variant="unstyled"
           width="60%"
         />
-        <Skeleton classNames={{ line: 'h-3 animate-pulse rounded bg-surface-muted' }}
-          className="flex flex-col gap-2"
-         
-          lines={3}
-          variant="unstyled"
-        />
+        <Skeleton className="flex flex-col gap-2" variant="unstyled">
+          <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
+          <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
+          <SkeletonLine className="h-3 w-3/5 animate-pulse rounded bg-surface-muted" />
+        </Skeleton>
       </div>
     </div>
   ),
@@ -219,12 +254,11 @@ export const Bootstrap: Story = {
         code: `<div aria-busy="true" className="card placeholder-glow" style={{ width: "18rem" }}>
   <div className="card-body">
     <Skeleton className="placeholder d-block col-6 mb-3" height={20} variant="unstyled" />
-    <Skeleton classNames={{ line: 'placeholder d-block col-12' }}
-      className="d-flex flex-column gap-2"
-     
-      lines={3}
-      variant="unstyled"
-    />
+    <Skeleton className="d-flex flex-column gap-2" variant="unstyled">
+      <SkeletonLine className="placeholder d-block col-12" />
+      <SkeletonLine className="placeholder d-block col-12" />
+      <SkeletonLine className="placeholder d-block col-8" />
+    </Skeleton>
   </div>
 </div>`,
       },
@@ -234,12 +268,11 @@ export const Bootstrap: Story = {
     <div aria-busy="true" className="card placeholder-glow" style={{ width: '18rem' }}>
       <div className="card-body">
         <Skeleton className="placeholder d-block col-6 mb-3" height={20} variant="unstyled" />
-        <Skeleton classNames={{ line: 'placeholder d-block col-12' }}
-          className="d-flex flex-column gap-2"
-         
-          lines={3}
-          variant="unstyled"
-        />
+        <Skeleton className="d-flex flex-column gap-2" variant="unstyled">
+          <SkeletonLine className="placeholder d-block col-12" />
+          <SkeletonLine className="placeholder d-block col-12" />
+          <SkeletonLine className="placeholder d-block col-8" />
+        </Skeleton>
       </div>
     </div>
   ),

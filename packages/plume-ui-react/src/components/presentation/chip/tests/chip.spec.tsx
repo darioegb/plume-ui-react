@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef } from 'react'
-import { Chip } from '..'
+import { Chip, ChipIcon, ChipLabel, ChipRemove } from '..'
 
 describe('Chip component', () => {
   describe('rendering', () => {
@@ -116,46 +116,197 @@ describe('Chip component', () => {
     })
   })
 
-  describe('classNames', () => {
-    const classNames = { icon: 'my-icon', label: 'my-label', remove: 'my-remove' }
-
-    it('adds a class to each part next to the Plume ones', () => {
-      render(
-        <Chip classNames={classNames} icon={<i />} onRemove={() => undefined}>
-          Design
-        </Chip>,
-      )
-      expect(screen.getByText('Design')).toHaveClass('label', 'my-label')
-      expect(screen.getByRole('button')).toHaveClass('remove', 'my-remove')
-      expect(document.querySelector('.icon')).toHaveClass('my-icon')
-    })
-
-    it('are the only classes of the parts when unstyled', () => {
+  describe('unstyled', () => {
+    it('drops the Plume classes of the parts and keeps the className of the root', () => {
       const { container } = render(
-        <Chip
-          className="mine"
-          classNames={classNames}
-          icon={<i />}
-          onRemove={() => undefined}
-          variant="unstyled"
-        >
+        <Chip className="mine" icon={<i />} onRemove={() => undefined} variant="unstyled">
           Design
         </Chip>,
       )
       expect(container.firstChild).toHaveAttribute('class', 'mine')
-      expect(screen.getByText('Design')).toHaveAttribute('class', 'my-label')
-      expect(screen.getByRole('button')).toHaveAttribute('class', 'my-remove')
+      expect(screen.getByText('Design')).not.toHaveAttribute('class')
+      expect(screen.getByRole('button')).not.toHaveAttribute('class')
+      expect(document.querySelector('[data-plume-chip-icon]')).not.toHaveAttribute('class')
     })
 
     it('has no class attribute when unstyled and there is none', () => {
-      const { container } = render(
-        <Chip icon={<i />} onRemove={() => undefined} variant="unstyled">
+      const { container } = render(<Chip variant="unstyled">Design</Chip>)
+      expect(container.firstChild).not.toHaveAttribute('class')
+    })
+  })
+
+  describe('parts', () => {
+    it('renders the default composition from the parts', () => {
+      render(
+        <Chip icon={<i />} onRemove={() => undefined}>
           Design
         </Chip>,
       )
-      expect(container.firstChild).not.toHaveAttribute('class')
-      expect(screen.getByText('Design')).not.toHaveAttribute('class')
-      expect(screen.getByRole('button')).not.toHaveAttribute('class')
+      expect(document.querySelector('[data-plume-chip-icon]')).toHaveClass('icon')
+      expect(document.querySelector('[data-plume-chip-label]')).toHaveClass('label')
+      expect(document.querySelector('[data-plume-chip-remove]')).toHaveClass('remove')
+    })
+
+    it('renders the parts given as children in the order they are written', () => {
+      render(
+        <Chip onRemove={() => undefined}>
+          <ChipRemove />
+          <ChipLabel>Design</ChipLabel>
+          <ChipIcon>
+            <i data-testid="icon" />
+          </ChipIcon>
+        </Chip>,
+      )
+      const root = document.querySelector('[data-plume-chip]') as HTMLElement
+      expect(root.firstElementChild).toHaveAttribute('data-plume-chip-remove')
+      expect(root.lastElementChild).toHaveAttribute('data-plume-chip-icon')
+      expect(screen.getByTestId('icon').parentElement).toHaveAttribute('aria-hidden', 'true')
+    })
+
+    it('can leave a part out', () => {
+      render(
+        <Chip onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+        </Chip>,
+      )
+      expect(screen.queryByRole('button')).toBeNull()
+    })
+
+    it('does not use the icon and onRemove props as parts when it is composed', () => {
+      render(
+        <Chip icon={<i data-testid="icon" />}>
+          <ChipLabel>Design</ChipLabel>
+        </Chip>,
+      )
+      expect(screen.queryByTestId('icon')).toBeNull()
+    })
+
+    it('takes className, style and ref on every part', () => {
+      const icon = createRef<HTMLSpanElement>()
+      const label = createRef<HTMLSpanElement>()
+      const remove = createRef<HTMLButtonElement>()
+      render(
+        <Chip onRemove={() => undefined}>
+          <ChipIcon className="my-icon" ref={icon} style={{ color: 'red' }}>
+            <i />
+          </ChipIcon>
+          <ChipLabel className="my-label" ref={label} style={{ color: 'green' }}>
+            Design
+          </ChipLabel>
+          <ChipRemove className="my-remove" ref={remove} style={{ color: 'blue' }} />
+        </Chip>,
+      )
+      expect(icon.current).toHaveClass('icon', 'my-icon')
+      expect(icon.current).toHaveStyle({ color: 'rgb(255, 0, 0)' })
+      expect(label.current).toHaveClass('label', 'my-label')
+      expect(label.current).toHaveStyle({ color: 'rgb(0, 128, 0)' })
+      expect(remove.current).toHaveClass('remove', 'my-remove')
+      expect(remove.current).toHaveStyle({ color: 'rgb(0, 0, 255)' })
+    })
+
+    it('keeps only the className of the part when the chip is unstyled', () => {
+      render(
+        <Chip onRemove={() => undefined} variant="unstyled">
+          <ChipIcon className="my-icon">
+            <i />
+          </ChipIcon>
+          <ChipLabel className="my-label">Design</ChipLabel>
+          <ChipRemove className="my-remove" />
+        </Chip>,
+      )
+      expect(screen.getByText('Design')).toHaveAttribute('class', 'my-label')
+      expect(screen.getByRole('button')).toHaveAttribute('class', 'my-remove')
+      expect(document.querySelector('[data-plume-chip-icon]')).toHaveAttribute('class', 'my-icon')
+    })
+
+    it('names a composed remove button after the label', () => {
+      render(
+        <Chip onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove />
+        </Chip>,
+      )
+      expect(screen.getByRole('button', { name: 'Remove Design' })).toBeInTheDocument()
+    })
+
+    it('names a composed remove button with labels.remove or its own aria-label', () => {
+      const { rerender } = render(
+        <Chip labels={{ remove: 'Quitar' }} onRemove={() => undefined}>
+          <ChipLabel>Diseño</ChipLabel>
+          <ChipRemove />
+        </Chip>,
+      )
+      expect(screen.getByRole('button', { name: 'Quitar' })).toBeInTheDocument()
+      rerender(
+        <Chip onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove aria-label="Drop it" />
+        </Chip>,
+      )
+      expect(screen.getByRole('button', { name: 'Drop it' })).toBeInTheDocument()
+    })
+
+    it('calls onRemove and the onClick of the remove part', async () => {
+      const onRemove = vi.fn()
+      const onClick = vi.fn()
+      render(
+        <Chip onRemove={onRemove}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove onClick={onClick} />
+        </Chip>,
+      )
+      await userEvent.click(screen.getByRole('button'))
+      expect(onClick).toHaveBeenCalledTimes(1)
+      expect(onRemove).toHaveBeenCalledTimes(1)
+    })
+
+    it('replaces the icon of the remove part', () => {
+      render(
+        <Chip onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove>x</ChipRemove>
+        </Chip>,
+      )
+      expect(screen.getByRole('button')).toHaveTextContent('x')
+    })
+
+    it('disables the remove part with the chip, or on its own', () => {
+      const { rerender } = render(
+        <Chip disabled onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove />
+        </Chip>,
+      )
+      expect(screen.getByRole('button')).toBeDisabled()
+      expect(screen.getByRole('button')).toHaveAttribute('data-disabled')
+      rerender(
+        <Chip onRemove={() => undefined}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove disabled />
+        </Chip>,
+      )
+      expect(screen.getByRole('button')).toBeDisabled()
+    })
+
+    it('does nothing in the remove part when the chip has no onRemove', async () => {
+      render(
+        <Chip>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove />
+        </Chip>,
+      )
+      await userEvent.click(screen.getByRole('button'))
+      expect(screen.getByRole('button')).toBeEnabled()
+    })
+
+    it.each([
+      ['ChipIcon', <ChipIcon key="icon" />],
+      ['ChipLabel', <ChipLabel key="label" />],
+      ['ChipRemove', <ChipRemove key="remove" />],
+    ])('%s throws outside a Chip', (name, part) => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(part)).toThrow(`<${name}> must be rendered inside a <Chip>`)
+      error.mockRestore()
     })
   })
 })

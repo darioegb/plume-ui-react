@@ -1,6 +1,14 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
-import { Alert, AlertDescription, AlertTitle } from '..'
+import {
+  Alert,
+  AlertAction,
+  AlertContent,
+  AlertDescription,
+  AlertDismiss,
+  AlertIcon,
+  AlertTitle,
+} from '..'
 
 const statuses = ['info', 'success', 'warning', 'error'] as const
 
@@ -17,10 +25,20 @@ const statuses = ['info', 'success', 'warning', 'error'] as const
  * button, named by **labels.dismiss**, and it goes away when it is pressed. **onDismiss** tells you, so you can keep
  * it away. An **action**, such as a button or a link, goes at the end.
  *
+ * Every element of the Alert is a part you can import. Given no parts, the `Alert` builds the usual layout from its
+ * props (**icon**, the children as the content, **action** and **dismissible**). Give it any of the parts as direct
+ * children and it renders them as written, so you can reorder, omit or replace each one, and give it its own
+ * `className`. In that case **action** and **dismissible** have no effect: compose `AlertAction` and `AlertDismiss`
+ * instead.
+ *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
+ * | `AlertIcon` | `className`, `style`, `ref`, `children`. The icon, `aria-hidden`. Without children it shows the icon of the status, or the **icon** of the `Alert`; it renders nothing when **icon** is `false`. |
+ * | `AlertContent` | `className`, `style`, `ref`, `children`. The block that holds the title and the description. |
+ * | `AlertAction` | `className`, `style`, `ref`, `children`. Where an action, such as a button or a link, goes. |
+ * | `AlertDismiss` | `aria-label`, `className`, `style`, `ref`, `children`. The close button. It dismisses the `Alert`, calls **onDismiss** and takes its name from **labels.dismiss**. Children replace the icon. |
  * | `AlertTitle` | `as` (`div` by default, or `h2` to `h6`), `id`, `className`, `style`, `children`. The title, in bold. Use a heading when it belongs in the outline of the page. |
  * | `AlertDescription` | `id`, `className`, `style`, `children`. The details. |
  */
@@ -30,7 +48,15 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      importNames: ['Alert', 'AlertTitle', 'AlertDescription'],
+      importNames: [
+        'Alert',
+        'AlertAction',
+        'AlertContent',
+        'AlertDescription',
+        'AlertDismiss',
+        'AlertIcon',
+        'AlertTitle',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -97,13 +123,8 @@ export default {
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Alert.',
+      description: 'Custom CSS class for the root element of the Alert.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description: 'Custom CSS classes for the parts: `icon`, `content`, `action` and `dismiss`.',
-      table: { type: { summary: 'Partial<Record<AlertPart, string>>' } },
     },
     style: {
       control: false,
@@ -281,6 +302,44 @@ export const WithAction: Story = {
 }
 
 /**
+ * Give the `Alert` its parts as direct children and it renders them as written. Here the dismiss button comes
+ * first, the icon is replaced, the action goes under the text and the content has its own class. Omit a part and it
+ * is not there: with parts, **action** and **dismissible** have no effect.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Alert status="warning">
+  <AlertDismiss />
+  <AlertIcon>⚠️</AlertIcon>
+  <AlertContent className="flex-col">
+    <AlertTitle>Your trial ends tomorrow</AlertTitle>
+    <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+    <AlertAction>
+      <Button colorScheme="warning" label="Choose a plan" size="sm" />
+    </AlertAction>
+  </AlertContent>
+</Alert>`,
+      },
+    },
+  },
+  render: (args) => (
+    <Alert {...args} status="warning">
+      <AlertDismiss />
+      <AlertIcon>⚠️</AlertIcon>
+      <AlertContent style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <AlertTitle>Your trial ends tomorrow</AlertTitle>
+        <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+        <AlertAction>
+          <Button colorScheme="warning" label="Choose a plan" size="sm" />
+        </AlertAction>
+      </AlertContent>
+    </Alert>
+  ),
+}
+
+/**
  * An `error` is announced right away (`role="alert"`) and the other statuses politely (`role="status"`). When the
  * Alert is part of the page from the start, give it `role="note"` so it is not announced when the page loads.
  * Use `as="h2"` in the title when it belongs in the outline of the page.
@@ -303,18 +362,16 @@ export const Tailwind: Story = {
       source: {
         code: `<Alert
   className="w-[28rem] max-w-full rounded-lg border-l-4 border-blue-700 bg-blue-50 text-blue-900"
-  classNames={{
-    content: 'text-sm',
-    dismiss: 'rounded p-1 hover:bg-blue-100',
-    icon: 'text-blue-700',
-  }}
-  dismissible
   status="info"
   style={{ padding: '0.75rem 1rem' }}
   variant="unstyled"
 >
-  <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
-  <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+  <AlertIcon className="text-blue-700" />
+  <AlertContent className="text-sm">
+    <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
+    <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+  </AlertContent>
+  <AlertDismiss className="rounded p-1 hover:bg-blue-100" />
 </Alert>`,
       },
     },
@@ -322,18 +379,16 @@ export const Tailwind: Story = {
   render: () => (
     <Alert
       className="w-[28rem] max-w-full rounded-lg border-l-4 border-blue-700 bg-blue-50 text-blue-900"
-      classNames={{
-        content: 'text-sm',
-        dismiss: 'rounded p-1 hover:bg-blue-100',
-        icon: 'text-blue-700',
-      }}
-      dismissible
       status="info"
       style={{ padding: '0.75rem 1rem' }}
       variant="unstyled"
     >
-      <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
-      <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+      <AlertIcon className="text-blue-700" />
+      <AlertContent className="text-sm">
+        <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
+        <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+      </AlertContent>
+      <AlertDismiss className="rounded p-1 hover:bg-blue-100" />
     </Alert>
   ),
 }
@@ -347,14 +402,16 @@ export const Bootstrap: Story = {
       source: {
         code: `<Alert
   className="alert alert-primary d-flex align-items-start gap-2 mb-0"
-  classNames={{ dismiss: 'btn-close ms-auto', icon: 'text-primary' }}
-  dismissible
   status="info"
   style={{ width: '28rem', maxWidth: '100%' }}
   variant="unstyled"
 >
-  <AlertTitle className="fw-semibold">Your trial ends tomorrow</AlertTitle>
-  <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+  <AlertIcon className="text-primary" />
+  <AlertContent>
+    <AlertTitle className="fw-semibold">Your trial ends tomorrow</AlertTitle>
+    <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+  </AlertContent>
+  <AlertDismiss className="btn-close ms-auto" />
 </Alert>`,
       },
     },
@@ -362,14 +419,16 @@ export const Bootstrap: Story = {
   render: () => (
     <Alert
       className="alert alert-primary d-flex align-items-start gap-2 mb-0"
-      classNames={{ dismiss: 'btn-close ms-auto', icon: 'text-primary' }}
-      dismissible
       status="info"
       style={{ width: '28rem', maxWidth: '100%' }}
       variant="unstyled"
     >
-      <AlertTitle className="fw-semibold">Your trial ends tomorrow</AlertTitle>
-      <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+      <AlertIcon className="text-primary" />
+      <AlertContent>
+        <AlertTitle className="fw-semibold">Your trial ends tomorrow</AlertTitle>
+        <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
+      </AlertContent>
+      <AlertDismiss className="btn-close ms-auto" />
     </Alert>
   ),
 }
