@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.19.0
+
+### Minor Changes
+
+- [#130](https://github.com/darioegb/plume-ui-react/pull/130) [`b2d8a189dcc85cd52afc7529863a69dc2ee40493`](https://github.com/darioegb/plume-ui-react/commit/b2d8a189dcc85cd52afc7529863a69dc2ee40493) Thanks [@darioegb](https://github.com/darioegb)! - `className` and `style` now go to the outermost element a component renders, and `classNames.input` reaches the native control. `Input` with addons, elements or a reveal button, `Textarea` with `showCount`, `DatePicker`, `TimePicker` and the `DatePickerInput` and `TimePickerInput` parts put `className` on the wrapper instead of the `<input>` or `<textarea>`. Use `classNames.input` to style the native control. `DatePicker` also takes `classNames.calendar`.
+
 ## 0.18.0
 
 ### Minor Changes
