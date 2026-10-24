@@ -5,10 +5,7 @@ import { Paginator } from '..'
 import type { PaginatorProps } from '..'
 
 const pageButtons = (): HTMLElement[] =>
-  screen
-    .getAllByRole('button')
-    .filter((button) => button.hasAttribute('data-plume-paginator-part'))
-    .filter((button) => button.getAttribute('data-plume-paginator-part') === 'page')
+  Array.from(document.querySelectorAll<HTMLElement>('[data-plume-paginator-page]'))
 
 const current = (): HTMLElement | null => document.querySelector('[aria-current="page"]')
 
@@ -77,13 +74,13 @@ describe('Paginator component', () => {
         '11',
         '20',
       ])
-      expect(document.querySelectorAll('[data-plume-paginator-part="ellipsis"]')).toHaveLength(2)
+      expect(document.querySelectorAll('[data-plume-paginator-ellipsis]')).toHaveLength(2)
     })
 
     it('hides the ellipses from assistive technology', () => {
       render(<Paginator count={20} defaultPage={10} />)
       document
-        .querySelectorAll('[data-plume-paginator-part="ellipsis"]')
+        .querySelectorAll('[data-plume-paginator-ellipsis]')
         .forEach((node) => expect(node).toHaveAttribute('aria-hidden', 'true'))
     })
 
@@ -297,54 +294,13 @@ describe('Paginator component', () => {
       expect(nav).toHaveStyle({ color: 'rgb(255, 0, 0)' })
     })
 
-    it('adds the classes of the user to every part', () => {
-      render(
-        <Paginator
-          classNames={{
-            ellipsis: 'e',
-            first: 'f',
-            item: 'i',
-            last: 'l',
-            list: 'ul',
-            next: 'n',
-            page: 'p',
-            previous: 'pr',
-          }}
-          count={20}
-          defaultPage={10}
-          showEdges
-        />,
-      )
-      expect(screen.getByRole('list')).toHaveClass('list', 'ul')
-      expect(screen.getAllByRole('listitem')[0]).toHaveClass('item', 'i')
-      expect(screen.getByRole('button', { name: 'First page' })).toHaveClass('f')
-      expect(screen.getByRole('button', { name: 'Last page' })).toHaveClass('l')
-      expect(screen.getByRole('button', { name: 'Next page' })).toHaveClass('n')
-      expect(screen.getByRole('button', { name: 'Previous page' })).toHaveClass('pr')
-      expect(current()).toHaveClass('page', 'p')
-      expect(document.querySelector('[data-plume-paginator-part="ellipsis"]')).toHaveClass(
-        'ellipsis',
-        'e',
-      )
-    })
-
     it('drops every Plume class when it is unstyled and keeps the user ones', () => {
-      render(
-        <Paginator
-          className="root"
-          classNames={{ list: 'ul', page: 'p' }}
-          count={20}
-          defaultPage={10}
-          variant="unstyled"
-        />,
-      )
+      render(<Paginator className="root" count={20} defaultPage={10} variant="unstyled" />)
       expect(screen.getByRole('navigation')).toHaveAttribute('class', 'root')
-      expect(screen.getByRole('list')).toHaveAttribute('class', 'ul')
-      expect(current()).toHaveAttribute('class', 'p')
+      expect(screen.getByRole('list')).not.toHaveAttribute('class')
+      expect(current()?.className).toBe('')
       expect(screen.getAllByRole('listitem')[0]).not.toHaveAttribute('class')
-      expect(document.querySelector('[data-plume-paginator-part="ellipsis"]')).not.toHaveAttribute(
-        'class',
-      )
+      expect(document.querySelector('[data-plume-paginator-ellipsis]')).not.toHaveAttribute('class')
     })
   })
 

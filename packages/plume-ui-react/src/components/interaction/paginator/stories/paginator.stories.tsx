@@ -1,7 +1,19 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Paginator } from '..'
+import {
+  Paginator,
+  PaginatorEllipsis,
+  PaginatorFirst,
+  PaginatorItem,
+  PaginatorLast,
+  PaginatorList,
+  PaginatorNext,
+  PaginatorPage,
+  PaginatorPages,
+  PaginatorPrevious,
+} from '..'
+import type { PaginatorProps } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -12,6 +24,44 @@ const stack = (gap: string): React.CSSProperties => ({
   gap,
   maxWidth: '100%',
 })
+
+interface PartClasses {
+  ellipsis?: string
+  item?: string
+  list?: string
+  next?: string
+  page?: string
+  previous?: string
+}
+
+function Styled({
+  classes,
+  ...props
+}: Readonly<PaginatorProps & { classes: PartClasses }>): React.ReactNode {
+  return (
+    <Paginator {...props}>
+      <PaginatorList className={classes.list}>
+        <PaginatorItem className={classes.item}>
+          <PaginatorPrevious className={classes.previous} />
+        </PaginatorItem>
+        <PaginatorPages>
+          {(entry) => (
+            <PaginatorItem className={classes.item}>
+              {typeof entry === 'number' ? (
+                <PaginatorPage className={classes.page} page={entry} />
+              ) : (
+                <PaginatorEllipsis className={classes.ellipsis} />
+              )}
+            </PaginatorItem>
+          )}
+        </PaginatorPages>
+        <PaginatorItem className={classes.item}>
+          <PaginatorNext className={classes.next} />
+        </PaginatorItem>
+      </PaginatorList>
+    </Paginator>
+  )
+}
 
 /**
  * Buttons to move between the pages of a list or a table. Use it when a result set is too long to show at once.
@@ -31,6 +81,25 @@ const stack = (gap: string): React.CSSProperties => ({
  *
  * It keeps the page itself, or follows **page** when you control it. It doesn't load anything: use
  * **onPageChange** to fetch the page, for example from a `Table`.
+ *
+ * Every element of the Paginator is a part you can import. Given no children, the `Paginator` builds the usual
+ * list from its props (**showEdges** adds the first and the last button). Give it children and it renders them as
+ * written, so you can reorder, omit or replace each part and give each one its own `className`. The pages are
+ * data-driven, so `PaginatorPages` takes a function that gets each entry (a page number, or `start-ellipsis` and
+ * `end-ellipsis`) and returns what to render for it. In that case **showEdges** has no effect: compose
+ * `PaginatorFirst` and `PaginatorLast` instead.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `PaginatorList` | `id`, `className`, `style`, `ref`, `children`. The `<ul>`. Without children it builds the default: the edges, the previous button, the pages and the next button, each in a `PaginatorItem`. |
+ * | `PaginatorItem` | `id`, `className`, `style`, `ref`, `children`. A `<li>`. Every control goes in one. |
+ * | `PaginatorPages` | `children`. Renders the entries of the current range, with no element of its own. Children is a function that gets the entry and its position, and returns what to render (usually a `PaginatorItem`). Without it, each entry is a page button or an ellipsis. |
+ * | `PaginatorPage` | `page` (required), `aria-label`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. The button of a page. It has `aria-current="page"` and `data-current` when it is the current one, its name comes from **labels.page** and its text is the number unless you pass children. |
+ * | `PaginatorEllipsis` | `id`, `className`, `style`, `ref`, `children`. The `…` that stands for the folded pages, `aria-hidden`. |
+ * | `PaginatorPrevious`, `PaginatorNext` | `aria-label`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. They go to the previous and the next page, are disabled at the ends and take their name from **labels.previous** and **labels.next**. Children replace the icon. |
+ * | `PaginatorFirst`, `PaginatorLast` | The same props. They go to the first and the last page, and take their name from **labels.first** and **labels.last**. |
  */
 export default {
   title: 'Components/Paginator',
@@ -51,11 +120,11 @@ export default {
       description: 'Custom CSS class for the Paginator.',
       table: { type: { summary: 'string' } },
     },
-    classNames: {
+    children: {
       control: false,
       description:
-        'Custom CSS classes for the parts: `list`, `item` (every `<li>`), `page`, `previous`, `next`, `first`, `last` and `ellipsis`.',
-      table: { type: { summary: 'Partial<Record<PaginatorPart, string>>' } },
+        'The parts of the Paginator, usually a `PaginatorList`. Without it the Paginator builds the default list.',
+      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
@@ -214,9 +283,9 @@ export const Variants: Story = {
           variant={variant}
         />
       ))}
-      <Paginator
+      <Styled
         aria-label="unstyled"
-        classNames={{
+        classes={{
           list: 'flex gap-2',
           page: 'rounded border border-gray-400 px-3 py-1 data-[current]:bg-gray-900 data-[current]:text-white',
         }}
@@ -356,6 +425,42 @@ export const Translated: Story = {
 }
 
 /**
+ * Compose the parts to build the list yourself. Here the page is written out with its edges, the pages show a `#`
+ * and the entries that fold pages are a plain dot.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Paginator aria-label="Compound" count={20} defaultPage={10}>
+      <PaginatorList>
+        <PaginatorItem>
+          <PaginatorFirst />
+        </PaginatorItem>
+        <PaginatorItem>
+          <PaginatorPrevious />
+        </PaginatorItem>
+        <PaginatorPages>
+          {(entry) => (
+            <PaginatorItem>
+              {typeof entry === 'number' ? (
+                <PaginatorPage page={entry}>#{entry}</PaginatorPage>
+              ) : (
+                <PaginatorEllipsis>·</PaginatorEllipsis>
+              )}
+            </PaginatorItem>
+          )}
+        </PaginatorPages>
+        <PaginatorItem>
+          <PaginatorNext />
+        </PaginatorItem>
+        <PaginatorItem>
+          <PaginatorLast />
+        </PaginatorItem>
+      </PaginatorList>
+    </Paginator>
+  ),
+}
+
+/**
  * A disabled Paginator can't be used. The current page keeps showing.
  */
 export const Disabled: Story = {
@@ -364,30 +469,43 @@ export const Disabled: Story = {
 
 /**
  * Some examples of Paginator with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
- * structure stays: the list, the buttons and `aria-current`. Style the parts with `classNames`, and use
- * `data-[current]:` on the current page and `disabled:` on the ones that can't be used.
+ * structure stays: the list, the buttons and `aria-current`. Compose the parts to give each one its classes, and
+ * use `data-[current]:` on the current page and `disabled:` on the ones that can't be used.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Paginator
-  classNames={{
-    list: "gap-1",
-    page: "size-9 rounded-md text-sm text-foreground hover:bg-surface-muted data-[current]:bg-primary-solid data-[current]:text-primary-on-solid",
-    previous: "size-9 rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40",
-    next: "size-9 rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40",
-    ellipsis: "grid size-9 place-items-center text-muted",
-  }}
-  count={10}
-  variant="unstyled"
-/>`,
+        code: `<Paginator count={10} variant="unstyled">
+  <PaginatorList className="gap-1">
+    <PaginatorItem>
+      <PaginatorPrevious className="grid size-9 place-items-center rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40" />
+    </PaginatorItem>
+    <PaginatorPages>
+      {(entry) => (
+        <PaginatorItem>
+          {typeof entry === 'number' ? (
+            <PaginatorPage
+              className="grid size-9 place-items-center rounded-md text-sm text-foreground hover:bg-surface-muted data-[current]:bg-primary-solid data-[current]:text-primary-on-solid"
+              page={entry}
+            />
+          ) : (
+            <PaginatorEllipsis className="grid size-9 place-items-center text-muted" />
+          )}
+        </PaginatorItem>
+      )}
+    </PaginatorPages>
+    <PaginatorItem>
+      <PaginatorNext className="grid size-9 place-items-center rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40" />
+    </PaginatorItem>
+  </PaginatorList>
+</Paginator>`,
       },
     },
   },
   render: () => (
-    <Paginator
-      classNames={{
+    <Styled
+      classes={{
         ellipsis: 'grid size-9 place-items-center text-muted',
         list: 'gap-1',
         next: 'grid size-9 place-items-center rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40',
@@ -412,19 +530,27 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<style>{'.bs-pagination [aria-current="page"]{background-color:var(--bs-primary);border-color:var(--bs-primary);color:#fff}.bs-pagination .page-link:disabled{color:var(--bs-secondary-color);pointer-events:none}'}</style>
-<Paginator
-  className="bs-pagination"
-  classNames={{
-    list: "pagination mb-0",
-    item: "page-item",
-    page: "page-link",
-    previous: "page-link",
-    next: "page-link",
-    ellipsis: "page-link disabled",
-  }}
-  count={10}
-  variant="unstyled"
-/>`,
+<Paginator className="bs-pagination" count={10} variant="unstyled">
+  <PaginatorList className="pagination mb-0">
+    <PaginatorItem className="page-item">
+      <PaginatorPrevious className="page-link" />
+    </PaginatorItem>
+    <PaginatorPages>
+      {(entry) => (
+        <PaginatorItem className="page-item">
+          {typeof entry === 'number' ? (
+            <PaginatorPage className="page-link" page={entry} />
+          ) : (
+            <PaginatorEllipsis className="page-link disabled" />
+          )}
+        </PaginatorItem>
+      )}
+    </PaginatorPages>
+    <PaginatorItem className="page-item">
+      <PaginatorNext className="page-link" />
+    </PaginatorItem>
+  </PaginatorList>
+</Paginator>`,
       },
     },
   },
@@ -435,9 +561,9 @@ export const Bootstrap: Story = {
           '.bs-pagination [aria-current="page"]{background-color:var(--bs-primary);border-color:var(--bs-primary);color:#fff}.bs-pagination .page-link:disabled{color:var(--bs-secondary-color);pointer-events:none}'
         }
       </style>
-      <Paginator
+      <Styled
         className="bs-pagination"
-        classNames={{
+        classes={{
           ellipsis: 'page-link disabled',
           item: 'page-item',
           list: 'pagination mb-0',

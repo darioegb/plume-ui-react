@@ -32,9 +32,9 @@ describe('Collapse component', () => {
     expect(ref.current).toBe(container.firstChild)
   })
 
-  it('puts the class of the user on the root', () => {
+  it('puts the class of the user on the root, after the Plume ones', () => {
     const { container } = render(<Collapse className="mine">Text</Collapse>)
-    expect(container.firstChild).toHaveAttribute('class', 'mine')
+    expect(container.firstChild).toHaveClass('collapse', 'mine')
   })
 
   it('renders a section when it is asked to', () => {
@@ -51,34 +51,33 @@ describe('Collapse component', () => {
     expect(container.firstChild?.nodeName).toBe('DIV')
   })
 
-  it('puts classNames.body on the box that holds the content', () => {
-    render(<Collapse classNames={{ body: 'mine' }}>Text</Collapse>)
-    expect(screen.getByText('Text')).toHaveClass('body', 'mine')
-  })
-
   it('is filled and medium by default', () => {
-    render(<Collapse>Text</Collapse>)
-    expect(screen.getByText('Text')).toHaveClass('body', 'filled', 'md')
+    const { container } = render(<Collapse>Text</Collapse>)
+    expect(container.firstChild).toHaveClass('collapse', 'filled', 'md')
   })
 
   it.each(['accent', 'filled', 'outline'] as const)('applies the %s variant', (variant) => {
-    render(<Collapse variant={variant}>Text</Collapse>)
-    expect(screen.getByText('Text')).toHaveClass(variant)
+    const { container } = render(<Collapse variant={variant}>Text</Collapse>)
+    expect(container.firstChild).toHaveClass(variant)
   })
 
   it.each(['sm', 'md', 'lg'] as const)('applies the %s size', (size) => {
-    render(<Collapse size={size}>Text</Collapse>)
-    expect(screen.getByText('Text')).toHaveClass(size)
+    const { container } = render(<Collapse size={size}>Text</Collapse>)
+    expect(container.firstChild).toHaveClass(size)
   })
 
-  it('drops the Plume classes of the body when it is unstyled', () => {
-    render(
-      <Collapse classNames={{ body: 'mine' }} variant="unstyled">
+  it('drops the Plume classes of the root when it is unstyled', () => {
+    const { container } = render(
+      <Collapse className="mine" variant="unstyled">
         Text
       </Collapse>,
     )
-    const body = screen.getByText('Text')
-    expect(body).toHaveAttribute('class', 'mine')
+    expect(container.firstChild).toHaveAttribute('class', 'mine')
+  })
+
+  it('has no class when it is unstyled and has none', () => {
+    const { container } = render(<Collapse variant="unstyled">Text</Collapse>)
+    expect(container.firstChild).not.toHaveAttribute('class')
   })
 
   it('sets the color variables from colorScheme and lets the style override them', () => {

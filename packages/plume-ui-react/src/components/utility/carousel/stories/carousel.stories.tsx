@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import {
   Carousel,
+  CarouselDot,
   CarouselDots,
   CarouselNext,
   CarouselPlayPause,
@@ -100,8 +101,9 @@ function Controls(): React.ReactNode {
  * | --- | --- |
  * | `CarouselSlides` | `id`, `title`, `className`, `style`, `children`. The strip that holds and scrolls the slides. Each child is one slide. |
  * | `CarouselSlide` | `aria-label`, `title`, `hidden`, `className`, `style`, `children`. One slide. It has `data-active` while it is the visible one. |
- * | `CarouselPrev`, `CarouselNext` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The buttons that go to the previous and the next slide. `label` is the accessible name (`"Previous slide"`, `"Next slide"`), `icon` replaces the arrow and `children` replaces all of its content. |
- * | `CarouselDots` | `classNames.dot`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`. One dot per slide, as a tab list. The name of each dot comes from `labels.dot` (`"Slide 1 of 4"`). A dot has `data-active` while its slide is the visible one. |
+ * | `CarouselPrev`, `CarouselNext` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. The buttons that go to the previous and the next slide. `label` is the accessible name (`"Previous slide"`, `"Next slide"`), `icon` replaces the arrow and `children` replaces all of its content. |
+ * | `CarouselDots` | `aria-label`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. The tab list of the dots. Given no children it renders one `CarouselDot` per slide. Children can be a function that gets the position of the dot, called once per slide, or the `CarouselDot` elements themselves. |
+ * | `CarouselDot` | `aria-label`, `disabled`, `onClick`, `onKeyDown`, `id`, `title`, `className`, `style`, `ref`, `children`. One dot, a tab that goes to its slide. It must be inside `CarouselDots`, which tells it which slide it is. Its name comes from `labels.dot` (`"Slide 1 of 4"`) and it has `data-active` while its slide is the visible one. The arrow keys, `Home` and `End` move between dots. |
  * | `CarouselPlayPause` | `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. |
  */
 export default {
@@ -117,6 +119,7 @@ export default {
         'CarouselPrev',
         'CarouselNext',
         'CarouselDots',
+        'CarouselDot',
         'CarouselPlayPause',
       ],
       toc: {
@@ -275,10 +278,11 @@ export const Variants: Story = {
           >
             Back
           </CarouselPrev>
-          <CarouselDots classNames={{ dot: 'size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800' }}
-            className="flex gap-2"
-           
-          />
+          <CarouselDots className="flex gap-2">
+            {() => (
+              <CarouselDot className="size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800" />
+            )}
+          </CarouselDots>
           <CarouselNext
             className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
             label="Next"
@@ -423,6 +427,39 @@ export const Controlled: Story = {
 }
 
 /**
+ * Every element of the Carousel is a part you can import, and the root holds whatever you put in it. The dots are
+ * data-driven, so `CarouselDots` takes a function that gets the position of each dot, or the `CarouselDot` elements
+ * themselves. Here the dots show the number of their slide.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Carousel aria-label="Featured places" style={frame}>
+      <Panels />
+      <CarouselPrev />
+      <CarouselNext />
+      <CarouselDots>
+        {(position) => (
+          <CarouselDot
+            style={{
+              alignItems: 'center',
+              borderRadius: '9999px',
+              color: 'var(--plume-foreground)',
+              display: 'inline-flex',
+              fontSize: '0.75rem',
+              height: '1.5rem',
+              justifyContent: 'center',
+              width: '1.5rem',
+            }}
+          >
+            {position + 1}
+          </CarouselDot>
+        )}
+      </CarouselDots>
+    </Carousel>
+  ),
+}
+
+/**
  * Use **labels** to translate what a screen reader says.
  */
 export const Translated: Story = {
@@ -462,7 +499,9 @@ export const Tailwind: Story = {
   </CarouselSlides>
   <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
   <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-  <CarouselDots classNames={{ dot: 'size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid' }} className="mt-3 gap-2" />
+  <CarouselDots className="mt-3 gap-2">
+    {() => <CarouselDot className="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid" />}
+  </CarouselDots>
 </Carousel>`,
       },
     },
@@ -482,10 +521,11 @@ export const Tailwind: Story = {
       </CarouselSlides>
       <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
       <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-      <CarouselDots classNames={{ dot: 'size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid' }}
-        className="mt-3 gap-2"
-       
-      />
+      <CarouselDots className="mt-3 gap-2">
+        {() => (
+          <CarouselDot className="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid" />
+        )}
+      </CarouselDots>
     </Carousel>
   ),
 }
@@ -507,7 +547,9 @@ export const Bootstrap: Story = {
   <style>{'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
   <div className="d-flex align-items-center justify-content-between mt-2">
     <CarouselPrev className="btn btn-outline-secondary btn-sm" />
-    <CarouselDots classNames={{ dot: 'rounded-circle bg-secondary-subtle p-1 border-0' }} className="d-flex gap-2" />
+    <CarouselDots className="d-flex gap-2">
+      {() => <CarouselDot className="rounded-circle bg-secondary-subtle p-1 border-0" />}
+    </CarouselDots>
     <CarouselNext className="btn btn-outline-secondary btn-sm" />
   </div>
 </Carousel>`,
@@ -532,10 +574,9 @@ export const Bootstrap: Story = {
       </style>
       <div className="d-flex align-items-center justify-content-between mt-2">
         <CarouselPrev className="btn btn-outline-secondary btn-sm" />
-        <CarouselDots classNames={{ dot: 'rounded-circle bg-secondary p-1 border-0' }}
-          className="d-flex gap-2"
-         
-        />
+        <CarouselDots className="d-flex gap-2">
+          {() => <CarouselDot className="rounded-circle bg-secondary p-1 border-0" />}
+        </CarouselDots>
         <CarouselNext className="btn btn-outline-secondary btn-sm" />
       </div>
     </Carousel>

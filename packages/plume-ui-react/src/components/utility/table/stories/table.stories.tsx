@@ -11,10 +11,15 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableElement,
   TableEmpty,
+  TableEmptyCell,
   TableFooter,
   TableHead,
+  TableHeadSort,
+  TableHeadSortIcon,
   TableHeader,
+  TableLoading,
   TableRow,
   type TableParams,
   useTableState,
@@ -78,6 +83,12 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  *
  * It has no `colorScheme`: a table is mostly neutral, and the selected row uses the primary color.
  *
+ * **Parts.** The `Table` is the box that scrolls (`className` and `style` go there) and renders the `<table>` and the
+ * loading veil by default. Every element is a part: give the `Table` a `TableElement` (the `<table>`, which takes
+ * **ref** of the `Table`) and, if you want it, a `TableLoading` as children and it renders them as written. Inside a
+ * `TableHead`, a `TableHeadSort` and its `TableHeadSortIcon` replace the sort button of **onSort**, and inside a
+ * `TableEmpty` a `TableEmptyCell` replaces the cell with the `EmptyState`.
+ *
  * ### Subcomponents
  *
  * | Component | Props |
@@ -85,8 +96,13 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * | `TableCaption` | `side`, `id`, `title`, `className`, `style`, `children`. The name of the table. `side` is `top` (the default) or `bottom`. |
  * | `TableHeader`, `TableBody`, `TableFooter` | `id`, `title`, `hidden`, `className`, `style`, `children`. The `<thead>`, `<tbody>` and `<tfoot>`. |
  * | `TableRow` | `selected`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<tr>`. `selected` sets `aria-selected` and `data-selected`. |
- * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `classNames`, `id`, `hidden`, `className`, `style`, `children`. A row with one cell that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. |
- * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `classNames.sort`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a button, and `classNames.sort` styles it. |
+ * | `TableElement` | `id`, `title`, `hidden`, `aria-label`, `aria-labelledby`, `className`, `style`, `ref`, `children`. The `<table>`. It takes the name, the variant, the size and the states (`data-hoverable`, `data-sticky`, `data-loading`, `aria-busy`) of the `Table`, and its **ref**. |
+ * | `TableLoading` | `label`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. The veil with the `Spinner`, only while the `Table` is `loading`. `label` is the name of the spinner (`labels.loading` by default); `children` replace the spinner. |
+ * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `id`, `hidden`, `className`, `style`, `ref`, `children`. A `<tr>` with one `TableEmptyCell` that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. With a `TableEmptyCell` as child it renders it as written, and those props have no effect. |
+ * | `TableEmptyCell` | `colSpan`, `id`, `hidden`, `className`, `style`, `ref`, `children`. The `<td>` of a `TableEmpty`, 100 columns wide by default. |
+ * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a `TableHeadSort` with a `TableHeadSortIcon`; with a `TableHeadSort` as child it renders it as written. |
+ * | `TableHeadSort` | `onClick`, `id`, `title`, `aria-label`, `className`, `style`, `ref`, `children`. The button of a sortable head. |
+ * | `TableHeadSortIcon` | `className`, `style`, `ref`, `children`. The arrow of a sortable head, which turns with `aria-sort`; `children` replace it. |
  * | `TableCell` | `align`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<td>`. |
  *
  * ### useTableState
@@ -129,7 +145,12 @@ export default {
         'TableRow',
         'TableHead',
         'TableCell',
+        'TableElement',
         'TableEmpty',
+        'TableEmptyCell',
+        'TableHeadSort',
+        'TableHeadSortIcon',
+        'TableLoading',
         'useTableState',
       ],
       toc: {
@@ -147,19 +168,13 @@ export default {
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the `<table>`.',
+      description: 'Custom CSS class for the outermost element, the box that scrolls around the `<table>`. Use `TableElement` for the `<table>`.',
       table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description: 'Inline styles for the `<table>`.',
+      description: 'Inline styles for the outermost element. They go after `maxHeight`, so they can override it.',
       table: { type: { summary: 'CSSProperties' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `container` (the box that scrolls around the `<table>`), `loading` (the spinner shown while it loads). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<TablePart, string>>' } },
     },
     hoverable: {
       control: 'boolean',
@@ -169,7 +184,7 @@ export default {
     loading: {
       control: 'boolean',
       description:
-        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, covers the body with a translucent veil and shows a `Spinner` in the middle.',
+        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading` on the `<table>`, covers the body with a translucent veil (`TableLoading`) and shows a `Spinner` in the middle.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     labels: {
@@ -211,17 +226,17 @@ export default {
     },
     id: {
       control: false,
-      description: 'Id of the `<table>`.',
+      description: 'Id of the `<table>`. It is passed to the `TableElement` of the default composition.',
       table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the `<table>`.',
+      description: 'Native tooltip of the `<table>`. It is passed to the `TableElement` of the default composition.',
       table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: false,
-      description: 'Hides the Table.',
+      description: 'Hides the `<table>`. It is passed to the `TableElement` of the default composition.',
       table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
@@ -238,7 +253,7 @@ export default {
   },
   args: {
     children: <Content />,
-    style: { minWidth: '28rem' },
+    style: { maxWidth: '100%', width: '28rem' },
   },
 } satisfies Meta<typeof Table>
 
@@ -358,7 +373,7 @@ export const Hoverable: Story = {
  */
 export const Alignment: Story = {
   render: () => (
-    <Table aria-label="Invoice" style={{ minWidth: '24rem' }}>
+    <Table aria-label="Invoice" style={{ maxWidth: '100%', width: '24rem' }}>
       <TableCaption>Invoice</TableCaption>
       <TableHeader>
         <TableRow>
@@ -397,7 +412,7 @@ function SortableTable(): React.ReactNode {
   })
 
   return (
-    <Table aria-label="Sortable people" hoverable style={{ minWidth: '28rem' }}>
+    <Table aria-label="Sortable people" hoverable style={{ maxWidth: '100%', width: '28rem' }}>
       <TableCaption>Click a header to sort</TableCaption>
       <TableHeader>
         <TableRow>
@@ -768,7 +783,7 @@ export const Selectable: Story = {
  */
 export const Loading: Story = {
   render: () => (
-    <Table aria-label="Loading people" loading style={{ minWidth: '28rem' }}>
+    <Table aria-label="Loading people" loading style={{ maxWidth: '100%', width: '28rem' }}>
       <Content />
     </Table>
   ),
@@ -780,7 +795,7 @@ export const Loading: Story = {
  */
 export const Empty: Story = {
   render: () => (
-    <Table aria-label="Empty people" style={{ minWidth: '28rem' }}>
+    <Table aria-label="Empty people" style={{ maxWidth: '100%', width: '28rem' }}>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
@@ -805,7 +820,7 @@ export const Empty: Story = {
  */
 export const StickyHeader: Story = {
   render: () => (
-    <Table aria-label="Long list" maxHeight="12rem" stickyHeader style={{ minWidth: '28rem' }}>
+    <Table aria-label="Long list" maxHeight="12rem" stickyHeader style={{ maxWidth: '100%', width: '28rem' }}>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
@@ -833,90 +848,155 @@ export const StickyHeader: Story = {
 export const Overflow: Story = {
   render: () => (
     <div style={{ maxWidth: '20rem' }}>
-      <Table aria-label="Wide table" style={{ minWidth: '40rem' }}>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Country</TableHead>
-            <TableHead align="end">Age</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {people.map(({ age, name, role }) => (
-            <TableRow key={name}>
-              <TableCell>{name}</TableCell>
-              <TableCell>{role}</TableCell>
-              <TableCell>Somewhere</TableCell>
-              <TableCell align="end">{age}</TableCell>
+      <Table aria-label="Wide table">
+        <TableElement style={{ minWidth: '40rem' }}>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Country</TableHead>
+              <TableHead align="end">Age</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
+          </TableHeader>
+          <TableBody>
+            {people.map(({ age, name, role }) => (
+              <TableRow key={name}>
+                <TableCell>{name}</TableCell>
+                <TableCell>{role}</TableCell>
+                <TableCell>Somewhere</TableCell>
+                <TableCell align="end">{age}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </TableElement>
       </Table>
     </div>
   ),
 }
 
 /**
+ * Give the `Table` a `TableElement` (the `<table>`) and a `TableLoading` as children and it renders them as
+ * written, so the veil can have its own content and the `<table>` its own class. A `TableHeadSort` with a
+ * `TableHeadSortIcon` replaces the button of **onSort**, and a `TableEmptyCell` takes the place of the cell with the
+ * `EmptyState`. Omit a part and it is not there: without a `TableLoading` the table is busy but shows no veil.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Table aria-label="People" loading>
+  <TableLoading>Loading people…</TableLoading>
+  <TableElement className="shadow-md">
+    <TableHeader>
+      <TableRow>
+        <TableHead sort="ascending">
+          <TableHeadSort onClick={sortByName}>
+            Name
+            <TableHeadSortIcon>▲</TableHeadSortIcon>
+          </TableHeadSort>
+        </TableHead>
+        <TableHead>Role</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableEmpty>
+        <TableEmptyCell colSpan={2}>Nobody here yet</TableEmptyCell>
+      </TableEmpty>
+    </TableBody>
+  </TableElement>
+</Table>`,
+      },
+    },
+  },
+  render: (args) => (
+    <Table {...args} aria-label="People" loading>
+      <TableLoading>Loading people…</TableLoading>
+      <TableElement style={{ boxShadow: '0 1px 4px rgb(0 0 0 / 0.25)' }}>
+        <TableHeader>
+          <TableRow>
+            <TableHead sort="ascending">
+              <TableHeadSort>
+                Name
+                <TableHeadSortIcon>▲</TableHeadSortIcon>
+              </TableHeadSort>
+            </TableHead>
+            <TableHead>Role</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableEmpty>
+            <TableEmptyCell colSpan={2}>Nobody here yet</TableEmptyCell>
+          </TableEmpty>
+        </TableBody>
+      </TableElement>
+    </Table>
+  ),
+}
+
+/**
  * Some examples of Table with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
- * structure stays: the box that scrolls and the sticky header. Style every part with its own classes, and use
- * `data-[selected]:` on the rows.
+ * structure stays: the box that scrolls and the sticky header. The `className` of the `Table` is for the box; the
+ * `<table>` has its own part, `TableElement`. Style every part with its own classes, and use `data-[selected]:` on
+ * the rows.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Table classNames={{ container: 'overflow-hidden rounded-lg border border-border' }} aria-label="People" className="w-full text-left text-sm text-foreground" variant="unstyled">
-  <TableHeader className="bg-surface-muted">
-    <TableRow>
-      <TableHead className="px-4 py-2 font-semibold">Name</TableHead>
-      <TableHead className="px-4 py-2 font-semibold">Role</TableHead>
-      <TableHead align="end" className="px-4 py-2 font-semibold">Age</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody className="divide-y divide-border">
-    <TableRow className="hover:bg-surface-muted data-[selected]:bg-primary-solid data-[selected]:text-primary-on-solid">
-      <TableCell className="px-4 py-2">Ada Lovelace</TableCell>
-      <TableCell className="px-4 py-2">Mathematician</TableCell>
-      <TableCell align="end" className="px-4 py-2">36</TableCell>
-    </TableRow>
-  </TableBody>
+        code: `<Table aria-label="People" className="overflow-hidden rounded-lg border border-border" variant="unstyled">
+  <TableElement className="w-full text-left text-sm text-foreground">
+    <TableHeader className="bg-surface-muted">
+      <TableRow>
+        <TableHead className="px-4 py-2 font-semibold">Name</TableHead>
+        <TableHead className="px-4 py-2 font-semibold">Role</TableHead>
+        <TableHead align="end" className="px-4 py-2 font-semibold">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody className="divide-y divide-border">
+      <TableRow className="hover:bg-surface-muted data-[selected]:bg-primary-solid data-[selected]:text-primary-on-solid">
+        <TableCell className="px-4 py-2">Ada Lovelace</TableCell>
+        <TableCell className="px-4 py-2">Mathematician</TableCell>
+        <TableCell align="end" className="px-4 py-2">36</TableCell>
+      </TableRow>
+    </TableBody>
+  </TableElement>
 </Table>`,
       },
     },
   },
   render: () => (
-    <Table classNames={{ container: 'overflow-hidden rounded-lg border border-border' }}
+    <Table
       aria-label="People"
-      className="w-full text-left text-sm text-foreground"
-     
-      style={{ minWidth: '28rem' }}
+      className="overflow-hidden rounded-lg border border-border"
+      style={{ maxWidth: '100%', width: '28rem' }}
       variant="unstyled"
     >
-      <TableHeader className="bg-surface-muted">
-        <TableRow>
-          <TableHead className="px-4 py-2 font-semibold">Name</TableHead>
-          <TableHead className="px-4 py-2 font-semibold">Role</TableHead>
-          <TableHead align="end" className="px-4 py-2 font-semibold">
-            Age
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="divide-y divide-border">
-        {people.map(({ age, name, role }) => (
-          <TableRow
-            className="hover:bg-surface-muted data-[selected]:bg-primary-solid data-[selected]:text-primary-on-solid"
-            key={name}
-            selected={name === 'Grace Hopper'}
-          >
-            <TableCell className="px-4 py-2">{name}</TableCell>
-            <TableCell className="px-4 py-2">{role}</TableCell>
-            <TableCell align="end" className="px-4 py-2">
-              {age}
-            </TableCell>
+      <TableElement className="w-full text-left text-sm text-foreground">
+        <TableHeader className="bg-surface-muted">
+          <TableRow>
+            <TableHead className="px-4 py-2 font-semibold">Name</TableHead>
+            <TableHead className="px-4 py-2 font-semibold">Role</TableHead>
+            <TableHead align="end" className="px-4 py-2 font-semibold">
+              Age
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableHeader>
+        <TableBody className="divide-y divide-border">
+          {people.map(({ age, name, role }) => (
+            <TableRow
+              className="hover:bg-surface-muted data-[selected]:bg-primary-solid data-[selected]:text-primary-on-solid"
+              key={name}
+              selected={name === 'Grace Hopper'}
+            >
+              <TableCell className="px-4 py-2">{name}</TableCell>
+              <TableCell className="px-4 py-2">{role}</TableCell>
+              <TableCell align="end" className="px-4 py-2">
+                {age}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableElement>
     </Table>
   ),
 }
@@ -929,56 +1009,59 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Table classNames={{ container: 'table-responsive' }} aria-label="People" className="table table-striped table-hover caption-top" variant="unstyled">
-  <TableCaption>People of the team</TableCaption>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Name</TableHead>
-      <TableHead>Role</TableHead>
-      <TableHead align="end">Age</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    <TableRow>
-      <TableCell>Ada Lovelace</TableCell>
-      <TableCell>Mathematician</TableCell>
-      <TableCell align="end">36</TableCell>
-    </TableRow>
-    <TableRow className="table-active">
-      <TableCell>Grace Hopper</TableCell>
-      <TableCell>Rear admiral</TableCell>
-      <TableCell align="end">45</TableCell>
-    </TableRow>
-  </TableBody>
+        code: `<Table aria-label="People" className="table-responsive" variant="unstyled">
+  <TableElement className="table table-striped table-hover caption-top">
+    <TableCaption>People of the team</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow className="table-active">
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </TableElement>
 </Table>`,
       },
     },
   },
   render: () => (
-    <Table classNames={{ container: 'table-responsive' }}
+    <Table
       aria-label="People"
-      className="table table-striped table-hover caption-top"
-     
-      style={{ minWidth: '28rem' }}
+      className="table-responsive"
+      style={{ maxWidth: '100%', width: '28rem' }}
       variant="unstyled"
     >
-      <TableCaption>People of the team</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead align="end">Age</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {people.map(({ age, name, role }) => (
-          <TableRow className={name === 'Grace Hopper' ? 'table-active' : undefined} key={name}>
-            <TableCell>{name}</TableCell>
-            <TableCell>{role}</TableCell>
-            <TableCell align="end">{age}</TableCell>
+      <TableElement className="table table-striped table-hover caption-top">
+        <TableCaption>People of the team</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead align="end">Age</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
+        </TableHeader>
+        <TableBody>
+          {people.map(({ age, name, role }) => (
+            <TableRow className={name === 'Grace Hopper' ? 'table-active' : undefined} key={name}>
+              <TableCell>{name}</TableCell>
+              <TableCell>{role}</TableCell>
+              <TableCell align="end">{age}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableElement>
     </Table>
   ),
 }

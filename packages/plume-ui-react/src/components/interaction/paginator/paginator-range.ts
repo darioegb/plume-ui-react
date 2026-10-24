@@ -1,4 +1,4 @@
-export type PaginatorItem = number | 'end-ellipsis' | 'start-ellipsis'
+export type PaginatorEntry = number | 'end-ellipsis' | 'start-ellipsis'
 
 const range = (start: number, end: number): number[] =>
   Array.from({ length: Math.max(end - start + 1, 0) }, (_, offset) => start + offset)
@@ -15,7 +15,7 @@ export function getPaginatorItems({
   count,
   page,
   siblingCount,
-}: PaginatorRangeOptions): PaginatorItem[] {
+}: PaginatorRangeOptions): PaginatorEntry[] {
   const startPages = range(1, Math.min(boundaryCount, count))
   const endPages = range(Math.max(count - boundaryCount + 1, boundaryCount + 1), count)
 
@@ -28,11 +28,11 @@ export function getPaginatorItems({
     endPages.length > 0 ? (endPages[0] ?? count) - 2 : count - 1,
   )
 
-  const beforeSiblings: PaginatorItem[] = []
+  const beforeSiblings: PaginatorEntry[] = []
   if (siblingsStart > boundaryCount + 2) beforeSiblings.push('start-ellipsis')
   else if (boundaryCount + 1 < count - boundaryCount) beforeSiblings.push(boundaryCount + 1)
 
-  const afterSiblings: PaginatorItem[] = []
+  const afterSiblings: PaginatorEntry[] = []
   if (siblingsEnd < count - boundaryCount - 1) afterSiblings.push('end-ellipsis')
   else if (count - boundaryCount > boundaryCount) afterSiblings.push(count - boundaryCount)
 
