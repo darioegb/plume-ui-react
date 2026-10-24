@@ -1,80 +1,48 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
-import { forwardRef, useEffect, useRef } from 'react'
-import { ChevronDownIcon, CloseIcon } from '../../../overlay/icons'
+import { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
-import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ComponentProps } from '../../../theme'
-import { Chip } from '../../presentation/chip'
 import { useFieldContext } from '../field/field-context'
+import { SelectChevron } from './select-chevron'
+import { SelectChips } from './select-chips'
+import { SelectClear } from './select-clear'
+import { SelectCombobox } from './select-combobox'
 import { useSelectContext, type SelectContextValue } from './select-context'
-import { SelectValue } from './select-value'
+import { SelectField } from './select-field'
+import { SelectHidden } from './select-hidden'
+import { hasPart } from './select-parts'
+import { SelectTriggerContext, type SelectDisplay } from './select-trigger-context'
 import styles from './select.module.css'
 
-export type SelectTriggerPart = 'chevron' | 'chip' | 'chipRemove' | 'clear' | 'field' | 'trigger'
+const TRIGGER_PARTS = [
+  SelectChevron,
+  SelectChips,
+  SelectClear,
+  SelectCombobox,
+  SelectField,
+  SelectHidden,
+]
 
 export interface SelectTriggerOwnProps {
   'aria-label'?: string
   'aria-labelledby'?: string
   children?: ReactNode
-  classNames?: Partial<Record<SelectTriggerPart, string>>
-  display?: 'chips' | 'text'
+  display?: SelectDisplay
   maxDisplay?: number
   placeholder?: ReactNode
 }
 
 export type SelectTriggerProps = Omit<ComponentProps, 'index'> & SelectTriggerOwnProps
 
-function Chips({
-  classNames,
-  context,
-  maxDisplay,
-}: Readonly<{
-  classNames: SelectTriggerProps['classNames']
-  context: SelectContextValue
-  maxDisplay: number
-}>): ReactNode {
-  const { isStyled, selectedOptions } = context
-  const shown = selectedOptions.slice(0, maxDisplay)
-  const hidden = selectedOptions.length - shown.length
-  const canRemove = !context.disabled && !context.readOnly
-  const variant = isStyled ? 'subtle' : 'unstyled'
-
-  return (
-    <>
-      {shown.map((option) => (
-        <Chip
-          className={classNames?.chip}
-          classNames={{ remove: classNames?.chipRemove }}
-          icon={option.icon}
-          key={option.value}
-          onRemove={canRemove ? () => context.remove(option.value) : undefined}
-          labels={{ remove: context.labels.remove(option.label) }}
-          size={context.size}
-          variant={variant}
-        >
-          <span aria-hidden="true">{option.label}</span>
-        </Chip>
-      ))}
-      {hidden > 0 ? (
-        <Chip className={classNames?.chip} size={context.size} variant={variant}>
-          +{hidden}
-        </Chip>
-      ) : null}
-    </>
-  )
-}
-
-interface ControlParts {
-  classNames?: NonNullable<SelectTriggerProps['classNames']>
-  context: SelectContextValue
-}
-
-function controlClasses(context: SelectContextValue, className: string): string | undefined {
+function controlClasses(
+  context: SelectContextValue,
+  className: string | undefined,
+): string | undefined {
   const { isStyled } = context
-  const classes = [
+  return joinClasses(
     isStyled && styles.control,
     isStyled && styles[context.variant],
     isStyled && styles[context.size],
@@ -82,98 +50,6 @@ function controlClasses(context: SelectContextValue, className: string): string 
     isStyled && context.invalid && styles.invalid,
     isStyled && context.disabled && styles.disabled,
     className,
-  ]
-  return classes.filter(Boolean).join(' ') || undefined
-}
-
-interface ComboboxButtonProps extends ControlParts {
-  ariaLabel?: string
-  children?: ReactNode
-  labelledBy?: string
-  placeholder?: ReactNode
-  showChips: boolean
-}
-
-const ComboboxButton = forwardRef<HTMLButtonElement, ComboboxButtonProps>(
-  (
-    { ariaLabel, children, classNames, context, labelledBy, placeholder, showChips },
-    ref: ForwardedRef<HTMLButtonElement>,
-  ): ReactNode => {
-    const { isStyled, open } = context
-    const hasValue = context.selected.length > 0
-    const chipLabels = context.selectedOptions.map((option) => option.label).join(', ')
-
-    return (
-      <button
-        aria-activedescendant={open && !context.searchable ? context.activeId : undefined}
-        aria-controls={context.listboxId}
-        aria-describedby={context.describedBy}
-        aria-expanded={open}
-        aria-invalid={context.invalid || undefined}
-        aria-label={ariaLabel}
-        aria-labelledby={labelledBy}
-        aria-readonly={context.readOnly || undefined}
-        aria-required={context.required || undefined}
-        className={joinClasses(isStyled && styles.trigger, classNames?.trigger)}
-        data-placeholder={hasValue ? undefined : ''}
-        data-plume-select-trigger=""
-        disabled={context.disabled}
-        id={context.controlId}
-        onClick={() => (open ? context.close(false) : context.setOpen(true))}
-        onKeyDown={(event) => context.onListKeyDown(event, false)}
-        ref={ref}
-        role="combobox"
-        type="button"
-      >
-        {showChips ? (
-          <>
-            {hasValue ? null : (
-              <span className={isStyled ? styles.placeholder : undefined}>{placeholder}</span>
-            )}
-            {hasValue ? <span style={visuallyHidden}>{chipLabels}</span> : null}
-          </>
-        ) : (
-          (children ?? <SelectValue placeholder={placeholder} />)
-        )}
-      </button>
-    )
-  },
-)
-
-ComboboxButton.displayName = 'ComboboxButton'
-
-function ClearButton({ classNames, context }: Readonly<ControlParts>): ReactNode {
-  return (
-    <button
-      aria-label={context.labels.clear}
-      className={joinClasses(context.isStyled && styles.clear, classNames?.clear)}
-      data-plume-select-clear=""
-      onClick={context.clear}
-      type="button"
-    >
-      <CloseIcon />
-    </button>
-  )
-}
-
-function ChevronButton({
-  classNames,
-  context,
-  onToggle,
-}: Readonly<ControlParts & { onToggle: () => void }>): ReactNode {
-  return (
-    <button
-      aria-hidden="true"
-      className={joinClasses(context.isStyled && styles.chevron, classNames?.chevron)}
-      data-plume-select-chevron=""
-      disabled={context.disabled}
-      onClick={onToggle}
-      onMouseDown={(event) => event.preventDefault()}
-      tabIndex={-1}
-      type="button"
-    >
-      <ChevronDownIcon />
-    </button>
   )
 }
 
@@ -200,8 +76,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       children,
-      className = '',
-      classNames,
+      className,
       display = 'chips',
       maxDisplay = Number.POSITIVE_INFINITY,
       placeholder,
@@ -212,62 +87,52 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
     const context = useSelectContext('SelectTrigger')
     const button = useRef<HTMLButtonElement>(null)
     const labelledBy = useLabelledBy(context, ariaLabel, ariaLabelledby)
-    const { isStyled, name, open } = context
+    const { close, open, setOpen } = context
+    const composed = hasPart(children, TRIGGER_PARTS)
     const showChips = context.multiple && display === 'chips' && children === undefined
     const colorVars = {
       '--select-color': `var(--plume-color-${context.colorScheme}-text)`,
       ...style,
     } as CSSProperties
+    const buttonRef = useMemo(() => mergeRefs<HTMLButtonElement>(button, ref), [ref])
 
-    const toggle = (): void => {
-      button.current?.focus()
-      if (open) context.close(false)
-      else context.setOpen(true)
-    }
+    const triggerContext = useMemo(() => {
+      const toggle = (): void => {
+        button.current?.focus()
+        if (open) close(false)
+        else setOpen(true)
+      }
+      return { ariaLabel, buttonRef, display, labelledBy, maxDisplay, placeholder, toggle }
+    }, [ariaLabel, buttonRef, close, display, labelledBy, maxDisplay, open, placeholder, setOpen])
 
     return (
-      <div
-        className={controlClasses(context, className)}
-        data-open={open ? '' : undefined}
-        data-plume-select-control=""
-        ref={context.setTrigger}
-        style={colorVars}
-      >
+      <SelectTriggerContext.Provider value={triggerContext}>
         <div
-          className={joinClasses(isStyled && styles.field, classNames?.field)}
-          data-plume-select-field=""
+          className={controlClasses(context, className)}
+          data-disabled={context.disabled ? '' : undefined}
+          data-invalid={context.invalid ? '' : undefined}
+          data-open={open ? '' : undefined}
+          data-plume-select-control=""
+          ref={context.setTrigger}
+          style={colorVars}
         >
-          {showChips ? (
-            <Chips classNames={classNames} context={context} maxDisplay={maxDisplay} />
-          ) : null}
-          <ComboboxButton
-            ariaLabel={ariaLabel}
-            classNames={classNames}
-            context={context}
-            labelledBy={labelledBy}
-            placeholder={placeholder}
-            ref={mergeRefs<HTMLButtonElement>(button, ref)}
-            showChips={showChips}
-          >
-            {children}
-          </ComboboxButton>
+          {composed ? (
+            children
+          ) : (
+            <>
+              <SelectField>
+                {showChips ? <SelectChips /> : null}
+                <SelectCombobox>{children}</SelectCombobox>
+              </SelectField>
+              <SelectClear />
+              <SelectChevron />
+              <SelectHidden />
+            </>
+          )}
         </div>
-        {context.canClear && context.selected.length > 0 ? (
-          <ClearButton classNames={classNames} context={context} />
-        ) : null}
-        <ChevronButton classNames={classNames} context={context} onToggle={toggle} />
-        {name ? <HiddenInputs name={name} /> : null}
-      </div>
+      </SelectTriggerContext.Provider>
     )
   },
 )
-
-function HiddenInputs({ name }: Readonly<{ name: string }>): ReactNode {
-  const { multiple, selected } = useSelectContext('SelectTrigger')
-  if (multiple) {
-    return selected.map((value) => <input key={value} name={name} type="hidden" value={value} />)
-  }
-  return <input name={name} type="hidden" value={selected[0] ?? ''} />
-}
 
 SelectTrigger.displayName = 'SelectTrigger'

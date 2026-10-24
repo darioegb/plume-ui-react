@@ -1,38 +1,57 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
+import { forwardRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import { Button } from '../../interaction/button'
 import styles from './picker-trigger.module.css'
 
-export interface PickerTriggerProps {
+export interface PickerTriggerOwnProps {
+  className?: string
   disabled: boolean
   icon: ReactNode
   label: string
   onClick: () => void
   open: boolean
+  style?: CSSProperties
   unstyled?: boolean
 }
 
-export function PickerTrigger({
-  disabled,
-  icon,
-  label,
-  onClick,
-  open,
-  unstyled = false,
-}: Readonly<PickerTriggerProps>): ReactNode {
-  return (
+export type PickerTriggerProps = PickerTriggerOwnProps &
+  Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'id' | 'title'>
+
+export const PickerTrigger = forwardRef<HTMLButtonElement, PickerTriggerProps>(
+  (
+    {
+      className,
+      disabled,
+      icon,
+      label,
+      onClick,
+      open,
+      style,
+      unstyled = false,
+      ...rest
+    }: Readonly<PickerTriggerProps>,
+    ref: ForwardedRef<HTMLButtonElement>,
+  ): ReactNode => (
     <Button
       aria-expanded={open}
       aria-haspopup="dialog"
       aria-label={label}
-      className={unstyled ? `${styles.trigger} ${styles.floating}` : styles.trigger}
+      className={joinClasses(styles.trigger, unstyled && styles.floating, className)}
+      data-open={open ? '' : undefined}
       disabled={disabled}
       onClick={onClick}
+      ref={ref}
       shape="pill"
+      style={style}
       variant="icon"
+      {...rest}
     >
       {icon}
     </Button>
-  )
-}
+  ),
+)
+
+PickerTrigger.displayName = 'PickerTrigger'

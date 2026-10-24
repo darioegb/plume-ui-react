@@ -1,50 +1,51 @@
 'use client'
 
 import type { ForwardedRef, ReactNode } from 'react'
-import { forwardRef, useId } from 'react'
+import { forwardRef, useId, useMemo } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import { useSelectContext } from './select-context'
+import { SelectGroupContext } from './select-group-context'
+import { SelectGroupLabel } from './select-group-label'
+import { hasPart } from './select-parts'
 import styles from './select.module.css'
-
-export type SelectGroupPart = 'label'
 
 export interface SelectGroupOwnProps {
   children?: ReactNode
-  label: ReactNode
-  classNames?: Partial<Record<SelectGroupPart, string>>
+  label?: ReactNode
 }
 
 export type SelectGroupProps = Omit<ComponentProps, 'index'> & SelectGroupOwnProps
 
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   (
-    { children, className = '', classNames, label, style }: SelectGroupProps,
+    { children, className, label, style }: SelectGroupProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const { isStyled } = useSelectContext('SelectGroup')
     const labelId = useId()
-    const classes = [isStyled && styles.group, className].filter(Boolean).join(' ')
+    const groupContext = useMemo(() => ({ labelId }), [labelId])
 
     return (
-      <div
-        aria-labelledby={labelId}
-        className={classes || undefined}
-        ref={ref}
-        role="group"
-        style={style}
-      >
+      <SelectGroupContext.Provider value={groupContext}>
         <div
-          className={
-            [isStyled && styles.groupLabel, classNames?.label]
-              .filter(Boolean)
-              .join(' ') || undefined
-          }
-          id={labelId}
+          aria-labelledby={labelId}
+          className={joinClasses(isStyled && styles.group, className)}
+          data-plume-select-group=""
+          ref={ref}
+          role="group"
+          style={style}
         >
-          {label}
+          {hasPart(children, [SelectGroupLabel]) ? (
+            children
+          ) : (
+            <>
+              <SelectGroupLabel>{label}</SelectGroupLabel>
+              {children}
+            </>
+          )}
         </div>
-        {children}
-      </div>
+      </SelectGroupContext.Provider>
     )
   },
 )

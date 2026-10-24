@@ -1,19 +1,26 @@
 'use client'
 
-import type { KeyboardEvent, ReactNode } from 'react'
-import { useEffect, useRef } from 'react'
+import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react'
+import { Fragment, useEffect, useMemo, useRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
+import { mergeRefs } from '../../../overlay/trigger'
+import { TimeColumnContext, type TimeColumnContextValue } from './time-column-context'
+import { TimePickerOption, type TimePickerOptionData } from './timepicker-option'
+import { useTimePicker } from './use-timepicker'
 import styles from './timepicker.module.css'
 
-export interface TimeOption<T extends number | string> {
-  label: string
-  value: T
-}
+export type TimeColumnKind = 'hours' | 'minutes' | 'period'
 
 export interface TimeColumnProps<T extends number | string> {
+  children?: (option: TimePickerOptionData<T>) => ReactNode
+  className?: string
+  columnRef?: Ref<HTMLDivElement>
+  kind: TimeColumnKind
   label: string
   onSelect: (value: T) => void
-  options: TimeOption<T>[]
+  options: TimePickerOptionData<T>[]
   selected?: T
+  style?: CSSProperties
 }
 
 const KEY_TARGETS: Record<string, (index: number, last: number) => number> = {
@@ -23,12 +30,27 @@ const KEY_TARGETS: Record<string, (index: number, last: number) => number> = {
   Home: () => 0,
 }
 
+const focusOption = (event: KeyboardEvent<HTMLButtonElement>): void => {
+  const move = KEY_TARGETS[event.key]
+  const list = event.currentTarget.closest('[role="listbox"]')
+  if (!move || !list) return
+  const buttons = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="option"]'))
+  event.preventDefault()
+  buttons[move(buttons.indexOf(event.currentTarget), buttons.length - 1)].focus()
+}
+
 export function TimeColumn<T extends number | string>({
+  children,
+  className,
+  columnRef,
+  kind,
   label,
   onSelect,
   options,
   selected,
+  style,
 }: Readonly<TimeColumnProps<T>>): ReactNode {
+  const { variant } = useTimePicker('TimePickerColumn')
   const list = useRef<HTMLDivElement>(null)
   const tabStop = options.some((option) => option.value === selected) ? selected : options[0]?.value
 
@@ -40,35 +62,37 @@ export function TimeColumn<T extends number | string>({
     }
   }, [])
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>): void => {
-    const move = KEY_TARGETS[event.key]
-    const list = event.currentTarget.parentElement
-    if (!move || !list) return
-    const buttons = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="option"]'))
-    event.preventDefault()
-    buttons[move(buttons.indexOf(event.currentTarget), buttons.length - 1)].focus()
-  }
+  const context = useMemo<TimeColumnContextValue>(
+    () => ({
+      isSelected: (value) => value === selected,
+      isTabStop: (value) => value === tabStop,
+      onKeyDown: focusOption,
+      select: (value) => {
+        onSelect(value as T)
+      },
+    }),
+    [onSelect, selected, tabStop],
+  )
 
   return (
-    <div aria-label={label} className={styles.column} ref={list} role="listbox">
-      {options.map((option) => (
-        <button
-          aria-selected={option.value === selected}
-          className={
-            option.value === selected ? `${styles.option} ${styles.selected}` : styles.option
-          }
-          key={option.value}
-          onClick={() => {
-            onSelect(option.value)
-          }}
-          onKeyDown={handleKeyDown}
-          role="option"
-          tabIndex={option.value === tabStop ? 0 : -1}
-          type="button"
-        >
-          {option.label}
-        </button>
-      ))}
-    </div>
+    <TimeColumnContext.Provider value={context}>
+      <div
+        aria-label={label}
+        className={joinClasses(variant !== 'unstyled' && styles.column, className)}
+        data-plume-timepicker-column=""
+        ref={mergeRefs<HTMLDivElement>(list, columnRef)}
+        role="listbox"
+        style={style}
+        {...{ [`data-plume-timepicker-${kind}`]: '' }}
+      >
+        {options.map((option) =>
+          children ? (
+            <Fragment key={option.value}>{children(option)}</Fragment>
+          ) : (
+            <TimePickerOption key={option.value} option={option} />
+          ),
+        )}
+      </div>
+    </TimeColumnContext.Provider>
   )
 }

@@ -5,9 +5,25 @@ import { Button } from '../../../interaction/button'
 import { Field } from '../../field'
 import {
   Select,
+  SelectChevron,
+  SelectChip,
+  SelectChips,
+  SelectClear,
+  SelectCombobox,
   SelectContent,
+  SelectEmpty,
+  SelectField,
   SelectGroup,
+  SelectGroupLabel,
+  SelectList,
   SelectOption,
+  SelectOptionBody,
+  SelectOptionCheck,
+  SelectOptionDescription,
+  SelectOptionIcon,
+  SelectOptionText,
+  SelectSearch,
+  SelectSearchInput,
   SelectTrigger,
   type SelectProps,
 } from '..'
@@ -104,11 +120,27 @@ function Example({
  *
  * | Component | Props |
  * | --- | --- |
- * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `aria-label`, `aria-labelledby`, `classNames`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button; `classNames` styles its parts (`field`, `trigger`, `chip`, `chipRemove`, `clear` and `chevron`); the chips are `Chip` components, and `chip` and `chipRemove` go to the chip and to its remove button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. |
- * | `SelectValue` | `placeholder`, `children`. What the button of the trigger shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectTrigger` renders one by default; use your own to render the value yourself with a function of the chosen options. |
- * | `SelectContent` | `searchPlaceholder`, `aria-label`, `classNames`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. `classNames` styles its parts (`search`, `searchInput`, `list` and `empty`). |
- * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `classNames`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). `classNames` styles `icon`, `description` and `check`, the mark at the end of a chosen option, in a single and in a `multiple` select. The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
- * | `SelectGroup` | `label`, `classNames.label`, `className`, `style`, `children`. A titled set of options. It hides itself when the search leaves it empty. |
+ * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `aria-label`, `aria-labelledby`, `className`, `style`, `children`. The control the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the control and `ref` to its button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. Given no `children`, it renders `SelectField` (with `SelectChips` for a `multiple` select and `SelectCombobox`), `SelectClear`, `SelectChevron` and `SelectHidden`; given those parts, it renders them in the order you write them. `children` that are not parts (a `SelectValue`) are the content of the `SelectCombobox`. |
+ * | `SelectField` | `className`, `style`, `children`. The row that holds the chips and the combobox. |
+ * | `SelectChips` | `children`, `maxDisplay`, `overflow`. The chips of a `multiple` select: no element of its own. `children` is a function of each chosen option that returns the chip (`(option) => <SelectChip className="..." option={option} />`) and `overflow` a function of the hidden count for the `+N` chip. |
+ * | `SelectChip` | `option`, `className`, `style`, `children`. A `Chip`. With an `option` it has a button that removes it; without one it is a plain chip, like the `+N`. Its remove button is styled through the `Chip` for now. |
+ * | `SelectCombobox` | `placeholder`, `className`, `style`, `children`. The button with `role="combobox"`. Its `children` replace what it shows. |
+ * | `SelectValue` | `placeholder`, `children`. What the combobox shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectCombobox` renders one by default; use your own to render the value yourself with a function of the chosen options. It is made of `SelectPlaceholder`, `SelectValueOption`, `SelectValueIcon` and `SelectValueText`, which take `className` and `style`. |
+ * | `SelectClear` | `className`, `style`, `children`. The button that clears the value. It renders nothing when the select is not `clearable` or has no value. |
+ * | `SelectChevron` | `className`, `style`, `children`. The button with the arrow. `children` replace the arrow. |
+ * | `SelectHidden` | `name`, `form`. The hidden inputs that carry the value in a form. It renders nothing without a `name`. |
+ * | `SelectContent` | `searchPlaceholder`, `aria-label`, `className`, `style`, `children`. The panel. It is as wide as the trigger and scrolls when it is long. Given `children` that are not parts, they are the options of a `SelectList`; given `SelectSearch`, `SelectList` or `SelectEmpty` it renders them as written. |
+ * | `SelectSearch` | `className`, `style`, `children`. The box around the search input. It renders nothing when the select is not `searchable`. |
+ * | `SelectSearchInput` | `placeholder`, `className`, `style`. The search input. |
+ * | `SelectList` | `aria-label`, `className`, `style`, `children`. The listbox that holds the options. |
+ * | `SelectEmpty` | `className`, `style`, `children`. The message when the search finds nothing. `children` replace the text of `labels.empty`. |
+ * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `className`, `style`, `children`. An option. Its `children` are its text, or, given `SelectOptionIcon`, `SelectOptionBody`, `SelectOptionText`, `SelectOptionDescription` or `SelectOptionCheck`, its parts as written. `label` is the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
+ * | `SelectOptionIcon`, `SelectOptionText`, `SelectOptionDescription`, `SelectOptionCheck` | `className`, `style`, `children`. The icon, the text, the description and the mark of a chosen option, in a single and in a `multiple` select. The icon and the description show the `icon` and `description` props of the option unless you give `children`. |
+ * | `SelectOptionBody` | `className`, `style`, `children`. The column that holds the text and the description. |
+ * | `SelectGroup` | `label`, `className`, `style`, `children`. A titled set of options. Given a `SelectGroupLabel` it renders it where you put it. It hides itself when the search leaves it empty. |
+ * | `SelectGroupLabel` | `className`, `style`, `children`. The title of a group. |
+ *
+ * Every part takes `className`, `style` and `ref`, carries a `data-plume-select-<part>` attribute, and with `variant="unstyled"` it has no Plume class.
  */
 export default {
   title: 'Components/Select',
@@ -323,12 +355,13 @@ export const Variants: Story = {
         <SelectTrigger
           aria-label="Unstyled"
           className="w-full rounded border border-border bg-surface px-3 py-2 text-foreground"
-          classNames={{
-            chevron: 'text-[var(--plume-muted)]',
-            trigger: 'data-[placeholder]:text-[var(--plume-muted)]',
-          }}
           placeholder="Unstyled"
-        />
+        >
+          <SelectField>
+            <SelectCombobox className="data-[placeholder]:text-[var(--plume-muted)]" />
+          </SelectField>
+          <SelectChevron className="text-[var(--plume-muted)]" />
+        </SelectTrigger>
         <SelectContent className="rounded border border-border bg-surface p-1 text-foreground shadow">
           {fruits.map((fruit) => (
             <SelectOption
@@ -657,7 +690,7 @@ export const WithField: Story = {
 }
 
 /**
- * Some examples of Select with Tailwind classes. With `variant="unstyled"` the select has none of the Plume classes: `className` styles the field, `classNames` its parts and the parts of the list and of the options, and the option the arrows are on has `data-active`, so `data-[active]:` styles it, as `aria-selected:` and `aria-disabled:` do for the chosen and the disabled ones.
+ * Some examples of Select with Tailwind classes. With `variant="unstyled"` the select has none of the Plume classes: `className` styles the control, each part takes its own `className`, and the option the arrows are on has `data-active`, so `data-[active]:` styles it, as `aria-selected:` and `aria-disabled:` do for the chosen and the disabled ones.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -668,18 +701,24 @@ export const Tailwind: Story = {
     <SelectTrigger
       aria-label="Fruit"
       className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
-      classNames={{ chevron: "text-[var(--plume-muted)]", trigger: "data-[placeholder]:text-[var(--plume-muted)]" }}
       placeholder="Pick a fruit"
-    />
+    >
+      <SelectField>
+        <SelectCombobox className="data-[placeholder]:text-[var(--plume-muted)]" />
+      </SelectField>
+      <SelectChevron className="text-[var(--plume-muted)]" />
+    </SelectTrigger>
     <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
       {fruits.map((fruit) => (
         <SelectOption
           className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
-          classNames={{ check: "text-blue-600" }}
           key={fruit}
           value={fruit.toLowerCase()}
         >
-          {fruit}
+          <SelectOptionBody>
+            <SelectOptionText>{fruit}</SelectOptionText>
+          </SelectOptionBody>
+          <SelectOptionCheck className="text-blue-600" />
         </SelectOption>
       ))}
     </SelectContent>
@@ -695,34 +734,41 @@ export const Tailwind: Story = {
     <SelectTrigger
       aria-label="Fruits"
       className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
-      classNames={{
-        chevron: "text-[var(--plume-muted)]",
-        chip: "rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900",
-        chipRemove: "ml-1 rounded-full hover:bg-emerald-200",
-        clear: "mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground",
-        trigger: "px-1 data-[placeholder]:text-[var(--plume-muted)]",
-      }}
       placeholder="Search fruits"
-    />
-    <SelectContent
-      className="rounded-lg border border-border bg-surface shadow-lg"
-      classNames={{
-        empty: "p-3 text-center text-sm text-[var(--plume-muted)]",
-        list: "p-1",
-        search: "border-b border-border p-2",
-        searchInput: "w-full rounded border border-border bg-transparent px-2 py-1 text-sm",
-      }}
     >
-      {fruits.map((fruit) => (
-        <SelectOption
-          className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
-          classNames={{ check: "text-emerald-600" }}
-          key={fruit}
-          value={fruit.toLowerCase()}
-        >
-          {fruit}
-        </SelectOption>
-      ))}
+      <SelectField>
+        <SelectChips>
+          {(chosen) => (
+            <SelectChip
+              className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 [&>button]:ml-1 [&>button]:rounded-full hover:[&>button]:bg-emerald-200"
+              option={chosen}
+            />
+          )}
+        </SelectChips>
+        <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
+      </SelectField>
+      <SelectClear className="mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground" />
+      <SelectChevron className="text-[var(--plume-muted)]" />
+    </SelectTrigger>
+    <SelectContent className="rounded-lg border border-border bg-surface shadow-lg">
+      <SelectSearch className="border-b border-border p-2">
+        <SelectSearchInput className="w-full rounded border border-border bg-transparent px-2 py-1 text-sm" />
+      </SelectSearch>
+      <SelectList className="p-1">
+        {fruits.map((fruit) => (
+          <SelectOption
+            className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+            key={fruit}
+            value={fruit.toLowerCase()}
+          >
+            <SelectOptionBody>
+              <SelectOptionText>{fruit}</SelectOptionText>
+            </SelectOptionBody>
+            <SelectOptionCheck className="text-emerald-600" />
+          </SelectOption>
+        ))}
+      </SelectList>
+      <SelectEmpty className="p-3 text-center text-sm text-[var(--plume-muted)]" />
     </SelectContent>
   </Select>
 </div>`,
@@ -735,21 +781,24 @@ export const Tailwind: Story = {
         <SelectTrigger
           aria-label="Fruit"
           className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
-          classNames={{
-            chevron: 'text-[var(--plume-muted)]',
-            trigger: 'data-[placeholder]:text-[var(--plume-muted)]',
-          }}
           placeholder="Pick a fruit"
-        />
+        >
+          <SelectField>
+            <SelectCombobox className="data-[placeholder]:text-[var(--plume-muted)]" />
+          </SelectField>
+          <SelectChevron className="text-[var(--plume-muted)]" />
+        </SelectTrigger>
         <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
           {fruits.map((fruit) => (
             <SelectOption
               className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
-              classNames={{ check: 'text-blue-600' }}
               key={fruit}
               value={fruit.toLowerCase()}
             >
-              {fruit}
+              <SelectOptionBody>
+                <SelectOptionText>{fruit}</SelectOptionText>
+              </SelectOptionBody>
+              <SelectOptionCheck className="text-blue-600" />
             </SelectOption>
           ))}
         </SelectContent>
@@ -765,36 +814,41 @@ export const Tailwind: Story = {
         <SelectTrigger
           aria-label="Fruits"
           className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
-          classNames={{
-            chevron: 'text-[var(--plume-muted)]',
-            chip: 'rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900',
-            chipRemove: 'ml-1 rounded-full hover:bg-emerald-200',
-            clear: 'mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground',
-            trigger: 'px-1 data-[placeholder]:text-[var(--plume-muted)]',
-          }}
           placeholder="Search fruits"
-        />
-        <SelectContent
-          className="rounded-lg border border-border bg-surface shadow-lg"
-          classNames={{
-            empty: 'p-3 text-center text-sm text-[var(--plume-muted)]',
-            list: 'p-1',
-            search: 'border-b border-border p-2',
-            searchInput: 'w-full rounded border border-border bg-transparent px-2 py-1 text-sm',
-          }}
         >
-          {fruits.map((fruit) => (
-            <SelectOption
-              className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
-              classNames={{
-                check: 'text-emerald-600',
-              }}
-              key={fruit}
-              value={fruit.toLowerCase()}
-            >
-              {fruit}
-            </SelectOption>
-          ))}
+          <SelectField>
+            <SelectChips>
+              {(chosen) => (
+                <SelectChip
+                  className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 [&>button]:ml-1 [&>button]:rounded-full hover:[&>button]:bg-emerald-200"
+                  option={chosen}
+                />
+              )}
+            </SelectChips>
+            <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
+          </SelectField>
+          <SelectClear className="mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground" />
+          <SelectChevron className="text-[var(--plume-muted)]" />
+        </SelectTrigger>
+        <SelectContent className="rounded-lg border border-border bg-surface shadow-lg">
+          <SelectSearch className="border-b border-border p-2">
+            <SelectSearchInput className="w-full rounded border border-border bg-transparent px-2 py-1 text-sm" />
+          </SelectSearch>
+          <SelectList className="p-1">
+            {fruits.map((fruit) => (
+              <SelectOption
+                className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+                key={fruit}
+                value={fruit.toLowerCase()}
+              >
+                <SelectOptionBody>
+                  <SelectOptionText>{fruit}</SelectOptionText>
+                </SelectOptionBody>
+                <SelectOptionCheck className="text-emerald-600" />
+              </SelectOption>
+            ))}
+          </SelectList>
+          <SelectEmpty className="p-3 text-center text-sm text-[var(--plume-muted)]" />
         </SelectContent>
       </Select>
     </div>
@@ -802,7 +856,7 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of Select with Bootstrap classes: `form-control d-flex` on the field (`form-control` is `display: block`), `dropdown-menu show` and `dropdown-item` on the list and its options, and `badge` for the chips. The option the arrows are on has `data-active`, which Bootstrap does not know, so a rule styles it.
+ * Some examples of Select with Bootstrap classes: `form-control d-flex` on the control (`form-control` is `display: block`), `dropdown-menu show` and `dropdown-item` on the panel and its options, and `badge` for the chips. The option the arrows are on has `data-active`, which Bootstrap does not know, so a rule styles it.
  */
 export const Bootstrap: Story = {
   parameters: {
@@ -814,18 +868,20 @@ export const Bootstrap: Story = {
     <SelectTrigger
       aria-label="Fruit"
       className="form-control d-flex align-items-center ps-3 pe-0"
-      classNames={{ chevron: "px-3 text-body-secondary", trigger: "bg-transparent border-0 p-0" }}
       placeholder="Pick a fruit"
-    />
+    >
+      <SelectField>
+        <SelectCombobox className="bg-transparent border-0 p-0" />
+      </SelectField>
+      <SelectChevron className="px-3 text-body-secondary" />
+    </SelectTrigger>
     <SelectContent className="dropdown-menu show p-1">
       {fruits.map((fruit) => (
-        <SelectOption
-          className="dropdown-item rounded"
-          classNames={{ check: "text-primary" }}
-          key={fruit}
-          value={fruit.toLowerCase()}
-        >
-          {fruit}
+        <SelectOption className="dropdown-item rounded" key={fruit} value={fruit.toLowerCase()}>
+          <SelectOptionBody>
+            <SelectOptionText>{fruit}</SelectOptionText>
+          </SelectOptionBody>
+          <SelectOptionCheck className="text-primary" />
         </SelectOption>
       ))}
     </SelectContent>
@@ -834,24 +890,29 @@ export const Bootstrap: Story = {
     <SelectTrigger
       aria-label="Fruits"
       className="form-control d-flex align-items-center ps-2 pe-0"
-      classNames={{
-        chevron: "px-3 text-body-secondary",
-        chip: "badge text-bg-primary fw-normal",
-        chipRemove: "ms-1 text-white",
-        clear: "btn btn-sm border-0 text-body-secondary",
-        trigger: "bg-transparent border-0 p-1",
-      }}
       placeholder="Pick fruits"
-    />
+    >
+      <SelectField>
+        <SelectChips>
+          {(chosen) => (
+            <SelectChip
+              className="badge text-bg-primary fw-normal [&>button]:ms-1 [&>button]:text-white"
+              option={chosen}
+            />
+          )}
+        </SelectChips>
+        <SelectCombobox className="bg-transparent border-0 p-1" />
+      </SelectField>
+      <SelectClear className="btn btn-sm border-0 text-body-secondary" />
+      <SelectChevron className="px-3 text-body-secondary" />
+    </SelectTrigger>
     <SelectContent className="dropdown-menu show p-1">
       {fruits.map((fruit) => (
-        <SelectOption
-          className="dropdown-item rounded"
-          classNames={{ check: "ms-auto text-success" }}
-          key={fruit}
-          value={fruit.toLowerCase()}
-        >
-          {fruit}
+        <SelectOption className="dropdown-item rounded" key={fruit} value={fruit.toLowerCase()}>
+          <SelectOptionBody>
+            <SelectOptionText>{fruit}</SelectOptionText>
+          </SelectOptionBody>
+          <SelectOptionCheck className="ms-auto text-success" />
         </SelectOption>
       ))}
     </SelectContent>
@@ -867,21 +928,24 @@ export const Bootstrap: Story = {
         <SelectTrigger
           aria-label="Fruit"
           className="form-control d-flex align-items-center ps-3 pe-0"
-          classNames={{
-            chevron: 'px-3 text-body-secondary',
-            trigger: 'bg-transparent border-0 p-0',
-          }}
           placeholder="Pick a fruit"
-        />
+        >
+          <SelectField>
+            <SelectCombobox className="bg-transparent border-0 p-0" />
+          </SelectField>
+          <SelectChevron className="px-3 text-body-secondary" />
+        </SelectTrigger>
         <SelectContent className="dropdown-menu show p-1">
           {fruits.map((fruit) => (
             <SelectOption
               className="dropdown-item rounded"
-              classNames={{ check: 'text-primary' }}
               key={fruit}
               value={fruit.toLowerCase()}
             >
-              {fruit}
+              <SelectOptionBody>
+                <SelectOptionText>{fruit}</SelectOptionText>
+              </SelectOptionBody>
+              <SelectOptionCheck className="text-primary" />
             </SelectOption>
           ))}
         </SelectContent>
@@ -890,28 +954,117 @@ export const Bootstrap: Story = {
         <SelectTrigger
           aria-label="Fruits"
           className="form-control d-flex align-items-center ps-2 pe-0"
-          classNames={{
-            chevron: 'px-3 text-body-secondary',
-            chip: 'badge text-bg-primary fw-normal',
-            chipRemove: 'ms-1 text-white',
-            clear: 'btn btn-sm border-0 text-body-secondary',
-            trigger: 'bg-transparent border-0 p-1',
-          }}
           placeholder="Pick fruits"
-        />
+        >
+          <SelectField>
+            <SelectChips>
+              {(chosen) => (
+                <SelectChip
+                  className="badge text-bg-primary fw-normal [&>button]:ms-1 [&>button]:text-white"
+                  option={chosen}
+                />
+              )}
+            </SelectChips>
+            <SelectCombobox className="bg-transparent border-0 p-1" />
+          </SelectField>
+          <SelectClear className="btn btn-sm border-0 text-body-secondary" />
+          <SelectChevron className="px-3 text-body-secondary" />
+        </SelectTrigger>
         <SelectContent className="dropdown-menu show p-1">
           {fruits.map((fruit) => (
             <SelectOption
               className="dropdown-item rounded"
-              classNames={{ check: 'ms-auto text-success' }}
               key={fruit}
               value={fruit.toLowerCase()}
             >
-              {fruit}
+              <SelectOptionBody>
+                <SelectOptionText>{fruit}</SelectOptionText>
+              </SelectOptionBody>
+              <SelectOptionCheck className="ms-auto text-success" />
             </SelectOption>
           ))}
         </SelectContent>
       </Select>
     </div>
+  ),
+}
+
+/**
+ * Every element of the Select is a part you can place yourself. Here the arrow comes first, the group has its own
+ * title, and the options show their icon, their text and their description in the order written. A part you leave
+ * out is not rendered (this one has no clear button and no hidden input), and one you give `children` shows them
+ * instead of its default content.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Select defaultValue="ada" searchable>
+  <SelectTrigger aria-label="Person" placeholder="Pick a person">
+    <SelectChevron />
+    <SelectField>
+      <SelectCombobox />
+    </SelectField>
+  </SelectTrigger>
+  <SelectContent>
+    <SelectSearch>
+      <SelectSearchInput placeholder="Find a person" />
+    </SelectSearch>
+    <SelectList>
+      <SelectGroup>
+        <SelectGroupLabel>People</SelectGroupLabel>
+        {people.map((person) => (
+          <SelectOption key={person.value} value={person.value} icon={person.icon} description={person.description}>
+            <SelectOptionIcon />
+            <SelectOptionBody>
+              <SelectOptionText>{person.name}</SelectOptionText>
+              <SelectOptionDescription />
+            </SelectOptionBody>
+            <SelectOptionCheck />
+          </SelectOption>
+        ))}
+      </SelectGroup>
+    </SelectList>
+    <SelectEmpty>Nobody with that name</SelectEmpty>
+  </SelectContent>
+</Select>`,
+      },
+    },
+  },
+  render: () => (
+    <Select defaultValue="ada" searchable>
+      <SelectTrigger aria-label="Person" placeholder="Pick a person">
+        <SelectChevron />
+        <SelectField>
+          <SelectCombobox />
+        </SelectField>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectSearch>
+          <SelectSearchInput placeholder="Find a person" />
+        </SelectSearch>
+        <SelectList>
+          <SelectGroup>
+            <SelectGroupLabel>People</SelectGroupLabel>
+            {people.map((person) => (
+              <SelectOption
+                description={person.description}
+                icon={person.icon}
+                key={person.value}
+                value={person.value}
+              >
+                <SelectOptionIcon />
+                <SelectOptionBody>
+                  <SelectOptionText>{person.name}</SelectOptionText>
+                  <SelectOptionDescription />
+                </SelectOptionBody>
+                <SelectOptionCheck />
+              </SelectOption>
+            ))}
+          </SelectGroup>
+        </SelectList>
+        <SelectEmpty>Nobody with that name</SelectEmpty>
+      </SelectContent>
+    </Select>
   ),
 }

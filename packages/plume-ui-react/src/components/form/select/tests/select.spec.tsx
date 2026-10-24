@@ -4,11 +4,32 @@ import { createRef, useState } from 'react'
 import { Field } from '../../field'
 import {
   Select,
+  SelectChevron,
+  SelectChip,
+  SelectChips,
+  SelectClear,
+  SelectCombobox,
   SelectContent,
+  SelectEmpty,
+  SelectField,
   SelectGroup,
+  SelectGroupLabel,
+  SelectHidden,
+  SelectList,
   SelectOption,
+  SelectOptionBody,
+  SelectOptionCheck,
+  SelectOptionDescription,
+  SelectOptionIcon,
+  SelectOptionText,
+  SelectPlaceholder,
+  SelectSearch,
+  SelectSearchInput,
   SelectTrigger,
   SelectValue,
+  SelectValueIcon,
+  SelectValueOption,
+  SelectValueText,
   type SelectProps,
 } from '..'
 
@@ -983,143 +1004,404 @@ describe('Select component', () => {
 
   describe('usage', () => {
     it.each([
-      ['SelectTrigger', <SelectTrigger key="a" />],
-      ['SelectContent', <SelectContent key="b">x</SelectContent>],
+      ['SelectTrigger', 'Select', <SelectTrigger key="a" />],
+      ['SelectContent', 'Select', <SelectContent key="b">x</SelectContent>],
       [
         'SelectOption',
+        'Select',
         <SelectOption key="c" value="a">
           x
         </SelectOption>,
       ],
-      ['SelectGroup', <SelectGroup key="d" label="x" />],
-      ['SelectValue', <SelectValue key="e" />],
-    ])('throws when %s is outside of a Select', (name, part) => {
+      ['SelectGroup', 'Select', <SelectGroup key="d" label="x" />],
+      ['SelectValue', 'Select', <SelectValue key="e" />],
+      ['SelectField', 'Select', <SelectField key="f" />],
+      ['SelectGroupLabel', 'Select', <SelectGroupLabel key="g">x</SelectGroupLabel>],
+      ['SelectOptionText', 'SelectOption', <SelectOptionText key="h" />],
+    ])('throws when %s is outside of its root', (name, root, part) => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
-      expect(() => render(part)).toThrow(`${name} must be used within a <Select>`)
+      expect(() => render(part)).toThrow(`${name} must be used within a <${root}>`)
+      error.mockRestore()
+    })
+
+    it.each([
+      ['SelectChevron', <SelectChevron key="a" />, 'SelectTrigger'],
+      ['SelectCombobox', <SelectCombobox key="b" />, 'SelectTrigger'],
+      ['SelectChips', <SelectChips key="c" />, 'SelectTrigger'],
+      ['SelectList', <SelectList key="d" />, 'SelectContent'],
+      ['SelectSearchInput', <SelectSearchInput key="e" />, 'SelectContent'],
+    ])('throws when %s is inside a Select but outside %s', (name, part, parent) => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(<Select>{part}</Select>)).toThrow(
+        `${name} must be used within a <${parent}>`,
+      )
       error.mockRestore()
     })
   })
 
-  describe('classNames', () => {
-    function Parts({ variant }: Readonly<{ variant?: 'unstyled' }>): React.ReactNode {
+  describe('parts', () => {
+    function Composed({ variant }: Readonly<{ variant?: 'unstyled' }>): React.ReactNode {
       return (
         <Select clearable defaultValue={['apple']} multiple searchable variant={variant}>
-          <SelectTrigger
-            aria-label="Fruit"
-            classNames={{
-              chevron: 'my-chevron',
-              chip: 'my-chip',
-              chipRemove: 'my-remove',
-              clear: 'my-clear',
-              field: 'my-field',
-              trigger: 'my-trigger',
-            }}
-            maxDisplay={1}
-          />
-          <SelectContent
-            classNames={{
-              empty: 'my-empty',
-              list: 'my-list',
-              search: 'my-search',
-              searchInput: 'my-search-input',
-            }}
-          >
-            <SelectGroup classNames={{ label: 'my-group-label' }} label="Fruits">
-              <SelectOption
-                classNames={{
-                  check: 'my-check',
-                  description: 'my-description',
-                  icon: 'my-icon',
-                }}
-                description="Red"
-                icon={<i />}
-                value="apple"
-              >
-                Apple
-              </SelectOption>
-              <SelectOption value="banana">Banana</SelectOption>
-            </SelectGroup>
+          <SelectTrigger aria-label="Fruit" maxDisplay={1}>
+            <SelectField className="my-field">
+              <SelectChips />
+              <SelectCombobox className="my-combobox" />
+            </SelectField>
+            <SelectClear className="my-clear" />
+            <SelectChevron className="my-chevron" />
+            <SelectHidden name="fruits" />
+          </SelectTrigger>
+          <SelectContent className="my-panel">
+            <SelectSearch className="my-search">
+              <SelectSearchInput className="my-search-input" placeholder="Find" />
+            </SelectSearch>
+            <SelectList className="my-list">
+              <SelectGroup>
+                <SelectGroupLabel className="my-group-label">Fruits</SelectGroupLabel>
+                <SelectOption description="Red" icon={<i data-testid="icon" />} value="apple">
+                  <SelectOptionIcon className="my-icon" />
+                  <SelectOptionBody className="my-body">
+                    <SelectOptionText className="my-text">Apple</SelectOptionText>
+                    <SelectOptionDescription className="my-description" />
+                  </SelectOptionBody>
+                  <SelectOptionCheck className="my-check" />
+                </SelectOption>
+                <SelectOption value="banana">Banana</SelectOption>
+              </SelectGroup>
+            </SelectList>
+            <SelectEmpty className="my-empty" />
           </SelectContent>
         </Select>
       )
     }
 
     it('adds a class to each part', async () => {
-      render(<Parts />)
+      render(<Composed />)
       await userEvent.click(trigger())
       await userEvent.keyboard('zz')
-      expect(trigger()).toHaveClass('trigger', 'my-trigger')
+      expect(trigger()).toHaveClass('trigger', 'my-combobox')
       expect(trigger().parentElement).toHaveClass('field', 'my-field')
-      expect(screen.getByRole('button', { name: 'Remove Apple' })).toHaveClass('my-remove')
-      expect(screen.getByRole('button', { name: 'Clear' })).toHaveClass('my-clear')
+      expect(screen.getByRole('button', { name: 'Clear' })).toHaveClass('clear', 'my-clear')
       expect(control().querySelector('[data-plume-select-chevron]')).toHaveClass(
         'chevron',
         'my-chevron',
       )
-      expect(control().querySelector('[data-plume-chip]')).toHaveClass('chip', 'my-chip')
       expect(listbox()).toHaveClass('list', 'my-list')
-      expect(screen.getByRole('combobox', { name: 'Search' }).parentElement).toHaveClass(
-        'search',
-        'my-search',
-      )
-      expect(screen.getByRole('combobox', { name: 'Search' })).toHaveClass('my-search-input')
+      const search = screen.getByRole('combobox', { name: 'Search' })
+      expect(search).toHaveClass('searchInput', 'my-search-input')
+      expect(search).toHaveAttribute('placeholder', 'Find')
+      expect(search.parentElement).toHaveClass('search', 'my-search')
       expect(screen.getByText('No results')).toHaveClass('empty', 'my-empty')
       expect(screen.getByText('Fruits')).toHaveClass('groupLabel', 'my-group-label')
+      expect(document.querySelector('[data-plume-select-panel]')).toHaveClass('panel', 'my-panel')
     })
 
     it('adds a class to the parts of an option', async () => {
-      render(<Parts />)
+      render(<Composed />)
       await userEvent.click(trigger())
       const apple = screen.getByRole('option', { name: /Apple/ })
-      expect(apple.querySelector('.my-icon')).not.toBeNull()
-      expect(apple.querySelector('.my-description')).not.toBeNull()
+      expect(apple.querySelector('.my-icon')).toContainElement(within(apple).getByTestId('icon'))
+      expect(apple.querySelector('.my-body')).toHaveClass('optionBody')
+      expect(apple.querySelector('.my-text')).toHaveTextContent('Apple')
+      expect(apple.querySelector('.my-description')).toHaveTextContent('Red')
+      expect(apple.querySelector('.my-check')).toHaveClass('check')
+      expect(option('Banana').querySelector('[data-plume-select-option-check]')).toBeNull()
     })
 
-    it('marks a chosen option with the same check in a multiple select', async () => {
-      render(
-        <Select defaultValue={['apple']} multiple>
-          <SelectTrigger aria-label="Fruit" />
-          <SelectContent>
-            <SelectOption classNames={{ check: 'my-check' }} value="apple">
-              Apple
-            </SelectOption>
-            <SelectOption classNames={{ check: 'my-check' }} value="banana">
-              Banana
-            </SelectOption>
-          </SelectContent>
-        </Select>,
-      )
+    it('names the option by its text and its description', async () => {
+      render(<Composed />)
       await userEvent.click(trigger())
-      expect(option('Apple').querySelector('.my-check')).not.toBeNull()
-      expect(option('Banana').querySelector('.my-check')).toBeNull()
-      expect(option('Apple').querySelector('input')).toBeNull()
-    })
-
-    it('adds a class to the check of a single option', async () => {
-      render(
-        <Select defaultValue="apple">
-          <SelectTrigger aria-label="Fruit" />
-          <SelectContent>
-            <SelectOption classNames={{ check: 'my-check' }} value="apple">
-              Apple
-            </SelectOption>
-          </SelectContent>
-        </Select>,
-      )
-      await userEvent.click(trigger())
-      expect(option('Apple').querySelector('.my-check')).not.toBeNull()
+      const apple = screen.getByRole('option', { name: /Apple/ })
+      expect(apple).toHaveAttribute('aria-labelledby')
+      expect(apple).toHaveAccessibleName('Apple Red')
     })
 
     it('are the only classes of the parts when unstyled', async () => {
-      render(<Parts variant="unstyled" />)
+      render(<Composed variant="unstyled" />)
       await userEvent.click(trigger())
-      expect(trigger()).toHaveAttribute('class', 'my-trigger')
+      expect(trigger()).toHaveAttribute('class', 'my-combobox')
       expect(trigger().parentElement).toHaveAttribute('class', 'my-field')
-      expect(screen.getByRole('button', { name: 'Remove Apple' })).toHaveAttribute(
-        'class',
-        'my-remove',
-      )
       expect(listbox()).toHaveAttribute('class', 'my-list')
+      expect(screen.getByRole('button', { name: 'Clear' })).toHaveAttribute('class', 'my-clear')
+      const apple = screen.getByRole('option', { name: /Apple/ })
+      expect(apple.querySelector('.my-body')).toHaveAttribute('class', 'my-body')
+      expect(apple.querySelector('.my-check')).toHaveAttribute('class', 'my-check')
+    })
+
+    it('carries data attributes to be targeted from CSS', async () => {
+      render(<Composed />)
+      await userEvent.click(trigger())
+      for (const part of [
+        'control',
+        'field',
+        'combobox',
+        'chip',
+        'clear',
+        'chevron',
+        'hidden',
+        'panel',
+        'search',
+        'search-input',
+        'list',
+        'group',
+        'group-label',
+        'option',
+        'option-icon',
+        'option-body',
+        'option-text',
+        'option-description',
+        'option-check',
+      ]) {
+        expect(document.querySelector(`[data-plume-select-${part}]`), part).not.toBeNull()
+      }
+    })
+
+    it('puts the parts in the order they are written and omits the ones left out', () => {
+      render(
+        <Select defaultValue="apple">
+          <SelectTrigger aria-label="Fruit">
+            <SelectChevron />
+            <SelectField>
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const parts = Array.from(control().children).map((child) =>
+        child.hasAttribute('data-plume-select-chevron') ? 'chevron' : 'field',
+      )
+      expect(parts).toEqual(['chevron', 'field'])
+      expect(screen.queryByRole('button', { name: 'Clear' })).toBeNull()
+      expect(control().querySelector('input[type="hidden"]')).toBeNull()
+    })
+
+    it('renders the content of a replaced part', async () => {
+      render(
+        <Select defaultValue="apple">
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox>
+                <SelectValueOption option={{ label: 'Apple', value: 'apple' }}>
+                  <SelectValueIcon className="my-value-icon">*</SelectValueIcon>
+                  <SelectValueText className="my-value-text">Mine</SelectValueText>
+                </SelectValueOption>
+              </SelectCombobox>
+            </SelectField>
+            <SelectChevron>v</SelectChevron>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectSearch />
+            <SelectList>
+              <SelectOption value="apple">
+                <SelectOptionText>Apple</SelectOptionText>
+                <SelectOptionCheck>ok</SelectOptionCheck>
+              </SelectOption>
+            </SelectList>
+            <SelectEmpty>Nothing</SelectEmpty>
+          </SelectContent>
+        </Select>,
+      )
+      expect(trigger()).toHaveTextContent('*Mine')
+      expect(trigger().querySelector('.my-value-icon')).toHaveAttribute('aria-hidden', 'true')
+      expect(control().querySelector('[data-plume-select-chevron]')).toHaveTextContent('v')
+      await userEvent.click(trigger())
+      expect(option('Apple')).toHaveTextContent('Appleok')
+      expect(document.querySelector('[data-plume-select-search]')).toBeNull()
+    })
+
+    it('shows a placeholder part and a custom empty message', async () => {
+      render(
+        <Select searchable>
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox>
+                <SelectPlaceholder className="my-placeholder">Choose</SelectPlaceholder>
+              </SelectCombobox>
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectSearch>
+              <SelectSearchInput />
+            </SelectSearch>
+            <SelectList>
+              <SelectOption value="apple">Apple</SelectOption>
+            </SelectList>
+            <SelectEmpty>Nothing here</SelectEmpty>
+          </SelectContent>
+        </Select>,
+      )
+      expect(trigger().querySelector('.my-placeholder')).toHaveTextContent('Choose')
+      await userEvent.click(trigger())
+      await userEvent.keyboard('zz')
+      expect(screen.getByText('Nothing here')).toBeInTheDocument()
+    })
+
+    it('renders a chip of its own and the +N chip', () => {
+      render(
+        <Select defaultValue={['apple', 'banana']} multiple>
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectChip className="my-chip" option={{ label: 'Apple', value: 'apple' }} />
+              <SelectChip className="my-more">+1</SelectChip>
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(control().querySelector('.my-chip')).toHaveAttribute('data-plume-select-chip')
+      expect(control().querySelector('.my-more')).toHaveTextContent('+1')
+      expect(screen.getByRole('button', { name: 'Remove Apple' })).toBeInTheDocument()
+    })
+
+    it('renders no chips in a single select and lets SelectChips limit them itself', () => {
+      const { rerender } = render(
+        <Select defaultValue="apple">
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectChips />
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(chips()).toEqual([])
+      rerender(
+        <Select defaultValue={['apple', 'banana']} multiple>
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectChips maxDisplay={1} />
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(chips()).toEqual(['Apple'])
+    })
+
+    it('renders the chips with a function and a custom overflow', () => {
+      render(
+        <Select defaultValue={['apple', 'banana', 'date']} multiple>
+          <SelectTrigger aria-label="Fruit" maxDisplay={1}>
+            <SelectField>
+              <SelectChips
+                overflow={(hidden) => <SelectChip className="my-more">{hidden} more</SelectChip>}
+              >
+                {(chosen) => <SelectChip className="my-chip" option={chosen} />}
+              </SelectChips>
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+            <SelectOption value="date">Date</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(control().querySelectorAll('.my-chip')).toHaveLength(1)
+      expect(control().querySelector('.my-more')).toHaveTextContent('2 more')
+    })
+
+    it('keeps the chips of the default trigger and limits them with maxDisplay', () => {
+      render(
+        <Select defaultValue={['apple', 'banana']} multiple>
+          <SelectTrigger aria-label="Fruit" maxDisplay={1} />
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(chips()).toEqual(['Apple'])
+      expect(control()).toHaveTextContent('+1')
+    })
+
+    it('forwards the refs and the style of the parts', () => {
+      const field = createRef<HTMLDivElement>()
+      const combobox = createRef<HTMLButtonElement>()
+      const chevron = createRef<HTMLButtonElement>()
+      const list = createRef<HTMLDivElement>()
+      const text = createRef<HTMLSpanElement>()
+      const triggerRef = createRef<HTMLButtonElement>()
+      render(
+        <Select defaultValue="apple">
+          <SelectTrigger aria-label="Fruit" ref={triggerRef}>
+            <SelectField ref={field} style={{ gap: 3 }}>
+              <SelectCombobox ref={combobox} />
+            </SelectField>
+            <SelectChevron ref={chevron} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectList ref={list} style={{ margin: 1 }}>
+              <SelectOption value="apple">
+                <SelectOptionText ref={text}>Apple</SelectOptionText>
+              </SelectOption>
+            </SelectList>
+          </SelectContent>
+        </Select>,
+      )
+      expect(field.current).toBe(trigger().parentElement)
+      expect(field.current).toHaveStyle({ gap: '3px' })
+      expect(combobox.current).toBe(trigger())
+      expect(triggerRef.current).toBe(trigger())
+      expect(chevron.current).toBe(control().querySelector('[data-plume-select-chevron]'))
+      expect(list.current).toBe(screen.getByRole('listbox', { hidden: true }))
+      expect(list.current).toHaveStyle({ margin: '1px' })
+      expect(text.current).toHaveTextContent('Apple')
+    })
+
+    it('opens from the chevron of a composed trigger', async () => {
+      render(
+        <Select>
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox />
+            </SelectField>
+            <SelectChevron />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      await userEvent.click(control().querySelector('[data-plume-select-chevron]') as HTMLElement)
+      expect(trigger()).toHaveAttribute('aria-expanded', 'true')
+      expect(trigger()).toHaveFocus()
+    })
+
+    it('submits the values of a composed trigger with its hidden inputs', () => {
+      const { container } = render(
+        <Select defaultValue={['apple', 'banana']} multiple name="fruits">
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox />
+            </SelectField>
+            <SelectHidden form="checkout" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+            <SelectOption value="banana">Banana</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const inputs = container.querySelectorAll<HTMLInputElement>('input[type="hidden"]')
+      expect(Array.from(inputs).map((input) => input.value)).toEqual(['apple', 'banana'])
+      expect(inputs[0]).toHaveAttribute('form', 'checkout')
     })
   })
 })

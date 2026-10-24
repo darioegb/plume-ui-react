@@ -72,3 +72,20 @@
 .selected:hover {
   background-color: var(--timepicker-selected-hover);
 }
+
+:global(:where([data-plume-timepicker-column])) {
+  display: flex;
+  flex-direction: column;
+  max-height: 14rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  position: relative;
+}
+
+:global(:where([data-plume-timepicker-option])) {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}

@@ -112,30 +112,55 @@ export function useTimePickerController({
     () => ({ ...timePickerColorVars(colorScheme), ...customProperties(style) }),
     [colorScheme, style],
   )
-  const panelStyle: CSSProperties = isPanel
-    ? panelVars
-    : { ...panelVars, ...position.style, opacity: position.isPositioned ? undefined : 0 }
+  const panelStyle = useMemo<CSSProperties>(
+    () =>
+      isPanel
+        ? panelVars
+        : { ...panelVars, ...position.style, opacity: position.isPositioned ? undefined : 0 },
+    [isPanel, panelVars, position.isPositioned, position.style],
+  )
 
-  const context: TimePickerContextProps = {
-    colorScheme,
-    hour12,
-    isPanel,
-    labels,
-    minuteStep,
-    open,
-    panelStyle,
-    pickHours,
-    pickMinutes,
-    pickPeriod,
-    setInput,
-    setPanel,
-    setValue,
-    shape,
-    size,
-    toggle,
-    value,
-    variant,
-  }
+  const context = useMemo<TimePickerContextProps>(
+    () => ({
+      colorScheme,
+      hour12,
+      isPanel,
+      labels,
+      minuteStep,
+      open,
+      panelStyle,
+      pickHours,
+      pickMinutes,
+      pickPeriod,
+      setInput,
+      setPanel,
+      setValue,
+      shape,
+      size,
+      toggle,
+      value,
+      variant,
+    }),
+    [
+      colorScheme,
+      hour12,
+      isPanel,
+      labels,
+      minuteStep,
+      open,
+      panelStyle,
+      pickHours,
+      pickMinutes,
+      pickPeriod,
+      setPanel,
+      setValue,
+      shape,
+      size,
+      toggle,
+      value,
+      variant,
+    ],
+  )
 
   return { context, handleBlur }
 }

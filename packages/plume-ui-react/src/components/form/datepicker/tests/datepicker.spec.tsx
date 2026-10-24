@@ -1,9 +1,16 @@
 import type { CSSProperties } from 'react'
 import { useState } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { DatePicker, DatePickerCalendar, DatePickerInput } from '..'
+import {
+  DatePicker,
+  DatePickerCalendar,
+  DatePickerField,
+  DatePickerInput,
+  DatePickerTrigger,
+} from '..'
 import type { DateRange } from '../datepicker'
 import { Modal, ModalBody, ModalContent } from '../../../overlay/modal'
+import { InputControl, InputElement } from '../../input'
 
 const openCalendar = (): void => {
   fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
@@ -849,7 +856,14 @@ describe('DatePicker component', () => {
     it('styles the input with its own props and the look of the DatePicker', () => {
       render(
         <DatePicker onChange={vi.fn()} shape="pill" size="lg" variant="filled">
-          <DatePickerInput className="mine" classNames={{ input: 'inner' }} disabled />
+          <DatePickerInput className="mine" disabled>
+            <InputControl>
+              <DatePickerField className="inner" />
+              <InputElement position="after">
+                <DatePickerTrigger />
+              </InputElement>
+            </InputControl>
+          </DatePickerInput>
         </DatePicker>,
       )
       const input = screen.getByRole('textbox')

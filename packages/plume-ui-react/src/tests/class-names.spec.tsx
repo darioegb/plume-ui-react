@@ -22,13 +22,6 @@ import { Modal, ModalContent } from '../components/overlay/modal'
 import { PinInput } from '../components/form/pininput'
 import { ProgressBar } from '../components/utility/progressbar'
 import { Radio } from '../components/form/radio'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectOption,
-  SelectTrigger,
-} from '../components/form/select'
 import { Skeleton } from '../components/utility/skeleton'
 import {
   Table,
@@ -49,34 +42,6 @@ interface Case {
 }
 
 const cases: Record<string, Case> = {
-  DatePicker: {
-    classes: ['a-input', 'a-calendar'],
-    element: () => (
-      <DatePicker
-        onChange={() => undefined}
-        classNames={{ calendar: 'a-calendar', input: 'a-input' }}
-      />
-    ),
-    open: () => fireEvent.click(screen.getByRole('button', { name: 'Open calendar' })),
-  },
-  SelectGroup: {
-    classes: ['a-label'],
-    element: () => (
-      <Select aria-label="Fruit">
-        <SelectTrigger />
-        <SelectContent>
-          <SelectGroup label="Fruits" classNames={{ label: 'a-label' }}>
-            <SelectOption value="apple">Apple</SelectOption>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    ),
-  },
-  TimePicker: {
-    classes: ['a-input', 'a-panel'],
-    element: () => <TimePicker classNames={{ input: 'a-input', panel: 'a-panel' }} />,
-    open: () => fireEvent.click(screen.getByRole('button', { name: 'Open time picker' })),
-  },
   Sidebar: {
     classes: ['a-backdrop'],
     element: () => (
