@@ -1,7 +1,7 @@
 'use client'
 
 import type { ForwardedRef, ReactNode } from 'react'
-import { forwardRef, useCallback, useId, useRef, useState } from 'react'
+import { forwardRef, useCallback, useId, useRef, useState, useMemo } from 'react'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { TextareaContext } from './textarea-context'
@@ -57,7 +57,9 @@ export const TextareaRoot = forwardRef<HTMLTextAreaElement, TextareaRootProps>(
     const text = useLabels('textarea', DEFAULT_LABELS, labels)
     const countId = useId()
     const touched = useRef(false)
-    const [typed, setTypedState] = useState(() => String(fieldProps.defaultValue ?? '').length)
+    const [typedLength, setTypedLength] = useState(
+      () => String(fieldProps.defaultValue ?? '').length,
+    )
     const [override, setOverride] = useState<TextareaFieldMeta>()
     const [countMounted, setCountMounted] = useState(isDefault)
     const meta = override ?? {
@@ -65,41 +67,62 @@ export const TextareaRoot = forwardRef<HTMLTextAreaElement, TextareaRootProps>(
       maxLength: fieldProps.maxLength,
       value: fieldProps.value,
     }
-    const count = meta.value === undefined ? typed : String(meta.value).length
+    const count = meta.value === undefined ? typedLength : String(meta.value).length
     const remaining = meta.maxLength === undefined ? undefined : meta.maxLength - count
     const invalid = isTextareaInvalid(fieldProps['aria-invalid'])
 
     const setTyped = useCallback((length: number): void => {
       touched.current = true
-      setTypedState(length)
+      setTypedLength(length)
     }, [])
     const registerField = useCallback((next: TextareaFieldMeta): void => {
       setOverride((previous) => (sameMeta(previous, next) ? previous : next))
       if (next.value === undefined && next.defaultValue !== undefined && !touched.current) {
-        setTypedState(String(next.defaultValue).length)
+        setTypedLength(String(next.defaultValue).length)
       }
     }, [])
 
-    const context: TextareaContextValue = {
-      colorScheme,
-      count,
-      countId,
-      countMounted,
-      disabled,
-      fieldProps,
-      fieldRef: ref,
-      invalid,
-      labels: text,
-      maxLength: meta.maxLength,
-      registerCount: setCountMounted,
-      registerField,
-      remaining,
-      resize,
-      setTyped,
-      shape,
-      size,
-      variant,
-    }
+    const context: TextareaContextValue = useMemo(
+      () => ({
+        colorScheme,
+        count,
+        countId,
+        countMounted,
+        disabled,
+        fieldProps,
+        fieldRef: ref,
+        invalid,
+        labels: text,
+        maxLength: meta.maxLength,
+        registerCount: setCountMounted,
+        registerField,
+        remaining,
+        resize,
+        setTyped,
+        shape,
+        size,
+        variant,
+      }),
+      [
+        colorScheme,
+        count,
+        countId,
+        countMounted,
+        disabled,
+        fieldProps,
+        invalid,
+        meta.maxLength,
+        ref,
+        registerField,
+        remaining,
+        resize,
+        setTyped,
+        shape,
+        size,
+        text,
+        variant,
+      ],
+    )
 
     return (
       <TextareaContext.Provider value={context}>

@@ -4,9 +4,7 @@ import type { ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { usePinInputContext } from './pininput-context'
 
-type PinInputHiddenRootAttributes = Pick<InputHTMLAttributes<HTMLInputElement>, 'form' | 'name'>
-
-export type PinInputHiddenProps = PinInputHiddenRootAttributes
+export type PinInputHiddenProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'form' | 'name'>
 
 export const PinInputHidden = forwardRef<HTMLInputElement, PinInputHiddenProps>(
   ({ name, ...rest }: PinInputHiddenProps, ref: ForwardedRef<HTMLInputElement>): ReactNode => {

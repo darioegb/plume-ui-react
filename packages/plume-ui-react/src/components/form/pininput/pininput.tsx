@@ -124,22 +124,40 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       isStyled && invalid && styles.invalid,
       className,
     )
-    const context = {
-      autoComplete,
-      disabled,
-      id,
-      invalid,
-      isStyled,
-      labels: text,
-      length,
-      mask,
-      name,
-      pin,
-      placeholder,
-      readOnly,
-      required,
-      type,
-    }
+    const context = useMemo(
+      () => ({
+        autoComplete,
+        disabled,
+        id,
+        invalid,
+        isStyled,
+        labels: text,
+        length,
+        mask,
+        name,
+        pin,
+        placeholder,
+        readOnly,
+        required,
+        type,
+      }),
+      [
+        autoComplete,
+        disabled,
+        id,
+        invalid,
+        isStyled,
+        length,
+        mask,
+        name,
+        pin,
+        placeholder,
+        readOnly,
+        required,
+        text,
+        type,
+      ],
+    )
 
     return (
       <PinInputContext.Provider value={context}>

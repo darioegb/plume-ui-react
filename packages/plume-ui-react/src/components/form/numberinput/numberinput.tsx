@@ -1,7 +1,7 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode, RefObject } from 'react'
-import { forwardRef, useRef } from 'react'
+import { forwardRef, useRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
@@ -129,20 +129,23 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       '--numberinput-color': `var(--plume-color-${colorScheme}-text)`,
       ...style,
     } as CSSProperties
-    const context = {
-      disabled,
-      fieldProps: rest,
-      forwardedRef: ref,
-      inputRef,
-      invalid,
-      isStyled,
-      labels: text,
-      max,
-      min,
-      number,
-      precision,
-      readOnly,
-    }
+    const context = useMemo(
+      () => ({
+        disabled,
+        fieldProps: rest,
+        forwardedRef: ref,
+        inputRef,
+        invalid,
+        isStyled,
+        labels: text,
+        max,
+        min,
+        number,
+        precision,
+        readOnly,
+      }),
+      [disabled, invalid, isStyled, max, min, number, precision, readOnly, ref, rest, text],
+    )
 
     return (
       <NumberInputContext.Provider value={context}>

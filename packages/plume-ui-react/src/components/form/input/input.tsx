@@ -1,7 +1,7 @@
 'use client'
 
 import type { ForwardedRef, ReactNode } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
 import { useLabels } from '../../../locale/locale-provider'
@@ -72,27 +72,49 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       defaultValue: typeof defaultValue === 'string' ? defaultValue : undefined,
       onChange,
     })
-    const context: InputContextValue = {
-      colorScheme,
-      disabled,
-      fieldProps: {
-        ...rest,
-        defaultValue: mask ? undefined : defaultValue,
-        onChange: maskedOnChange,
+    const context: InputContextValue = useMemo(
+      () => ({
+        colorScheme,
+        disabled,
+        fieldProps: {
+          ...rest,
+          defaultValue: mask ? undefined : defaultValue,
+          onChange: maskedOnChange,
+          type,
+          value: mask ? maskedValue : value,
+        },
+        fieldRef: ref,
+        invalid: isInvalid,
+        isStyled: variant !== 'unstyled',
+        labels: text,
+        readOnly,
+        revealed,
+        shape,
+        size,
+        toggleReveal: toggle,
+        variant,
+      }),
+      [
+        colorScheme,
+        defaultValue,
+        disabled,
+        isInvalid,
+        mask,
+        maskedOnChange,
+        maskedValue,
+        readOnly,
+        ref,
+        rest,
+        revealed,
+        shape,
+        size,
+        text,
+        toggle,
         type,
-        value: mask ? maskedValue : value,
-      },
-      fieldRef: ref,
-      invalid: isInvalid,
-      isStyled: variant !== 'unstyled',
-      labels: text,
-      readOnly,
-      revealed,
-      shape,
-      size,
-      toggleReveal: toggle,
-      variant,
-    }
+        value,
+        variant,
+      ],
+    )
     const colorVars = {
       ...inputColorVars(isInvalid ? 'error' : colorScheme),
       ...style,
