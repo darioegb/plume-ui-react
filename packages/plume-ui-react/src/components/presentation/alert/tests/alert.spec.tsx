@@ -118,39 +118,25 @@ describe('Alert component', () => {
     expect(container.firstChild).toHaveStyle({ width: '300px' })
   })
 
-  it('applies the classes of each part', () => {
+  it('adds the classes of the default parts', () => {
     const { container } = render(
-      <Alert
-        action="Go"
-        classNames={{ action: 'a-class', content: 'c-class', dismiss: 'd-class', icon: 'i-class' }}
-        dismissible
-      >
+      <Alert action="Go" dismissible>
         Text
       </Alert>,
     )
-    expect(container.querySelector('[data-plume-alert-action]')).toHaveClass('action', 'a-class')
-    expect(container.querySelector('[data-plume-alert-content]')).toHaveClass('content', 'c-class')
-    expect(container.querySelector('[data-plume-alert-dismiss]')).toHaveClass('dismiss', 'd-class')
-    expect(container.querySelector('[data-plume-alert-icon]')).toHaveClass('icon', 'i-class')
+    expect(container.querySelector('[data-plume-alert-action]')).toHaveClass('action')
+    expect(container.querySelector('[data-plume-alert-dismiss]')).toHaveClass('dismiss')
+    expect(container.querySelector('[data-plume-alert-icon]')).toHaveClass('icon')
   })
 
   it('drops the Plume classes when unstyled', () => {
     const { container } = render(
-      <Alert
-        action="Go"
-        className="custom"
-        classNames={{ content: 'c-class' }}
-        dismissible
-        variant="unstyled"
-      >
+      <Alert action="Go" className="custom" dismissible variant="unstyled">
         Text
       </Alert>,
     )
     expect(container.firstChild).toHaveAttribute('class', 'custom')
-    expect(container.querySelector('[data-plume-alert-content]')).toHaveAttribute(
-      'class',
-      'c-class',
-    )
+    expect(container.querySelector('[data-plume-alert-content]')).not.toHaveAttribute('class')
     expect(container.querySelector('[data-plume-alert-icon]')).not.toHaveAttribute('class')
     expect(container.querySelector('[data-plume-alert-action]')).not.toHaveAttribute('class')
     expect(container.querySelector('[data-plume-alert-dismiss]')).not.toHaveAttribute('class')

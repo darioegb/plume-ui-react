@@ -44,23 +44,23 @@
   background-color: var(--plume-surface-muted);
 }
 
-.icon {
+:where(.emptystate) .icon {
   color: var(--plume-muted);
   display: inline-flex;
 }
 
-.title {
+:where(.emptystate) .title {
   font-size: 1.125em;
   font-weight: var(--plume-font-weight-semibold);
   margin: 0;
 }
 
-.description {
+:where(.emptystate) .description {
   color: var(--plume-muted);
   margin: 0;
   max-inline-size: 36ch;
 }
 
-.action {
+:where(.emptystate) .action {
   margin-block-start: var(--plume-space-2);
 }

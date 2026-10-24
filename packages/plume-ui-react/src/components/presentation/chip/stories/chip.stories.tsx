@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Chip } from '..'
+import { Chip, ChipIcon, ChipLabel, ChipRemove } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -25,6 +25,18 @@ const noop = (): void => undefined
  * It renders a `<span>`. The remove button is named after the chip (`Remove Design`) unless you give it a
  * `labels.remove`, and an icon is decorative, so the text has to say what the chip is. A `Badge` labels a status
  * or a count and is never interactive, a `Chip` is a value that can go away.
+ *
+ * ### Parts
+ *
+ * Every element of the Chip is a part you can import. Without parts as children the Chip renders its text with the
+ * `icon` before it and the remove button after it when it has `onRemove`. With parts, it renders them as written, so
+ * you can reorder, leave out or replace each one.
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `ChipIcon` | `className`, `style`, `children`. The decorative icon or image, hidden from screen readers. |
+ * | `ChipLabel` | `className`, `style`, `children`. The text of the Chip. It names the remove button. |
+ * | `ChipRemove` | `aria-label`, `disabled`, `onClick`, `className`, `style`, `children`. The button that removes the Chip. It calls the `onRemove` of the Chip, and `children` replace the cross. |
  */
 export default {
   title: 'Components/Chip',
@@ -49,12 +61,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the Chip.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts of the Chip, in every variant: `icon`, `label` and `remove`. With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: `Partial<Record<ChipPart, string>>` } },
     },
     style: {
       control: false,
@@ -244,6 +250,31 @@ export const WithImage: Story = {
 }
 
 /**
+ * Give the Chip its parts as children to reorder, leave out or replace them. Here the remove button comes first,
+ * the icon is an emoji and the label is styled on its own. The `icon` prop is not used when the Chip is composed.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Chip onRemove={() => undefined}>
+  <ChipRemove />
+  <ChipLabel className="font-semibold">Design</ChipLabel>
+  <ChipIcon>🎨</ChipIcon>
+</Chip>`,
+      },
+    },
+  },
+  render: () => (
+    <Chip onRemove={noop}>
+      <ChipRemove />
+      <ChipLabel className="font-semibold">Design</ChipLabel>
+      <ChipIcon>🎨</ChipIcon>
+    </Chip>
+  ),
+}
+
+/**
  * A **disabled** Chip is dimmed and its remove button can't be used.
  */
 export const Disabled: Story = {
@@ -255,7 +286,7 @@ export const Disabled: Story = {
 }
 
 /**
- * Some examples of Chip with Tailwind classes. With `variant="unstyled"` the `className` is the only class of the Chip and `classNames` the only ones of its icon, label and remove button, which keeps its position and its row.
+ * Some examples of Chip with Tailwind classes. With `variant="unstyled"` the `className` is the only class of the Chip and the `className` of each part is the only one of that part, which keeps its position and its row.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -264,19 +295,19 @@ export const Tailwind: Story = {
         code: `<div className="flex flex-wrap items-center gap-3">
   <Chip
     className="rounded-full bg-primary-solid py-0.5 pl-3 pr-1 text-xs font-semibold text-primary-on-solid"
-    classNames={{ remove: "h-4 w-4 justify-center rounded-full hover:bg-white/25" }}
     onRemove={() => undefined}
     variant="unstyled"
   >
-    Design
+    <ChipLabel>Design</ChipLabel>
+    <ChipRemove className="h-4 w-4 justify-center rounded-full hover:bg-white/25" />
   </Chip>
   <Chip
     className="rounded-md border border-emerald-600 py-0.5 pl-2 pr-1 text-xs font-medium text-emerald-700 dark:text-emerald-400"
-    classNames={{ remove: "h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950" }}
     onRemove={() => undefined}
     variant="unstyled"
   >
-    Research
+    <ChipLabel>Research</ChipLabel>
+    <ChipRemove className="h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950" />
   </Chip>
   <Chip
     className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-900"
@@ -292,21 +323,19 @@ export const Tailwind: Story = {
     <div className="flex flex-wrap items-center gap-3">
       <Chip
         className="rounded-full bg-primary-solid py-0.5 pl-3 pr-1 text-xs font-semibold text-primary-on-solid"
-        classNames={{ remove: 'h-4 w-4 justify-center rounded-full hover:bg-white/25' }}
         onRemove={() => undefined}
         variant="unstyled"
       >
-        Design
+        <ChipLabel>Design</ChipLabel>
+        <ChipRemove className="h-4 w-4 justify-center rounded-full hover:bg-white/25" />
       </Chip>
       <Chip
         className="rounded-md border border-emerald-600 py-0.5 pl-2 pr-1 text-xs font-medium text-emerald-700 dark:text-emerald-400"
-        classNames={{
-          remove: 'h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950',
-        }}
         onRemove={() => undefined}
         variant="unstyled"
       >
-        Research
+        <ChipLabel>Research</ChipLabel>
+        <ChipRemove className="h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950" />
       </Chip>
       <Chip className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-900" variant="unstyled">
         Read only

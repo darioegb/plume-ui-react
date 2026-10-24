@@ -1,6 +1,12 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
-import { EmptyState } from '..'
+import {
+  EmptyState,
+  EmptyStateAction,
+  EmptyStateDescription,
+  EmptyStateIcon,
+  EmptyStateTitle,
+} from '..'
 
 const inbox = (
   <svg
@@ -29,6 +35,19 @@ const inbox = (
  *
  * It has no text of its own: you write the title, the description and the label of the action, so they can be
  * translated like the rest of your interface.
+ *
+ * Given the **icon**, **title**, **description** and **action** props it renders them in that order. To reorder them,
+ * leave one out or style each, give it its parts as children instead: the props are then ignored. The EmptyState
+ * has no state to share, so it is a plain component that a Server Component can render.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `EmptyStateIcon` | `className`, `style`, `ref`, `children`. The decorative icon, hidden from assistive technology. |
+ * | `EmptyStateTitle` | `className`, `style`, `ref`, `children`, `as` (`div` by default, or `h2` to `h6`). |
+ * | `EmptyStateDescription` | `className`, `style`, `ref`, `children`. The `<p>` that explains. |
+ * | `EmptyStateAction` | `className`, `style`, `ref`, `children`. What the user can do about it. |
  */
 export default {
   title: 'Components/EmptyState',
@@ -79,10 +98,11 @@ export default {
       description: 'Custom CSS class for the EmptyState.',
       table: { type: { summary: 'string' } },
     },
-    classNames: {
+    children: {
       control: false,
-      description: 'Custom CSS classes for the parts: `icon`, `title`, `description` and `action`.',
-      table: { type: { summary: 'Partial<Record<EmptyStatePart, string>>' } },
+      description:
+        'The parts to render (`EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, `EmptyStateAction`). When given, the `icon`, `title`, `description` and `action` props are ignored.',
+      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
@@ -170,18 +190,19 @@ export const Variants: Story = {
         />
       ))}
       <EmptyState
-        {...args}
-        classNames={{
-          action: 'mt-3',
-          description: 'text-sm text-muted',
-          icon: 'text-muted [&>svg]:size-12',
-          title: 'text-lg font-bold',
-        }}
         className="flex flex-col items-center gap-2 rounded-lg border border-border p-6 text-center"
         style={{ width: '18rem' }}
-        title="Unstyled"
         variant="unstyled"
-      />
+      >
+        <EmptyStateIcon className="text-muted [&>svg]:size-12">{inbox}</EmptyStateIcon>
+        <EmptyStateTitle className="text-lg font-bold">Unstyled</EmptyStateTitle>
+        <EmptyStateDescription className="text-sm text-muted">
+          Projects you create will show up here.
+        </EmptyStateDescription>
+        <EmptyStateAction className="mt-3">
+          <Button label="Create a project" size="sm" />
+        </EmptyStateAction>
+      </EmptyState>
     </div>
   ),
 }
@@ -232,6 +253,35 @@ export const Parts: Story = {
 }
 
 /**
+ * Give the EmptyState its parts as children to change the order or leave one out. Here the action comes first and
+ * there is no icon. The `icon`, `title`, `description` and `action` props are ignored when it has children.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<EmptyState variant="outline">
+  <EmptyStateAction>
+    <Button label="Clear filters" size="sm" variant="outline" />
+  </EmptyStateAction>
+  <EmptyStateTitle as="h3">No results</EmptyStateTitle>
+  <EmptyStateDescription>Try other filters.</EmptyStateDescription>
+</EmptyState>`,
+      },
+    },
+  },
+  render: () => (
+    <EmptyState style={{ width: '18rem' }} variant="outline">
+      <EmptyStateAction>
+        <Button label="Clear filters" size="sm" variant="outline" />
+      </EmptyStateAction>
+      <EmptyStateTitle as="h3">No results</EmptyStateTitle>
+      <EmptyStateDescription>Try other filters.</EmptyStateDescription>
+    </EmptyState>
+  ),
+}
+
+/**
  * Use **titleAs** when the title belongs in the outline of the page, and `role="status"` when the state shows up
  * after something the user did, so a screen reader announces it.
  */
@@ -256,49 +306,43 @@ export const Tailwind: Story = {
     docs: {
       source: {
         code: `<EmptyState
-  action={
+  className="flex w-80 max-w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border p-8 text-center"
+  variant="unstyled"
+>
+  <EmptyStateIcon className="text-muted [&>svg]:size-12">{inbox}</EmptyStateIcon>
+  <EmptyStateTitle className="text-lg font-semibold">No projects yet</EmptyStateTitle>
+  <EmptyStateDescription className="text-sm text-muted">
+    Projects you create will show up here.
+  </EmptyStateDescription>
+  <EmptyStateAction className="mt-3">
     <Button
       className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
       label="Create a project"
       variant="unstyled"
     />
-  }
-  className="flex w-80 max-w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border p-8 text-center"
-  classNames={{
-    action: 'mt-3',
-    description: 'text-sm text-muted',
-    icon: 'text-muted [&>svg]:size-12',
-    title: 'text-lg font-semibold',
-  }}
-  description="Projects you create will show up here."
-  icon={inbox}
-  title="No projects yet"
-  variant="unstyled"
-/>`,
+  </EmptyStateAction>
+</EmptyState>`,
       },
     },
   },
   render: () => (
     <EmptyState
-      action={
+      className="flex w-80 max-w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border p-8 text-center"
+      variant="unstyled"
+    >
+      <EmptyStateIcon className="text-muted [&>svg]:size-12">{inbox}</EmptyStateIcon>
+      <EmptyStateTitle className="text-lg font-semibold">No projects yet</EmptyStateTitle>
+      <EmptyStateDescription className="text-sm text-muted">
+        Projects you create will show up here.
+      </EmptyStateDescription>
+      <EmptyStateAction className="mt-3">
         <Button
           className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
           label="Create a project"
           variant="unstyled"
         />
-      }
-      className="flex w-80 max-w-full flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border p-8 text-center"
-      classNames={{
-        action: 'mt-3',
-        description: 'text-sm text-muted',
-        icon: 'text-muted [&>svg]:size-12',
-        title: 'text-lg font-semibold',
-      }}
-      description="Projects you create will show up here."
-      icon={inbox}
-      title="No projects yet"
-      variant="unstyled"
-    />
+      </EmptyStateAction>
+    </EmptyState>
   ),
 }
 
@@ -310,40 +354,36 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<EmptyState
-  action={<Button className="btn btn-primary btn-sm" label="Create a project" variant="unstyled" />}
   className="d-flex flex-column align-items-center gap-2 border border-2 rounded-3 p-4 text-center"
-  classNames={{
-    action: 'mt-2',
-    description: 'text-body-secondary small',
-    icon: 'text-body-secondary',
-    title: 'h5 mb-0',
-  }}
-  description="Projects you create will show up here."
-  icon={inbox}
   style={{ width: '20rem', maxWidth: '100%' }}
-  title="No projects yet"
   variant="unstyled"
-/>`,
+>
+  <EmptyStateIcon className="text-body-secondary">{inbox}</EmptyStateIcon>
+  <EmptyStateTitle className="h5 mb-0">No projects yet</EmptyStateTitle>
+  <EmptyStateDescription className="text-body-secondary small">
+    Projects you create will show up here.
+  </EmptyStateDescription>
+  <EmptyStateAction className="mt-2">
+    <Button className="btn btn-primary btn-sm" label="Create a project" variant="unstyled" />
+  </EmptyStateAction>
+</EmptyState>`,
       },
     },
   },
   render: () => (
     <EmptyState
-      action={
-        <Button className="btn btn-primary btn-sm" label="Create a project" variant="unstyled" />
-      }
       className="d-flex flex-column align-items-center gap-2 border border-2 rounded-3 p-4 text-center"
-      classNames={{
-        action: 'mt-2',
-        description: 'text-body-secondary small',
-        icon: 'text-body-secondary',
-        title: 'h5 mb-0',
-      }}
-      description="Projects you create will show up here."
-      icon={inbox}
       style={{ width: '20rem', maxWidth: '100%' }}
-      title="No projects yet"
       variant="unstyled"
-    />
+    >
+      <EmptyStateIcon className="text-body-secondary">{inbox}</EmptyStateIcon>
+      <EmptyStateTitle className="h5 mb-0">No projects yet</EmptyStateTitle>
+      <EmptyStateDescription className="text-body-secondary small">
+        Projects you create will show up here.
+      </EmptyStateDescription>
+      <EmptyStateAction className="mt-2">
+        <Button className="btn btn-primary btn-sm" label="Create a project" variant="unstyled" />
+      </EmptyStateAction>
+    </EmptyState>
   ),
 }

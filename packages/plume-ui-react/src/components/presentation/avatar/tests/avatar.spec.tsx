@@ -65,7 +65,7 @@ describe('Avatar component', () => {
   it('shows a status and includes it in the name', () => {
     const { container } = render(<Avatar name="Ada" status="online" />)
     expect(screen.getByRole('img', { name: 'Ada, Online' })).toBeInTheDocument()
-    expect(container.querySelector('[data-plume-avatar-status]')).toBeInTheDocument()
+    expect(container.querySelector('[data-plume-avatar-status-dot]')).toBeInTheDocument()
     expect(container.firstChild).toHaveAttribute('data-status', 'online')
   })
 
@@ -97,7 +97,7 @@ describe('Avatar component', () => {
 
   it('has no status by default', () => {
     const { container } = render(<Avatar name="Ada" />)
-    expect(container.querySelector('[data-plume-avatar-status]')).toBeNull()
+    expect(container.querySelector('[data-plume-avatar-status-dot]')).toBeNull()
   })
 
   it('is a subtle, medium, round avatar by default', () => {
@@ -135,41 +135,13 @@ describe('Avatar component', () => {
     expect(container.firstChild).toHaveStyle({ width: '60px' })
   })
 
-  it('applies the classes of each part', () => {
-    const { container } = render(
-      <>
-        <Avatar
-          classNames={{ fallback: 'f-class', status: 's-class' }}
-          name="Ada"
-          status="online"
-        />
-        <Avatar classNames={{ image: 'i-class' }} src="/ada.png" />
-      </>,
-    )
-    expect(container.querySelector('[data-plume-avatar-fallback]')).toHaveClass(
-      'fallback',
-      'f-class',
-    )
-    expect(container.querySelector('[data-plume-avatar-status]')).toHaveClass('status', 's-class')
-    expect(container.querySelector('img')).toHaveClass('image', 'i-class')
-  })
-
   it('drops the Plume classes when unstyled', () => {
     const { container } = render(
-      <Avatar
-        className="custom"
-        classNames={{ fallback: 'f-class' }}
-        name="Ada"
-        status="busy"
-        variant="unstyled"
-      />,
+      <Avatar className="custom" name="Ada" status="busy" variant="unstyled" />,
     )
     expect(container.firstChild).toHaveAttribute('class', 'custom')
-    expect(container.querySelector('[data-plume-avatar-fallback]')).toHaveAttribute(
-      'class',
-      'f-class',
-    )
-    expect(container.querySelector('[data-plume-avatar-status]')).not.toHaveAttribute('class')
+    expect(container.querySelector('[data-plume-avatar-fallback]')).not.toHaveAttribute('class')
+    expect(container.querySelector('[data-plume-avatar-status-dot]')).not.toHaveAttribute('class')
   })
 
   it('forwards the ref', () => {

@@ -4,9 +4,9 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { Children, forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { useLabels } from '../../../locale/locale-provider'
-import { Avatar, type AvatarLabels, type AvatarVariant } from './avatar'
+import type { AvatarLabels, AvatarVariant } from './avatar'
 import { AvatarGroupContext } from './avatar-context'
+import { AvatarOverflow } from './avatar-overflow'
 import styles from './avatar.module.css'
 
 export interface AvatarGroupLabels extends AvatarLabels {
@@ -33,10 +33,6 @@ export type AvatarGroupProps = Omit<ComponentProps, 'index'> &
 
 const groupRole = 'group'
 
-const DEFAULT_LABELS: Pick<AvatarGroupLabels, 'overflow'> = {
-  overflow: (hidden) => `${hidden} more`,
-}
-
 export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
     {
@@ -55,7 +51,6 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     const avatars = Children.toArray(children)
     const limit = max !== undefined && max < avatars.length ? Math.max(max, 0) : avatars.length
     const hidden = avatars.length - limit
-    const { overflow } = useLabels('avatarGroup', DEFAULT_LABELS, labels)
     const context = useMemo(
       () => ({ colorScheme, labels, shape, size, variant }),
       [colorScheme, labels, shape, size, variant],
@@ -71,9 +66,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
           {...rest}
         >
           {avatars.slice(0, limit)}
-          {hidden > 0 ? (
-            <Avatar alt={overflow(hidden)} data-overflow="" fallback={`+${hidden}`} />
-          ) : null}
+          {hidden > 0 ? <AvatarOverflow count={hidden} /> : null}
         </div>
       </AvatarGroupContext.Provider>
     )

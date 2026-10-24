@@ -11,7 +11,7 @@ import { SelectOptionContext } from './select-option-context'
 import { SelectOptionDescription } from './select-option-description'
 import { SelectOptionIcon } from './select-option-icon'
 import { SelectOptionText } from './select-option-text'
-import { hasPart } from './select-parts'
+import { hasPart } from '../../../overlay/has-part'
 import styles from './select.module.css'
 
 const OPTION_PARTS = [

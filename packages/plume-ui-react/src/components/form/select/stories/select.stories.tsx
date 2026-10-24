@@ -2,6 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Button } from '../../../interaction/button'
+import { ChipLabel, ChipRemove } from '../../../presentation/chip'
 import { Field } from '../../field'
 import {
   Select,
@@ -123,7 +124,7 @@ function Example({
  * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `aria-label`, `aria-labelledby`, `className`, `style`, `children`. The control the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the control and `ref` to its button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. Given no `children`, it renders `SelectField` (with `SelectChips` for a `multiple` select and `SelectCombobox`), `SelectClear`, `SelectChevron` and `SelectHidden`; given those parts, it renders them in the order you write them. `children` that are not parts (a `SelectValue`) are the content of the `SelectCombobox`. |
  * | `SelectField` | `className`, `style`, `children`. The row that holds the chips and the combobox. |
  * | `SelectChips` | `children`, `maxDisplay`, `overflow`. The chips of a `multiple` select: no element of its own. `children` is a function of each chosen option that returns the chip (`(option) => <SelectChip className="..." option={option} />`) and `overflow` a function of the hidden count for the `+N` chip. |
- * | `SelectChip` | `option`, `className`, `style`, `children`. A `Chip`. With an `option` it has a button that removes it; without one it is a plain chip, like the `+N`. Its remove button is styled through the `Chip` for now. |
+ * | `SelectChip` | `option`, `className`, `style`, `children`. A `Chip`. With an `option` it has a button that removes it; without one it is a plain chip, like the `+N`. Compose it with `ChipLabel`, `ChipIcon` and `ChipRemove` to style its parts. |
  * | `SelectCombobox` | `placeholder`, `className`, `style`, `children`. The button with `role="combobox"`. Its `children` replace what it shows. |
  * | `SelectValue` | `placeholder`, `children`. What the combobox shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectCombobox` renders one by default; use your own to render the value yourself with a function of the chosen options. It is made of `SelectPlaceholder`, `SelectValueOption`, `SelectValueIcon` and `SelectValueText`, which take `className` and `style`. |
  * | `SelectClear` | `className`, `style`, `children`. The button that clears the value. It renders nothing when the select is not `clearable` or has no value. |
@@ -739,10 +740,12 @@ export const Tailwind: Story = {
       <SelectField>
         <SelectChips>
           {(chosen) => (
-            <SelectChip
-              className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 [&>button]:ml-1 [&>button]:rounded-full hover:[&>button]:bg-emerald-200"
-              option={chosen}
-            />
+            <SelectChip className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900" option={chosen}>
+              <ChipLabel>
+                <span aria-hidden="true">{chosen.label}</span>
+              </ChipLabel>
+              <ChipRemove className="ml-1 rounded-full hover:bg-emerald-200" />
+            </SelectChip>
           )}
         </SelectChips>
         <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
@@ -819,10 +822,12 @@ export const Tailwind: Story = {
           <SelectField>
             <SelectChips>
               {(chosen) => (
-                <SelectChip
-                  className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900 [&>button]:ml-1 [&>button]:rounded-full hover:[&>button]:bg-emerald-200"
-                  option={chosen}
-                />
+                <SelectChip className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-900" option={chosen}>
+                  <ChipLabel>
+                    <span aria-hidden="true">{chosen.label}</span>
+                  </ChipLabel>
+                  <ChipRemove className="ml-1 rounded-full hover:bg-emerald-200" />
+                </SelectChip>
               )}
             </SelectChips>
             <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
@@ -895,10 +900,12 @@ export const Bootstrap: Story = {
       <SelectField>
         <SelectChips>
           {(chosen) => (
-            <SelectChip
-              className="badge text-bg-primary fw-normal [&>button]:ms-1 [&>button]:text-white"
-              option={chosen}
-            />
+            <SelectChip className="badge text-bg-primary fw-normal" option={chosen}>
+              <ChipLabel>
+                <span aria-hidden="true">{chosen.label}</span>
+              </ChipLabel>
+              <ChipRemove className="ms-1 border-0 bg-transparent text-white" />
+            </SelectChip>
           )}
         </SelectChips>
         <SelectCombobox className="bg-transparent border-0 p-1" />
@@ -959,10 +966,12 @@ export const Bootstrap: Story = {
           <SelectField>
             <SelectChips>
               {(chosen) => (
-                <SelectChip
-                  className="badge text-bg-primary fw-normal [&>button]:ms-1 [&>button]:text-white"
-                  option={chosen}
-                />
+                <SelectChip className="badge text-bg-primary fw-normal" option={chosen}>
+                  <ChipLabel>
+                    <span aria-hidden="true">{chosen.label}</span>
+                  </ChipLabel>
+                  <ChipRemove className="ms-1 border-0 bg-transparent text-white" />
+                </SelectChip>
               )}
             </SelectChips>
             <SelectCombobox className="bg-transparent border-0 p-1" />

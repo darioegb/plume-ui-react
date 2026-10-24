@@ -85,7 +85,7 @@ hr.vertical {
   flex: 0 0 var(--plume-space-6);
 }
 
-.label {
+:where(.labeled) .label {
   flex: none;
 }
 

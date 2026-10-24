@@ -7,7 +7,7 @@ import type { ComponentProps } from '../../../theme'
 import { useSelectContext } from './select-context'
 import { SelectGroupContext } from './select-group-context'
 import { SelectGroupLabel } from './select-group-label'
-import { hasPart } from './select-parts'
+import { hasPart } from '../../../overlay/has-part'
 import styles from './select.module.css'
 
 export interface SelectGroupOwnProps {

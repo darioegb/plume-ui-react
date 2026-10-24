@@ -1,15 +1,17 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { UserIcon } from '../../../overlay/icons'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
-import { useAvatarGroup } from './avatar-context'
-import { getInitials } from './avatar-initials'
+import { AvatarContext, useAvatarGroup } from './avatar-context'
+import { AvatarFallback } from './avatar-fallback'
+import { AvatarImage } from './avatar-image'
+import { hasPart } from '../../../overlay/has-part'
+import { AvatarStatusDot } from './avatar-status-dot'
 import styles from './avatar.module.css'
 
 export type AvatarStatus = 'away' | 'busy' | 'offline' | 'online'
@@ -23,11 +25,8 @@ export interface AvatarLabels {
   online: string
 }
 
-export type AvatarPart = 'fallback' | 'image' | 'status'
-
 export interface AvatarOwnProps {
   alt?: string
-  classNames?: Partial<Record<AvatarPart, string>>
   colorScheme?: ColorScheme
   fallback?: ReactNode
   labels?: Partial<AvatarLabels>
@@ -41,10 +40,12 @@ export interface AvatarOwnProps {
 
 type AvatarRootAttributes = Pick<
   HTMLAttributes<HTMLSpanElement>,
-  'aria-label' | 'aria-labelledby' | 'hidden' | 'id' | 'title'
+  'aria-label' | 'aria-labelledby' | 'children' | 'hidden' | 'id' | 'title'
 >
 
 export type AvatarProps = Omit<ComponentProps, 'index'> & AvatarRootAttributes & AvatarOwnProps
+
+const AVATAR_PARTS = [AvatarFallback, AvatarImage, AvatarStatusDot]
 
 const DEFAULT_LABELS: AvatarLabels = {
   away: 'Away',
@@ -57,8 +58,8 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
   (
     {
       alt,
+      children,
       className,
-      classNames,
       colorScheme,
       fallback,
       labels,
@@ -86,54 +87,49 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const label = [alt ?? name, statusText].filter(Boolean).join(', ')
     const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'] ?? label)
     const role = isNamed ? 'img' : undefined
-    const content = fallback ?? (getInitials(name) || <UserIcon />)
+    const context = useMemo(
+      () => ({
+        fallback,
+        isStyled,
+        name,
+        setFailedSrc,
+        showImage,
+        src,
+        status,
+        variant: resolvedVariant,
+      }),
+      [fallback, isStyled, name, resolvedVariant, showImage, src, status],
+    )
 
     return (
-      <span
-        aria-hidden={isNamed ? undefined : true}
-        aria-label={label || undefined}
-        className={joinClasses(
-          isStyled && styles.avatar,
-          isStyled && styles[resolvedSize],
-          isStyled && tag[resolvedShape],
-          className,
-        )}
-        data-plume-avatar=""
-        data-status={status}
-        ref={ref}
-        role={role}
-        style={tagColorVars('avatar', resolvedScheme, style)}
-        {...rest}
-      >
-        {showImage ? (
-          <img
-            alt=""
-            className={joinClasses(isStyled && styles.image, classNames?.image)}
-            data-plume-avatar-image=""
-            onError={() => setFailedSrc(src)}
-            src={src}
-          />
-        ) : (
-          <span
-            aria-hidden="true"
-            className={joinClasses(
-              isStyled && styles.fallback,
-              isStyled && tag[resolvedVariant],
-              classNames?.fallback,
-            )}
-            data-plume-avatar-fallback=""
-          >
-            {content}
-          </span>
-        )}
-        {status ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.status, classNames?.status)}
-            data-plume-avatar-status=""
-          />
-        ) : null}
-      </span>
+      <AvatarContext.Provider value={context}>
+        <span
+          aria-hidden={isNamed ? undefined : true}
+          aria-label={label || undefined}
+          className={joinClasses(
+            isStyled && styles.avatar,
+            isStyled && styles[resolvedSize],
+            isStyled && tag[resolvedShape],
+            className,
+          )}
+          data-plume-avatar=""
+          data-status={status}
+          ref={ref}
+          role={role}
+          style={tagColorVars('avatar', resolvedScheme, style)}
+          {...rest}
+        >
+          {hasPart(children, AVATAR_PARTS) ? (
+            children
+          ) : (
+            <>
+              <AvatarImage />
+              <AvatarFallback />
+              <AvatarStatusDot />
+            </>
+          )}
+        </span>
+      </AvatarContext.Provider>
     )
   },
 )
