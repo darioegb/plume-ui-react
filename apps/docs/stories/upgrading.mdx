@@ -96,6 +96,50 @@ native control. It changes for the components that wrap their `<input>` or `<tex
 An `Input` or a `Textarea` with nothing around it keeps `className` on the native element, because it is the
 outermost one.
 
+## One prop for the texts: `labels`
+
+Every text the library shows or announces is changed with a single `labels` prop, typed per component as
+`Partial<<Name>Labels>`. Texts that carry data are functions. The loose props of 0.x are gone.
+
+```tsx
+// Before
+<Paginator nextLabel='Siguiente' previousLabel='Anterior' getPageLabel={(page) => `Página ${page}`} />
+
+// After
+<Paginator labels={{ next: 'Siguiente', previous: 'Anterior', page: (page) => `Página ${page}` }} />
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Input</code></td><td><code>revealLabel</code></td><td><code>labels.reveal</code></td></tr>
+    <tr><td><code>Textarea</code></td><td><code>formatCount</code>, <code>formatRemaining</code></td><td><code>labels.count</code>, <code>labels.remaining</code></td></tr>
+    <tr><td><code>NumberInput</code></td><td><code>decrementLabel</code>, <code>incrementLabel</code></td><td><code>labels.decrement</code>, <code>labels.increment</code></td></tr>
+    <tr><td><code>PinInput</code></td><td><code>getInputLabel</code></td><td><code>labels.input</code></td></tr>
+    <tr><td><code>Rating</code></td><td><code>getItemLabel</code>, <code>readOnlyLabel</code></td><td><code>labels.item</code>, <code>labels.readOnly</code></td></tr>
+    <tr><td><code>Slider</code></td><td><code>getThumbLabel</code></td><td><code>labels.thumb</code></td></tr>
+    <tr><td><code>Select</code></td><td><code>clearLabel</code> and <code>removeLabel</code> on <code>SelectTrigger</code>; <code>emptyText</code> and <code>searchLabel</code> on <code>SelectContent</code></td><td><code>labels.clear</code>, <code>labels.remove</code>, <code>labels.empty</code>, <code>labels.search</code> on <code>Select</code></td></tr>
+    <tr><td><code>DatePicker</code></td><td><code>config.labels</code>, <code>config.footer</code></td><td><code>labels</code> (adds <code>previousMonth</code>, <code>nextMonth</code>, <code>previousYears</code>, <code>nextYears</code>); <code>config</code> only keeps <code>language</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>config.labels</code></td><td><code>labels</code>; <code>config</code> is removed</td></tr>
+    <tr><td><code>Stepper</code></td><td><code>statusLabels</code></td><td><code>labels</code></td></tr>
+    <tr><td><code>ToastProvider</code></td><td><code>dismissLabel</code>, <code>regionLabel</code></td><td><code>labels.dismiss</code>, <code>labels.region</code></td></tr>
+    <tr><td><code>Paginator</code></td><td><code>firstLabel</code>, <code>previousLabel</code>, <code>nextLabel</code>, <code>lastLabel</code>, <code>getPageLabel</code></td><td><code>labels.first</code>, <code>labels.previous</code>, <code>labels.next</code>, <code>labels.last</code>, <code>labels.page</code></td></tr>
+    <tr><td><code>Alert</code></td><td><code>dismissLabel</code></td><td><code>labels.dismiss</code></td></tr>
+    <tr><td><code>Chip</code></td><td><code>removeLabel</code></td><td><code>labels.remove</code></td></tr>
+    <tr><td><code>Avatar</code></td><td><code>statusLabel</code></td><td><code>labels</code> (<code>online</code>, <code>away</code>, <code>busy</code>, <code>offline</code>)</td></tr>
+    <tr><td><code>AvatarGroup</code></td><td><code>overflowLabel</code></td><td><code>labels.overflow</code></td></tr>
+    <tr><td><code>Table</code></td><td><code>loadingLabel</code></td><td><code>labels.loading</code></td></tr>
+    <tr><td><code>Carousel</code></td><td><code>slideLabel</code> on <code>Carousel</code>, <code>dotLabel</code> on <code>CarouselDots</code>, <code>playLabel</code> and <code>pauseLabel</code> on <code>CarouselPlayPause</code></td><td><code>labels</code> on <code>Carousel</code> (<code>slide</code>, <code>dot</code>, <code>dots</code>, <code>previous</code>, <code>next</code>, <code>play</code>, <code>pause</code>)</td></tr>
+    <tr><td><code>FileUpload</code></td><td><code>progressLabel</code>, <code>removeLabel</code>, <code>formatRejection</code></td><td><code>labels.progress</code>, <code>labels.remove</code>, <code>labels.rejection</code>; also <code>labels.prompt</code> and <code>labels.fileSize</code></td></tr>
+    <tr><td><code>Breadcrumb</code>, <code>Button</code>, <code>Spinner</code></td><td>fixed texts</td><td><code>labels.breadcrumb</code>, <code>labels.busy</code>, <code>label</code></td></tr>
+  </tbody>
+</table>
+
+The type of each one is exported, for example `PaginatorLabels`. The spinner now says `Loading` instead of
+`loading` by default.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

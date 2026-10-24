@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { isValidElement, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { Portal } from '../../../overlay'
+import { mergeLabels } from '../../../overlay/labels'
 import {
   ToastContext,
   type ToastApi,
@@ -30,17 +31,26 @@ export type ToastVariant = 'solid' | 'subtle' | 'outline' | 'unstyled'
 export type ToastPart =
   'action' | 'content' | 'description' | 'dismiss' | 'icon' | 'title' | 'toast'
 
+export interface ToastLabels {
+  dismiss: string
+  region: string
+}
+
 export interface ToastProviderProps {
   children: ReactNode
   className?: string
   classNames?: Partial<Record<ToastPart, string>>
-  dismissLabel?: string
   duration?: number
   icons?: false | ToastIcons
+  labels?: Partial<ToastLabels>
   max?: number
   position?: ToastPosition
-  regionLabel?: string
   variant?: ToastVariant
+}
+
+const DEFAULT_LABELS: ToastLabels = {
+  dismiss: 'Dismiss notification',
+  region: 'Notifications',
 }
 
 const isOptions = (content: ToastContent): content is ToastOptions =>
@@ -53,14 +63,14 @@ export function ToastProvider({
   children,
   className = '',
   classNames,
-  dismissLabel = 'Dismiss notification',
   duration = 5000,
   icons,
+  labels,
   max = 5,
   position = 'bottom-end',
-  regionLabel = 'Notifications',
   variant = 'subtle',
 }: Readonly<ToastProviderProps>): ReactNode {
+  const text = mergeLabels(DEFAULT_LABELS, labels)
   const baseId = useId()
   const counter = useRef(0)
   const [toasts, setToasts] = useState<ToastData[]>([])
@@ -135,10 +145,10 @@ export function ToastProvider({
     <ToastContext.Provider value={api}>
       {children}
       <Portal>
-        <section aria-label={regionLabel} aria-live="polite" className={regionClasses || undefined}>
+        <section aria-label={text.region} aria-live="polite" className={regionClasses || undefined}>
           {toasts.map((toast) => (
             <ToastItem
-              dismissLabel={dismissLabel}
+              dismissLabel={text.dismiss}
               className={classNames?.toast ?? ''}
               classNames={classNames}
               icons={icons}

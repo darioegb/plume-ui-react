@@ -1,5 +1,6 @@
 export {
   Paginator,
+  type PaginatorLabels,
   type PaginatorOwnProps,
   type PaginatorPart,
   type PaginatorProps,

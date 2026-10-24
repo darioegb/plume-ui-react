@@ -4,14 +4,19 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { Children, forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { Avatar, type AvatarVariant } from './avatar'
+import { mergeLabels } from '../../../overlay/labels'
+import { Avatar, type AvatarLabels, type AvatarVariant } from './avatar'
 import { AvatarGroupContext } from './avatar-context'
 import styles from './avatar.module.css'
 
+export interface AvatarGroupLabels extends AvatarLabels {
+  overflow: (hidden: number) => string
+}
+
 export interface AvatarGroupOwnProps {
   colorScheme?: ColorScheme
+  labels?: Partial<AvatarGroupLabels>
   max?: number
-  overflowLabel?: (hidden: number) => string
   shape?: Shape
   size?: Size
   variant?: AvatarVariant
@@ -28,7 +33,9 @@ export type AvatarGroupProps = Omit<ComponentProps, 'index'> &
 
 const groupRole = 'group'
 
-const defaultOverflowLabel = (hidden: number): string => `${hidden} more`
+const DEFAULT_LABELS: Pick<AvatarGroupLabels, 'overflow'> = {
+  overflow: (hidden) => `${hidden} more`,
+}
 
 export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
@@ -36,8 +43,8 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
       children,
       className,
       colorScheme,
+      labels,
       max,
-      overflowLabel = defaultOverflowLabel,
       shape,
       size,
       variant,
@@ -48,9 +55,10 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     const avatars = Children.toArray(children)
     const limit = max !== undefined && max < avatars.length ? Math.max(max, 0) : avatars.length
     const hidden = avatars.length - limit
+    const { overflow } = mergeLabels(DEFAULT_LABELS, labels)
     const context = useMemo(
-      () => ({ colorScheme, shape, size, variant }),
-      [colorScheme, shape, size, variant],
+      () => ({ colorScheme, labels, shape, size, variant }),
+      [colorScheme, labels, shape, size, variant],
     )
 
     return (
@@ -64,7 +72,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
         >
           {avatars.slice(0, limit)}
           {hidden > 0 ? (
-            <Avatar alt={overflowLabel(hidden)} data-overflow="" fallback={`+${hidden}`} />
+            <Avatar alt={overflow(hidden)} data-overflow="" fallback={`+${hidden}`} />
           ) : null}
         </div>
       </AvatarGroupContext.Provider>

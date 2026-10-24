@@ -3,6 +3,7 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
 import type { PinInputType } from './pin-utils'
@@ -11,6 +12,10 @@ import { usePinInput } from './use-pin-input'
 
 export type PinInputPart = 'input'
 
+export interface PinInputLabels {
+  input: (index: number, length: number) => string
+}
+
 export type PinInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface PinInputOwnProps {
@@ -18,8 +23,8 @@ export interface PinInputOwnProps {
   focusOnMount?: boolean
   colorScheme?: ColorScheme
   defaultValue?: string
-  getInputLabel?: (index: number, length: number) => string
   classNames?: Partial<Record<PinInputPart, string>>
+  labels?: Partial<PinInputLabels>
   length?: number
   mask?: boolean
   name?: string
@@ -51,10 +56,9 @@ export type PinInputProps = Omit<ComponentProps, 'index'> &
   PinInputRootAttributes &
   PinInputOwnProps
 
-const defaultLabel =
-  (type: PinInputType) =>
-  (index: number, length: number): string =>
-    `${type === 'numeric' ? 'Digit' : 'Character'} ${index} of ${length}`
+const defaultLabels = (type: PinInputType): PinInputLabels => ({
+  input: (index, length) => `${type === 'numeric' ? 'Digit' : 'Character'} ${index} of ${length}`,
+})
 
 export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
   (
@@ -69,7 +73,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       colorScheme = 'secondary',
       defaultValue,
       disabled = false,
-      getInputLabel,
+      labels,
       id,
       classNames,
       length = 6,
@@ -105,7 +109,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
     const invalid = ariaInvalid === true || ariaInvalid === 'true'
     const fieldLabel = field?.controlId === id ? field?.labelId : undefined
     const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
-    const label = getInputLabel ?? defaultLabel(type)
+    const text = mergeLabels(defaultLabels(type), labels)
     const colorVars = {
       '--pininput-color': `var(--plume-color-${invalid ? 'error' : colorScheme}-text)`,
       ...style,
@@ -134,7 +138,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
         {[...new Array(length).keys()].map((index) => (
           <input
             aria-invalid={invalid || undefined}
-            aria-label={label(index + 1, length)}
+            aria-label={text.input(index + 1, length)}
             aria-required={required || undefined}
             autoComplete={autoComplete}
             className={joinClasses(isStyled && styles.cell, classNames?.input)}

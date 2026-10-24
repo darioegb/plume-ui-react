@@ -1,5 +1,6 @@
 export {
   Slider,
+  type SliderLabels,
   type SliderMark,
   type SliderOrientation,
   type SliderOwnProps,

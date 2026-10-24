@@ -5,12 +5,7 @@ import { createContext, useContext } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import type { UsePositionResult } from '../../../overlay/use-position'
 import type { DatePickerAction, DatePickerState } from './datepicker-reducer'
-import type {
-  DatePickerLabels,
-  DatePickerVariant,
-  DateRange,
-  FooterLabels,
-} from './datepicker-types'
+import type { DatePickerLabels, DatePickerVariant, DateRange } from './datepicker-types'
 
 export interface DatePickerContextProps {
   closeAndRestoreFocus: () => void
@@ -18,7 +13,6 @@ export interface DatePickerContextProps {
   colorScheme: ColorScheme
   dispatch: Dispatch<DatePickerAction>
   displayFormat?: string
-  footerLabels: FooterLabels
   isCalendar: boolean
   isRange: boolean
   labels: DatePickerLabels

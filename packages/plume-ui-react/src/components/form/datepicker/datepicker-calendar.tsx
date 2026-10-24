@@ -26,7 +26,7 @@ function FooterActions(): ReactNode {
   const {
     closeAndRestoreFocus,
     colorScheme,
-    footerLabels: { apply, cancel },
+    labels: { apply, cancel },
     onApply,
   } = useDatePicker('DatePickerCalendar')
 

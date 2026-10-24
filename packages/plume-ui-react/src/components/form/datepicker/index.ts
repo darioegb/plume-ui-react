@@ -16,5 +16,4 @@ export type {
   DatePickerRootAttributes,
   DatePickerVariant,
   DateRange,
-  FooterLabels,
 } from './datepicker-types'

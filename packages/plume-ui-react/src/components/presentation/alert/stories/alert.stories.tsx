@@ -14,7 +14,7 @@ const statuses = ['info', 'success', 'warning', 'error'] as const
  * (`note` for a message that doesn't need to be announced).
  *
  * Put a `AlertTitle` and a `AlertDescription` inside, or just the text. With **dismissible** it gets a close
- * button, named by **dismissLabel**, and it goes away when it is pressed. **onDismiss** tells you, so you can keep
+ * button, named by **labels.dismiss**, and it goes away when it is pressed. **onDismiss** tells you, so you can keep
  * it away. An **action**, such as a button or a link, goes at the end.
  *
  * ### Subcomponents
@@ -85,13 +85,14 @@ export default {
       description: 'Shows a button that closes the Alert.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    dismissLabel: {
-      control: 'text',
-      description: 'Accessible name of the dismiss button. Change it to translate it.',
+    labels: {
+      control: false,
+      description:
+        'The texts of the Alert, to translate it: `dismiss` is the accessible name of the dismiss button.',
       table: {
         category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'Dismiss' },
+        type: { summary: 'Partial<AlertLabels>' },
+        defaultValue: { summary: "{ dismiss: 'Dismiss' }" },
       },
     },
     className: {
@@ -262,7 +263,7 @@ export const Icons: Story = {
 
 /**
  * With **dismissible** the Alert has a close button and goes away when it is pressed. **onDismiss** tells you,
- * so you can keep it away the next time. Change **dismissLabel** to translate the name of the button.
+ * so you can keep it away the next time. Change **labels.dismiss** to translate the name of the button.
  */
 export const Dismissible: Story = {
   args: { dismissible: true, status: 'success' },

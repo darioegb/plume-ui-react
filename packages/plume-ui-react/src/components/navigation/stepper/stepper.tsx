@@ -3,22 +3,23 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { Children, forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import {
   StepIndexContext,
   StepperContext,
+  type StepperLabels,
   type StepperOrientation,
   type StepperVariant,
-  type StepStatus,
 } from './stepper-context'
 import styles from './stepper.module.css'
 
 export interface StepperOwnProps {
   activeStep?: number
   colorScheme?: ColorScheme
+  labels?: Partial<StepperLabels>
   orientation?: StepperOrientation
   size?: Size
-  statusLabels?: Partial<Record<StepStatus, string>>
   variant?: StepperVariant
 }
 
@@ -29,8 +30,9 @@ type StepperRootAttributes = Pick<
 
 export type StepperProps = Omit<ComponentProps, 'index'> & StepperRootAttributes & StepperOwnProps
 
-const defaultStatusLabels: Partial<Record<StepStatus, string>> = {
+const DEFAULT_LABELS: StepperLabels = {
   completed: 'Completed',
+  current: '',
   upcoming: 'Not started',
 }
 
@@ -50,9 +52,9 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(
       children,
       className,
       colorScheme = 'primary',
+      labels,
       orientation = 'horizontal',
       size = 'md',
-      statusLabels,
       style,
       variant = 'solid',
       ...rest
@@ -60,10 +62,10 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(
     ref: ForwardedRef<HTMLOListElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const labels = useMemo(() => ({ ...defaultStatusLabels, ...statusLabels }), [statusLabels])
+    const mergedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
     const context = useMemo(
-      () => ({ activeStep, isStyled, statusLabels: labels }),
-      [activeStep, isStyled, labels],
+      () => ({ activeStep, isStyled, labels: mergedLabels }),
+      [activeStep, isStyled, mergedLabels],
     )
 
     return (

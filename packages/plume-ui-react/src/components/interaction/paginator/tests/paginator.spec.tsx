@@ -226,19 +226,24 @@ describe('Paginator component', () => {
   })
 
   describe('translation', () => {
+    it('names the navigation with labels.pagination', () => {
+      render(<Paginator count={5} labels={{ pagination: 'Paginación' }} />)
+      expect(screen.getByRole('navigation', { name: 'Paginación' })).toBeInTheDocument()
+    })
+
     it('uses the labels of the user', () => {
       render(
         <Paginator
           aria-label="Paginación"
           count={5}
           defaultPage={2}
-          firstLabel="Primera"
-          getPageLabel={(page, isCurrent) =>
-            isCurrent ? `Página ${page}, actual` : `Página ${page}`
-          }
-          lastLabel="Última"
-          nextLabel="Siguiente"
-          previousLabel="Anterior"
+          labels={{
+            first: 'Primera',
+            last: 'Última',
+            next: 'Siguiente',
+            page: (page, isCurrent) => (isCurrent ? `Página ${page}, actual` : `Página ${page}`),
+            previous: 'Anterior',
+          }}
           showEdges
         />,
       )

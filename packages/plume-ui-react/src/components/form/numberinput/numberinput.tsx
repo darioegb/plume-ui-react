@@ -3,6 +3,7 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode, RefObject } from 'react'
 import { forwardRef, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { NumberInputStepper } from './numberinput-stepper'
@@ -11,15 +12,21 @@ import { useNumberInput } from './use-number-input'
 
 export type NumberInputPart = 'decrement' | 'increment' | 'input'
 
+export interface NumberInputLabels {
+  decrement: string
+  increment: string
+}
+
+const DEFAULT_LABELS: NumberInputLabels = { decrement: 'Decrease', increment: 'Increase' }
+
 export type NumberInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface NumberInputOwnProps {
   classNames?: Partial<Record<NumberInputPart, string>>
   colorScheme?: ColorScheme
-  decrementLabel?: string
   defaultValue?: number | null
   format?: (value: number) => string
-  incrementLabel?: string
+  labels?: Partial<NumberInputLabels>
   largeStep?: number
   max?: number
   min?: number
@@ -81,11 +88,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       className,
       classNames,
       colorScheme = 'secondary',
-      decrementLabel = 'Decrease',
       defaultValue,
       disabled = false,
       format,
-      incrementLabel = 'Increase',
+      labels,
       largeStep,
       max,
       min,
@@ -123,6 +129,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const isStyled = variant !== 'unstyled'
     const invalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
     const canStep = steppers && !disabled
+    const text = mergeLabels(DEFAULT_LABELS, labels)
     const colorVars = {
       '--numberinput-color': `var(--plume-color-${colorScheme}-text)`,
       ...style,
@@ -140,7 +147,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className={joinClasses(isStyled && styles.stepper, classNames?.decrement)}
             direction={-1}
             disabled={!canStep || !number.canDecrement}
-            label={decrementLabel}
+            label={text.decrement}
             onStep={() => {
               focusInput()
               number.stepBy(-1)
@@ -175,7 +182,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             className={joinClasses(isStyled && styles.stepper, classNames?.increment)}
             direction={1}
             disabled={!canStep || !number.canIncrement}
-            label={incrementLabel}
+            label={text.increment}
             onStep={() => {
               focusInput()
               number.stepBy(1)

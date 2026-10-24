@@ -18,9 +18,9 @@ export const StepIndicator = forwardRef<HTMLSpanElement, StepIndicatorProps>(
     { children, className, style, ...rest }: StepIndicatorProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled, statusLabels } = useStepperContext('StepIndicator')
+    const { isStyled, labels } = useStepperContext('StepIndicator')
     const { index, status } = useStepContext('StepIndicator')
-    const label = statusLabels[status]
+    const label = labels[status]
 
     return (
       <span

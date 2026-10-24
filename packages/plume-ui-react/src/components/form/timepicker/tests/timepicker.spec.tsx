@@ -207,13 +207,11 @@ describe('TimePicker', () => {
   it('names its parts with the labels it is given', () => {
     render(
       <TimePicker
-        config={{
-          labels: {
-            hours: 'Horas',
-            minutes: 'Minutos',
-            openTimePicker: 'Abrir',
-            timePicker: 'Hora',
-          },
+        labels={{
+          hours: 'Horas',
+          minutes: 'Minutos',
+          openTimePicker: 'Abrir',
+          timePicker: 'Hora',
         }}
       />,
     )
@@ -301,7 +299,7 @@ describe('TimePicker', () => {
     it('uses the labels of the period', () => {
       render(
         <TimePicker
-          config={{ labels: { am: 'a. m.', pm: 'p. m.', period: 'Periodo' } }}
+          labels={{ am: 'a. m.', pm: 'p. m.', period: 'Periodo' }}
           defaultValue="08:00"
           hour12
         />,

@@ -63,7 +63,7 @@ describe('Rating component', () => {
 
     it('uses another name for the stars', () => {
       render(
-        <Rating aria-label="Rating" getItemLabel={(value, max) => `${value}/${max}`} max={2} />,
+        <Rating aria-label="Rating" labels={{ item: (value, max) => `${value}/${max}` }} max={2} />,
       )
       expect(radios()[1]).toHaveAttribute('aria-label', '2/2')
     })
@@ -317,7 +317,7 @@ describe('Rating component', () => {
         <Rating
           aria-label="Rating"
           readOnly
-          readOnlyLabel={(value, max) => `${value} de ${max}`}
+          labels={{ readOnly: (value, max) => `${value} de ${max}` }}
           value={4}
         />,
       )

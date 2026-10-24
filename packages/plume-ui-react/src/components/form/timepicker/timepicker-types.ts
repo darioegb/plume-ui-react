@@ -7,7 +7,3 @@ export interface TimePickerLabels {
   pm: string
   timePicker: string
 }
-
-export interface TimePickerConfig {
-  labels?: Partial<TimePickerLabels>
-}

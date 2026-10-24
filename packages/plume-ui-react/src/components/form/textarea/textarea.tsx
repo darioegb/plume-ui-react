@@ -7,11 +7,15 @@ import styles from './textarea.module.css'
 
 export type TextareaPart = 'count' | 'input'
 
+export interface TextareaLabels {
+  count: (count: number, max: number | undefined) => string
+  remaining: (remaining: number) => string
+}
+
 export interface TextareaOwnProps {
   colorScheme?: ColorScheme
   classNames?: Partial<Record<TextareaPart, string>>
-  formatCount?: (count: number, max: number | undefined) => string
-  formatRemaining?: (remaining: number) => string
+  labels?: Partial<TextareaLabels>
   resize?: TextareaResize
   shape?: Shape
   showCount?: boolean
@@ -63,8 +67,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       colorScheme = 'secondary',
       classNames,
       disabled = false,
-      formatCount,
-      formatRemaining,
+      labels,
       resize = 'vertical',
       rows = 3,
       shape = 'rounded',
@@ -102,8 +105,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={className}
         countClassName={classNames?.count}
         style={colorVars}
-        formatCount={formatCount}
-        formatRemaining={formatRemaining}
+        labels={labels}
         isStyled={isStyled}
         ref={ref}
         textareaProps={textareaProps}

@@ -3,9 +3,14 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ComponentProps, Size } from '../../../theme'
 import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
+
+export interface TableLabels {
+  loading: string
+}
 
 export type TablePart = 'container' | 'loading'
 
@@ -14,8 +19,8 @@ export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 export interface TableOwnProps {
   classNames?: Partial<Record<TablePart, string>>
   hoverable?: boolean
+  labels?: Partial<TableLabels>
   loading?: boolean
-  loadingLabel?: string
   maxHeight?: number | string
   size?: Size
   stickyHeader?: boolean
@@ -28,6 +33,8 @@ type TableRootAttributes = Pick<
 >
 
 export type TableProps = Omit<ComponentProps, 'index'> & TableRootAttributes & TableOwnProps
+
+const DEFAULT_LABELS: TableLabels = { loading: 'Loading' }
 
 function useOverflow(container: HTMLElement | null): boolean {
   const [overflowing, setOverflowing] = useState(false)
@@ -59,8 +66,8 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
       className,
       classNames,
       hoverable = false,
+      labels,
       loading = false,
-      loadingLabel = 'Loading',
       maxHeight,
       size = 'md',
       stickyHeader = false,
@@ -92,9 +99,9 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
         {loading ? (
           <div data-plume-table-loading="">
             <Spinner
-              aria-label={loadingLabel}
               className={classNames?.loading}
               color="primary"
+              label={mergeLabels(DEFAULT_LABELS, labels).loading}
               variant={isStyled ? 'solid' : 'unstyled'}
             />
           </div>

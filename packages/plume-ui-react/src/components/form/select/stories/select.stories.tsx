@@ -104,9 +104,9 @@ function Example({
  *
  * | Component | Props |
  * | --- | --- |
- * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `removeLabel`, `clearLabel`, `aria-label`, `aria-labelledby`, `classNames`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button; `classNames` styles its parts (`field`, `trigger`, `chip`, `chipRemove`, `clear` and `chevron`); the chips are `Chip` components, and `chip` and `chipRemove` go to the chip and to its remove button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. |
+ * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `aria-label`, `aria-labelledby`, `classNames`, `className`, `style`, `children`. The field the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the field and `ref` to its button; `classNames` styles its parts (`field`, `trigger`, `chip`, `chipRemove`, `clear` and `chevron`); the chips are `Chip` components, and `chip` and `chipRemove` go to the chip and to its remove button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. |
  * | `SelectValue` | `placeholder`, `children`. What the button of the trigger shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectTrigger` renders one by default; use your own to render the value yourself with a function of the chosen options. |
- * | `SelectContent` | `emptyText`, `searchLabel`, `searchPlaceholder`, `aria-label`, `classNames`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. `classNames` styles its parts (`search`, `searchInput`, `list` and `empty`). |
+ * | `SelectContent` | `searchPlaceholder`, `aria-label`, `classNames`, `className`, `style`, `children`. The list. It is as wide as the trigger and scrolls when it is long. `classNames` styles its parts (`search`, `searchInput`, `list` and `empty`). |
  * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `classNames`, `className`, `style`, `children`. An option. `children` is its content and `label` the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). `classNames` styles `icon`, `description` and `check`, the mark at the end of a chosen option, in a single and in a `multiple` select. The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
  * | `SelectGroup` | `label`, `classNames.label`, `className`, `style`, `children`. A titled set of options. It hides itself when the search leaves it empty. |
  */
@@ -137,6 +137,12 @@ export default {
       control: false,
       description: 'The `SelectTrigger` and the `SelectContent`.',
       table: { type: { summary: 'ReactNode' } },
+    },
+    labels: {
+      control: false,
+      description:
+        'The texts of the Select, for other languages, used by its parts: `clear` is the accessible name of the clear button (`Clear`), `remove(label)` the name of the button that removes a chip (`Remove Apple`), `search` the name of the search box (`Search`) and `empty` what shows when the search finds nothing (`No results`).',
+      table: { category: 'Accessibility', type: { summary: 'Partial<SelectLabels>' } },
     },
     value: {
       control: false,
@@ -447,20 +453,16 @@ export const ImagesAndDescriptions: Story = {
 
 /**
  * **searchable** adds a search box that filters the options while the user types, and a message when none is
- * left (**emptyText** in the `SelectContent`). The arrows and <kbd>Enter</kbd> work from the search box, and typing
+ * left (**labels.empty** in the `Select`). The arrows and <kbd>Enter</kbd> work from the search box, and typing
  * on the closed trigger opens it with that text. The text of an option, or its `label`, is what is searched.
  */
 export const Searchable: Story = {
   parameters: { docs: { story: { inline: false, iframeHeight: 420 } } },
   render: () => (
     <div className="flex flex-col gap-4">
-      <Select searchable>
+      <Select labels={{ empty: 'Nobody with that name', search: 'Search people' }} searchable>
         <SelectTrigger aria-label="Person" placeholder="Search a person" />
-        <SelectContent
-          emptyText="Nobody with that name"
-          searchLabel="Search people"
-          searchPlaceholder="Search…"
-        >
+        <SelectContent searchPlaceholder="Search…">
           {people.map((person) => (
             <SelectOption
               description={person.description}
@@ -473,9 +475,9 @@ export const Searchable: Story = {
           ))}
         </SelectContent>
       </Select>
-      <Select clearable multiple searchable>
+      <Select clearable labels={{ search: 'Search fruits' }} multiple searchable>
         <SelectTrigger aria-label="Fruits" placeholder="Search fruits" />
-        <SelectContent searchLabel="Search fruits">
+        <SelectContent>
           <Fruits />
         </SelectContent>
       </Select>
@@ -682,7 +684,14 @@ export const Tailwind: Story = {
       ))}
     </SelectContent>
   </Select>
-  <Select clearable defaultValue={["apple", "mango"]} multiple searchable variant="unstyled">
+  <Select
+    clearable
+    defaultValue={["apple", "mango"]}
+    labels={{ search: "Search fruits" }}
+    multiple
+    searchable
+    variant="unstyled"
+  >
     <SelectTrigger
       aria-label="Fruits"
       className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
@@ -703,7 +712,6 @@ export const Tailwind: Story = {
         search: "border-b border-border p-2",
         searchInput: "w-full rounded border border-border bg-transparent px-2 py-1 text-sm",
       }}
-      searchLabel="Search fruits"
     >
       {fruits.map((fruit) => (
         <SelectOption
@@ -746,7 +754,14 @@ export const Tailwind: Story = {
           ))}
         </SelectContent>
       </Select>
-      <Select clearable defaultValue={['apple', 'mango']} multiple searchable variant="unstyled">
+      <Select
+        clearable
+        defaultValue={['apple', 'mango']}
+        labels={{ search: 'Search fruits' }}
+        multiple
+        searchable
+        variant="unstyled"
+      >
         <SelectTrigger
           aria-label="Fruits"
           className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
@@ -767,7 +782,6 @@ export const Tailwind: Story = {
             search: 'border-b border-border p-2',
             searchInput: 'w-full rounded border border-border bg-transparent px-2 py-1 text-sm',
           }}
-          searchLabel="Search fruits"
         >
           {fruits.map((fruit) => (
             <SelectOption

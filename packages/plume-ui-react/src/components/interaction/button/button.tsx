@@ -1,8 +1,13 @@
 import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { Spinner } from '../../presentation/spinner'
 import styles from './button.module.css'
+
+export interface ButtonLabels {
+  busy: string
+}
 
 export interface ButtonOwnProps {
   busyText?: string
@@ -11,6 +16,7 @@ export interface ButtonOwnProps {
   iconRight?: ReactNode
   isBusy?: boolean
   label?: string
+  labels?: Partial<ButtonLabels>
   shape?: Shape
   size?: Size
   variant?: ButtonVariant
@@ -40,6 +46,8 @@ type ButtonRootAttributes = Pick<
 >
 
 export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
+
+const DEFAULT_LABELS: ButtonLabels = { busy: 'Loading' }
 
 const renderContent = (
   busyText: string,
@@ -98,6 +106,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       iconLeft,
       iconRight,
       label,
+      labels,
       style,
       busyText = '',
       className = '',
@@ -127,6 +136,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
         {isBusy ? (
           <Spinner
+            aria-label={mergeLabels(DEFAULT_LABELS, labels).busy}
             style={{ '--spinner-scheme': 'var(--button-contrast-color)' } as CSSProperties}
             {...(busyText && { className: styles.spinnerMargin })}
             size='sm'

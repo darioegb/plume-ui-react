@@ -3,12 +3,13 @@
 import type { CSSProperties, FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
+import { mergeLabels } from '../../../overlay/labels'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { customProperties, type PickerVariant } from '../shared/picker-panel'
 import type { TimePickerContextProps } from './use-timepicker'
 import { useTimePicks } from './use-time-picks'
-import type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
+import type { TimePickerLabels } from './timepicker-types'
 
 const DEFAULT_LABELS: TimePickerLabels = {
   am: 'AM',
@@ -22,10 +23,10 @@ const DEFAULT_LABELS: TimePickerLabels = {
 
 interface TimePickerControllerOptions {
   colorScheme: ColorScheme
-  config?: TimePickerConfig
   defaultValue: string
   hour12: boolean
   isPanel: boolean
+  labels?: Partial<TimePickerLabels>
   minuteStep: number
   onChange?: (value: string) => void
   root: HTMLDivElement | null
@@ -52,10 +53,10 @@ export const timePickerColorVars = (colorScheme: ColorScheme): CSSProperties =>
 
 export function useTimePickerController({
   colorScheme,
-  config,
   defaultValue,
   hour12,
   isPanel,
+  labels: labelsProp,
   minuteStep,
   onChange,
   root,
@@ -65,7 +66,7 @@ export function useTimePickerController({
   value: valueProp,
   variant,
 }: Readonly<TimePickerControllerOptions>): TimePickerController {
-  const labels = useMemo(() => ({ ...DEFAULT_LABELS, ...config?.labels }), [config?.labels])
+  const labels = useMemo(() => mergeLabels(DEFAULT_LABELS, labelsProp), [labelsProp])
   const [value, setValue] = useControllableState({ defaultValue, onChange, value: valueProp })
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState<HTMLInputElement | null>(null)

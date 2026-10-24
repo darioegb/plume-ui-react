@@ -20,11 +20,9 @@ export interface SelectTriggerOwnProps {
   'aria-labelledby'?: string
   children?: ReactNode
   classNames?: Partial<Record<SelectTriggerPart, string>>
-  clearLabel?: string
   display?: 'chips' | 'text'
   maxDisplay?: number
   placeholder?: ReactNode
-  removeLabel?: (label: string) => string
 }
 
 export type SelectTriggerProps = Omit<ComponentProps, 'index'> & SelectTriggerOwnProps
@@ -33,12 +31,10 @@ function Chips({
   classNames,
   context,
   maxDisplay,
-  removeLabel,
 }: Readonly<{
   classNames: SelectTriggerProps['classNames']
   context: SelectContextValue
   maxDisplay: number
-  removeLabel: (label: string) => string
 }>): ReactNode {
   const { isStyled, selectedOptions } = context
   const shown = selectedOptions.slice(0, maxDisplay)
@@ -55,7 +51,7 @@ function Chips({
           icon={option.icon}
           key={option.value}
           onRemove={canRemove ? () => context.remove(option.value) : undefined}
-          removeLabel={removeLabel(option.label)}
+          labels={{ remove: context.labels.remove(option.label) }}
           size={context.size}
           variant={variant}
         >
@@ -146,14 +142,10 @@ const ComboboxButton = forwardRef<HTMLButtonElement, ComboboxButtonProps>(
 
 ComboboxButton.displayName = 'ComboboxButton'
 
-function ClearButton({
-  classNames,
-  clearLabel,
-  context,
-}: Readonly<ControlParts & { clearLabel: string }>): ReactNode {
+function ClearButton({ classNames, context }: Readonly<ControlParts>): ReactNode {
   return (
     <button
-      aria-label={clearLabel}
+      aria-label={context.labels.clear}
       className={joinClasses(context.isStyled && styles.clear, classNames?.clear)}
       data-plume-select-clear=""
       onClick={context.clear}
@@ -210,11 +202,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       children,
       className = '',
       classNames,
-      clearLabel = 'Clear',
       display = 'chips',
       maxDisplay = Number.POSITIVE_INFINITY,
       placeholder,
-      removeLabel = (label) => `Remove ${label}`,
       style,
     }: SelectTriggerProps,
     ref: ForwardedRef<HTMLButtonElement>,
@@ -248,12 +238,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           data-plume-select-field=""
         >
           {showChips ? (
-            <Chips
-              classNames={classNames}
-              context={context}
-              maxDisplay={maxDisplay}
-              removeLabel={removeLabel}
-            />
+            <Chips classNames={classNames} context={context} maxDisplay={maxDisplay} />
           ) : null}
           <ComboboxButton
             ariaLabel={ariaLabel}
@@ -268,7 +253,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           </ComboboxButton>
         </div>
         {context.canClear && context.selected.length > 0 ? (
-          <ClearButton classNames={classNames} clearLabel={clearLabel} context={context} />
+          <ClearButton classNames={classNames} context={context} />
         ) : null}
         <ChevronButton classNames={classNames} context={context} onToggle={toggle} />
         {name ? <HiddenInputs name={name} /> : null}

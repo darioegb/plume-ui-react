@@ -30,7 +30,7 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * | Component | Props |
  * | --- | --- |
  * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `classNames.input` (the `<input>`). The field and the button that opens the panel. It renders nothing when the `TimePicker` is `isPanel`. |
- * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `config.labels.timePicker`), `className`, `style`. The lists of hours and minutes. It is a popup that opens under the input, or the page content when the `TimePicker` is `isPanel`. |
+ * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `labels.timePicker`), `className`, `style`. The lists of hours and minutes. It is a popup that opens under the input, or the page content when the `TimePicker` is `isPanel`. |
  *
  * ### Keyboard
  *
@@ -137,7 +137,7 @@ export default {
       description: 'Shows the value but blocks typing and the button that opens the popup.',
       table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
-    config: {
+    labels: {
       control: false,
       description:
         '`labels` sets every text the component shows or announces: the names of the popup (`timePicker`), of its lists (`hours`, `minutes`, `period`), of the button that opens it (`openTimePicker`) and the `am` and `pm` texts. Every key is optional and falls back to its default.',
@@ -145,12 +145,12 @@ export default {
         defaultValue: {
           summary: 'object',
           detail:
-            "{ labels: { timePicker: 'Time picker', hours: 'Hours', minutes: 'Minutes', period: 'Period', openTimePicker: 'Open time picker', am: 'AM', pm: 'PM' } }",
+            "{ am: 'AM', hours: 'Hours', minutes: 'Minutes', openTimePicker: 'Open time picker', period: 'Period', pm: 'PM', timePicker: 'Time picker' }",
         },
         type: {
-          summary: 'TimePickerConfig',
+          summary: 'Partial<TimePickerLabels>',
           detail:
-            '{ labels?: { am?: string; hours?: string; minutes?: string; openTimePicker?: string; period?: string; pm?: string; timePicker?: string } }',
+            '{ am?: string; hours?: string; minutes?: string; openTimePicker?: string; period?: string; pm?: string; timePicker?: string }',
         },
       },
     },
@@ -298,20 +298,18 @@ export const Colors: Story = {
 }
 
 /**
- * Every text can be changed with `config.labels`, here in Spanish with a 12-hour clock.
+ * Every text can be changed with `labels`, here in Spanish with a 12-hour clock.
  */
 export const CustomLabels: Story = {
   args: {
-    config: {
-      labels: {
-        am: 'a. m.',
-        hours: 'Horas',
-        minutes: 'Minutos',
-        openTimePicker: 'Abrir selector de hora',
-        period: 'Periodo',
-        pm: 'p. m.',
-        timePicker: 'Selector de hora',
-      },
+    labels: {
+      am: 'a. m.',
+      hours: 'Horas',
+      minutes: 'Minutos',
+      openTimePicker: 'Abrir selector de hora',
+      period: 'Periodo',
+      pm: 'p. m.',
+      timePicker: 'Selector de hora',
     },
     defaultValue: '16:45',
     hour12: true,

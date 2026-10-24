@@ -83,7 +83,7 @@ describe('Stepper component', () => {
       render(
         <Demo
           activeStep={1}
-          statusLabels={{ completed: 'Hecho', current: 'Ahora', upcoming: 'Pendiente' }}
+          labels={{ completed: 'Hecho', current: 'Ahora', upcoming: 'Pendiente' }}
         />,
       )
       expect(step('Account')).toHaveTextContent('Hecho')

@@ -5,11 +5,18 @@ import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { InputGroup } from './input-group'
 import { InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
 
 export type InputPart = 'input' | 'reveal'
+
+export interface InputLabels {
+  reveal: string
+}
+
+const DEFAULT_LABELS: InputLabels = { reveal: 'Show password' }
 
 export interface InputOwnProps {
   addonBefore?: ReactNode
@@ -19,7 +26,7 @@ export interface InputOwnProps {
   colorScheme?: ColorScheme
   mask?: string
   classNames?: Partial<Record<InputPart, string>>
-  revealLabel?: string
+  labels?: Partial<InputLabels>
   revealable?: boolean
   shape?: Shape
   size?: Size
@@ -89,7 +96,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled = false,
       readOnly = false,
       classNames,
-      revealLabel = 'Show password',
+      labels,
       revealable = false,
       shape = 'rounded',
       size = 'md',
@@ -159,7 +166,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               className={classNames?.reveal}
               disabled={disabled}
               isStyled={isStyled}
-              label={revealLabel}
+              label={mergeLabels(DEFAULT_LABELS, labels).reveal}
               onToggle={toggle}
               visible={revealed}
             />

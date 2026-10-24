@@ -1,1 +1,7 @@
-export { Rating, type RatingPart, type RatingProps, type RatingVariant } from './rating'
+export {
+  Rating,
+  type RatingLabels,
+  type RatingPart,
+  type RatingProps,
+  type RatingVariant,
+} from './rating'

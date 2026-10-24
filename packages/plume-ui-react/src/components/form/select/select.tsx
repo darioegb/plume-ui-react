@@ -3,10 +3,16 @@
 import type { ReactNode } from 'react'
 import { useCallback, useId, useMemo, useState } from 'react'
 import type { Placement } from '../../../overlay'
+import { mergeLabels } from '../../../overlay/labels'
 import { useOpenState } from '../../../overlay/use-open-state'
 import { useSelectionState } from '../../../overlay/use-selection-state'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import { SelectContext, type SelectLabelling, type SelectVariant } from './select-context'
+import {
+  SelectContext,
+  type SelectLabelling,
+  type SelectLabels,
+  type SelectVariant,
+} from './select-context'
 import { useSelectKeyboard } from './use-select-keyboard'
 import { useSelectRegistry } from './use-select-registry'
 
@@ -21,6 +27,7 @@ interface SelectBaseProps {
   disabled?: boolean
   flip?: boolean
   id?: string
+  labels?: Partial<SelectLabels>
   name?: string
   offset?: number
   onOpenChange?: (open: boolean) => void
@@ -49,6 +56,13 @@ interface SelectMultipleProps {
   value?: string[]
 }
 
+const DEFAULT_LABELS: SelectLabels = {
+  clear: 'Clear',
+  empty: 'No results',
+  remove: (label) => `Remove ${label}`,
+  search: 'Search',
+}
+
 export type SelectProps = SelectBaseProps & (SelectMultipleProps | SelectSingleProps)
 
 function nextSelection(
@@ -72,6 +86,7 @@ export function Select({
   disabled = false,
   flip = true,
   id,
+  labels,
   multiple = false,
   name,
   offset = 4,
@@ -105,6 +120,16 @@ export function Select({
     value,
   })
   const { options, register } = useSelectRegistry()
+  const merged = mergeLabels(DEFAULT_LABELS, labels)
+  const text = useMemo<SelectLabels>(
+    () => ({
+      clear: merged.clear,
+      empty: merged.empty,
+      remove: merged.remove,
+      search: merged.search,
+    }),
+    [merged.clear, merged.empty, merged.remove, merged.search],
+  )
   const canEdit = !disabled && !readOnly
   const shouldClose = closeOnSelect ?? !multiple
 
@@ -187,6 +212,7 @@ export function Select({
       isSelected,
       isStyled: variant !== 'unstyled',
       labelling,
+      labels: text,
       listboxId: `${baseId}-listbox`,
       multiple,
       name,
@@ -252,6 +278,7 @@ export function Select({
       shape,
       shift,
       size,
+      text,
       trigger,
       variant,
     ],

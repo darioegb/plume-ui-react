@@ -80,8 +80,19 @@ describe('Avatar component', () => {
   })
 
   it('takes another text for the status', () => {
-    render(<Avatar name="Ada" status="busy" statusLabel="Ocupada" />)
+    render(<Avatar labels={{ busy: 'Ocupada' }} name="Ada" status="busy" />)
     expect(screen.getByRole('img', { name: 'Ada, Ocupada' })).toBeInTheDocument()
+  })
+
+  it('takes the texts of the status from the group', () => {
+    render(
+      <AvatarGroup labels={{ online: 'En línea' }}>
+        <Avatar name="Ada" status="online" />
+        <Avatar labels={{ online: 'Conectada' }} name="Grace" status="online" />
+      </AvatarGroup>,
+    )
+    expect(screen.getByRole('img', { name: 'Ada, En línea' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Grace, Conectada' })).toBeInTheDocument()
   })
 
   it('has no status by default', () => {
@@ -201,8 +212,8 @@ describe('AvatarGroup component', () => {
     expect(screen.getByRole('img', { name: '2 more' })).toBeInTheDocument()
   })
 
-  it('takes the text of the counter from overflowLabel', () => {
-    renderGroup({ max: 3, overflowLabel: (hidden: number) => `${hidden} más` })
+  it('takes the text of the counter from labels.overflow', () => {
+    renderGroup({ labels: { overflow: (hidden: number) => `${hidden} más` }, max: 3 })
     expect(screen.getByRole('img', { name: '1 más' })).toBeInTheDocument()
   })
 

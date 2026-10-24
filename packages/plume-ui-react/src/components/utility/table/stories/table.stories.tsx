@@ -172,10 +172,14 @@ export default {
         'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`, covers the body with a translucent veil and shows a `Spinner` in the middle.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    loadingLabel: {
-      control: 'text',
-      description: 'Accessible name of the spinner shown while the table is loading.',
-      table: { type: { summary: 'string' }, defaultValue: { summary: 'Loading' } },
+    labels: {
+      control: false,
+      description:
+        'The texts of the Table, to translate it: `loading` is the accessible name of the spinner shown while the table is loading.',
+      table: {
+        type: { summary: 'Partial<TableLabels>' },
+        defaultValue: { summary: "{ loading: 'Loading' }" },
+      },
     },
     maxHeight: {
       control: 'text',
@@ -759,7 +763,7 @@ export const Selectable: Story = {
 
 /**
  * **loading** marks the table as busy while the data is on its way: it sets `aria-busy`, covers the body with a translucent veil and shows
- * a `Spinner` in the middle, named by **loadingLabel**. The rows stay in place so the table doesn't jump when the
+ * a `Spinner` in the middle, named by **labels.loading**. The rows stay in place so the table doesn't jump when the
  * new data arrives.
  */
 export const Loading: Story = {

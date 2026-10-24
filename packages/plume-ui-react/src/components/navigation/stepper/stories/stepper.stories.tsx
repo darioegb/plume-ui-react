@@ -36,7 +36,7 @@ function renderSteps(withDescription = true): React.ReactNode {
  *
  * It is an ordered list: every `Step` is a `<li>`, and the one the user is on has `aria-current="step"`. A screen
  * reader says "Completed" for the steps already done and "Not started" for the ones to come, which you can
- * translate with `statusLabels`. The numbers, the check and the separators are decorative and hidden from
+ * translate with `labels`. The numbers, the check and the separators are decorative and hidden from
  * assistive technology. The state is also in `data-state` (`completed`, `current` or `upcoming`) on the step, the
  * indicator, the title, the description and the separator, so you can style any of them.
  *
@@ -111,13 +111,13 @@ export default {
         defaultValue: { summary: 'horizontal' },
       },
     },
-    statusLabels: {
+    labels: {
       control: false,
       description:
         'The text a screen reader says for each status. Pass only the ones you want to change; use an empty string to say nothing for a status.',
       table: {
-        type: { summary: 'Partial<Record<"completed" | "current" | "upcoming", string>>' },
-        defaultValue: { summary: '{ completed: "Completed", upcoming: "Not started" }' },
+        type: { summary: 'Partial<StepperLabels>' },
+        defaultValue: { summary: '{ completed: "Completed", current: "", upcoming: "Not started" }' },
       },
     },
     colorScheme: {
@@ -298,12 +298,12 @@ export const CustomIndicator: Story = {
 }
 
 /**
- * Use **statusLabels** to translate what a screen reader says. Nothing is said for the current step because
+ * Use **labels** to translate what a screen reader says. Nothing is said for the current step because
  * `aria-current="step"` already announces it.
  */
 export const StatusLabels: Story = {
   args: {
-    statusLabels: { completed: 'Completado', upcoming: 'Pendiente' },
+    labels: { completed: 'Completado', upcoming: 'Pendiente' },
   },
 }
 

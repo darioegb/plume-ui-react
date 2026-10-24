@@ -3,6 +3,7 @@
 import type { ChangeEvent, CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useId, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -22,14 +23,18 @@ export type SliderOrientation = 'horizontal' | 'vertical'
 
 export type SliderPart = 'mark' | 'markLabel' | 'range' | 'thumb' | 'track'
 
+export interface SliderLabels {
+  thumb: (index: number) => string
+}
+
 export interface SliderOwnProps {
   classNames?: Partial<Record<SliderPart, string>>
   colorScheme?: ColorScheme
   defaultValue?: SliderValue
   disabled?: boolean
   formatValue?: (value: number) => string
-  getThumbLabel?: (index: number) => string
   invalid?: boolean
+  labels?: Partial<SliderLabels>
   marks?: boolean | number[] | SliderMark[]
   max?: number
   min?: number
@@ -53,7 +58,9 @@ export type SliderProps = Omit<ComponentProps, 'children' | 'index'> &
   SliderRootAttributes &
   SliderOwnProps
 
-const defaultThumbLabel = (index: number): string => (index === 0 ? 'Minimum' : 'Maximum')
+const DEFAULT_LABELS: SliderLabels = {
+  thumb: (index) => (index === 0 ? 'Minimum' : 'Maximum'),
+}
 
 const sliderColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
@@ -76,9 +83,9 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       defaultValue,
       disabled = false,
       formatValue,
-      getThumbLabel = defaultThumbLabel,
       id,
       invalid = false,
+      labels,
       marks,
       max = 100,
       min = 0,
@@ -107,6 +114,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
     const isRange = Array.isArray(value)
     const values = toValues(value).map((current) => clamp(current, min, max))
     const isStyled = variant !== 'unstyled'
+    const text = mergeLabels(DEFAULT_LABELS, labels)
     const isInvalid = invalid || ariaInvalid === true || ariaInvalid === 'true'
     const firstId = id ?? generatedId
     const fieldLabelId = field?.controlId === id ? field?.labelId : undefined
@@ -204,7 +212,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
             <input
               aria-describedby={describedBy}
               aria-invalid={isInvalid || undefined}
-              aria-label={isRange ? getThumbLabel(index) : ariaLabel}
+              aria-label={isRange ? text.thumb(index) : ariaLabel}
               aria-labelledby={isRange ? undefined : labelledBy}
               aria-readonly={readOnly || undefined}
               aria-valuetext={formatValue?.(current)}

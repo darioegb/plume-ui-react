@@ -10,4 +10,4 @@ export {
   type TimePickerInputProps,
 } from './timepicker-input'
 export { TimePickerPanel, type TimePickerPanelProps } from './timepicker-panel'
-export type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
+export type { TimePickerLabels } from './timepicker-types'

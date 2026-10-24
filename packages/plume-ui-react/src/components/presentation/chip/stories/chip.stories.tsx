@@ -23,7 +23,7 @@ const noop = (): void => undefined
  * `Select` that allows several. It can have an icon or an image and, with `onRemove`, a button to remove it.
  *
  * It renders a `<span>`. The remove button is named after the chip (`Remove Design`) unless you give it a
- * `removeLabel`, and an icon is decorative, so the text has to say what the chip is. A `Badge` labels a status
+ * `labels.remove`, and an icon is decorative, so the text has to say what the chip is. A `Badge` labels a status
  * or a count and is never interactive, a `Chip` is a value that can go away.
  */
 export default {
@@ -101,11 +101,15 @@ export default {
       description: 'Shows a remove button, and is called when it is clicked.',
       table: { type: { summary: '(event: MouseEvent<HTMLButtonElement>) => void' } },
     },
-    removeLabel: {
-      control: 'text',
+    labels: {
+      control: false,
       description:
-        'Accessible name of the remove button. By default it is `Remove` followed by the text of the Chip.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
+        'The texts of the Chip, to translate it: `remove` is the accessible name of the remove button. By default it is `Remove` followed by the text of the Chip; with `labels.remove` the name is exactly that text.',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'Partial<ChipLabels>' },
+        defaultValue: { summary: "{ remove: 'Remove' }" },
+      },
     },
     disabled: {
       control: 'boolean',
@@ -213,7 +217,7 @@ function RemovableExample(): React.ReactNode {
 
 /**
  * With **onRemove** the Chip has a button to remove it. Its name is `Remove` followed by the text of the Chip, so
- * a screen reader says which one goes away, or give it your own with **removeLabel**.
+ * a screen reader says which one goes away, or give it your own with **labels.remove**.
  */
 export const Removable: Story = {
   render: () => <RemovableExample />,

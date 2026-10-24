@@ -80,7 +80,8 @@ describe('DatePicker component', () => {
     render(
       <DatePicker
         isCalendar
-        config={{ language: 'en', footer: { apply: 'Apply', cancel: 'Cancel' } }}
+        config={{ language: 'en' }}
+        labels={{ apply: 'Apply', cancel: 'Cancel' }}
         onChange={vi.fn()}
       />,
     )
@@ -152,8 +153,8 @@ describe('DatePicker component', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
-  it('fills in the config keys that are left out', () => {
-    render(<DatePicker config={{ footer: { apply: 'Aplicar' } }} onChange={vi.fn()} showFooter />)
+  it('fills in the labels that are left out', () => {
+    render(<DatePicker labels={{ apply: 'Aplicar' }} onChange={vi.fn()} showFooter />)
     openCalendar()
 
     expect(screen.getByRole('button', { name: 'Aplicar' })).toBeInTheDocument()
@@ -179,7 +180,8 @@ describe('DatePicker component', () => {
   it('uses custom footer labels', () => {
     render(
       <DatePicker
-        config={{ language: 'es', footer: { cancel: 'Cancelar', apply: 'Aplicar' } }}
+        config={{ language: 'es' }}
+        labels={{ cancel: 'Cancelar', apply: 'Aplicar' }}
         onChange={vi.fn()}
         showFooter
       />,
@@ -888,12 +890,33 @@ describe('DatePicker component', () => {
     it('names the calendar and the button with the labels it is given', () => {
       render(
         <DatePicker
-          config={{ labels: { calendar: 'Calendario', openCalendar: 'Abrir calendario' } }}
+          labels={{ calendar: 'Calendario', openCalendar: 'Abrir calendario' }}
           onChange={vi.fn()}
         />,
       )
       fireEvent.click(screen.getByRole('button', { name: 'Abrir calendario' }))
       expect(screen.getByRole('dialog', { name: 'Calendario' })).toBeInTheDocument()
+    })
+
+    it('names the navigation buttons with the labels it is given', () => {
+      render(
+        <DatePicker
+          labels={{
+            nextMonth: 'Mes siguiente',
+            nextYears: 'Años siguientes',
+            previousMonth: 'Mes anterior',
+            previousYears: 'Años anteriores',
+          }}
+          onChange={vi.fn()}
+        />,
+      )
+      openCalendar()
+      expect(screen.getByRole('button', { name: 'Mes anterior' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Mes siguiente' })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Next month' })).not.toBeInTheDocument()
+      fireEvent.click(selector('year'))
+      expect(screen.getByRole('button', { name: 'Años anteriores' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Años siguientes' })).toBeInTheDocument()
     })
 
     it('names the calendar with its own aria-label', () => {

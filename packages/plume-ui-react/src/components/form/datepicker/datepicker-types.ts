@@ -5,19 +5,18 @@ export interface DateRange {
   startDate: Date | null
 }
 
-export interface FooterLabels {
-  apply: string
-  cancel: string
-}
-
 export interface DatePickerLabels {
+  apply: string
   calendar: string
+  cancel: string
+  nextMonth: string
+  nextYears: string
   openCalendar: string
+  previousMonth: string
+  previousYears: string
 }
 
 export interface DatePickerConfig {
-  footer?: Partial<FooterLabels>
-  labels?: Partial<DatePickerLabels>
   language?: string
 }
 

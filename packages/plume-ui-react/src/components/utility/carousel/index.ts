@@ -1,5 +1,5 @@
 export { Carousel, type CarouselOwnProps, type CarouselProps } from './carousel'
-export type { CarouselVariant } from './carousel-context'
+export type { CarouselLabels, CarouselVariant } from './carousel-context'
 export { CarouselDots, type CarouselDotsPart, type CarouselDotsProps } from './carousel-dots'
 export { CarouselNext, type CarouselNextProps } from './carousel-next'
 export { CarouselPlayPause, type CarouselPlayPauseProps } from './carousel-play-pause'

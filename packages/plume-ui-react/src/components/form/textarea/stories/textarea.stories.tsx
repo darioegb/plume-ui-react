@@ -75,22 +75,13 @@ export default {
         'Custom CSS classes for the parts, in every variant: `input` (the `<textarea>`) and `count` (the character counter). With `variant="unstyled"` they are the only classes the parts have.',
       table: { type: { summary: 'Partial<Record<TextareaPart, string>>' } },
     },
-    formatCount: {
+    labels: {
       control: false,
       description:
-        'The text of the count, from the number of characters and the `maxLength`. The default says `12 / 200`, or `12` without a limit. Use it to translate it or to show what is left: `188 left`.',
+        'The texts of the Textarea, for other languages. `count(count, max)` is the text of the count; the default says `12 / 200`, or `12` without a limit, and it can also show what is left: `188 left`. `remaining(remaining)` is the message a screen reader gets when there are few characters left, at ten or at a tenth of the `maxLength` if that is more; the default says `8 characters left`.',
       table: {
         category: 'Accessibility',
-        type: { summary: '(count: number, max: number | undefined) => string' },
-      },
-    },
-    formatRemaining: {
-      control: false,
-      description:
-        'The message a screen reader gets when there are few characters left: at ten, or at a tenth of the `maxLength` if that is more. The default says `8 characters left`.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: '(remaining: number) => string' },
+        type: { summary: 'Partial<TextareaLabels>' },
       },
     },
     resize: {
@@ -278,7 +269,7 @@ export const Colors: Story = {
 /**
  * **showCount** shows how many characters there are under the Textarea, and with a **maxLength** how many are
  * allowed. The count describes the field to a screen reader when it gets the focus, and near the limit a polite
- * message says how many characters are left. Use **formatCount** and **formatRemaining** to change the texts.
+ * message says how many characters are left. Use **labels** (`count` and `remaining`) to change the texts.
  */
 export const CharacterCount: Story = {
   render: () => (
@@ -294,7 +285,7 @@ export const CharacterCount: Story = {
       <Textarea
         aria-label="Short bio"
         defaultValue="Almost there, only a few more characters can fit in this one"
-        formatCount={(count, max) => `${(max ?? 0) - count} left`}
+        labels={{ count: (count, max) => `${(max ?? 0) - count} left` }}
         maxLength={64}
         showCount
       />

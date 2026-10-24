@@ -192,7 +192,7 @@ export default {
     'aria-label': {
       control: 'text',
       description:
-        'Accessible name of the slider. In a range it names the group, and the thumbs are named from `getThumbLabel`.',
+        'Accessible name of the slider. In a range it names the group, and the thumbs are named from `labels.thumb`.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
@@ -210,13 +210,13 @@ export default {
       description: 'Marks the slider as invalid. A `Field` with an error sets it.',
       table: { category: 'Accessibility', type: { summary: 'boolean | "true" | "false"' } },
     },
-    getThumbLabel: {
+    labels: {
       control: false,
-      description: 'Returns the accessible name of a thumb of a range, from its index.',
+      description:
+        'The texts of the Slider, for other languages: `thumb(index)` is the accessible name of a thumb of a range, from its index (`Minimum` and `Maximum` by default).',
       table: {
         category: 'Accessibility',
-        type: { summary: '(index: number) => string' },
-        defaultValue: { summary: '"Minimum" / "Maximum"' },
+        type: { summary: 'Partial<SliderLabels>' },
       },
     },
   },
@@ -288,7 +288,7 @@ export const Colors: Story = {
 
 /**
  * Pass a pair in **defaultValue** or **value** for a range with two thumbs. They are named "Minimum" and
- * "Maximum" (change it with **getThumbLabel**) inside a group named by the `aria-label`, and they can't cross.
+ * "Maximum" (change it with **labels.thumb**) inside a group named by the `aria-label`, and they can't cross.
  */
 export const Range: Story = {
   args: {

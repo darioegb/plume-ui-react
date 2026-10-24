@@ -11,7 +11,6 @@ export type CarouselDotsPart = 'dot'
 
 export interface CarouselDotsOwnProps {
   classNames?: Partial<Record<CarouselDotsPart, string>>
-  dotLabel?: (index: number, count: number) => string
 }
 
 type CarouselDotsRootAttributes = Pick<
@@ -23,8 +22,6 @@ export type CarouselDotsProps = Omit<ComponentProps, 'index'> &
   CarouselDotsRootAttributes &
   CarouselDotsOwnProps
 
-const defaultDotLabel = (index: number, count: number): string => `Slide ${index + 1} of ${count}`
-
 const keyTargets = (key: string, current: number, count: number): number | undefined => {
   if (key === 'ArrowRight') return (current + 1) % count
   if (key === 'ArrowLeft') return (current - 1 + count) % count
@@ -35,16 +32,15 @@ const keyTargets = (key: string, current: number, count: number): number | undef
 export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
   (
     {
-      'aria-label': ariaLabel = 'Choose a slide',
+      'aria-label': ariaLabel,
       className,
       classNames,
-      dotLabel = defaultDotLabel,
       style,
       ...rest
     }: CarouselDotsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { baseId, count, index, isStyled, setIndex } = useCarouselContext('CarouselDots')
+    const { baseId, count, index, isStyled, labels, setIndex } = useCarouselContext('CarouselDots')
     const dots = useRef<(HTMLButtonElement | null)[]>([])
 
     const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, current: number): void => {
@@ -57,7 +53,7 @@ export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
 
     return (
       <div
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? labels.dots}
         className={joinClasses(isStyled && styles.dots, className)}
         data-plume-carousel-dots=""
         ref={ref}
@@ -68,7 +64,7 @@ export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
         {Array.from({ length: count }, (_, position) => (
           <button
             aria-controls={getSlideId(baseId, position)}
-            aria-label={dotLabel(position, count)}
+            aria-label={labels.dot(position, count)}
             aria-selected={position === index}
             className={joinClasses(isStyled && styles.dot, classNames?.dot)}
             data-active={position === index ? '' : undefined}

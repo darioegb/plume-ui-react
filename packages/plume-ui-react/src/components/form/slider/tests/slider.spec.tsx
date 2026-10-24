@@ -185,7 +185,7 @@ describe('Slider component', () => {
         <Slider
           aria-label="Precio"
           defaultValue={[20, 80]}
-          getThumbLabel={(index) => (index === 0 ? 'Mínimo' : 'Máximo')}
+          labels={{ thumb: (index) => (index === 0 ? 'Mínimo' : 'Máximo') }}
         />,
       )
       expect(screen.getByRole('slider', { name: 'Mínimo' })).toBeInTheDocument()

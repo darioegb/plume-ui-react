@@ -10,20 +10,20 @@ import { TimePickerInput, type TimePickerInputProps } from './timepicker-input'
 import { TimePickerPanel } from './timepicker-panel'
 import { TimePickerContext } from './use-timepicker'
 import { timePickerColorVars, useTimePickerController } from './use-timepicker-controller'
-import type { TimePickerConfig } from './timepicker-types'
+import type { TimePickerLabels } from './timepicker-types'
 import styles from './timepicker.module.css'
 
 export type TimePickerPart = 'input' | 'panel'
 
-export type { TimePickerConfig, TimePickerLabels } from './timepicker-types'
+export type { TimePickerLabels } from './timepicker-types'
 
 export interface TimePickerOwnProps {
   children?: ReactNode
   colorScheme?: ColorScheme
-  config?: TimePickerConfig
   defaultValue?: string
   hour12?: boolean
   isPanel?: boolean
+  labels?: Partial<TimePickerLabels>
   minuteStep?: number
   onChange?: (value: string) => void
   classNames?: Partial<Record<TimePickerPart, string>>
@@ -44,10 +44,10 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       className,
       classNames,
       colorScheme = 'secondary',
-      config,
       defaultValue = '',
       hour12 = false,
       isPanel = false,
+      labels,
       minuteStep = 1,
       onChange,
       shape,
@@ -66,10 +66,10 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
     )
     const { context, handleBlur } = useTimePickerController({
       colorScheme,
-      config,
       defaultValue,
       hour12,
       isPanel,
+      labels,
       minuteStep,
       onChange,
       root,

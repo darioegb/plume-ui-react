@@ -348,10 +348,10 @@ describe('Table component', () => {
       expect(screen.getByRole('table')).toHaveAttribute('data-loading')
     })
 
-    it('shows a spinner named by loadingLabel', () => {
+    it('shows a spinner named by labels.loading', () => {
       const { rerender } = render(<Demo loading />)
       expect(screen.getByLabelText('Loading')).toBeInTheDocument()
-      rerender(<Demo loading loadingLabel="Cargando" />)
+      rerender(<Demo labels={{ loading: 'Cargando' }} loading />)
       expect(screen.getByLabelText('Cargando')).toBeInTheDocument()
     })
 

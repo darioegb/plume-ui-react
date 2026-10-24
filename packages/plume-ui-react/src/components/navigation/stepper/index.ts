@@ -4,4 +4,9 @@ export { StepIndicator, type StepIndicatorProps } from './step-indicator'
 export { StepSeparator, type StepSeparatorProps } from './step-separator'
 export { StepTitle, type StepTitleProps } from './step-title'
 export { Stepper, type StepperOwnProps, type StepperProps } from './stepper'
-export type { StepperOrientation, StepperVariant, StepStatus } from './stepper-context'
+export type {
+  StepperLabels,
+  StepperOrientation,
+  StepperVariant,
+  StepStatus,
+} from './stepper-context'

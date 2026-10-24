@@ -135,7 +135,7 @@ export function Calendar({
   onSelectDate,
   onYearChange,
 }: Readonly<CalendarProps>): ReactNode {
-  const { state } = useDatePicker()
+  const { labels, state } = useDatePicker()
   const [selector, setSelector] = useState<SelectorType>('day')
   const [startYear, setStartYear] = useState(isSecondCalendar ? state.secondYear : state.year)
   const [focusedDate, setFocusedDate] = useState<Date | null>(null)
@@ -329,7 +329,7 @@ export function Calendar({
         <div className={styles.monthYearSelectors}>
           {selector !== 'year' ? (
             <Button
-              aria-label="Previous month"
+              aria-label={labels.previousMonth}
               onClick={() => {
                 onMonthChange((isSecondCalendar ? state.secondMonth : state.month) - 1)
               }}
@@ -349,7 +349,7 @@ export function Calendar({
               </svg>
             </Button>
           ) : (
-            <Button aria-label="Previous years" onClick={handlePrev} variant="icon">
+            <Button aria-label={labels.previousYears} onClick={handlePrev} variant="icon">
               <svg
                 aria-hidden="true"
                 fill="currentColor"
@@ -383,7 +383,7 @@ export function Calendar({
           />
           {selector !== 'year' ? (
             <Button
-              aria-label="Next month"
+              aria-label={labels.nextMonth}
               onClick={() => {
                 onMonthChange((isSecondCalendar ? state.secondMonth : state.month) + 1)
               }}
@@ -403,7 +403,7 @@ export function Calendar({
               </svg>
             </Button>
           ) : (
-            <Button aria-label="Next years" onClick={handleNext} variant="icon">
+            <Button aria-label={labels.nextYears} onClick={handleNext} variant="icon">
               <svg
                 aria-hidden="true"
                 fill="currentColor"

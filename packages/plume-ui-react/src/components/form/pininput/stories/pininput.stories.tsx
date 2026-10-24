@@ -100,13 +100,13 @@ export default {
       description: 'Called with the code when the last box is filled.',
       table: { category: 'Events', type: { summary: '(value: string) => void' } },
     },
-    getInputLabel: {
+    labels: {
       control: false,
       description:
-        'The accessible name of a box, from its position (counting from 1) and the length. The default says `Digit 1 of 6`, or `Character` when the type is not numeric. Use it to translate it.',
+        'The texts of the PinInput, for other languages: `input(index, length)` is the accessible name of a box, from its position (counting from 1) and the length. The default says `Digit 1 of 6`, or `Character` when the type is not numeric.',
       table: {
         category: 'Accessibility',
-        type: { summary: '(index: number, length: number) => string' },
+        type: { summary: 'Partial<PinInputLabels>' },
       },
     },
     colorScheme: {

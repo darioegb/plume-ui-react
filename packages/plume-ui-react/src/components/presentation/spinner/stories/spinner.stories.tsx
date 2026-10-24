@@ -97,12 +97,12 @@ export default {
       description: 'Hides the Spinner.',
       table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
-    'aria-label': {
+    label: {
       control: 'text',
       description: 'Accessible name of the Spinner, announced while it spins. Change it to translate it.',
       table: {
         category: 'Accessibility',
-        defaultValue: { summary: 'loading' },
+        defaultValue: { summary: 'Loading' },
         type: { summary: 'string' },
       },
     },

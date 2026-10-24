@@ -3,15 +3,21 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { BreadcrumbContext, type BreadcrumbVariant } from './breadcrumb-context'
 import styles from './breadcrumb.module.css'
 
 export type BreadcrumbPart = 'list' | 'separator'
 
+export interface BreadcrumbLabels {
+  breadcrumb: string
+}
+
 export interface BreadcrumbOwnProps {
   colorScheme?: ColorScheme
   classNames?: Partial<Record<BreadcrumbPart, string>>
+  labels?: Partial<BreadcrumbLabels>
   separator?: ReactNode
   size?: Size
   variant?: BreadcrumbVariant
@@ -25,6 +31,8 @@ type BreadcrumbRootAttributes = Pick<
 export type BreadcrumbProps = Omit<ComponentProps, 'index'> &
   BreadcrumbRootAttributes &
   BreadcrumbOwnProps
+
+const DEFAULT_LABELS: BreadcrumbLabels = { breadcrumb: 'Breadcrumb' }
 
 const breadcrumbColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
@@ -44,6 +52,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       className,
       colorScheme = 'primary',
       classNames,
+      labels,
       separator = '/',
       size = 'md',
       style,
@@ -65,7 +74,8 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     return (
       <BreadcrumbContext.Provider value={context}>
         <nav
-          aria-label={ariaLabel ?? (ariaLabelledBy ? undefined : 'Breadcrumb')}
+          aria-label={ariaLabel ??
+            (ariaLabelledBy ? undefined : mergeLabels(DEFAULT_LABELS, labels).breadcrumb)}
           aria-labelledby={ariaLabelledBy}
           className={joinClasses(
             isStyled && styles.breadcrumb,

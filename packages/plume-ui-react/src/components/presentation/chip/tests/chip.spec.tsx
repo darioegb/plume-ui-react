@@ -93,9 +93,9 @@ describe('Chip component', () => {
       expect(onRemove).toHaveBeenCalledTimes(1)
     })
 
-    it('names the button with removeLabel', () => {
+    it('names the button with labels.remove', () => {
       render(
-        <Chip onRemove={() => undefined} removeLabel="Quitar Diseño">
+        <Chip labels={{ remove: 'Quitar Diseño' }} onRemove={() => undefined}>
           Diseño
         </Chip>,
       )

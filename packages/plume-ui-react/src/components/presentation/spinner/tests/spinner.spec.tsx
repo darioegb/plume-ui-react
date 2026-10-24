@@ -14,10 +14,10 @@ describe('Spinner component', () => {
     expect(spinnerElement).toHaveClass('lg solid')
   })
 
-  it('is named loading by default and takes another name', () => {
+  it('is named Loading by default and takes another name', () => {
     const { rerender } = render(<Spinner />)
-    expect(screen.getByLabelText('loading')).toBeInTheDocument()
-    rerender(<Spinner aria-label="Cargando" />)
+    expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+    rerender(<Spinner label="Cargando" />)
     expect(screen.getByLabelText('Cargando')).toBeInTheDocument()
   })
 

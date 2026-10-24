@@ -3,6 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { mergeLabels } from '../../../overlay/labels'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
@@ -15,6 +16,11 @@ export type { RatingPart }
 
 export type RatingVariant = 'solid' | 'unstyled'
 
+export interface RatingLabels {
+  item: (value: number, max: number) => string
+  readOnly: (value: number, max: number) => string
+}
+
 export interface RatingOwnProps {
   allowHalf?: boolean
   classNames?: Partial<Record<RatingPart, string>>
@@ -23,13 +29,12 @@ export interface RatingOwnProps {
   defaultValue?: number
   disabled?: boolean
   emptyIcon?: ReactNode
-  getItemLabel?: (value: number, max: number) => string
   icon?: ReactNode
+  labels?: Partial<RatingLabels>
   max?: number
   name?: string
   onValueChange?: (value: number) => void
   readOnly?: boolean
-  readOnlyLabel?: (value: number, max: number) => string
   required?: boolean
   size?: Size
   value?: number
@@ -48,9 +53,10 @@ const halfOf = (allowHalf: boolean, option: number, position: number): string | 
   return option === position ? 'end' : 'start'
 }
 
-const defaultItemLabel = (value: number): string => `${value} ${value === 1 ? 'star' : 'stars'}`
-
-const defaultReadOnlyLabel = (value: number, max: number): string => `${value} out of ${max}`
+const DEFAULT_LABELS: RatingLabels = {
+  item: (value) => `${value} ${value === 1 ? 'star' : 'stars'}`,
+  readOnly: (value, max) => `${value} out of ${max}`,
+}
 
 export const Rating = forwardRef<HTMLElement, RatingProps>(
   (
@@ -63,13 +69,12 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
       defaultValue,
       disabled = false,
       emptyIcon,
-      getItemLabel = defaultItemLabel,
       icon,
+      labels,
       max = 5,
       name,
       onValueChange,
       readOnly = false,
-      readOnlyLabel = defaultReadOnlyLabel,
       required = false,
       size = 'md',
       style,
@@ -83,6 +88,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
     const generatedName = useId()
     const rating = useRating({ allowHalf, defaultValue, max, onValueChange, value: valueProp })
     const isStyled = variant !== 'unstyled'
+    const text = mergeLabels(DEFAULT_LABELS, labels)
     const fieldLabel = field?.controlId === rest.id ? field?.labelId : undefined
     const labelledBy = rest['aria-labelledby'] ?? (rest['aria-label'] ? undefined : fieldLabel)
     const filledIcon = icon ?? <StarIcon filled />
@@ -114,7 +120,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
           aria-label={undefined}
           aria-labelledby={undefined}
         >
-          <span style={visuallyHidden}>{readOnlyLabel(rating.value, max)}</span>
+          <span style={visuallyHidden}>{text.readOnly(rating.value, max)}</span>
           {positions.map((position) => (
             <RatingItem
               classNames={classNames}
@@ -153,7 +159,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
           >
             {(allowHalf ? [position - step, position] : [position]).map((option) => (
               <input
-                aria-label={getItemLabel(option, max)}
+                aria-label={text.item(option, max)}
                 checked={rating.value === option}
                 className={isStyled ? styles.radio : undefined}
                 data-half={halfOf(allowHalf, option, position)}

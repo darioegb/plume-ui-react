@@ -8,7 +8,12 @@ import { mergeRefs } from '../../../overlay/trigger'
 import { customProperties } from '../shared/picker-panel'
 import { DatePickerCalendar } from './datepicker-calendar'
 import { DatePickerInput, type DatePickerInputProps } from './datepicker-input'
-import type { DatePickerConfig, DatePickerVariant, DateRange } from './datepicker-types'
+import type {
+  DatePickerConfig,
+  DatePickerLabels,
+  DatePickerVariant,
+  DateRange,
+} from './datepicker-types'
 import { DatePickerContext } from './use-datepicker'
 import { useDatePickerController } from './use-datepicker-controller'
 import styles from './datepicker.module.css'
@@ -19,7 +24,6 @@ export type {
   DatePickerRootAttributes,
   DatePickerVariant,
   DateRange,
-  FooterLabels,
 } from './datepicker-types'
 
 export type DatePickerPart = 'calendar' | 'input'
@@ -32,6 +36,7 @@ export interface DatePickerOwnProps {
   displayFormat?: string
   isCalendar?: boolean
   isRange?: boolean
+  labels?: Partial<DatePickerLabels>
   maxDate?: Date
   minDate?: Date
   onChange: (value: DateRange) => void
@@ -70,6 +75,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       displayFormat,
       isCalendar = false,
       isRange = false,
+      labels,
       maxDate,
       minDate,
       onChange,
@@ -95,6 +101,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       displayFormat,
       isCalendar,
       isRange,
+      labels,
       maxDate,
       minDate,
       onChange,
