@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.21.0
+
+### Minor Changes
+
+- [#135](https://github.com/darioegb/plume-ui-react/pull/135) [`42a207834c7097bd4fa2f49d286dffbdc3ad76a1`](https://github.com/darioegb/plume-ui-react/commit/42a207834c7097bd4fa2f49d286dffbdc3ad76a1) Thanks [@darioegb](https://github.com/darioegb)! - Add `LocaleProvider` and `useLocale`: one place to give the texts of every component (`messages`, typed by `PlumeMessages`) and the `locale`, with the order `labels` prop, then provider, then English default. The messages can change at runtime, and the `DatePicker` takes its language from the `locale`. `Button` and `Spinner` become client components because they read the provider. The single texts of `Spinner` (`label`), `SidebarToggle`, `NavbarToggle` and the close button of the overlays are translatable from the provider too.
+
 ## 0.20.0
 
 ### Minor Changes
