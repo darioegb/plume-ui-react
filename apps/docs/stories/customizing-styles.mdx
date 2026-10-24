@@ -1,0 +1,93 @@
+{/* customizing-styles.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Customizing Styles' />
+
+# Customizing styles
+
+Every component can be restyled, from a light touch to a full replacement. Pick the lightest option that does what you
+need.
+
+<table>
+  <thead>
+    <tr><th>You want to</th><th>Use</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Change the color of a component</td><td><code>colorScheme</code>, or your own tokens in <code>ThemeProvider</code></td></tr>
+    <tr><td>Change one value (a radius, a size, a color of a state)</td><td>The CSS variable the component reads</td></tr>
+    <tr><td>Add something Plume does not style (a margin, a width, a ring)</td><td><code>className</code>, in any variant</td></tr>
+    <tr><td>Replace the look of a component or of one of its parts</td><td><code>variant='unstyled'</code> and your own classes</td></tr>
+  </tbody>
+</table>
+
+## `className` in every variant
+
+`className` and `style` of a component go to the outermost element it renders. Every other element is a part you can
+import, and each part takes its own `className`, `style` and `ref`:
+
+```tsx
+<Input type='password' className='mt-4'>
+  <InputControl>
+    <InputField className='font-mono' />
+    <InputReveal className='opacity-60' />
+  </InputControl>
+</Input>
+```
+
+The class is added **next to** the Plume classes of the part, in the `outline`, `filled`, `solid` and every other
+variant. It does not replace them, so a declaration of Plume and one of yours for the same property compete in the
+cascade: the more specific one wins, and at the same specificity the one that comes later in the stylesheets.
+
+This is where utility classes can lose. The classes of Plume are plain CSS with a single selector. Tailwind CSS v4
+puts its utilities in a cascade layer, and CSS with no layer beats CSS in a layer, so `px-5` on a styled `ModalContent`
+can lose against the padding of Plume. With Tailwind v3 and Bootstrap the order of the stylesheets decides.
+
+When your class loses, you have three ways out:
+
+1. Use `variant='unstyled'` on the component, which drops the Plume classes of every part (see below).
+2. Raise the specificity of your declaration: Tailwind's important modifier (`!px-5`), or a more specific selector.
+3. Change the value Plume reads, if the component exposes it as a CSS variable, instead of fighting the declaration.
+
+Adding what Plume does not set (`mt-4`, `max-w-md`, `ring-2`, `hidden`) always works.
+
+## `variant='unstyled'`
+
+`variant='unstyled'` drops every Plume class and keeps only yours, so you style the component from scratch with
+Tailwind or Bootstrap. It applies to the root and to all its parts at once:
+
+```tsx
+<Input variant='unstyled' className='rounded-lg border border-gray-200 px-4 py-2.5 focus:ring' />
+
+<Input variant='unstyled' className='form-control form-control-lg' />
+```
+
+What `unstyled` keeps is what makes the component work, not how it looks: the flex row that holds a chevron, the layer
+that centers a modal, the reset of a `<button>` or a `<dialog>`. Those rules have zero specificity, so any class of
+yours overrides them. The calendar of the `DatePicker` also keeps its structural classes (the grid of days), and it is
+themed with `colorScheme` and the `--datepicker-*` variables.
+
+Every story of Tailwind and Bootstrap in the components shows the component in `unstyled` with those frameworks.
+
+## Styling states
+
+Parts expose their state as attributes, and every part carries `data-plume-<component>-<part>`, so you can style a
+state without a class of your own:
+
+```tsx
+<InputField className='data-[invalid]:border-red-500 data-[disabled]:opacity-40' />
+```
+
+```css
+[data-plume-select-option][aria-selected='true'] {
+  font-weight: 600;
+}
+```
+
+The attributes that exist depend on the part (`data-open`, `data-disabled`, `data-invalid`, `data-active`...) and
+the ARIA state of the element (`aria-selected`, `aria-checked`, `aria-expanded`) is always there too.
+
+## Colors and tokens
+
+`colorScheme` takes any key of the theme palette, custom ones included, and the tokens of `ThemeProvider` can be
+overridden in light and dark mode. See the **Colors** and **Tokens** pages of the Theme section.
