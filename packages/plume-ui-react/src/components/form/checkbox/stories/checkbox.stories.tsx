@@ -8,8 +8,9 @@ const colorSchemes = Object.keys(defaultTheme.colors)
 
 /**
  * A checkbox to pick any number of options, or to turn a single option on and off.
- * It renders a native `<input type="checkbox">`, so it works with forms, labels and the keyboard
- * out of the box. Children become its label, and the `ref` points to the input.
+ * It renders a native `<input type="checkbox">`, so it works with forms and the keyboard out of the box, and
+ * the `ref` points to the input. It has no text of its own: give it a visible label by wrapping it in a
+ * `Field` with `orientation="inline"`, or an accessible name with `aria-label`.
  */
 export default {
   title: 'Components/Checkbox',
@@ -25,26 +26,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: 'text',
-      description: 'Label of the Checkbox. Clicking it toggles the Checkbox.',
-      table: { type: { summary: 'ReactNode' } },
-    },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the label that wraps the input.',
+      description: 'Custom CSS class for the `<input>`.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`), `label` (the text of the label). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<CheckboxPart, string>>' } },
     },
     style: {
       control: false,
       description:
-        'Inline styles for the wrapping label. They are applied after the color variables, so they can override them (e.g. `--checkbox-solid`).',
+        'Inline styles for the `<input>`. They are applied after the color variables, so they can override them (e.g. `--checkbox-solid`).',
       table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
@@ -58,7 +48,7 @@ export default {
     },
     size: {
       control: 'radio',
-      description: 'Size of the Checkbox.',
+      description: 'Size of the box.',
       options: ['sm', 'md', 'lg'],
       table: {
         type: { summary: `"sm" | "md" | "lg"` },
@@ -132,7 +122,7 @@ export default {
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Checkbox has no label.',
+      description: 'Accessible name when the Checkbox is not inside a Field with a label.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
@@ -178,16 +168,29 @@ export default {
     },
   },
   args: {
-    children: 'Accept the terms',
+    'aria-label': 'Accept the terms',
   },
 } satisfies Meta<typeof Checkbox>
 
 type Story = StoryObj<typeof Checkbox>
 
 /**
- * This is the default Checkbox. Its **children** are the label.
+ * This is the default Checkbox: just the box, named with **aria-label**. To show a label next to it, wrap it in a
+ * `Field` (see **WithLabel**).
  */
 export const Default: Story = {}
+
+/**
+ * Wrap the Checkbox in a **Field** with `orientation="inline"` to show a label after the box. Clicking the label
+ * toggles the Checkbox, and the Field wires `id`, `aria-describedby`, `aria-invalid` and `required`.
+ */
+export const WithLabel: Story = {
+  render: () => (
+    <Field label="Accept the terms" orientation="inline">
+      <Checkbox />
+    </Field>
+  ),
+}
 
 /**
  * Use the **variant** prop to pick how a checked box looks: `solid` fills it with the color, `outline` only
@@ -196,34 +199,26 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
-      <Checkbox defaultChecked variant="solid">
-        Solid
-      </Checkbox>
-      <Checkbox defaultChecked variant="outline">
-        Outline
-      </Checkbox>
-      <Checkbox defaultChecked variant="unstyled">
-        Unstyled
-      </Checkbox>
+      {(['solid', 'outline', 'unstyled'] as const).map((variant) => (
+        <Field key={variant} label={variant} orientation="inline">
+          <Checkbox defaultChecked variant={variant} />
+        </Field>
+      ))}
     </div>
   ),
 }
 
 /**
- * Use the **size** prop to change the size of the box and of the label.
+ * Use the **size** prop to change the size of the box.
  */
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
-      <Checkbox defaultChecked size="sm">
-        Small
-      </Checkbox>
-      <Checkbox defaultChecked size="md">
-        Medium
-      </Checkbox>
-      <Checkbox defaultChecked size="lg">
-        Large
-      </Checkbox>
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Field key={size} label={size} orientation="inline">
+          <Checkbox defaultChecked size={size} />
+        </Field>
+      ))}
     </div>
   ),
 }
@@ -235,13 +230,9 @@ export const Colors: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
-        <Checkbox
-          colorScheme={scheme as keyof typeof defaultTheme.colors}
-          defaultChecked
-          key={scheme}
-        >
-          {scheme}
-        </Checkbox>
+        <Field key={scheme} label={scheme} orientation="inline">
+          <Checkbox colorScheme={scheme as keyof typeof defaultTheme.colors} defaultChecked />
+        </Field>
       ))}
     </div>
   ),
@@ -256,28 +247,27 @@ function SelectAll(): React.ReactNode {
   const all = selected.length === options.length
   return (
     <div className="flex flex-col gap-2">
-      <Checkbox
-        checked={all}
-        indeterminate={!all && selected.length > 0}
-        onChange={() => setSelected(all ? [] : options)}
-      >
-        All notifications
-      </Checkbox>
+      <Field label="All notifications" orientation="inline">
+        <Checkbox
+          checked={all}
+          indeterminate={!all && selected.length > 0}
+          onChange={() => setSelected(all ? [] : options)}
+        />
+      </Field>
       <div className="flex flex-col gap-2 ps-6">
         {options.map((option) => (
-          <Checkbox
-            checked={selected.includes(option)}
-            key={option}
-            onChange={() =>
-              setSelected((current) =>
-                current.includes(option)
-                  ? current.filter((item) => item !== option)
-                  : [...current, option],
-              )
-            }
-          >
-            {option}
-          </Checkbox>
+          <Field key={option} label={option} orientation="inline">
+            <Checkbox
+              checked={selected.includes(option)}
+              onChange={() =>
+                setSelected((current) =>
+                  current.includes(option)
+                    ? current.filter((item) => item !== option)
+                    : [...current, option],
+                )
+              }
+            />
+          </Field>
         ))}
       </div>
     </div>
@@ -294,13 +284,15 @@ export const Indeterminate: Story = {
 export const DisabledAndReadOnly: Story = {
   render: () => (
     <div className="flex flex-col gap-2">
-      <Checkbox disabled>Disabled</Checkbox>
-      <Checkbox defaultChecked disabled>
-        Disabled and checked
-      </Checkbox>
-      <Checkbox defaultChecked readOnly>
-        Read only and checked
-      </Checkbox>
+      <Field label="Disabled" orientation="inline">
+        <Checkbox disabled />
+      </Field>
+      <Field label="Disabled and checked" orientation="inline">
+        <Checkbox defaultChecked disabled />
+      </Field>
+      <Field label="Read only and checked" orientation="inline">
+        <Checkbox defaultChecked readOnly />
+      </Field>
     </div>
   ),
 }
@@ -315,153 +307,93 @@ export const Invalid: Story = {
 }
 
 /**
- * Wrap it in a **Field** to add a label, a helper and an error text. The Field wires the accessibility attributes.
+ * A **Field** also adds a helper and an error text, and marks the Checkbox as required.
  */
 export const WithField: Story = {
   render: () => (
     <Field
       errorText="You must accept the terms to continue"
       helperText="Read them before accepting"
-      label="Terms"
+      label="I accept the terms and conditions"
+      orientation="inline"
       required
     >
-      <Checkbox>I accept the terms and conditions</Checkbox>
+      <Checkbox />
     </Field>
   ),
 }
 
 /**
- * Some examples of Checkbox with Tailwind classes. With `variant="unstyled"` the Plume classes are gone: `className` styles the label that wraps the input, `classNames.input` the input and `classNames.label` the text. A native checkbox takes its color from `accent-*`.
+ * Some examples of Checkbox with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and
+ * `className` styles the `<input>`. A native checkbox takes its color from `accent-*`. The label comes from the
+ * `Field`.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="flex flex-col gap-3">
-  <Checkbox classNames={{ input: 'h-4 w-4 rounded accent-blue-600' }}
-    className="inline-flex items-center gap-2 text-sm"
-   
-    variant="unstyled"
-  >
-    Accept the terms
-  </Checkbox>
-  <Checkbox classNames={{ input: 'h-5 w-5 accent-emerald-600', label: 'font-semibold' }}
-    className="inline-flex items-center gap-2 text-sm"
-    defaultChecked
-   
-   
-    variant="unstyled"
-  >
-    Subscribe to the newsletter
-  </Checkbox>
-  <Checkbox classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-    className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
-    disabled
-   
-    variant="unstyled"
-  >
-    Disabled
-  </Checkbox>
+  <Field label="Accept the terms" orientation="inline">
+    <Checkbox className="h-4 w-4 rounded accent-blue-600" variant="unstyled" />
+  </Field>
+  <Field label="Subscribe to the newsletter" orientation="inline">
+    <Checkbox className="h-5 w-5 accent-emerald-600" defaultChecked variant="unstyled" />
+  </Field>
+  <Field label="Disabled" orientation="inline">
+    <Checkbox className="h-4 w-4 accent-blue-600" disabled variant="unstyled" />
+  </Field>
 </div>`,
       },
     },
   },
   render: () => (
     <div className="flex flex-col gap-3">
-      <Checkbox classNames={{ input: 'h-4 w-4 rounded accent-blue-600' }}
-        className="inline-flex items-center gap-2 text-sm"
-       
-        variant="unstyled"
-      >
-        Accept the terms
-      </Checkbox>
-      <Checkbox classNames={{ input: 'h-5 w-5 accent-emerald-600', label: 'font-semibold' }}
-        className="inline-flex items-center gap-2 text-sm"
-        defaultChecked
-       
-       
-        variant="unstyled"
-      >
-        Subscribe to the newsletter
-      </Checkbox>
-      <Checkbox classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-        className="inline-flex cursor-not-allowed items-center gap-2 text-sm opacity-50"
-        disabled
-       
-        variant="unstyled"
-      >
-        Disabled
-      </Checkbox>
+      <Field label="Accept the terms" orientation="inline">
+        <Checkbox className="h-4 w-4 rounded accent-blue-600" variant="unstyled" />
+      </Field>
+      <Field label="Subscribe to the newsletter" orientation="inline">
+        <Checkbox className="h-5 w-5 accent-emerald-600" defaultChecked variant="unstyled" />
+      </Field>
+      <Field label="Disabled" orientation="inline">
+        <Checkbox className="h-4 w-4 accent-blue-600" disabled variant="unstyled" />
+      </Field>
     </div>
   ),
 }
 
 /**
- * Some examples of Checkbox with Bootstrap classes. `className` goes to the label that wraps the input, so it takes `form-check`, while `classNames.input` takes `form-check-input` and `classNames.label` `form-check-label`.
+ * Some examples of Checkbox with Bootstrap classes. `className` goes to the `<input>`, so it takes
+ * `form-check-input`. The label comes from the `Field`.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="d-flex flex-column gap-2">
-  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-   
-   
-    variant="unstyled"
-  >
-    Accept the terms
-  </Checkbox>
-  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-    defaultChecked
-   
-   
-    variant="unstyled"
-  >
-    Subscribe to the newsletter
-  </Checkbox>
-  <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-    disabled
-   
-   
-    variant="unstyled"
-  >
-    Disabled
-  </Checkbox>
+  <Field label="Accept the terms" orientation="inline">
+    <Checkbox className="form-check-input" variant="unstyled" />
+  </Field>
+  <Field label="Subscribe to the newsletter" orientation="inline">
+    <Checkbox className="form-check-input" defaultChecked variant="unstyled" />
+  </Field>
+  <Field label="Disabled" orientation="inline">
+    <Checkbox className="form-check-input" disabled variant="unstyled" />
+  </Field>
 </div>`,
       },
     },
   },
   render: () => (
     <div className="d-flex flex-column gap-2">
-      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-       
-       
-        variant="unstyled"
-      >
-        Accept the terms
-      </Checkbox>
-      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-        defaultChecked
-       
-       
-        variant="unstyled"
-      >
-        Subscribe to the newsletter
-      </Checkbox>
-      <Checkbox classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-        disabled
-       
-       
-        variant="unstyled"
-      >
-        Disabled
-      </Checkbox>
+      <Field label="Accept the terms" orientation="inline">
+        <Checkbox className="form-check-input" variant="unstyled" />
+      </Field>
+      <Field label="Subscribe to the newsletter" orientation="inline">
+        <Checkbox className="form-check-input" defaultChecked variant="unstyled" />
+      </Field>
+      <Field label="Disabled" orientation="inline">
+        <Checkbox className="form-check-input" disabled variant="unstyled" />
+      </Field>
     </div>
   ),
 }

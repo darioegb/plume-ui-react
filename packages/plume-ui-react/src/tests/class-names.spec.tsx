@@ -49,22 +49,6 @@ interface Case {
 }
 
 const cases: Record<string, Case> = {
-  Checkbox: {
-    classes: ['a-input', 'a-label'],
-    element: () => <Checkbox classNames={{ input: 'a-input', label: 'a-label' }}>Accept</Checkbox>,
-  },
-  Radio: {
-    classes: ['a-input', 'a-label'],
-    element: () => (
-      <Radio value="x" classNames={{ input: 'a-input', label: 'a-label' }}>
-        Option
-      </Radio>
-    ),
-  },
-  Toggle: {
-    classes: ['a-input', 'a-label'],
-    element: () => <Toggle classNames={{ input: 'a-input', label: 'a-label' }}>Notify</Toggle>,
-  },
   PinInput: {
     classes: ['a-input'],
     element: () => <PinInput aria-label="Code" length={2} classNames={{ input: 'a-input' }} />,
@@ -234,7 +218,7 @@ describe('classNames of the parts', () => {
   })
 
   describe.each<[string, () => ReactElement]>([
-    ['Checkbox', () => <Checkbox className="a-root">Accept</Checkbox>],
+    ['Checkbox', () => <Checkbox className="a-root" />],
     ['DatePicker', () => <DatePicker className="a-root" onChange={() => undefined} />],
     ['Input with a group', () => <Input className="a-root" elementAfter={<span />} />],
     ['Input', () => <Input className="a-root" />],
@@ -243,7 +227,7 @@ describe('classNames of the parts', () => {
     ['Textarea with a counter', () => <Textarea aria-label="Bio" className="a-root" showCount />],
     ['Textarea', () => <Textarea aria-label="Bio" className="a-root" />],
     ['TimePicker', () => <TimePicker className="a-root" />],
-    ['Toggle', () => <Toggle className="a-root">Dark</Toggle>],
+    ['Toggle', () => <Toggle className="a-root" />],
   ])('className of %s', (_name, element) => {
     it('goes to the outermost element', () => {
       const { container } = render(element())

@@ -9,13 +9,10 @@ import type {
 } from 'react'
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { useControlLabelledBy } from '../field/use-control-labelled-by'
+import { joinClasses } from '../../../overlay/class-names'
 import styles from './checkbox.module.css'
 
-export type CheckboxPart = 'input' | 'label'
-
 export interface CheckboxOwnProps {
-  classNames?: Partial<Record<CheckboxPart, string>>
   colorScheme?: ColorScheme
   indeterminate?: boolean
   readOnly?: boolean
@@ -32,7 +29,6 @@ type CheckboxRootAttributes = Pick<
   | 'aria-label'
   | 'aria-labelledby'
   | 'checked'
-  | 'children'
   | 'defaultChecked'
   | 'disabled'
   | 'id'
@@ -56,12 +52,10 @@ const checkboxColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSS
     ...style,
   }) as CSSProperties
 
-const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
-      children,
-      className = '',
-      classNames,
+      className,
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -76,12 +70,6 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
   ) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const isStyled = variant !== 'unstyled'
-    const { labelledBy, textId } = useControlLabelledBy({
-      hasText: Boolean(children),
-      id: rest.id,
-      labelledBy: rest['aria-labelledby'],
-    })
-    const Wrapper = children ? 'label' : 'span'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
@@ -89,24 +77,6 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
     useEffect(() => {
       if (inputRef.current) inputRef.current.indeterminate = indeterminate
     }, [indeterminate])
-
-    const rootClasses = [
-      isStyled && styles.root,
-      isStyled && styles[size],
-      disabled && styles.disabled,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ')
-    const inputClasses =
-      [
-        isStyled && styles.checkbox,
-        isStyled && styles[variant],
-        isStyled && isInvalid && styles.invalid,
-        classNames?.input,
-      ]
-        .filter(Boolean)
-        .join(' ') || undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (readOnly) event.preventDefault()
@@ -117,38 +87,25 @@ const CheckboxControl = forwardRef<HTMLInputElement, CheckboxProps>(
     }
 
     return (
-      <Wrapper
-        className={rootClasses}
+      <input
+        aria-readonly={readOnly || undefined}
+        className={joinClasses(
+          isStyled && styles.checkbox,
+          isStyled && styles[size],
+          isStyled && styles[variant],
+          isStyled && isInvalid && styles.invalid,
+          className,
+        )}
+        disabled={disabled}
+        onChange={onChange ? ignoreWhenReadOnly : undefined}
+        onClick={preventWhenReadOnly}
+        ref={inputRef}
         style={checkboxColorVars(isInvalid ? 'error' : colorScheme, style)}
-      >
-        <input
-          aria-readonly={readOnly || undefined}
-          className={inputClasses}
-          disabled={disabled}
-          onChange={onChange ? ignoreWhenReadOnly : undefined}
-          onClick={preventWhenReadOnly}
-          ref={inputRef}
-          type="checkbox"
-          {...rest}
-          aria-labelledby={labelledBy}
-        />
-        {children ? (
-          <span
-            className={
-              [isStyled && styles.label, classNames?.label]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
-            id={textId}
-          >
-            {children}
-          </span>
-        ) : null}
-      </Wrapper>
+        type="checkbox"
+        {...rest}
+      />
     )
   },
 )
 
-CheckboxControl.displayName = 'Checkbox'
-
-export const Checkbox = Object.assign(CheckboxControl, { labelsItself: true })
+Checkbox.displayName = 'Checkbox'

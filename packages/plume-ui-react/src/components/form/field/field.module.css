@@ -23,6 +23,37 @@
   grid-column: 2;
 }
 
+.inline {
+  composes: field;
+  align-items: center;
+  column-gap: var(--plume-space-2);
+  display: grid;
+  grid-template-areas:
+    'control label'
+    '. helper'
+    '. error';
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.inline > :not(.label, .helperText, .errorText) {
+  grid-area: control;
+}
+
+.inline > .label {
+  cursor: pointer;
+  font-size: var(--plume-font-size-base);
+  font-weight: var(--plume-font-weight-normal);
+  grid-area: label;
+}
+
+.inline > .helperText {
+  grid-area: helper;
+}
+
+.inline > .errorText {
+  grid-area: error;
+}
+
 .label {
   font-size: var(--plume-font-size-sm);
   font-weight: var(--plume-font-weight-medium);

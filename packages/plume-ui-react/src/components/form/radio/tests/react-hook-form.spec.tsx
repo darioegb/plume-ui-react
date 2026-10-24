@@ -23,12 +23,11 @@ function PlanForm({ onSubmit }: { onSubmit: (values: Values) => void }): React.R
       {['free', 'pro'].map((plan) => (
         <Radio
           aria-invalid={Boolean(errors.plan)}
+          aria-label={plan}
           key={plan}
           value={plan}
           {...register('plan', { required: 'Pick a plan' })}
-        >
-          {plan}
-        </Radio>
+        />
       ))}
       {errors.plan ? <p role="alert">{errors.plan.message}</p> : null}
       <button type="submit">Submit</button>

@@ -23,10 +23,9 @@ function TermsForm({ onSubmit }: { onSubmit: (values: Values) => void }): React.
       <Checkbox
         aria-describedby="terms-error"
         aria-invalid={Boolean(errors.terms)}
+        aria-label="Terms"
         {...register('terms', { required: 'Accept the terms' })}
-      >
-        Terms
-      </Checkbox>
+      />
       {errors.terms ? <p id="terms-error">{errors.terms.message}</p> : null}
       <button type="submit">Submit</button>
     </form>

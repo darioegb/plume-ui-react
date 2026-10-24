@@ -5,31 +5,26 @@ import { Field } from '../../field'
 import { Toggle } from '..'
 
 describe('Toggle component', () => {
-  it('renders a switch named by its label', () => {
-    render(<Toggle>Notifications</Toggle>)
+  it('renders a switch named by its aria-label', () => {
+    render(<Toggle aria-label="Notifications" />)
     expect(screen.getByRole('switch', { name: 'Notifications' })).not.toBeChecked()
   })
 
-  it('renders without a label', () => {
-    render(<Toggle aria-label="Standalone" />)
-    expect(screen.getByRole('switch', { name: 'Standalone' })).toBeInTheDocument()
+  it('renders a bare input, without a label or a wrapper', () => {
+    const { container } = render(<Toggle aria-label="Notifications" />)
+    expect(container.firstElementChild).toBe(screen.getByRole('switch'))
+    expect(container.querySelector('label')).toBeNull()
   })
 
   it('is still a checkbox for forms', () => {
-    render(<Toggle name="notify">Notifications</Toggle>)
+    render(<Toggle aria-label="Notifications" name="notify" />)
     expect(screen.getByRole('switch')).toHaveAttribute('type', 'checkbox')
     expect(screen.getByRole('switch')).toHaveAttribute('name', 'notify')
   })
 
-  it('toggles when its label is clicked', () => {
-    render(<Toggle>Notifications</Toggle>)
-    fireEvent.click(screen.getByText('Notifications'))
-    expect(screen.getByRole('switch')).toBeChecked()
-  })
-
   it('toggles with the keyboard', async () => {
     const user = userEvent.setup()
-    render(<Toggle>Notifications</Toggle>)
+    render(<Toggle aria-label="Notifications" />)
     await user.tab()
     expect(screen.getByRole('switch')).toHaveFocus()
     await user.keyboard(' ')
@@ -37,7 +32,7 @@ describe('Toggle component', () => {
   })
 
   it('starts on with defaultChecked', () => {
-    render(<Toggle defaultChecked>Notifications</Toggle>)
+    render(<Toggle aria-label="Notifications" defaultChecked />)
     expect(screen.getByRole('switch')).toBeChecked()
   })
 
@@ -45,9 +40,11 @@ describe('Toggle component', () => {
     function Controlled(): React.ReactNode {
       const [checked, setChecked] = useState(false)
       return (
-        <Toggle checked={checked} onChange={(event) => setChecked(event.target.checked)}>
-          Notifications
-        </Toggle>
+        <Toggle
+          aria-label="Notifications"
+          checked={checked}
+          onChange={(event) => setChecked(event.target.checked)}
+        />
       )
     }
     render(<Controlled />)
@@ -58,11 +55,10 @@ describe('Toggle component', () => {
   })
 
   describe('disabled', () => {
-    it('disables the input, marks the label and does not toggle', () => {
-      render(<Toggle disabled>Notifications</Toggle>)
+    it('disables the input and does not toggle', async () => {
+      render(<Toggle aria-label="Notifications" disabled />)
       expect(screen.getByRole('switch')).toBeDisabled()
-      expect(screen.getByRole('switch').closest('label')).toHaveClass('disabled')
-      fireEvent.click(screen.getByText('Notifications'))
+      await userEvent.click(screen.getByRole('switch'))
       expect(screen.getByRole('switch')).not.toBeChecked()
     })
   })
@@ -70,11 +66,7 @@ describe('Toggle component', () => {
   describe('read only', () => {
     it('keeps the state, tells assistive technology and does not call onChange', () => {
       const onChange = vi.fn()
-      render(
-        <Toggle defaultChecked onChange={onChange} readOnly>
-          Notifications
-        </Toggle>,
-      )
+      render(<Toggle aria-label="Notifications" defaultChecked onChange={onChange} readOnly />)
       fireEvent.click(screen.getByRole('switch'))
       expect(screen.getByRole('switch')).toBeChecked()
       expect(screen.getByRole('switch')).toHaveAttribute('aria-readonly', 'true')
@@ -82,124 +74,127 @@ describe('Toggle component', () => {
     })
 
     it('does not set aria-readonly otherwise', () => {
-      render(<Toggle>Notifications</Toggle>)
+      render(<Toggle aria-label="Notifications" />)
       expect(screen.getByRole('switch')).not.toHaveAttribute('aria-readonly')
+    })
+
+    it('calls onChange when it is not read only', () => {
+      const onChange = vi.fn()
+      render(<Toggle aria-label="Notifications" onChange={onChange} />)
+      fireEvent.click(screen.getByRole('switch'))
+      expect(onChange).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('appearance', () => {
-    it('applies the base, size and input classes', () => {
-      render(<Toggle size="lg">Notifications</Toggle>)
-      expect(screen.getByRole('switch').closest('label')).toHaveClass('root', 'lg')
-      expect(screen.getByRole('switch')).toHaveClass('toggle')
+    it('applies the base and size classes to the input', () => {
+      render(<Toggle aria-label="Notifications" size="lg" />)
+      expect(screen.getByRole('switch')).toHaveClass('toggle', 'lg')
     })
 
-    it('exposes the color scheme as CSS variables', () => {
-      render(<Toggle colorScheme="success">Notifications</Toggle>)
-      expect(screen.getByRole('switch').closest('label')).toHaveStyle(
+    it('uses the md size by default', () => {
+      render(<Toggle aria-label="Notifications" />)
+      expect(screen.getByRole('switch')).toHaveClass('md')
+    })
+
+    it('exposes the color scheme as CSS variables on the input', () => {
+      render(<Toggle aria-label="Notifications" colorScheme="success" />)
+      expect(screen.getByRole('switch')).toHaveStyle(
         '--toggle-solid: var(--plume-color-success-solid)',
       )
     })
 
     it('switches to the error scheme when it is invalid', () => {
-      render(<Toggle aria-invalid>Notifications</Toggle>)
+      render(<Toggle aria-invalid aria-label="Notifications" />)
       expect(screen.getByRole('switch')).toHaveClass('invalid')
-      expect(screen.getByRole('switch').closest('label')).toHaveStyle(
+      expect(screen.getByRole('switch')).toHaveStyle(
         '--toggle-solid: var(--plume-color-error-solid)',
       )
     })
 
-    it('puts className and style on the label', () => {
+    it('puts className and style on the input', () => {
       render(
-        <Toggle className="custom" style={{ '--toggle-solid': 'red' } as React.CSSProperties}>
-          Notifications
-        </Toggle>,
+        <Toggle
+          aria-label="Notifications"
+          className="custom"
+          style={{ '--toggle-solid': 'red' } as React.CSSProperties}
+        />,
       )
-      const label = screen.getByRole('switch').closest('label')
-      expect(label).toHaveClass('root', 'custom')
-      expect(label).toHaveStyle('--toggle-solid: red')
+      const input = screen.getByRole('switch')
+      expect(input).toHaveClass('toggle', 'custom')
+      expect(input).toHaveStyle('--toggle-solid: red')
     })
 
     it('uses the solid variant by default and can switch to another one', () => {
-      const { rerender } = render(<Toggle>Notifications</Toggle>)
+      const { rerender } = render(<Toggle aria-label="Notifications" />)
       expect(screen.getByRole('switch')).toHaveClass('toggle', 'solid')
       expect(screen.getByRole('switch')).not.toHaveClass('outline')
 
-      rerender(<Toggle variant="outline">Notifications</Toggle>)
+      rerender(<Toggle aria-label="Notifications" variant="outline" />)
       expect(screen.getByRole('switch')).toHaveClass('toggle', 'outline')
       expect(screen.getByRole('switch')).not.toHaveClass('solid')
 
-      rerender(<Toggle variant="raised">Notifications</Toggle>)
+      rerender(<Toggle aria-label="Notifications" variant="raised" />)
       expect(screen.getByRole('switch')).toHaveClass('toggle', 'raised')
       expect(screen.getByRole('switch')).not.toHaveClass('outline')
     })
 
-    it('drops the Plume classes when unstyled', () => {
-      render(
-        <Toggle className="custom" variant="unstyled">
-          Notifications
-        </Toggle>,
-      )
-      const label = screen.getByRole('switch').closest('label')
-      expect(label).toHaveClass('custom')
-      expect(label).not.toHaveClass('root')
-      expect(screen.getByRole('switch')).not.toHaveClass('toggle')
+    it('drops the Plume classes when unstyled and keeps only className', () => {
+      render(<Toggle aria-label="Notifications" className="custom" variant="unstyled" />)
+      expect(screen.getByRole('switch')).toHaveAttribute('class', 'custom')
+    })
+
+    it('has no class attribute when unstyled and without className', () => {
+      render(<Toggle aria-label="Notifications" variant="unstyled" />)
+      expect(screen.getByRole('switch')).not.toHaveAttribute('class')
     })
   })
 
   it('forwards the ref to the input', () => {
     const ref = createRef<HTMLInputElement>()
-    render(<Toggle ref={ref}>Notifications</Toggle>)
+    render(<Toggle aria-label="Notifications" ref={ref} />)
     expect(ref.current).toBe(screen.getByRole('switch'))
   })
 
-  it('gets the description, invalid state and required from a Field', () => {
-    render(
-      <Field errorText="Needed" helperText="Turn it on" label="Alerts" required>
-        <Toggle>Notifications</Toggle>
-      </Field>,
-    )
-    const toggle = screen.getByRole('switch', { name: /Alerts/ })
-    expect(toggle).toBeRequired()
-    expect(toggle).toHaveAttribute('aria-invalid', 'true')
-    expect(toggle).toHaveAccessibleDescription('Needed Turn it on')
-  })
-
-  describe('classes of the parts', () => {
-    it('adds classNames.input to the input and classNames.label to the text', () => {
+  describe('inside a Field', () => {
+    it('is named by the label and toggled by clicking its text', () => {
       render(
-        <Toggle classNames={{ input: 'my-input', label: 'my-label' }}>
-          Label
-        </Toggle>,
+        <Field label="Notifications" orientation="inline">
+          <Toggle />
+        </Field>,
       )
-      expect(screen.getByRole('switch')).toHaveClass('my-input')
-      expect(screen.getByText('Label')).toHaveClass('my-label')
+      expect(screen.getByRole('switch', { name: 'Notifications' })).not.toBeChecked()
+      fireEvent.click(screen.getByText('Notifications'))
+      expect(screen.getByRole('switch', { name: 'Notifications' })).toBeChecked()
     })
 
-    it('keeps them next to the Plume classes', () => {
+    it('gets the description, invalid state and required from the Field', () => {
       render(
-        <Toggle classNames={{ input: 'my-input', label: 'my-label' }}>
-          Label
-        </Toggle>,
+        <Field
+          errorText="Needed"
+          helperText="Turn it on"
+          label="Alerts"
+          orientation="inline"
+          required
+        >
+          <Toggle />
+        </Field>,
       )
-      expect(screen.getByRole('switch').className).toMatch(/toggle.+my-input/)
-      expect(screen.getByText('Label').className).toMatch(/label.+my-label/)
+      const toggle = screen.getByRole('switch', { name: /Alerts/ })
+      expect(toggle).toBeRequired()
+      expect(toggle).toHaveAttribute('aria-invalid', 'true')
+      expect(toggle).toHaveAccessibleDescription('Needed Turn it on')
     })
 
-    it('is the only class of the input and the text when unstyled', () => {
+    it('is disabled by the Field and does not toggle from its label', async () => {
       render(
-        <Toggle classNames={{ input: 'my-input', label: 'my-label' }} variant="unstyled">
-          Label
-        </Toggle>,
+        <Field disabled label="Notifications" orientation="inline">
+          <Toggle />
+        </Field>,
       )
-      expect(screen.getByRole('switch')).toHaveAttribute('class', 'my-input')
-      expect(screen.getByText('Label')).toHaveAttribute('class', 'my-label')
-    })
-
-    it('leaves the input and the text without a class attribute when unstyled and empty', () => {
-      render(<Toggle variant="unstyled">Label</Toggle>)
-      expect(screen.getByRole('switch')).not.toHaveAttribute('class')
-      expect(screen.getByText('Label')).not.toHaveAttribute('class')
+      expect(screen.getByRole('switch')).toBeDisabled()
+      await userEvent.click(screen.getByText('Notifications'))
+      expect(screen.getByRole('switch')).not.toBeChecked()
     })
   })
 })

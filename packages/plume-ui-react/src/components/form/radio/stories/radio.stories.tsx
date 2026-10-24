@@ -2,13 +2,14 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { Radio, RadioGroup } from '..'
+import { Radio, RadioGroup, type RadioProps } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
 /**
  * A radio to pick one option out of a few. It renders a native `<input type="radio">`, so it works with forms,
- * labels and the keyboard out of the box. Children become its label, and the `ref` points to the input.
+ * labels and the keyboard out of the box, and the `ref` points to the input. It has no text of its own: put it in a
+ * `Field` with `orientation="inline"` to give it a label, and clicking that label selects the Radio.
  * Radios that share a **name** form a group, and the arrow keys move the selection between them.
  *
  * ### RadioGroup
@@ -43,26 +44,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: 'text',
-      description: 'Label of the Radio. Clicking it selects the Radio.',
-      table: { type: { summary: 'ReactNode' } },
-    },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the label that wraps the input.',
+      description: 'Custom CSS class for the `<input>`.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`), `label` (the text of the label). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<RadioPart, string>>' } },
     },
     style: {
       control: false,
       description:
-        'Inline styles for the wrapping label. They are applied after the color variables, so they can override them (e.g. `--radio-solid`).',
+        'Inline styles for the `<input>`. They are applied after the color variables, so they can override them (e.g. `--radio-solid`).',
       table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
@@ -142,7 +132,7 @@ export default {
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Radio has no label.',
+      description: 'Accessible name when the Radio is not inside a Field with a label.',
       table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
@@ -187,14 +177,28 @@ export default {
     },
   },
   args: {
-    children: 'Free plan',
+    name: 'plan',
+    value: 'free',
   },
+  render: (args) => (
+    <Field label="Free plan" orientation="inline">
+      <Radio {...args} />
+    </Field>
+  ),
 } satisfies Meta<typeof Radio>
 
 type Story = StoryObj<typeof Radio>
 
+function Option({ label, ...props }: Readonly<RadioProps & { label: string }>): React.ReactNode {
+  return (
+    <Field label={label} orientation="inline">
+      <Radio {...props} />
+    </Field>
+  )
+}
+
 /**
- * This is the default Radio. Its **children** are the label.
+ * This is the default Radio. Its label comes from the **Field** around it.
  */
 export const Default: Story = {}
 
@@ -205,34 +209,22 @@ export const Default: Story = {}
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
-      <Radio defaultChecked name="variant-solid" variant="solid">
-        Solid
-      </Radio>
-      <Radio defaultChecked name="variant-outline" variant="outline">
-        Outline
-      </Radio>
-      <Radio defaultChecked name="variant-unstyled" variant="unstyled">
-        Unstyled
-      </Radio>
+      <Option defaultChecked label="Solid" name="variant-solid" variant="solid" />
+      <Option defaultChecked label="Outline" name="variant-outline" variant="outline" />
+      <Option defaultChecked label="Unstyled" name="variant-unstyled" variant="unstyled" />
     </div>
   ),
 }
 
 /**
- * Use the **size** prop to change the size of the box and of the label.
+ * Use the **size** prop to change the size of the circle.
  */
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
-      <Radio defaultChecked size="sm">
-        Small
-      </Radio>
-      <Radio defaultChecked size="md">
-        Medium
-      </Radio>
-      <Radio defaultChecked size="lg">
-        Large
-      </Radio>
+      <Option defaultChecked label="Small" size="sm" />
+      <Option defaultChecked label="Medium" size="md" />
+      <Option defaultChecked label="Large" size="lg" />
     </div>
   ),
 }
@@ -244,9 +236,12 @@ export const Colors: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
-        <Radio colorScheme={scheme as keyof typeof defaultTheme.colors} defaultChecked key={scheme}>
-          {scheme}
-        </Radio>
+        <Option
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          defaultChecked
+          key={scheme}
+          label={scheme}
+        />
       ))}
     </div>
   ),
@@ -258,15 +253,9 @@ export const Colors: Story = {
 export const DisabledAndReadOnly: Story = {
   render: () => (
     <div className="flex flex-col gap-2">
-      <Radio disabled name="disabled-demo">
-        Disabled
-      </Radio>
-      <Radio defaultChecked disabled name="disabled-demo">
-        Disabled and selected
-      </Radio>
-      <Radio defaultChecked name="readonly-demo" readOnly>
-        Read only and selected
-      </Radio>
+      <Option disabled label="Disabled" name="disabled-demo" />
+      <Option defaultChecked disabled label="Disabled and selected" name="disabled-demo" />
+      <Option defaultChecked label="Read only and selected" name="readonly-demo" readOnly />
     </div>
   ),
 }
@@ -281,19 +270,19 @@ export const Invalid: Story = {
 }
 
 /**
- * Wrap it in a **Field** to add a label, a helper and an error text. The Field wires the accessibility attributes.
+ * The **Field** adds the label, a helper and an error text, and wires the accessibility attributes. With
+ * `orientation="inline"` the label sits beside the Radio and the texts go under it.
  */
 export const WithField: Story = {
   render: () => (
     <Field
       errorText="Pick a plan to continue"
       helperText="You can change it later"
-      label="Plan"
+      label="Free plan"
+      orientation="inline"
       required
     >
-      <Radio name="plan-field" value="free">
-        Free plan
-      </Radio>
+      <Radio name="plan-field" value="free" />
     </Field>
   ),
 }
@@ -306,13 +295,13 @@ export const Group: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <RadioGroup aria-label="Plan" defaultValue="pro">
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
-        <Radio value="team">Team</Radio>
+        <Option label="Free" value="free" />
+        <Option label="Pro" value="pro" />
+        <Option label="Team" value="team" />
       </RadioGroup>
       <RadioGroup aria-label="Billing" defaultValue="monthly" orientation="horizontal">
-        <Radio value="monthly">Monthly</Radio>
-        <Radio value="yearly">Yearly</Radio>
+        <Option label="Monthly" value="monthly" />
+        <Option label="Yearly" value="yearly" />
       </RadioGroup>
     </div>
   ),
@@ -323,9 +312,9 @@ function ControlledPlan(): React.ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <RadioGroup aria-label="Plan" onChange={setPlan} value={plan}>
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
-        <Radio value="team">Team</Radio>
+        <Option label="Free" value="free" />
+        <Option label="Pro" value="pro" />
+        <Option label="Team" value="team" />
       </RadioGroup>
       <p>Selected plan: {plan}</p>
     </div>
@@ -352,8 +341,8 @@ export const GroupSizesAndColors: Story = {
         orientation="horizontal"
         size="lg"
       >
-        <Radio value="a">Large</Radio>
-        <Radio value="b">Success</Radio>
+        <Option label="Large" value="a" />
+        <Option label="Success" value="b" />
       </RadioGroup>
       <RadioGroup
         aria-label="Small"
@@ -363,10 +352,8 @@ export const GroupSizesAndColors: Story = {
         size="sm"
         variant="outline"
       >
-        <Radio value="a">Small</Radio>
-        <Radio colorScheme="warning" size="md" value="b">
-          Its own size and color
-        </Radio>
+        <Option label="Small" value="a" />
+        <Option colorScheme="warning" label="Its own size and color" size="md" value="b" />
       </RadioGroup>
     </div>
   ),
@@ -380,18 +367,16 @@ export const GroupDisabledAndReadOnly: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       <RadioGroup aria-label="Disabled group" defaultValue="free" disabled>
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
+        <Option label="Free" value="free" />
+        <Option label="Pro" value="pro" />
       </RadioGroup>
       <RadioGroup aria-label="One disabled option" defaultValue="free">
-        <Radio value="free">Free</Radio>
-        <Radio disabled value="pro">
-          Pro (unavailable)
-        </Radio>
+        <Option label="Free" value="free" />
+        <Option disabled label="Pro (unavailable)" value="pro" />
       </RadioGroup>
       <RadioGroup aria-label="Read only group" defaultValue="pro" readOnly>
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
+        <Option label="Free" value="free" />
+        <Option label="Pro" value="pro" />
       </RadioGroup>
     </div>
   ),
@@ -403,16 +388,17 @@ export const GroupDisabledAndReadOnly: Story = {
 export const GroupInvalid: Story = {
   render: () => (
     <RadioGroup aria-invalid aria-label="Plan">
-      <Radio value="free">Free</Radio>
-      <Radio value="pro">Pro</Radio>
-      <Radio value="team">Team</Radio>
+      <Option label="Free" value="free" />
+      <Option label="Pro" value="pro" />
+      <Option label="Team" value="team" />
     </RadioGroup>
   ),
 }
 
 /**
- * Wrap it in a **Field** to add a label, a helper and an error text. The group is named by the Field's label and
- * described by its texts, and it gets the required and disabled state from the Field.
+ * Wrap the group in a **Field** to add a label, a helper and an error text. The group is named by the Field's
+ * label and described by its texts, and it gets the required and disabled state from the Field. Each option has
+ * its own inline Field for its label.
  */
 export const GroupWithField: Story = {
   render: () => (
@@ -423,44 +409,34 @@ export const GroupWithField: Story = {
       required
     >
       <RadioGroup>
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
-        <Radio value="team">Team</Radio>
+        <Option label="Free" value="free" />
+        <Option label="Pro" value="pro" />
+        <Option label="Team" value="team" />
       </RadioGroup>
     </Field>
   ),
 }
 
 /**
- * Some examples of Radio with Tailwind classes. Give `variant="unstyled"` to the `RadioGroup` and its radios follow. `className` styles the label that wraps each radio, `classNames.input` the input and `classNames.label` the text.
+ * Some examples of Radio with Tailwind classes. Give `variant="unstyled"` to the `RadioGroup` and its radios follow. `className` styles the input, and a native `label` with `htmlFor` gives it a name.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<RadioGroup aria-label="Plan" className="flex flex-col gap-2" defaultValue="team" variant="unstyled">
-  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-    className="inline-flex items-center gap-2 text-sm"
-   
-    value="solo"
-  >
-    Solo
-  </Radio>
-  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600', label: 'font-semibold' }}
-    className="inline-flex items-center gap-2 text-sm"
-   
-   
-    value="team"
-  >
-    Team
-  </Radio>
-  <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-    className="inline-flex items-center gap-2 text-sm"
-   
-    value="company"
-  >
-    Company
-  </Radio>
+  <div className="inline-flex items-center gap-2 text-sm">
+    <Radio className="h-4 w-4 accent-blue-600" id="tw-solo" value="solo" />
+    <label htmlFor="tw-solo">Solo</label>
+  </div>
+  <div className="inline-flex items-center gap-2 text-sm">
+    <Radio className="h-4 w-4 accent-blue-600" id="tw-team" value="team" />
+    <label className="font-semibold" htmlFor="tw-team">Team</label>
+  </div>
+  <div className="inline-flex items-center gap-2 text-sm">
+    <Radio className="h-4 w-4 accent-blue-600" id="tw-company" value="company" />
+    <label htmlFor="tw-company">Company</label>
+  </div>
 </RadioGroup>`,
       },
     },
@@ -472,94 +448,68 @@ export const Tailwind: Story = {
       defaultValue="team"
       variant="unstyled"
     >
-      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-        className="inline-flex items-center gap-2 text-sm"
-       
-        value="solo"
-      >
-        Solo
-      </Radio>
-      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600', label: 'font-semibold' }}
-        className="inline-flex items-center gap-2 text-sm"
-       
-       
-        value="team"
-      >
-        Team
-      </Radio>
-      <Radio classNames={{ input: 'h-4 w-4 accent-blue-600' }}
-        className="inline-flex items-center gap-2 text-sm"
-       
-        value="company"
-      >
-        Company
-      </Radio>
+      <div className="inline-flex items-center gap-2 text-sm">
+        <Radio className="h-4 w-4 accent-blue-600" id="tw-solo" value="solo" />
+        <label htmlFor="tw-solo">Solo</label>
+      </div>
+      <div className="inline-flex items-center gap-2 text-sm">
+        <Radio className="h-4 w-4 accent-blue-600" id="tw-team" value="team" />
+        <label className="font-semibold" htmlFor="tw-team">
+          Team
+        </label>
+      </div>
+      <div className="inline-flex items-center gap-2 text-sm">
+        <Radio className="h-4 w-4 accent-blue-600" id="tw-company" value="company" />
+        <label htmlFor="tw-company">Company</label>
+      </div>
     </RadioGroup>
   ),
 }
 
 /**
- * Some examples of Radio with Bootstrap classes: `form-check` on the radio, `form-check-input` on its input and `form-check-label` on its text.
+ * Some examples of Radio with Bootstrap classes: `form-check` on the wrapper, `form-check-input` on the Radio and `form-check-label` on its label.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
         code: `<RadioGroup aria-label="Plan" defaultValue="team" variant="unstyled">
-  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-   
-   
-    value="solo"
-  >
-    Solo
-  </Radio>
-  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-   
-   
-    value="team"
-  >
-    Team
-  </Radio>
-  <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-    className="form-check"
-   
-   
-    value="company"
-  >
-    Company
-  </Radio>
+  <div className="form-check">
+    <Radio className="form-check-input" id="plan-solo" value="solo" />
+    <label className="form-check-label" htmlFor="plan-solo">Solo</label>
+  </div>
+  <div className="form-check">
+    <Radio className="form-check-input" id="plan-team" value="team" />
+    <label className="form-check-label" htmlFor="plan-team">Team</label>
+  </div>
+  <div className="form-check">
+    <Radio className="form-check-input" id="plan-company" value="company" />
+    <label className="form-check-label" htmlFor="plan-company">Company</label>
+  </div>
 </RadioGroup>`,
       },
     },
   },
   render: () => (
     <RadioGroup aria-label="Plan" defaultValue="team" variant="unstyled">
-      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-       
-       
-        value="solo"
-      >
-        Solo
-      </Radio>
-      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-       
-       
-        value="team"
-      >
-        Team
-      </Radio>
-      <Radio classNames={{ input: 'form-check-input', label: 'form-check-label' }}
-        className="form-check"
-       
-       
-        value="company"
-      >
-        Company
-      </Radio>
+      <div className="form-check">
+        <Radio className="form-check-input" id="plan-solo" value="solo" />
+        <label className="form-check-label" htmlFor="plan-solo">
+          Solo
+        </label>
+      </div>
+      <div className="form-check">
+        <Radio className="form-check-input" id="plan-team" value="team" />
+        <label className="form-check-label" htmlFor="plan-team">
+          Team
+        </label>
+      </div>
+      <div className="form-check">
+        <Radio className="form-check-input" id="plan-company" value="company" />
+        <label className="form-check-label" htmlFor="plan-company">
+          Company
+        </label>
+      </div>
     </RadioGroup>
   ),
 }

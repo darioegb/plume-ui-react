@@ -111,9 +111,9 @@ describe('LocaleProvider', () => {
   it('does not break a component that has no texts', () => {
     render(
       <LocaleProvider messages={es}>
-        <Toggle>Dark</Toggle>
+        <Toggle aria-label="Dark" />
       </LocaleProvider>,
     )
-    expect(screen.getByText('Dark')).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'Dark' })).toBeInTheDocument()
   })
 })

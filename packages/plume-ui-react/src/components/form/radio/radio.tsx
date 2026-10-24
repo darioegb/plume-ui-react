@@ -9,14 +9,11 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { useControlLabelledBy } from '../field/use-control-labelled-by'
+import { joinClasses } from '../../../overlay/class-names'
 import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
-export type RadioPart = 'input' | 'label'
-
 export interface RadioOwnProps {
-  classNames?: Partial<Record<RadioPart, string>>
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -32,7 +29,6 @@ type RadioRootAttributes = Pick<
   | 'aria-label'
   | 'aria-labelledby'
   | 'checked'
-  | 'children'
   | 'defaultChecked'
   | 'disabled'
   | 'id'
@@ -54,13 +50,11 @@ const radioColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPro
     ...style,
   }) as CSSProperties
 
-const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   (
     {
       checked,
-      children,
-      className = '',
-      classNames,
+      className,
       colorScheme,
       defaultChecked,
       disabled = false,
@@ -78,12 +72,6 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
   ) => {
     const group = useRadioGroupContext()
     const resolvedVariant = variant ?? group?.variant ?? 'solid'
-    const { labelledBy, textId } = useControlLabelledBy({
-      hasText: Boolean(children),
-      id: rest.id,
-      labelledBy: rest['aria-labelledby'],
-    })
-    const Wrapper = children ? 'label' : 'span'
     const isStyled = resolvedVariant !== 'unstyled'
     const isInvalid =
       rest['aria-invalid'] === true || rest['aria-invalid'] === 'true' || Boolean(group?.invalid)
@@ -91,24 +79,6 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
     const isReadOnly = readOnly || Boolean(group?.readOnly)
     const resolvedSize = size ?? group?.size ?? 'md'
     const resolvedColorScheme = colorScheme ?? group?.colorScheme ?? 'primary'
-    const rootClasses = [
-      isStyled && styles.root,
-      isStyled && styles[resolvedSize],
-      isDisabled && styles.disabled,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ')
-    const inputClasses =
-      [
-        isStyled && styles.radio,
-        isStyled && styles[resolvedVariant],
-        isStyled && isInvalid && styles.invalid,
-        classNames?.input,
-      ]
-        .filter(Boolean)
-        .join(' ') || undefined
-
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (isReadOnly) event.preventDefault()
     }
@@ -128,39 +98,26 @@ const RadioControl = forwardRef<HTMLInputElement, RadioProps>(
       : { checked, defaultChecked, name, required }
 
     return (
-      <Wrapper
-        className={rootClasses}
+      <input
+        className={joinClasses(
+          isStyled && styles.radio,
+          isStyled && styles[resolvedSize],
+          isStyled && styles[resolvedVariant],
+          isStyled && isInvalid && styles.invalid,
+          className,
+        )}
+        disabled={isDisabled}
+        onChange={onChange || group ? handleChange : undefined}
+        onClick={preventWhenReadOnly}
+        ref={ref}
         style={radioColorVars(isInvalid ? 'error' : resolvedColorScheme, style)}
-      >
-        <input
-          className={inputClasses}
-          disabled={isDisabled}
-          onChange={onChange || group ? handleChange : undefined}
-          onClick={preventWhenReadOnly}
-          ref={ref}
-          type="radio"
-          value={value}
-          {...stateProps}
-          {...rest}
-          aria-labelledby={labelledBy}
-        />
-        {children ? (
-          <span
-            className={
-              [isStyled && styles.label, classNames?.label]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
-            id={textId}
-          >
-            {children}
-          </span>
-        ) : null}
-      </Wrapper>
+        type="radio"
+        value={value}
+        {...stateProps}
+        {...rest}
+      />
     )
   },
 )
 
-RadioControl.displayName = 'Radio'
-
-export const Radio = Object.assign(RadioControl, { labelsItself: true })
+Radio.displayName = 'Radio'

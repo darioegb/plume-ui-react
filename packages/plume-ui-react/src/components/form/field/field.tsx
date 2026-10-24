@@ -18,7 +18,7 @@ export interface FieldOwnProps {
   required?: boolean
 }
 
-export type FieldOrientation = 'vertical' | 'horizontal'
+export type FieldOrientation = 'vertical' | 'horizontal' | 'inline'
 
 export interface FieldControlProps {
   'aria-describedby'?: string
@@ -96,13 +96,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
         .filter(Boolean)
         .join(' ') || undefined
 
-    const labelsItself = Boolean(
-      (control.type as { labelsItself?: boolean }).labelsItself && controlProps.children,
-    )
-    const context = useMemo(
-      () => ({ controlId, labelId, labelsItself }),
-      [controlId, labelId, labelsItself],
-    )
+    const context = useMemo(() => ({ controlId, labelId }), [controlId, labelId])
 
     const fieldClasses = `${styles.field} ${styles[orientation]} ${
       disabled ? styles.disabled : ''
@@ -113,7 +107,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
         <div className={fieldClasses} ref={ref} style={style}>
           {label ? (
             <FieldLabel
-              htmlFor={labelsItself ? undefined : controlId}
+              htmlFor={controlId}
               id={labelId}
               optionalText={optionalText}
               required={required}

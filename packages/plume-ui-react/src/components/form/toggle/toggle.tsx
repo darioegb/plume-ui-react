@@ -9,13 +9,10 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { useControlLabelledBy } from '../field/use-control-labelled-by'
+import { joinClasses } from '../../../overlay/class-names'
 import styles from './toggle.module.css'
 
-export type TogglePart = 'input' | 'label'
-
 export interface ToggleOwnProps {
-  classNames?: Partial<Record<TogglePart, string>>
   colorScheme?: ColorScheme
   readOnly?: boolean
   size?: Size
@@ -31,7 +28,6 @@ type ToggleRootAttributes = Pick<
   | 'aria-label'
   | 'aria-labelledby'
   | 'checked'
-  | 'children'
   | 'defaultChecked'
   | 'disabled'
   | 'id'
@@ -53,12 +49,10 @@ const toggleColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSPr
     ...style,
   }) as CSSProperties
 
-const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
+export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
   (
     {
-      children,
-      className = '',
-      classNames,
+      className,
       colorScheme = 'primary',
       disabled = false,
       onChange,
@@ -71,30 +65,7 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const { labelledBy, textId } = useControlLabelledBy({
-      hasText: Boolean(children),
-      id: rest.id,
-      labelledBy: rest['aria-labelledby'],
-    })
-    const Wrapper = children ? 'label' : 'span'
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
-    const rootClasses = [
-      isStyled && styles.root,
-      isStyled && styles[size],
-      disabled && styles.disabled,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ')
-    const inputClasses =
-      [
-        isStyled && styles.toggle,
-        isStyled && styles[variant],
-        isStyled && isInvalid && styles.invalid,
-        classNames?.input,
-      ]
-        .filter(Boolean)
-        .join(' ') || undefined
 
     const preventWhenReadOnly = (event: MouseEvent<HTMLInputElement>): void => {
       if (readOnly) event.preventDefault()
@@ -105,39 +76,26 @@ const ToggleControl = forwardRef<HTMLInputElement, ToggleProps>(
     }
 
     return (
-      <Wrapper
-        className={rootClasses}
+      <input
+        aria-readonly={readOnly || undefined}
+        className={joinClasses(
+          isStyled && styles.toggle,
+          isStyled && styles[size],
+          isStyled && styles[variant],
+          isStyled && isInvalid && styles.invalid,
+          className,
+        )}
+        disabled={disabled}
+        onChange={onChange ? ignoreWhenReadOnly : undefined}
+        onClick={preventWhenReadOnly}
+        ref={ref}
+        role="switch"
         style={toggleColorVars(isInvalid ? 'error' : colorScheme, style)}
-      >
-        <input
-          aria-readonly={readOnly || undefined}
-          className={inputClasses}
-          disabled={disabled}
-          onChange={onChange ? ignoreWhenReadOnly : undefined}
-          onClick={preventWhenReadOnly}
-          ref={ref}
-          role="switch"
-          type="checkbox"
-          {...rest}
-          aria-labelledby={labelledBy}
-        />
-        {children ? (
-          <span
-            className={
-              [isStyled && styles.label, classNames?.label]
-                .filter(Boolean)
-                .join(' ') || undefined
-            }
-            id={textId}
-          >
-            {children}
-          </span>
-        ) : null}
-      </Wrapper>
+        type="checkbox"
+        {...rest}
+      />
     )
   },
 )
 
-ToggleControl.displayName = 'Toggle'
-
-export const Toggle = Object.assign(ToggleControl, { labelsItself: true })
+Toggle.displayName = 'Toggle'

@@ -7,39 +7,38 @@ import { Radio } from '..'
 function Group({ onChange }: { onChange?: (value: string) => void }): React.ReactNode {
   return (
     <>
-      <Radio name="plan" onChange={(event) => onChange?.(event.target.value)} value="free">
-        Free
-      </Radio>
-      <Radio name="plan" onChange={(event) => onChange?.(event.target.value)} value="pro">
-        Pro
-      </Radio>
+      <Radio
+        aria-label="Free"
+        name="plan"
+        onChange={(event) => onChange?.(event.target.value)}
+        value="free"
+      />
+      <Radio
+        aria-label="Pro"
+        name="plan"
+        onChange={(event) => onChange?.(event.target.value)}
+        value="pro"
+      />
     </>
   )
 }
 
 describe('Radio component', () => {
-  it('renders a radio named by its label', () => {
-    render(<Radio value="free">Free</Radio>)
+  it('renders a bare radio input named by its aria-label', () => {
+    const { container } = render(<Radio aria-label="Free" value="free" />)
     expect(screen.getByRole('radio', { name: 'Free' })).not.toBeChecked()
+    expect(container.firstElementChild).toBe(screen.getByRole('radio'))
   })
 
-  it('renders without a label', () => {
-    render(<Radio aria-label="Standalone" value="x" />)
-    expect(screen.getByRole('radio', { name: 'Standalone' })).toBeInTheDocument()
-  })
-
-  it('selects when its label is clicked', () => {
-    render(<Radio value="free">Free</Radio>)
-    fireEvent.click(screen.getByText('Free'))
-    expect(screen.getByRole('radio')).toBeChecked()
+  it('calls onChange without a value', () => {
+    const onChange = vi.fn()
+    render(<Radio aria-label="Any" onChange={onChange} />)
+    fireEvent.click(screen.getByRole('radio'))
+    expect(onChange).toHaveBeenCalledTimes(1)
   })
 
   it('starts selected with defaultChecked', () => {
-    render(
-      <Radio defaultChecked value="free">
-        Free
-      </Radio>,
-    )
+    render(<Radio aria-label="Free" defaultChecked value="free" />)
     expect(screen.getByRole('radio')).toBeChecked()
   })
 
@@ -70,14 +69,13 @@ describe('Radio component', () => {
         <>
           {['free', 'pro'].map((plan) => (
             <Radio
+              aria-label={plan}
               checked={value === plan}
               key={plan}
               name="plan"
               onChange={() => setValue(plan)}
               value={plan}
-            >
-              {plan}
-            </Radio>
+            />
           ))}
         </>
       )
@@ -89,189 +87,134 @@ describe('Radio component', () => {
   })
 
   it('forwards the name, value and required attributes', () => {
-    render(
-      <Radio name="plan" required value="pro">
-        Pro
-      </Radio>,
-    )
+    render(<Radio aria-label="Pro" name="plan" required value="pro" />)
     expect(screen.getByRole('radio')).toHaveAttribute('name', 'plan')
     expect(screen.getByRole('radio')).toHaveAttribute('value', 'pro')
     expect(screen.getByRole('radio')).toBeRequired()
   })
 
   describe('disabled', () => {
-    it('disables the input, marks the label and does not select', () => {
-      render(
-        <Radio disabled value="free">
-          Free
-        </Radio>,
-      )
+    it('disables the input', () => {
+      render(<Radio aria-label="Free" disabled value="free" />)
       expect(screen.getByRole('radio')).toBeDisabled()
-      expect(screen.getByRole('radio').closest('label')).toHaveClass('disabled')
-      fireEvent.click(screen.getByText('Free'))
-      expect(screen.getByRole('radio')).not.toBeChecked()
     })
   })
 
   describe('read only', () => {
     it('does not select and does not call onChange', () => {
       const onChange = vi.fn()
-      render(
-        <Radio onChange={onChange} readOnly value="free">
-          Free
-        </Radio>,
-      )
+      render(<Radio aria-label="Free" onChange={onChange} readOnly value="free" />)
       fireEvent.click(screen.getByRole('radio'))
       expect(screen.getByRole('radio')).not.toBeChecked()
       expect(onChange).not.toHaveBeenCalled()
     })
 
     it('works without an onChange handler', () => {
-      render(
-        <Radio readOnly value="free">
-          Free
-        </Radio>,
-      )
+      render(<Radio aria-label="Free" readOnly value="free" />)
       fireEvent.click(screen.getByRole('radio'))
       expect(screen.getByRole('radio')).not.toBeChecked()
     })
   })
 
   describe('appearance', () => {
-    it('applies the base, size and input classes', () => {
-      render(
-        <Radio size="lg" value="x">
-          Free
-        </Radio>,
-      )
-      expect(screen.getByRole('radio').closest('label')).toHaveClass('root', 'lg')
-      expect(screen.getByRole('radio')).toHaveClass('radio')
+    it('applies the base, size and variant classes to the input', () => {
+      render(<Radio aria-label="Free" size="lg" value="x" />)
+      expect(screen.getByRole('radio')).toHaveClass('radio', 'lg', 'solid')
     })
 
-    it('exposes the color scheme as CSS variables', () => {
-      render(
-        <Radio colorScheme="success" value="x">
-          Free
-        </Radio>,
-      )
-      expect(screen.getByRole('radio').closest('label')).toHaveStyle(
+    it('exposes the color scheme as CSS variables on the input', () => {
+      render(<Radio aria-label="Free" colorScheme="success" value="x" />)
+      expect(screen.getByRole('radio')).toHaveStyle(
         '--radio-solid: var(--plume-color-success-solid)',
       )
     })
 
     it('switches to the error scheme when it is invalid', () => {
-      render(
-        <Radio aria-invalid value="x">
-          Free
-        </Radio>,
-      )
+      render(<Radio aria-invalid aria-label="Free" value="x" />)
       expect(screen.getByRole('radio')).toHaveClass('invalid')
-      expect(screen.getByRole('radio').closest('label')).toHaveStyle(
-        '--radio-solid: var(--plume-color-error-solid)',
-      )
+      expect(screen.getByRole('radio')).toHaveStyle('--radio-solid: var(--plume-color-error-solid)')
     })
 
-    it('puts className and style on the label', () => {
+    it('puts className and style on the input', () => {
       render(
         <Radio
+          aria-label="Free"
           className="custom"
           style={{ '--radio-solid': 'red' } as React.CSSProperties}
           value="x"
-        >
-          Free
-        </Radio>,
+        />,
       )
-      const label = screen.getByRole('radio').closest('label')
-      expect(label).toHaveClass('root', 'custom')
-      expect(label).toHaveStyle('--radio-solid: red')
+      const input = screen.getByRole('radio')
+      expect(input).toHaveClass('radio', 'custom')
+      expect(input).toHaveStyle('--radio-solid: red')
     })
 
     it('uses the solid variant by default and can switch to outline', () => {
-      const { rerender } = render(<Radio value="x">Free</Radio>)
+      const { rerender } = render(<Radio aria-label="Free" value="x" />)
       expect(screen.getByRole('radio')).toHaveClass('radio', 'solid')
 
-      rerender(
-        <Radio value="x" variant="outline">
-          Free
-        </Radio>,
-      )
+      rerender(<Radio aria-label="Free" value="x" variant="outline" />)
       expect(screen.getByRole('radio')).toHaveClass('radio', 'outline')
       expect(screen.getByRole('radio')).not.toHaveClass('solid')
     })
 
-    it('drops the Plume classes when unstyled', () => {
-      render(
-        <Radio className="custom" value="x" variant="unstyled">
-          Free
-        </Radio>,
-      )
-      const label = screen.getByRole('radio').closest('label')
-      expect(label).toHaveClass('custom')
-      expect(label).not.toHaveClass('root')
-      expect(screen.getByRole('radio')).not.toHaveClass('radio')
+    it('drops the Plume classes when unstyled and keeps className', () => {
+      render(<Radio aria-label="Free" className="custom" value="x" variant="unstyled" />)
+      expect(screen.getByRole('radio')).toHaveAttribute('class', 'custom')
+    })
+
+    it('has no class attribute when unstyled and without className', () => {
+      render(<Radio aria-label="Free" value="x" variant="unstyled" />)
+      expect(screen.getByRole('radio')).not.toHaveAttribute('class')
     })
   })
 
   it('forwards the ref to the input', () => {
     const ref = createRef<HTMLInputElement>()
-    render(
-      <Radio ref={ref} value="x">
-        Free
-      </Radio>,
-    )
+    render(<Radio aria-label="Free" ref={ref} value="x" />)
     expect(ref.current).toBe(screen.getByRole('radio'))
   })
 
-  it('gets the description and invalid state from a Field', () => {
-    render(
-      <Field errorText="Pick one" helperText="Required" label="Plan">
-        <Radio value="x">Free</Radio>
-      </Field>,
-    )
-    const radio = screen.getByRole('radio', { name: /Plan/ })
-    expect(radio).toHaveAttribute('aria-invalid', 'true')
-    expect(radio).toHaveAccessibleDescription('Pick one Required')
-  })
-
-  describe('classes of the parts', () => {
-    it('adds classNames.input to the input and classNames.label to the text', () => {
+  describe('inside a Field', () => {
+    it('is named by the label of its own Field and toggled by clicking that label', () => {
       render(
-        <Radio classNames={{ input: 'my-input', label: 'my-label' }} value="x">
-          Label
-        </Radio>,
+        <>
+          <Field label="Free" orientation="inline">
+            <Radio name="plan" value="free" />
+          </Field>
+          <Field label="Pro" orientation="inline">
+            <Radio name="plan" value="pro" />
+          </Field>
+        </>,
       )
-      expect(screen.getByRole('radio')).toHaveClass('my-input')
-      expect(screen.getByText('Label')).toHaveClass('my-label')
+      expect(screen.getByRole('radio', { name: 'Free' })).not.toBeChecked()
+      fireEvent.click(screen.getByText('Pro'))
+      expect(screen.getByRole('radio', { name: 'Pro' })).toBeChecked()
+      fireEvent.click(screen.getByText('Free'))
+      expect(screen.getByRole('radio', { name: 'Free' })).toBeChecked()
+      expect(screen.getByRole('radio', { name: 'Pro' })).not.toBeChecked()
     })
 
-    it('keeps them next to the Plume classes', () => {
+    it('gets the description and invalid state from the Field', () => {
       render(
-        <Radio classNames={{ input: 'my-input', label: 'my-label' }} value="x">
-          Label
-        </Radio>,
+        <Field errorText="Pick one" helperText="Required" label="Plan" orientation="inline">
+          <Radio value="x" />
+        </Field>,
       )
-      expect(screen.getByRole('radio').className).toMatch(/radio.+my-input/)
-      expect(screen.getByText('Label').className).toMatch(/label.+my-label/)
+      const radio = screen.getByRole('radio', { name: 'Plan' })
+      expect(radio).toHaveAttribute('aria-invalid', 'true')
+      expect(radio).toHaveAccessibleDescription('Pick one Required')
     })
 
-    it('is the only class of the input and the text when unstyled', () => {
+    it('gets disabled from the Field', () => {
       render(
-        <Radio classNames={{ input: 'my-input', label: 'my-label' }} variant="unstyled" value="x">
-          Label
-        </Radio>,
+        <Field disabled label="Free" orientation="inline">
+          <Radio value="free" />
+        </Field>,
       )
-      expect(screen.getByRole('radio')).toHaveAttribute('class', 'my-input')
-      expect(screen.getByText('Label')).toHaveAttribute('class', 'my-label')
-    })
-
-    it('leaves the input and the text without a class attribute when unstyled and empty', () => {
-      render(
-        <Radio variant="unstyled" value="x">
-          Label
-        </Radio>,
-      )
-      expect(screen.getByRole('radio')).not.toHaveAttribute('class')
-      expect(screen.getByText('Label')).not.toHaveAttribute('class')
+      expect(screen.getByRole('radio', { name: 'Free' })).toBeDisabled()
+      fireEvent.click(screen.getByText('Free'))
+      expect(screen.getByRole('radio', { name: 'Free' })).not.toBeChecked()
     })
   })
 })
