@@ -3,7 +3,7 @@
 import type { CSSProperties, FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { customProperties, type PickerVariant } from '../shared/picker-panel'
@@ -66,7 +66,7 @@ export function useTimePickerController({
   value: valueProp,
   variant,
 }: Readonly<TimePickerControllerOptions>): TimePickerController {
-  const labels = useMemo(() => mergeLabels(DEFAULT_LABELS, labelsProp), [labelsProp])
+  const labels = useLabels('timePicker', DEFAULT_LABELS, labelsProp)
   const [value, setValue] = useControllableState({ defaultValue, onChange, value: valueProp })
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState<HTMLInputElement | null>(null)

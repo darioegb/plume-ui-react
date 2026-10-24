@@ -1,9 +1,9 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
 import type { PinInputType } from './pin-utils'
@@ -109,7 +109,8 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
     const invalid = ariaInvalid === true || ariaInvalid === 'true'
     const fieldLabel = field?.controlId === id ? field?.labelId : undefined
     const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
-    const text = mergeLabels(defaultLabels(type), labels)
+    const defaults = useMemo(() => defaultLabels(type), [type])
+    const text = useLabels('pinInput', defaults, labels)
     const colorVars = {
       '--pininput-color': `var(--plume-color-${invalid ? 'error' : colorScheme}-text)`,
       ...style,

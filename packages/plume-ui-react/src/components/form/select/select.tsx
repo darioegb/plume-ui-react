@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 import { useCallback, useId, useMemo, useState } from 'react'
 import type { Placement } from '../../../overlay'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { useOpenState } from '../../../overlay/use-open-state'
 import { useSelectionState } from '../../../overlay/use-selection-state'
 import type { ColorScheme, Shape, Size } from '../../../theme'
@@ -120,7 +120,7 @@ export function Select({
     value,
   })
   const { options, register } = useSelectRegistry()
-  const merged = mergeLabels(DEFAULT_LABELS, labels)
+  const merged = useLabels('select', DEFAULT_LABELS, labels)
   const text = useMemo<SelectLabels>(
     () => ({
       clear: merged.clear,

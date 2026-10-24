@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode, RefObject } from 'react'
 import { forwardRef, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { NumberInputStepper } from './numberinput-stepper'
@@ -129,7 +129,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const isStyled = variant !== 'unstyled'
     const invalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
     const canStep = steppers && !disabled
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('numberInput', DEFAULT_LABELS, labels)
     const colorVars = {
       '--numberinput-color': `var(--plume-color-${colorScheme}-text)`,
       ...style,

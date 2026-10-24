@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { BreadcrumbContext, type BreadcrumbVariant } from './breadcrumb-context'
 import styles from './breadcrumb.module.css'
@@ -61,6 +61,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     }: BreadcrumbProps,
     ref: ForwardedRef<HTMLElement>,
   ) => {
+    const text = useLabels('breadcrumb', DEFAULT_LABELS, labels)
     const isStyled = variant !== 'unstyled'
     const context = useMemo(
       () => ({
@@ -75,7 +76,7 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       <BreadcrumbContext.Provider value={context}>
         <nav
           aria-label={ariaLabel ??
-            (ariaLabelledBy ? undefined : mergeLabels(DEFAULT_LABELS, labels).breadcrumb)}
+            (ariaLabelledBy ? undefined : text.breadcrumb)}
           aria-labelledby={ariaLabelledBy}
           className={joinClasses(
             isStyled && styles.breadcrumb,

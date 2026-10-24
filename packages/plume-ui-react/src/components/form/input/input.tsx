@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { InputGroup } from './input-group'
 import { InputReveal, usePasswordReveal } from './input-reveal'
 import styles from './input.module.css'
@@ -110,6 +110,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }: InputProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
+    const text = useLabels('input', DEFAULT_LABELS, labels)
     const isStyled = variant !== 'unstyled'
     const { canReveal, inputType, revealed, toggle } = usePasswordReveal(type, revealable)
     const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
@@ -166,7 +167,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               className={classNames?.reveal}
               disabled={disabled}
               isStyled={isStyled}
-              label={mergeLabels(DEFAULT_LABELS, labels).reveal}
+              label={text.reveal}
               onToggle={toggle}
               visible={revealed}
             />

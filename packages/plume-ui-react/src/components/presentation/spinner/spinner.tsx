@@ -1,8 +1,13 @@
+'use client'
+
 import { forwardRef } from 'react'
 import type { HtmlHTMLAttributes } from 'react'
 import type { ColorShade, ComponentProps, Size } from '../../../theme'
 import { colorVar } from '../../../theme'
+import { useLabels } from '../../../locale/locale-provider'
 import styles from './spinner.module.css'
+
+const DEFAULT_LABELS = { label: 'Loading' }
 
 export interface SpinnerOwnProps {
   color?: ColorShade
@@ -38,7 +43,7 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
       color = `secondary.900`,
-      label = 'Loading',
+      label,
       style,
       speed,
       className = '',
@@ -49,6 +54,7 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
     }: SpinnerProps,
     ref,
   ) => {
+    const text = useLabels('spinner', DEFAULT_LABELS, { label })
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
     const spinnerClass = `
@@ -59,7 +65,7 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
 
     return (
       <output
-        aria-label={label}
+        aria-label={text.label}
         className={spinnerClass}
         ref={ref}
         style={createSpinnerStyles({

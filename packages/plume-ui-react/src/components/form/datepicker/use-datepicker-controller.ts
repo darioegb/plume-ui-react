@@ -3,7 +3,7 @@
 import type { CSSProperties, FocusEvent } from 'react'
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels, useLocale } from '../../../locale/locale-provider'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import type { DatePickerContextProps } from './use-datepicker'
 import {
@@ -84,8 +84,9 @@ export function useDatePickerController({
   value,
   variant,
 }: Readonly<DatePickerControllerOptions>): DatePickerController {
-  const language = config?.language ?? DEFAULT_LANGUAGE
-  const mergedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
+  const locale = useLocale()
+  const language = config?.language ?? locale ?? DEFAULT_LANGUAGE
+  const mergedLabels = useLabels('datePicker', DEFAULT_LABELS, labels)
   const [state, dispatch] = useReducer(datePickerReducer, value, (initialValue?: DateRange) =>
     initialValue
       ? datePickerReducer(DATE_PICKER_INITIAL_STATE, { type: 'SET_VALUE', payload: initialValue })

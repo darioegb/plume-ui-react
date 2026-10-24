@@ -9,7 +9,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../../../overlay/icons'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { Button } from '../button'
@@ -132,7 +132,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     const isStyled = variant !== 'unstyled'
     const current = clamp(page, 1, Math.max(pages, 1))
     const variants = buttonVariants[variant]
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('paginator', DEFAULT_LABELS, labels)
 
     if (pages < 1) return null
 

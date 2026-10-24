@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ComponentProps, Size } from '../../../theme'
 import { Spinner } from '../../presentation/spinner'
 import styles from './table.module.css'
@@ -77,6 +77,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
     }: TableProps,
     ref: ForwardedRef<HTMLTableElement>,
   ) => {
+    const text = useLabels('table', DEFAULT_LABELS, labels)
     const isStyled = variant !== 'unstyled'
     const [container, setContainer] = useState<HTMLElement | null>(null)
     const scrollable = useOverflow(container)
@@ -101,7 +102,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(
             <Spinner
               className={classNames?.loading}
               color="primary"
-              label={mergeLabels(DEFAULT_LABELS, labels).loading}
+              label={text.loading}
               variant={isStyled ? 'solid' : 'unstyled'}
             />
           </div>

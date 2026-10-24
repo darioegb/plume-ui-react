@@ -1,6 +1,8 @@
+'use client'
+
 import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { Spinner } from '../../presentation/spinner'
 import styles from './button.module.css'
@@ -121,6 +123,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
+    const text = useLabels('button', DEFAULT_LABELS, labels)
     const buttonClasses = generateButtonClasses(variant, className, disabled, isBusy, size, shape)
 
     return (
@@ -136,7 +139,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
         {isBusy ? (
           <Spinner
-            aria-label={mergeLabels(DEFAULT_LABELS, labels).busy}
+            aria-label={text.busy}
             style={{ '--spinner-scheme': 'var(--button-contrast-color)' } as CSSProperties}
             {...(busyText && { className: styles.spinnerMargin })}
             size='sm'

@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useEffect, useId, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useMediaQuery } from '../../../overlay/use-media-query'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -106,7 +106,7 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
       return () => clearInterval(timer)
     }, [autoplay, count, index, running, setIndex])
 
-    const resolvedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
+    const resolvedLabels = useLabels('carousel', DEFAULT_LABELS, labels)
     const context = useMemo(
       () => ({
         baseId,
