@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { PinInput } from '..'
+import { PinInput, PinInputCell, PinInputHidden } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -21,6 +21,19 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * keyboard user does not walk through six empty boxes. `onComplete` runs when the last box is filled. With a
  * `name` the code is submitted in a hidden input. It composes with `Field`, which names the group and gives the
  * focus to the first box when its label is clicked.
+ *
+ * On its own it renders the boxes for you. To change what it shows (a separator in the middle of the code, a
+ * different class on each box) give it its parts as children: `PinInputCell` is one box and `PinInputHidden` the
+ * hidden input of a `name`. The `PinInput` keeps the code and the focus and shares them with its parts, so the
+ * boxes can be in any order and wrapped in other elements. The look (`variant`, `size`, `shape`), the type, the
+ * mask and the labels always go on the `PinInput`.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `PinInputCell` | `index` (required, from 0), `className`, `style`, `ref`, `aria-label`, `autoComplete`, `inputMode`, `placeholder`, `id`, `title`. One box. It has `data-filled`, `data-disabled` and `data-invalid`. |
+ * | `PinInputHidden` | `name` (the `name` of the `PinInput` by default), `form`, `ref`. The hidden input that carries the whole code. The default composition renders it when the `PinInput` has a `name`; in a composition you add it yourself. |
  */
 export default {
   title: 'Components/PinInput',
@@ -41,11 +54,11 @@ export default {
       description: 'Custom CSS class for the group (the `<fieldset>`). `style` goes there too.',
       table: { type: { summary: 'string' } },
     },
-    classNames: {
+    children: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `input` (every box). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<PinInputPart, string>>' } },
+        'The parts of the PinInput: `PinInputCell` for each box and `PinInputHidden` for the hidden input of a `name`. Without children it renders the boxes.',
+      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
@@ -235,13 +248,15 @@ export const Variants: Story = {
       <PinInput aria-label="Outline" length={4} variant="outline" />
       <PinInput aria-label="Filled" length={4} variant="filled" />
       <PinInput aria-label="Underline" length={4} variant="underline" />
-      <PinInput classNames={{ input: 'h-10 w-10 rounded border border-gray-400' }}
-        aria-label="Unstyled"
-        className="gap-2"
-       
-        length={4}
-        variant="unstyled"
-      />
+      <PinInput aria-label="Unstyled" className="flex gap-2" length={4} variant="unstyled">
+        {[0, 1, 2, 3].map((index) => (
+          <PinInputCell
+            className="h-10 w-10 rounded border border-gray-400 text-center"
+            index={index}
+            key={index}
+          />
+        ))}
+      </PinInput>
     </div>
   ),
 }
@@ -286,6 +301,42 @@ export const Shapes: Story = {
       <PinInput aria-label="Rounded" length={4} shape="rounded" />
       <PinInput aria-label="Pill" length={4} shape="pill" />
     </div>
+  ),
+}
+
+/**
+ * Give the `PinInput` its parts to compose the boxes yourself: here a dash splits a code of six in two groups of
+ * three. Every `PinInputCell` takes its position with **index**, and they can be wrapped in other elements. Add a
+ * `PinInputHidden` when the code has to be submitted with a **name**.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<PinInput aria-label="Code" length={6} name="code">
+  <PinInputCell index={0} />
+  <PinInputCell index={1} />
+  <PinInputCell index={2} />
+  <span aria-hidden="true">-</span>
+  <PinInputCell index={3} />
+  <PinInputCell index={4} />
+  <PinInputCell index={5} />
+  <PinInputHidden />
+</PinInput>`,
+      },
+    },
+  },
+  render: () => (
+    <PinInput aria-label="Code" className="items-center" length={6} name="code">
+      <PinInputCell index={0} />
+      <PinInputCell index={1} />
+      <PinInputCell index={2} />
+      <span aria-hidden="true">-</span>
+      <PinInputCell index={3} />
+      <PinInputCell index={4} />
+      <PinInputCell index={5} />
+      <PinInputHidden />
+    </PinInput>
   ),
 }
 
@@ -402,31 +453,35 @@ export const WithField: Story = {
 
 /**
  * Some examples of PinInput with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
- * classes: `className` styles the group, `classNames.input` every box, and a filled one has `data-filled`, so
- * `data-[filled]:` styles it.
+ * classes: `className` styles the group, the `className` of each `PinInputCell` its box, and a filled one has
+ * `data-filled`, so `data-[filled]:` styles it.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<PinInput classNames={{ input: 'h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500' }}
-  aria-label="Verification code"
-  className="gap-2"
- 
-  length={6}
-  variant="unstyled"
-/>`,
+        code: `<PinInput aria-label="Verification code" className="flex gap-2" length={6} variant="unstyled">
+  {[0, 1, 2, 3, 4, 5].map((index) => (
+    <PinInputCell
+      className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+      index={index}
+      key={index}
+    />
+  ))}
+</PinInput>`,
       },
     },
   },
   render: () => (
-    <PinInput classNames={{ input: 'h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500' }}
-      aria-label="Verification code"
-      className="gap-2"
-     
-      length={6}
-      variant="unstyled"
-    />
+    <PinInput aria-label="Verification code" className="flex gap-2" length={6} variant="unstyled">
+      {[0, 1, 2, 3, 4, 5].map((index) => (
+        <PinInputCell
+          className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+          index={index}
+          key={index}
+        />
+      ))}
+    </PinInput>
   ),
 }
 
@@ -438,25 +493,35 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<PinInput classNames={{ input: 'form-control form-control-lg text-center px-0' }}
+        code: `<PinInput
   aria-label="Verification code"
   className="d-flex gap-2"
- 
   length={6}
-  style={{ maxWidth: "100%", width: "20rem" }}
+  style={{ maxWidth: '100%', width: '20rem' }}
   variant="unstyled"
-/>`,
+>
+  {[0, 1, 2, 3, 4, 5].map((index) => (
+    <PinInputCell className="form-control form-control-lg text-center px-0" index={index} key={index} />
+  ))}
+</PinInput>`,
       },
     },
   },
   render: () => (
-    <PinInput classNames={{ input: 'form-control form-control-lg text-center px-0' }}
+    <PinInput
       aria-label="Verification code"
       className="d-flex gap-2"
-     
       length={6}
       style={{ maxWidth: '100%', width: '20rem' }}
       variant="unstyled"
-    />
+    >
+      {[0, 1, 2, 3, 4, 5].map((index) => (
+        <PinInputCell
+          className="form-control form-control-lg text-center px-0"
+          index={index}
+          key={index}
+        />
+      ))}
+    </PinInput>
   ),
 }

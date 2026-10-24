@@ -234,29 +234,21 @@ describe('Input component', () => {
       render(
         <Input elementAfter={<span>after</span>} placeholder="Secret" revealable type="password" />,
       )
-      expect(screen.getByText('after').parentElement).toHaveClass('element', 'beforeReveal')
-      expect(toggle()).toBeInTheDocument()
+      const control = screen.getByPlaceholderText('Secret').parentElement as HTMLElement
+      const children = Array.from(control.children)
+      expect(children.indexOf(screen.getByText('after').parentElement as Element)).toBeLessThan(
+        children.indexOf(toggle().parentElement as Element),
+      )
     })
 
-    it('adds the class of the button in every variant', () => {
-      render(
-        <Input classNames={{ reveal: 'eye' }} placeholder="Secret" revealable type="password" />,
-      )
-      expect(toggle()).toHaveClass('revealButton', 'eye')
+    it('keeps the classes of the button in every variant', () => {
+      render(<Input placeholder="Secret" revealable type="password" />)
+      expect(toggle()).toHaveClass('revealButton')
     })
 
     it('drops the Plume classes of the button when it is unstyled', () => {
-      render(
-        <Input
-          classNames={{ reveal: 'eye' }}
-          placeholder="Secret"
-
-          revealable
-          type="password"
-          variant="unstyled"
-        />,
-      )
-      expect(toggle()).toHaveAttribute('class', 'eye')
+      render(<Input placeholder="Secret" revealable type="password" variant="unstyled" />)
+      expect(toggle()).not.toHaveAttribute('class')
       expect(toggle().closest('[data-plume-input-group]')).not.toHaveAttribute('class')
     })
 

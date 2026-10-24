@@ -229,30 +229,17 @@ describe('Textarea component', () => {
       expect(ref.current).toBe(screen.getByRole('textbox'))
     })
 
-    it('keeps the classes of the textarea', () => {
-      render(
-        <Textarea aria-label="Bio" className="mine" classNames={{ input: 'inner' }} showCount />,
-      )
+    it('puts className on the wrapper and keeps the classes of the textarea', () => {
+      render(<Textarea aria-label="Bio" className="mine" showCount />)
       const textarea = screen.getByRole('textbox')
-      expect(textarea).toHaveClass('base', 'outline', 'inner')
+      expect(textarea).toHaveClass('base', 'outline')
       expect(textarea).not.toHaveClass('mine')
       expect(textarea.parentElement).toHaveClass('mine')
     })
 
-    it('styles the count, and drops its class when it is unstyled', () => {
-      const { rerender } = render(
-        <Textarea classNames={{ count: 'my-count' }} aria-label="Bio" showCount />,
-      )
-      expect(count()).toHaveClass('count', 'my-count')
-      rerender(
-        <Textarea
-          classNames={{ count: 'my-count' }}
-          aria-label="Bio"
-          showCount
-          variant="unstyled"
-        />,
-      )
-      expect(count()).toHaveAttribute('class', 'my-count')
+    it('drops the class of the count when it is unstyled', () => {
+      const { rerender } = render(<Textarea aria-label="Bio" showCount />)
+      expect(count()).toHaveClass('count')
       rerender(<Textarea aria-label="Bio" showCount variant="unstyled" />)
       expect(count()).not.toHaveAttribute('class')
     })

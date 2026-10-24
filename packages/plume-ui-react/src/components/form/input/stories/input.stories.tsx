@@ -2,7 +2,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Input } from '..'
+import { Input, InputAddon, InputControl, InputElement, InputField, InputReveal } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -11,6 +11,22 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * It supports multiple variants, sizes, shapes and color schemes, optional addons
  * and inline elements, validation states, and an input mask for formatted values
  * such as dates, phone numbers or card numbers.
+ *
+ * On its own it renders the `<input>` (inside a group when it has addons, elements or the reveal button). To
+ * change what it shows or the order, give it its parts as children, and the native props (`id`, `name`,
+ * `placeholder`, `aria-*`...) go on the `InputField`, or on the `Input` to share them with it. The `ref` of the `Input`
+ * always points to the `<input>`, so `register` of react-hook-form works on either of them.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `InputGroup` | `className`, `style`. The wrapper `Input` renders around its parts (its `className` and `style` are the ones of the `Input`). |
+ * | `InputAddon` | `position` (`before` by default, or `after`), `className`, `style`. A block with a border and a background beside the field, like a currency or a domain. |
+ * | `InputControl` | `className`, `style`. Wraps the field and its elements. |
+ * | `InputElement` | `position` (`before` by default, or `after`), `className`, `style`. An icon or a small piece of content inside the field. |
+ * | `InputField` | The native props of the input, `className`, `style`, `ref`. The `<input>`. |
+ * | `InputReveal` | `aria-label`, `disabled`, `onClick`, `className`, `style`, `children` (another icon). The button that shows and hides a password. |
  */
 export default {
   title: 'Components/Input',
@@ -164,12 +180,6 @@ export default {
         category: 'Accessibility',
         type: { summary: 'Partial<InputLabels>' },
       },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `input` (the `<input>`) and `reveal` (the button that shows the password). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<InputPart, string>>' } },
     },
     autoComplete: {
       control: 'text',
@@ -495,6 +505,62 @@ export const Masked: Story = {
 }
 
 /**
+ * Give the **Input** its parts as children to choose what it shows and in which order. The native props go on the
+ * `InputField`, or on the `Input` so every part shares them. The `ref` of the `Input` points to the `<input>`, and
+ * parts you leave out are not rendered.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Input>
+  <InputAddon>https://</InputAddon>
+  <InputControl>
+    <InputField placeholder="example.com" />
+  </InputControl>
+  <InputAddon position="after">.com</InputAddon>
+</Input>
+<Input type="password">
+  <InputControl>
+    <InputReveal />
+    <InputField placeholder="Password" />
+  </InputControl>
+</Input>
+<Input>
+  <InputControl>
+    <InputElement>@</InputElement>
+    <InputField placeholder="Username" />
+  </InputControl>
+</Input>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-4 w-80 max-w-full">
+      <Input>
+        <InputAddon>https://</InputAddon>
+        <InputControl>
+          <InputField aria-label="Domain" placeholder="example" />
+        </InputControl>
+        <InputAddon position="after">.com</InputAddon>
+      </Input>
+      <Input type="password">
+        <InputControl>
+          <InputField aria-label="Password" placeholder="Password" />
+          <InputReveal />
+        </InputControl>
+      </Input>
+      <Input>
+        <InputControl>
+          <InputElement>@</InputElement>
+          <InputField aria-label="Username" placeholder="Username" />
+        </InputControl>
+      </Input>
+    </div>
+  ),
+}
+
+/**
  * Some examples of Input with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
  */
@@ -523,14 +589,15 @@ export const Tailwind: Story = {
   defaultValue="Invalid value"
   className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
 />
-<Input classNames={{ reveal: '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white' }}
-  variant="unstyled"
-  type="password"
-  placeholder="Password"
-  revealable
-  className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
- 
-/>`,
+<Input variant="unstyled" type="password">
+  <InputControl>
+    <InputField
+      placeholder="Password"
+      className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+    />
+    <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white" />
+  </InputControl>
+</Input>`,
       },
     },
   },
@@ -557,18 +624,15 @@ export const Tailwind: Story = {
         placeholder="Error Input"
         variant="unstyled"
       />
-      <Input
-        classNames={{
-          reveal:
-            '-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white',
-        }}
-        className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-        placeholder="Password"
-
-        revealable
-        type="password"
-        variant="unstyled"
-      />
+      <Input type="password" variant="unstyled">
+        <InputControl>
+          <InputField
+            className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            placeholder="Password"
+          />
+          <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white" />
+        </InputControl>
+      </Input>
     </div>
   ),
 }

@@ -3,7 +3,7 @@
   display: flex;
 }
 
-:global(:where([data-plume-numberinput-input])) {
+:global(:where([data-plume-numberinput-field])) {
   background: transparent;
   border: 0;
   color: inherit;

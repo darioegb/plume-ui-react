@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { NumberInput } from '..'
+import { NumberInput, NumberInputDecrement, NumberInputField, NumberInputIncrement } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -31,6 +31,20 @@ const readEuros = (text: string): number | null => {
  *
  * The visible input shows the formatted number, so with a `name` the component submits the plain number in a hidden
  * input. It composes with `Field`.
+ *
+ * On its own it renders the field between a decrease and an increase button. To change what it shows or the order,
+ * give it its parts as children: `NumberInputField` is the `<input>`, and `NumberInputDecrement` and
+ * `NumberInputIncrement` are the buttons. The `NumberInput` keeps the number and shares it with its parts, so a
+ * part can go anywhere inside it, and be left out. With children the `steppers` prop has no effect, since you
+ * choose the buttons yourself.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `NumberInputField` | `className`, `style`, `ref`, `id`, `placeholder`, `title`, `required`, `onBlur`, `onFocus`, `aria-*`. The `<input>`. It takes the attributes of the `NumberInput` and the ones it gets itself win. The `ref` of the `NumberInput` goes to it. |
+ * | `NumberInputDecrement` | `className`, `style`, `ref`, `label`, `children`, `disabled`, `id`, `title`. The button that subtracts. `label` is its accessible name (`labels.decrement` by default) and `children` replace the icon. |
+ * | `NumberInputIncrement` | The same props, for the button that adds (`labels.increment`). |
  */
 export default {
   title: 'Components/NumberInput',
@@ -49,14 +63,8 @@ export default {
     className: {
       control: 'text',
       description:
-        'Custom CSS class for the control, the box that holds the input and the buttons. `style` goes there too.',
+        'Custom CSS class for the control, the box that holds the input and the buttons. `style` goes there too. The parts take their own `className`.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `input`, `decrement` and `increment`. With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: `Partial<Record<NumberInputPart, string>>` } },
     },
     style: {
       control: false,
@@ -261,10 +269,13 @@ export const Variants: Story = {
       <NumberInput
         aria-label="Unstyled"
         className="rounded border border-gray-400"
-        classNames={{ decrement: 'w-8', increment: 'w-8' }}
         defaultValue={1}
         variant="unstyled"
-      />
+      >
+        <NumberInputDecrement className="w-8" />
+        <NumberInputField />
+        <NumberInputIncrement className="w-8" />
+      </NumberInput>
     </div>
   ),
 }
@@ -459,9 +470,49 @@ export const WithField: Story = {
 }
 
 /**
+ * Give the NumberInput its parts to put the buttons where you want, on the same side or only one of them. The field
+ * and the buttons keep working together, whatever the order.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<NumberInput aria-label="Quantity" defaultValue={2} max={10} min={0}>
+  <NumberInputField />
+  <NumberInputDecrement />
+  <NumberInputIncrement />
+</NumberInput>
+
+<NumberInput aria-label="Guests" defaultValue={1} min={1}>
+  <NumberInputField />
+  <NumberInputIncrement label="Add a guest">Add</NumberInputIncrement>
+</NumberInput>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-4" style={{ width: '14rem' }}>
+      <NumberInput aria-label="Quantity" defaultValue={2} max={10} min={0}>
+        <NumberInputField />
+        <NumberInputDecrement />
+        <NumberInputIncrement />
+      </NumberInput>
+      <NumberInput aria-label="Guests" defaultValue={1} min={1}>
+        <NumberInputField />
+        <NumberInputIncrement
+          label="Add a guest"
+          style={{ aspectRatio: 'auto', padding: '0 0.75rem' }}
+        >
+          Add
+        </NumberInputIncrement>
+      </NumberInput>
+    </div>
+  ),
+}
+
+/**
  * Some examples of NumberInput with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
- * row of the buttons and the input stays. `className` styles the control and `classNames` the `input`, `decrement`
- * and `increment` parts.
+ * row of the buttons and the input stays. `className` styles the control and each part takes its own `className`.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -470,16 +521,15 @@ export const Tailwind: Story = {
         code: `<NumberInput
   aria-label="Quantity"
   className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
-  classNames={{
-    decrement: "w-9 text-muted hover:bg-surface-muted disabled:opacity-40",
-    increment: "w-9 text-muted hover:bg-surface-muted disabled:opacity-40",
-    input: "w-full bg-transparent py-2 text-center outline-none",
-  }}
   defaultValue={2}
   max={10}
   min={0}
   variant="unstyled"
-/>`,
+>
+  <NumberInputDecrement className="w-9 text-muted hover:bg-surface-muted disabled:opacity-40" />
+  <NumberInputField className="w-full bg-transparent py-2 text-center outline-none" />
+  <NumberInputIncrement className="w-9 text-muted hover:bg-surface-muted disabled:opacity-40" />
+</NumberInput>`,
       },
     },
   },
@@ -487,16 +537,15 @@ export const Tailwind: Story = {
     <NumberInput
       aria-label="Quantity"
       className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
-      classNames={{
-        decrement: 'w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40',
-        increment: 'w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40',
-        input: 'w-full bg-transparent py-2 text-center outline-none',
-      }}
       defaultValue={2}
       max={10}
       min={0}
       variant="unstyled"
-    />
+    >
+      <NumberInputDecrement className="w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40" />
+      <NumberInputField className="w-full bg-transparent py-2 text-center outline-none" />
+      <NumberInputIncrement className="w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40" />
+    </NumberInput>
   ),
 }
 
@@ -511,17 +560,16 @@ export const Bootstrap: Story = {
         code: `<NumberInput
   aria-label="Quantity"
   className="input-group"
-  classNames={{
-    decrement: "btn btn-outline-secondary",
-    increment: "btn btn-outline-secondary",
-    input: "form-control text-center",
-  }}
   defaultValue={2}
   max={10}
   min={0}
   style={{ width: "10rem" }}
   variant="unstyled"
-/>`,
+>
+  <NumberInputDecrement className="btn btn-outline-secondary" />
+  <NumberInputField className="form-control text-center" />
+  <NumberInputIncrement className="btn btn-outline-secondary" />
+</NumberInput>`,
       },
     },
   },
@@ -529,16 +577,15 @@ export const Bootstrap: Story = {
     <NumberInput
       aria-label="Quantity"
       className="input-group"
-      classNames={{
-        decrement: 'btn btn-outline-secondary',
-        increment: 'btn btn-outline-secondary',
-        input: 'form-control text-center',
-      }}
       defaultValue={2}
       max={10}
       min={0}
       style={{ width: '10rem' }}
       variant="unstyled"
-    />
+    >
+      <NumberInputDecrement className="btn btn-outline-secondary" />
+      <NumberInputField className="form-control text-center" />
+      <NumberInputIncrement className="btn btn-outline-secondary" />
+    </NumberInput>
   ),
 }

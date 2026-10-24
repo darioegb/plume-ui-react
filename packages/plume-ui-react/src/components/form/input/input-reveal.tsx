@@ -1,48 +1,59 @@
 'use client'
 
-import type { HTMLInputTypeAttribute, ReactNode } from 'react'
-import { useState } from 'react'
+import type { ButtonHTMLAttributes, ForwardedRef, HTMLInputTypeAttribute, ReactNode } from 'react'
+import { forwardRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { EyeIcon, EyeOffIcon } from '../../../overlay/icons'
+import type { ComponentProps } from '../../../theme'
+import { useInputContext } from './input-context'
 import styles from './input.module.css'
 
-interface InputRevealProps {
-  className?: string
-  disabled: boolean
-  isStyled: boolean
-  label: string
-  onToggle: () => void
-  visible: boolean
-}
+export type InputRevealProps = Omit<ComponentProps, 'index'> &
+  Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'disabled' | 'onClick'>
 
-export function InputReveal({
-  className,
-  disabled,
-  isStyled,
-  label,
-  onToggle,
-  visible,
-}: Readonly<InputRevealProps>): ReactNode {
-  return (
-    <span className={isStyled ? `${styles.element} ${styles.elementAfter}` : undefined}>
-      <button
-        aria-label={label}
-        aria-pressed={visible}
-        className={joinClasses(isStyled && styles.revealButton, className)}
-        data-plume-input-reveal=""
-        disabled={disabled}
-        onClick={onToggle}
-        type="button"
+export const InputReveal = forwardRef<HTMLButtonElement, InputRevealProps>(
+  (
+    { 'aria-label': ariaLabel, children, className, disabled, onClick, style }: InputRevealProps,
+    ref: ForwardedRef<HTMLButtonElement>,
+  ): ReactNode => {
+    const context = useInputContext('InputReveal')
+    const { isStyled, labels, revealed, toggleReveal } = context
+    const isDisabled = disabled ?? context.disabled
+
+    return (
+      <span
+        className={joinClasses(
+          isStyled && styles.element,
+          isStyled && styles.elementAfter,
+          isStyled && styles.revealSlot,
+        )}
       >
-        {visible ? <EyeOffIcon /> : <EyeIcon />}
-      </button>
-    </span>
-  )
-}
+        <button
+          aria-label={ariaLabel ?? labels.reveal}
+          aria-pressed={revealed}
+          className={joinClasses(isStyled && styles.revealButton, className)}
+          data-disabled={isDisabled ? '' : undefined}
+          data-plume-input-reveal=""
+          disabled={isDisabled}
+          onClick={(event) => {
+            onClick?.(event)
+            toggleReveal()
+          }}
+          ref={ref}
+          style={style}
+          type="button"
+        >
+          {children ?? (revealed ? <EyeOffIcon /> : <EyeIcon />)}
+        </button>
+      </span>
+    )
+  },
+)
+
+InputReveal.displayName = 'InputReveal'
 
 interface PasswordReveal {
   canReveal: boolean
-  inputType: HTMLInputTypeAttribute
   revealed: boolean
   toggle: () => void
 }
@@ -52,17 +63,9 @@ export function usePasswordReveal(
   revealable: boolean,
 ): PasswordReveal {
   const [revealed, setRevealed] = useState(false)
-  const canReveal = revealable && type === 'password'
   return {
-    canReveal,
-    inputType: canReveal && revealed ? 'text' : type,
+    canReveal: revealable && type === 'password',
     revealed,
     toggle: () => setRevealed((current) => !current),
   }
-}
-
-export const afterElementClass = (isStyled: boolean, canReveal: boolean): string => {
-  if (!isStyled) return ''
-  const base = `${styles.element} ${styles.elementAfter}`
-  return canReveal ? `${base} ${styles.beforeReveal}` : base
 }

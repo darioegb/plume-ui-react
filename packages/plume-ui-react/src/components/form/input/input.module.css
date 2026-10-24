@@ -270,10 +270,10 @@
   cursor: not-allowed;
 }
 
-.beforeReveal {
+.control:has(> .revealSlot) > .elementAfter:not(.revealSlot) {
   inset-inline-end: 2.5rem;
 }
 
-.control:has(.beforeReveal) > .input {
+.control:has(> .revealSlot):has(> .elementAfter:not(.revealSlot)) > .input {
   padding-inline-end: 5rem;
 }
