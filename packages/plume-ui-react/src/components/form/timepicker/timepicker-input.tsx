@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { ClockIcon } from '../../../overlay/icons'
 import { mergeRefs } from '../../../overlay/trigger'
-import { Input } from '../input'
+import { Input, InputControl, InputElement, InputField } from '../input'
 import { PickerTrigger } from '../shared/picker-trigger'
 import { useTimePicker } from './use-timepicker'
 import { useTimeText } from './use-time-text'
@@ -73,19 +73,8 @@ export function TimePickerInput({
     <Input
       {...rest}
       className={className}
-      classNames={classNames}
       colorScheme={colorScheme}
       disabled={disabled}
-      elementAfter={
-        <PickerTrigger
-          disabled={disabled || Boolean(readOnly)}
-          icon={<ClockIcon />}
-          label={labels.openTimePicker}
-          onClick={toggle}
-          open={open}
-          unstyled={variant === 'unstyled'}
-        />
-      }
       inputMode="numeric"
       mask={hour12 ? undefined : TIME_MASK}
       onBlur={() => {
@@ -95,12 +84,25 @@ export function TimePickerInput({
       onChange={handleChange}
       placeholder={placeholder ?? defaultPlaceholder(hour12, labels.am)}
       readOnly={readOnly}
-      ref={setInputRef}
       shape={shape}
       size={size}
       type="text"
       value={text}
       variant={variant}
-    />
+    >
+      <InputControl>
+        <InputField className={classNames?.input} ref={setInputRef} />
+        <InputElement position="after">
+          <PickerTrigger
+            disabled={disabled || Boolean(readOnly)}
+            icon={<ClockIcon />}
+            label={labels.openTimePicker}
+            onClick={toggle}
+            open={open}
+            unstyled={variant === 'unstyled'}
+          />
+        </InputElement>
+      </InputControl>
+    </Input>
   )
 }

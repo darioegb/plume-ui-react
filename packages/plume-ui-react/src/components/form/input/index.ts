@@ -1,1 +1,7 @@
-export { Input, type InputLabels, type InputPart, type InputProps } from './input'
+export { Input, type InputLabels, type InputProps, type InputVariant } from './input'
+export { InputAddon, type InputAddonProps, type InputSide } from './input-addon'
+export { InputControl, type InputControlProps } from './input-control'
+export { InputElement, type InputElementProps } from './input-element'
+export { InputField, type InputFieldProps } from './input-field'
+export { InputGroup, type InputGroupProps } from './input-group'
+export { InputReveal, type InputRevealProps } from './input-reveal'

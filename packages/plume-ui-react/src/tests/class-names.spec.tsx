@@ -49,22 +49,6 @@ interface Case {
 }
 
 const cases: Record<string, Case> = {
-  PinInput: {
-    classes: ['a-input'],
-    element: () => <PinInput aria-label="Code" length={2} classNames={{ input: 'a-input' }} />,
-  },
-  Input: {
-    classes: ['a-input', 'a-reveal'],
-    element: () => (
-      <Input revealable type="password" classNames={{ input: 'a-input', reveal: 'a-reveal' }} />
-    ),
-  },
-  Textarea: {
-    classes: ['a-count', 'a-input'],
-    element: () => (
-      <Textarea aria-label="Bio" showCount classNames={{ count: 'a-count', input: 'a-input' }} />
-    ),
-  },
   DatePicker: {
     classes: ['a-input', 'a-calendar'],
     element: () => (

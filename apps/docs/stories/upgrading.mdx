@@ -58,9 +58,6 @@ existed in 0.x are gone. `classNames` adds its class in every variant, next to t
     <tr><th>Component</th><th>Before</th><th>After</th></tr>
   </thead>
   <tbody>
-    <tr><td><code>PinInput</code></td><td><code>inputClassName</code></td><td><code>classNames.input</code></td></tr>
-    <tr><td><code>Input</code></td><td><code>revealClassName</code></td><td><code>classNames.reveal</code></td></tr>
-    <tr><td><code>Textarea</code></td><td><code>countClassName</code></td><td><code>classNames.count</code></td></tr>
     <tr><td><code>SelectGroup</code></td><td><code>labelClassName</code></td><td><code>classNames.label</code></td></tr>
     <tr><td><code>TimePicker</code></td><td><code>panelClassName</code></td><td><code>classNames.panel</code></td></tr>
     <tr><td><code>Sidebar</code>, <code>ModalContent</code>, <code>DrawerContent</code></td><td><code>backdropClassName</code></td><td><code>classNames.backdrop</code></td></tr>
@@ -168,6 +165,42 @@ Every text the library shows or announces is changed with a single `labels` prop
 
 The type of each one is exported, for example `PaginatorLabels`. The spinner now says `Loading` instead of
 `loading` by default.
+
+## Text fields are made of parts
+
+`Input`, `Textarea`, `NumberInput` and `PinInput` no longer take `classNames`. Every element they render is a part
+you can import, with its own `className`, `style` and `ref`, so you reorder, omit or replace it like any other React
+element. Given no `children`, the component renders the same default composition as before.
+
+```tsx
+// Before
+<Input type='password' revealable classNames={{ input: 'font-mono', reveal: 'text-sm' }} />
+
+// After
+<Input type='password'>
+  <InputControl>
+    <InputField className='font-mono' />
+    <InputReveal className='text-sm' />
+  </InputControl>
+</Input>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Input</code></td><td><code>classNames.input</code>, <code>classNames.reveal</code></td><td><code>InputField</code>, <code>InputReveal</code>; also <code>InputGroup</code>, <code>InputControl</code>, <code>InputAddon</code>, <code>InputElement</code></td></tr>
+    <tr><td><code>Textarea</code></td><td><code>classNames.input</code>, <code>classNames.count</code></td><td><code>TextareaField</code>, <code>TextareaCount</code>, <code>TextareaStatus</code></td></tr>
+    <tr><td><code>NumberInput</code></td><td><code>classNames.input</code>, <code>classNames.decrement</code>, <code>classNames.increment</code></td><td><code>NumberInputField</code>, <code>NumberInputDecrement</code>, <code>NumberInputIncrement</code></td></tr>
+    <tr><td><code>PinInput</code></td><td><code>classNames.input</code></td><td><code>PinInputCell</code> (one per position, with <code>index</code>) and <code>PinInputHidden</code> for the <code>name</code></td></tr>
+  </tbody>
+</table>
+
+The `ref` of the root is always the native `<input>` or `<textarea>`, with or without parts, so react-hook-form's
+`register` works on the root. `className` and `style` of the root go to the outermost element. The `data-plume-*-input`
+attribute of `NumberInput` is now `data-plume-numberinput-field`. Components that still take `classNames` are listed
+in each story.
 
 ## `useClickOutside` is removed
 

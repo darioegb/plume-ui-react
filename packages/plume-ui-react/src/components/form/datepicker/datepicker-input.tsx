@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ComponentProps } from '../../../theme'
 import { CalendarIcon } from '../../../overlay/icons'
 import { PickerTrigger } from '../shared/picker-trigger'
-import { Input } from '../input'
+import { Input, InputControl, InputElement, InputField } from '../input'
 import {
   getDateFormatByLanguage,
   getDateFromDateString,
@@ -142,19 +142,8 @@ export function DatePickerInput({
   return (
     <Input
       className={className}
-      classNames={classNames}
       colorScheme={colorScheme}
       disabled={disabled}
-      elementAfter={
-        <PickerTrigger
-          disabled={disabled || Boolean(readOnly)}
-          icon={<CalendarIcon />}
-          label={labels.openCalendar}
-          onClick={handleButtonClick}
-          open={modalOpen}
-          unstyled={variant === 'unstyled'}
-        />
-      }
       inputMode="numeric"
       mask={mask}
       onBlur={() => {
@@ -163,13 +152,26 @@ export function DatePickerInput({
       onChange={handleChange}
       placeholder={placeholder ?? (isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)}
       readOnly={readOnly}
-      ref={setRef}
       shape={shape}
       size={size}
       type="text"
       value={inputValue}
       variant={variant}
       {...rest}
-    />
+    >
+      <InputControl>
+        <InputField className={classNames?.input} ref={setRef} />
+        <InputElement position="after">
+          <PickerTrigger
+            disabled={disabled || Boolean(readOnly)}
+            icon={<CalendarIcon />}
+            label={labels.openCalendar}
+            onClick={handleButtonClick}
+            open={modalOpen}
+            unstyled={variant === 'unstyled'}
+          />
+        </InputElement>
+      </InputControl>
+    </Input>
   )
 }

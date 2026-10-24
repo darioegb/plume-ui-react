@@ -449,16 +449,10 @@ describe('PinInput component', () => {
   describe('unstyled', () => {
     it('drops every Plume class and keeps the user ones', () => {
       render(
-        <PinInput classNames={{ input: 'cell' }}
-          aria-label="Code"
-          className="root"
-         
-          length={2}
-          variant="unstyled"
-        />,
+        <PinInput aria-label="Code" className="root" length={2} variant="unstyled" />,
       )
       expect(screen.getByRole('group')).toHaveAttribute('class', 'root')
-      cells().forEach((cell) => expect(cell).toHaveAttribute('class', 'cell'))
+      cells().forEach((cell) => expect(cell).not.toHaveAttribute('class'))
     })
 
     it('has no class at all without any', () => {
@@ -467,9 +461,9 @@ describe('PinInput component', () => {
       expect(cells()[0]).not.toHaveAttribute('class')
     })
 
-    it('adds the class of the cells in every variant', () => {
-      render(<PinInput classNames={{ input: 'mine' }} aria-label="Code" length={2} />)
-      expect(cells()[0]).toHaveClass('cell', 'mine')
+    it('keeps the cell class in the styled variants', () => {
+      render(<PinInput aria-label="Code" length={2} />)
+      expect(cells()[0]).toHaveClass('cell')
     })
   })
 })

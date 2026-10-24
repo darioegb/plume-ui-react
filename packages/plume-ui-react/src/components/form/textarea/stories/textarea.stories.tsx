@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { Textarea } from '..'
+import { Textarea, TextareaCount, TextareaField, TextareaStatus } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -9,6 +9,22 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * A multi-line text field for longer answers such as comments or a bio.
  * It renders a native `<textarea>`, so it works with forms and the keyboard out of the box,
  * and the `ref` points to it.
+ *
+ * With **showCount** it adds a character counter under the field. To change what it shows or the order, give it its
+ * parts as children: `TextareaField` is the `<textarea>`, `TextareaCount` the counter and `TextareaStatus` the
+ * invisible message a screen reader gets near the limit. The `Textarea` keeps the look (`variant`, `size`, `shape`,
+ * `colorScheme`, `resize`), the state and the texts, and shares them with its parts. The `ref` of the `Textarea` always
+ * points to the `<textarea>` (it stays empty if there is no `TextareaField`), and `className` and `style` go to its
+ * outermost element, the wrapper when it has parts. The props of the field (`value`, `defaultValue`, `maxLength`,
+ * `placeholder`, `rows`...) may go on the `Textarea` or on `TextareaField`, and so can the `register` of react-hook-form.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `TextareaField` | The attributes of a `<textarea>`, `className`, `style` and `ref`, which is set together with the `ref` of the `Textarea`. The field itself. |
+ * | `TextareaCount` | `children` (what it shows instead of the count), `className`, `style` and `ref`. The counter, which describes the field to a screen reader. |
+ * | `TextareaStatus` | `className`, `style` and `ref`. The invisible live region that says how many characters are left near the limit. |
  */
 export default {
   title: 'Components/Textarea',
@@ -27,7 +43,7 @@ export default {
     className: {
       control: 'text',
       description:
-        'Custom CSS class for the outermost element: the `<textarea>`, or the wrapper around it when `showCount` is on.',
+        'Custom CSS class for the outermost element: the `<textarea>`, or the wrapper around it when `showCount` is on or it has children.',
       table: { type: { summary: 'string' } },
     },
     style: {
@@ -69,11 +85,11 @@ export default {
         'Shows how many characters there are under the Textarea, as `12` or, with `maxLength`, as `12 / 200`. The count describes the textarea (`aria-describedby`), and near the limit a polite message says how many characters are left. The count turns red at the limit.',
       table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
-    classNames: {
+    children: {
       control: false,
       description:
-        'Custom CSS classes for the parts, in every variant: `input` (the `<textarea>`) and `count` (the character counter). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<TextareaPart, string>>' } },
+        'The parts of the Textarea (`TextareaField`, `TextareaCount` and `TextareaStatus`), in the order they should appear. Without children it renders the field, and the count with `showCount`.',
+      table: { type: { summary: 'ReactNode' } },
     },
     labels: {
       control: false,
@@ -294,6 +310,32 @@ export const CharacterCount: Story = {
 }
 
 /**
+ * Give the Textarea its parts to change what it shows or the order. Here the count goes above the field and says how
+ * many characters are left. The props of the field (**maxLength**, **placeholder**) go on the Textarea, and the
+ * `TextareaStatus` is the message a screen reader gets near the limit.
+ */
+export const Compound: Story = {
+  render: () => (
+    <div className="flex w-72 max-w-full flex-col gap-4">
+      <Textarea maxLength={80}>
+        <TextareaCount />
+        <TextareaField aria-label="Bio" placeholder="Count above the field" />
+        <TextareaStatus />
+      </Textarea>
+      <Textarea
+        defaultValue="Short"
+        labels={{ count: (count, max) => `${(max ?? 0) - count} left` }}
+        maxLength={80}
+      >
+        <TextareaField aria-label="Notes" />
+        <TextareaCount />
+        <TextareaStatus />
+      </Textarea>
+    </div>
+  ),
+}
+
+/**
  * Use **rows** for the initial height and **resize** to control how the user can change it.
  */
 export const RowsAndResize: Story = {
@@ -363,15 +405,15 @@ export const Tailwind: Story = {
     rows={4}
     variant="unstyled"
   />
-  <Textarea classNames={{ count: 'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600' }}
-    className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-   
-    aria-label="With a count"
-    maxLength={80}
-    placeholder="With a count"
-    showCount
-    variant="unstyled"
-  />
+  <Textarea maxLength={80} variant="unstyled">
+    <TextareaField
+      aria-label="With a count"
+      className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+      placeholder="With a count"
+    />
+    <TextareaCount className="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600" />
+    <TextareaStatus />
+  </Textarea>
 </div>`,
       },
     },
@@ -389,19 +431,15 @@ export const Tailwind: Story = {
         rows={4}
         variant="unstyled"
       />
-      <Textarea
-        classNames={{
-          count:
-            'mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600',
-        }}
-        className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-
-        aria-label="With a count"
-        maxLength={80}
-        placeholder="With a count"
-        showCount
-        variant="unstyled"
-      />
+      <Textarea maxLength={80} variant="unstyled">
+        <TextareaField
+          aria-label="With a count"
+          className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+          placeholder="With a count"
+        />
+        <TextareaCount className="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600" />
+        <TextareaStatus />
+      </Textarea>
     </div>
   ),
 }
@@ -427,15 +465,11 @@ export const Bootstrap: Story = {
     style={{ backgroundImage: 'none' }}
     variant="unstyled"
   />
-  <Textarea classNames={{ count: 'form-text text-end' }}
-    className="form-control"
-   
-    aria-label="With a count"
-    maxLength={80}
-    placeholder="With a count"
-    showCount
-    variant="unstyled"
-  />
+  <Textarea maxLength={80} variant="unstyled">
+    <TextareaField aria-label="With a count" className="form-control" placeholder="With a count" />
+    <TextareaCount className="form-text text-end" />
+    <TextareaStatus />
+  </Textarea>
 </div>`,
       },
     },
@@ -455,16 +489,15 @@ export const Bootstrap: Story = {
         style={{ backgroundImage: 'none' }}
         variant="unstyled"
       />
-      <Textarea
-        classNames={{ count: 'form-text text-end' }}
-        className="form-control"
-
-        aria-label="With a count"
-        maxLength={80}
-        placeholder="With a count"
-        showCount
-        variant="unstyled"
-      />
+      <Textarea maxLength={80} variant="unstyled">
+        <TextareaField
+          aria-label="With a count"
+          className="form-control"
+          placeholder="With a count"
+        />
+        <TextareaCount className="form-text text-end" />
+        <TextareaStatus />
+      </Textarea>
     </div>
   ),
 }

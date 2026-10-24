@@ -1,28 +1,25 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode, RefObject } from 'react'
-import { forwardRef, useRef } from 'react'
+import { forwardRef, useRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
-import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { NumberInputStepper } from './numberinput-stepper'
+import { NumberInputContext } from './numberinput-context'
+import { NumberInputDecrement } from './numberinput-decrement'
+import { NumberInputField } from './numberinput-field'
+import { NumberInputIncrement } from './numberinput-increment'
+import { DEFAULT_LABELS } from './numberinput-labels'
+import type { NumberInputLabels } from './numberinput-labels'
 import styles from './numberinput.module.css'
 import { useNumberInput } from './use-number-input'
 
-export type NumberInputPart = 'decrement' | 'increment' | 'input'
-
-export interface NumberInputLabels {
-  decrement: string
-  increment: string
-}
-
-const DEFAULT_LABELS: NumberInputLabels = { decrement: 'Decrease', increment: 'Increase' }
+export type { NumberInputLabels }
 
 export type NumberInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface NumberInputOwnProps {
-  classNames?: Partial<Record<NumberInputPart, string>>
+  children?: ReactNode
   colorScheme?: ColorScheme
   defaultValue?: number | null
   format?: (value: number) => string
@@ -85,8 +82,8 @@ const controlClasses = (
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   (
     {
+      children,
       className,
-      classNames,
       colorScheme = 'secondary',
       defaultValue,
       disabled = false,
@@ -96,7 +93,6 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       max,
       min,
       name,
-      onBlur,
       onValueChange,
       parse,
       precision,
@@ -112,7 +108,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     }: NumberInputProps,
     ref: ForwardedRef<HTMLInputElement>,
   ): ReactNode => {
-    const input: RefObject<HTMLInputElement | null> = useRef(null)
+    const inputRef: RefObject<HTMLInputElement | null> = useRef(null)
     const number = useNumberInput({
       defaultValue,
       format,
@@ -128,69 +124,48 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     })
     const isStyled = variant !== 'unstyled'
     const invalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
-    const canStep = steppers && !disabled
     const text = useLabels('numberInput', DEFAULT_LABELS, labels)
     const colorVars = {
       '--numberinput-color': `var(--plume-color-${colorScheme}-text)`,
       ...style,
     } as CSSProperties
-    const focusInput = (): void => input.current?.focus()
+    const context = useMemo(
+      () => ({
+        disabled,
+        fieldProps: rest,
+        forwardedRef: ref,
+        inputRef,
+        invalid,
+        isStyled,
+        labels: text,
+        max,
+        min,
+        number,
+        precision,
+        readOnly,
+      }),
+      [disabled, invalid, isStyled, max, min, number, precision, readOnly, ref, rest, text],
+    )
 
     return (
-      <div
-        className={controlClasses(className, disabled, invalid, shape, size, variant)}
-        data-plume-numberinput-control=""
-        style={colorVars}
-      >
-        {steppers ? (
-          <NumberInputStepper
-            className={joinClasses(isStyled && styles.stepper, classNames?.decrement)}
-            direction={-1}
-            disabled={!canStep || !number.canDecrement}
-            label={text.decrement}
-            onStep={() => {
-              focusInput()
-              number.stepBy(-1)
-            }}
-          />
-        ) : null}
-        <input
-          aria-valuemax={max}
-          aria-valuemin={min}
-          aria-valuenow={number.value ?? undefined}
-          aria-valuetext={number.valueText}
-          autoComplete="off"
-          className={joinClasses(isStyled && styles.input, classNames?.input)}
-          data-plume-numberinput-input=""
-          disabled={disabled}
-          inputMode={precision === 0 ? 'numeric' : 'decimal'}
-          onBlur={(event) => {
-            number.commit()
-            onBlur?.(event)
-          }}
-          onChange={(event) => number.onTextChange(event.target.value)}
-          onKeyDown={number.onKeyDown}
-          readOnly={readOnly}
-          ref={mergeRefs<HTMLInputElement>(input, ref)}
-          role="spinbutton"
-          type="text"
-          value={number.display}
-          {...rest}
-        />
-        {steppers ? (
-          <NumberInputStepper
-            className={joinClasses(isStyled && styles.stepper, classNames?.increment)}
-            direction={1}
-            disabled={!canStep || !number.canIncrement}
-            label={text.increment}
-            onStep={() => {
-              focusInput()
-              number.stepBy(1)
-            }}
-          />
-        ) : null}
-        {name ? <input name={name} type="hidden" value={number.value ?? ''} /> : null}
-      </div>
+      <NumberInputContext.Provider value={context}>
+        <div
+          className={controlClasses(className, disabled, invalid, shape, size, variant)}
+          data-disabled={disabled ? '' : undefined}
+          data-invalid={invalid ? '' : undefined}
+          data-plume-numberinput-control=""
+          style={colorVars}
+        >
+          {children ?? (
+            <>
+              {steppers ? <NumberInputDecrement /> : null}
+              <NumberInputField />
+              {steppers ? <NumberInputIncrement /> : null}
+            </>
+          )}
+          {name ? <input name={name} type="hidden" value={number.value ?? ''} /> : null}
+        </div>
+      </NumberInputContext.Provider>
     )
   },
 )

@@ -6,11 +6,12 @@ import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
+import { PinInputCell } from './pininput-cell'
+import { PinInputContext } from './pininput-context'
+import { PinInputHidden } from './pininput-hidden'
 import type { PinInputType } from './pin-utils'
 import styles from './pininput.module.css'
 import { usePinInput } from './use-pin-input'
-
-export type PinInputPart = 'input'
 
 export interface PinInputLabels {
   input: (index: number, length: number) => string
@@ -20,10 +21,10 @@ export type PinInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface PinInputOwnProps {
   autoComplete?: string
+  children?: ReactNode
   focusOnMount?: boolean
   colorScheme?: ColorScheme
   defaultValue?: string
-  classNames?: Partial<Record<PinInputPart, string>>
   labels?: Partial<PinInputLabels>
   length?: number
   mask?: boolean
@@ -68,6 +69,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby,
       autoComplete = 'one-time-code',
+      children,
       focusOnMount = false,
       className,
       colorScheme = 'secondary',
@@ -75,7 +77,6 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       disabled = false,
       labels,
       id,
-      classNames,
       length = 6,
       mask = false,
       name,
@@ -123,48 +124,66 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       isStyled && invalid && styles.invalid,
       className,
     )
+    const context = useMemo(
+      () => ({
+        autoComplete,
+        disabled,
+        id,
+        invalid,
+        isStyled,
+        labels: text,
+        length,
+        mask,
+        name,
+        pin,
+        placeholder,
+        readOnly,
+        required,
+        type,
+      }),
+      [
+        autoComplete,
+        disabled,
+        id,
+        invalid,
+        isStyled,
+        length,
+        mask,
+        name,
+        pin,
+        placeholder,
+        readOnly,
+        required,
+        text,
+        type,
+      ],
+    )
 
     return (
-      <fieldset
-        aria-describedby={describedBy}
-        aria-label={ariaLabel}
-        aria-labelledby={labelledBy}
-        className={classes}
-        data-plume-pininput=""
-        disabled={disabled}
-        ref={ref}
-        style={colorVars}
-        {...rest}
-      >
-        {[...new Array(length).keys()].map((index) => (
-          <input
-            aria-invalid={invalid || undefined}
-            aria-label={text.input(index + 1, length)}
-            aria-required={required || undefined}
-            autoComplete={autoComplete}
-            className={joinClasses(isStyled && styles.cell, classNames?.input)}
-            data-filled={pin.value[index] ? '' : undefined}
-            data-plume-pininput-cell=""
-            disabled={disabled}
-            id={index === 0 ? id : undefined}
-            inputMode={type === 'numeric' ? 'numeric' : 'text'}
-            key={index}
-            onChange={(event) => pin.onChange(index, event.target.value)}
-            onFocus={(event) => event.target.select()}
-            onKeyDown={(event) => pin.onKeyDown(index, event)}
-            onPaste={(event) => pin.onPaste(index, event)}
-            placeholder={placeholder}
-            readOnly={readOnly}
-            ref={(element) => {
-              pin.cells.current[index] = element
-            }}
-            tabIndex={index === pin.tabbable ? 0 : -1}
-            type={mask ? 'password' : 'text'}
-            value={pin.value[index] ?? ''}
-          />
-        ))}
-        {name ? <input name={name} type="hidden" value={pin.value} /> : null}
-      </fieldset>
+      <PinInputContext.Provider value={context}>
+        <fieldset
+          aria-describedby={describedBy}
+          aria-label={ariaLabel}
+          aria-labelledby={labelledBy}
+          className={classes}
+          data-disabled={disabled ? '' : undefined}
+          data-invalid={invalid ? '' : undefined}
+          data-plume-pininput=""
+          disabled={disabled}
+          ref={ref}
+          style={colorVars}
+          {...rest}
+        >
+          {children ?? (
+            <>
+              {[...new Array(length).keys()].map((index) => (
+                <PinInputCell index={index} key={index} />
+              ))}
+              {name ? <PinInputHidden /> : null}
+            </>
+          )}
+        </fieldset>
+      </PinInputContext.Provider>
     )
   },
 )
