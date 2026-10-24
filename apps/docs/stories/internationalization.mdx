@@ -1,0 +1,148 @@
+{/* internationalization.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Internationalization' />
+
+# Internationalization
+
+Every text the library shows or announces can be translated, and the library does not depend on any i18n package.
+You give it plain strings (or functions, for the texts that carry data) from whatever you already use: react-intl,
+i18next, next-intl, Lingui or your own dictionary.
+
+There are two ways to give the texts, and they combine.
+
+## Once for the whole app: `LocaleProvider`
+
+`LocaleProvider` takes the messages of every component in one place. A component looks for its texts in this order:
+the `labels` prop, then the provider, then the English default.
+
+```tsx
+import { LocaleProvider, type PlumeMessages } from 'plume-ui-react'
+
+const es: PlumeMessages = {
+  alert: { dismiss: 'Cerrar aviso' },
+  datePicker: { apply: 'Aplicar', cancel: 'Cancelar', openCalendar: 'Abrir calendario' },
+  paginator: { next: 'Siguiente', previous: 'Anterior', page: (page) => `Página ${page}` },
+  spinner: { label: 'Cargando' },
+}
+
+<LocaleProvider locale='es' messages={es}>
+  <App />
+</LocaleProvider>
+```
+
+`messages` is keyed by component (`alert`, `avatar`, `avatarGroup`, `breadcrumb`, `button`, `carousel`, `chip`,
+`datePicker`, `fileUpload`, `input`, `navbarToggle`, `numberInput`, `overlayClose`, `paginator`, `pinInput`,
+`rating`, `select`, `sidebarToggle`, `slider`, `spinner`, `stepper`, `table`, `textarea`, `timePicker`, `toast`).
+Each value is the same `Partial<<Name>Labels>` the component takes in its `labels` prop, so you only write what you
+change. `PlumeMessages` types all of it.
+
+`locale` is a BCP 47 tag (`es`, `es-AR`, `en-US`). The components that format dates, like the `DatePicker`, use it
+for the names of the days and months and for the format of the date. The `language` of the `DatePicker` config still
+wins when you set it.
+
+## For one component: the `labels` prop
+
+```tsx
+<Paginator count={10} labels={{ next: 'Siguiente', page: (page) => `Página ${page}` }} />
+```
+
+A single text on a small part, such as the close button of a `Modal` or the `Spinner`, is a `label` prop.
+
+## Changing the language at runtime
+
+`LocaleProvider` reads its props on every render, so changing the language is changing the props. The components
+below update on their own, with no remount. Define the messages outside the component, or memoize them, so they keep
+their identity between renders.
+
+```tsx
+const messages = { en, es }
+
+function Root({ children }) {
+  const [language, setLanguage] = useState<'en' | 'es'>('en')
+
+  return (
+    <LocaleProvider locale={language} messages={messages[language]}>
+      <LanguageSwitch onChange={setLanguage} />
+      {children}
+    </LocaleProvider>
+  )
+}
+```
+
+## With an i18n library
+
+Build the messages from your library and pass them to the provider. When the library changes the language, your
+component renders again and the new messages reach every component.
+
+```tsx
+// react-intl
+function PlumeLocale({ children }) {
+  const intl = useIntl()
+  const messages = useMemo<PlumeMessages>(
+    () => ({
+      alert: { dismiss: intl.formatMessage({ id: 'alert.dismiss' }) },
+      paginator: {
+        next: intl.formatMessage({ id: 'paginator.next' }),
+        page: (page) => intl.formatMessage({ id: 'paginator.page' }, { page }),
+      },
+    }),
+    [intl],
+  )
+
+  return (
+    <LocaleProvider locale={intl.locale} messages={messages}>
+      {children}
+    </LocaleProvider>
+  )
+}
+```
+
+```tsx
+// i18next
+function PlumeLocale({ children }) {
+  const { t, i18n } = useTranslation()
+  const messages = useMemo<PlumeMessages>(
+    () => ({
+      alert: { dismiss: t('alert.dismiss') },
+      paginator: { next: t('paginator.next'), page: (page) => t('paginator.page', { page }) },
+    }),
+    [t],
+  )
+
+  return (
+    <LocaleProvider locale={i18n.language} messages={messages}>
+      {children}
+    </LocaleProvider>
+  )
+}
+```
+
+```tsx
+// next-intl
+'use client'
+
+function PlumeLocale({ children }) {
+  const t = useTranslations('plume')
+  const locale = useLocale()
+  const messages = useMemo<PlumeMessages>(
+    () => ({
+      alert: { dismiss: t('alert.dismiss') },
+      paginator: { next: t('paginator.next'), page: (page) => t('paginator.page', { page }) },
+    }),
+    [t],
+  )
+
+  return (
+    <LocaleProvider locale={locale} messages={messages}>
+      {children}
+    </LocaleProvider>
+  )
+}
+```
+
+## Server components
+
+`LocaleProvider` is a client component. Render it once in the root layout and every component of the library below
+it reads the messages, also when the page is rendered on the server.

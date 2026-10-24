@@ -4,7 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { StatusIcon } from '../../../overlay/status-icon'
 import type { ComponentProps, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
@@ -62,6 +62,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     }: AlertProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
+    const text = useLabels('alert', DEFAULT_LABELS, labels)
     const [dismissed, setDismissed] = useState(false)
     const isStyled = variant !== 'unstyled'
     const resolvedIcon = icon === undefined ? <StatusIcon status={status} /> : icon
@@ -113,7 +114,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
         ) : null}
         {dismissible ? (
           <button
-            aria-label={mergeLabels(DEFAULT_LABELS, labels).dismiss}
+            aria-label={text.dismiss}
             className={joinClasses(isStyled && styles.dismiss, classNames?.dismiss)}
             data-plume-alert-dismiss=""
             onClick={dismiss}

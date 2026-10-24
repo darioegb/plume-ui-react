@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
@@ -88,7 +88,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
     const generatedName = useId()
     const rating = useRating({ allowHalf, defaultValue, max, onValueChange, value: valueProp })
     const isStyled = variant !== 'unstyled'
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('rating', DEFAULT_LABELS, labels)
     const fieldLabel = field?.controlId === rest.id ? field?.labelId : undefined
     const labelledBy = rest['aria-labelledby'] ?? (rest['aria-label'] ? undefined : fieldLabel)
     const filledIcon = icon ?? <StarIcon filled />

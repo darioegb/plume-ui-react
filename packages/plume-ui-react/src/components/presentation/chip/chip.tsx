@@ -4,7 +4,7 @@ import type { ForwardedRef, HTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { forwardRef, useId } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
@@ -58,6 +58,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
     }: ChipProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
+    const text = useLabels('chip', DEFAULT_LABELS, labels)
     const isStyled = variant !== 'unstyled'
     const labelId = useId()
     const removeId = useId()
@@ -91,7 +92,7 @@ export const Chip = forwardRef<HTMLSpanElement, ChipProps>(
         </span>
         {onRemove ? (
           <button
-            aria-label={mergeLabels(DEFAULT_LABELS, labels).remove}
+            aria-label={text.remove}
             aria-labelledby={labels?.remove ? undefined : `${removeId} ${labelId}`}
             className={joinClasses(isStyled && styles.remove, classNames?.remove)}
             data-plume-chip-remove=""

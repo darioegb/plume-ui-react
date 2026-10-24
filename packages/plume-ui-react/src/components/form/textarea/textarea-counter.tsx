@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
 import { forwardRef, useId, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { TextareaLabels } from './textarea'
 import styles from './textarea.module.css'
@@ -31,7 +31,7 @@ export const TextareaCounter = forwardRef<HTMLTextAreaElement, TextareaCounterPr
     ref: ForwardedRef<HTMLTextAreaElement>,
   ): ReactNode => {
     const { defaultValue, maxLength, onChange, value } = textareaProps
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('textarea', DEFAULT_LABELS, labels)
     const countId = useId()
     const [typed, setTyped] = useState(String(defaultValue ?? '').length)
     const count = value === undefined ? typed : String(value).length

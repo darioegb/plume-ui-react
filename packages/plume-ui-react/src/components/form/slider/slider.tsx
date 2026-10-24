@@ -3,7 +3,7 @@
 import type { ChangeEvent, CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useId, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -114,7 +114,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
     const isRange = Array.isArray(value)
     const values = toValues(value).map((current) => clamp(current, min, max))
     const isStyled = variant !== 'unstyled'
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('slider', DEFAULT_LABELS, labels)
     const isInvalid = invalid || ariaInvalid === true || ariaInvalid === 'true'
     const firstId = id ?? generatedId
     const fieldLabelId = field?.controlId === id ? field?.labelId : undefined
