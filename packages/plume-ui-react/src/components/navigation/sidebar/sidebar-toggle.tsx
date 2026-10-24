@@ -8,6 +8,7 @@ import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { useSidebarContext } from './sidebar-context'
 import styles from './sidebar.module.css'
+import { useLabels } from '../../../locale/locale-provider'
 
 export interface SidebarToggleOwnProps {
   icon?: ReactNode
@@ -24,13 +25,15 @@ export type SidebarToggleProps = Omit<ComponentProps, 'index'> &
   SidebarToggleRootAttributes &
   SidebarToggleOwnProps
 
+const DEFAULT_LABELS = { label: 'Toggle sidebar' }
+
 export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
   (
     {
       children,
       className,
       icon,
-      label = 'Toggle sidebar',
+      label,
       onClick,
       style,
       variant = 'default',
@@ -38,6 +41,7 @@ export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
     }: SidebarToggleProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
+    const text = useLabels('sidebarToggle', DEFAULT_LABELS, { label })
     const { collapsed, isMobile, open, panelId, setCollapsed, setOpen, toggleRef } =
       useSidebarContext('SidebarToggle')
     const expanded = isMobile ? open : !collapsed
@@ -46,7 +50,7 @@ export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
       <button
         aria-controls={panelId}
         aria-expanded={expanded}
-        aria-label={label}
+        aria-label={text.label}
         className={joinClasses(variant !== 'unstyled' && styles.toggle, className)}
         data-plume-sidebar-toggle=""
         onClick={(event) => {

@@ -11,7 +11,7 @@ import type {
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { CloseIcon } from '../../../overlay/icons'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -168,7 +168,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     }: FileUploadProps,
     ref: ForwardedRef<HTMLInputElement>,
   ): ReactNode => {
-    const text = mergeLabels(DEFAULT_LABELS, labels)
+    const text = useLabels('fileUpload', DEFAULT_LABELS, labels)
     const promptId = useId()
     const input = useRef<HTMLInputElement | null>(null)
     const [files, setFiles] = useControllableState({

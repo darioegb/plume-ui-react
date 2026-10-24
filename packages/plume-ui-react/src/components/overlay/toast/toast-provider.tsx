@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 import { isValidElement, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { Portal } from '../../../overlay'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import {
   ToastContext,
   type ToastApi,
@@ -70,7 +70,7 @@ export function ToastProvider({
   position = 'bottom-end',
   variant = 'subtle',
 }: Readonly<ToastProviderProps>): ReactNode {
-  const text = mergeLabels(DEFAULT_LABELS, labels)
+  const text = useLabels('toast', DEFAULT_LABELS, labels)
   const baseId = useId()
   const counter = useRef(0)
   const [toasts, setToasts] = useState<ToastData[]>([])

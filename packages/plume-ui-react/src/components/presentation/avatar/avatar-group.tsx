@@ -4,7 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { Children, forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import { Avatar, type AvatarLabels, type AvatarVariant } from './avatar'
 import { AvatarGroupContext } from './avatar-context'
 import styles from './avatar.module.css'
@@ -55,7 +55,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     const avatars = Children.toArray(children)
     const limit = max !== undefined && max < avatars.length ? Math.max(max, 0) : avatars.length
     const hidden = avatars.length - limit
-    const { overflow } = mergeLabels(DEFAULT_LABELS, labels)
+    const { overflow } = useLabels('avatarGroup', DEFAULT_LABELS, labels)
     const context = useMemo(
       () => ({ colorScheme, labels, shape, size, variant }),
       [colorScheme, labels, shape, size, variant],

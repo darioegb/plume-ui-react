@@ -4,7 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { UserIcon } from '../../../overlay/icons'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
@@ -81,9 +81,8 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const isStyled = resolvedVariant !== 'unstyled'
     const [failedSrc, setFailedSrc] = useState<string>()
     const showImage = Boolean(src) && failedSrc !== src
-    const statusText = status
-      ? mergeLabels(DEFAULT_LABELS, { ...group?.labels, ...labels })[status]
-      : undefined
+    const text = useLabels('avatar', DEFAULT_LABELS, { ...group?.labels, ...labels })
+    const statusText = status ? text[status] : undefined
     const label = [alt ?? name, statusText].filter(Boolean).join(', ')
     const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'] ?? label)
     const role = isNamed ? 'img' : undefined

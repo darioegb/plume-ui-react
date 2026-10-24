@@ -8,6 +8,7 @@ import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { useNavbarContext } from './navbar-context'
 import styles from './navbar.module.css'
+import { useLabels } from '../../../locale/locale-provider'
 
 export interface NavbarToggleOwnProps {
   icon?: ReactNode
@@ -23,26 +24,29 @@ export type NavbarToggleProps = Omit<ComponentProps, 'index'> &
   NavbarToggleRootAttributes &
   NavbarToggleOwnProps
 
+const DEFAULT_LABELS = { label: 'Toggle navigation' }
+
 export const NavbarToggle = forwardRef<HTMLButtonElement, NavbarToggleProps>(
   (
     {
       children,
       className,
       icon,
-      label = 'Toggle navigation',
+      label,
       onClick,
       style,
       ...rest
     }: NavbarToggleProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
+    const text = useLabels('navbarToggle', DEFAULT_LABELS, { label })
     const { contentId, isStyled, open, setOpen, toggleRef } = useNavbarContext('NavbarToggle')
 
     return (
       <button
         aria-controls={contentId}
         aria-expanded={open}
-        aria-label={label}
+        aria-label={text.label}
         className={joinClasses(isStyled && styles.toggle, className)}
         data-open={open ? '' : undefined}
         data-plume-navbar-toggle=""

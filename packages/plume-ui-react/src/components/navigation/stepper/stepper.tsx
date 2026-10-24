@@ -3,7 +3,7 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { Children, forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { mergeLabels } from '../../../overlay/labels'
+import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import {
   StepIndexContext,
@@ -62,7 +62,7 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(
     ref: ForwardedRef<HTMLOListElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const mergedLabels = useMemo(() => mergeLabels(DEFAULT_LABELS, labels), [labels])
+    const mergedLabels = useLabels('stepper', DEFAULT_LABELS, labels)
     const context = useMemo(
       () => ({ activeStep, isStyled, labels: mergedLabels }),
       [activeStep, isStyled, mergedLabels],
