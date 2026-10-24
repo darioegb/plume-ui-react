@@ -10,9 +10,7 @@ function Plans(props: Omit<RadioGroupProps, 'children'>): React.ReactNode {
   return (
     <RadioGroup aria-label="Plan" {...props}>
       {plans.map((plan) => (
-        <Radio key={plan} value={plan}>
-          {plan}
-        </Radio>
+        <Radio aria-label={plan} key={plan} value={plan} />
       ))}
     </RadioGroup>
   )
@@ -38,10 +36,8 @@ describe('RadioGroup component', () => {
   it('shares its variant with the radios, and a radio can set its own', () => {
     render(
       <RadioGroup aria-label="Plan" variant="outline">
-        <Radio value="free">free</Radio>
-        <Radio value="pro" variant="solid">
-          pro
-        </Radio>
+        <Radio aria-label="free" value="free" />
+        <Radio aria-label="pro" value="pro" variant="solid" />
       </RadioGroup>,
     )
     expect(radio('free')).toHaveClass('outline')
@@ -118,14 +114,23 @@ describe('RadioGroup component', () => {
     const onGroupChange = vi.fn()
     render(
       <RadioGroup aria-label="Plan" onChange={onGroupChange}>
-        <Radio onChange={onRadioChange} value="free">
-          free
-        </Radio>
+        <Radio aria-label="free" onChange={onRadioChange} value="free" />
       </RadioGroup>,
     )
     fireEvent.click(radio('free'))
     expect(onRadioChange).toHaveBeenCalledTimes(1)
     expect(onGroupChange).toHaveBeenCalledTimes(1)
+  })
+
+  it('treats a radio without a value as the empty value', () => {
+    const onChange = vi.fn()
+    render(
+      <RadioGroup aria-label="Plan" onChange={onChange}>
+        <Radio aria-label="none" />
+      </RadioGroup>,
+    )
+    fireEvent.click(radio('none'))
+    expect(onChange.mock.calls.map(([value]) => value as string)).toEqual([''])
   })
 
   describe('orientation', () => {
@@ -148,10 +153,8 @@ describe('RadioGroup component', () => {
 
       rerender(
         <RadioGroup aria-label="Plan">
-          <Radio value="free">free</Radio>
-          <Radio disabled value="pro">
-            pro
-          </Radio>
+          <Radio aria-label="free" value="free" />
+          <Radio aria-label="pro" disabled value="pro" />
         </RadioGroup>,
       )
       expect(radio('free')).toBeEnabled()
@@ -179,9 +182,7 @@ describe('RadioGroup component', () => {
       expect(screen.getByRole('radiogroup')).toHaveAttribute('aria-invalid', 'true')
       expect(radio('free')).toHaveClass('invalid')
       expect(radio('free')).not.toHaveAttribute('aria-invalid')
-      expect(radio('free').closest('label')).toHaveStyle(
-        '--radio-solid: var(--plume-color-error-solid)',
-      )
+      expect(radio('free')).toHaveStyle('--radio-solid: var(--plume-color-error-solid)')
     })
 
     it('does not set the state attributes when there is nothing to report', () => {
@@ -195,20 +196,14 @@ describe('RadioGroup component', () => {
     it('passes the size and the color scheme down, and a radio can override them', () => {
       render(
         <RadioGroup aria-label="Plan" colorScheme="success" size="lg">
-          <Radio value="free">free</Radio>
-          <Radio colorScheme="info" size="sm" value="pro">
-            pro
-          </Radio>
+          <Radio aria-label="free" value="free" />
+          <Radio aria-label="pro" colorScheme="info" size="sm" value="pro" />
         </RadioGroup>,
       )
-      expect(radio('free').closest('label')).toHaveClass('lg')
-      expect(radio('free').closest('label')).toHaveStyle(
-        '--radio-solid: var(--plume-color-success-solid)',
-      )
-      expect(radio('pro').closest('label')).toHaveClass('sm')
-      expect(radio('pro').closest('label')).toHaveStyle(
-        '--radio-solid: var(--plume-color-info-solid)',
-      )
+      expect(radio('free')).toHaveClass('lg')
+      expect(radio('free')).toHaveStyle('--radio-solid: var(--plume-color-success-solid)')
+      expect(radio('pro')).toHaveClass('sm')
+      expect(radio('pro')).toHaveStyle('--radio-solid: var(--plume-color-info-solid)')
     })
   })
 
@@ -216,7 +211,7 @@ describe('RadioGroup component', () => {
     const ref = createRef<HTMLDivElement>()
     render(
       <RadioGroup aria-label="Plan" className="custom" id="plans" ref={ref} style={{ gap: '3px' }}>
-        <Radio value="free">free</Radio>
+        <Radio aria-label="free" value="free" />
       </RadioGroup>,
     )
     const group = screen.getByRole('radiogroup')
@@ -227,7 +222,7 @@ describe('RadioGroup component', () => {
   })
 
   it('still works for a radio outside of a group', () => {
-    render(<Radio value="solo">solo</Radio>)
+    render(<Radio aria-label="solo" value="solo" />)
     fireEvent.click(radio('solo'))
     expect(radio('solo')).toBeChecked()
   })
@@ -277,6 +272,28 @@ describe('RadioGroup component', () => {
         expect(input).toBeDisabled()
         expect(input).toBeRequired()
       }
+    })
+
+    it('names the group with the Field label and each option with its own Field', () => {
+      render(
+        <Field label="Plan">
+          <RadioGroup>
+            {plans.map((plan) => (
+              <Field key={plan} label={plan} orientation="inline">
+                <Radio value={plan} />
+              </Field>
+            ))}
+          </RadioGroup>
+        </Field>,
+      )
+      const group = screen.getByRole('radiogroup', { name: 'Plan' })
+      expect(group).toHaveAttribute('aria-labelledby')
+      expect(radio('pro')).not.toBeChecked()
+      fireEvent.click(screen.getByText('pro'))
+      expect(radio('pro')).toBeChecked()
+      fireEvent.click(screen.getByText('team'))
+      expect(radio('team')).toBeChecked()
+      expect(radio('pro')).not.toBeChecked()
     })
 
     it('has no label to point to when the Field has none', () => {

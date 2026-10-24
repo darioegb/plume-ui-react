@@ -25,8 +25,8 @@ function PlanForm({ onSubmit }: { onSubmit: (values: Values) => void }): React.R
             onChange={field.onChange}
             value={field.value}
           >
-            <Radio value="free">free</Radio>
-            <Radio value="pro">pro</Radio>
+            <Radio aria-label="free" value="free" />
+            <Radio aria-label="pro" value="pro" />
           </RadioGroup>
         )}
       />

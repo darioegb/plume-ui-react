@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Button } from '../../../interaction/button'
 import { DatePicker, type DateRange } from '../../datepicker'
+import { Checkbox } from '../../checkbox'
 import { Input } from '../../input'
+import { Radio, RadioGroup } from '../../radio'
+import { Toggle } from '../../toggle'
 import { Field } from '..'
 
 /**
@@ -11,7 +14,8 @@ import { Field } from '..'
  * and wires them to the control: the label points to it, the texts describe it through `aria-describedby`,
  * and `invalid`, `required`, `disabled` and `readOnly` are passed down to it.
  *
- * It works with `Input`, `DatePicker` and any control that accepts `id`, `aria-describedby` and `aria-invalid`.
+ * It works with `Input`, `DatePicker`, `Checkbox`, `Radio`, `Toggle` and any control that accepts `id`, `aria-describedby` and `aria-invalid`.
+ * `Checkbox`, `Radio` and `Toggle` have no text of their own: their label always comes from a `Field`, with `orientation="inline"`.
  * When the control already has an `id`, Field keeps it; otherwise it generates one.
  */
 export default {
@@ -78,10 +82,13 @@ export default {
     },
     orientation: {
       control: 'inline-radio',
-      options: ['vertical', 'horizontal'],
+      options: ['vertical', 'horizontal', 'inline'],
       description:
-        'Places the label above the control or beside it. The horizontal label column width comes from `--field-label-width` (default `8rem`).',
-      table: { defaultValue: { summary: 'vertical' }, type: { summary: '"vertical" | "horizontal"' } },
+        'Places the label above the control (`vertical`), beside it in a column (`horizontal`, whose width comes from `--field-label-width`, default `8rem`), or right after it (`inline`, for `Checkbox`, `Radio` and `Toggle`; the helper and error texts go under the label).',
+      table: {
+        defaultValue: { summary: 'vertical' },
+        type: { summary: '"vertical" | "horizontal" | "inline"' },
+      },
     },
     className: {
       control: 'text',
@@ -184,6 +191,63 @@ export const Horizontal: Story = {
       </Field>
       <Field errorText='Enter your last name.' label='Last name' orientation='horizontal'>
         <Input />
+      </Field>
+    </div>
+  ),
+}
+
+/**
+ * **orientation="inline"** puts the control first and the label right after it, which is how a `Checkbox`,
+ * a `Radio` or a `Toggle` is read. The helper and the error texts go under the label, and a click on the
+ * label activates the control.
+ */
+export const Inline: Story = {
+  decorators: [(Story) => <div className='w-80 max-w-full'>{Story()}</div>],
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field helperText="You can change this later." label="Send me updates" orientation="inline">
+  <Checkbox />
+</Field>
+<Field errorText="You must accept the terms." label="I accept the terms" orientation="inline">
+  <Checkbox />
+</Field>
+<Field label="Dark mode" orientation="inline">
+  <Toggle />
+</Field>
+<Field label="Notifications" helperText="Where we reach you.">
+  <RadioGroup defaultValue="email">
+    <Field label="Email" orientation="inline">
+      <Radio value="email" />
+    </Field>
+    <Field label="SMS" orientation="inline">
+      <Radio value="sms" />
+    </Field>
+  </RadioGroup>
+</Field>`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4'>
+      <Field helperText='You can change this later.' label='Send me updates' orientation='inline'>
+        <Checkbox />
+      </Field>
+      <Field errorText='You must accept the terms.' label='I accept the terms' orientation='inline'>
+        <Checkbox />
+      </Field>
+      <Field label='Dark mode' orientation='inline'>
+        <Toggle />
+      </Field>
+      <Field helperText='Where we reach you.' label='Notifications'>
+        <RadioGroup defaultValue='email'>
+          <Field label='Email' orientation='inline'>
+            <Radio value='email' />
+          </Field>
+          <Field label='SMS' orientation='inline'>
+            <Radio value='sms' />
+          </Field>
+        </RadioGroup>
       </Field>
     </div>
   ),

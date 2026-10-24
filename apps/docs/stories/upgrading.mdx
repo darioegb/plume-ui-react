@@ -9,6 +9,36 @@ import { Meta } from '@storybook/addon-docs/blocks'
 This page lists what changed for someone who comes from the 0.x versions of `plume-ui-react`. From 1.0 on, the
 public API follows semver: a breaking change only arrives in a major version, and this page will list it.
 
+## `Checkbox`, `Radio` and `Toggle` are bare controls
+
+They render a single `<input>` and no longer take text as `children`, so there is one `<label>` per control. The
+visible text comes from `Field`, with the new `inline` orientation (control first, then the label, with the helper
+and error text under it). `className` and `style` go to the `<input>`, and `classNames` and the `CheckboxPart`,
+`RadioPart` and `TogglePart` types are gone.
+
+```tsx
+// Before
+<Checkbox classNames={{ label: 'font-semibold' }}>Accept the terms</Checkbox>
+
+// After
+<Field label='Accept the terms' orientation='inline'>
+  <Checkbox />
+</Field>
+```
+
+A control that has no visible text needs an `aria-label`. In a `RadioGroup`, give each option its own `Field`:
+
+```tsx
+<RadioGroup aria-label='Plan'>
+  <Field label='Free' orientation='inline'>
+    <Radio value='free' />
+  </Field>
+  <Field label='Pro' orientation='inline'>
+    <Radio value='pro' />
+  </Field>
+</RadioGroup>
+```
+
 ## One prop for the classes of the parts
 
 A component that has inner parts takes a single `classNames` prop, a record keyed by part. The loose props that
@@ -17,10 +47,10 @@ existed in 0.x are gone. `classNames` adds its class in every variant, next to t
 
 ```tsx
 // Before
-<Checkbox inputClassName='h-4 w-4' labelClassName='font-semibold'>Accept</Checkbox>
+<PinInput length={4} inputClassName='h-12 w-12' />
 
 // After
-<Checkbox classNames={{ input: 'h-4 w-4', label: 'font-semibold' }}>Accept</Checkbox>
+<PinInput length={4} classNames={{ input: 'h-12 w-12' }} />
 ```
 
 <table>
@@ -28,7 +58,6 @@ existed in 0.x are gone. `classNames` adds its class in every variant, next to t
     <tr><th>Component</th><th>Before</th><th>After</th></tr>
   </thead>
   <tbody>
-    <tr><td><code>Checkbox</code>, <code>Radio</code>, <code>Toggle</code></td><td><code>inputClassName</code>, <code>labelClassName</code></td><td><code>classNames.input</code>, <code>classNames.label</code></td></tr>
     <tr><td><code>PinInput</code></td><td><code>inputClassName</code></td><td><code>classNames.input</code></td></tr>
     <tr><td><code>Input</code></td><td><code>revealClassName</code></td><td><code>classNames.reveal</code></td></tr>
     <tr><td><code>Textarea</code></td><td><code>countClassName</code></td><td><code>classNames.count</code></td></tr>
@@ -47,7 +76,7 @@ existed in 0.x are gone. `classNames` adds its class in every variant, next to t
   </tbody>
 </table>
 
-Every component exports its `<Name>Part` type, for example `CheckboxPart`, with the keys it accepts.
+Every component exports its `<Name>Part` type, for example `PinInputPart`, with the keys it accepts.
 
 ## The look of the `DatePicker` goes on the `DatePicker`
 

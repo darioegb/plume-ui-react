@@ -124,6 +124,15 @@ describe('Field component', () => {
     expect(root).toHaveStyle({ margin: '4px' })
   })
 
+  it('has a vertical layout by default', () => {
+    const { container } = render(
+      <Field label="Email">
+        <Input />
+      </Field>,
+    )
+    expect(container.firstChild).toHaveClass('vertical')
+  })
+
   it('wires a DatePicker the same way', () => {
     render(
       <Field errorText="Pick a date" label="Check-in" required>

@@ -1,26 +1,13 @@
-.root {
-  align-items: center;
-  color: var(--plume-foreground);
-  cursor: pointer;
-  display: inline-flex;
-  font-family: var(--plume-font-family);
-  gap: var(--plume-space-2);
-  vertical-align: middle;
-}
-
 .sm {
   --toggle-height: var(--plume-space-5);
-  font-size: var(--plume-font-size-xs);
 }
 
 .md {
   --toggle-height: var(--plume-space-6);
-  font-size: var(--plume-font-size-base);
 }
 
 .lg {
   --toggle-height: var(--plume-space-8);
-  font-size: var(--plume-font-size-lg);
 }
 
 .toggle {
@@ -32,7 +19,7 @@
   border: 0;
   border-radius: var(--plume-radius-full);
   box-sizing: border-box;
-  cursor: inherit;
+  cursor: pointer;
   flex: none;
   height: var(--toggle-height);
   margin: 0;
@@ -127,11 +114,7 @@
   outline-offset: 1px;
 }
 
-.label {
-  line-height: var(--plume-line-height-normal);
-}
-
-.disabled {
+.toggle:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }

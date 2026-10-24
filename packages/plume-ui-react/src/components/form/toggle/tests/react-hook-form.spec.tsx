@@ -15,7 +15,7 @@ function SettingsForm({ onSubmit }: { onSubmit: (values: Values) => void }): Rea
         void handleSubmit(onSubmit)(event)
       }}
     >
-      <Toggle {...register('notify')}>Notifications</Toggle>
+      <Toggle aria-label="Notifications" {...register('notify')} />
       <button type="submit">Save</button>
     </form>
   )
