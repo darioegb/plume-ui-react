@@ -118,6 +118,6 @@ export function renderItems<T>(
   children: ((item: T, index: number) => ReactNode) | ReactNode,
   fallback: (item: T) => ReactNode,
 ): ReactNode {
-  if (typeof children === 'function') return items.map(children)
+  if (typeof children === 'function') return items.map((item, index) => children(item, index))
   return children === undefined ? items.map(fallback) : children
 }

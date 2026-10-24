@@ -11,17 +11,16 @@ import { useDatePicker } from './use-datepicker'
 import styles from './datepicker.module.css'
 
 type PartProps = Omit<ComponentProps, 'index'>
-type ContainerProps = PartProps & Pick<HTMLAttributes<HTMLElement>, 'children'>
-type ButtonPartProps = PartProps &
-  Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children'>
+type ContainerAttributes = Pick<HTMLAttributes<HTMLElement>, 'children'>
+type ButtonAttributes = Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children'>
 
-export type DatePickerHeaderProps = ContainerProps
-export type DatePickerNavProps = ContainerProps
-export type DatePickerSeparatorProps = ContainerProps
-export type DatePickerPreviousProps = ButtonPartProps
-export type DatePickerNextProps = ButtonPartProps
-export type DatePickerMonthButtonProps = ButtonPartProps
-export type DatePickerYearButtonProps = ButtonPartProps
+export type DatePickerHeaderProps = PartProps & ContainerAttributes
+export type DatePickerNavProps = PartProps & ContainerAttributes
+export type DatePickerSeparatorProps = PartProps & ContainerAttributes
+export type DatePickerPreviousProps = PartProps & ButtonAttributes
+export type DatePickerNextProps = PartProps & ButtonAttributes
+export type DatePickerMonthButtonProps = PartProps & ButtonAttributes
+export type DatePickerYearButtonProps = PartProps & ButtonAttributes
 
 export const DatePickerHeader = forwardRef<HTMLDivElement, DatePickerHeaderProps>(
   (

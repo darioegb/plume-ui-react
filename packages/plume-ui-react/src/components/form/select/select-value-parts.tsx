@@ -33,7 +33,7 @@ export const SelectValueText = forwardRef<HTMLSpanElement, SelectValueTextProps>
 
 SelectValueText.displayName = 'SelectValueText'
 
-export type SelectValueIconProps = SelectValueTextProps
+export type SelectValueIconProps = Omit<ComponentProps, 'index'> & SelectValueTextRootAttributes
 
 export const SelectValueIcon = forwardRef<HTMLSpanElement, SelectValueIconProps>(
   (
