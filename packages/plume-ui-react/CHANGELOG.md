@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.22.0
+
+### Minor Changes
+
+- [#138](https://github.com/darioegb/plume-ui-react/pull/138) [`bdb5b4e073f69ca1b6101691c416b26bd520c389`](https://github.com/darioegb/plume-ui-react/commit/bdb5b4e073f69ca1b6101691c416b26bd520c389) Thanks [@darioegb](https://github.com/darioegb)! - `Checkbox`, `Radio` and `Toggle` are bare controls: a single `<input>` with no wrapper and no text of their own, so there is one `<label>` per control. The visible text comes from `Field`, which has a new `orientation="inline"` (control first, label after, helper and error text under the label). `className` and `style` go to the `<input>`, and `classNames`, `CheckboxPart`, `RadioPart`, `TogglePart` and the `labelsItself` hook of `Field` are removed. See "Upgrading to 1.0".
+
 ## 0.21.0
 
 ### Minor Changes
