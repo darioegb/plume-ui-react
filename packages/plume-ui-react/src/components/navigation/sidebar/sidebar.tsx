@@ -1,7 +1,7 @@
 'use client'
 
-import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
-import { forwardRef, useMemo, useState } from 'react'
+import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
+import { Children, forwardRef, isValidElement, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useDismiss } from '../../../overlay/use-dismiss'
 import { useFocusTrap } from '../../../overlay/use-focus-trap'
@@ -9,6 +9,7 @@ import { useLayer } from '../../../overlay/layer'
 import { useScrollLock } from '../../../overlay/use-scroll-lock'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
+import { SidebarBackdrop } from './sidebar-backdrop'
 import {
   SidebarStyleContext,
   type SidebarSide,
@@ -17,10 +18,7 @@ import {
 } from './sidebar-context'
 import styles from './sidebar.module.css'
 
-export type SidebarPart = 'backdrop'
-
 export interface SidebarOwnProps {
-  classNames?: Partial<Record<SidebarPart, string>>
   colorScheme?: ColorScheme
   side?: SidebarSide
   size?: Size
@@ -46,12 +44,14 @@ const sidebarColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSP
     ...style,
   }) as CSSProperties
 
+const isBackdrop = (node: ReactNode): boolean =>
+  isValidElement(node) && node.type === SidebarBackdrop
+
 export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
   (
     {
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
-      classNames,
       children,
       className,
       colorScheme = 'primary',
@@ -81,6 +81,9 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     useScrollLock(modal)
 
     const styleContext = useMemo(() => ({ isStyled }), [isStyled])
+    const nodes = Children.toArray(children)
+    const backdrops = nodes.filter(isBackdrop)
+    const content = nodes.filter((node) => !isBackdrop(node))
     const modalProps = modal
       ? {
           'aria-label': ariaLabel,
@@ -92,17 +95,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
 
     return (
       <SidebarStyleContext.Provider value={styleContext}>
-        <div
-          aria-hidden="true"
-          className={joinClasses(
-            isStyled && styles.backdrop,
-            classNames?.backdrop,
-          )}
-          data-breakpoint={breakpoint}
-          data-open={open ? '' : undefined}
-          data-plume-sidebar-backdrop=""
-          onClick={() => setOpen(false)}
-        />
+        {backdrops.length > 0 ? backdrops : <SidebarBackdrop />}
         <div
           className={joinClasses(
             isStyled && styles.sidebar,
@@ -121,7 +114,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
           {...modalProps}
           {...rest}
         >
-          {children}
+          {content}
         </div>
       </SidebarStyleContext.Provider>
     )

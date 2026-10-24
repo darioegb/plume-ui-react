@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, type Ref } from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from '..'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '..'
 import type { BreadcrumbProps } from '..'
 
 function Demo({
@@ -221,12 +221,15 @@ describe('Breadcrumb component', () => {
 
     it('adds the classes of the user to every part', () => {
       render(
-        <Breadcrumb classNames={{ list: 'list', separator: 'sep' }} className="root">
-          <BreadcrumbItem className="item">
-            <BreadcrumbLink className="link" href="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+        <Breadcrumb className="root">
+          <BreadcrumbList className="list">
+            <BreadcrumbItem className="item" separator={null}>
+              <BreadcrumbLink className="link" href="/">
+                Home
+              </BreadcrumbLink>
+              <BreadcrumbSeparator className="sep" />
+            </BreadcrumbItem>
+          </BreadcrumbList>
         </Breadcrumb>,
       )
       expect(screen.getByRole('navigation')).toHaveClass('root')
@@ -238,17 +241,15 @@ describe('Breadcrumb component', () => {
 
     it('drops the Plume classes when it is unstyled and keeps the structure attributes', () => {
       render(
-        <Breadcrumb classNames={{ list: 'list', separator: 'sep' }}
-          className="root"
-         
-         
-          variant="unstyled"
-        >
-          <BreadcrumbItem className="item">
-            <BreadcrumbLink className="link" href="/">
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+        <Breadcrumb className="root" variant="unstyled">
+          <BreadcrumbList className="list">
+            <BreadcrumbItem className="item" separator={null}>
+              <BreadcrumbLink className="link" href="/">
+                Home
+              </BreadcrumbLink>
+              <BreadcrumbSeparator className="sep" />
+            </BreadcrumbItem>
+          </BreadcrumbList>
         </Breadcrumb>,
       )
       expect(screen.getByRole('navigation')).toHaveAttribute('class', 'root')
@@ -263,6 +264,7 @@ describe('Breadcrumb component', () => {
   describe('outside a breadcrumb', () => {
     it.each([
       ['BreadcrumbItem', <BreadcrumbItem key="item" />],
+      ['BreadcrumbList', <BreadcrumbList key="list" />],
       ['BreadcrumbLink', <BreadcrumbLink key="link" />],
       ['BreadcrumbSeparator', <BreadcrumbSeparator key="separator" />],
     ])('throws when %s has no Breadcrumb', (name, element) => {

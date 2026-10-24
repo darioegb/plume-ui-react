@@ -2,9 +2,17 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
 import { Icon } from '../../../presentation/icon'
 import {
+  Toast,
+  ToastActionButton,
+  ToastBody,
+  ToastDescription,
+  ToastDismiss,
+  ToastIcon,
   ToastProvider,
+  ToastTitle,
   useToast,
   type ToastApi,
+  type ToastData,
   type ToastPosition,
   type ToastProviderProps,
 } from '..'
@@ -76,6 +84,24 @@ function Demo({
  * | `dismissible` | Whether it has a dismiss button, and <kbd>Esc</kbd> dismisses it. `true` by default. |
  * | `id` | Shows the toast with a known id. Calling again with the same id updates it and restarts its timer. |
  * | `onDismiss` | Called when the toast goes away, for any reason. |
+ *
+ * ### Parts
+ *
+ * A toast is made of parts. Without anything else the provider renders `Toast` with the default composition, and
+ * `render` lets you write it yourself for every toast: `render={(toast) => <Toast toast={toast}>...</Toast>}`.
+ * Each part takes `className`, `style` and `ref`, and the ones that hold content read it from the toast, so they
+ * work with no children and accept `children` to replace it. A part that has nothing to show renders nothing.
+ *
+ * | Part | Element | Props |
+ * | --- | --- | --- |
+ * | `Toast` | The toast. | `toast` (the data `render` receives, required), `children`, `className`, `style`, `ref`. |
+ * | `ToastIcon` | The icon of the status. | `children` replaces it. |
+ * | `ToastBody` | The wrapper of the text and the action. | `children`. |
+ * | `ToastTitle`, `ToastDescription` | The text. | `children` replaces the one of the toast. |
+ * | `ToastActionButton` | The action button. It runs `onClick` and dismisses the toast. | `children` replaces the label. |
+ * | `ToastDismiss` | The dismiss button. | `aria-label` (defaults to `labels.dismiss`), `children` replaces the cross. |
+ *
+ * Every part carries `data-plume-toast-<part>`, and the toast `data-status`.
  */
 export default {
   title: 'Components/Toast',
@@ -136,11 +162,11 @@ export default {
       description: 'Custom CSS class for the region that holds the toasts.',
       table: { type: { summary: 'string' } },
     },
-    classNames: {
+    render: {
       control: false,
       description:
-        'Custom CSS classes for the parts of every toast, in every variant: `toast` (the toast itself), `icon`, `content`, `title`, `description`, `action` and `dismiss`. With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: `Partial<Record<ToastPart, string>>` } },
+        'Renders every toast from its data, to compose the parts yourself: `(toast) => <Toast toast={toast}>...</Toast>`. Without it every toast is the default composition.',
+      table: { type: { summary: '(toast: ToastData) => ReactNode' } },
     },
     labels: {
       control: false,
@@ -194,10 +220,15 @@ export const Variants: Story = {
           />
         </ToastProvider>
       ))}
-      <ToastProvider classNames={{ toast: 'flex items-center gap-3 rounded bg-black px-4 py-2 text-white' }}
+      <ToastProvider
         className="fixed bottom-4 right-4 flex flex-col gap-2"
         labels={{ region: 'unstyled notifications' }}
-       
+        render={(toast) => (
+          <Toast
+            className="flex items-center gap-3 rounded bg-black px-4 py-2 text-white"
+            toast={toast}
+          />
+        )}
         variant="unstyled"
       >
         <Fire
@@ -279,7 +310,11 @@ const bell = (
 export const Icons: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
-      <ToastProvider icons={false} labels={{ region: 'no icons notifications' }} position="top-start">
+      <ToastProvider
+        icons={false}
+        labels={{ region: 'no icons notifications' }}
+        position="top-start"
+      >
         <Fire
           label="No icons"
           make={(api) => api.success({ description: 'Your changes were saved.', title: 'Saved' })}
@@ -319,7 +354,11 @@ export const Positions: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {positions.map((position) => (
-        <ToastProvider key={position} position={position} labels={{ region: `${position} notifications` }}>
+        <ToastProvider
+          key={position}
+          position={position}
+          labels={{ region: `${position} notifications` }}
+        >
           <Fire
             className="w-full whitespace-nowrap"
             label={position}
@@ -427,7 +466,40 @@ export const Limit: Story = {
 }
 
 /**
- * Some examples of Toast with Tailwind classes. With `variant="unstyled"` the region is yours to place (`className`), `classNames` styles every toast (`toast`) and each of its parts: `icon`, `content`, `title`, `description`, `action` and `dismiss`.
+ * `render` writes every toast with the parts, so you can reorder them, leave one out or replace its content. A part
+ * with nothing to show renders nothing, and the dismiss button and the action keep their behavior.
+ */
+export const Compound: Story = {
+  render: () => (
+    <ToastProvider
+      render={(toast: ToastData) => (
+        <Toast toast={toast}>
+          <ToastBody>
+            <ToastTitle />
+            <ToastDescription />
+          </ToastBody>
+          <ToastActionButton>Undo</ToastActionButton>
+          <ToastIcon />
+        </Toast>
+      )}
+    >
+      <Fire
+        label="Show a toast"
+        make={(api) =>
+          api.success({
+            action: { label: 'Undo' },
+            description: 'The action sits before the icon, and there is no dismiss button.',
+            title: 'Saved',
+          })
+        }
+        variant="outline"
+      />
+    </ToastProvider>
+  ),
+}
+
+/**
+ * Some examples of Toast with Tailwind classes. With `variant="unstyled"` the region is yours to place (`className`), and `render` writes every toast with the parts and the classes you want.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -435,13 +507,21 @@ export const Tailwind: Story = {
       source: {
         code: `<ToastProvider
   className="fixed bottom-4 right-4 z-10 flex flex-col gap-2"
-  classNames={{ action: "mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted",
-    content: "flex-1",
-    description: "block text-[var(--plume-muted)]",
-    dismiss: "rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted",
-    icon: "mt-0.5 text-emerald-600",
-    title: "block font-semibold", toast: 'flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg' }}
- 
+  render={(toast) => (
+    <Toast
+      className="flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+      toast={toast}
+    >
+      <ToastIcon className="mt-0.5 text-emerald-600" />
+      <ToastBody className="flex-1">
+        <ToastTitle className="block font-semibold" />
+        <ToastDescription className="block text-[var(--plume-muted)]" />
+        <ToastActionButton className="mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
+      </ToastBody>
+      <ToastDismiss className="rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
+    </Toast>
+  )}
+
   variant="unstyled"
 >
   <App />
@@ -452,15 +532,22 @@ export const Tailwind: Story = {
   render: () => (
     <ToastProvider
       className="fixed bottom-4 right-4 z-10 flex flex-col gap-2"
-      classNames={{ action:
-          'mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted',
-        content: 'flex-1',
-        description: 'block text-[var(--plume-muted)]',
-        dismiss: 'rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted',
-        icon: 'mt-0.5 text-emerald-600',
-        title: 'block font-semibold', toast: 'flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg' }}
+      render={(toast) => (
+        <Toast
+          className="flex w-80 max-w-full items-start gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-foreground shadow-lg"
+          toast={toast}
+        >
+          <ToastIcon className="mt-0.5 text-emerald-600" />
+          <ToastBody className="flex-1">
+            <ToastTitle className="block font-semibold" />
+            <ToastDescription className="block text-[var(--plume-muted)]" />
+            <ToastActionButton className="mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
+          </ToastBody>
+          <ToastDismiss className="rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
+        </Toast>
+      )}
       labels={{ region: 'Tailwind notifications' }}
-     
+
       variant="unstyled"
     >
       <Fire
@@ -479,7 +566,7 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of Toast with Bootstrap classes: `toast-container` on the region, `toast show` on every toast and `toast-body` on its content.
+ * Some examples of Toast with Bootstrap classes: `toast-container` on the region, `toast show` on every toast (`Toast`) and `toast-body` on its content (`ToastBody`).
  */
 export const Bootstrap: Story = {
   parameters: {
@@ -487,13 +574,18 @@ export const Bootstrap: Story = {
       source: {
         code: `<ToastProvider
   className="toast-container position-fixed bottom-0 end-0 p-3"
-  classNames={{ action: "btn btn-sm btn-primary mt-2",
-    content: "toast-body flex-grow-1",
-    description: "d-block text-body-secondary",
-    dismiss: "btn btn-sm btn-light border-0 m-2 align-self-start",
-    icon: "ms-3 mt-3 text-success",
-    title: "d-block fw-semibold", toast: 'toast show d-flex align-items-start' }}
- 
+  render={(toast) => (
+    <Toast className="toast show d-flex align-items-start" toast={toast}>
+      <ToastIcon className="ms-3 mt-3 text-success" />
+      <ToastBody className="toast-body flex-grow-1">
+        <ToastTitle className="d-block fw-semibold" />
+        <ToastDescription className="d-block text-body-secondary" />
+        <ToastActionButton className="btn btn-sm btn-primary mt-2" />
+      </ToastBody>
+      <ToastDismiss className="btn btn-sm btn-light border-0 m-2 align-self-start" />
+    </Toast>
+  )}
+
   variant="unstyled"
 >
   <App />
@@ -504,14 +596,19 @@ export const Bootstrap: Story = {
   render: () => (
     <ToastProvider
       className="toast-container position-fixed bottom-0 end-0 p-3"
-      classNames={{ action: 'btn btn-sm btn-primary mt-2',
-        content: 'toast-body flex-grow-1',
-        description: 'd-block text-body-secondary',
-        dismiss: 'btn btn-sm btn-light border-0 m-2 align-self-start',
-        icon: 'ms-3 mt-3 text-success',
-        title: 'd-block fw-semibold', toast: 'toast show d-flex align-items-start' }}
+      render={(toast) => (
+        <Toast className="toast show d-flex align-items-start" toast={toast}>
+          <ToastIcon className="ms-3 mt-3 text-success" />
+          <ToastBody className="toast-body flex-grow-1">
+            <ToastTitle className="d-block fw-semibold" />
+            <ToastDescription className="d-block text-body-secondary" />
+            <ToastActionButton className="btn btn-sm btn-primary mt-2" />
+          </ToastBody>
+          <ToastDismiss className="btn btn-sm btn-light border-0 m-2 align-self-start" />
+        </Toast>
+      )}
       labels={{ region: 'Bootstrap notifications' }}
-     
+
       variant="unstyled"
     >
       <Fire

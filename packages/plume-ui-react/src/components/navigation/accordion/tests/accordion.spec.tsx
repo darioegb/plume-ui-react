@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..'
+import {
+  Accordion,
+  AccordionBody,
+  AccordionContent,
+  AccordionHeading,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTitle,
+  AccordionTrigger,
+} from '..'
 import type { AccordionProps } from '..'
 
 function Demo(props: Readonly<Partial<AccordionProps>>) {
@@ -352,11 +361,14 @@ describe('Accordion component', () => {
       render(
         <Accordion className="root" variant="unstyled">
           <AccordionItem className="item" value="a">
-            <AccordionTrigger className="trigger" classNames={{ heading: 'heading', icon: 'icon' }}>
-              Alpha
-            </AccordionTrigger>
-            <AccordionContent classNames={{ body: 'body' }} className="content">
-              Alpha content
+            <AccordionHeading className="heading">
+              <AccordionTrigger className="trigger">
+                <AccordionTitle className="title">Alpha</AccordionTitle>
+                <AccordionIcon className="icon" />
+              </AccordionTrigger>
+            </AccordionHeading>
+            <AccordionContent className="content">
+              <AccordionBody className="body">Alpha content</AccordionBody>
             </AccordionContent>
           </AccordionItem>
         </Accordion>,
@@ -371,6 +383,10 @@ describe('Accordion component', () => {
         'content',
       )
       expect(screen.getByText('Alpha content')).toHaveAttribute('class', 'body')
+      expect(document.querySelector('[data-plume-accordion-title]')).toHaveAttribute(
+        'class',
+        'title',
+      )
     })
 
     it('has no class at all without any', () => {
@@ -386,14 +402,19 @@ describe('Accordion component', () => {
       expect(trigger('Alpha')).not.toHaveAttribute('class')
     })
 
-    it('adds the classes of the parts in every variant', () => {
+    it('adds the classes of the parts next to the Plume ones in every variant', () => {
       render(
         <Accordion>
           <AccordionItem value="a">
-            <AccordionTrigger classNames={{ heading: 'heading', icon: 'icon' }}>
-              Alpha
-            </AccordionTrigger>
-            <AccordionContent classNames={{ body: 'body' }}>Alpha content</AccordionContent>
+            <AccordionHeading className="heading">
+              <AccordionTrigger>
+                <AccordionTitle>Alpha</AccordionTitle>
+                <AccordionIcon className="icon" />
+              </AccordionTrigger>
+            </AccordionHeading>
+            <AccordionContent>
+              <AccordionBody className="body">Alpha content</AccordionBody>
+            </AccordionContent>
           </AccordionItem>
         </Accordion>,
       )

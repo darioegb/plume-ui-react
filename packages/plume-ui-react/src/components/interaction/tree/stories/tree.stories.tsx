@@ -1,7 +1,15 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Tree, TreeItem, TreeItemGroup, TreeItemLabel } from '..'
+import {
+  Tree,
+  TreeItem,
+  TreeItemCheckbox,
+  TreeItemChevron,
+  TreeItemGroup,
+  TreeItemIcon,
+  TreeItemLabel,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -122,7 +130,10 @@ function Files(
  * | Component | Props |
  * | --- | --- |
  * | `TreeItem` | `value` (required, the id of the node), `disabled`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`, `children`. One node. Put a `TreeItemLabel` and, for a branch, a `TreeItemGroup` as its direct children. It has `data-selected` and `data-expanded`. |
- * | `TreeItemLabel` | `icon`, `title`, `className`, `style`, `children`. The text of the node, with the chevron of a branch and an optional leading icon. |
+ * | `TreeItemLabel` | `icon`, `title`, `className`, `style`, `children`. The text of the node, with the chevron of a branch, the checkbox of a `checkbox` tree and an optional leading icon. Given `TreeItemChevron`, `TreeItemCheckbox` or `TreeItemIcon` as children it renders them as written, and `icon` has no effect. |
+ * | `TreeItemChevron` | `className`, `style`, `children`. The arrow of a branch. It is empty on a leaf, and `children` replaces the arrow. It has `data-visible` on a branch. |
+ * | `TreeItemCheckbox` | `className`, `style`, `children`. The checkbox of a `checkbox` tree, which renders nothing in the other trees. `children` replaces the check mark. It has `data-state` (`checked`, `unchecked` or `mixed`). |
+ * | `TreeItemIcon` | `className`, `style`, `children`. The leading icon of the node. It renders nothing without children. |
  * | `TreeItemGroup` | `id`, `title`, `className`, `style`, `children`. The children of a branch: more `TreeItem`s. It opens and closes with a height animation. It must be a direct child of the `TreeItem`. |
  */
 export default {
@@ -131,7 +142,15 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      importNames: ['Tree', 'TreeItem', 'TreeItemLabel', 'TreeItemGroup'],
+      importNames: [
+        'Tree',
+        'TreeItem',
+        'TreeItemLabel',
+        'TreeItemGroup',
+        'TreeItemChevron',
+        'TreeItemCheckbox',
+        'TreeItemIcon',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -470,6 +489,35 @@ export const Controlled: Story = {
  */
 export const Disabled: Story = {
   args: { defaultExpanded: [], defaultValue: undefined },
+}
+
+/**
+ * A label is made of **TreeItemChevron**, **TreeItemCheckbox** and **TreeItemIcon**. Write them as its children to
+ * reorder them or give each its own class: here the icon comes first and the chevron last.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Tree aria-label="Files" selection="checkbox" style={frame}>
+      <TreeItem value="docs">
+        <TreeItemLabel>
+          <TreeItemCheckbox />
+          <TreeItemIcon>
+            <Glyph path="M3 7h6l2 2h10v10H3z" />
+          </TreeItemIcon>
+          Documents
+          <TreeItemChevron />
+        </TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="alpha">
+            <TreeItemLabel>
+              <TreeItemCheckbox />
+              Alpha
+            </TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+    </Tree>
+  ),
 }
 
 /**

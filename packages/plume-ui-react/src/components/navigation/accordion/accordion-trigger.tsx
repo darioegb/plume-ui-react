@@ -1,17 +1,23 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
-import { createElement, forwardRef } from 'react'
+import { forwardRef, useContext } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { ChevronDownIcon } from '../../../overlay/icons'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
-import { useAccordionContext, useAccordionItemContext } from './accordion-context'
+import {
+  AccordionHeadingContext,
+  useAccordionContext,
+  useAccordionItemContext,
+} from './accordion-context'
+import { AccordionHeading } from './accordion-heading'
+import { AccordionIcon } from './accordion-icon'
+import { AccordionTitle } from './accordion-title'
 import styles from './accordion.module.css'
 
-export type AccordionTriggerPart = 'heading' | 'icon'
+const TRIGGER_PARTS = [AccordionTitle, AccordionIcon]
 
 export interface AccordionTriggerOwnProps {
-  classNames?: Partial<Record<AccordionTriggerPart, string>>
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6
   icon?: ReactNode
 }
@@ -43,19 +49,12 @@ function nextTrigger(triggers: HTMLButtonElement[], current: HTMLElement, key: s
 
 export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   (
-    {
-      children,
-      className,
-      classNames,
-      headingLevel = 3,
-      icon,
-      style,
-      ...rest
-    }: AccordionTriggerProps,
+    { children, className, headingLevel = 3, icon, style, ...rest }: AccordionTriggerProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
     const accordion = useAccordionContext('AccordionTrigger')
     const item = useAccordionItemContext('AccordionTrigger')
+    const insideHeading = useContext(AccordionHeadingContext)
     const { isStyled } = accordion
 
     const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>): void => {
@@ -81,23 +80,21 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
         type="button"
         {...rest}
       >
-        <span data-plume-accordion-title="">{children}</span>
-        {icon === null ? null : (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.icon, classNames?.icon)}
-            data-plume-accordion-icon=""
-          >
-            {icon ?? <ChevronDownIcon />}
-          </span>
+        {hasPart(children, TRIGGER_PARTS) ? (
+          children
+        ) : (
+          <>
+            <AccordionTitle>{children}</AccordionTitle>
+            {icon === null ? null : <AccordionIcon>{icon}</AccordionIcon>}
+          </>
         )}
       </button>
     )
 
-    return createElement(
-      `h${headingLevel}`,
-      { className: joinClasses(isStyled && styles.heading, classNames?.heading) },
-      button,
+    return insideHeading ? (
+      button
+    ) : (
+      <AccordionHeading level={headingLevel}>{button}</AccordionHeading>
     )
   },
 )

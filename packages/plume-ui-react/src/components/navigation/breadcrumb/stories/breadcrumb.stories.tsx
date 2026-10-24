@@ -1,6 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { defaultTheme } from '../../../../theme'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '..'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -39,7 +39,8 @@ function Trail(): React.ReactNode {
  * | --- | --- |
  * | `BreadcrumbItem` | `separator`, `id`, `title`, `hidden`, `className`, `style`, `children`. One `<li>`, with the separator after it. `separator` replaces the separator of the breadcrumb for this item, and `null` removes it. |
  * | `BreadcrumbLink` | `current`, `href`, `target`, `rel`, `hrefLang`, `referrerPolicy`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a `<span>` when it has no `href`. `current` marks the current page with `aria-current="page"` and `data-current`. |
- * | `BreadcrumbSeparator` | `className`, `style`, `children`. The separator. `BreadcrumbItem` renders it for you, so use it only to put one in another place. |
+ * | `BreadcrumbList` | `title`, `className`, `style`, `children`. The `<ol>` that holds the items. The `Breadcrumb` wraps its items in one; add it yourself to style the list. |
+ * | `BreadcrumbSeparator` | `className`, `style`, `children`. The separator. `BreadcrumbItem` renders it for you, so use it with `separator={null}` on the item to style it or to put one in another place. |
  */
 export default {
   title: 'Components/Breadcrumb',
@@ -71,12 +72,6 @@ export default {
       description:
         'Inline styles for the `<nav>`. They are applied after the color variables, so they can override them (e.g. `--breadcrumb-text`).',
       table: { type: { summary: 'CSSProperties' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `list` (the `<ol>`), `separator` (every separator). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<BreadcrumbPart, string>>' } },
     },
     labels: {
       control: false,
@@ -173,10 +168,10 @@ export const Variants: Story = {
       <Breadcrumb aria-label="Filled" variant="filled">
         <Trail />
       </Breadcrumb>
-      <Breadcrumb classNames={{ separator: 'mx-2 text-gray-400' }}
+      <Breadcrumb
         aria-label="Unstyled"
         className="text-sm"
-       
+        separator={<span className="mx-2 text-gray-400">/</span>}
         variant="unstyled"
       >
         <BreadcrumbItem>
@@ -284,57 +279,83 @@ export const Long: Story = {
 }
 
 /**
+ * Every element of the Breadcrumb is a part: **BreadcrumbList** (the `<ol>`), `BreadcrumbItem`, `BreadcrumbLink` and
+ * **BreadcrumbSeparator**. Put a `BreadcrumbList` in the `Breadcrumb` to style the list, and give an item
+ * `separator={null}` to place a `BreadcrumbSeparator` of your own, with its own `className`, wherever you want.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Breadcrumb aria-label="Compound">
+      <BreadcrumbList className="gap-y-1">
+        <BreadcrumbItem separator={null}>
+          <BreadcrumbLink href="#home">Home</BreadcrumbLink>
+          <BreadcrumbSeparator className="font-bold">›</BreadcrumbSeparator>
+        </BreadcrumbItem>
+        <BreadcrumbItem separator={null}>
+          <BreadcrumbLink href="#components">Components</BreadcrumbLink>
+          <BreadcrumbSeparator className="font-bold">›</BreadcrumbSeparator>
+        </BreadcrumbItem>
+        <BreadcrumbItem separator={null}>
+          <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  ),
+}
+
+/**
  * Some examples of Breadcrumb with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
  * structure stays (the list is a wrapping row and the last separator is hidden). Style the parts with their own
- * classes: `classNames.separator` for the separators and `data-[current]:` on the link for the current page.
+ * classes: `className` on the `BreadcrumbList` and on the separator you pass, and `data-[current]:` on the link for
+ * the current page.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Breadcrumb classNames={{ list: 'gap-y-1', separator: 'mx-2 opacity-50' }}
+        code: `<Breadcrumb
   className="text-sm text-foreground"
- 
-  separator="/"
- 
+  separator={<span className="mx-2 opacity-50">/</span>}
   variant="unstyled"
 >
-  <BreadcrumbItem>
-    <BreadcrumbLink className="text-primary-text hover:underline" href="/">Home</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem>
-    <BreadcrumbLink className="text-primary-text hover:underline" href="/components">Components</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem>
-    <BreadcrumbLink className="font-semibold text-foreground" current>Breadcrumb</BreadcrumbLink>
-  </BreadcrumbItem>
+  <BreadcrumbList className="gap-y-1">
+    <BreadcrumbItem>
+      <BreadcrumbLink className="text-primary-text hover:underline" href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink className="text-primary-text hover:underline" href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink className="font-semibold text-foreground" current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </BreadcrumbList>
 </Breadcrumb>`,
       },
     },
   },
   render: () => (
-    <Breadcrumb classNames={{ list: 'gap-y-1', separator: 'mx-2 opacity-50' }}
+    <Breadcrumb
       className="text-sm text-foreground"
-     
-      separator="/"
-     
+      separator={<span className="mx-2 opacity-50">/</span>}
       variant="unstyled"
     >
-      <BreadcrumbItem>
-        <BreadcrumbLink className="text-primary-text hover:underline" href="#home">
-          Home
-        </BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink className="text-primary-text hover:underline" href="#components">
-          Components
-        </BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem>
-        <BreadcrumbLink className="font-semibold text-foreground" current>
-          Breadcrumb
-        </BreadcrumbLink>
-      </BreadcrumbItem>
+      <BreadcrumbList className="gap-y-1">
+        <BreadcrumbItem>
+          <BreadcrumbLink className="text-primary-text hover:underline" href="#home">
+            Home
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink className="text-primary-text hover:underline" href="#components">
+            Components
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink className="font-semibold text-foreground" current>
+            Breadcrumb
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </BreadcrumbList>
     </Breadcrumb>
   ),
 }
@@ -348,31 +369,35 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Breadcrumb classNames={{ list: 'breadcrumb mb-0' }} variant="unstyled">
-  <BreadcrumbItem className="breadcrumb-item" separator={null}>
-    <BreadcrumbLink href="/">Home</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem className="breadcrumb-item" separator={null}>
-    <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem className="breadcrumb-item active" separator={null}>
-    <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
-  </BreadcrumbItem>
+        code: `<Breadcrumb variant="unstyled">
+  <BreadcrumbList className="breadcrumb mb-0">
+    <BreadcrumbItem className="breadcrumb-item" separator={null}>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem className="breadcrumb-item" separator={null}>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem className="breadcrumb-item active" separator={null}>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </BreadcrumbList>
 </Breadcrumb>`,
       },
     },
   },
   render: () => (
-    <Breadcrumb classNames={{ list: 'breadcrumb mb-0' }} variant="unstyled">
-      <BreadcrumbItem className="breadcrumb-item" separator={null}>
-        <BreadcrumbLink href="#home">Home</BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem className="breadcrumb-item" separator={null}>
-        <BreadcrumbLink href="#components">Components</BreadcrumbLink>
-      </BreadcrumbItem>
-      <BreadcrumbItem className="breadcrumb-item active" separator={null}>
-        <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
-      </BreadcrumbItem>
+    <Breadcrumb variant="unstyled">
+      <BreadcrumbList className="breadcrumb mb-0">
+        <BreadcrumbItem className="breadcrumb-item" separator={null}>
+          <BreadcrumbLink href="#home">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem className="breadcrumb-item" separator={null}>
+          <BreadcrumbLink href="#components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem className="breadcrumb-item active" separator={null}>
+          <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+        </BreadcrumbItem>
+      </BreadcrumbList>
     </Breadcrumb>
   ),
 }

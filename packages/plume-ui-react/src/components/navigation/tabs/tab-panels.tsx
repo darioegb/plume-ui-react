@@ -5,14 +5,17 @@ import type { HTMLAttributes, Ref } from 'react'
 import { TabIndexContext } from './tab-index-context'
 import { useTabs } from './use-tabs'
 
-export type TabPanelsProps = Pick<HTMLAttributes<HTMLDivElement>, 'className' | 'id' | 'children'>
+export type TabPanelsProps = Pick<
+  HTMLAttributes<HTMLDivElement>,
+  'className' | 'id' | 'children' | 'style'
+>
 
 export const TabPanels = forwardRef(
   ({ children, ...rest }: TabPanelsProps, ref: Ref<HTMLDivElement>) => {
     const { index } = useTabs()
 
     return (
-      <div ref={ref} {...rest}>
+      <div data-plume-tabs-panels="" ref={ref} {...rest}>
         {Children.map(Children.toArray(children), (child, i) =>
           i === index ? (
             <TabIndexContext.Provider value={i}>{child}</TabIndexContext.Provider>

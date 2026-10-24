@@ -17,12 +17,12 @@ export const BreadcrumbSeparator = forwardRef<HTMLSpanElement, BreadcrumbSeparat
     { children, className, style, ...rest }: BreadcrumbSeparatorProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled, separator, separatorClassName } = useBreadcrumbContext('BreadcrumbSeparator')
+    const { isStyled, separator } = useBreadcrumbContext('BreadcrumbSeparator')
 
     return (
       <span
         aria-hidden="true"
-        className={joinClasses(isStyled && styles.separator, separatorClassName, className)}
+        className={joinClasses(isStyled && styles.separator, className)}
         data-plume-breadcrumb-separator=""
         ref={ref}
         style={style}

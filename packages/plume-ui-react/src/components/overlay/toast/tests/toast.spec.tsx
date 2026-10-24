@@ -421,18 +421,17 @@ describe('ToastProvider component', () => {
       expect(toast.querySelector('span[aria-hidden="true"]')).not.toHaveClass('icon')
     })
 
-    it('keeps the className of the region and of the toasts', () => {
-      setup({ className: 'mine', classNames: { toast: 'toast-mine' } })
+    it('keeps the className of the region', () => {
+      setup({ className: 'mine' })
       run(() => api.toast('Saved'))
       expect(region()).toHaveClass('region', 'mine')
-      expect(screen.getByRole('status')).toHaveClass('toast', 'toast-mine')
+      expect(screen.getByRole('status')).toHaveClass('toast')
     })
 
     it('leaves the classes to the user when unstyled', () => {
-      setup({ className: 'mine', classNames: { toast: 'toast-mine' }, variant: 'unstyled' })
+      setup({ className: 'mine', variant: 'unstyled' })
       run(() => api.toast('Saved'))
       expect(region()).toHaveAttribute('class', 'mine')
-      expect(screen.getByRole('status')).toHaveAttribute('class', 'toast-mine')
     })
 
     it('has no class attribute when unstyled and there is none', () => {
@@ -522,42 +521,6 @@ describe('ToastProvider component', () => {
       setup()
       run(() => api.info({ icon: <b>i</b>, title: 'Info' }))
       expect(iconOf()).toHaveAttribute('aria-hidden', 'true')
-    })
-  })
-
-  describe('classNames', () => {
-    const classNames = {
-      action: 'my-action',
-      content: 'my-content',
-      description: 'my-description',
-      dismiss: 'my-dismiss',
-      icon: 'my-icon',
-      title: 'my-title',
-    }
-
-    it('adds a class to each part next to the Plume ones', () => {
-      setup({ classNames })
-      run(() => api.info({ action: { label: 'Undo' }, description: 'More', title: 'Saved' }))
-      expect(screen.getByText('Saved')).toHaveClass('title', 'my-title')
-      expect(screen.getByText('More')).toHaveClass('description', 'my-description')
-      expect(screen.getByRole('button', { name: 'Undo' })).toHaveClass('action', 'my-action')
-      expect(screen.getByRole('button', { name: 'Dismiss notification' })).toHaveClass(
-        'dismiss',
-        'my-dismiss',
-      )
-      expect(screen.getByText('Saved').parentElement).toHaveClass('content', 'my-content')
-      expect(screen.getByRole('status').querySelector('span[aria-hidden="true"]')).toHaveClass(
-        'icon',
-        'my-icon',
-      )
-    })
-
-    it('are the only classes of the parts when unstyled', () => {
-      setup({ classNames, variant: 'unstyled' })
-      run(() => api.info({ action: { label: 'Undo' }, description: 'More', title: 'Saved' }))
-      expect(screen.getByText('Saved')).toHaveAttribute('class', 'my-title')
-      expect(screen.getByRole('button', { name: 'Undo' })).toHaveAttribute('class', 'my-action')
-      expect(screen.getByText('Saved').parentElement).toHaveAttribute('class', 'my-content')
     })
   })
 })

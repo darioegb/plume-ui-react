@@ -3,12 +3,12 @@
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { BreadcrumbContext, type BreadcrumbVariant } from './breadcrumb-context'
+import { BreadcrumbList } from './breadcrumb-list'
 import styles from './breadcrumb.module.css'
-
-export type BreadcrumbPart = 'list' | 'separator'
 
 export interface BreadcrumbLabels {
   breadcrumb: string
@@ -16,7 +16,6 @@ export interface BreadcrumbLabels {
 
 export interface BreadcrumbOwnProps {
   colorScheme?: ColorScheme
-  classNames?: Partial<Record<BreadcrumbPart, string>>
   labels?: Partial<BreadcrumbLabels>
   separator?: ReactNode
   size?: Size
@@ -51,7 +50,6 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       children,
       className,
       colorScheme = 'primary',
-      classNames,
       labels,
       separator = '/',
       size = 'md',
@@ -63,20 +61,12 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   ) => {
     const text = useLabels('breadcrumb', DEFAULT_LABELS, labels)
     const isStyled = variant !== 'unstyled'
-    const context = useMemo(
-      () => ({
-        isStyled,
-        separator,
-        separatorClassName: classNames?.separator,
-      }),
-      [classNames?.separator, isStyled, separator],
-    )
+    const context = useMemo(() => ({ isStyled, separator }), [isStyled, separator])
 
     return (
       <BreadcrumbContext.Provider value={context}>
         <nav
-          aria-label={ariaLabel ??
-            (ariaLabelledBy ? undefined : text.breadcrumb)}
+          aria-label={ariaLabel ?? (ariaLabelledBy ? undefined : text.breadcrumb)}
           aria-labelledby={ariaLabelledBy}
           className={joinClasses(
             isStyled && styles.breadcrumb,
@@ -89,12 +79,11 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
           style={breadcrumbColorVars(colorScheme, style)}
           {...rest}
         >
-          <ol
-            className={joinClasses(isStyled && styles.list, classNames?.list)}
-            data-plume-breadcrumb-list=""
-          >
-            {children}
-          </ol>
+          {hasPart(children, [BreadcrumbList]) ? (
+            children
+          ) : (
+            <BreadcrumbList>{children}</BreadcrumbList>
+          )}
         </nav>
       </BreadcrumbContext.Provider>
     )

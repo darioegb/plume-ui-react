@@ -8,7 +8,7 @@ import { useTabs } from './use-tabs'
 
 export type TabListProps = Pick<
   HTMLAttributes<HTMLDivElement>,
-  'aria-label' | 'aria-labelledby' | 'className' | 'id' | 'children'
+  'aria-label' | 'aria-labelledby' | 'className' | 'id' | 'children' | 'style'
 >
 
 export const TabList = forwardRef<HTMLDivElement, TabListProps>(
@@ -20,6 +20,8 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(
         aria-orientation={orientation}
         className={`${isStyled ? styles.tablist : ''} ${variantClass} ${alignmentClass}`.trim()}
         ref={ref}
+        data-orientation={orientation}
+        data-plume-tabs-list=""
         role="tablist"
         {...rest}
       >

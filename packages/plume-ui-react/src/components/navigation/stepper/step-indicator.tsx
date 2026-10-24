@@ -3,13 +3,16 @@
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { CheckIcon } from '../../../overlay/icons'
-import { visuallyHidden } from '../../../overlay/visually-hidden'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
+import { StepIndicatorContent } from './step-indicator-content'
+import { StepIndicatorLabel } from './step-indicator-label'
 import { useStepContext, useStepperContext } from './stepper-context'
 import styles from './stepper.module.css'
 
 type StepIndicatorRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
+
+const INDICATOR_PARTS = [StepIndicatorContent, StepIndicatorLabel]
 
 export type StepIndicatorProps = Omit<ComponentProps, 'index'> & StepIndicatorRootAttributes
 
@@ -18,9 +21,8 @@ export const StepIndicator = forwardRef<HTMLSpanElement, StepIndicatorProps>(
     { children, className, style, ...rest }: StepIndicatorProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled, labels } = useStepperContext('StepIndicator')
-    const { index, status } = useStepContext('StepIndicator')
-    const label = labels[status]
+    const { isStyled } = useStepperContext('StepIndicator')
+    const { status } = useStepContext('StepIndicator')
 
     return (
       <span
@@ -31,10 +33,14 @@ export const StepIndicator = forwardRef<HTMLSpanElement, StepIndicatorProps>(
         style={style}
         {...rest}
       >
-        <span aria-hidden="true" data-plume-step-indicator-content="">
-          {children ?? (status === 'completed' ? <CheckIcon /> : index + 1)}
-        </span>
-        {label ? <span style={visuallyHidden}>{label}</span> : null}
+        {hasPart(children, INDICATOR_PARTS) ? (
+          children
+        ) : (
+          <>
+            <StepIndicatorContent>{children}</StepIndicatorContent>
+            <StepIndicatorLabel />
+          </>
+        )}
       </span>
     )
   },

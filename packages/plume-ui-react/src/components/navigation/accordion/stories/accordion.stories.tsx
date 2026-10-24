@@ -1,7 +1,16 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '..'
+import {
+  Accordion,
+  AccordionBody,
+  AccordionContent,
+  AccordionHeading,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTitle,
+  AccordionTrigger,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -53,8 +62,12 @@ function Items({ disabled }: Readonly<{ disabled?: string }>): React.ReactNode {
  * | Component | Props |
  * | --- | --- |
  * | `AccordionItem` | `value`, `disabled`, `id`, `title`, `hidden`, `className`, `style`, `children`. One section. `value` identifies it and is required. It has `data-open` and `data-disabled` to style it. |
- * | `AccordionTrigger` | `headingLevel`, `icon`, `classNames`, `title`, `className`, `style`, `children`. The button that toggles the item. `headingLevel` (`1` to `6`, `3` by default) is the heading around it, so choose the one that fits your page. `icon` replaces the chevron, and `null` removes it. `className` goes to the button and `classNames` styles its parts, `heading` and `icon`. The button has `data-open` while its item is open. |
- * | `AccordionContent` | `classNames.body`, `title`, `className`, `style`, `children`. The panel, a `<section>`. `className` goes to the panel, which only animates its height, and `classNames.body` to the box with the content, which is where the padding goes. |
+ * | `AccordionTrigger` | `headingLevel`, `icon`, `title`, `className`, `style`, `children`. The button that toggles the item. `headingLevel` (`1` to `6`, `3` by default) is the heading around it, so choose the one that fits your page. `icon` replaces the chevron, and `null` removes it. Given no parts it renders an `AccordionHeading` with the button, an `AccordionTitle` with `children` and an `AccordionIcon`; given `AccordionTitle` or `AccordionIcon` among its children it renders them as written. The button has `data-open` while its item is open. |
+ * | `AccordionHeading` | `level`, `title`, `className`, `style`, `children`. The heading (`<h1>` to `<h6>`, `3` by default) around a trigger. Use it to style the heading or to put something next to the trigger inside it. A trigger inside an `AccordionHeading` does not add its own. |
+ * | `AccordionTitle` | `title`, `className`, `style`, `children`. The text inside the trigger. |
+ * | `AccordionIcon` | `className`, `style`, `children`. The decorative icon inside the trigger, a chevron by default. It has `data-open` while its item is open. |
+ * | `AccordionContent` | `title`, `className`, `style`, `children`. The panel, a `<section>` that only animates its height. Its content sits in a box with the padding, unless you put an `AccordionBody` in it. |
+ * | `AccordionBody` | `title`, `className`, `style`, `children`. The box with the content and the padding of the panel. Add it to style that box, or to change its padding. |
  */
 export default {
   title: 'Components/Accordion',
@@ -201,7 +214,9 @@ export const Variants: Story = {
         {questions.map(({ answer, title }) => (
           <AccordionItem className="border-b border-gray-300" key={title} value={title}>
             <AccordionTrigger className="py-2 text-left font-bold">{title}</AccordionTrigger>
-            <AccordionContent classNames={{ body: 'pb-2' }}>{answer}</AccordionContent>
+            <AccordionContent>
+              <AccordionBody className="pb-2">{answer}</AccordionBody>
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
@@ -310,14 +325,39 @@ export const CustomIcon: Story = {
   render: () => (
     <Accordion defaultValue="plus" style={{ width: '28rem', maxWidth: '100%' }}>
       <AccordionItem value="plus">
-        <AccordionTrigger classNames={{ icon: 'font-bold' }} icon={<span>+</span>}>
-          With a plus sign
-        </AccordionTrigger>
+        <AccordionTrigger icon={<span>+</span>}>With a plus sign</AccordionTrigger>
         <AccordionContent>The icon is whatever you pass.</AccordionContent>
       </AccordionItem>
       <AccordionItem value="none">
         <AccordionTrigger icon={null}>Without an icon</AccordionTrigger>
         <AccordionContent>Nothing next to the title.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+}
+
+/**
+ * Every element of the Accordion is a part you can import: **AccordionHeading** (the heading around the trigger),
+ * **AccordionTitle**, **AccordionIcon** and **AccordionBody**. Compose them to reorder, to restyle one of them with
+ * its own `className`, or to put something else next to the title. A trigger that has an `AccordionTitle` or an
+ * `AccordionIcon` among its children renders them as written, and a content that has an `AccordionBody` does not add
+ * its own box.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Accordion defaultValue="parts" style={{ width: '28rem', maxWidth: '100%' }}>
+      <AccordionItem value="parts">
+        <AccordionHeading level={2}>
+          <AccordionTrigger>
+            <AccordionIcon>
+              <span>▸</span>
+            </AccordionIcon>
+            <AccordionTitle>The icon goes first</AccordionTitle>
+          </AccordionTrigger>
+        </AccordionHeading>
+        <AccordionContent>
+          <AccordionBody className="italic">The body has its own class.</AccordionBody>
+        </AccordionContent>
       </AccordionItem>
     </Accordion>
   ),
@@ -354,25 +394,21 @@ export const Tailwind: Story = {
   variant="unstyled"
 >
   <AccordionItem value="install">
-    <AccordionTrigger
-      className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text"
-      classNames={{ icon: "transition-transform group-data-[open]:rotate-180" }}
-    >
-      How do I install it?
+    <AccordionTrigger className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text">
+      <AccordionTitle>How do I install it?</AccordionTitle>
+      <AccordionIcon className="transition-transform group-data-[open]:rotate-180" />
     </AccordionTrigger>
-    <AccordionContent classNames={{ body: 'px-4 pb-4' }} className="transition-[grid-template-rows] duration-200">
-      Run pnpm add plume-ui-react.
+    <AccordionContent className="transition-[grid-template-rows] duration-200">
+      <AccordionBody className="px-4 pb-4">Run pnpm add plume-ui-react.</AccordionBody>
     </AccordionContent>
   </AccordionItem>
   <AccordionItem value="tailwind">
-    <AccordionTrigger
-      className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text"
-      classNames={{ icon: "transition-transform group-data-[open]:rotate-180" }}
-    >
-      Can I use Tailwind?
+    <AccordionTrigger className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text">
+      <AccordionTitle>Can I use Tailwind?</AccordionTitle>
+      <AccordionIcon className="transition-transform group-data-[open]:rotate-180" />
     </AccordionTrigger>
-    <AccordionContent classNames={{ body: 'px-4 pb-4' }} className="transition-[grid-template-rows] duration-200">
-      Yes, that is what this is.
+    <AccordionContent className="transition-[grid-template-rows] duration-200">
+      <AccordionBody className="px-4 pb-4">Yes, that is what this is.</AccordionBody>
     </AccordionContent>
   </AccordionItem>
 </Accordion>`,
@@ -387,17 +423,12 @@ export const Tailwind: Story = {
     >
       {questions.slice(0, 2).map(({ answer, title }) => (
         <AccordionItem key={title} value={title}>
-          <AccordionTrigger
-            className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text"
-            classNames={{ icon: 'transition-transform group-data-[open]:rotate-180' }}
-          >
-            {title}
+          <AccordionTrigger className="group px-4 py-3 font-semibold hover:bg-surface-muted data-[open]:text-primary-text">
+            <AccordionTitle>{title}</AccordionTitle>
+            <AccordionIcon className="transition-transform group-data-[open]:rotate-180" />
           </AccordionTrigger>
-          <AccordionContent classNames={{ body: 'px-4 pb-4' }}
-           
-            className="transition-[grid-template-rows] duration-200"
-          >
-            {answer}
+          <AccordionContent className="transition-[grid-template-rows] duration-200">
+            <AccordionBody className="px-4 pb-4">{answer}</AccordionBody>
           </AccordionContent>
         </AccordionItem>
       ))}
@@ -417,14 +448,17 @@ function BootstrapAccordion(): React.ReactNode {
     >
       {questions.slice(0, 2).map(({ answer, title }) => (
         <AccordionItem className="accordion-item" key={title} value={title}>
-          <AccordionTrigger
-            className={`accordion-button${value === title ? '' : ' collapsed'}`}
-            classNames={{ heading: 'accordion-header' }}
-            icon={null}
-          >
-            {title}
-          </AccordionTrigger>
-          <AccordionContent classNames={{ body: 'accordion-body' }}>{answer}</AccordionContent>
+          <AccordionHeading className="accordion-header">
+            <AccordionTrigger
+              className={`accordion-button${value === title ? '' : ' collapsed'}`}
+              icon={null}
+            >
+              {title}
+            </AccordionTrigger>
+          </AccordionHeading>
+          <AccordionContent>
+            <AccordionBody className="accordion-body">{answer}</AccordionBody>
+          </AccordionContent>
         </AccordionItem>
       ))}
     </Accordion>
@@ -445,14 +479,17 @@ export const Bootstrap: Story = {
 
 <Accordion className="accordion" onValueChange={setValue} value={value} variant="unstyled">
   <AccordionItem className="accordion-item" value="install">
-    <AccordionTrigger
-      className={\`accordion-button\${value === "install" ? "" : " collapsed"}\`}
-      classNames={{ heading: "accordion-header" }}
-      icon={null}
-    >
-      How do I install it?
-    </AccordionTrigger>
-    <AccordionContent classNames={{ body: 'accordion-body' }}>Run pnpm add plume-ui-react.</AccordionContent>
+    <AccordionHeading className="accordion-header">
+      <AccordionTrigger
+        className={\`accordion-button\${value === "install" ? "" : " collapsed"}\`}
+        icon={null}
+      >
+        How do I install it?
+      </AccordionTrigger>
+    </AccordionHeading>
+    <AccordionContent>
+      <AccordionBody className="accordion-body">Run pnpm add plume-ui-react.</AccordionBody>
+    </AccordionContent>
   </AccordionItem>
 </Accordion>`,
       },

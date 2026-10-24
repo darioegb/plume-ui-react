@@ -24,6 +24,8 @@ export interface AccordionItemContextValue {
 
 export const AccordionContext = createContext<AccordionContextValue | undefined>(undefined)
 
+export const AccordionHeadingContext = createContext(false)
+
 export const AccordionItemContext = createContext<AccordionItemContextValue | undefined>(undefined)
 
 export function useAccordionContext(part: string): AccordionContextValue {

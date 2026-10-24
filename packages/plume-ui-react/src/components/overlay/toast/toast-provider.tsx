@@ -1,18 +1,20 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { isValidElement, useCallback, useId, useMemo, useRef, useState } from 'react'
+import { Fragment, isValidElement, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { Portal } from '../../../overlay'
 import { useLabels } from '../../../locale/locale-provider'
 import {
   ToastContext,
   type ToastApi,
   type ToastContent,
+  type ToastData,
   type ToastIcons,
   type ToastOptions,
   type ToastStatus,
 } from './toast-context'
-import { ToastItem, type ToastData } from './toast-item'
+import { Toast } from './toast'
+import { ToastRegionContext } from './toast-region-context'
 import styles from './toast.module.css'
 
 export type ToastPosition =
@@ -28,9 +30,6 @@ export type ToastPosition =
 
 export type ToastVariant = 'solid' | 'subtle' | 'outline' | 'unstyled'
 
-export type ToastPart =
-  'action' | 'content' | 'description' | 'dismiss' | 'icon' | 'title' | 'toast'
-
 export interface ToastLabels {
   dismiss: string
   region: string
@@ -39,12 +38,12 @@ export interface ToastLabels {
 export interface ToastProviderProps {
   children: ReactNode
   className?: string
-  classNames?: Partial<Record<ToastPart, string>>
   duration?: number
   icons?: false | ToastIcons
   labels?: Partial<ToastLabels>
   max?: number
   position?: ToastPosition
+  render?: (toast: ToastData) => ReactNode
   variant?: ToastVariant
 }
 
@@ -62,12 +61,12 @@ const isOptions = (content: ToastContent): content is ToastOptions =>
 export function ToastProvider({
   children,
   className = '',
-  classNames,
   duration = 5000,
   icons,
   labels,
   max = 5,
   position = 'bottom-end',
+  render,
   variant = 'subtle',
 }: Readonly<ToastProviderProps>): ReactNode {
   const text = useLabels('toast', DEFAULT_LABELS, labels)
@@ -132,6 +131,11 @@ export function ToastProvider({
     [remove, show],
   )
 
+  const region = useMemo(
+    () => ({ dismiss: remove, dismissLabel: text.dismiss, icons, isStyled }),
+    [remove, text.dismiss, icons, isStyled],
+  )
+
   const regionClasses = [
     isStyled && styles.region,
     isStyled && styles[position],
@@ -145,20 +149,20 @@ export function ToastProvider({
     <ToastContext.Provider value={api}>
       {children}
       <Portal>
-        <section aria-label={text.region} aria-live="polite" className={regionClasses || undefined}>
-          {toasts.map((toast) => (
-            <ToastItem
-              dismissLabel={text.dismiss}
-              className={classNames?.toast ?? ''}
-              classNames={classNames}
-              icons={icons}
-              isStyled={isStyled}
-              key={`${toast.id}-${toast.revision}`}
-              onDismiss={remove}
-              toast={toast}
-            />
-          ))}
-        </section>
+        <ToastRegionContext.Provider value={region}>
+          <section
+            aria-label={text.region}
+            aria-live="polite"
+            className={regionClasses || undefined}
+            data-plume-toast-region=""
+          >
+            {toasts.map((toast) => (
+              <Fragment key={`${toast.id}-${toast.revision}`}>
+                {render ? render(toast) : <Toast toast={toast} />}
+              </Fragment>
+            ))}
+          </section>
+        </ToastRegionContext.Provider>
       </Portal>
     </ToastContext.Provider>
   )

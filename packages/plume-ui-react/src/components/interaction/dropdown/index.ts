@@ -1,5 +1,8 @@
 export { Dropdown, type DropdownProps } from './dropdown'
 export { DropdownItem, type DropdownItemProps } from './dropdown-item'
+export { DropdownItemIcon, type DropdownItemIconProps } from './dropdown-item-icon'
+export { DropdownItemLabel, type DropdownItemLabelProps } from './dropdown-item-label'
+export { DropdownItemShortcut, type DropdownItemShortcutProps } from './dropdown-item-shortcut'
 export { DropdownLabel, type DropdownLabelProps } from './dropdown-label'
 export { DropdownMenu, type DropdownMenuProps } from './dropdown-menu'
 export { DropdownSeparator, type DropdownSeparatorProps } from './dropdown-separator'

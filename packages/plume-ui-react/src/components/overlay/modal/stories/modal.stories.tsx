@@ -4,6 +4,7 @@ import { Button } from '../../../interaction/button'
 import { Input } from '../../../form/input'
 import {
   Modal,
+  ModalBackdrop,
   ModalBody,
   ModalClose,
   ModalContent,
@@ -45,14 +46,16 @@ function Example(props: Readonly<Omit<ModalProps, 'children'>>): React.ReactNode
  * doesn't scroll. <kbd>Esc</kbd> and a click on the backdrop close it.
  *
  * Compose it with `ModalTrigger`, `ModalContent` and the parts you need. The `Modal` itself renders nothing: it
- * keeps the state and shares it with its parts.
+ * keeps the state and shares it with its parts. `ModalContent` draws the backdrop around itself; to style or
+ * replace the layer, wrap `ModalContent` in a `ModalBackdrop`.
  *
  * ### Subcomponents
  *
  * | Component | Props |
  * | --- | --- |
  * | `ModalTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes. With text, it renders a plain `<button>`. |
- * | `ModalContent` | `className`, `classNames.backdrop`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. `classNames.backdrop` styles the layer behind it, which covers the screen and centers the dialog. |
+ * | `ModalBackdrop` | `className`, `style`, `children`. The layer behind the dialog, which covers the screen and centers it. `ModalContent` renders it on its own; wrap `ModalContent` in it to style it, or to put other elements next to the dialog. It renders nothing while the Modal is closed. |
+ * | `ModalContent` | `className`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. |
  * | `ModalHeader` | `as` (`h1` to `h6`, `h2` by default), `className`, `style`, `children`. The title, which names the dialog. |
  * | `ModalBody` | `className`, `style`, `children`. The content. It scrolls when it is taller than the screen. |
  * | `ModalFooter` | `className`, `style`, `children`. A row for the actions. |
@@ -71,6 +74,7 @@ export default {
       importNames: [
         'Modal',
         'ModalTrigger',
+        'ModalBackdrop',
         'ModalContent',
         'ModalHeader',
         'ModalBody',
@@ -337,7 +341,55 @@ export const Nested: Story = {
 }
 
 /**
- * Some examples of Modal with Tailwind classes. With `variant="unstyled"` every part is yours: `classNames.backdrop` styles the layer behind the dialog (it is centered and covers the screen, nothing else), and each part takes its own `className`.
+ * `ModalContent` draws the backdrop around itself. To style the layer, or to put something else next to the
+ * dialog, wrap `ModalContent` in a `ModalBackdrop`. It takes `className`, `style` and `ref`, and it renders
+ * nothing while the Modal is closed.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Modal>
+  <ModalTrigger>
+    <Button label="Open modal" />
+  </ModalTrigger>
+  <ModalBackdrop style={{ backgroundColor: 'rgb(0 0 0 / 75%)' }}>
+    <ModalContent>
+      <ModalHeader>Delete project</ModalHeader>
+      <ModalBody>This cannot be undone.</ModalBody>
+      <ModalFooter>
+        <ModalClose>
+          <Button label="Cancel" variant="ghost" />
+        </ModalClose>
+      </ModalFooter>
+    </ModalContent>
+  </ModalBackdrop>
+</Modal>`,
+      },
+    },
+  },
+  render: () => (
+    <Modal>
+      <ModalTrigger>
+        <Button label="Open modal" />
+      </ModalTrigger>
+      <ModalBackdrop style={{ backgroundColor: 'rgb(0 0 0 / 75%)' }}>
+        <ModalContent>
+          <ModalHeader>Delete project</ModalHeader>
+          <ModalBody>This cannot be undone.</ModalBody>
+          <ModalFooter>
+            <ModalClose>
+              <Button label="Cancel" variant="ghost" />
+            </ModalClose>
+          </ModalFooter>
+        </ModalContent>
+      </ModalBackdrop>
+    </Modal>
+  ),
+}
+
+/**
+ * Some examples of Modal with Tailwind classes. With `variant="unstyled"` every part is yours: `ModalBackdrop` is the layer behind the dialog (it is centered and covers the screen, nothing else), and each part takes its own `className`.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -351,33 +403,34 @@ export const Tailwind: Story = {
       variant="unstyled"
     />
   </ModalTrigger>
-  <ModalContent classNames={{ backdrop: 'bg-black/50 p-[1rem]' }}
-   
-    className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
-  >
-    <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
-      Delete project
-    </ModalHeader>
-    <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
-      Deleting a project removes its files, its history and its members. This cannot be undone.
-    </ModalBody>
-    <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
-      <ModalClose>
-        <Button
-          className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
-          label="Cancel"
-          variant="unstyled"
-        />
-      </ModalClose>
-      <ModalClose>
-        <Button
-          className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
-          label="Delete"
-          variant="unstyled"
-        />
-      </ModalClose>
-    </ModalFooter>
-  </ModalContent>
+  <ModalBackdrop className="bg-black/50 p-[1rem]">
+    <ModalContent
+      className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
+    >
+      <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
+        Delete project
+      </ModalHeader>
+      <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
+        Deleting a project removes its files, its history and its members. This cannot be undone.
+      </ModalBody>
+      <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
+        <ModalClose>
+          <Button
+            className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
+            label="Cancel"
+            variant="unstyled"
+          />
+        </ModalClose>
+        <ModalClose>
+          <Button
+            className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+            label="Delete"
+            variant="unstyled"
+          />
+        </ModalClose>
+      </ModalFooter>
+    </ModalContent>
+  </ModalBackdrop>
 </Modal>`,
       },
     },
@@ -391,33 +444,34 @@ export const Tailwind: Story = {
           variant="unstyled"
         />
       </ModalTrigger>
-      <ModalContent classNames={{ backdrop: 'bg-black/50 p-[1rem]' }}
-       
-        className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
-      >
-        <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
-          Delete project
-        </ModalHeader>
-        <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
-          Deleting a project removes its files, its history and its members. This cannot be undone.
-        </ModalBody>
-        <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
-          <ModalClose>
-            <Button
-              className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
-              label="Cancel"
-              variant="unstyled"
-            />
-          </ModalClose>
-          <ModalClose>
-            <Button
-              className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
-              label="Delete"
-              variant="unstyled"
-            />
-          </ModalClose>
-        </ModalFooter>
-      </ModalContent>
+      <ModalBackdrop className="bg-black/50 p-[1rem]">
+        <ModalContent
+          className="w-full max-w-md rounded-xl bg-surface text-foreground shadow-xl"
+        >
+          <ModalHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
+            Delete project
+          </ModalHeader>
+          <ModalBody className="px-[1.25rem] py-[1rem] text-sm">
+            Deleting a project removes its files, its history and its members. This cannot be undone.
+          </ModalBody>
+          <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
+            <ModalClose>
+              <Button
+                className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
+                label="Cancel"
+                variant="unstyled"
+              />
+            </ModalClose>
+            <ModalClose>
+              <Button
+                className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+                label="Delete"
+                variant="unstyled"
+              />
+            </ModalClose>
+          </ModalFooter>
+        </ModalContent>
+      </ModalBackdrop>
     </Modal>
   ),
 }
@@ -433,24 +487,25 @@ export const Bootstrap: Story = {
   <ModalTrigger>
     <Button className="btn btn-primary" label="Open modal" variant="unstyled" />
   </ModalTrigger>
-  <ModalContent classNames={{ backdrop: 'modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3' }}
-   
-    className="modal-content"
-    style={{ maxWidth: '32rem' }}
-  >
-    <ModalHeader className="modal-header fs-5 fw-semibold">Delete project</ModalHeader>
-    <ModalBody className="modal-body">
-      Deleting a project removes its files, its history and its members. This cannot be undone.
-    </ModalBody>
-    <ModalFooter className="modal-footer">
-      <ModalClose>
-        <Button className="btn btn-secondary" label="Cancel" variant="unstyled" />
-      </ModalClose>
-      <ModalClose>
-        <Button className="btn btn-danger" label="Delete" variant="unstyled" />
-      </ModalClose>
-    </ModalFooter>
-  </ModalContent>
+  <ModalBackdrop className="modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3">
+    <ModalContent
+      className="modal-content"
+      style={{ maxWidth: '32rem' }}
+    >
+      <ModalHeader className="modal-header fs-5 fw-semibold">Delete project</ModalHeader>
+      <ModalBody className="modal-body">
+        Deleting a project removes its files, its history and its members. This cannot be undone.
+      </ModalBody>
+      <ModalFooter className="modal-footer">
+        <ModalClose>
+          <Button className="btn btn-secondary" label="Cancel" variant="unstyled" />
+        </ModalClose>
+        <ModalClose>
+          <Button className="btn btn-danger" label="Delete" variant="unstyled" />
+        </ModalClose>
+      </ModalFooter>
+    </ModalContent>
+  </ModalBackdrop>
 </Modal>`,
       },
     },
@@ -460,24 +515,25 @@ export const Bootstrap: Story = {
       <ModalTrigger>
         <Button className="btn btn-primary" label="Open modal" variant="unstyled" />
       </ModalTrigger>
-      <ModalContent classNames={{ backdrop: 'modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3' }}
-       
-        className="modal-content"
-        style={{ maxWidth: '32rem' }}
-      >
-        <ModalHeader className="modal-header fs-5 fw-semibold">Delete project</ModalHeader>
-        <ModalBody className="modal-body">
-          Deleting a project removes its files, its history and its members. This cannot be undone.
-        </ModalBody>
-        <ModalFooter className="modal-footer">
-          <ModalClose>
-            <Button className="btn btn-secondary" label="Cancel" variant="unstyled" />
-          </ModalClose>
-          <ModalClose>
-            <Button className="btn btn-danger" label="Delete" variant="unstyled" />
-          </ModalClose>
-        </ModalFooter>
-      </ModalContent>
+      <ModalBackdrop className="modal d-flex align-items-center justify-content-center bg-black bg-opacity-50 p-3">
+        <ModalContent
+          className="modal-content"
+          style={{ maxWidth: '32rem' }}
+        >
+          <ModalHeader className="modal-header fs-5 fw-semibold">Delete project</ModalHeader>
+          <ModalBody className="modal-body">
+            Deleting a project removes its files, its history and its members. This cannot be undone.
+          </ModalBody>
+          <ModalFooter className="modal-footer">
+            <ModalClose>
+              <Button className="btn btn-secondary" label="Cancel" variant="unstyled" />
+            </ModalClose>
+            <ModalClose>
+              <Button className="btn btn-danger" label="Delete" variant="unstyled" />
+            </ModalClose>
+          </ModalFooter>
+        </ModalContent>
+      </ModalBackdrop>
     </Modal>
   ),
 }

@@ -1,7 +1,15 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
-import { Tree, TreeItem, TreeItemGroup, TreeItemLabel } from '..'
+import {
+  Tree,
+  TreeItem,
+  TreeItemCheckbox,
+  TreeItemChevron,
+  TreeItemGroup,
+  TreeItemIcon,
+  TreeItemLabel,
+} from '..'
 import type { TreeProps } from '..'
 
 function Files(props: Readonly<Partial<TreeProps>>) {
@@ -888,5 +896,141 @@ describe('Tree component', () => {
       expect(document.querySelector('[data-plume-tree-checkbox]')).toBeNull()
       expect(item('docs')).not.toHaveAttribute('aria-checked')
     })
+  })
+})
+
+describe('TreeItemLabel parts', () => {
+  const Parts = (props: Readonly<Partial<TreeProps>>): React.ReactNode => (
+    <Tree aria-label="Files" {...(props as TreeProps)}>
+      <TreeItem value="docs">
+        <TreeItemLabel>
+          <TreeItemIcon className="i">★</TreeItemIcon>
+          <TreeItemCheckbox className="c" />
+          Documents
+          <TreeItemChevron className="v" />
+        </TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="alpha">
+            <TreeItemLabel>
+              <TreeItemChevron />
+              Alpha
+            </TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+    </Tree>
+  )
+
+  it('builds the default label from the parts', () => {
+    render(<Files selection="checkbox" />)
+    const docs = label('docs')
+    expect(docs.querySelector('[data-plume-tree-chevron]')).toHaveAttribute('data-visible', '')
+    expect(docs.querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
+      'data-state',
+      'unchecked',
+    )
+    expect(label('pictures').querySelector('[data-plume-tree-chevron]')).not.toHaveAttribute(
+      'data-visible',
+    )
+  })
+
+  it('renders the parts the way they are written', () => {
+    render(<Parts selection="checkbox" />)
+    const docs = label('docs')
+    expect(Array.from(docs.children).map((child) => child.getAttribute('class'))).toEqual([
+      'icon i',
+      'checkbox c',
+      'chevron v',
+    ])
+    expect(docs).toHaveTextContent('Documents')
+  })
+
+  it('shows the checkbox only in a checkbox tree', () => {
+    render(<Parts />)
+    expect(label('docs').querySelector('[data-plume-tree-checkbox]')).toBeNull()
+  })
+
+  it('keeps toggling a branch from a chevron it was given', async () => {
+    render(<Parts selection="checkbox" />)
+    expect(isOpen('docs')).toBe(false)
+    await userEvent.click(label('docs').querySelector('[data-plume-tree-chevron]') as HTMLElement)
+    expect(isOpen('docs')).toBe(true)
+  })
+
+  it('empties the chevron of a leaf and lets the content be replaced', () => {
+    render(
+      <Tree aria-label="Files" selection="checkbox">
+        <TreeItem value="leaf">
+          <TreeItemLabel>
+            <TreeItemChevron>›</TreeItemChevron>
+            <TreeItemCheckbox>✔</TreeItemCheckbox>
+            <TreeItemIcon />
+            Leaf
+          </TreeItemLabel>
+        </TreeItem>
+        <TreeItem value="branch">
+          <TreeItemLabel>
+            <TreeItemChevron>›</TreeItemChevron>
+            Branch
+          </TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="child">
+              <TreeItemLabel>Child</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+      </Tree>,
+    )
+    expect(label('leaf').querySelector('[data-plume-tree-chevron]')).toBeEmptyDOMElement()
+    expect(label('leaf').querySelector('[data-plume-tree-icon]')).toBeNull()
+    expect(label('leaf').querySelector('[data-plume-tree-checkbox]')).toHaveTextContent('✔')
+    expect(label('branch').querySelector('[data-plume-tree-chevron]')).toHaveTextContent('›')
+  })
+
+  it('forwards the ref and the style of every part', () => {
+    const icon = createRef<HTMLSpanElement>()
+    const checkbox = createRef<HTMLSpanElement>()
+    const chevron = createRef<HTMLSpanElement>()
+    render(
+      <Tree aria-label="Files" selection="checkbox">
+        <TreeItem value="docs">
+          <TreeItemLabel>
+            <TreeItemIcon ref={icon} style={{ margin: 1 }}>
+              ★
+            </TreeItemIcon>
+            <TreeItemCheckbox ref={checkbox} style={{ margin: 2 }} />
+            <TreeItemChevron ref={chevron} style={{ margin: 3 }} />
+          </TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="a">
+              <TreeItemLabel>A</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+      </Tree>,
+    )
+    expect(icon.current).toBe(label('docs').querySelector('[data-plume-tree-icon]'))
+    expect(checkbox.current).toBe(label('docs').querySelector('[data-plume-tree-checkbox]'))
+    expect(chevron.current).toBe(label('docs').querySelector('[data-plume-tree-chevron]'))
+    expect(icon.current).toHaveStyle({ margin: '1px' })
+  })
+
+  it('drops the Plume classes of the parts when the tree is unstyled', () => {
+    render(<Parts selection="checkbox" variant="unstyled" />)
+    expect(Array.from(label('docs').children).map((child) => child.getAttribute('class'))).toEqual([
+      'i',
+      'c',
+      'v',
+    ])
+  })
+
+  it.each([
+    ['TreeItemChevron', <TreeItemChevron key="v" />],
+    ['TreeItemCheckbox', <TreeItemCheckbox key="c" />],
+    ['TreeItemIcon', <TreeItemIcon key="i">x</TreeItemIcon>],
+  ])('throws when %s is rendered outside a Tree', (_name, element) => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(element)).toThrow(/must be used within a <Tree>/)
+    error.mockRestore()
   })
 })
