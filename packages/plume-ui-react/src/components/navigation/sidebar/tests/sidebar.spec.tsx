@@ -1,7 +1,16 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
-import { Sidebar, SidebarContent, SidebarItem, SidebarProvider, SidebarToggle } from '..'
+import {
+  Sidebar,
+  SidebarBackdrop,
+  SidebarContent,
+  SidebarItem,
+  SidebarItemIcon,
+  SidebarItemLabel,
+  SidebarProvider,
+  SidebarToggle,
+} from '..'
 import type { SidebarProps, SidebarProviderProps } from '..'
 
 let mobile = false
@@ -119,7 +128,7 @@ describe('Sidebar component', () => {
 
     it('shows the icon, hidden from assistive technology, and the label', () => {
       render(<Demo />)
-      expect(screen.getByText('H').closest('[data-plume-sidebar-icon]')).toHaveAttribute(
+      expect(screen.getByText('H').closest('[data-plume-sidebar-item-icon]')).toHaveAttribute(
         'aria-hidden',
         'true',
       )
@@ -165,19 +174,22 @@ describe('Sidebar component', () => {
       expect(onClick).toHaveBeenCalledTimes(2)
     })
 
-    it('adds the classes of the user to the icon and the label', () => {
+    it('adds the classes of the user to the icon and the label parts', () => {
       render(
         <SidebarProvider>
           <Sidebar>
             <SidebarContent>
-              <SidebarItem classNames={{ icon: 'my-icon', label: 'my-label' }} icon={<i>i</i>}>
-                Name
+              <SidebarItem>
+                <SidebarItemIcon className="my-icon">
+                  <i>i</i>
+                </SidebarItemIcon>
+                <SidebarItemLabel className="my-label">Name</SidebarItemLabel>
               </SidebarItem>
             </SidebarContent>
           </Sidebar>
         </SidebarProvider>,
       )
-      expect(document.querySelector('[data-plume-sidebar-icon]')).toHaveClass('icon', 'my-icon')
+      expect(document.querySelector('[data-plume-sidebar-item-icon]')).toHaveClass('icon', 'my-icon')
       expect(screen.getByText('Name')).toHaveClass('label', 'my-label')
     })
   })
@@ -376,7 +388,8 @@ describe('Sidebar component', () => {
       render(
         <SidebarProvider>
           <SidebarToggle className="toggle" variant="unstyled" />
-          <Sidebar classNames={{ backdrop: 'back' }} className="root" variant="unstyled">
+          <Sidebar className="root" variant="unstyled">
+            <SidebarBackdrop className="back" />
             <SidebarContent className="content">
               <SidebarItem className="item" icon={<i>i</i>}>
                 Name

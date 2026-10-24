@@ -1,13 +1,13 @@
 export { Accordion, type AccordionOwnProps, type AccordionProps } from './accordion'
+export { AccordionBody, type AccordionBodyProps } from './accordion-body'
 export type { AccordionVariant } from './accordion-context'
+export { AccordionContent, type AccordionContentProps } from './accordion-content'
 export {
-  AccordionContent,
-  type AccordionContentPart,
-  type AccordionContentProps,
-} from './accordion-content'
+  AccordionHeading,
+  type AccordionHeadingOwnProps,
+  type AccordionHeadingProps,
+} from './accordion-heading'
+export { AccordionIcon, type AccordionIconProps } from './accordion-icon'
 export { AccordionItem, type AccordionItemProps } from './accordion-item'
-export {
-  AccordionTrigger,
-  type AccordionTriggerPart,
-  type AccordionTriggerProps,
-} from './accordion-trigger'
+export { AccordionTitle, type AccordionTitleProps } from './accordion-title'
+export { AccordionTrigger, type AccordionTriggerProps } from './accordion-trigger'

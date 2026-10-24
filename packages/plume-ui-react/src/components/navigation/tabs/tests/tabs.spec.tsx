@@ -328,3 +328,51 @@ describe('Tabs Component', () => {
     expect(newState).toEqual(initialState)
   })
 })
+
+describe('Tabs parts', () => {
+  it('carries the plume attributes and the state of every part', () => {
+    const { container } = render(
+      <Tabs>
+        <TabList style={{ '--probe': 'list' } as React.CSSProperties}>
+          <Tab style={{ '--probe': 'tab' } as React.CSSProperties}>One</Tab>
+          <Tab>Two</Tab>
+        </TabList>
+        <TabPanels style={{ '--probe': 'panels' } as React.CSSProperties}>
+          <TabPanel style={{ '--probe': 'panel' } as React.CSSProperties}>First</TabPanel>
+          <TabPanel>Second</TabPanel>
+        </TabPanels>
+      </Tabs>,
+    )
+    expect(container.querySelector('[data-plume-tabs]')).toHaveAttribute(
+      'data-orientation',
+      'horizontal',
+    )
+    expect(container.querySelector('[data-plume-tabs-list]')).toHaveStyle('--probe: list')
+    const tabs = container.querySelectorAll('[data-plume-tabs-tab]')
+    expect(tabs).toHaveLength(2)
+    expect(tabs[0]).toHaveAttribute('data-active')
+    expect(tabs[0]).toHaveStyle('--probe: tab')
+    expect(tabs[1]).not.toHaveAttribute('data-active')
+    expect(container.querySelector('[data-plume-tabs-panels]')).toHaveStyle('--probe: panels')
+    expect(container.querySelector('[data-plume-tabs-panel]')).toHaveStyle('--probe: panel')
+  })
+
+  it('moves the active mark with the selection and reports the orientation', () => {
+    const { container } = render(
+      <Tabs orientation="vertical">
+        <TabList>
+          <Tab>One</Tab>
+          <Tab>Two</Tab>
+        </TabList>
+      </Tabs>,
+    )
+    fireEvent.click(screen.getByText('Two'))
+    const tabs = container.querySelectorAll('[data-plume-tabs-tab]')
+    expect(tabs[1]).toHaveAttribute('data-active')
+    expect(tabs[0]).not.toHaveAttribute('data-active')
+    expect(container.querySelector('[data-plume-tabs-list]')).toHaveAttribute(
+      'data-orientation',
+      'vertical',
+    )
+  })
+})

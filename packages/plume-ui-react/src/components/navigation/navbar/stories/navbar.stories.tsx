@@ -62,6 +62,8 @@ function Parts({
  * | `NavbarToggle` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The button that opens and closes the content. It is only shown below the breakpoint. `label` is its accessible name (`"Toggle navigation"`), `icon` replaces the menu and close icons, and `children` replaces all of its content. |
  * | `NavbarContent` | `align`, `id`, `title`, `hidden`, `className`, `style`, `children`. What folds: the links and anything else you want in the menu. `align` (`start`, `center` or `end`) places them in the bar. It has `data-open` while the menu is open. |
  * | `NavbarItem` | `active`, `disabled`, `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a button without `href`. It has `data-active` and `data-disabled`. |
+ *
+ * The `Navbar` renders the `<nav>` and nothing else: every other element is one of these parts, so `className` styles each one, and with `variant="unstyled"` the parts keep only your classes.
  */
 export default {
   title: 'Components/Navbar',

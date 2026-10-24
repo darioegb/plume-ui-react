@@ -5,6 +5,7 @@ export {
   type DrawerShape,
   type DrawerSide,
 } from './drawer'
+export { DrawerBackdrop, type DrawerBackdropProps } from './drawer-backdrop'
 export { DrawerContent, type DrawerContentProps } from './drawer-content'
 export {
   DrawerBody,

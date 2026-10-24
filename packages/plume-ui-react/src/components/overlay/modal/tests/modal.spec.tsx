@@ -4,6 +4,7 @@ import { createRef, useState } from 'react'
 import { ThemeProvider } from '../../../../theme'
 import {
   Modal,
+  ModalBackdrop,
   ModalBody,
   ModalClose,
   ModalContent,
@@ -478,28 +479,114 @@ describe('Modal component', () => {
   })
 
   describe('backdrop', () => {
-    it('takes a class next to the Plume one', () => {
+    it('is the layer around the dialog and carries its hooks', () => {
       render(
         <Modal defaultOpen>
-          <ModalContent classNames={{ backdrop: 'my-backdrop' }} aria-label="Name">
-            Body
-          </ModalContent>
+          <ModalContent aria-label="Name">Body</ModalContent>
+        </Modal>,
+      )
+      const backdrop = screen.getByRole('dialog').parentElement
+      expect(backdrop).toHaveClass('backdrop')
+      expect(backdrop).toHaveAttribute('data-plume-modal-backdrop')
+      expect(backdrop).toHaveAttribute('data-open')
+      expect(screen.getByRole('dialog')).toHaveAttribute('data-open')
+    })
+
+    it('takes a class, a style and a ref next to the Plume ones when it is composed', () => {
+      const ref = createRef<HTMLDivElement>()
+      render(
+        <Modal defaultOpen>
+          <ModalBackdrop className="my-backdrop" ref={ref} style={{ opacity: 0.9 }}>
+            <ModalContent aria-label="Name">Body</ModalContent>
+          </ModalBackdrop>
         </Modal>,
       )
       const backdrop = screen.getByRole('dialog').parentElement
       expect(backdrop).toHaveClass('backdrop', 'my-backdrop')
-      expect(backdrop).toHaveAttribute('data-plume-modal-backdrop')
+      expect(backdrop).toHaveStyle({ opacity: '0.9' })
+      expect(ref.current).toBe(backdrop)
+      expect(document.querySelectorAll('[data-plume-modal-backdrop]')).toHaveLength(1)
     })
 
     it('has only the class of the user when unstyled', () => {
       render(
         <Modal defaultOpen variant="unstyled">
-          <ModalContent classNames={{ backdrop: 'my-backdrop' }} aria-label="Name">
-            Body
-          </ModalContent>
+          <ModalBackdrop className="my-backdrop">
+            <ModalContent aria-label="Name">Body</ModalContent>
+          </ModalBackdrop>
         </Modal>,
       )
       expect(screen.getByRole('dialog').parentElement).toHaveAttribute('class', 'my-backdrop')
+    })
+
+    it('holds other elements next to the dialog', () => {
+      render(
+        <Modal defaultOpen>
+          <ModalBackdrop>
+            <p>Before</p>
+            <ModalContent aria-label="Name">Body</ModalContent>
+          </ModalBackdrop>
+        </Modal>,
+      )
+      expect(screen.getByText('Before').parentElement).toBe(
+        screen.getByRole('dialog').parentElement,
+      )
+    })
+
+    it('renders nothing while the Modal is closed', () => {
+      render(
+        <Modal>
+          <ModalBackdrop>
+            <ModalContent aria-label="Name">Body</ModalContent>
+          </ModalBackdrop>
+        </Modal>,
+      )
+      expect(document.querySelector('[data-plume-modal-backdrop]')).toBeNull()
+    })
+
+    it('closes on a click on the composed backdrop', async () => {
+      render(
+        <Modal>
+          <ModalTrigger>
+            <button>Open</button>
+          </ModalTrigger>
+          <ModalBackdrop>
+            <ModalContent aria-label="Name">
+              <input aria-label="Field" />
+            </ModalContent>
+          </ModalBackdrop>
+        </Modal>,
+      )
+      await userEvent.click(screen.getByText('Open'))
+      expect(dialog()).toBeInTheDocument()
+      await userEvent.click(dialog().parentElement as HTMLElement)
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
+
+    it('gives the focus back to the trigger when the composed backdrop closes', async () => {
+      render(
+        <Modal>
+          <ModalTrigger>
+            <button>Open</button>
+          </ModalTrigger>
+          <ModalBackdrop>
+            <ModalContent aria-label="Name">
+              <input aria-label="Field" />
+            </ModalContent>
+          </ModalBackdrop>
+        </Modal>,
+      )
+      await userEvent.click(screen.getByText('Open'))
+      await userEvent.keyboard('{Escape}')
+      expect(screen.getByText('Open')).toHaveFocus()
+    })
+
+    it('throws outside a Modal', () => {
+      const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(<ModalBackdrop>x</ModalBackdrop>)).toThrow(
+        'ModalBackdrop must be used within a <Modal>',
+      )
+      error.mockRestore()
     })
 
     it('has no class attribute when unstyled and there is none', () => {

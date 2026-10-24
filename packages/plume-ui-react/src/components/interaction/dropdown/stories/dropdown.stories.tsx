@@ -5,6 +5,9 @@ import { Button } from '../../button'
 import {
   Dropdown,
   DropdownItem,
+  DropdownItemIcon,
+  DropdownItemLabel,
+  DropdownItemShortcut,
   DropdownLabel,
   DropdownMenu,
   DropdownSeparator,
@@ -77,7 +80,10 @@ function Example(props: Readonly<Omit<DropdownProps, 'children'>>): React.ReactN
  * | --- | --- |
  * | `DropdownTrigger` | `children`. One element, such as a `Button`, which gets the click and keyboard handlers and the `aria-*` attributes and is what the menu is anchored to. With text, it renders a plain `<button>`. |
  * | `DropdownMenu` | `className`, `style`, `aria-label`, `aria-labelledby`, `children`. The menu. It is named after the trigger unless you give it a name. |
- * | `DropdownItem` | `onSelect`, `closeOnSelect`, `disabled`, `href`, `target`, `rel`, `icon`, `shortcut`, `className`, `style`, `children`. An action. With `href` it is a link. |
+ * | `DropdownItem` | `onSelect`, `closeOnSelect`, `disabled`, `href`, `target`, `rel`, `icon`, `shortcut`, `className`, `style`, `children`. An action. With `href` it is a link. Given `DropdownItemIcon`, `DropdownItemLabel` or `DropdownItemShortcut` as children it renders them as written, and `icon` and `shortcut` have no effect. |
+ * | `DropdownItemIcon` | `className`, `style`, `children`. The decorative icon of an item. It renders nothing without children. |
+ * | `DropdownItemLabel` | `className`, `style`, `children`. The text of an item. |
+ * | `DropdownItemShortcut` | `className`, `style`, `children`. The shortcut of an item. It renders nothing without children. |
  * | `DropdownSeparator` | `className`, `style`. A line between groups of items. |
  * | `DropdownLabel` | `className`, `style`, `children`. A heading for the items that follow. It isn't focusable. |
  */
@@ -95,6 +101,9 @@ export default {
         'DropdownItem',
         'DropdownSeparator',
         'DropdownLabel',
+        'DropdownItemIcon',
+        'DropdownItemLabel',
+        'DropdownItemShortcut',
       ],
       toc: {
         title: 'On this page',
@@ -285,6 +294,30 @@ export const IconsAndShortcuts: Story = {
         </DropdownItem>
         <DropdownItem icon={logoutIcon} shortcut="⇧⌘Q">
           Sign out
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  ),
+}
+
+/**
+ * An item is made of **DropdownItemIcon**, **DropdownItemLabel** and **DropdownItemShortcut**. Write them as the
+ * children of the item to reorder them, leave one out or give each its own class. The shortcut here comes first.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Dropdown>
+      <DropdownTrigger>
+        <Button label="Account" variant="outline" />
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem>
+          <DropdownItemShortcut>⌘P</DropdownItemShortcut>
+          <DropdownItemLabel>Profile</DropdownItemLabel>
+          <DropdownItemIcon>{userIcon}</DropdownItemIcon>
+        </DropdownItem>
+        <DropdownItem>
+          <DropdownItemLabel>Settings</DropdownItemLabel>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

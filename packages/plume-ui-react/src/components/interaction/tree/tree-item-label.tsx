@@ -3,10 +3,12 @@
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { CheckIcon, ChevronRightIcon, MinusIcon } from '../../../overlay/icons'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
-import type { TreeCheckState } from './tree-checks'
 import { useTreeContext, useTreeItemContext } from './tree-context'
+import { TreeItemCheckbox } from './tree-item-checkbox'
+import { TreeItemChevron } from './tree-item-chevron'
+import { TreeItemIcon } from './tree-item-icon'
 import styles from './tree.module.css'
 
 export interface TreeItemLabelOwnProps {
@@ -19,22 +21,14 @@ export type TreeItemLabelProps = Omit<ComponentProps, 'index'> &
   TreeItemLabelRootAttributes &
   TreeItemLabelOwnProps
 
-const checkboxIcon = (checked: TreeCheckState | undefined): ReactNode => {
-  if (checked === 'mixed') return <MinusIcon />
-  return checked ? <CheckIcon /> : null
-}
-
-const checkboxState = (checked: TreeCheckState | undefined): string => {
-  if (checked === 'mixed') return 'mixed'
-  return checked ? 'checked' : 'unchecked'
-}
+const LABEL_PARTS = [TreeItemChevron, TreeItemCheckbox, TreeItemIcon]
 
 export const TreeItemLabel = forwardRef<HTMLSpanElement, TreeItemLabelProps>(
   (
     { children, className, icon, style, ...rest }: TreeItemLabelProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled, selection } = useTreeContext('TreeItemLabel')
+    const { isStyled } = useTreeContext('TreeItemLabel')
     const item = useTreeItemContext('TreeItemLabel')
 
     return (
@@ -46,30 +40,16 @@ export const TreeItemLabel = forwardRef<HTMLSpanElement, TreeItemLabelProps>(
         style={style}
         {...rest}
       >
-        <span
-          aria-hidden="true"
-          className={joinClasses(isStyled && styles.chevron)}
-          data-plume-tree-chevron=""
-          data-visible={item.hasChildren ? '' : undefined}
-        >
-          {item.hasChildren ? <ChevronRightIcon /> : null}
-        </span>
-        {selection === 'checkbox' ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.checkbox)}
-            data-plume-tree-checkbox=""
-            data-state={checkboxState(item.checked)}
-          >
-            {checkboxIcon(item.checked)}
-          </span>
-        ) : null}
-        {icon ? (
-          <span aria-hidden="true" className={joinClasses(isStyled && styles.icon)}>
-            {icon}
-          </span>
-        ) : null}
-        {children}
+        {hasPart(children, LABEL_PARTS) ? (
+          children
+        ) : (
+          <>
+            <TreeItemChevron />
+            <TreeItemCheckbox />
+            {icon ? <TreeItemIcon>{icon}</TreeItemIcon> : null}
+            {children}
+          </>
+        )}
       </span>
     )
   },

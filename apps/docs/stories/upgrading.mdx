@@ -279,6 +279,60 @@ of the `Chip`, `icon`, `title`, `description` and `action` of the `EmptyState`, 
 effect: compose the part instead. The `data-plume-avatar-status` attribute is now `data-plume-avatar-status-dot`.
 `SelectChip` composes `ChipRemove`, so the remove button of a select chip is styled with `className` on it.
 
+## Navigation, overlays and menus are made of parts
+
+`Accordion`, `Breadcrumb`, `Stepper`, `Sidebar`, `Modal`, `Drawer`, `Toast`, `Dropdown` and `Tree` no longer take
+`classNames`. Every element they render is a part you can import, with its own `className`, `style` and `ref`. Given
+no parts, they render the same default composition as before, and the root switches to your composition when a direct
+child is one of its parts.
+
+```tsx
+// Before
+<ModalContent classNames={{ backdrop: 'bg-black/70' }}>…</ModalContent>
+
+// After
+<ModalBackdrop className='bg-black/70'>
+  <ModalContent>…</ModalContent>
+</ModalBackdrop>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Accordion</code></td><td><code>classNames.heading</code>, <code>.icon</code>, <code>.body</code></td><td><code>AccordionHeading</code>, <code>AccordionTitle</code>, <code>AccordionIcon</code>, <code>AccordionBody</code></td></tr>
+    <tr><td><code>Breadcrumb</code></td><td><code>classNames.list</code>, <code>.separator</code></td><td><code>BreadcrumbList</code>, <code>BreadcrumbSeparator</code></td></tr>
+    <tr><td><code>Stepper</code></td><td>no class for the indicator</td><td><code>StepIndicatorContent</code>, <code>StepIndicatorLabel</code></td></tr>
+    <tr><td><code>Sidebar</code></td><td><code>classNames.backdrop</code>, <code>.icon</code>, <code>.label</code></td><td><code>SidebarBackdrop</code>, <code>SidebarItemIcon</code>, <code>SidebarItemLabel</code></td></tr>
+    <tr><td><code>Modal</code></td><td><code>classNames.backdrop</code></td><td><code>ModalBackdrop</code></td></tr>
+    <tr><td><code>Drawer</code></td><td><code>classNames.backdrop</code></td><td><code>DrawerBackdrop</code></td></tr>
+    <tr><td><code>Toast</code></td><td><code>classNames.toast</code>, <code>.icon</code>, <code>.content</code>, <code>.title</code>, <code>.description</code>, <code>.action</code>, <code>.dismiss</code></td><td><code>Toast</code>, <code>ToastIcon</code>, <code>ToastBody</code>, <code>ToastTitle</code>, <code>ToastDescription</code>, <code>ToastActionButton</code>, <code>ToastDismiss</code></td></tr>
+    <tr><td><code>Dropdown</code></td><td>no class for the icon, the text or the shortcut</td><td><code>DropdownItemIcon</code>, <code>DropdownItemLabel</code>, <code>DropdownItemShortcut</code></td></tr>
+    <tr><td><code>Tree</code></td><td>no class for the chevron, the checkbox or the icon</td><td><code>TreeItemChevron</code>, <code>TreeItemCheckbox</code>, <code>TreeItemIcon</code></td></tr>
+  </tbody>
+</table>
+
+The toasts are created with `useToast()`, so the `ToastProvider` takes a `render` function to compose them:
+
+```tsx
+<ToastProvider
+  render={(toast) => (
+    <Toast toast={toast}>
+      <ToastBody>
+        <ToastTitle />
+      </ToastBody>
+      <ToastDismiss className='opacity-60' />
+    </Toast>
+  )}
+/>
+```
+
+With parts, the props that only fill the default (`icon` of a `SidebarItem`, `DropdownItem` and `TreeItemLabel`,
+`shortcut` of a `DropdownItem`) have no effect: compose the part instead. The `separatorClassName` of the
+`Breadcrumb` context is gone: put the class on `BreadcrumbSeparator`. The attributes `data-plume-sidebar-icon` and
+`data-plume-sidebar-label` are now `data-plume-sidebar-item-icon` and `data-plume-sidebar-item-label`.
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

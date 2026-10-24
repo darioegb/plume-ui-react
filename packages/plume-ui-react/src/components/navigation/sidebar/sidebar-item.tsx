@@ -1,18 +1,24 @@
 'use client'
 
-import type { AnchorHTMLAttributes, ForwardedRef, MouseEventHandler, ReactNode } from 'react'
+import type {
+  AnchorHTMLAttributes,
+  ElementType,
+  ForwardedRef,
+  MouseEventHandler,
+  ReactNode,
+} from 'react'
 import { forwardRef, useContext } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { NavLink } from '../shared/nav-link'
 import { SidebarStyleContext } from './sidebar-context'
+import { SidebarItemIcon } from './sidebar-item-icon'
+import { SidebarItemLabel } from './sidebar-item-label'
 import styles from './sidebar.module.css'
-
-export type SidebarItemPart = 'icon' | 'label'
 
 export interface SidebarItemOwnProps {
   active?: boolean
-  classNames?: Partial<Record<SidebarItemPart, string>>
   disabled?: boolean
   icon?: ReactNode
   onClick?: MouseEventHandler<HTMLElement>
@@ -27,17 +33,11 @@ export type SidebarItemProps = Omit<ComponentProps, 'index'> &
   SidebarItemRootAttributes &
   SidebarItemOwnProps
 
+const ITEM_PARTS: readonly ElementType[] = [SidebarItemIcon, SidebarItemLabel]
+
 export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
   (
-    {
-      active = false,
-      children,
-      className,
-      classNames,
-      disabled = false,
-      icon,
-      ...rest
-    }: SidebarItemProps,
+    { active = false, children, className, disabled = false, icon, ...rest }: SidebarItemProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
     const { isStyled } = useContext(SidebarStyleContext)
@@ -51,21 +51,14 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
         ref={ref}
         {...rest}
       >
-        {icon ? (
-          <span
-            aria-hidden="true"
-            className={joinClasses(isStyled && styles.icon, classNames?.icon)}
-            data-plume-sidebar-icon=""
-          >
-            {icon}
-          </span>
-        ) : null}
-        <span
-          className={joinClasses(isStyled && styles.label, classNames?.label)}
-          data-plume-sidebar-label=""
-        >
-          {children}
-        </span>
+        {hasPart(children, ITEM_PARTS) ? (
+          children
+        ) : (
+          <>
+            {icon ? <SidebarItemIcon>{icon}</SidebarItemIcon> : null}
+            <SidebarItemLabel>{children}</SidebarItemLabel>
+          </>
+        )}
       </NavLink>
     )
   },

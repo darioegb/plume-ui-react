@@ -9,9 +9,15 @@ import type {
   ReactNode,
 } from 'react'
 import { forwardRef } from 'react'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { useDropdownContext } from './dropdown-context'
+import { DropdownItemIcon } from './dropdown-item-icon'
+import { DropdownItemLabel } from './dropdown-item-label'
+import { DropdownItemShortcut } from './dropdown-item-shortcut'
 import styles from './dropdown.module.css'
+
+const ITEM_PARTS = [DropdownItemIcon, DropdownItemLabel, DropdownItemShortcut]
 
 export interface DropdownItemOwnProps {
   children?: ReactNode
@@ -69,19 +75,13 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
       }
     }
 
-    const content = (
+    const content = hasPart(children, ITEM_PARTS) ? (
+      children
+    ) : (
       <>
-        {icon ? (
-          <span aria-hidden="true" className={context.isStyled ? styles.icon : undefined}>
-            {icon}
-          </span>
-        ) : null}
-        <span className={context.isStyled ? styles.label : undefined} data-plume-menu-item-label="">
-          {children}
-        </span>
-        {shortcut ? (
-          <span className={context.isStyled ? styles.shortcut : undefined}>{shortcut}</span>
-        ) : null}
+        {icon ? <DropdownItemIcon>{icon}</DropdownItemIcon> : null}
+        <DropdownItemLabel>{children}</DropdownItemLabel>
+        {shortcut ? <DropdownItemShortcut>{shortcut}</DropdownItemShortcut> : null}
       </>
     )
 

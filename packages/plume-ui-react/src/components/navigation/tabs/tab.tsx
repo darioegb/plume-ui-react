@@ -29,6 +29,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
       index: indexProp,
       children,
       className = '',
+      style,
     }: TabProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
@@ -80,6 +81,8 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
         className={`${isStyled ? styles.tab : ''} ${alignmentClass} ${sizeClass} ${
           isActive && isStyled ? styles.active : ''
         } ${className}`.trim()}
+        data-active={isActive ? '' : undefined}
+        data-plume-tabs-tab=""
         disabled={disabled}
         iconLeft={extraContentLeft}
         iconRight={extraContentRight}
@@ -89,6 +92,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
         onKeyDown={handleKeyDown}
         ref={ref}
         role="tab"
+        style={style}
         tabIndex={isActive ? 0 : -1}
         variant="unstyled"
       >

@@ -3,8 +3,11 @@ import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import {
   Sidebar,
+  SidebarBackdrop,
   SidebarContent,
   SidebarItem,
+  SidebarItemIcon,
+  SidebarItemLabel,
   SidebarProvider,
   SidebarToggle,
   type SidebarProps,
@@ -147,7 +150,12 @@ function Shell({
  * | `SidebarProvider` | `breakpoint`, `open`, `defaultOpen`, `onOpenChange`, `collapsed`, `defaultCollapsed`, `onCollapsedChange`, `id`, `children`. The state of the sidebar. It renders no element, so the layout is yours. `id` is the id of the panel. |
  * | `SidebarToggle` | `label`, `icon`, `variant`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The button that collapses the sidebar on a wide screen and opens it on a small one, with `aria-expanded` and `aria-controls`. `label` is its accessible name (`"Toggle sidebar"`), and `variant="unstyled"` drops the Plume styles. |
  * | `SidebarContent` | `aria-label`, `aria-labelledby`, `id`, `title`, `hidden`, `className`, `style`, `children`. The `<nav>` with the items. |
- * | `SidebarItem` | `active`, `disabled`, `icon`, `classNames`, `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a button without `href`. `classNames` styles its parts, `icon` and `label`. It has `data-active` and `data-disabled`. |
+ * | `SidebarItem` | `active`, `disabled`, `icon`, `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a button without `href`. Given text it renders the `icon` and the label; given `SidebarItemIcon` or `SidebarItemLabel` it renders them as written. It has `data-active` and `data-disabled`. |
+ * | `SidebarItemIcon` | `className`, `style`, `children`. The icon of an item, hidden from assistive technology. |
+ * | `SidebarItemLabel` | `className`, `style`, `children`. The text of an item. In the rail it is hidden visually and stays in the page for screen readers. |
+ * | `SidebarBackdrop` | `onClick`, `hidden`, `id`, `title`, `className`, `style`. The layer behind the sidebar on a small screen. Put one in the `Sidebar` to replace the default; the `Sidebar` renders it before its panel, so it is never inside it. A press closes the sidebar unless `onClick` prevents the default. It has `data-open`. |
+ *
+ * Every element of the sidebar is a part, so `className` styles each one, and with `variant="unstyled"` the parts keep only your classes.
  */
 export default {
   title: 'Components/Sidebar',
@@ -155,7 +163,16 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      importNames: ['SidebarProvider', 'Sidebar', 'SidebarToggle', 'SidebarContent', 'SidebarItem'],
+      importNames: [
+        'SidebarProvider',
+        'Sidebar',
+        'SidebarToggle',
+        'SidebarBackdrop',
+        'SidebarContent',
+        'SidebarItem',
+        'SidebarItemIcon',
+        'SidebarItemLabel',
+      ],
       toc: {
         title: 'On this page',
         disable: false,
@@ -166,7 +183,8 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'What goes in the sidebar, usually a `SidebarContent`.',
+      description:
+        'What goes in the sidebar, usually a `SidebarContent`. A `SidebarBackdrop` among them replaces the default backdrop.',
       table: { type: { summary: 'ReactNode' } },
     },
     className: {
@@ -179,12 +197,6 @@ export default {
       description:
         'Inline styles for the Sidebar panel. They are applied after the color variables, so they can override them. `--sidebar-width` and `--sidebar-collapsed-width` set its widths.',
       table: { type: { summary: 'CSSProperties' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `backdrop` (the backdrop of the mobile drawer). With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: 'Partial<Record<SidebarPart, string>>' } },
     },
     side: {
       control: 'radio',
@@ -414,6 +426,53 @@ export const Controlled: Story = {
 }
 
 /**
+ * Every element is a part, so you compose them. Here the label comes before the icon, the icon is styled on its
+ * own, and a `SidebarBackdrop` replaces the default one, with its own class. Parts that are left out are not
+ * rendered, and the `icon` prop is only used by the default composition.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider>
+  <Sidebar aria-label="Application">
+    <SidebarBackdrop className="backdrop-blur-sm" />
+    <SidebarContent aria-label="Pages">
+      <SidebarItem active href="/">
+        <SidebarItemLabel>Home</SidebarItemLabel>
+        <SidebarItemIcon className="ms-auto text-primary-text">
+          <HomeIcon />
+        </SidebarItemIcon>
+      </SidebarItem>
+      <SidebarItem href="/projects">
+        <SidebarItemLabel>Projects</SidebarItemLabel>
+      </SidebarItem>
+    </SidebarContent>
+  </Sidebar>
+</SidebarProvider>`,
+      },
+    },
+  },
+  render: () => (
+    <Shell>
+      <SidebarBackdrop className="backdrop-blur-sm" />
+      <SidebarContent aria-label="Pages">
+        {pages.slice(0, 3).map(({ href, icon, label }, index) => (
+          <SidebarItem active={index === 0} href={href} key={label}>
+            <SidebarItemLabel>{label}</SidebarItemLabel>
+            {index < 2 ? (
+              <SidebarItemIcon className="ms-auto">
+                <Glyph path={icon} />
+              </SidebarItemIcon>
+            ) : null}
+          </SidebarItem>
+        ))}
+      </SidebarContent>
+    </Shell>
+  ),
+}
+
+/**
  * Some examples of Sidebar with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
  * behavior stays: the collapsing, the hidden labels, and the panel that slides in on a small screen. Style the
  * parts with their own classes, and use `data-[active]:` on the items and `data-[collapsed]:` on the sidebar.
@@ -424,12 +483,12 @@ export const Tailwind: Story = {
       source: {
         code: `<SidebarProvider>
   <div className="flex">
-    <Sidebar classNames={{ backdrop: 'bg-black/50' }}
+    <Sidebar
       aria-label="Application"
-     
       className="border-r border-border bg-surface p-3 text-sm text-foreground max-md:shadow-xl"
       variant="unstyled"
     >
+      <SidebarBackdrop className="bg-black/50" />
       <SidebarContent aria-label="Pages" className="gap-1">
         <SidebarItem
           active
@@ -455,11 +514,11 @@ export const Tailwind: Story = {
   render: () => (
     <Shell
       sidebar={{
-        classNames: { backdrop: 'bg-black/50' },
         className: 'border-r border-border bg-surface p-3 text-sm text-foreground max-md:shadow-xl',
         variant: 'unstyled',
       }}
     >
+      <SidebarBackdrop className="bg-black/50" />
       <SidebarContent aria-label="Pages" className="gap-1">
         {pages.slice(0, 3).map(({ href, icon, label }, index) => (
           <SidebarItem

@@ -5,6 +5,7 @@ import { Field } from '../../../form/field'
 import { Input } from '../../../form/input'
 import {
   Drawer,
+  DrawerBackdrop,
   DrawerBody,
   DrawerClose,
   DrawerContent,
@@ -64,7 +65,8 @@ function Example({
  * | Component | Props |
  * | --- | --- |
  * | `DrawerTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes. With text, it renders a plain `<button>`. |
- * | `DrawerContent` | `className`, `classNames.backdrop`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The panel. It is named by the `DrawerHeader`, or by `aria-label` when there is none. `classNames.backdrop` styles the layer behind it. |
+ * | `DrawerBackdrop` | `className`, `style`, `children`. The layer behind the panel, which covers the screen and puts the panel on its side. `DrawerContent` renders it on its own; wrap `DrawerContent` in it to style it. It carries `data-side`. |
+ * | `DrawerContent` | `className`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The panel. It is named by the `DrawerHeader`, or by `aria-label` when there is none. |
  * | `DrawerHeader` | `as` (`h1` to `h6`, `h2` by default), `className`, `style`, `children`. The title, which names the panel. |
  * | `DrawerBody` | `className`, `style`, `children`. The content. It scrolls when it is taller than the screen. |
  * | `DrawerFooter` | `className`, `style`, `children`. A row for the actions. |
@@ -83,6 +85,7 @@ export default {
       importNames: [
         'Drawer',
         'DrawerTrigger',
+        'DrawerBackdrop',
         'DrawerContent',
         'DrawerHeader',
         'DrawerBody',
@@ -286,7 +289,54 @@ export const Persistent: Story = {
 }
 
 /**
- * Some examples of Drawer with Tailwind classes. With `variant="unstyled"` the Drawer and its parts have no Plume styles, so each takes the classes you give it. The `DrawerContent` keeps `data-side`, and here Tailwind positions the panel with it.
+ * `DrawerContent` draws the backdrop around itself, on the side of the Drawer. To style the layer, wrap
+ * `DrawerContent` in a `DrawerBackdrop`. It takes `className`, `style` and `ref`, and carries `data-side`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Drawer>
+  <DrawerTrigger>
+    <Button label="Open drawer" />
+  </DrawerTrigger>
+  <DrawerBackdrop style={{ backgroundColor: 'rgb(0 0 0 / 75%)' }}>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>Choose what to show.</DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Done" />
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </DrawerBackdrop>
+</Drawer>`,
+      },
+    },
+  },
+  render: () => (
+    <Drawer>
+      <DrawerTrigger>
+        <Button label="Open drawer" />
+      </DrawerTrigger>
+      <DrawerBackdrop style={{ backgroundColor: 'rgb(0 0 0 / 75%)' }}>
+        <DrawerContent>
+          <DrawerHeader>Filters</DrawerHeader>
+          <DrawerBody>Choose what to show.</DrawerBody>
+          <DrawerFooter>
+            <DrawerClose>
+              <Button label="Done" />
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </DrawerBackdrop>
+    </Drawer>
+  ),
+}
+
+/**
+ * Some examples of Drawer with Tailwind classes. With `variant="unstyled"` the Drawer and its parts have no Plume styles, so each takes the classes you give it. `DrawerBackdrop` and `DrawerContent` keep `data-side`, and here Tailwind positions the panel with it.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -300,26 +350,27 @@ export const Tailwind: Story = {
       variant="unstyled"
     />
   </DrawerTrigger>
-  <DrawerContent classNames={{ backdrop: 'flex justify-end bg-black/50' }}
-   
-    className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
-  >
-    <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
-      Filters
-    </DrawerHeader>
-    <DrawerBody className="flex-1 overflow-y-auto px-[1.25rem] py-[1rem] text-sm">
-      Choose what the list shows.
-    </DrawerBody>
-    <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
-      <DrawerClose>
-        <Button
-          className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
-          label="Apply"
-          variant="unstyled"
-        />
-      </DrawerClose>
-    </DrawerFooter>
-  </DrawerContent>
+  <DrawerBackdrop className="flex justify-end bg-black/50">
+    <DrawerContent
+      className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
+    >
+      <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
+        Filters
+      </DrawerHeader>
+      <DrawerBody className="flex-1 overflow-y-auto px-[1.25rem] py-[1rem] text-sm">
+        Choose what the list shows.
+      </DrawerBody>
+      <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
+        <DrawerClose>
+          <Button
+            className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+            label="Apply"
+            variant="unstyled"
+          />
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </DrawerBackdrop>
 </Drawer>`,
       },
     },
@@ -333,26 +384,27 @@ export const Tailwind: Story = {
           variant="unstyled"
         />
       </DrawerTrigger>
-      <DrawerContent classNames={{ backdrop: 'flex justify-end bg-black/50' }}
-       
-        className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
-      >
-        <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
-          Filters
-        </DrawerHeader>
-        <DrawerBody className="flex-1 overflow-y-auto px-[1.25rem] py-[1rem] text-sm">
-          Choose what the list shows.
-        </DrawerBody>
-        <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
-          <DrawerClose>
-            <Button
-              className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
-              label="Apply"
-              variant="unstyled"
-            />
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
+      <DrawerBackdrop className="flex justify-end bg-black/50">
+        <DrawerContent
+          className="flex h-full w-80 max-w-full flex-col bg-surface text-foreground shadow-xl"
+        >
+          <DrawerHeader className="border-b border-border px-[1.25rem] py-[1rem] text-lg font-semibold">
+            Filters
+          </DrawerHeader>
+          <DrawerBody className="flex-1 overflow-y-auto px-[1.25rem] py-[1rem] text-sm">
+            Choose what the list shows.
+          </DrawerBody>
+          <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
+            <DrawerClose>
+              <Button
+                className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+                label="Apply"
+                variant="unstyled"
+              />
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </DrawerBackdrop>
     </Drawer>
   ),
 }
@@ -368,19 +420,20 @@ export const Bootstrap: Story = {
   <DrawerTrigger>
     <Button className="btn btn-primary" label="Open drawer" variant="unstyled" />
   </DrawerTrigger>
-  <DrawerContent classNames={{ backdrop: 'd-flex justify-content-end bg-black bg-opacity-50' }}
-   
-    className="d-flex flex-column h-100 bg-body shadow"
-    style={{ width: '20rem', maxWidth: '100%' }}
-  >
-    <DrawerHeader className="fs-5 fw-semibold border-bottom px-3 py-3 m-0">Filters</DrawerHeader>
-    <DrawerBody className="flex-grow-1 overflow-auto p-3">Choose what the list shows.</DrawerBody>
-    <DrawerFooter className="d-flex justify-content-end gap-2 border-top p-3">
-      <DrawerClose>
-        <Button className="btn btn-primary" label="Apply" variant="unstyled" />
-      </DrawerClose>
-    </DrawerFooter>
-  </DrawerContent>
+  <DrawerBackdrop className="d-flex justify-content-end bg-black bg-opacity-50">
+    <DrawerContent
+      className="d-flex flex-column h-100 bg-body shadow"
+      style={{ width: '20rem', maxWidth: '100%' }}
+    >
+      <DrawerHeader className="fs-5 fw-semibold border-bottom px-3 py-3 m-0">Filters</DrawerHeader>
+      <DrawerBody className="flex-grow-1 overflow-auto p-3">Choose what the list shows.</DrawerBody>
+      <DrawerFooter className="d-flex justify-content-end gap-2 border-top p-3">
+        <DrawerClose>
+          <Button className="btn btn-primary" label="Apply" variant="unstyled" />
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </DrawerBackdrop>
 </Drawer>`,
       },
     },
@@ -390,23 +443,24 @@ export const Bootstrap: Story = {
       <DrawerTrigger>
         <Button className="btn btn-primary" label="Open drawer" variant="unstyled" />
       </DrawerTrigger>
-      <DrawerContent classNames={{ backdrop: 'd-flex justify-content-end bg-black bg-opacity-50' }}
-       
-        className="d-flex flex-column h-100 bg-body shadow"
-        style={{ width: '20rem', maxWidth: '100%' }}
-      >
-        <DrawerHeader className="fs-5 fw-semibold border-bottom px-3 py-3 m-0">
-          Filters
-        </DrawerHeader>
-        <DrawerBody className="flex-grow-1 overflow-auto p-3">
-          Choose what the list shows.
-        </DrawerBody>
-        <DrawerFooter className="d-flex justify-content-end gap-2 border-top p-3">
-          <DrawerClose>
-            <Button className="btn btn-primary" label="Apply" variant="unstyled" />
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
+      <DrawerBackdrop className="d-flex justify-content-end bg-black bg-opacity-50">
+        <DrawerContent
+          className="d-flex flex-column h-100 bg-body shadow"
+          style={{ width: '20rem', maxWidth: '100%' }}
+        >
+          <DrawerHeader className="fs-5 fw-semibold border-bottom px-3 py-3 m-0">
+            Filters
+          </DrawerHeader>
+          <DrawerBody className="flex-grow-1 overflow-auto p-3">
+            Choose what the list shows.
+          </DrawerBody>
+          <DrawerFooter className="d-flex justify-content-end gap-2 border-top p-3">
+            <DrawerClose>
+              <Button className="btn btn-primary" label="Apply" variant="unstyled" />
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </DrawerBackdrop>
     </Drawer>
   ),
 }

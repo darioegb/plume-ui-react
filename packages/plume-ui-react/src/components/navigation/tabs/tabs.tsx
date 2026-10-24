@@ -75,6 +75,8 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       >
         <div
           className={tabsClassNames}
+          data-orientation={orientation}
+          data-plume-tabs=""
           ref={ref}
           style={tabsColorVars(colorScheme, style)}
           {...rest}

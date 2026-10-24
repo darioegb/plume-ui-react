@@ -45,10 +45,10 @@ const commonTabs = (
  *
  * | Component | Props |
  * | --- | --- |
- * | `TabList` | `aria-label`, `aria-labelledby`, `className`, `id`, `children` (the `Tab` items) |
- * | `Tab` | `index` (its position, which it only needs when a wrapper holds several tabs), `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `children` |
- * | `TabPanels` | `className`, `id`, `children` (one `TabPanel` per `Tab`, in the same order) |
- * | `TabPanel` | `index` (its position, only needed inside a wrapper that holds several panels), `className`, `children` |
+ * | `TabList` | `aria-label`, `aria-labelledby`, `className`, `style`, `id`, `children` (the `Tab` items). It has `data-plume-tabs-list` and `data-orientation`. |
+ * | `Tab` | `index` (its position, which it only needs when a wrapper holds several tabs), `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `style`, `children`. It has `data-plume-tabs-tab`, and `data-active` while it is selected. |
+ * | `TabPanels` | `className`, `style`, `id`, `children` (one `TabPanel` per `Tab`, in the same order). It has `data-plume-tabs-panels`. |
+ * | `TabPanel` | `index` (its position, only needed inside a wrapper that holds several panels), `className`, `style`, `children`. It has `data-plume-tabs-panel`. |
  *
  * Tab and panel ids are generated, and derive from the `Tabs` `id` when you set one (`settings` → `settings-tab-0`, `settings-panel-0`).
  */

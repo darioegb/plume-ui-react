@@ -4,31 +4,23 @@ import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { ModalContent, type ModalContentProps } from '../modal'
+import { useInModalBackdrop } from '../modal/modal-backdrop-context'
 import { useModalContext } from '../modal/modal-context'
+import { DrawerBackdrop } from './drawer-backdrop'
 import { useDrawerContext } from './drawer-context'
 import styles from './drawer.module.css'
 
 export type DrawerContentProps = ModalContentProps
 
 export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
-  (
-    { className, classNames, ...rest }: DrawerContentProps,
-    ref: ForwardedRef<HTMLDialogElement>,
-  ): ReactNode => {
+  ({ className, ...rest }: DrawerContentProps, ref: ForwardedRef<HTMLDialogElement>): ReactNode => {
     const { shape, side } = useDrawerContext('DrawerContent')
     const { isStyled, size } = useModalContext('DrawerContent')
+    const inBackdrop = useInModalBackdrop()
 
-    return (
+    const panel = (
       <ModalContent
         {...rest}
-        classNames={{
-          ...classNames,
-          backdrop: joinClasses(
-            isStyled && styles.backdrop,
-            isStyled && styles[`${side}Backdrop`],
-            classNames?.backdrop,
-          ),
-        }}
         className={joinClasses(
           isStyled && styles.drawer,
           isStyled && styles[side],
@@ -41,6 +33,8 @@ export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
         ref={ref}
       />
     )
+
+    return inBackdrop ? panel : <DrawerBackdrop>{panel}</DrawerBackdrop>
   },
 )
 

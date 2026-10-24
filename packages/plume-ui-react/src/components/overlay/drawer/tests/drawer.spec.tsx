@@ -3,6 +3,7 @@ import { userEvent } from '@testing-library/user-event'
 import { createRef } from 'react'
 import {
   Drawer,
+  DrawerBackdrop,
   DrawerBody,
   DrawerClose,
   DrawerContent,
@@ -119,16 +120,55 @@ describe('Drawer component', () => {
     expect(dialog().parentElement).not.toHaveClass('backdrop')
   })
 
-  it('takes the classes of the dialog and the backdrop', () => {
+  it('takes the classes of the dialog and of a composed backdrop', () => {
     render(
       <Drawer defaultOpen>
-        <DrawerContent classNames={{ backdrop: 'my-backdrop' }} className="my-drawer">
-          <DrawerHeader>Title</DrawerHeader>
-        </DrawerContent>
+        <DrawerBackdrop className="my-backdrop">
+          <DrawerContent className="my-drawer">
+            <DrawerHeader>Title</DrawerHeader>
+          </DrawerContent>
+        </DrawerBackdrop>
       </Drawer>,
     )
     expect(dialog()).toHaveClass('drawer', 'my-drawer')
-    expect(dialog().parentElement).toHaveClass('backdrop', 'my-backdrop')
+    expect(dialog().parentElement).toHaveClass('backdrop', 'rightBackdrop', 'my-backdrop')
+    expect(dialog().parentElement).toHaveAttribute('data-side', 'right')
+    expect(document.querySelectorAll('[data-plume-modal-backdrop]')).toHaveLength(1)
+  })
+
+  it('renders the backdrop of the side by default and none of the Plume classes when unstyled', () => {
+    const { unmount } = render(<Example defaultOpen side="top" />)
+    expect(dialog().parentElement).toHaveClass('backdrop', 'topBackdrop')
+    expect(dialog().parentElement).toHaveAttribute('data-side', 'top')
+    unmount()
+    render(
+      <Drawer defaultOpen variant="unstyled">
+        <DrawerBackdrop className="mine">
+          <DrawerContent aria-label="Panel">Body</DrawerContent>
+        </DrawerBackdrop>
+      </Drawer>,
+    )
+    expect(dialog().parentElement).toHaveAttribute('class', 'mine')
+  })
+
+  it('forwards the ref of the backdrop', () => {
+    const ref = createRef<HTMLDivElement>()
+    render(
+      <Drawer defaultOpen>
+        <DrawerBackdrop ref={ref}>
+          <DrawerContent aria-label="Panel">Body</DrawerContent>
+        </DrawerBackdrop>
+      </Drawer>,
+    )
+    expect(ref.current).toBe(dialog().parentElement)
+  })
+
+  it('throws when the backdrop is outside a Drawer', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(<DrawerBackdrop>x</DrawerBackdrop>)).toThrow(
+      'DrawerBackdrop must be used within a <Drawer>',
+    )
+    error.mockRestore()
   })
 
   it('forwards the refs of its parts', () => {

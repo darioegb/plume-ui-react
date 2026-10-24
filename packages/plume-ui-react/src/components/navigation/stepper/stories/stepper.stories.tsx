@@ -1,7 +1,16 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
-import { Step, StepDescription, StepIndicator, Stepper, StepSeparator, StepTitle } from '..'
+import {
+  Step,
+  StepDescription,
+  StepIndicator,
+  StepIndicatorContent,
+  StepIndicatorLabel,
+  Stepper,
+  StepSeparator,
+  StepTitle,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -53,7 +62,9 @@ function renderSteps(withDescription = true): React.ReactNode {
  * | Component | Props |
  * | --- | --- |
  * | `Step` | `id`, `title`, `hidden`, `className`, `style`, `children`. One `<li>`. It has `data-state`. |
- * | `StepIndicator` | `className`, `style`, `children`. The circle: the number, or a check when the step is completed. `children` replaces the content, for example with an icon. |
+ * | `StepIndicator` | `className`, `style`, `children`. The circle. Given no parts it renders a `StepIndicatorContent` (the number, or a check when the step is completed; `children` replaces it, for example with an icon) and a `StepIndicatorLabel`. Given `StepIndicatorContent` or `StepIndicatorLabel` among its children it renders them as written. |
+ * | `StepIndicatorContent` | `className`, `style`, `children`. What is drawn inside the circle: the number, a check when the step is completed, or `children`. It is hidden from screen readers. It has `data-state`. |
+ * | `StepIndicatorLabel` | `className`, `style`, `children`. The text only a screen reader gets: `children`, or the label of the step state (`labels` of the `Stepper`). It renders nothing when there is no text. It has `data-state`. |
  * | `StepTitle` | `id`, `title`, `className`, `style`, `children`. The name of the step. |
  * | `StepDescription` | `id`, `title`, `className`, `style`, `children`. A line of detail under the title. |
  * | `StepSeparator` | `className`, `style`. The line to the next step. The last one is not shown. |
@@ -290,6 +301,28 @@ export const CustomIndicator: Story = {
         <Step key={title}>
           <StepIndicator>{icon}</StepIndicator>
           <StepTitle>{title}</StepTitle>
+          <StepSeparator />
+        </Step>
+      ))}
+    </Stepper>
+  ),
+}
+
+/**
+ * The circle is made of two parts, **StepIndicatorContent** (what is drawn) and **StepIndicatorLabel** (what only a
+ * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
+      {steps.map(({ description, title }) => (
+        <Step key={title}>
+          <StepIndicator>
+            <StepIndicatorContent className="font-bold" />
+            <StepIndicatorLabel>{`Step: ${title}`}</StepIndicatorLabel>
+          </StepIndicator>
+          <StepTitle>{title}</StepTitle>
+          <StepDescription>{description}</StepDescription>
           <StepSeparator />
         </Step>
       ))}

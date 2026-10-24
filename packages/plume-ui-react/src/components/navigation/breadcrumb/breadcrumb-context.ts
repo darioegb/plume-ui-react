@@ -8,7 +8,6 @@ export type BreadcrumbVariant = 'plain' | 'filled' | 'unstyled'
 export interface BreadcrumbContextValue {
   isStyled: boolean
   separator: ReactNode
-  separatorClassName?: string
 }
 
 export const BreadcrumbContext = createContext<BreadcrumbContextValue | undefined>(undefined)

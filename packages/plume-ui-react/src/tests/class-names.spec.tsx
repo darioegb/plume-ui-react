@@ -1,13 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import type { ReactElement } from 'react'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '../components/navigation/accordion'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '../components/navigation/breadcrumb'
-import { Sidebar, SidebarContent, SidebarProvider } from '../components/navigation/sidebar'
 import {
   Carousel,
   CarouselDots,
@@ -18,7 +10,6 @@ import { Checkbox } from '../components/form/checkbox'
 import { DatePicker } from '../components/form/datepicker'
 import { Collapse } from '../components/utility/collapse'
 import { Input } from '../components/form/input'
-import { Modal, ModalContent } from '../components/overlay/modal'
 import { PinInput } from '../components/form/pininput'
 import { ProgressBar } from '../components/utility/progressbar'
 import { Radio } from '../components/form/radio'
@@ -41,48 +32,6 @@ interface Case {
 }
 
 const cases: Record<string, Case> = {
-  Sidebar: {
-    classes: ['a-backdrop'],
-    element: () => (
-      <SidebarProvider>
-        <Sidebar classNames={{ backdrop: 'a-backdrop' }}>
-          <SidebarContent>Content</SidebarContent>
-        </Sidebar>
-      </SidebarProvider>
-    ),
-  },
-  AccordionContent: {
-    classes: ['a-body'],
-    element: () => (
-      <Accordion>
-        <AccordionItem value="a">
-          <AccordionTrigger>Alpha</AccordionTrigger>
-          <AccordionContent classNames={{ body: 'a-body' }}>Content</AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    ),
-  },
-  Breadcrumb: {
-    classes: ['a-list', 'a-separator'],
-    element: () => (
-      <Breadcrumb classNames={{ list: 'a-list', separator: 'a-separator' }}>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>Page</BreadcrumbItem>
-      </Breadcrumb>
-    ),
-  },
-  ModalContent: {
-    classes: ['a-backdrop'],
-    element: () => (
-      <Modal defaultOpen>
-        <ModalContent aria-label="Name" classNames={{ backdrop: 'a-backdrop' }}>
-          Body
-        </ModalContent>
-      </Modal>
-    ),
-  },
   Collapse: {
     classes: ['a-body'],
     element: () => <Collapse classNames={{ body: 'a-body' }}>Text</Collapse>,
@@ -178,24 +127,5 @@ describe('classNames of the parts', () => {
       expect(container.firstElementChild).toHaveClass('a-root')
       expect(container.querySelectorAll('.a-root')).toHaveLength(1)
     })
-  })
-
-  it('adds the class of the toast', async () => {
-    const { ToastProvider, useToast } = await import('../components/overlay/toast')
-    function Trigger(): ReactElement {
-      const { toast } = useToast()
-      return (
-        <button onClick={() => toast('Saved')} type="button">
-          Go
-        </button>
-      )
-    }
-    render(
-      <ToastProvider classNames={{ toast: 'a-toast' }}>
-        <Trigger />
-      </ToastProvider>,
-    )
-    fireEvent.click(screen.getByRole('button', { name: 'Go' }))
-    expect(screen.getByRole('status')).toHaveClass('a-toast')
   })
 })
