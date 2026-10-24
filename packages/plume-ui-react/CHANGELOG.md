@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.20.0
+
+### Minor Changes
+
+- [#132](https://github.com/darioegb/plume-ui-react/pull/132) [`12ebb0d3e15f1b0c7ac695c3d51b27dbe88006bc`](https://github.com/darioegb/plume-ui-react/commit/12ebb0d3e15f1b0c7ac695c3d51b27dbe88006bc) Thanks [@darioegb](https://github.com/darioegb)! - Every text the library shows or announces is changed with a typed `labels` prop (`PaginatorLabels`, `SelectLabels`...), and the loose props (`nextLabel`, `getPageLabel`, `revealLabel`, `emptyText`, `statusLabels`, `dismissLabel`...) are removed. `DatePicker` and `TimePicker` take `labels` instead of `config.labels` and `config.footer`, and the calendar navigation texts can be translated. `FileUpload` also translates its prompt, rejections and file sizes, `Carousel` takes one `labels` for all its parts, and `Spinner` takes `label`. See "Upgrading to 1.0" for the full table.
+
 ## 0.19.0
 
 ### Minor Changes
