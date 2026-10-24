@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.26.0
+
+### Minor Changes
+
+- [#151](https://github.com/darioegb/plume-ui-react/pull/151) [`99352042ea5ec025d22491d3a7358901ce5a4d87`](https://github.com/darioegb/plume-ui-react/commit/99352042ea5ec025d22491d3a7358901ce5a4d87) Thanks [@darioegb](https://github.com/darioegb)! - `Accordion`, `Breadcrumb`, `Stepper`, `Sidebar`, `Modal`, `Drawer`, `Toast`, `Dropdown` and `Tree` are made of exported parts (`AccordionHeading`, `AccordionTitle`, `AccordionIcon`, `AccordionBody`, `BreadcrumbList`, `StepIndicatorContent`, `StepIndicatorLabel`, `SidebarBackdrop`, `SidebarItemIcon`, `SidebarItemLabel`, `ModalBackdrop`, `DrawerBackdrop`, `Toast`, `ToastIcon`, `ToastBody`, `ToastTitle`, `ToastDescription`, `ToastActionButton`, `ToastDismiss`, `DropdownItemIcon`, `DropdownItemLabel`, `DropdownItemShortcut`, `TreeItemChevron`, `TreeItemCheckbox`, `TreeItemIcon`), each with its own `className`, `style` and `ref`, and `classNames` is removed from them. `ToastProvider` takes a `render` function to compose the toasts created with `useToast()`. `Tabs`, `Navbar`, `Popover` and `Tooltip` already were made of parts and now take `style` in each of them. See "Upgrading to 1.0".
+
 ## 0.25.0
 
 ### Minor Changes
