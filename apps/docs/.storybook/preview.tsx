@@ -1,7 +1,8 @@
 import React from 'react'
 import type { Preview } from '@storybook/react-vite'
 import { DocsContainer } from '@storybook/addon-docs/blocks'
-import { ThemeProvider } from 'plume-ui-react'
+import { addons } from 'storybook/preview-api'
+import { ThemeProvider, useTheme } from 'plume-ui-react'
 import 'plume-ui-react/styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -20,7 +21,7 @@ const PlumeDocsContainer = ({
 }): React.ReactElement => {
   const globals = (context as { store?: { userGlobals?: { globals?: Record<string, unknown> } } })
     .store?.userGlobals?.globals
-  const colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
+  const colorMode = useToggledMode(globals?.colorMode === 'dark' ? 'dark' : 'light')
   // preview-head.html themes the docs blocks the `theme` prop misses, keyed on this attribute.
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -36,6 +37,28 @@ const PlumeDocsContainer = ({
 }
 
 type ColorMode = 'light' | 'dark'
+
+// The header toggle (see manager.ts) tells the preview through the channel instead of through the
+// globals: a change of globals ends up in the URL and reloads the whole preview, which sends the page
+// back to the top.
+const COLOR_MODE_EVENT = 'plume/color-mode'
+let toggledMode: ColorMode | null = null
+const modeListeners = new Set<(mode: ColorMode) => void>()
+addons.getChannel().on(COLOR_MODE_EVENT, (mode: ColorMode) => {
+  toggledMode = mode
+  modeListeners.forEach((listener) => listener(mode))
+})
+
+const useToggledMode = (fallback: ColorMode): ColorMode => {
+  const [mode, setMode] = React.useState<ColorMode | null>(toggledMode)
+  React.useEffect(() => {
+    modeListeners.add(setMode)
+    return () => {
+      modeListeners.delete(setMode)
+    }
+  }, [])
+  return mode ?? fallback
+}
 
 const preferredColorMode = (): ColorMode => {
   try {
@@ -95,6 +118,14 @@ const useBlockStoryLinks = (): void => {
   }, [])
 }
 
+// ThemeProvider only reads its initial mode, so the mode follows the toolbar through setColorMode: a
+// `key` would remount every story and the page would lose its height and its scroll position.
+const SyncColorMode = ({ colorMode }: { colorMode: ColorMode }): null => {
+  const { setColorMode } = useTheme()
+  React.useEffect(() => setColorMode(colorMode), [colorMode, setColorMode])
+  return null
+}
+
 const StoryFrame = ({
   children,
   globalMode,
@@ -102,18 +133,15 @@ const StoryFrame = ({
   children: React.ReactNode
   globalMode: ColorMode
 }): React.ReactElement => {
-  const colorMode = useColorMode(globalMode)
+  const colorMode = useColorMode(useToggledMode(globalMode))
   useBlockStoryLinks()
   React.useEffect(() => {
     document.documentElement.setAttribute('data-plume-color-mode', colorMode)
     document.documentElement.setAttribute('data-bs-theme', colorMode)
   }, [colorMode])
   return (
-    <ThemeProvider
-      key={colorMode}
-      defaultColorMode={colorMode}
-      style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}
-    >
+    <ThemeProvider defaultColorMode={colorMode} style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}>
+      <SyncColorMode colorMode={colorMode} />
       {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
       <div data-bs-theme={colorMode}>{children}</div>
     </ThemeProvider>

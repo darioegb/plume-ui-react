@@ -1,7 +1,7 @@
 // .storybook/manager.ts
 
 import { addons } from 'storybook/manager-api'
-import { GLOBALS_UPDATED, SET_GLOBALS, UPDATE_GLOBALS } from 'storybook/internal/core-events'
+import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events'
 import { darkTheme, lightTheme } from './theme'
 
 const isProd = process.env.NODE_ENV === 'prod'
@@ -10,6 +10,7 @@ const SUN_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" st
 const MOON_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`
 
 const STORAGE_KEY = 'plume-colormode'
+const COLOR_MODE_EVENT = 'plume/color-mode'
 
 const getStoredMode = (): 'light' | 'dark' | null => {
   try {
@@ -51,9 +52,7 @@ addons.register('plume/theme-sync', (api) => {
       button.className = 'plume-theme-toggle'
       button.setAttribute('aria-label', 'Toggle color mode')
       button.addEventListener('click', () => {
-        const next = colorMode === 'dark' ? 'light' : 'dark'
-        setStoredMode(next)
-        channel.emit(UPDATE_GLOBALS, { globals: { colorMode: next } })
+        setMode(colorMode === 'dark' ? 'light' : 'dark')
       })
       links.insertBefore(button, links.firstChild)
       renderToggle()
@@ -80,17 +79,30 @@ addons.register('plume/theme-sync', (api) => {
     }
   }
 
-  const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {
-    colorMode = globals?.colorMode === 'dark' ? 'dark' : 'light'
-    api.setOptions({ theme: colorMode === 'dark' ? darkTheme : lightTheme })
-    document.documentElement.setAttribute('data-plume-mode', colorMode)
+  const applyMode = (mode: 'light' | 'dark'): void => {
+    colorMode = mode
+    api.setOptions({ theme: mode === 'dark' ? darkTheme : lightTheme })
+    document.documentElement.setAttribute('data-plume-mode', mode)
     renderToggle()
+  }
+
+  // The preview is told through the channel and not through the globals: a change of globals ends up
+  // in the URL and reloads the preview, which sends the page back to the top.
+  const setMode = (mode: 'light' | 'dark'): void => {
+    setStoredMode(mode)
+    applyMode(mode)
+    channel.emit(COLOR_MODE_EVENT, mode)
+  }
+
+  const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {
+    applyMode(globals?.colorMode === 'dark' ? 'dark' : 'light')
   }
 
   const applyPreferredMode = (): void => {
     const target = getStoredMode() ?? (prefersDark() ? 'dark' : 'light')
     if (target !== colorMode) {
-      channel.emit(UPDATE_GLOBALS, { globals: { colorMode: target } })
+      applyMode(target)
+      channel.emit(COLOR_MODE_EVENT, target)
     }
   }
 
