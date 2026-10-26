@@ -21,7 +21,7 @@ export interface RadioGroupOwnProps {
   /** Name shared by the radios of the group. A generated one is used when it is not set. */
   name?: string
   /** Called with the value of the radio the user selects. */
-  onChange?: (value: string, event: ChangeEvent<HTMLInputElement>) => void
+  onValueChange?: (value: string, event: ChangeEvent<HTMLInputElement>) => void
   /**
    * Direction in which the radios are laid out.
    * @default 'vertical'
@@ -42,7 +42,7 @@ export interface RadioGroupOwnProps {
    * @default 'md'
    */
   size?: Size
-  /** Value of the selected radio, for a controlled group. Pair it with `onChange`. */
+  /** Value of the selected radio, for a controlled group. Pair it with `onValueChange`. */
   value?: string
   /**
    * Visual variant of the radios of the group.
@@ -75,7 +75,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       defaultValue,
       disabled = false,
       name,
-      onChange,
+      onValueChange: onChange,
       orientation = 'vertical',
       readOnly = false,
       required = false,

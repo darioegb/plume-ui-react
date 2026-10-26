@@ -136,7 +136,7 @@ describe('Field component', () => {
   it('wires a DatePicker the same way', () => {
     render(
       <Field errorText="Pick a date" label="Check-in" required>
-        <DatePicker onChange={vi.fn()} />
+        <DatePicker onValueChange={vi.fn()} />
       </Field>,
     )
     const input = screen.getByRole('textbox', { name: 'Check-in' })

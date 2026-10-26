@@ -41,7 +41,7 @@ export interface TimePickerOwnProps {
    * Renders only the lists of hours and minutes, always visible, without the input.
    * @default false
    */
-  isPanel?: boolean
+  panel?: boolean
   /**
    * Every text the picker shows or announces: the names of the popup (`timePicker`), of its lists
    * (`hours`, `minutes`, `period`) and of the button that opens it (`openTimePicker`), and the `am`
@@ -57,7 +57,7 @@ export interface TimePickerOwnProps {
    * Called with the new `HH:mm` value when a complete valid time is typed or an option is picked,
    * or with `""` when the input is cleared.
    */
-  onChange?: (value: string) => void
+  onValueChange?: (value: string) => void
   /**
    * Shape of the corners. `pill` rounds the `outline` input and the corners of the popup.
    * @default 'rounded'
@@ -94,10 +94,10 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       colorScheme = 'secondary',
       defaultValue = '',
       hour12 = false,
-      isPanel = false,
+      panel: isPanel = false,
       labels,
       minuteStep = 1,
-      onChange,
+      onValueChange: onChange,
       shape,
       size,
       style,

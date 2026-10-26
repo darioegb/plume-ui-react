@@ -64,7 +64,7 @@ describe('RadioGroup component', () => {
 
     it('keeps one radio selected and reports the value with the event', () => {
       const onChange = vi.fn()
-      render(<Plans onChange={onChange} />)
+      render(<Plans onValueChange={onChange} />)
 
       fireEvent.click(radio('free'))
       fireEvent.click(radio('team'))
@@ -93,7 +93,7 @@ describe('RadioGroup component', () => {
     it('follows the value and asks for changes through onChange', () => {
       function Controlled(): React.ReactNode {
         const [value, setValue] = useState('free')
-        return <Plans onChange={setValue} value={value} />
+        return <Plans onValueChange={setValue} value={value} />
       }
       render(<Controlled />)
       fireEvent.click(radio('team'))
@@ -102,7 +102,7 @@ describe('RadioGroup component', () => {
     })
 
     it('does not change by itself without a new value', () => {
-      render(<Plans onChange={vi.fn()} value="free" />)
+      render(<Plans onValueChange={vi.fn()} value="free" />)
       fireEvent.click(radio('pro'))
       expect(radio('free')).toBeChecked()
       expect(radio('pro')).not.toBeChecked()
@@ -113,7 +113,7 @@ describe('RadioGroup component', () => {
     const onRadioChange = vi.fn()
     const onGroupChange = vi.fn()
     render(
-      <RadioGroup aria-label="Plan" onChange={onGroupChange}>
+      <RadioGroup aria-label="Plan" onValueChange={onGroupChange}>
         <Radio aria-label="free" onChange={onRadioChange} value="free" />
       </RadioGroup>,
     )
@@ -125,7 +125,7 @@ describe('RadioGroup component', () => {
   it('treats a radio without a value as the empty value', () => {
     const onChange = vi.fn()
     render(
-      <RadioGroup aria-label="Plan" onChange={onChange}>
+      <RadioGroup aria-label="Plan" onValueChange={onChange}>
         <Radio aria-label="none" />
       </RadioGroup>,
     )
@@ -163,7 +163,7 @@ describe('RadioGroup component', () => {
 
     it('keeps the selection and does not call onChange when it is read only', () => {
       const onChange = vi.fn()
-      render(<Plans defaultValue="free" onChange={onChange} readOnly />)
+      render(<Plans defaultValue="free" onValueChange={onChange} readOnly />)
       fireEvent.click(radio('pro'))
       expect(radio('free')).toBeChecked()
       expect(radio('pro')).not.toBeChecked()

@@ -23,9 +23,9 @@ export interface TabsOwnProps {
    *
    * @default false
    */
-  isLazy?: boolean
+  lazy?: boolean
   /** Called with the index of the newly selected tab. */
-  onChange?: (index: number) => void
+  onIndexChange?: (index: number) => void
   /**
    * Orientation of the Tabs.
    *
@@ -70,7 +70,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     {
       children,
       style,
-      onChange,
+      onIndexChange: onChange,
       index = 0,
       alignment = 'left',
       className = '',
@@ -78,7 +78,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       orientation = 'horizontal',
       size = 'md',
       variant = 'underline',
-      isLazy = false,
+      lazy: isLazy = false,
       ...rest
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -97,12 +97,12 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
           alignment,
           baseId,
           colorScheme,
-          isLazy,
+          lazy: isLazy,
           isStyled,
           orientation,
           size,
           variant,
-          onChange,
+          onIndexChange: onChange,
         }}
       >
         <div

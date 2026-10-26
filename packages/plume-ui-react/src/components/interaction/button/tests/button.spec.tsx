@@ -88,13 +88,13 @@ describe('Button component', () => {
     expect(getByRole('button')).toHaveTextContent('Save')
     expect(getByRole('button')).not.toHaveTextContent('Saving')
 
-    rerender(<Button busyText="Saving" isBusy label="Save" />)
+    rerender(<Button busyText="Saving" busy label="Save" />)
     expect(getByRole('button')).toHaveTextContent('Saving')
   })
 
   it('renders busy button', () => {
     const { getByText, getByLabelText } = render(
-      <Button busyText="Loading" isBusy>
+      <Button busyText="Loading" busy>
         Busy Button
       </Button>,
     )
@@ -105,12 +105,12 @@ describe('Button component', () => {
   })
 
   it('names the spinner with labels.busy', () => {
-    const { getByLabelText } = render(<Button isBusy labels={{ busy: 'Cargando' }} label="Save" />)
+    const { getByLabelText } = render(<Button busy labels={{ busy: 'Cargando' }} label="Save" />)
     expect(getByLabelText('Cargando')).toBeInTheDocument()
   })
 
   it('renders busy button without busy text', () => {
-    const { getByText } = render(<Button colorScheme="primary" isBusy label="Busy Button" />)
+    const { getByText } = render(<Button colorScheme="primary" busy label="Busy Button" />)
     const buttonElement = getByText('Busy Button')
     expect(buttonElement).toBeInTheDocument()
     expect(buttonElement).toHaveClass('hidden')
@@ -118,7 +118,7 @@ describe('Button component', () => {
 
   it('passes the contrast color to the busy spinner', () => {
     const { getByText } = render(
-      <Button colorScheme="primary" isBusy>
+      <Button colorScheme="primary" busy>
         Busy Button
       </Button>,
     )
@@ -130,7 +130,7 @@ describe('Button component', () => {
   })
 
   it('stays focusable and announced as busy while busy', () => {
-    const { getByRole } = render(<Button isBusy label="Save" />)
+    const { getByRole } = render(<Button busy label="Save" />)
     const button = getByRole('button', { name: /Save/ })
     expect(button).toHaveAttribute('aria-busy', 'true')
     expect(button).toHaveAttribute('aria-disabled', 'true')
@@ -140,7 +140,7 @@ describe('Button component', () => {
   })
 
   it('keeps the label in its accessible name while busy without busy text', () => {
-    const { getByRole } = render(<Button isBusy label="Save" />)
+    const { getByRole } = render(<Button busy label="Save" />)
     expect(getByRole('button')).toHaveAccessibleName(/Save/)
   })
 
@@ -150,7 +150,7 @@ describe('Button component', () => {
     const parentClick = vi.fn()
     const { container, getByRole } = render(
       <form onSubmit={onSubmit}>
-        <Button isBusy label="Save" onClick={onClick} type="submit" />
+        <Button busy label="Save" onClick={onClick} type="submit" />
       </form>,
     )
     container.addEventListener('click', parentClick)
@@ -167,7 +167,7 @@ describe('Button component', () => {
   })
 
   it('stays natively disabled when it is disabled and busy', () => {
-    const { getByRole } = render(<Button disabled isBusy label="Save" />)
+    const { getByRole } = render(<Button disabled busy label="Save" />)
     expect(getByRole('button')).toBeDisabled()
     expect(getByRole('button')).not.toHaveAttribute('aria-disabled')
   })

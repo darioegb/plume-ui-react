@@ -36,9 +36,10 @@ export interface CarouselOwnProps {
   /**
    * The texts the Carousel shows to assistive technology: `slide(index, count)` and `dot(index,
    * count)` name each slide and dot, `dots` names the group of dots, `previous` and `next` name
-   * the arrows, `play` and `pause` name the autoplay button. The `label` of an arrow and the
-   * `aria-label` of a dots group or slide win over these.
-   * @default { slide: (i, n) => `${i + 1} of ${n}`, dot: (i, n) => `Slide ${i + 1} of ${n}`, dots: 'Choose a slide', previous: 'Previous slide', next: 'Next slide', play: 'Start the slideshow', pause: 'Pause the slideshow' }
+   * the arrows, `play` and `pause` name the autoplay button, and `roleDescription` and
+   * `slideRoleDescription` are the words a screen reader says for the carousel and for each slide.
+   * The `label` of an arrow and the `aria-label` of a dots group or slide win over these.
+   * @default { slide: (i, n) => `${i + 1} of ${n}`, dot: (i, n) => `Slide ${i + 1} of ${n}`, dots: 'Choose a slide', previous: 'Previous slide', next: 'Next slide', play: 'Start the slideshow', pause: 'Pause the slideshow', roleDescription: 'carousel', slideRoleDescription: 'slide' }
    */
   labels?: Partial<CarouselLabels>
   /**
@@ -83,7 +84,9 @@ const DEFAULT_LABELS: CarouselLabels = {
   pause: 'Pause the slideshow',
   play: 'Start the slideshow',
   previous: 'Previous slide',
+  roleDescription: 'carousel',
   slide: (index, count) => `${index + 1} of ${count}`,
+  slideRoleDescription: 'slide',
 }
 
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)'
@@ -173,7 +176,7 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
     return (
       <CarouselContext.Provider value={context}>
         <section
-          aria-roledescription="carousel"
+          aria-roledescription={resolvedLabels.roleDescription}
           className={joinClasses(
             isStyled && styles.carousel,
             isStyled && styles[variant],

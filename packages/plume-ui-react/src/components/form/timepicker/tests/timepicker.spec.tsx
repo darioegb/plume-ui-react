@@ -34,7 +34,7 @@ describe('TimePicker', () => {
 
   it('emits the value once the typed time is complete and valid', () => {
     const onChange = vi.fn()
-    render(<TimePicker onChange={onChange} />)
+    render(<TimePicker onValueChange={onChange} />)
     const input = screen.getByRole('textbox')
     fireEvent.change(input, { target: { value: '0930' } })
     expect(input).toHaveValue('09:30')
@@ -43,7 +43,7 @@ describe('TimePicker', () => {
 
   it('does not emit an incomplete or invalid time', () => {
     const onChange = vi.fn()
-    render(<TimePicker onChange={onChange} />)
+    render(<TimePicker onValueChange={onChange} />)
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '0' } })
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '2599' } })
     expect(onChange).not.toHaveBeenCalled()
@@ -61,7 +61,7 @@ describe('TimePicker', () => {
 
   it('clears the value when the input is emptied', () => {
     const onChange = vi.fn()
-    render(<TimePicker defaultValue="10:00" onChange={onChange} />)
+    render(<TimePicker defaultValue="10:00" onValueChange={onChange} />)
     const input = screen.getByRole('textbox')
     fireEvent.change(input, { target: { value: '' } })
     fireEvent.blur(input)
@@ -91,7 +91,7 @@ describe('TimePicker', () => {
 
   it('picks the hour keeping the popup open and the minute closing it', () => {
     const onChange = vi.fn()
-    render(<TimePicker defaultValue="09:15" onChange={onChange} />)
+    render(<TimePicker defaultValue="09:15" onValueChange={onChange} />)
     openPicker()
     pick('Hours', '18')
     expect(onChange).toHaveBeenLastCalledWith('18:15')
@@ -105,7 +105,7 @@ describe('TimePicker', () => {
 
   it('starts from midnight when picking with no value', () => {
     const onChange = vi.fn()
-    render(<TimePicker onChange={onChange} />)
+    render(<TimePicker onValueChange={onChange} />)
     openPicker()
     expect(screen.getAllByRole('option').filter((option) => option.tabIndex === 0)).toHaveLength(2)
     pick('Hours', '07')
@@ -187,7 +187,7 @@ describe('TimePicker', () => {
       const [value, setValue] = useState('08:00')
       return (
         <>
-          <TimePicker onChange={setValue} value={value} />
+          <TimePicker onValueChange={setValue} value={value} />
           <button
             onClick={() => {
               setValue('21:45')
@@ -268,7 +268,7 @@ describe('TimePicker', () => {
 
     it('keeps the period when picking the hour and changes the hours when picking the period', () => {
       const onChange = vi.fn()
-      render(<TimePicker defaultValue="15:30" hour12 onChange={onChange} />)
+      render(<TimePicker defaultValue="15:30" hour12 onValueChange={onChange} />)
       openPicker()
       pick('Hours', '09')
       expect(onChange).toHaveBeenLastCalledWith('21:30')
@@ -278,7 +278,7 @@ describe('TimePicker', () => {
 
     it('parses the typed time on blur', () => {
       const onChange = vi.fn()
-      render(<TimePicker hour12 onChange={onChange} />)
+      render(<TimePicker hour12 onValueChange={onChange} />)
       const input = screen.getByRole('textbox')
       fireEvent.change(input, { target: { value: '7:05 pm' } })
       expect(onChange).not.toHaveBeenCalled()
@@ -327,7 +327,7 @@ describe('TimePicker', () => {
 
     it('shows the panel without the input and keeps it open when a minute is picked', () => {
       const onChange = vi.fn()
-      render(<TimePicker defaultValue="09:00" isPanel onChange={onChange} />)
+      render(<TimePicker defaultValue="09:00" panel onValueChange={onChange} />)
       expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
       expect(screen.getByRole('dialog', { name: 'Time picker' })).toHaveClass('inline')
 
@@ -340,7 +340,7 @@ describe('TimePicker', () => {
 
     it('names the panel with its own label', () => {
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel aria-label="Start time" />
         </TimePicker>,
       )
@@ -394,7 +394,7 @@ describe('TimePicker', () => {
                   inputRef={field.ref}
                   name={field.name}
                   onBlur={field.onBlur}
-                  onChange={field.onChange}
+                  onValueChange={field.onChange}
                   value={field.value}
                 />
               )}

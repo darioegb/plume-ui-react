@@ -31,7 +31,7 @@ const VARIANT_CLASS = {
 } as const
 
 /**
- * The popup, or the page content when the picker is `isPanel`. Given no children it holds the
+ * The popup, or the page content when the picker is `panel`. Given no children it holds the
  * hours, the minutes and, with `hour12`, the period.
  */
 export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(

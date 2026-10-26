@@ -39,7 +39,7 @@ const part = (name: string): HTMLElement =>
 
 describe('DatePicker parts', () => {
   it('renders the default composition from the parts', () => {
-    render(<DatePicker onChange={vi.fn()} showFooter />)
+    render(<DatePicker onValueChange={vi.fn()} showFooter />)
     openCalendar()
     for (const name of [
       'trigger',
@@ -67,7 +67,7 @@ describe('DatePicker parts', () => {
   })
 
   it('renders two pages for a range', () => {
-    render(<DatePicker isCalendar isRange onChange={vi.fn()} />)
+    render(<DatePicker calendar range onValueChange={vi.fn()} />)
     expect(document.querySelectorAll('[data-plume-datepicker-page]')).toHaveLength(2)
   })
 
@@ -86,7 +86,7 @@ describe('DatePicker parts', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
     expect(() =>
       render(
-        <DatePicker isCalendar onChange={vi.fn()}>
+        <DatePicker calendar onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerGrid />
           </DatePickerCalendar>
@@ -100,7 +100,7 @@ describe('DatePicker parts', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
     expect(() =>
       render(
-        <DatePicker onChange={vi.fn()}>
+        <DatePicker onValueChange={vi.fn()}>
           <DatePickerTrigger />
         </DatePicker>,
       ),
@@ -111,7 +111,7 @@ describe('DatePicker parts', () => {
   describe('input parts', () => {
     it('lets the trigger go before the field', () => {
       render(
-        <DatePicker onChange={vi.fn()}>
+        <DatePicker onValueChange={vi.fn()}>
           <DatePickerInput>
             <InputControl>
               <InputElement>
@@ -135,7 +135,7 @@ describe('DatePicker parts', () => {
       const fieldRef = createRef<HTMLInputElement>()
       const triggerRef = createRef<HTMLButtonElement>()
       render(
-        <DatePicker onChange={vi.fn()}>
+        <DatePicker onValueChange={vi.fn()}>
           <DatePickerInput>
             <InputControl>
               <DatePickerField className="field-mine" ref={fieldRef} />
@@ -158,7 +158,7 @@ describe('DatePicker parts', () => {
     })
 
     it('marks the trigger as open', () => {
-      render(<DatePicker onChange={vi.fn()} />)
+      render(<DatePicker onValueChange={vi.fn()} />)
       const trigger = screen.getByRole('button', { name: 'Open calendar' })
       expect(trigger).not.toHaveAttribute('data-open')
       openCalendar()
@@ -168,7 +168,7 @@ describe('DatePicker parts', () => {
     it('keeps the inputRef of the DatePickerInput on the field', () => {
       const inputRef = createRef<HTMLInputElement>()
       render(
-        <DatePicker onChange={vi.fn()}>
+        <DatePicker onValueChange={vi.fn()}>
           <DatePickerInput inputRef={inputRef} />
         </DatePicker>,
       )
@@ -180,7 +180,7 @@ describe('DatePicker parts', () => {
     it('styles and refs every part', () => {
       const ref = createRef<HTMLDivElement>()
       render(
-        <DatePicker isCalendar onChange={vi.fn()} showFooter>
+        <DatePicker calendar onValueChange={vi.fn()} showFooter>
           <DatePickerCalendar className="calendar-mine" ref={ref} style={{ margin: 3 }}>
             <DatePickerPages className="pages-mine">
               <DatePickerPage className="page-mine">
@@ -233,7 +233,7 @@ describe('DatePicker parts', () => {
 
     it('reorders and omits parts', () => {
       render(
-        <DatePicker isCalendar onChange={vi.fn()}>
+        <DatePicker calendar onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -257,7 +257,7 @@ describe('DatePicker parts', () => {
 
     it('replaces the content of a part', () => {
       render(
-        <DatePicker isCalendar onChange={vi.fn()} showFooter>
+        <DatePicker calendar onValueChange={vi.fn()} showFooter>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -286,14 +286,14 @@ describe('DatePicker parts', () => {
     })
 
     it('navigates with custom previous and next parts and the labels of the root', () => {
-      render(<DatePicker isCalendar labels={{ nextMonth: 'Adelante' }} onChange={vi.fn()} />)
+      render(<DatePicker calendar labels={{ nextMonth: 'Adelante' }} onValueChange={vi.fn()} />)
       const month = part('month-button').textContent
       fireEvent.click(screen.getByRole('button', { name: 'Adelante' }))
       expect(part('month-button').textContent).not.toBe(month)
     })
 
     it('switches the views and pages through the years', () => {
-      render(<DatePicker isCalendar onChange={vi.fn()} />)
+      render(<DatePicker calendar onValueChange={vi.fn()} />)
       fireEvent.click(part('year-button'))
       expect(part('years')).not.toBeNull()
       expect(part('year-button')).toHaveAttribute('data-active')
@@ -311,7 +311,7 @@ describe('DatePicker parts', () => {
     })
 
     it('picks a year', () => {
-      render(<DatePicker isCalendar onChange={vi.fn()} />)
+      render(<DatePicker calendar onValueChange={vi.fn()} />)
       fireEvent.click(part('year-button'))
       const option = within(part('years')).getAllByRole('button')[2]
       fireEvent.click(option)
@@ -320,7 +320,7 @@ describe('DatePicker parts', () => {
 
     it('renders days, weekdays, months and years from render functions', () => {
       render(
-        <DatePicker isCalendar onChange={vi.fn()}>
+        <DatePicker calendar onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -380,7 +380,7 @@ describe('DatePicker parts', () => {
 
     it('takes the children of the grid and weekdays as plain nodes', () => {
       render(
-        <DatePicker isCalendar onChange={vi.fn()}>
+        <DatePicker calendar onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -405,10 +405,10 @@ describe('DatePicker parts', () => {
       const today = new Date()
       render(
         <DatePicker
-          isCalendar
+          calendar
           maxDate={new Date(today.getFullYear(), today.getMonth(), 28)}
           minDate={new Date(today.getFullYear(), today.getMonth(), 2)}
-          onChange={vi.fn()}
+          onValueChange={vi.fn()}
           value={{ startDate: new Date(today.getFullYear(), today.getMonth(), 10), endDate: null }}
         />,
       )
@@ -426,8 +426,8 @@ describe('DatePicker parts', () => {
       const today = new Date()
       render(
         <DatePicker
-          isRange
-          onChange={vi.fn()}
+          range
+          onValueChange={vi.fn()}
           value={{
             startDate: new Date(today.getFullYear(), today.getMonth(), 3),
             endDate: new Date(today.getFullYear(), today.getMonth(), 6),
@@ -441,7 +441,7 @@ describe('DatePicker parts', () => {
 
     it('selects a day through a standalone day part and lets the footer apply it', () => {
       const onChange = vi.fn()
-      render(<DatePicker isCalendar onChange={onChange} showFooter />)
+      render(<DatePicker calendar onValueChange={onChange} showFooter />)
       fireEvent.click(
         document.querySelector('[data-plume-datepicker-day]:not([aria-hidden])') as HTMLElement,
       )
@@ -452,7 +452,7 @@ describe('DatePicker parts', () => {
 
     it('renders nothing but the content when the day has children', () => {
       render(
-        <DatePicker isCalendar onChange={vi.fn()}>
+        <DatePicker calendar onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -472,13 +472,13 @@ describe('DatePicker parts', () => {
     })
 
     it('marks the inline calendar', () => {
-      render(<DatePicker isCalendar onChange={vi.fn()} />)
+      render(<DatePicker calendar onValueChange={vi.fn()} />)
       expect(screen.getByRole('dialog')).toHaveAttribute('data-inline')
     })
 
     it('cancels from a custom footer', () => {
       render(
-        <DatePicker onChange={vi.fn()} showFooter>
+        <DatePicker onValueChange={vi.fn()} showFooter>
           <DatePickerInput />
           <DatePickerCalendar />
         </DatePicker>,

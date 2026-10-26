@@ -46,7 +46,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
       orientation,
       sizeClass,
       setActiveTabIndex,
-      onChange,
+      onIndexChange: onChange,
     } = useTabs()
     const index = useTabIndex(indexProp)
     const isActive = index === activeIndex

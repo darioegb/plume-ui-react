@@ -11,10 +11,10 @@ interface Values {
 const emptyRange = { startDate: null, endDate: null }
 
 function BookingForm({
-  isRange = false,
+  range: isRange = false,
   onSubmit,
 }: {
-  isRange?: boolean
+  range?: boolean
   onSubmit: (values: Values) => void
 }): React.ReactNode {
   const { control, handleSubmit } = useForm<Values>({ defaultValues: { date: emptyRange } })
@@ -35,10 +35,10 @@ function BookingForm({
               aria-describedby="date-error"
               aria-invalid={fieldState.invalid}
               inputRef={field.ref}
-              isRange={isRange}
+              range={isRange}
               name={field.name}
               onBlur={field.onBlur}
-              onChange={field.onChange}
+              onValueChange={field.onChange}
               value={field.value}
             />
             {fieldState.error ? <p id="date-error">{fieldState.error.message}</p> : null}
@@ -100,7 +100,7 @@ describe('DatePicker with react-hook-form', () => {
 
   it('submits a picked range', async () => {
     const onSubmit = vi.fn()
-    render(<BookingForm isRange onSubmit={onSubmit} />)
+    render(<BookingForm range onSubmit={onSubmit} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Open calendar' }))
     pickDay(10)
@@ -118,7 +118,7 @@ describe('DatePicker with react-hook-form', () => {
 
   it('submits a range that was typed and sent right away, without waiting', async () => {
     const onSubmit = vi.fn()
-    render(<BookingForm isRange onSubmit={onSubmit} />)
+    render(<BookingForm range onSubmit={onSubmit} />)
 
     await userEvent.type(screen.getByRole('textbox'), '10/01/2026 - 10/05/2026{Enter}')
 

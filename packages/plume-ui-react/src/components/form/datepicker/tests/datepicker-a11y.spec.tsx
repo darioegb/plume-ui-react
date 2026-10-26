@@ -19,14 +19,14 @@ const open = async (): Promise<void> => {
 
 describe('DatePicker accessibility', () => {
   it('asks the browser not to autofill the input and describes its format', () => {
-    render(<DatePicker onChange={vi.fn()} />)
+    render(<DatePicker onValueChange={vi.fn()} />)
     const input = screen.getByRole('textbox')
     expect(input).toHaveAttribute('autocomplete', 'off')
     expect(input).toHaveAccessibleDescription('Format: mm/dd/yyyy')
   })
 
   it('describes the format of a range and of another language', () => {
-    const { rerender } = render(<DatePicker isRange onChange={vi.fn()} />)
+    const { rerender } = render(<DatePicker range onValueChange={vi.fn()} />)
     expect(screen.getByRole('textbox')).toHaveAccessibleDescription(
       'Format: mm/dd/yyyy - mm/dd/yyyy',
     )
@@ -34,7 +34,7 @@ describe('DatePicker accessibility', () => {
       <DatePicker
         displayFormat="dd/mm/yyyy"
         labels={{ format: (format) => `Formato: ${format}` }}
-        onChange={vi.fn()}
+        onValueChange={vi.fn()}
       />,
     )
     expect(screen.getByRole('textbox')).toHaveAccessibleDescription('Formato: dd/mm/yyyy')
@@ -44,7 +44,7 @@ describe('DatePicker accessibility', () => {
     render(
       <>
         <p id="help">Your birthday</p>
-        <DatePicker aria-describedby="help" onChange={vi.fn()} />
+        <DatePicker aria-describedby="help" onValueChange={vi.fn()} />
       </>,
     )
     expect(screen.getByRole('textbox')).toHaveAccessibleDescription(
@@ -53,7 +53,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('links the button to the dialog it opens, which is modal', async () => {
-    render(<DatePicker onChange={vi.fn()} value={value} />)
+    render(<DatePicker onValueChange={vi.fn()} value={value} />)
     const button = screen.getByRole('button', { name: 'Open calendar' })
     expect(button).not.toHaveAttribute('aria-controls')
     await open()
@@ -63,7 +63,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('leaves the always visible calendar without modal semantics', () => {
-    render(<DatePicker isCalendar onChange={vi.fn()} value={value} />)
+    render(<DatePicker calendar onValueChange={vi.fn()} value={value} />)
     const dialog = screen.getByRole('dialog', { name: 'Calendar' })
     expect(dialog).not.toHaveAttribute('aria-modal')
     expect(dialog).not.toHaveAttribute('id')
@@ -72,7 +72,7 @@ describe('DatePicker accessibility', () => {
   it('moves the focus to the selected day and keeps Tab inside the dialog', async () => {
     render(
       <>
-        <DatePicker onChange={vi.fn()} value={value} />
+        <DatePicker onValueChange={vi.fn()} value={value} />
         <button type="button">after</button>
       </>,
     )
@@ -90,7 +90,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('announces the month that is shown when it changes', async () => {
-    render(<DatePicker onChange={vi.fn()} value={value} />)
+    render(<DatePicker onValueChange={vi.fn()} value={value} />)
     await open()
     const status = screen.getByRole('status')
     expect(status).toHaveTextContent('June 2026')
@@ -100,13 +100,13 @@ describe('DatePicker accessibility', () => {
   })
 
   it('announces only the first month of a range', async () => {
-    render(<DatePicker isRange onChange={vi.fn()} value={value} />)
+    render(<DatePicker range onValueChange={vi.fn()} value={value} />)
     await open()
     expect(screen.getAllByRole('status')).toHaveLength(1)
   })
 
   it('tells whether the month and the year lists are open', async () => {
-    render(<DatePicker onChange={vi.fn()} value={value} />)
+    render(<DatePicker onValueChange={vi.fn()} value={value} />)
     await open()
     const month = screen.getByRole('button', { name: 'June' })
     const year = screen.getByRole('button', { name: '2026' })
@@ -118,7 +118,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('gives the focus back to the month button after choosing a month', async () => {
-    render(<DatePicker onChange={vi.fn()} value={value} />)
+    render(<DatePicker onValueChange={vi.fn()} value={value} />)
     await open()
     await userEvent.click(screen.getByRole('button', { name: 'June' }))
     await userEvent.click(screen.getByRole('button', { name: 'March' }))
@@ -127,7 +127,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('gives the focus back to the year button after choosing a year', async () => {
-    render(<DatePicker onChange={vi.fn()} value={value} />)
+    render(<DatePicker onValueChange={vi.fn()} value={value} />)
     await open()
     await userEvent.click(screen.getByRole('button', { name: '2026' }))
     await userEvent.click(screen.getByRole('button', { name: '2030' }))
@@ -136,7 +136,7 @@ describe('DatePicker accessibility', () => {
 
   it('lets text children name the buttons that change the month', async () => {
     render(
-      <DatePicker onChange={vi.fn()} value={value}>
+      <DatePicker onValueChange={vi.fn()} value={value}>
         <DatePickerInput aria-label="Date" />
         <DatePickerCalendar>
           <DatePickerPage>
@@ -157,7 +157,7 @@ describe('DatePicker accessibility', () => {
 
   it('names the input with the aria-label it is given, also in a composition', () => {
     render(
-      <DatePicker onChange={vi.fn()}>
+      <DatePicker onValueChange={vi.fn()}>
         <DatePickerInput aria-label="Birthday" />
       </DatePicker>,
     )

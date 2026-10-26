@@ -35,7 +35,7 @@ export default {
     label: { control: 'text' },
     iconLeft: { control: false },
     iconRight: { control: false },
-    isBusy: { control: 'boolean' },
+    busy: { control: 'boolean' },
     busyText: { control: 'text' },
     labels: { control: false },
     shape: { control: 'inline-radio', options: ['pill', 'rounded'] },
@@ -60,7 +60,7 @@ export default {
   },
   args: {
     disabled: false,
-    isBusy: false,
+    busy: false,
   },
 } satisfies Meta<typeof Button>
 
@@ -336,12 +336,12 @@ export const Block: Story = {
 
 /**
  * This is a Button with busy state.
- * Use **isBusy** to show a spinner and disable the Button,
+ * Use **busy** to show a spinner and disable the Button,
  * and **busyText** to replace the label while it is busy.
  */
 export const Busy: Story = {
   args: {
-    isBusy: true,
+    busy: true,
     busyText: 'Loading...',
     label: 'Busy Button',
   },
@@ -349,13 +349,11 @@ export const Busy: Story = {
     docs: {
       source: {
         code: `<Button 
-  isBusy 
-  label="Busy Default Button" 
+  busy  label="Busy Default Button" 
 />
 <Button 
   busyText="Loading..." 
-  isBusy 
-  label="Busy Button" 
+  busy  label="Busy Button" 
 />
         `,
       },
@@ -363,8 +361,8 @@ export const Busy: Story = {
   },
   render: () => (
     <div className='flex flex-wrap justify-center items-center gap-4'>
-      <Button isBusy label='Busy Default Button' />
-      <Button busyText='Loading...' isBusy label='Busy Button' />
+      <Button busy label='Busy Default Button' />
+      <Button busyText='Loading...' busy label='Busy Button' />
     </div>
   ),
 }

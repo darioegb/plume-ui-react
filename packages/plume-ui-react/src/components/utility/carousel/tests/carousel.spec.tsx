@@ -59,6 +59,18 @@ describe('Carousel component', () => {
       expect(region).toHaveAttribute('aria-roledescription', 'carousel')
     })
 
+    it('translates the role descriptions of the carousel and of its slides', () => {
+      render(<Demo labels={{ roleDescription: 'carrusel', slideRoleDescription: 'diapositiva' }} />)
+      expect(screen.getByRole('region', { name: 'Photos' })).toHaveAttribute(
+        'aria-roledescription',
+        'carrusel',
+      )
+      expect(screen.getAllByRole('tabpanel')[0]).toHaveAttribute(
+        'aria-roledescription',
+        'diapositiva',
+      )
+    })
+
     it('renders every slide as a labelled tab panel', () => {
       render(<Demo />)
       const groups = screen.getAllByRole('tabpanel')

@@ -36,7 +36,7 @@ export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
 
 const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
-/** The field with its button. It renders nothing when the `DatePicker` is `isCalendar`. */
+/** The field with its button. It renders nothing when the `DatePicker` is `calendar`. */
 export function DatePickerInput({
   children,
   className,
@@ -66,7 +66,7 @@ export function DatePickerInput({
   const [inputValue, setInputValue] = useState<string>(
     getDateStringByLanguage({
       displayFormat,
-      isRange,
+      range: isRange,
       ...(startDate && { startDate }),
       ...(endDate && { endDate }),
       language,
@@ -123,7 +123,7 @@ export function DatePickerInput({
     setInputValue(
       getDateStringByLanguage({
         displayFormat,
-        isRange,
+        range: isRange,
         ...(startDate && { startDate }),
         ...(endDate && { endDate }),
         language,

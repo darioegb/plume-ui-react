@@ -39,6 +39,41 @@ A control that has no visible text needs an `aria-label`. In a `RadioGroup`, giv
 </RadioGroup>
 ```
 
+## One name for the value callback and for flags
+
+The value of a component is always reported by `onValueChange`, and a flag is a plain adjective, without `is`. The
+components that are a single native `<input>` or `<textarea>` (`Input`, `Textarea`, `Checkbox`, `Toggle`, `Radio`)
+keep the `onChange` of the element, with its event.
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>DatePicker</code></td><td><code>onChange</code></td><td><code>onValueChange</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>onChange</code></td><td><code>onValueChange</code></td></tr>
+    <tr><td><code>RadioGroup</code></td><td><code>onChange</code></td><td><code>onValueChange</code>, still called with the value and the event</td></tr>
+    <tr><td><code>Tabs</code></td><td><code>onChange</code></td><td><code>onIndexChange</code>, the same name as the <code>Carousel</code></td></tr>
+    <tr><td><code>Button</code></td><td><code>isBusy</code></td><td><code>busy</code></td></tr>
+    <tr><td><code>DatePicker</code></td><td><code>isRange</code>, <code>isCalendar</code></td><td><code>range</code>, <code>calendar</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>isPanel</code></td><td><code>panel</code></td></tr>
+    <tr><td><code>Tabs</code></td><td><code>isLazy</code></td><td><code>lazy</code></td></tr>
+  </tbody>
+</table>
+
+```tsx
+// Before
+<DatePicker onChange={setValue} isRange />
+<Button isBusy label='Save' />
+
+// After
+<DatePicker onValueChange={setValue} range />
+<Button busy label='Save' />
+```
+
+With react-hook-form, `onValueChange={field.onChange}` goes on the components of the table, and `onChange` on the
+native ones. The `range` option of `getDateStringByLanguage` has the same change.
+
 ## Every element is a part
 
 In 0.x, a component with inner parts styled them through loose props (`inputClassName`, `backdropClassName`...) and
@@ -96,7 +131,7 @@ longer on the `DatePickerInput`.
 </DatePicker>
 
 // After
-<DatePicker onChange={onChange} variant='filled' size='sm'>
+<DatePicker onValueChange={onChange} variant='filled' size='sm'>
   <DatePickerInput />
   <DatePickerCalendar />
 </DatePicker>
@@ -227,7 +262,7 @@ takes a render function to style or replace each item.
 <DatePicker onChange={onChange} classNames={{ input: 'font-mono' }} />
 
 // After
-<DatePicker onChange={onChange}>
+<DatePicker onValueChange={onChange}>
   <DatePickerInput>
     <InputControl>
       <DatePickerField className='font-mono' />

@@ -18,7 +18,7 @@ describe('TimePicker parts', () => {
   describe('the panel', () => {
     it('lists only the columns it is given', () => {
       render(
-        <TimePicker defaultValue="09:30" isPanel>
+        <TimePicker defaultValue="09:30" panel>
           <TimePickerPanel>
             <TimePickerMinutes />
             <TimePickerHours />
@@ -31,7 +31,7 @@ describe('TimePicker parts', () => {
 
     it('can hold only the hours', () => {
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel>
             <TimePickerHours />
           </TimePickerPanel>
@@ -43,7 +43,7 @@ describe('TimePicker parts', () => {
     it('takes className, style and ref and marks itself', () => {
       const ref = createRef<HTMLDivElement>()
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel className="mine" ref={ref} style={{ width: 123 }} />
         </TimePicker>,
       )
@@ -66,7 +66,7 @@ describe('TimePicker parts', () => {
       const hours = createRef<HTMLDivElement>()
       const minutes = createRef<HTMLDivElement>()
       render(
-        <TimePicker hour12 isPanel>
+        <TimePicker hour12 panel>
           <TimePickerPanel>
             <TimePickerHours className="h" ref={hours} style={{ width: 11 }} />
             <TimePickerMinutes className="m" ref={minutes} />
@@ -87,7 +87,7 @@ describe('TimePicker parts', () => {
 
     it('are named with their own label or the one of the picker', () => {
       render(
-        <TimePicker isPanel labels={{ hours: 'Horas' }}>
+        <TimePicker panel labels={{ hours: 'Horas' }}>
           <TimePickerPanel>
             <TimePickerHours />
             <TimePickerMinutes aria-label="Mins" />
@@ -100,7 +100,7 @@ describe('TimePicker parts', () => {
 
     it('leave the period out when the picker has 24 hours', () => {
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel>
             <TimePickerPeriod />
           </TimePickerPanel>
@@ -112,7 +112,7 @@ describe('TimePicker parts', () => {
     it('render the options with a function and keep the keyboard and the selection', () => {
       const onChange = vi.fn()
       render(
-        <TimePicker defaultValue="10:00" isPanel onChange={onChange}>
+        <TimePicker defaultValue="10:00" panel onValueChange={onChange}>
           <TimePickerPanel>
             <TimePickerHours>
               {(option) => (
@@ -140,7 +140,7 @@ describe('TimePicker parts', () => {
 
     it('can render something else than an option', () => {
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel>
             <TimePickerMinutes>
               {(option) => <i key={option.value}>{option.label}</i>}
@@ -157,7 +157,7 @@ describe('TimePicker parts', () => {
     it('takes ref and style, marks itself and replaces the label with children', () => {
       const ref = createRef<HTMLButtonElement>()
       render(
-        <TimePicker isPanel>
+        <TimePicker panel>
           <TimePickerPanel>
             <TimePickerMinutes>
               {() => (
@@ -181,7 +181,7 @@ describe('TimePicker parts', () => {
       const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
       expect(() =>
         render(
-          <TimePicker isPanel>
+          <TimePicker panel>
             <TimePickerOption option={{ label: '01', value: 1 }} />
           </TimePicker>,
         ),
@@ -318,7 +318,7 @@ describe('TimePicker parts', () => {
 
   describe('unstyled', () => {
     it('drops the Plume classes of the columns and options but keeps the structure marks', () => {
-      render(<TimePicker defaultValue="10:15" isPanel variant="unstyled" />)
+      render(<TimePicker defaultValue="10:15" panel variant="unstyled" />)
       const hours = column('Hours')
       const selected = within(hours).getByRole('option', { name: '10' })
       expect(hours).not.toHaveAttribute('class')
@@ -329,7 +329,7 @@ describe('TimePicker parts', () => {
 
     it('keeps only the class of the user on its parts', () => {
       render(
-        <TimePicker defaultValue="10:15" isPanel variant="unstyled">
+        <TimePicker defaultValue="10:15" panel variant="unstyled">
           <TimePickerPanel>
             <TimePickerHours className="mine">
               {(option) => <TimePickerOption className="opt" key={option.value} option={option} />}
@@ -342,7 +342,7 @@ describe('TimePicker parts', () => {
     })
 
     it('styles the parts in the other variants', () => {
-      render(<TimePicker defaultValue="10:15" isPanel />)
+      render(<TimePicker defaultValue="10:15" panel />)
       expect(column('Hours')).toHaveClass('column')
       expect(within(column('Hours')).getByRole('option', { name: '10' })).toHaveClass(
         'option',

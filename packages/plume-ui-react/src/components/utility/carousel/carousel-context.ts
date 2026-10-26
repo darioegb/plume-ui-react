@@ -11,7 +11,9 @@ export interface CarouselLabels {
   pause: string
   play: string
   previous: string
+  roleDescription: string
   slide: (index: number, count: number) => string
+  slideRoleDescription: string
 }
 
 export interface CarouselContextValue {

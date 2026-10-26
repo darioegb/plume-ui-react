@@ -37,7 +37,7 @@ describe('TimePicker accessibility', () => {
   })
 
   it('leaves the always visible panel without modal semantics', () => {
-    render(<TimePicker defaultValue="09:30" isPanel />)
+    render(<TimePicker defaultValue="09:30" panel />)
     const dialog = screen.getByRole('dialog', { name: 'Time picker' })
     expect(dialog).not.toHaveAttribute('aria-modal')
     expect(dialog).not.toHaveAttribute('id')

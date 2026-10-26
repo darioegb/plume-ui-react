@@ -73,14 +73,14 @@ export function getMonthsByLanguage(language?: string): string[] {
 
 export function getDateStringByLanguage({
   displayFormat,
-  isRange,
+  range: isRange,
   startDate,
   endDate,
   language,
 }: {
   displayFormat?: string
   startDate?: Date
-  isRange?: boolean
+  range?: boolean
   endDate?: Date
   language?: string
 }): string {

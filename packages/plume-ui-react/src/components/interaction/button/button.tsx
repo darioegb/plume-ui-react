@@ -19,7 +19,7 @@ export interface ButtonLabels {
 
 export interface ButtonOwnProps {
   /**
-   * Text shown instead of the label while `isBusy` is set.
+   * Text shown instead of the label while `busy` is set.
    *
    * @default ''
    */
@@ -41,12 +41,12 @@ export interface ButtonOwnProps {
    *
    * @default false
    */
-  isBusy?: boolean
+  busy?: boolean
   /** Text of the Button. When `children` are also set, they render after the label. */
   label?: string
   /**
    * The texts the Button adds, to translate them: `busy` is the accessible name of the spinner
-   * shown while `isBusy` is set.
+   * shown while `busy` is set.
    */
   labels?: Partial<ButtonLabels>
   /**
@@ -167,7 +167,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className = '',
       colorScheme ='secondary',
       disabled = false,
-      isBusy = false,
+      busy: isBusy = false,
       shape = 'rounded',
       size = 'md',
       type = 'button',

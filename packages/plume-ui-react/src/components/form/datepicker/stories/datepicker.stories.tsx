@@ -33,7 +33,7 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  *
  * On its own it shows an input with a button that opens the calendar. To change what it shows or the order, give
  * it its parts as children: `DatePickerInput` is the field with the button, and `DatePickerCalendar` the calendar
- * (a popup under the input, or always visible with `isCalendar`). The `DatePicker` keeps the value and the state
+ * (a popup under the input, or always visible with `calendar`). The `DatePicker` keeps the value and the state
  * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
  * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
  * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
@@ -74,8 +74,8 @@ export default {
   argTypes: {
     className: { control: 'text' },
     value: { control: false },
-    isCalendar: { control: 'boolean' },
-    isRange: { control: 'boolean' },
+    calendar: { control: 'boolean' },
+    range: { control: 'boolean' },
     colorScheme: { control: 'select', options: colorSchemes },
     disabled: { control: 'boolean' },
     displayFormat: { control: 'text' },
@@ -100,7 +100,7 @@ export default {
   ),
   args: {
     disabled: false,
-    isRange: false,
+    range: false,
     readOnly: false,
     showFooter: false,
   },
@@ -121,7 +121,7 @@ export const Default: Story = {
         code: `<DatePicker
   aria-label="Date"
   colorScheme="primary"
-  onChange={() => {}}
+  onValueChange={() => {}}
   value={{
     endDate: null,
     startDate: null
@@ -141,10 +141,10 @@ export const Variants: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker aria-label="Outline DatePicker" placeholder="Outline DatePicker" variant="outline" value={value} onChange={handleValueChange} />
-<DatePicker aria-label="Underline DatePicker" placeholder="Underline DatePicker" variant="underline" value={value} onChange={handleValueChange} />
-<DatePicker aria-label="Filled DatePicker" placeholder="Filled DatePicker" variant="filled" value={value} onChange={handleValueChange} />
-<DatePicker aria-label="Unstyled DatePicker" placeholder="Unstyled DatePicker" variant="unstyled" value={value} onChange={handleValueChange} />
+        code: `<DatePicker aria-label="Outline DatePicker" placeholder="Outline DatePicker" variant="outline" value={value} onValueChange={handleValueChange} />
+<DatePicker aria-label="Underline DatePicker" placeholder="Underline DatePicker" variant="underline" value={value} onValueChange={handleValueChange} />
+<DatePicker aria-label="Filled DatePicker" placeholder="Filled DatePicker" variant="filled" value={value} onValueChange={handleValueChange} />
+<DatePicker aria-label="Unstyled DatePicker" placeholder="Unstyled DatePicker" variant="unstyled" value={value} onValueChange={handleValueChange} />
           `,
       },
     },
@@ -163,28 +163,28 @@ export const Variants: Story = {
       <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
         <DatePicker
           aria-label='Outline DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Outline DatePicker'
           value={value}
           variant='outline'
         />
         <DatePicker
           aria-label='Underline DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Underline DatePicker'
           value={value}
           variant='underline'
         />
         <DatePicker
           aria-label='Filled DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Filled DatePicker'
           value={value}
           variant='filled'
         />
         <DatePicker
           aria-label='Unstyled DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Unstyled DatePicker'
           value={value}
           variant='unstyled'
@@ -202,9 +202,9 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker aria-label="Small DatePicker" size="sm" placeholder="Small DatePicker" value={value} onChange={handleValueChange} />
-<DatePicker aria-label="Medium DatePicker" size="md" placeholder="Medium DatePicker" value={value} onChange={handleValueChange} />
-<DatePicker aria-label="Large DatePicker" size="lg" placeholder="Large DatePicker" value={value} onChange={handleValueChange} />
+        code: `<DatePicker aria-label="Small DatePicker" size="sm" placeholder="Small DatePicker" value={value} onValueChange={handleValueChange} />
+<DatePicker aria-label="Medium DatePicker" size="md" placeholder="Medium DatePicker" value={value} onValueChange={handleValueChange} />
+<DatePicker aria-label="Large DatePicker" size="lg" placeholder="Large DatePicker" value={value} onValueChange={handleValueChange} />
           `,
       },
     },
@@ -223,21 +223,21 @@ export const Sizes: Story = {
       <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
         <DatePicker
           aria-label='Small DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Small DatePicker'
           size='sm'
           value={value}
         />
         <DatePicker
           aria-label='Medium DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Medium DatePicker'
           size='md'
           value={value}
         />
         <DatePicker
           aria-label='Large DatePicker'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Large DatePicker'
           size='lg'
           value={value}
@@ -261,42 +261,42 @@ export const Colors: Story = {
   colorScheme="primary"
   placeholder="Primary DatePicker"
   value={value}
-  onChange={handleValueChange} 
+  onValueChange={handleValueChange} 
 />
 <DatePicker
   aria-label="Secondary DatePicker"
   colorScheme="secondary"
   placeholder="Secondary DatePicker"
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
 />
 <DatePicker
   aria-label="Info DatePicker"
   colorScheme="info"
   placeholder="Info DatePicker"
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
 />
 <DatePicker
   aria-label="Warning DatePicker"
   colorScheme="warning"
   placeholder="Warning DatePicker"
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
 />
 <DatePicker
   aria-label="Error DatePicker"
   colorScheme="error"
   placeholder="Error DatePicker"
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
 />
 <DatePicker
   aria-label="Success DatePicker"
   colorScheme="success"
   placeholder="Success DatePicker"
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
 />
           `,
       },
@@ -314,46 +314,46 @@ export const Colors: Story = {
     }
     return (
       <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
-        <DatePicker aria-label='Default DatePicker' onChange={handleValueChange} placeholder='Default DatePicker' value={value} />
+        <DatePicker aria-label='Default DatePicker' onValueChange={handleValueChange} placeholder='Default DatePicker' value={value} />
         <DatePicker
           aria-label='Primary DatePicker'
           colorScheme='primary'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Primary DatePicker'
           value={value}
         />
         <DatePicker
           aria-label='Secondary DatePicker'
           colorScheme='secondary'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Secondary DatePicker'
           value={value}
         />
         <DatePicker
           aria-label='Info DatePicker'
           colorScheme='info'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Info DatePicker'
           value={value}
         />
         <DatePicker
           aria-label='Warning DatePicker'
           colorScheme='warning'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Warning DatePicker'
           value={value}
         />
         <DatePicker
           aria-label='Error DatePicker'
           colorScheme='error'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Error DatePicker'
           value={value}
         />
         <DatePicker
           aria-label='Success DatePicker'
           colorScheme='success'
-          onChange={handleValueChange}
+          onValueChange={handleValueChange}
           placeholder='Success DatePicker'
           value={value}
         />
@@ -368,7 +368,7 @@ export const Colors: Story = {
 export const RangeSelection: Story = {
   args: {
     ...Default.args,
-    isRange: true,
+    range: true,
   },
 }
 
@@ -428,7 +428,7 @@ export const CustomParts: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker showFooter onChange={onChange}>
+        code: `<DatePicker showFooter onValueChange={onChange}>
   <DatePickerInput aria-label="Date" />
   <DatePickerCalendar>
     <DatePickerPages>
@@ -452,8 +452,8 @@ export const CustomParts: Story = {
       },
     },
   },
-  render: ({ onChange }) => (
-    <DatePicker config={{ language: 'en' }} onChange={onChange} showFooter value={defaultDateRangeValue}>
+  render: ({ onValueChange: onChange }) => (
+    <DatePicker config={{ language: 'en' }} onValueChange={onChange} showFooter value={defaultDateRangeValue}>
       <DatePickerInput aria-label='Date' />
       <DatePickerCalendar>
         <DatePickerPages>
@@ -496,9 +496,9 @@ export const CalendarTheming: Story = {
       source: {
         code: `<DatePicker
   aria-label="Date"
-  isRange
+  range
   value={value}
-  onChange={handleValueChange}
+  onValueChange={handleValueChange}
   style={{
     '--datepicker-solid': '#7c3aed',
     '--datepicker-scheme': '#6d28d9',
@@ -525,8 +525,8 @@ export const CalendarTheming: Story = {
     return (
       <DatePicker
         aria-label='Custom themed calendar'
-        isRange
-        onChange={handleValueChange}
+        range
+        onValueChange={handleValueChange}
         placeholder='Custom themed calendar'
         style={
           {
@@ -563,10 +563,10 @@ export const Disabled: Story = {
  * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
  */
 export const Compound: Story = {
-  render: ({ onChange }) => (
+  render: ({ onValueChange: onChange }) => (
     <DatePicker
       config={{ language: 'en' }}
-      onChange={onChange}
+      onValueChange={onChange}
       size='sm'
       value={defaultDateRangeValue}
       variant='filled'
@@ -589,7 +589,7 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+        code: `<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
   <DatePickerInput aria-label="Pick a date" placeholder="Pick a date">
     <InputControl>
       <DatePickerField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
@@ -600,7 +600,7 @@ export const Tailwind: Story = {
   </DatePickerInput>
   <DatePickerCalendar />
 </DatePicker>
-<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
   <DatePickerInput aria-label="Pill date" placeholder="Pill date">
     <InputControl>
       <DatePickerField className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
@@ -626,7 +626,7 @@ export const Tailwind: Story = {
     }
     return (
       <div className='flex flex-col gap-4 w-72 max-w-full'>
-        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Pick a date' placeholder='Pick a date'>
             <InputControl>
               <DatePickerField className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
@@ -637,7 +637,7 @@ export const Tailwind: Story = {
           </DatePickerInput>
           <DatePickerCalendar />
         </DatePicker>
-        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Pill date' placeholder='Pill date'>
             <InputControl>
               <DatePickerField className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
@@ -665,7 +665,7 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+        code: `<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
   <DatePickerInput aria-label="Default date" placeholder="Default date">
     <InputControl>
       <DatePickerField className="form-control" />
@@ -676,7 +676,7 @@ export const Bootstrap: Story = {
   </DatePickerInput>
   <DatePickerCalendar />
 </DatePicker>
-<DatePicker onChange={handleValueChange} value={value} variant="unstyled">
+<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
   <DatePickerInput aria-label="Large date" placeholder="Large date">
     <InputControl>
       <DatePickerField className="form-control form-control-lg" />
@@ -702,7 +702,7 @@ export const Bootstrap: Story = {
     }
     return (
       <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
-        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Default date' placeholder='Default date'>
             <InputControl>
               <DatePickerField className='form-control' />
@@ -713,7 +713,7 @@ export const Bootstrap: Story = {
           </DatePickerInput>
           <DatePickerCalendar />
         </DatePicker>
-        <DatePicker onChange={handleValueChange} value={value} variant='unstyled'>
+        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Large date' placeholder='Large date'>
             <InputControl>
               <DatePickerField className='form-control form-control-lg' />

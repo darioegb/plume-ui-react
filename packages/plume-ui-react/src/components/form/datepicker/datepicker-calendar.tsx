@@ -24,7 +24,7 @@ const VARIANT_CLASS = {
 } as const
 
 /**
- * The popup that opens under the input, or the content of the page when the `DatePicker` is `isCalendar`. Its accessible name is `labels.calendar`.
+ * The popup that opens under the input, or the content of the page when the `DatePicker` is `calendar`. Its accessible name is `labels.calendar`.
  */
 export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarProps>(
   (

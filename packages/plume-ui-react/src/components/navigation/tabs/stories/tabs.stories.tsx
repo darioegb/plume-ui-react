@@ -61,8 +61,8 @@ export default {
     index: { control: 'number' },
     alignment: { control: 'radio', options: ['left', 'center', 'right'] },
     colorScheme: { control: 'select', options: colorSchemes },
-    isLazy: { control: 'boolean' },
-    onChange: { action: 'tabChanged' },
+    lazy: { control: 'boolean' },
+    onIndexChange: { action: 'tabChanged' },
     orientation: { control: 'radio', options: ['horizontal', 'vertical'] },
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
     variant: {
@@ -343,12 +343,12 @@ export const Orientations: Story = {
 
 /**
  * This is a story for lazy-loaded tabs.
- * Just set the **isLazy** prop to true.
+ * Just set the **lazy** prop to true.
  */
 export const LazyTabs: Story = {
   args: {
     colorScheme: 'primary',
-    isLazy: true,
+    lazy: true,
     children: commonTabs,
   },
 }
@@ -695,7 +695,7 @@ export const Bootstrap: Story = {
         code: `const [activeIndex, setActiveIndex] = useState(0)
 const handleOnChange = (i: number): void => { setActiveIndex(i); }
 return (
-  <Tabs onChange={handleOnChange} variant="unstyled">
+  <Tabs onIndexChange={handleOnChange} variant="unstyled">
     <TabList className="nav nav-underline">
       <Tab className="nav-item">
         <span className={\`nav-link \${activeIndex === 0 && 'active'}\`}>One</span>
@@ -731,7 +731,7 @@ return (
       setActiveIndex(i)
     }
     return (
-      <Tabs onChange={handleOnChange} variant="unstyled">
+      <Tabs onIndexChange={handleOnChange} variant="unstyled">
         <TabList className="nav nav-underline">
           <Tab className="nav-item">
             <span className={`nav-link ${activeIndex === 0 && 'active'}`}>One</span>
