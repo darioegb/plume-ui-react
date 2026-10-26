@@ -91,6 +91,23 @@ export const Lines: Story = {
 }
 
 /**
+ * Put the skeletons where the content will be, mark the container with `aria-busy` and swap them for the real
+ * content when it is ready. The skeleton is hidden from screen readers, so `aria-busy` is what tells them the area
+ * is loading.
+ */
+export const Loading: Story = {
+  render: () => (
+    <div aria-busy="true" className="flex w-72 gap-3 rounded-lg border border-gray-300 p-4">
+      <Skeleton shape="circle" />
+      <div className="flex flex-1 flex-col gap-2">
+        <Skeleton height={16} width="60%" />
+        <Skeleton lines={3} />
+      </div>
+    </div>
+  ),
+}
+
+/**
  * Give the Skeleton its lines as `SkeletonLine` children to set the width of each one. A line without a width fills
  * the row, and the last line of a group is shorter unless you give it one.
  */
@@ -113,23 +130,6 @@ export const Compound: Story = {
         <SkeletonLine width="80%" />
         <SkeletonLine height={20} width="40%" />
       </Skeleton>
-    </div>
-  ),
-}
-
-/**
- * Put the skeletons where the content will be, mark the container with `aria-busy` and swap them for the real
- * content when it is ready. The skeleton is hidden from screen readers, so `aria-busy` is what tells them the area
- * is loading.
- */
-export const Loading: Story = {
-  render: () => (
-    <div aria-busy="true" className="flex w-72 gap-3 rounded-lg border border-gray-300 p-4">
-      <Skeleton shape="circle" />
-      <div className="flex flex-1 flex-col gap-2">
-        <Skeleton height={16} width="60%" />
-        <Skeleton lines={3} />
-      </div>
     </div>
   ),
 }

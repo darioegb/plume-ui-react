@@ -226,6 +226,48 @@ export const WithForm: Story = {
 }
 
 /**
+ * The Popover is its parts: the `PopoverTrigger` is the element that opens it and the one it is anchored to, the
+ * `PopoverContent` is the panel (it takes `className`, `style` and `ref`) and a `PopoverClose` can go anywhere inside
+ * it, with its own `label` as the accessible name when its child has no text.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Popover placement="bottom-start">
+  <PopoverTrigger>
+    <Button label="Share" variant="outline" />
+  </PopoverTrigger>
+  <PopoverContent aria-label="Share link" className="max-w-xs">
+    <div className="flex flex-col gap-3">
+      <p>Anyone with the link can view the file.</p>
+      <PopoverClose label="Dismiss">
+        <Button label="Got it" size="sm" />
+      </PopoverClose>
+    </div>
+  </PopoverContent>
+</Popover>`,
+      },
+    },
+  },
+  render: () => (
+    <Popover placement="bottom-start">
+      <PopoverTrigger>
+        <Button label="Share" variant="outline" />
+      </PopoverTrigger>
+      <PopoverContent aria-label="Share link" className="max-w-xs">
+        <div className="flex flex-col gap-3">
+          <p>Anyone with the link can view the file.</p>
+          <PopoverClose label="Dismiss">
+            <Button label="Got it" size="sm" />
+          </PopoverClose>
+        </div>
+      </PopoverContent>
+    </Popover>
+  ),
+}
+
+/**
  * Some examples of Popover with Tailwind classes. With `variant="unstyled"` the content is the only thing with classes: the ones you give it.
  */
 export const Tailwind: Story = {

@@ -243,6 +243,22 @@ export const CustomIcon: Story = {
 }
 
 /**
+ * A disabled item can't be opened or focused. Use **disabled** on the Accordion to disable all of them.
+ */
+export const Disabled: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6" style={{ width: '28rem', maxWidth: '100%' }}>
+      <Accordion defaultValue={questions[0].title}>
+        <Items disabled={questions[1].title} />
+      </Accordion>
+      <Accordion disabled>
+        <Items />
+      </Accordion>
+    </div>
+  ),
+}
+
+/**
  * Every element of the Accordion is a part you can import: **AccordionHeading** (the heading around the trigger),
  * **AccordionTitle**, **AccordionIcon** and **AccordionBody**. Compose them to reorder, to restyle one of them with
  * its own `className`, or to put something else next to the title. A trigger that has an `AccordionTitle` or an
@@ -266,22 +282,6 @@ export const Compound: Story = {
         </AccordionContent>
       </AccordionItem>
     </Accordion>
-  ),
-}
-
-/**
- * A disabled item can't be opened or focused. Use **disabled** on the Accordion to disable all of them.
- */
-export const Disabled: Story = {
-  render: () => (
-    <div className="flex flex-col gap-6" style={{ width: '28rem', maxWidth: '100%' }}>
-      <Accordion defaultValue={questions[0].title}>
-        <Items disabled={questions[1].title} />
-      </Accordion>
-      <Accordion disabled>
-        <Items />
-      </Accordion>
-    </div>
   ),
 }
 

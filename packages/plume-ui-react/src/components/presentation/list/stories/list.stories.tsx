@@ -406,6 +406,54 @@ export const Sections: Story = {
 }
 
 /**
+ * The List is its parts: a `ListSubheader` titles a section, a `ListItem` is a row that can hold a `ListItemButton`
+ * (or only text), and inside a row go a `ListItemIcon`, a `ListItemText` and anything else, such as a `Badge` at the
+ * end. Every part takes `className`, `style` and `ref`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
+  <ListSubheader>Folders</ListSubheader>
+  <ListItem>
+    <ListItemButton selected>
+      <ListItemIcon>{inboxIcon}</ListItemIcon>
+      <ListItemText primary="Inbox" secondary="12 unread messages" />
+      <Badge shape="pill" size="sm">
+        12
+      </Badge>
+    </ListItemButton>
+  </ListItem>
+  <ListDivider />
+  <ListItem>
+    <ListItemText className="font-semibold" primary="Trash" />
+  </ListItem>
+</List>`,
+      },
+    },
+  },
+  render: () => (
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
+      <ListSubheader>Folders</ListSubheader>
+      <ListItem>
+        <ListItemButton selected>
+          <ListItemIcon>{inboxIcon}</ListItemIcon>
+          <ListItemText primary="Inbox" secondary="12 unread messages" />
+          <Badge shape="pill" size="sm">
+            12
+          </Badge>
+        </ListItemButton>
+      </ListItem>
+      <ListDivider />
+      <ListItem>
+        <ListItemText className="font-semibold" primary="Trash" />
+      </ListItem>
+    </List>
+  ),
+}
+
+/**
  * Some examples of List with Tailwind classes. With `variant="unstyled"` the List and its parts have no Plume styles. `ListItemButton` sets `aria-current` when it is `selected`, which Tailwind reads with `aria-[current=true]:`.
  */
 export const Tailwind: Story = {

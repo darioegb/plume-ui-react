@@ -167,51 +167,6 @@ type Story = StoryObj<typeof Slider>
 export const Default: Story = {}
 
 /**
- * Use the parts to give each element its own class or style, to change what a mark shows, or to leave something
- * out. The `SliderThumb` of a range takes the `index` of its value.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
-  <SliderTrack className="h-2">
-    <SliderRange className="bg-emerald-500" />
-  </SliderTrack>
-  <SliderMarks>
-    {(mark) => (
-      <SliderMarkItem mark={mark}>
-        <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
-      </SliderMarkItem>
-    )}
-  </SliderMarks>
-  <SliderThumb aria-label="From" index={0} />
-  <SliderThumb aria-label="To" index={1} />
-</Slider>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={frame}>
-      <Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
-        <SliderTrack className="h-2">
-          <SliderRange className="bg-emerald-500" />
-        </SliderTrack>
-        <SliderMarks>
-          {(mark) => (
-            <SliderMarkItem mark={mark}>
-              <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
-            </SliderMarkItem>
-          )}
-        </SliderMarks>
-        <SliderThumb aria-label="From" index={0} />
-        <SliderThumb aria-label="To" index={1} />
-      </Slider>
-    </div>
-  ),
-}
-
-/**
  * Use the **variant** prop to pick how the Slider looks. `unstyled` renders only the native input, to style it
  * yourself.
  */
@@ -406,6 +361,51 @@ export const WithField: Story = {
       <Field errorText="Choose a lower price" label="Price" required>
         <Slider defaultValue={[20, 90]} />
       </Field>
+    </div>
+  ),
+}
+
+/**
+ * Use the parts to give each element its own class or style, to change what a mark shows, or to leave something
+ * out. The `SliderThumb` of a range takes the `index` of its value.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+  <SliderTrack className="h-2">
+    <SliderRange className="bg-emerald-500" />
+  </SliderTrack>
+  <SliderMarks>
+    {(mark) => (
+      <SliderMarkItem mark={mark}>
+        <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+      </SliderMarkItem>
+    )}
+  </SliderMarks>
+  <SliderThumb aria-label="From" index={0} />
+  <SliderThumb aria-label="To" index={1} />
+</Slider>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={frame}>
+      <Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+        <SliderTrack className="h-2">
+          <SliderRange className="bg-emerald-500" />
+        </SliderTrack>
+        <SliderMarks>
+          {(mark) => (
+            <SliderMarkItem mark={mark}>
+              <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+            </SliderMarkItem>
+          )}
+        </SliderMarks>
+        <SliderThumb aria-label="From" index={0} />
+        <SliderThumb aria-label="To" index={1} />
+      </Slider>
     </div>
   ),
 }

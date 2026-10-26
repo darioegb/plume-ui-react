@@ -297,6 +297,13 @@ export const Translated: Story = {
 }
 
 /**
+ * A disabled Paginator can't be used. The current page keeps showing.
+ */
+export const Disabled: Story = {
+  args: { defaultPage: 3, disabled: true },
+}
+
+/**
  * Compose the parts to build the list yourself. Here the page is written out with its edges, the pages show a `#`
  * and the entries that fold pages are a plain dot.
  */
@@ -330,13 +337,6 @@ export const Compound: Story = {
       </PaginatorList>
     </Paginator>
   ),
-}
-
-/**
- * A disabled Paginator can't be used. The current page keeps showing.
- */
-export const Disabled: Story = {
-  args: { defaultPage: 3, disabled: true },
 }
 
 /**

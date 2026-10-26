@@ -84,36 +84,6 @@ export const Variants: Story = {
 }
 
 /**
- * Use the `ProgressBarTrack`, `ProgressBarIndicator` and `ProgressBarValue` parts to give each element its own
- * class or style, or to put the text with the value before the bar. With a `ProgressBarTrack` among its children,
- * the ProgressBar wraps them in an element that takes its `className` and `style`.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<ProgressBar aria-label="Upload" className="gap-3" value={65}>
-  <ProgressBarValue className="font-semibold" />
-  <ProgressBarTrack className="h-3">
-    <ProgressBarIndicator className="bg-emerald-500" />
-  </ProgressBarTrack>
-</ProgressBar>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={{ maxWidth: '100%', width: '20rem' }}>
-      <ProgressBar aria-label="Upload" className="gap-3" value={65}>
-        <ProgressBarValue className="font-semibold" />
-        <ProgressBarTrack className="h-3">
-          <ProgressBarIndicator className="bg-emerald-500" />
-        </ProgressBarTrack>
-      </ProgressBar>
-    </div>
-  ),
-}
-
-/**
  * Use the **size** prop to change the thickness of the bar.
  */
 export const Sizes: Story = {
@@ -231,6 +201,36 @@ function LiveBar(): React.ReactNode {
  */
 export const Live: Story = {
   render: () => <LiveBar />,
+}
+
+/**
+ * Use the `ProgressBarTrack`, `ProgressBarIndicator` and `ProgressBarValue` parts to give each element its own
+ * class or style, or to put the text with the value before the bar. With a `ProgressBarTrack` among its children,
+ * the ProgressBar wraps them in an element that takes its `className` and `style`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ProgressBar aria-label="Upload" className="gap-3" value={65}>
+  <ProgressBarValue className="font-semibold" />
+  <ProgressBarTrack className="h-3">
+    <ProgressBarIndicator className="bg-emerald-500" />
+  </ProgressBarTrack>
+</ProgressBar>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ maxWidth: '100%', width: '20rem' }}>
+      <ProgressBar aria-label="Upload" className="gap-3" value={65}>
+        <ProgressBarValue className="font-semibold" />
+        <ProgressBarTrack className="h-3">
+          <ProgressBarIndicator className="bg-emerald-500" />
+        </ProgressBarTrack>
+      </ProgressBar>
+    </div>
+  ),
 }
 
 /**

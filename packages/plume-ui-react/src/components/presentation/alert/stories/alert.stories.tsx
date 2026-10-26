@@ -242,6 +242,20 @@ export const WithAction: Story = {
 }
 
 /**
+ * An `error` is announced right away (`role="alert"`) and the other statuses politely (`role="status"`). When the
+ * Alert is part of the page from the start, give it `role="note"` so it is not announced when the page loads.
+ * Use `as="h2"` in the title when it belongs in the outline of the page.
+ */
+export const Accessibility: Story = {
+  render: (args) => (
+    <Alert {...args} role="note" status="warning">
+      <AlertTitle as="h2">Scheduled maintenance</AlertTitle>
+      <AlertDescription>The service will be down on Sunday from 02:00 to 04:00.</AlertDescription>
+    </Alert>
+  ),
+}
+
+/**
  * Give the `Alert` its parts as direct children and it renders them as written. Here the dismiss button comes
  * first, the icon is replaced, the action goes under the text and the content has its own class. Omit a part and it
  * is not there: with parts, **action** and **dismissible** have no effect.
@@ -275,20 +289,6 @@ export const Compound: Story = {
           <Button colorScheme="warning" label="Choose a plan" size="sm" />
         </AlertAction>
       </AlertContent>
-    </Alert>
-  ),
-}
-
-/**
- * An `error` is announced right away (`role="alert"`) and the other statuses politely (`role="status"`). When the
- * Alert is part of the page from the start, give it `role="note"` so it is not announced when the page loads.
- * Use `as="h2"` in the title when it belongs in the outline of the page.
- */
-export const Accessibility: Story = {
-  render: (args) => (
-    <Alert {...args} role="note" status="warning">
-      <AlertTitle as="h2">Scheduled maintenance</AlertTitle>
-      <AlertDescription>The service will be down on Sunday from 02:00 to 04:00.</AlertDescription>
     </Alert>
   ),
 }

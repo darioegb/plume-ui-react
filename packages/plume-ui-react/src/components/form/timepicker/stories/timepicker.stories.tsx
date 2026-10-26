@@ -279,59 +279,6 @@ export const CustomLabels: Story = {
 }
 
 /**
- * Give the `TimePicker` its parts to choose what it shows and in which order. The props of the field, here its
- * placeholder, go on the `TimePickerInput`, the look (here small and filled) on the `TimePicker`, and the
- * `TimePickerPanel` opens under it. Here the button goes before the field, the panel lists only the hours and the
- * minutes, and the hours are rendered with a class of their own.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<TimePicker defaultValue="09:30" size="sm" variant="filled">
-  <TimePickerInput placeholder="Pick a time">
-    <InputControl>
-      <InputElement>
-        <TimePickerTrigger />
-      </InputElement>
-      <InputField />
-    </InputControl>
-  </TimePickerInput>
-  <TimePickerPanel>
-    <TimePickerHours>
-      {(option) => (
-        <TimePickerOption className="font-semibold" key={option.value} option={option} />
-      )}
-    </TimePickerHours>
-    <TimePickerMinutes />
-  </TimePickerPanel>
-</TimePicker>`,
-      },
-    },
-  },
-  render: () => (
-    <TimePicker defaultValue='09:30' size='sm' variant='filled'>
-      <TimePickerInput placeholder='Pick a time'>
-        <InputControl>
-          <InputElement>
-            <TimePickerTrigger />
-          </InputElement>
-          <InputField />
-        </InputControl>
-      </TimePickerInput>
-      <TimePickerPanel>
-        <TimePickerHours>
-          {(option) => (
-            <TimePickerOption className='font-semibold' key={option.value} option={option} />
-          )}
-        </TimePickerHours>
-        <TimePickerMinutes />
-      </TimePickerPanel>
-    </TimePicker>
-  ),
-}
-
-/**
  * With **isPanel** only the lists of hours and minutes are shown, always visible, to put them in the page
  * (a booking form, a side panel). Picking a minute doesn't hide them.
  */
@@ -396,6 +343,59 @@ export const WithDatePicker: Story = {
  */
 export const Disabled: Story = {
   args: { defaultValue: '09:30', disabled: true },
+}
+
+/**
+ * Give the `TimePicker` its parts to choose what it shows and in which order. The props of the field, here its
+ * placeholder, go on the `TimePickerInput`, the look (here small and filled) on the `TimePicker`, and the
+ * `TimePickerPanel` opens under it. Here the button goes before the field, the panel lists only the hours and the
+ * minutes, and the hours are rendered with a class of their own.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<TimePicker defaultValue="09:30" size="sm" variant="filled">
+  <TimePickerInput placeholder="Pick a time">
+    <InputControl>
+      <InputElement>
+        <TimePickerTrigger />
+      </InputElement>
+      <InputField />
+    </InputControl>
+  </TimePickerInput>
+  <TimePickerPanel>
+    <TimePickerHours>
+      {(option) => (
+        <TimePickerOption className="font-semibold" key={option.value} option={option} />
+      )}
+    </TimePickerHours>
+    <TimePickerMinutes />
+  </TimePickerPanel>
+</TimePicker>`,
+      },
+    },
+  },
+  render: () => (
+    <TimePicker defaultValue='09:30' size='sm' variant='filled'>
+      <TimePickerInput placeholder='Pick a time'>
+        <InputControl>
+          <InputElement>
+            <TimePickerTrigger />
+          </InputElement>
+          <InputField />
+        </InputControl>
+      </TimePickerInput>
+      <TimePickerPanel>
+        <TimePickerHours>
+          {(option) => (
+            <TimePickerOption className='font-semibold' key={option.value} option={option} />
+          )}
+        </TimePickerHours>
+        <TimePickerMinutes />
+      </TimePickerPanel>
+    </TimePicker>
+  ),
 }
 
 /**

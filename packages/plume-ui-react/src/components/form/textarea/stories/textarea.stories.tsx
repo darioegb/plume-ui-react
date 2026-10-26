@@ -223,32 +223,6 @@ export const CharacterCount: Story = {
 }
 
 /**
- * Give the Textarea its parts to change what it shows or the order. Here the count goes above the field and says how
- * many characters are left. The props of the field (**maxLength**, **placeholder**) go on the Textarea, and the
- * `TextareaStatus` is the message a screen reader gets near the limit.
- */
-export const Compound: Story = {
-  render: () => (
-    <div className="flex w-72 max-w-full flex-col gap-4">
-      <Textarea maxLength={80}>
-        <TextareaCount />
-        <TextareaField aria-label="Bio" placeholder="Count above the field" />
-        <TextareaStatus />
-      </Textarea>
-      <Textarea
-        defaultValue="Short"
-        labels={{ count: (count, max) => `${(max ?? 0) - count} left` }}
-        maxLength={80}
-      >
-        <TextareaField aria-label="Notes" />
-        <TextareaCount />
-        <TextareaStatus />
-      </Textarea>
-    </div>
-  ),
-}
-
-/**
  * Use **rows** for the initial height and **resize** to control how the user can change it.
  */
 export const RowsAndResize: Story = {
@@ -296,6 +270,32 @@ export const WithField: Story = {
     >
       <Textarea defaultValue="Too short" placeholder="Your bio" />
     </Field>
+  ),
+}
+
+/**
+ * Give the Textarea its parts to change what it shows or the order. Here the count goes above the field and says how
+ * many characters are left. The props of the field (**maxLength**, **placeholder**) go on the Textarea, and the
+ * `TextareaStatus` is the message a screen reader gets near the limit.
+ */
+export const Compound: Story = {
+  render: () => (
+    <div className="flex w-72 max-w-full flex-col gap-4">
+      <Textarea maxLength={80}>
+        <TextareaCount />
+        <TextareaField aria-label="Bio" placeholder="Count above the field" />
+        <TextareaStatus />
+      </Textarea>
+      <Textarea
+        defaultValue="Short"
+        labels={{ count: (count, max) => `${(max ?? 0) - count} left` }}
+        maxLength={80}
+      >
+        <TextareaField aria-label="Notes" />
+        <TextareaCount />
+        <TextareaStatus />
+      </Textarea>
+    </div>
   ),
 }
 

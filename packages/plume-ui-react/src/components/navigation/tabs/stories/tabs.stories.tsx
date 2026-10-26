@@ -1,6 +1,7 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
+import { Badge } from '../../../presentation/badge'
 import { Tabs } from '..'
 import { TabList } from '../tab-list'
 import { Tab } from '../tab'
@@ -573,6 +574,65 @@ export const Disabled: Story = {
       },
     },
   },
+}
+
+/**
+ * Tabs are always built from their parts: a `TabList` with one `Tab` per panel, and `TabPanels` with one `TabPanel` for
+ * each. Every part takes `className`, `style` and `ref`, a `Tab` can have extra content on each side, such as a `Badge`,
+ * and a disabled one is skipped by the keyboard.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tabs variant="underline">
+  <TabList className="gap-2">
+    <Tab extraContentRight={<Badge shape="pill" size="sm">3</Badge>} label="Inbox" />
+    <Tab label="Sent" />
+    <Tab disabled label="Archived" />
+  </TabList>
+  <TabPanels>
+    <TabPanel className="py-4">
+      <p>Three new messages.</p>
+    </TabPanel>
+    <TabPanel className="py-4">
+      <p>Nothing sent today.</p>
+    </TabPanel>
+    <TabPanel className="py-4">
+      <p>Archived messages.</p>
+    </TabPanel>
+  </TabPanels>
+</Tabs>`,
+      },
+    },
+  },
+  render: () => (
+    <Tabs variant="underline">
+      <TabList className="gap-2">
+        <Tab
+          extraContentRight={
+            <Badge shape="pill" size="sm">
+              3
+            </Badge>
+          }
+          label="Inbox"
+        />
+        <Tab label="Sent" />
+        <Tab disabled label="Archived" />
+      </TabList>
+      <TabPanels>
+        <TabPanel className="py-4">
+          <p>Three new messages.</p>
+        </TabPanel>
+        <TabPanel className="py-4">
+          <p>Nothing sent today.</p>
+        </TabPanel>
+        <TabPanel className="py-4">
+          <p>Archived messages.</p>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  ),
 }
 
 /**

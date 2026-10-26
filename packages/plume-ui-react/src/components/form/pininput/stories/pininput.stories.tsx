@@ -151,42 +151,6 @@ export const Shapes: Story = {
 }
 
 /**
- * Give the `PinInput` its parts to compose the boxes yourself: here a dash splits a code of six in two groups of
- * three. Every `PinInputCell` takes its position with **index**, and they can be wrapped in other elements. Add a
- * `PinInputHidden` when the code has to be submitted with a **name**.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<PinInput aria-label="Code" length={6} name="code">
-  <PinInputCell index={0} />
-  <PinInputCell index={1} />
-  <PinInputCell index={2} />
-  <span aria-hidden="true">-</span>
-  <PinInputCell index={3} />
-  <PinInputCell index={4} />
-  <PinInputCell index={5} />
-  <PinInputHidden />
-</PinInput>`,
-      },
-    },
-  },
-  render: () => (
-    <PinInput aria-label="Code" className="items-center" length={6} name="code">
-      <PinInputCell index={0} />
-      <PinInputCell index={1} />
-      <PinInputCell index={2} />
-      <span aria-hidden="true">-</span>
-      <PinInputCell index={3} />
-      <PinInputCell index={4} />
-      <PinInputCell index={5} />
-      <PinInputHidden />
-    </PinInput>
-  ),
-}
-
-/**
  * **length** is the number of boxes, and **type** what they accept: `numeric` (the default), `alphanumeric` or
  * `text`. A character that doesn't fit is not typed, and a pasted code drops what doesn't fit.
  */
@@ -294,6 +258,42 @@ export const WithField: Story = {
         <PinInput defaultValue="1234" length={4} />
       </Field>
     </div>
+  ),
+}
+
+/**
+ * Give the `PinInput` its parts to compose the boxes yourself: here a dash splits a code of six in two groups of
+ * three. Every `PinInputCell` takes its position with **index**, and they can be wrapped in other elements. Add a
+ * `PinInputHidden` when the code has to be submitted with a **name**.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<PinInput aria-label="Code" length={6} name="code">
+  <PinInputCell index={0} />
+  <PinInputCell index={1} />
+  <PinInputCell index={2} />
+  <span aria-hidden="true">-</span>
+  <PinInputCell index={3} />
+  <PinInputCell index={4} />
+  <PinInputCell index={5} />
+  <PinInputHidden />
+</PinInput>`,
+      },
+    },
+  },
+  render: () => (
+    <PinInput aria-label="Code" className="items-center" length={6} name="code">
+      <PinInputCell index={0} />
+      <PinInputCell index={1} />
+      <PinInputCell index={2} />
+      <span aria-hidden="true">-</span>
+      <PinInputCell index={3} />
+      <PinInputCell index={4} />
+      <PinInputCell index={5} />
+      <PinInputHidden />
+    </PinInput>
   ),
 }
 

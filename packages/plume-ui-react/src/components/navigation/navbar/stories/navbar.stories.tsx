@@ -233,6 +233,48 @@ export const Controlled: Story = {
 }
 
 /**
+ * The Navbar is its parts, so you can reorder them. Here the `NavbarToggle` comes first, with its own `label`, the
+ * links sit at the `end` of the `NavbarContent`, and the last item is a button with its own `className`. Every part
+ * takes `className`, `style` and `ref`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Navbar aria-label="Compound">
+  <NavbarToggle label="Menu" />
+  <NavbarBrand href="#home">Plume</NavbarBrand>
+  <NavbarContent align="end">
+    <NavbarItem active href="#home">
+      Home
+    </NavbarItem>
+    <NavbarItem href="#docs">Docs</NavbarItem>
+    <NavbarItem className="font-semibold" onClick={() => undefined}>
+      Sign in
+    </NavbarItem>
+  </NavbarContent>
+</Navbar>`,
+      },
+    },
+  },
+  render: () => (
+    <Navbar aria-label="Compound">
+      <NavbarToggle label="Menu" />
+      <NavbarBrand href="#home">Plume</NavbarBrand>
+      <NavbarContent align="end">
+        <NavbarItem active href="#home">
+          Home
+        </NavbarItem>
+        <NavbarItem href="#docs">Docs</NavbarItem>
+        <NavbarItem className="font-semibold" onClick={() => undefined}>
+          Sign in
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
+  ),
+}
+
+/**
  * Some examples of Navbar with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
  * structure stays: the toggle appears and the content folds below the breakpoint. Style every part with its own
  * classes, and use `data-[active]:` on the items and `data-[open]:` on the toggle.

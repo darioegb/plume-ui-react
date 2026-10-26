@@ -246,37 +246,6 @@ export const Status: Story = {
 }
 
 /**
- * Every element is a part. Give the Avatar some of them and it renders only those, in the order you write them, each
- * with its own `className`, `style` and `ref`. The **src**, **name**, **fallback** and **status** stay on the Avatar.
- * Here the status dot goes first, the image is omitted in the second one and the fallback has its own content in the
- * third. `AvatarOverflow` is the counter that `AvatarGroup` renders for **max**, and it can be placed by hand.
- */
-export const Compound: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center justify-center gap-4">
-      <Avatar name="Ada Lovelace" src={portrait} status="online">
-        <AvatarStatusDot />
-        <AvatarImage />
-        <AvatarFallback />
-      </Avatar>
-      <Avatar name="Grace Hopper" status="busy">
-        <AvatarFallback />
-      </Avatar>
-      <Avatar name="Assistant">
-        <AvatarFallback>
-          <strong>AI</strong>
-        </AvatarFallback>
-      </Avatar>
-      <AvatarGroup aria-label="Team members">
-        <Avatar name="Ada Lovelace" />
-        <Avatar name="Grace Hopper" />
-        <AvatarOverflow count={3} />
-      </AvatarGroup>
-    </div>
-  ),
-}
-
-/**
  * `AvatarGroup` stacks avatars. It gives them its **size**, **shape**, **colorScheme** and **variant**, and with
  * **max** it shows that many and a counter with the rest.
  */
@@ -314,6 +283,37 @@ export const Group: Story = {
         <Avatar name="Margaret Hamilton" src={portrait} />
         <Avatar name="Katherine Johnson" />
         <Avatar name="Alan Turing" />
+      </AvatarGroup>
+    </div>
+  ),
+}
+
+/**
+ * Every element is a part. Give the Avatar some of them and it renders only those, in the order you write them, each
+ * with its own `className`, `style` and `ref`. The **src**, **name**, **fallback** and **status** stay on the Avatar.
+ * Here the status dot goes first, the image is omitted in the second one and the fallback has its own content in the
+ * third. `AvatarOverflow` is the counter that `AvatarGroup` renders for **max**, and it can be placed by hand.
+ */
+export const Compound: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Avatar name="Ada Lovelace" src={portrait} status="online">
+        <AvatarStatusDot />
+        <AvatarImage />
+        <AvatarFallback />
+      </Avatar>
+      <Avatar name="Grace Hopper" status="busy">
+        <AvatarFallback />
+      </Avatar>
+      <Avatar name="Assistant">
+        <AvatarFallback>
+          <strong>AI</strong>
+        </AvatarFallback>
+      </Avatar>
+      <AvatarGroup aria-label="Team members">
+        <Avatar name="Ada Lovelace" />
+        <Avatar name="Grace Hopper" />
+        <AvatarOverflow count={3} />
       </AvatarGroup>
     </div>
   ),

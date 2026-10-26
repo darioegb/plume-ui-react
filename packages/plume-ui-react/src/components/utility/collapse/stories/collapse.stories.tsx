@@ -122,35 +122,6 @@ export const Variants: Story = {
 }
 
 /**
- * Use the `CollapseBody` part to give the box its own class or style, or `CollapseClip` to reach the element that
- * clips it. Put the part inside the Collapse and it replaces the box the Collapse draws.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Collapse open>
-  <CollapseClip>
-    <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
-      Content
-    </CollapseBody>
-  </CollapseClip>
-</Collapse>`,
-      },
-    },
-  },
-  render: () => (
-    <Collapse open style={frame}>
-      <CollapseClip>
-        <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
-          {text}
-        </CollapseBody>
-      </CollapseClip>
-    </Collapse>
-  ),
-}
-
-/**
  * Use the **size** prop to change the text and the padding of the box.
  */
 export const Sizes: Story = {
@@ -247,6 +218,35 @@ export const Nested: Story = {
     }
     return <Example />
   },
+}
+
+/**
+ * Use the `CollapseBody` part to give the box its own class or style, or `CollapseClip` to reach the element that
+ * clips it. Put the part inside the Collapse and it replaces the box the Collapse draws.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Collapse open>
+  <CollapseClip>
+    <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
+      Content
+    </CollapseBody>
+  </CollapseClip>
+</Collapse>`,
+      },
+    },
+  },
+  render: () => (
+    <Collapse open style={frame}>
+      <CollapseClip>
+        <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
+          {text}
+        </CollapseBody>
+      </CollapseClip>
+    </Collapse>
+  ),
 }
 
 /**

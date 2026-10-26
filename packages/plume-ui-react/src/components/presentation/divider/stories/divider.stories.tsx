@@ -152,28 +152,6 @@ export const WithLabel: Story = {
 }
 
 /**
- * Use the `DividerLabel` part to give the label its own class or style, or to put something else next to the text.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Divider>
-  <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
-</Divider>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={{ maxWidth: '100%', width: '22rem' }}>
-      <Divider>
-        <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
-      </Divider>
-    </div>
-  ),
-}
-
-/**
  * A **vertical** Divider separates things in a row. The row needs a height, which the line stretches to.
  */
 export const Vertical: Story = {
@@ -216,6 +194,28 @@ export const Accessibility: Story = {
       <p className="text-sm">Hidden from assistive technology</p>
       <Divider {...args} decorative />
       <p className="text-sm">Last</p>
+    </div>
+  ),
+}
+
+/**
+ * Use the `DividerLabel` part to give the label its own class or style, or to put something else next to the text.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Divider>
+  <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
+</Divider>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ maxWidth: '100%', width: '22rem' }}>
+      <Divider>
+        <DividerLabel style={{ fontWeight: 600 }}>or continue with</DividerLabel>
+      </Divider>
     </div>
   ),
 }

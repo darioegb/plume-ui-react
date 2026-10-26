@@ -223,28 +223,6 @@ export const CustomIndicator: Story = {
 }
 
 /**
- * The circle is made of two parts, **StepIndicatorContent** (what is drawn) and **StepIndicatorLabel** (what only a
- * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
- */
-export const Compound: Story = {
-  render: () => (
-    <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
-      {steps.map(({ description, title }) => (
-        <Step key={title}>
-          <StepIndicator>
-            <StepIndicatorContent className="font-bold" />
-            <StepIndicatorLabel>{`Step: ${title}`}</StepIndicatorLabel>
-          </StepIndicator>
-          <StepTitle>{title}</StepTitle>
-          <StepDescription>{description}</StepDescription>
-          <StepSeparator />
-        </Step>
-      ))}
-    </Stepper>
-  ),
-}
-
-/**
  * Use **labels** to translate what a screen reader says. Nothing is said for the current step because
  * `aria-current="step"` already announces it.
  */
@@ -293,6 +271,28 @@ function InteractiveStepper(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <InteractiveStepper />,
+}
+
+/**
+ * The circle is made of two parts, **StepIndicatorContent** (what is drawn) and **StepIndicatorLabel** (what only a
+ * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
+      {steps.map(({ description, title }) => (
+        <Step key={title}>
+          <StepIndicator>
+            <StepIndicatorContent className="font-bold" />
+            <StepIndicatorLabel>{`Step: ${title}`}</StepIndicatorLabel>
+          </StepIndicator>
+          <StepTitle>{title}</StepTitle>
+          <StepDescription>{description}</StepDescription>
+          <StepSeparator />
+        </Step>
+      ))}
+    </Stepper>
+  ),
 }
 
 /**

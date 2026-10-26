@@ -400,26 +400,6 @@ export const CustomConfiguration: Story = {
 }
 
 /**
- * Give the `DatePicker` its parts to choose what it shows and in which order. The props of the field, here its
- * placeholder, go on the `DatePickerInput`, the look (here small and filled) on the `DatePicker`, and the
- * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
- */
-export const Compound: Story = {
-  render: ({ onChange }) => (
-    <DatePicker
-      config={{ language: 'en' }}
-      onChange={onChange}
-      size='sm'
-      value={defaultDateRangeValue}
-      variant='filled'
-    >
-      <DatePickerInput placeholder='Pick a day' />
-      <DatePickerCalendar />
-    </DatePicker>
-  ),
-}
-
-/**
  * Every element of the calendar is a part, so you can rebuild any piece. Here the header only has the arrows and
  * the month, the weekdays and the days keep their default content, and the footer has its own texts and an order
  * of its own.
@@ -553,6 +533,26 @@ export const Disabled: Story = {
     ...Default.args,
     disabled: true,
   },
+}
+
+/**
+ * Give the `DatePicker` its parts to choose what it shows and in which order. The props of the field, here its
+ * placeholder, go on the `DatePickerInput`, the look (here small and filled) on the `DatePicker`, and the
+ * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
+ */
+export const Compound: Story = {
+  render: ({ onChange }) => (
+    <DatePicker
+      config={{ language: 'en' }}
+      onChange={onChange}
+      size='sm'
+      value={defaultDateRangeValue}
+      variant='filled'
+    >
+      <DatePickerInput placeholder='Pick a day' />
+      <DatePickerCalendar />
+    </DatePicker>
+  ),
 }
 
 /**

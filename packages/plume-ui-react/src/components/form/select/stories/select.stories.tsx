@@ -588,6 +588,86 @@ export const WithField: Story = {
 }
 
 /**
+ * Every element of the Select is a part you can place yourself. Here the arrow comes first, the group has its own
+ * title, and the options show their icon, their text and their description in the order written. A part you leave
+ * out is not rendered (this one has no clear button and no hidden input), and one you give `children` shows them
+ * instead of its default content.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Select defaultValue="ada" searchable>
+  <SelectTrigger aria-label="Person" placeholder="Pick a person">
+    <SelectChevron />
+    <SelectField>
+      <SelectCombobox />
+    </SelectField>
+  </SelectTrigger>
+  <SelectContent>
+    <SelectSearch>
+      <SelectSearchInput placeholder="Find a person" />
+    </SelectSearch>
+    <SelectList>
+      <SelectGroup>
+        <SelectGroupLabel>People</SelectGroupLabel>
+        {people.map((person) => (
+          <SelectOption key={person.value} value={person.value} icon={person.icon} description={person.description}>
+            <SelectOptionIcon />
+            <SelectOptionBody>
+              <SelectOptionText>{person.name}</SelectOptionText>
+              <SelectOptionDescription />
+            </SelectOptionBody>
+            <SelectOptionCheck />
+          </SelectOption>
+        ))}
+      </SelectGroup>
+    </SelectList>
+    <SelectEmpty>Nobody with that name</SelectEmpty>
+  </SelectContent>
+</Select>`,
+      },
+    },
+  },
+  render: () => (
+    <Select defaultValue="ada" searchable>
+      <SelectTrigger aria-label="Person" placeholder="Pick a person">
+        <SelectChevron />
+        <SelectField>
+          <SelectCombobox />
+        </SelectField>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectSearch>
+          <SelectSearchInput placeholder="Find a person" />
+        </SelectSearch>
+        <SelectList>
+          <SelectGroup>
+            <SelectGroupLabel>People</SelectGroupLabel>
+            {people.map((person) => (
+              <SelectOption
+                description={person.description}
+                icon={person.icon}
+                key={person.value}
+                value={person.value}
+              >
+                <SelectOptionIcon />
+                <SelectOptionBody>
+                  <SelectOptionText>{person.name}</SelectOptionText>
+                  <SelectOptionDescription />
+                </SelectOptionBody>
+                <SelectOptionCheck />
+              </SelectOption>
+            ))}
+          </SelectGroup>
+        </SelectList>
+        <SelectEmpty>Nobody with that name</SelectEmpty>
+      </SelectContent>
+    </Select>
+  ),
+}
+
+/**
  * Some examples of Select with Tailwind classes. With `variant="unstyled"` the select has none of the Plume classes: `className` styles the control, each part takes its own `className`, and the option the arrows are on has `data-active`, so `data-[active]:` styles it, as `aria-selected:` and `aria-disabled:` do for the chosen and the disabled ones.
  */
 export const Tailwind: Story = {
@@ -892,85 +972,5 @@ export const Bootstrap: Story = {
         </SelectContent>
       </Select>
     </div>
-  ),
-}
-
-/**
- * Every element of the Select is a part you can place yourself. Here the arrow comes first, the group has its own
- * title, and the options show their icon, their text and their description in the order written. A part you leave
- * out is not rendered (this one has no clear button and no hidden input), and one you give `children` shows them
- * instead of its default content.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Select defaultValue="ada" searchable>
-  <SelectTrigger aria-label="Person" placeholder="Pick a person">
-    <SelectChevron />
-    <SelectField>
-      <SelectCombobox />
-    </SelectField>
-  </SelectTrigger>
-  <SelectContent>
-    <SelectSearch>
-      <SelectSearchInput placeholder="Find a person" />
-    </SelectSearch>
-    <SelectList>
-      <SelectGroup>
-        <SelectGroupLabel>People</SelectGroupLabel>
-        {people.map((person) => (
-          <SelectOption key={person.value} value={person.value} icon={person.icon} description={person.description}>
-            <SelectOptionIcon />
-            <SelectOptionBody>
-              <SelectOptionText>{person.name}</SelectOptionText>
-              <SelectOptionDescription />
-            </SelectOptionBody>
-            <SelectOptionCheck />
-          </SelectOption>
-        ))}
-      </SelectGroup>
-    </SelectList>
-    <SelectEmpty>Nobody with that name</SelectEmpty>
-  </SelectContent>
-</Select>`,
-      },
-    },
-  },
-  render: () => (
-    <Select defaultValue="ada" searchable>
-      <SelectTrigger aria-label="Person" placeholder="Pick a person">
-        <SelectChevron />
-        <SelectField>
-          <SelectCombobox />
-        </SelectField>
-      </SelectTrigger>
-      <SelectContent>
-        <SelectSearch>
-          <SelectSearchInput placeholder="Find a person" />
-        </SelectSearch>
-        <SelectList>
-          <SelectGroup>
-            <SelectGroupLabel>People</SelectGroupLabel>
-            {people.map((person) => (
-              <SelectOption
-                description={person.description}
-                icon={person.icon}
-                key={person.value}
-                value={person.value}
-              >
-                <SelectOptionIcon />
-                <SelectOptionBody>
-                  <SelectOptionText>{person.name}</SelectOptionText>
-                  <SelectOptionDescription />
-                </SelectOptionBody>
-                <SelectOptionCheck />
-              </SelectOption>
-            ))}
-          </SelectGroup>
-        </SelectList>
-        <SelectEmpty>Nobody with that name</SelectEmpty>
-      </SelectContent>
-    </Select>
   ),
 }

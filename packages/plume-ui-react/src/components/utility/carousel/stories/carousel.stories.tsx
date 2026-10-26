@@ -327,6 +327,30 @@ export const Controlled: Story = {
 }
 
 /**
+ * Use **labels** to translate what a screen reader says.
+ */
+export const Translated: Story = {
+  render: () => (
+    <Carousel
+      aria-label="Lugares destacados"
+      labels={{
+        dot: (index, count) => `Diapositiva ${index + 1} de ${count}`,
+        dots: 'Elegir una diapositiva',
+        next: 'Siguiente',
+        previous: 'Anterior',
+        slide: (index, count) => `${index + 1} de ${count}`,
+      }}
+      style={frame}
+    >
+      <Panels />
+      <CarouselPrev />
+      <CarouselNext />
+      <CarouselDots />
+    </Carousel>
+  ),
+}
+
+/**
  * Every element of the Carousel is a part you can import, and the root holds whatever you put in it. The dots are
  * data-driven, so `CarouselDots` takes a function that gets the position of each dot, or the `CarouselDot` elements
  * themselves. Here the dots show the number of their slide.
@@ -355,30 +379,6 @@ export const Compound: Story = {
           </CarouselDot>
         )}
       </CarouselDots>
-    </Carousel>
-  ),
-}
-
-/**
- * Use **labels** to translate what a screen reader says.
- */
-export const Translated: Story = {
-  render: () => (
-    <Carousel
-      aria-label="Lugares destacados"
-      labels={{
-        dot: (index, count) => `Diapositiva ${index + 1} de ${count}`,
-        dots: 'Elegir una diapositiva',
-        next: 'Siguiente',
-        previous: 'Anterior',
-        slide: (index, count) => `${index + 1} de ${count}`,
-      }}
-      style={frame}
-    >
-      <Panels />
-      <CarouselPrev />
-      <CarouselNext />
-      <CarouselDots />
     </Carousel>
   ),
 }

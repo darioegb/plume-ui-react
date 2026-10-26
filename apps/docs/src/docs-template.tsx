@@ -66,7 +66,6 @@ function DocsTemplate(): ReactNode {
       <h2>Import</h2>
       <Source code={`import { ${importNames.join(', ')} } from '${PACKAGE_NAME}'`} dark />
       <h2>Examples</h2>
-      <p>Open an example in the Canvas to try its props with the Controls panel.</p>
       <Stories includePrimary title="" />
       <hr />
       <ApiReference

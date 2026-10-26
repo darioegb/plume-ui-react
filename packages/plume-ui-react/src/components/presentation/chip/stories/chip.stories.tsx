@@ -201,6 +201,17 @@ export const WithImage: Story = {
 }
 
 /**
+ * A **disabled** Chip is dimmed and its remove button can't be used.
+ */
+export const Disabled: Story = {
+  render: () => (
+    <Chip disabled onRemove={noop}>
+      Design
+    </Chip>
+  ),
+}
+
+/**
  * Give the Chip its parts as children to reorder, leave out or replace them. Here the remove button comes first,
  * the icon is an emoji and the label is styled on its own. The `icon` prop is not used when the Chip is composed.
  */
@@ -221,17 +232,6 @@ export const Compound: Story = {
       <ChipRemove />
       <ChipLabel className="font-semibold">Design</ChipLabel>
       <ChipIcon>🎨</ChipIcon>
-    </Chip>
-  ),
-}
-
-/**
- * A **disabled** Chip is dimmed and its remove button can't be used.
- */
-export const Disabled: Story = {
-  render: () => (
-    <Chip disabled onRemove={noop}>
-      Design
     </Chip>
   ),
 }

@@ -1,5 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { Button } from '../../../interaction/button'
+import { Badge } from '../../badge'
 import { Divider } from '../../divider'
 import { Card, CardBody, CardFooter, CardHeader } from '..'
 
@@ -183,6 +184,48 @@ export const Clickable: Story = {
         </a>
       </CardHeader>
       <CardBody>The whole card is a link to the report.</CardBody>
+    </Card>
+  ),
+}
+
+/**
+ * The Card is its parts, and each one is a plain element you can fill with anything and style with its own
+ * `className`, `style` and `ref`. Here the header holds a title and a `Badge`, and the footer spreads its content to
+ * both ends.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Card style={{ maxWidth: '100%', width: '22rem' }} variant="outline">
+  <CardHeader className="flex items-center justify-between">
+    <span>Invoice #1042</span>
+    <Badge colorScheme="success" size="sm" variant="subtle">
+      Paid
+    </Badge>
+  </CardHeader>
+  <CardBody>Design system subscription, October.</CardBody>
+  <CardFooter className="justify-between">
+    <span>Due Oct 30</span>
+    <Button label="Download" size="sm" variant="ghost" />
+  </CardFooter>
+</Card>`,
+      },
+    },
+  },
+  render: () => (
+    <Card style={{ maxWidth: '100%', width: '22rem' }} variant="outline">
+      <CardHeader className="flex items-center justify-between">
+        <span>Invoice #1042</span>
+        <Badge colorScheme="success" size="sm" variant="subtle">
+          Paid
+        </Badge>
+      </CardHeader>
+      <CardBody>Design system subscription, October.</CardBody>
+      <CardFooter className="justify-between">
+        <span>Due Oct 30</span>
+        <Button label="Download" size="sm" variant="ghost" />
+      </CardFooter>
     </Card>
   ),
 }

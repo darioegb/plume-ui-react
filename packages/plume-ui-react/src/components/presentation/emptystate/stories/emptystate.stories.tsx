@@ -202,6 +202,23 @@ export const Parts: Story = {
 }
 
 /**
+ * Use **titleAs** when the title belongs in the outline of the page, and `role="status"` when the state shows up
+ * after something the user did, so a screen reader announces it.
+ */
+export const Accessibility: Story = {
+  render: () => (
+    <EmptyState
+      description="Check the spelling or try a shorter search."
+      role="status"
+      style={{ width: '20rem' }}
+      title={'No results for "plume"'}
+      titleAs="h2"
+      variant="outline"
+    />
+  ),
+}
+
+/**
  * Give the EmptyState its parts as children to change the order or leave one out. Here the action comes first and
  * there is no icon. The `icon`, `title`, `description` and `action` props are ignored when it has children.
  */
@@ -227,23 +244,6 @@ export const Compound: Story = {
       <EmptyStateTitle as="h3">No results</EmptyStateTitle>
       <EmptyStateDescription>Try other filters.</EmptyStateDescription>
     </EmptyState>
-  ),
-}
-
-/**
- * Use **titleAs** when the title belongs in the outline of the page, and `role="status"` when the state shows up
- * after something the user did, so a screen reader announces it.
- */
-export const Accessibility: Story = {
-  render: () => (
-    <EmptyState
-      description="Check the spelling or try a shorter search."
-      role="status"
-      style={{ width: '20rem' }}
-      title={'No results for "plume"'}
-      titleAs="h2"
-      variant="outline"
-    />
   ),
 }
 

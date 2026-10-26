@@ -239,30 +239,6 @@ export const IconsAndShortcuts: Story = {
 }
 
 /**
- * An item is made of **DropdownItemIcon**, **DropdownItemLabel** and **DropdownItemShortcut**. Write them as the
- * children of the item to reorder them, leave one out or give each its own class. The shortcut here comes first.
- */
-export const Compound: Story = {
-  render: () => (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button label="Account" variant="outline" />
-      </DropdownTrigger>
-      <DropdownMenu>
-        <DropdownItem>
-          <DropdownItemShortcut>⌘P</DropdownItemShortcut>
-          <DropdownItemLabel>Profile</DropdownItemLabel>
-          <DropdownItemIcon>{userIcon}</DropdownItemIcon>
-        </DropdownItem>
-        <DropdownItem>
-          <DropdownItemLabel>Settings</DropdownItemLabel>
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  ),
-}
-
-/**
  * A **DropdownLabel** titles the items that follow and a **DropdownSeparator** draws a line between groups.
  * Neither can take the focus, so the arrows go from item to item.
  */
@@ -340,6 +316,30 @@ function ControlledExample(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <ControlledExample />,
+}
+
+/**
+ * An item is made of **DropdownItemIcon**, **DropdownItemLabel** and **DropdownItemShortcut**. Write them as the
+ * children of the item to reorder them, leave one out or give each its own class. The shortcut here comes first.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Dropdown>
+      <DropdownTrigger>
+        <Button label="Account" variant="outline" />
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem>
+          <DropdownItemShortcut>⌘P</DropdownItemShortcut>
+          <DropdownItemLabel>Profile</DropdownItemLabel>
+          <DropdownItemIcon>{userIcon}</DropdownItemIcon>
+        </DropdownItem>
+        <DropdownItem>
+          <DropdownItemLabel>Settings</DropdownItemLabel>
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  ),
 }
 
 /**
