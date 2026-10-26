@@ -95,7 +95,7 @@
 
 .button:enabled:focus-visible {
   outline: 2px solid var(--button-color);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 :is(.outline, .ghost):enabled:not([aria-busy]):active {

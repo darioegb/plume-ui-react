@@ -89,7 +89,7 @@
 .item:has(:focus-visible) {
   border-radius: var(--plume-radius-3);
   outline: 2px solid var(--rating-edge, currentColor);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .disabled {

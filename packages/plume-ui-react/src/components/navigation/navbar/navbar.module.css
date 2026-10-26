@@ -219,7 +219,7 @@
 .brand:focus-visible,
 .toggle:focus-visible {
   outline: 2px solid var(--navbar-text);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .solid .item:focus-visible,

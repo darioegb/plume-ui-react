@@ -118,7 +118,7 @@
 
 .table [data-plume-table-sort]:focus-visible {
   outline: 2px solid currentcolor;
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .table [data-plume-table-sort-icon] {
@@ -198,7 +198,7 @@
 
 :global(:where([data-plume-table]:focus-visible)) {
   outline: 2px solid var(--plume-color-primary-text);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 @media (forced-colors: active) {

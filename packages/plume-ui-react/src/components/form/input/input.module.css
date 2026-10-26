@@ -4,7 +4,7 @@
   background: transparent;
   border: none;
   outline: 2px solid transparent;
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .input {
@@ -83,7 +83,7 @@
 :not(.control) > .outline:enabled:focus,
 .control:has(.outline:enabled):focus-within {
   outline: 2px solid var(--input-color);
-  outline-offset: 2px;
+  outline-offset: 0;
 }
 
 .outline:enabled:focus {

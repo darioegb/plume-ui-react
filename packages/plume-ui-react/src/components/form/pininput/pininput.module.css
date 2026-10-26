@@ -26,7 +26,7 @@
   font-size: var(--plume-font-size-lg);
   height: var(--plume-space-12);
   outline: 2px solid transparent;
-  outline-offset: 2px;
+  outline-offset: 0;
   padding: 0;
   width: var(--plume-space-10);
 }
