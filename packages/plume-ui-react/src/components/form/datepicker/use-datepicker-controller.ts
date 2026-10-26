@@ -36,7 +36,7 @@ interface DatePickerControllerOptions {
   colorScheme: ColorScheme
   config?: DatePickerConfig
   displayFormat?: string
-  isCalendar: boolean
+  isPanel: boolean
   isRange: boolean
   labels?: Partial<DatePickerLabels>
   maxDate?: Date
@@ -72,7 +72,7 @@ export function useDatePickerController({
   colorScheme,
   config,
   displayFormat,
-  isCalendar,
+  isPanel,
   isRange,
   labels,
   maxDate,
@@ -95,7 +95,7 @@ export function useDatePickerController({
       : DATE_PICKER_INITIAL_STATE,
   )
   const isFirstRender = useRef(true)
-  const popoverOpen = !isCalendar && state.modalOpen
+  const popoverOpen = !isPanel && state.modalOpen
   const calendarId = useId()
 
   const focusInput = useCallback((): void => {
@@ -152,10 +152,10 @@ export function useDatePickerController({
   const toggle = useCallback((): void => dispatch({ type: 'TOGGLE_MODAL' }), [])
 
   const closeAndRestoreFocus = useCallback((): void => {
-    if (isCalendar) return
+    if (isPanel) return
     dispatch({ type: 'CLOSE_MODAL' })
     focusInput()
-  }, [focusInput, isCalendar])
+  }, [focusInput, isPanel])
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLDivElement>): void => {
@@ -266,7 +266,7 @@ export function useDatePickerController({
       colorScheme,
       dispatch,
       displayFormat,
-      isCalendar,
+      isPanel,
       isRange,
       labels: mergedLabels,
       language,
@@ -294,7 +294,7 @@ export function useDatePickerController({
       commitTypedValue,
       colorScheme,
       displayFormat,
-      isCalendar,
+      isPanel,
       isRange,
       mergedLabels,
       language,

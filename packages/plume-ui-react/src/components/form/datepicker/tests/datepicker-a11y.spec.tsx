@@ -63,7 +63,7 @@ describe('DatePicker accessibility', () => {
   })
 
   it('leaves the always visible calendar without modal semantics', () => {
-    render(<DatePicker calendar onValueChange={vi.fn()} value={value} />)
+    render(<DatePicker panel onValueChange={vi.fn()} value={value} />)
     const dialog = screen.getByRole('dialog', { name: 'Calendar' })
     expect(dialog).not.toHaveAttribute('aria-modal')
     expect(dialog).not.toHaveAttribute('id')

@@ -14,7 +14,7 @@ export interface DatePickerContextProps {
   colorScheme: ColorScheme
   dispatch: Dispatch<DatePickerAction>
   displayFormat?: string
-  isCalendar: boolean
+  isPanel: boolean
   isRange: boolean
   labels: DatePickerLabels
   language: string

@@ -33,7 +33,7 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  *
  * On its own it shows an input with a button that opens the calendar. To change what it shows or the order, give
  * it its parts as children: `DatePickerInput` is the field with the button, and `DatePickerCalendar` the calendar
- * (a popup under the input, or always visible with `calendar`). The `DatePicker` keeps the value and the state
+ * (a popup under the input, or always visible with `panel`). The `DatePicker` keeps the value and the state
  * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
  * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
  * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
@@ -74,7 +74,7 @@ export default {
   argTypes: {
     className: { control: 'text' },
     value: { control: false },
-    calendar: { control: 'boolean' },
+    panel: { control: 'boolean' },
     range: { control: 'boolean' },
     colorScheme: { control: 'select', options: colorSchemes },
     disabled: { control: 'boolean' },

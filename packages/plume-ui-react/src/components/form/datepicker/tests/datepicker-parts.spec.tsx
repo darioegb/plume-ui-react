@@ -67,7 +67,7 @@ describe('DatePicker parts', () => {
   })
 
   it('renders two pages for a range', () => {
-    render(<DatePicker calendar range onValueChange={vi.fn()} />)
+    render(<DatePicker panel range onValueChange={vi.fn()} />)
     expect(document.querySelectorAll('[data-plume-datepicker-page]')).toHaveLength(2)
   })
 
@@ -86,7 +86,7 @@ describe('DatePicker parts', () => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
     expect(() =>
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerGrid />
           </DatePickerCalendar>
@@ -180,7 +180,7 @@ describe('DatePicker parts', () => {
     it('styles and refs every part', () => {
       const ref = createRef<HTMLDivElement>()
       render(
-        <DatePicker calendar onValueChange={vi.fn()} showFooter>
+        <DatePicker panel onValueChange={vi.fn()} showFooter>
           <DatePickerCalendar className="calendar-mine" ref={ref} style={{ margin: 3 }}>
             <DatePickerPages className="pages-mine">
               <DatePickerPage className="page-mine">
@@ -233,7 +233,7 @@ describe('DatePicker parts', () => {
 
     it('reorders and omits parts', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -257,7 +257,7 @@ describe('DatePicker parts', () => {
 
     it('replaces the content of a part', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()} showFooter>
+        <DatePicker panel onValueChange={vi.fn()} showFooter>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -286,14 +286,14 @@ describe('DatePicker parts', () => {
     })
 
     it('navigates with custom previous and next parts and the labels of the root', () => {
-      render(<DatePicker calendar labels={{ nextMonth: 'Adelante' }} onValueChange={vi.fn()} />)
+      render(<DatePicker panel labels={{ nextMonth: 'Adelante' }} onValueChange={vi.fn()} />)
       const month = part('month-button').textContent
       fireEvent.click(screen.getByRole('button', { name: 'Adelante' }))
       expect(part('month-button').textContent).not.toBe(month)
     })
 
     it('switches the views and pages through the years', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} />)
+      render(<DatePicker panel onValueChange={vi.fn()} />)
       fireEvent.click(part('year-button'))
       expect(part('years')).not.toBeNull()
       expect(part('year-button')).toHaveAttribute('data-active')
@@ -311,7 +311,7 @@ describe('DatePicker parts', () => {
     })
 
     it('picks a year', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} />)
+      render(<DatePicker panel onValueChange={vi.fn()} />)
       fireEvent.click(part('year-button'))
       const option = within(part('years')).getAllByRole('button')[2]
       fireEvent.click(option)
@@ -320,7 +320,7 @@ describe('DatePicker parts', () => {
 
     it('renders days, weekdays, months and years from render functions', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -380,7 +380,7 @@ describe('DatePicker parts', () => {
 
     it('takes the children of the grid and weekdays as plain nodes', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -405,7 +405,7 @@ describe('DatePicker parts', () => {
       const today = new Date()
       render(
         <DatePicker
-          calendar
+          panel
           maxDate={new Date(today.getFullYear(), today.getMonth(), 28)}
           minDate={new Date(today.getFullYear(), today.getMonth(), 2)}
           onValueChange={vi.fn()}
@@ -441,7 +441,7 @@ describe('DatePicker parts', () => {
 
     it('selects a day through a standalone day part and lets the footer apply it', () => {
       const onChange = vi.fn()
-      render(<DatePicker calendar onValueChange={onChange} showFooter />)
+      render(<DatePicker panel onValueChange={onChange} showFooter />)
       fireEvent.click(
         document.querySelector('[data-plume-datepicker-day]:not([aria-hidden])') as HTMLElement,
       )
@@ -452,7 +452,7 @@ describe('DatePicker parts', () => {
 
     it('renders nothing but the content when the day has children', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar>
             <DatePickerPages>
               <DatePickerPage>
@@ -472,7 +472,7 @@ describe('DatePicker parts', () => {
     })
 
     it('marks the inline calendar', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} />)
+      render(<DatePicker panel onValueChange={vi.fn()} />)
       expect(screen.getByRole('dialog')).toHaveAttribute('data-inline')
     })
 

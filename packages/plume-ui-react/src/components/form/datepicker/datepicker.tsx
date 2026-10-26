@@ -50,7 +50,7 @@ export interface DatePickerOwnProps {
    *
    * @default false
    */
-  calendar?: boolean
+  panel?: boolean
   /**
    * Selects a start and an end date, showing two consecutive months.
    *
@@ -116,7 +116,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       colorScheme = 'secondary',
       config,
       displayFormat,
-      calendar: isCalendar = false,
+      panel: isPanel = false,
       range: isRange = false,
       labels,
       maxDate,
@@ -142,7 +142,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       colorScheme,
       config,
       displayFormat,
-      isCalendar,
+      isPanel,
       isRange,
       labels,
       maxDate,
