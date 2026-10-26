@@ -1,5 +1,15 @@
 # plume-ui-react
 
+## 0.28.0
+
+### Minor Changes
+
+- [#158](https://github.com/darioegb/plume-ui-react/pull/158) [`66bf8a55f4345abce8354df220416bdab6f7a059`](https://github.com/darioegb/plume-ui-react/commit/66bf8a55f4345abce8354df220416bdab6f7a059) Thanks [@darioegb](https://github.com/darioegb)! - `Slider` and `Rating` are made of exported parts (`SliderBody`, `SliderTrack`, `SliderRange`, `SliderMarks`, `SliderMarkItem`, `SliderMarkLabel`, `SliderThumb`, `RatingItem`, `RatingEmpty`, `RatingFilled`, `RatingRadio`, `RatingValueText`), each with its own `className`, `style` and `ref`, and `classNames`, `SliderPart` and `RatingPart` are removed. With this, no component takes `classNames` any more: every element is a part. See "Upgrading to 1.0".
+
+### Patch Changes
+
+- [#159](https://github.com/darioegb/plume-ui-react/pull/159) [`08bd73edd524dd82e0b60b788d0e1c876fd55352`](https://github.com/darioegb/plume-ui-react/commit/08bd73edd524dd82e0b60b788d0e1c876fd55352) Thanks [@darioegb](https://github.com/darioegb)! - The focus ring of an `Input` with addons (`InputAddon`) now surrounds only the field area, not the addons too. It sits on `InputControl`, with square corners on the side of an addon.
+
 ## 0.27.0
 
 ### Minor Changes
