@@ -53,7 +53,7 @@ export function DatePickerInput({
     },
     commitTypedValue,
     displayFormat,
-    isCalendar,
+    isPanel,
     colorScheme,
     isRange,
     labels,
@@ -156,7 +156,7 @@ export function DatePickerInput({
     [disabled, handleButtonClick, readOnly, setRef],
   )
 
-  if (isCalendar) return null
+  if (isPanel) return null
 
   return (
     <DatePickerInputContext.Provider value={inputContext}>

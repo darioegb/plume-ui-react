@@ -24,7 +24,7 @@ const VARIANT_CLASS = {
 } as const
 
 /**
- * The popup that opens under the input, or the content of the page when the `DatePicker` is `calendar`. Its accessible name is `labels.calendar`.
+ * The popup that opens under the input, or the content of the page when the `DatePicker` is `panel`. Its accessible name is `labels.calendar`.
  */
 export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarProps>(
   (
@@ -33,7 +33,7 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
   ): ReactNode => {
     const {
       calendarId,
-      isCalendar,
+      isPanel,
       labels,
       panelVars,
       position,
@@ -46,9 +46,9 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
     } = useDatePicker('DatePickerCalendar')
     const setRef = useMemo(() => mergeRefs(setPanel, ref), [ref, setPanel])
 
-    if (!isCalendar && !state.modalOpen) return null
+    if (!isPanel && !state.modalOpen) return null
 
-    const floatingStyle: CSSProperties | undefined = isCalendar
+    const floatingStyle: CSSProperties | undefined = isPanel
       ? undefined
       : {
           ...panelVars,
@@ -60,19 +60,19 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
     const calendar = (
       <div
         aria-label={ariaLabel ?? labels.calendar}
-        aria-modal={isCalendar ? undefined : true}
+        aria-modal={isPanel ? undefined : true}
         className={joinClasses(
           styles.datePickerModal,
           pickerPanelClasses(variant, size, shape),
           variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
-          isCalendar && styles.inline,
+          isPanel && styles.inline,
           size === 'sm' && styles.daySm,
           size === 'lg' && styles.dayLg,
           className,
         )}
-        data-inline={isCalendar ? '' : undefined}
+        data-inline={isPanel ? '' : undefined}
         data-plume-datepicker-calendar=""
-        id={isCalendar ? undefined : calendarId}
+        id={isPanel ? undefined : calendarId}
         ref={setRef}
         role={dialogRole}
         style={{ ...floatingStyle, ...style }}
@@ -86,7 +86,7 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
       </div>
     )
 
-    return isCalendar ? calendar : <Portal>{calendar}</Portal>
+    return isPanel ? calendar : <Portal>{calendar}</Portal>
   },
 )
 

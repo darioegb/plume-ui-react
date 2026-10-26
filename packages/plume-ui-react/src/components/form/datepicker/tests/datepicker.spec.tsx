@@ -78,7 +78,7 @@ describe('DatePicker component', () => {
   })
 
   it('always renders the calendar when calendar is set', () => {
-    render(<DatePicker calendar onValueChange={vi.fn()} />)
+    render(<DatePicker panel onValueChange={vi.fn()} />)
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
   })
@@ -86,7 +86,7 @@ describe('DatePicker component', () => {
   it('lists the weekday headers Monday to Sunday', () => {
     render(
       <DatePicker
-        calendar
+        panel
         locale='en'
         labels={{ apply: 'Apply', cancel: 'Cancel' }}
         onValueChange={vi.fn()}
@@ -766,7 +766,7 @@ describe('DatePicker component', () => {
     })
 
     it('does not listen to Escape or presses while the calendar is shown on the page', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} />)
+      render(<DatePicker panel onValueChange={vi.fn()} />)
 
       fireEvent.keyDown(document.body, { key: 'Escape' })
       fireEvent.pointerDown(document.body)
@@ -845,7 +845,7 @@ describe('DatePicker component', () => {
 
     it('can have a calendar without an input', () => {
       render(
-        <DatePicker calendar onValueChange={vi.fn()}>
+        <DatePicker panel onValueChange={vi.fn()}>
           <DatePickerCalendar />
         </DatePicker>,
       )
@@ -877,27 +877,27 @@ describe('DatePicker component', () => {
       ['filled', 'panelFilled'],
       ['underline', 'panelUnderline'],
     ] as const)('gives the calendar the %s look', (variant, expected) => {
-      render(<DatePicker calendar onValueChange={vi.fn()} variant={variant} />)
+      render(<DatePicker panel onValueChange={vi.fn()} variant={variant} />)
       expect(screen.getByRole('dialog')).toHaveClass('panel', expected)
     })
 
     it('leaves the calendar unstyled with the unstyled variant', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} variant="unstyled" />)
+      render(<DatePicker panel onValueChange={vi.fn()} variant="unstyled" />)
       expect(screen.getByRole('dialog').className).not.toMatch(/panel(Outline|Filled|Underline)/)
     })
 
     it('scales and rounds the calendar with the size and the shape', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} shape="pill" size="sm" />)
+      render(<DatePicker panel onValueChange={vi.fn()} shape="pill" size="sm" />)
       expect(screen.getByRole('dialog')).toHaveClass('panelSm', 'panelPill', 'daySm')
     })
 
     it('keeps the always visible calendar in the flow', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} />)
+      render(<DatePicker panel onValueChange={vi.fn()} />)
       expect(screen.getByRole('dialog')).toHaveClass('inline')
     })
 
     it('gives the calendar the large size', () => {
-      render(<DatePicker calendar onValueChange={vi.fn()} size="lg" />)
+      render(<DatePicker panel onValueChange={vi.fn()} size="lg" />)
       expect(screen.getByRole('dialog')).toHaveClass('panelLg', 'dayLg')
     })
 
