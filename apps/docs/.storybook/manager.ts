@@ -33,6 +33,51 @@ const setStoredMode = (mode: 'light' | 'dark'): void => {
 const prefersDark = (): boolean =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
 
+const CHEVRON_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`
+
+// A disclosure with a list of links, so it can be styled (a native select draws the menu of the system).
+const createVersionMenu = (): [HTMLButtonElement, HTMLUListElement] => {
+  const button = document.createElement('button')
+  button.type = 'button'
+  button.className = 'plume-version'
+  button.title = 'Change the version of the docs'
+  button.setAttribute('aria-controls', 'plume-version-list')
+  button.setAttribute('aria-expanded', 'false')
+  button.append(currentVersion.label)
+  button.insertAdjacentHTML('beforeend', CHEVRON_ICON)
+
+  const list = document.createElement('ul')
+  list.className = 'plume-version-list'
+  list.id = 'plume-version-list'
+  list.hidden = true
+  for (const version of versions) {
+    const link = document.createElement('a')
+    link.href = version.href
+    link.textContent = version.label
+    if (version === currentVersion) link.setAttribute('aria-current', 'true')
+    const item = document.createElement('li')
+    item.append(link)
+    list.append(item)
+  }
+
+  const setOpen = (open: boolean): void => {
+    list.hidden = !open
+    button.setAttribute('aria-expanded', String(open))
+  }
+  button.addEventListener('click', () => {
+    setOpen(list.hidden)
+  })
+  document.addEventListener('click', (event) => {
+    if (!list.hidden && !(event.target as Element).closest('.plume-version-menu')) setOpen(false)
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || list.hidden) return
+    setOpen(false)
+    button.focus()
+  })
+  return [button, list]
+}
+
 // The toggle lives in the header so it stays visible when the production build hides the toolbar.
 addons.register('plume/theme-sync', (api) => {
   const channel = api.getChannel()
@@ -55,7 +100,7 @@ addons.register('plume/theme-sync', (api) => {
       button.addEventListener('click', () => {
         setMode(colorMode === 'dark' ? 'light' : 'dark')
       })
-      links.insertBefore(button, links.firstChild)
+      links.insertBefore(button, links.querySelector('.plume-version-menu')?.nextSibling ?? links.firstChild)
       renderToggle()
     }
     const navToggle = document.querySelector<HTMLButtonElement>('.plume-nav-toggle')
@@ -81,30 +126,20 @@ addons.register('plume/theme-sync', (api) => {
   }
 
   const injectVersion = (): void => {
-    const start = document.querySelector('header .header-start')
-    if (!start || start.querySelector('.plume-version')) return
+    const links = document.querySelector('header .header-links')
+    if (!links || links.querySelector('.plume-version-menu')) return
+    const wrapper = document.createElement('div')
+    wrapper.className = 'plume-version-menu'
     if (versions.length === 1) {
       const badge = document.createElement('span')
       badge.className = 'plume-version'
       badge.textContent = currentVersion.label
       badge.title = 'Version of the library these docs describe'
-      start.append(badge)
-      return
+      wrapper.append(badge)
+    } else {
+      wrapper.append(...createVersionMenu())
     }
-    const menu = document.createElement('select')
-    menu.className = 'plume-version'
-    menu.setAttribute('aria-label', 'Documentation version')
-    for (const version of versions) {
-      const option = document.createElement('option')
-      option.value = version.href
-      option.textContent = version.label
-      option.selected = version === currentVersion
-      menu.append(option)
-    }
-    menu.addEventListener('change', () => {
-      window.location.assign(menu.value)
-    })
-    start.append(menu)
+    links.insertBefore(wrapper, links.firstChild)
   }
 
   const applyMode = (mode: 'light' | 'dark'): void => {
