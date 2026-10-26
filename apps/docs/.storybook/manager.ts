@@ -3,6 +3,7 @@
 import { addons } from 'storybook/manager-api'
 import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events'
 import { darkTheme, lightTheme } from './theme'
+import { currentVersion, versions } from './versions'
 
 const isProd = process.env.NODE_ENV === 'prod'
 
@@ -79,6 +80,33 @@ addons.register('plume/theme-sync', (api) => {
     }
   }
 
+  const injectVersion = (): void => {
+    const start = document.querySelector('header .header-start')
+    if (!start || start.querySelector('.plume-version')) return
+    if (versions.length === 1) {
+      const badge = document.createElement('span')
+      badge.className = 'plume-version'
+      badge.textContent = currentVersion.label
+      badge.title = 'Version of the library these docs describe'
+      start.append(badge)
+      return
+    }
+    const menu = document.createElement('select')
+    menu.className = 'plume-version'
+    menu.setAttribute('aria-label', 'Documentation version')
+    for (const version of versions) {
+      const option = document.createElement('option')
+      option.value = version.href
+      option.textContent = version.label
+      option.selected = version === currentVersion
+      menu.append(option)
+    }
+    menu.addEventListener('change', () => {
+      window.location.assign(menu.value)
+    })
+    start.append(menu)
+  }
+
   const applyMode = (mode: 'light' | 'dark'): void => {
     colorMode = mode
     api.setOptions({ theme: mode === 'dark' ? darkTheme : lightTheme })
@@ -144,9 +172,13 @@ addons.register('plume/theme-sync', (api) => {
     drawer.focus()
   })
 
-  const observer = new MutationObserver(injectToggle)
+  const observer = new MutationObserver(() => {
+    injectToggle()
+    injectVersion()
+  })
   observer.observe(document.body, { childList: true, subtree: true })
   injectToggle()
+  injectVersion()
 })
 
 addons.setConfig({

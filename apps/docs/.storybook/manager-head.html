@@ -209,6 +209,38 @@
     color: #a1a1aa;
   }
 
+  /* The version the docs describe: a badge, or a menu once there are archived versions. */
+  .plume-version {
+    border: 1px solid rgba(24, 24, 27, 0.16);
+    border-radius: 999px;
+    color: #52525b;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.3rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  select.plume-version {
+    background: transparent;
+    cursor: pointer;
+  }
+
+  select.plume-version:hover {
+    border-color: #34d399;
+    color: #34d399;
+  }
+
+  html[data-plume-mode='dark'] .plume-version {
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #a1a1aa;
+  }
+
+  html[data-plume-mode='dark'] select.plume-version {
+    color-scheme: dark;
+  }
+
   .title a {
     gap: 0.5rem;
   }
