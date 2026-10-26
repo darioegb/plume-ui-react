@@ -63,10 +63,8 @@
   font-size: var(--plume-font-size-sm);
 }
 
-/* Docks the size changer to the far end, so it reads as a toolbar control and not as a dangling select. */
 .pageSize {
   display: inline-flex;
-  margin-inline-start: auto;
 }
 
 .pageSize [data-plume-select-control] {

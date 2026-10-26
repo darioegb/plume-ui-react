@@ -247,10 +247,10 @@ export const WithTotal: Story = {
   args: { count: undefined, pageSize: 25, total: 237 },
 }
 
-function SummaryAndPageSizeExample(props: Readonly<PaginatorProps>): React.ReactNode {
+function TableFooterExample(props: Readonly<PaginatorProps>): React.ReactNode {
   const [pageSize, setPageSize] = useState(10)
   return (
-    <div style={{ inlineSize: 'min(44rem, 100%)' }}>
+    <div style={{ inlineSize: 'min(32rem, 100%)' }}>
       <Paginator
         {...props}
         aria-label="Results"
@@ -258,24 +258,33 @@ function SummaryAndPageSizeExample(props: Readonly<PaginatorProps>): React.React
         pageSize={pageSize}
         total={237}
       >
-        <PaginatorSummary />
-        <PaginatorList />
         <PaginatorPageSize options={[10, 25, 50]} />
+        <PaginatorSummary />
+        <PaginatorList>
+          <PaginatorItem>
+            <PaginatorPrevious />
+          </PaginatorItem>
+          <PaginatorItem>
+            <PaginatorNext />
+          </PaginatorItem>
+        </PaginatorList>
       </Paginator>
     </div>
   )
 }
 
 /**
- * The root lays its parts out as a toolbar, so pass the width you want it to fill. `PaginatorSummary` shows the range
- * of the current page ("11–20 of 237") on the lead edge and needs the **total**. `PaginatorPageSize` is a `Select` to
- * choose how many items a page has, docked to the trailing edge: pass **pageSize** and **onPageSizeChange** to control
- * it, or **defaultPageSize** to leave it to the Paginator. When the size changes the page changes too, so the first
- * item of the old page stays in view. Their texts are `labels.summary` and `labels.pageSize`.
+ * Show the numbered pages, or a compact range with just the previous and next buttons, like a table footer — one or
+ * the other, not both. This is the compact form: `PaginatorPageSize` chooses how many items a page has,
+ * `PaginatorSummary` shows the range of the current page ("21–30 of 237") instead of the numbers, and a
+ * `PaginatorList` with only `PaginatorPrevious` and `PaginatorNext` moves between pages. `total` feeds the summary;
+ * when the size changes the page changes too, so the first item of the old page stays in view. Their texts are
+ * `labels.pageSize` and `labels.summary`. The parts sit in source order, so reorder them or push one aside with a
+ * `marginInlineStart: 'auto'` style to lay the toolbar out your way.
  */
-export const SummaryAndPageSize: Story = {
+export const TableFooter: Story = {
   parameters: { docs: { story: { inline: false, iframeHeight: 300 } } },
-  render: (args) => <SummaryAndPageSizeExample {...args} />,
+  render: (args) => <TableFooterExample {...args} />,
 }
 
 /**
