@@ -11,7 +11,9 @@ import {
   PaginatorNext,
   PaginatorPage,
   PaginatorPages,
+  PaginatorPageSize,
   PaginatorPrevious,
+  PaginatorSummary,
 } from '..'
 import type { PaginatorProps } from '..'
 
@@ -107,6 +109,8 @@ export default {
     children: { control: false },
     style: { control: false },
     count: { control: 'number' },
+    defaultPageSize: { control: 'number' },
+    onPageSizeChange: { control: false },
     total: { control: 'number' },
     pageSize: { control: 'number' },
     page: { control: false },
@@ -241,6 +245,34 @@ export const ManyPages: Story = {
  */
 export const WithTotal: Story = {
   args: { count: undefined, pageSize: 25, total: 237 },
+}
+
+function SummaryAndPageSizeExample(props: Readonly<PaginatorProps>): React.ReactNode {
+  const [pageSize, setPageSize] = useState(10)
+  return (
+    <Paginator
+      {...props}
+      aria-label="Results"
+      onPageSizeChange={setPageSize}
+      pageSize={pageSize}
+      total={237}
+    >
+      <PaginatorSummary />
+      <PaginatorList />
+      <PaginatorPageSize options={[10, 25, 50]} />
+    </Paginator>
+  )
+}
+
+/**
+ * `PaginatorSummary` shows the range of the current page ("11–20 of 237") and needs the **total**. `PaginatorPageSize`
+ * is a `Select` to choose how many items a page has: pass **pageSize** and **onPageSizeChange** to control it, or
+ * **defaultPageSize** to leave it to the Paginator. When the size changes the page changes too, so the first item
+ * of the old page stays in view. Their texts are `labels.summary` and `labels.pageSize`.
+ */
+export const SummaryAndPageSize: Story = {
+  parameters: { docs: { story: { inline: false, iframeHeight: 300 } } },
+  render: (args) => <SummaryAndPageSizeExample {...args} />,
 }
 
 /**
