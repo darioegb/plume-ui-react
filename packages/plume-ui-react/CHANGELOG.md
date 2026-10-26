@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.28.1
+
+### Patch Changes
+
+- [#162](https://github.com/darioegb/plume-ui-react/pull/162) [`8e6cd6021d023fb3cd445baea84790245ba92554`](https://github.com/darioegb/plume-ui-react/commit/8e6cd6021d023fb3cd445baea84790245ba92554) Thanks [@darioegb](https://github.com/darioegb)! - Every prop and every part has a JSDoc description, with `@default` when it has one, so the editor shows it on hover. The docs pages list them in an API reference generated from these types.
+
 ## 0.28.0
 
 ### Minor Changes
