@@ -250,25 +250,28 @@ export const WithTotal: Story = {
 function SummaryAndPageSizeExample(props: Readonly<PaginatorProps>): React.ReactNode {
   const [pageSize, setPageSize] = useState(10)
   return (
-    <Paginator
-      {...props}
-      aria-label="Results"
-      onPageSizeChange={setPageSize}
-      pageSize={pageSize}
-      total={237}
-    >
-      <PaginatorSummary />
-      <PaginatorList />
-      <PaginatorPageSize options={[10, 25, 50]} />
-    </Paginator>
+    <div style={{ inlineSize: 'min(44rem, 100%)' }}>
+      <Paginator
+        {...props}
+        aria-label="Results"
+        onPageSizeChange={setPageSize}
+        pageSize={pageSize}
+        total={237}
+      >
+        <PaginatorSummary />
+        <PaginatorList />
+        <PaginatorPageSize options={[10, 25, 50]} />
+      </Paginator>
+    </div>
   )
 }
 
 /**
- * `PaginatorSummary` shows the range of the current page ("11–20 of 237") and needs the **total**. `PaginatorPageSize`
- * is a `Select` to choose how many items a page has: pass **pageSize** and **onPageSizeChange** to control it, or
- * **defaultPageSize** to leave it to the Paginator. When the size changes the page changes too, so the first item
- * of the old page stays in view. Their texts are `labels.summary` and `labels.pageSize`.
+ * The root lays its parts out as a toolbar, so pass the width you want it to fill. `PaginatorSummary` shows the range
+ * of the current page ("11–20 of 237") on the lead edge and needs the **total**. `PaginatorPageSize` is a `Select` to
+ * choose how many items a page has, docked to the trailing edge: pass **pageSize** and **onPageSizeChange** to control
+ * it, or **defaultPageSize** to leave it to the Paginator. When the size changes the page changes too, so the first
+ * item of the old page stays in view. Their texts are `labels.summary` and `labels.pageSize`.
  */
 export const SummaryAndPageSize: Story = {
   parameters: { docs: { story: { inline: false, iframeHeight: 300 } } },
