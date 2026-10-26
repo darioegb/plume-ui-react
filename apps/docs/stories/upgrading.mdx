@@ -39,41 +39,49 @@ A control that has no visible text needs an `aria-label`. In a `RadioGroup`, giv
 </RadioGroup>
 ```
 
-## One prop for the classes of the parts
+## Every element is a part
 
-A component that has inner parts takes a single `classNames` prop, a record keyed by part. The loose props that
-existed in 0.x are gone. `classNames` adds its class in every variant, next to the Plume classes, and with
-`variant="unstyled"` it is the only class a part has.
+In 0.x, a component with inner parts styled them through loose props (`inputClassName`, `backdropClassName`...) and
+later through a `classNames` record. Both are gone: every element a component renders is a part you can import, with
+its own `className`, `style`, `ref` and `data-plume-<component>-<part>` attribute. Given no parts, a component renders
+the same default composition as before; when a direct child is one of its parts, it renders your composition, so you
+reorder, omit or replace any element like any other React element. The sections below list the parts of each family.
 
 ```tsx
 // Before
-<PinInput length={4} inputClassName='h-12 w-12' />
+<Input type='password' revealable revealClassName='text-sm' />
 
 // After
-<PinInput length={4} classNames={{ input: 'h-12 w-12' }} />
+<Input type='password'>
+  <InputControl>
+    <InputField />
+    <InputReveal className='text-sm' />
+  </InputControl>
+</Input>
 ```
 
 <table>
   <thead>
-    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+    <tr><th>Component</th><th>0.x prop</th><th>Part</th></tr>
   </thead>
   <tbody>
-    <tr><td><code>SelectGroup</code></td><td><code>labelClassName</code></td><td><code>classNames.label</code></td></tr>
-    <tr><td><code>TimePicker</code></td><td><code>panelClassName</code></td><td><code>classNames.panel</code></td></tr>
-    <tr><td><code>Sidebar</code>, <code>ModalContent</code>, <code>DrawerContent</code></td><td><code>backdropClassName</code></td><td><code>classNames.backdrop</code></td></tr>
-    <tr><td><code>AccordionContent</code>, <code>Collapse</code></td><td><code>bodyClassName</code></td><td><code>classNames.body</code></td></tr>
-    <tr><td><code>Breadcrumb</code></td><td><code>listClassName</code>, <code>separatorClassName</code></td><td><code>classNames.list</code>, <code>classNames.separator</code></td></tr>
-    <tr><td><code>ToastProvider</code></td><td><code>toastClassName</code></td><td><code>classNames.toast</code></td></tr>
-    <tr><td><code>Skeleton</code></td><td><code>lineClassName</code></td><td><code>classNames.line</code></td></tr>
-    <tr><td><code>ProgressBar</code></td><td><code>indicatorClassName</code>, <code>valueClassName</code></td><td><code>classNames.indicator</code>, <code>classNames.value</code></td></tr>
-    <tr><td><code>CarouselDots</code></td><td><code>dotClassName</code></td><td><code>classNames.dot</code></td></tr>
-    <tr><td><code>Table</code></td><td><code>containerClassName</code>, <code>loadingClassName</code></td><td><code>classNames.container</code>, <code>classNames.loading</code></td></tr>
-    <tr><td><code>TableHead</code></td><td><code>sortClassName</code></td><td><code>classNames.sort</code></td></tr>
-    <tr><td><code>TableEmpty</code></td><td><code>emptyStateClassName</code></td><td><code>classNames.emptyState</code></td></tr>
+    <tr><td><code>Input</code></td><td><code>inputClassName</code>, <code>revealClassName</code></td><td><code>InputField</code>, <code>InputReveal</code></td></tr>
+    <tr><td><code>Textarea</code></td><td><code>inputClassName</code>, <code>countClassName</code></td><td><code>TextareaField</code>, <code>TextareaCount</code></td></tr>
+    <tr><td><code>PinInput</code></td><td><code>inputClassName</code></td><td><code>PinInputCell</code></td></tr>
+    <tr><td><code>SelectGroup</code></td><td><code>labelClassName</code></td><td><code>SelectGroupLabel</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>panelClassName</code></td><td><code>TimePickerPanel</code></td></tr>
+    <tr><td><code>Sidebar</code>, <code>ModalContent</code>, <code>DrawerContent</code></td><td><code>backdropClassName</code></td><td><code>SidebarBackdrop</code>, <code>ModalBackdrop</code>, <code>DrawerBackdrop</code></td></tr>
+    <tr><td><code>AccordionContent</code>, <code>Collapse</code></td><td><code>bodyClassName</code></td><td><code>AccordionBody</code>, <code>CollapseBody</code></td></tr>
+    <tr><td><code>Breadcrumb</code></td><td><code>listClassName</code>, <code>separatorClassName</code></td><td><code>BreadcrumbList</code>, <code>BreadcrumbSeparator</code></td></tr>
+    <tr><td><code>ToastProvider</code></td><td><code>toastClassName</code></td><td><code>Toast</code>, through the <code>render</code> prop</td></tr>
+    <tr><td><code>Skeleton</code></td><td><code>lineClassName</code></td><td><code>SkeletonLine</code></td></tr>
+    <tr><td><code>ProgressBar</code></td><td><code>indicatorClassName</code>, <code>valueClassName</code></td><td><code>ProgressBarIndicator</code>, <code>ProgressBarValue</code></td></tr>
+    <tr><td><code>CarouselDots</code></td><td><code>dotClassName</code></td><td><code>CarouselDot</code></td></tr>
+    <tr><td><code>Table</code></td><td><code>containerClassName</code>, <code>loadingClassName</code></td><td><code>className</code> of the <code>Table</code>, <code>TableLoading</code></td></tr>
+    <tr><td><code>TableHead</code></td><td><code>sortClassName</code></td><td><code>TableHeadSort</code></td></tr>
+    <tr><td><code>TableEmpty</code></td><td><code>emptyStateClassName</code></td><td><code>TableEmptyCell</code> with an <code>EmptyState</code> inside</td></tr>
   </tbody>
 </table>
-
-Every component exports its `<Name>Part` type, for example `PinInputPart`, with the keys it accepts.
 
 ## The look of the `DatePicker` goes on the `DatePicker`
 
@@ -96,27 +104,33 @@ longer on the `DatePickerInput`.
 
 ## `className` goes to the outermost element
 
-`className` and `style` always land on the outermost element a component renders, and `classNames.input` reaches the
-native control. It changes for the components that wrap their `<input>` or `<textarea>`:
+`className` and `style` always land on the outermost element a component renders, and the native control is a part
+(`InputField`, `TextareaField`, `DatePickerField`...) with its own `className`. It changes for the components that
+wrap their `<input>` or `<textarea>`:
 
 <table>
   <thead>
     <tr><th>Component</th><th>Before</th><th>After</th></tr>
   </thead>
   <tbody>
-    <tr><td><code>Input</code> with addons, elements or <code>revealable</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the group, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
-    <tr><td><code>Textarea</code> with <code>showCount</code></td><td><code>className</code> on the <code>&lt;textarea&gt;</code></td><td><code>className</code> on the wrapper, <code>classNames.input</code> on the <code>&lt;textarea&gt;</code></td></tr>
-    <tr><td><code>DatePicker</code>, <code>TimePicker</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the root, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
-    <tr><td><code>DatePickerInput</code>, <code>TimePickerInput</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the field with its button, <code>classNames.input</code> on the <code>&lt;input&gt;</code></td></tr>
+    <tr><td><code>Input</code> with addons, elements or <code>revealable</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the group, <code>InputField</code> for the <code>&lt;input&gt;</code></td></tr>
+    <tr><td><code>Textarea</code> with <code>showCount</code></td><td><code>className</code> on the <code>&lt;textarea&gt;</code></td><td><code>className</code> on the wrapper, <code>TextareaField</code> for the <code>&lt;textarea&gt;</code></td></tr>
+    <tr><td><code>DatePicker</code>, <code>TimePicker</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the root, <code>DatePickerField</code> or <code>InputField</code> for the <code>&lt;input&gt;</code></td></tr>
+    <tr><td><code>DatePickerInput</code>, <code>TimePickerInput</code></td><td><code>className</code> on the <code>&lt;input&gt;</code></td><td><code>className</code> on the field with its button, <code>DatePickerField</code> or <code>InputField</code> for the <code>&lt;input&gt;</code></td></tr>
   </tbody>
 </table>
 
 ```tsx
 // Before
-<DatePicker onChange={onChange} variant='unstyled' className='form-control' />
+<Input type='password' revealable className='form-control' />
 
 // After
-<DatePicker onChange={onChange} variant='unstyled' classNames={{ input: 'form-control' }} />
+<Input type='password'>
+  <InputControl>
+    <InputField className='form-control' />
+    <InputReveal />
+  </InputControl>
+</Input>
 ```
 
 An `Input` or a `Textarea` with nothing around it keeps `className` on the native element, because it is the
@@ -199,8 +213,7 @@ element. Given no `children`, the component renders the same default composition
 
 The `ref` of the root is always the native `<input>` or `<textarea>`, with or without parts, so react-hook-form's
 `register` works on the root. `className` and `style` of the root go to the outermost element. The `data-plume-*-input`
-attribute of `NumberInput` is now `data-plume-numberinput-field`. Components that still take `classNames` are listed
-in each story.
+attribute of `NumberInput` is now `data-plume-numberinput-field`.
 
 ## `Select` and the pickers are made of parts
 
@@ -376,6 +389,44 @@ file and `FileUploadErrors` each rejection. `showEdges` of the `Paginator` only 
 you compose the list, write `PaginatorFirst` and `PaginatorLast` yourself. The attributes `data-plume-fileupload-file`
 and `data-plume-paginator-part="x"` are now `data-plume-fileupload-item` and `data-plume-paginator-x`, and the
 attribute of the `<table>` is `data-plume-table-element`. `ProgressBar` is now a client component.
+
+## `Slider` and `Rating` are made of parts
+
+`Slider` and `Rating` no longer take `classNames`. Every element they render is a part with its own `className`, `style`
+and `ref`. Given no parts they render the same default composition as before, and a data-driven part takes a function:
+`SliderMarks` gets each mark and a `Rating` gets the position of each star.
+
+```tsx
+// Before
+<Rating classNames={{ empty: 'text-gray-300', filled: 'text-amber-500' }} variant='unstyled' />
+
+// After
+<Rating variant='unstyled'>
+  {(position) => (
+    <RatingItem position={position}>
+      <RatingEmpty className='text-gray-300' />
+      <RatingFilled className='text-amber-500' />
+      <RatingRadio />
+    </RatingItem>
+  )}
+</Rating>
+```
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Slider</code></td><td><code>classNames.track</code>, <code>.range</code>, <code>.thumb</code>, <code>.mark</code>, <code>.markLabel</code></td><td><code>SliderTrack</code>, <code>SliderRange</code>, <code>SliderThumb</code> (one per value, with <code>index</code>), <code>SliderMarks</code> with <code>SliderMarkItem</code> and <code>SliderMarkLabel</code>; also <code>SliderBody</code></td></tr>
+    <tr><td><code>Rating</code></td><td><code>classNames.item</code>, <code>.empty</code>, <code>.filled</code></td><td><code>RatingItem</code>, <code>RatingEmpty</code>, <code>RatingFilled</code>; also <code>RatingRadio</code> and <code>RatingValueText</code></td></tr>
+  </tbody>
+</table>
+
+A composed `Slider` needs one `SliderThumb` per value, and a composed `Rating` needs a `RatingRadio` in each item,
+because they are the native controls. The attribute `data-plume-slider-mark` is now `data-plume-slider-mark-item`.
+
+With these two, no component takes `classNames` and the `<Name>Part` types are gone: the elements you used to reach with
+a key of `classNames` are parts you import.
 
 ## `useClickOutside` is removed
 

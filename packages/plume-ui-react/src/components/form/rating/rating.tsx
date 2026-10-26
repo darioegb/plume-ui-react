@@ -1,29 +1,27 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useId } from 'react'
+import { forwardRef, Fragment, useId, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import { useLabels } from '../../../locale/locale-provider'
-import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
+import { RatingContext } from './rating-context'
+import type { RatingContextValue, RatingLabels } from './rating-context'
 import { StarIcon } from './rating-icons'
-import { itemState, RatingItem, type RatingPart } from './rating-item'
+import { RatingItem } from './rating-item'
+import { RatingValueText } from './rating-value-text'
 import styles from './rating.module.css'
 import { useRating } from './use-rating'
 
-export type { RatingPart }
+export type { RatingLabels }
 
 export type RatingVariant = 'solid' | 'unstyled'
 
-export interface RatingLabels {
-  item: (value: number, max: number) => string
-  readOnly: (value: number, max: number) => string
-}
-
 export interface RatingOwnProps {
   allowHalf?: boolean
-  classNames?: Partial<Record<RatingPart, string>>
+  children?: ReactNode | ((position: number) => ReactNode)
   clearable?: boolean
   colorScheme?: ColorScheme
   defaultValue?: number
@@ -48,22 +46,20 @@ type RatingRootAttributes = Pick<
 
 export type RatingProps = Omit<ComponentProps, 'index'> & RatingRootAttributes & RatingOwnProps
 
-const halfOf = (allowHalf: boolean, option: number, position: number): string | undefined => {
-  if (!allowHalf) return undefined
-  return option === position ? 'end' : 'start'
-}
-
 const DEFAULT_LABELS: RatingLabels = {
   item: (value) => `${value} ${value === 1 ? 'star' : 'stars'}`,
   readOnly: (value, max) => `${value} out of ${max}`,
 }
 
+const FILLED_ICON = <StarIcon filled />
+const OUTLINE_ICON = <StarIcon filled={false} />
+
 export const Rating = forwardRef<HTMLElement, RatingProps>(
   (
     {
       allowHalf = false,
+      children,
       className,
-      classNames,
       clearable = false,
       colorScheme = 'warning',
       defaultValue,
@@ -91,10 +87,11 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
     const text = useLabels('rating', DEFAULT_LABELS, labels)
     const fieldLabel = field?.controlId === rest.id ? field?.labelId : undefined
     const labelledBy = rest['aria-labelledby'] ?? (rest['aria-label'] ? undefined : fieldLabel)
-    const filledIcon = icon ?? <StarIcon filled />
-    const outlineIcon = emptyIcon ?? icon ?? <StarIcon filled={false} />
-    const step = allowHalf ? 0.5 : 1
+    const filledIcon = icon ?? FILLED_ICON
+    const outlineIcon = emptyIcon ?? icon ?? OUTLINE_ICON
     const positions = [...new Array(max).keys()].map((index) => index + 1)
+    const { preview, setHover, setValue, value } = rating
+    const resolvedName = name ?? generatedName
     const classes = joinClasses(
       isStyled && styles.rating,
       isStyled && styles[size],
@@ -107,83 +104,98 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
       '--rating-empty': 'var(--plume-border-strong)',
       ...style,
     } as CSSProperties
+    const context: RatingContextValue = useMemo(
+      () => ({
+        allowHalf,
+        clearable,
+        filledIcon,
+        isStyled,
+        labels: text,
+        max,
+        name: resolvedName,
+        outlineIcon,
+        preview,
+        readOnly,
+        setHover,
+        setValue,
+        value,
+      }),
+      [
+        allowHalf,
+        clearable,
+        filledIcon,
+        isStyled,
+        max,
+        outlineIcon,
+        preview,
+        readOnly,
+        resolvedName,
+        setHover,
+        setValue,
+        text,
+        value,
+      ],
+    )
+
+    let content: ReactNode
+    if (typeof children === 'function') {
+      content = (
+        <>
+          <RatingValueText />
+          {positions.map((position) => (
+            <Fragment key={position}>{children(position)}</Fragment>
+          ))}
+        </>
+      )
+    } else if (hasPart(children, [RatingItem, RatingValueText])) {
+      content = children
+    } else {
+      content = (
+        <>
+          <RatingValueText />
+          {positions.map((position) => (
+            <RatingItem key={position} position={position} />
+          ))}
+        </>
+      )
+    }
 
     if (readOnly) {
       return (
-        <span
-          className={classes}
-          data-plume-rating=""
-          ref={ref}
-          style={colorVars}
-          {...rest}
-          aria-invalid={undefined}
-          aria-label={undefined}
-          aria-labelledby={undefined}
-        >
-          <span style={visuallyHidden}>{text.readOnly(rating.value, max)}</span>
-          {positions.map((position) => (
-            <RatingItem
-              classNames={classNames}
-              emptyIcon={outlineIcon}
-              icon={filledIcon}
-              isStyled={isStyled}
-              key={position}
-              state={itemState(position, rating.value)}
-            />
-          ))}
-        </span>
+        <RatingContext.Provider value={context}>
+          <span
+            className={classes}
+            data-plume-rating=""
+            ref={ref}
+            style={colorVars}
+            {...rest}
+            aria-invalid={undefined}
+            aria-label={undefined}
+            aria-labelledby={undefined}
+          >
+            {content}
+          </span>
+        </RatingContext.Provider>
       )
     }
 
     return (
-      <fieldset
-        {...rest}
-        aria-labelledby={labelledBy}
-        aria-required={required || undefined}
-        className={classes}
-        data-plume-rating=""
-        disabled={disabled}
-        onPointerLeave={() => rating.setHover(undefined)}
-        ref={ref as ForwardedRef<HTMLFieldSetElement>}
-        role="radiogroup"
-        style={colorVars}
-      >
-        {positions.map((position) => (
-          <RatingItem
-            classNames={classNames}
-            emptyIcon={outlineIcon}
-            icon={filledIcon}
-            isStyled={isStyled}
-            key={position}
-            state={itemState(position, rating.preview)}
-          >
-            {(allowHalf ? [position - step, position] : [position]).map((option) => (
-              <input
-                aria-label={text.item(option, max)}
-                checked={rating.value === option}
-                className={isStyled ? styles.radio : undefined}
-                data-half={halfOf(allowHalf, option, position)}
-                data-plume-rating-radio=""
-                key={option}
-                name={name ?? generatedName}
-                onChange={() => rating.setValue(option)}
-                onClick={() => {
-                  if (clearable && rating.value === option) rating.setValue(0)
-                }}
-                onKeyDown={(event) => {
-                  if (clearable && (event.key === 'Backspace' || event.key === 'Delete')) {
-                    event.preventDefault()
-                    rating.setValue(0)
-                  }
-                }}
-                onPointerEnter={() => rating.setHover(option)}
-                type="radio"
-                value={option}
-              />
-            ))}
-          </RatingItem>
-        ))}
-      </fieldset>
+      <RatingContext.Provider value={context}>
+        <fieldset
+          {...rest}
+          aria-labelledby={labelledBy}
+          aria-required={required || undefined}
+          className={classes}
+          data-plume-rating=""
+          disabled={disabled}
+          onPointerLeave={() => setHover(undefined)}
+          ref={ref as ForwardedRef<HTMLFieldSetElement>}
+          role="radiogroup"
+          style={colorVars}
+        >
+          {content}
+        </fieldset>
+      </RatingContext.Provider>
     )
   },
 )

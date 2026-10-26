@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 
 export interface UseRatingOptions {
@@ -39,12 +39,10 @@ export function useRating({
   })
   const [hover, setHover] = useState<number | undefined>(undefined)
   const value = snap(raw, max, allowHalf)
+  const setValue = useCallback(
+    (next: number) => setRaw(snap(next, max, allowHalf)),
+    [allowHalf, max, setRaw],
+  )
 
-  return {
-    hover,
-    preview: hover ?? value,
-    setHover,
-    setValue: (next) => setRaw(snap(next, max, allowHalf)),
-    value,
-  }
+  return { hover, preview: hover ?? value, setHover, setValue, value }
 }

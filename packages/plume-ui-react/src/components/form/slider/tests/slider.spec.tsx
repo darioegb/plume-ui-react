@@ -419,7 +419,7 @@ describe('Slider component', () => {
   })
 
   describe('marks', () => {
-    const marks = () => document.querySelectorAll('[data-plume-slider-mark]')
+    const marks = () => document.querySelectorAll('[data-plume-slider-mark-item]')
 
     it('shows no marks by default', () => {
       render(<Slider aria-label="Volume" />)
@@ -545,41 +545,10 @@ describe('Slider component', () => {
       expect(root.style.getPropertyValue('--slider-tint')).toBe('red')
     })
 
-    it('adds the classes of the user to every part', () => {
-      render(
-        <Slider
-          aria-label="Volume"
-          className="root"
-          classNames={{
-            mark: 'm',
-            markLabel: 'ml',
-            range: 'r',
-            thumb: 't',
-            track: 'tr',
-          }}
-          marks={[{ label: 'Half', value: 50 }]}
-        />,
-      )
-      expect(document.querySelector('[data-plume-slider]')).toHaveClass('root')
-      expect(screen.getByRole('slider')).toHaveClass('thumb', 't')
-      expect(document.querySelector('[data-plume-slider-track]')).toHaveClass('tr')
-      expect(document.querySelector('[data-plume-slider-range]')).toHaveClass('r')
-      expect(document.querySelector('[data-plume-slider-mark]')).toHaveClass('m')
-      expect(screen.getByText('Half')).toHaveClass('ml')
-    })
-
     it('renders only the native inputs when it is unstyled', () => {
-      render(
-        <Slider
-          aria-label="Volume"
-          className="root"
-          classNames={{ thumb: 't' }}
-          marks
-          variant="unstyled"
-        />,
-      )
+      render(<Slider aria-label="Volume" className="root" marks variant="unstyled" />)
       expect(document.querySelector('[data-plume-slider]')).toHaveAttribute('class', 'root')
-      expect(screen.getByRole('slider')).toHaveAttribute('class', 't')
+      expect(screen.getByRole('slider')).not.toHaveAttribute('class')
       expect(document.querySelector('[data-plume-slider-track]')).not.toBeInTheDocument()
       expect(document.querySelector('[data-plume-slider-marks]')).not.toBeInTheDocument()
     })

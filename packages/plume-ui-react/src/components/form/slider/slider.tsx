@@ -1,19 +1,30 @@
 'use client'
 
-import type { ChangeEvent, CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useId, useRef } from 'react'
+import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
+import { forwardRef, useCallback, useId, useMemo, useRef } from 'react'
+import { hasPart } from '../../../overlay/has-part'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
-import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
-import { SliderMarks, type SliderMark } from './slider-marks'
-import { clamp, fractionOf, snap, toValues } from './slider-math'
+import { SliderBody } from './slider-body'
+import {
+  SliderContext,
+  sliderColorVars,
+  type SliderContextValue,
+  type SliderLabels,
+  type SliderMark,
+  type SliderRootAttributes,
+} from './slider-context'
+import { SliderMarks } from './slider-marks'
+import { clamp, fractionOf, resolveMarks, snap, toValues } from './slider-math'
+import { SliderThumb } from './slider-thumb'
+import { SliderTrack } from './slider-track'
 import styles from './slider.module.css'
 import { useTrackPress } from './use-track-press'
 
-export type { SliderMark }
+export type { SliderLabels, SliderMark }
 
 export type SliderValue = number | [number, number]
 
@@ -21,14 +32,8 @@ export type SliderVariant = 'outline' | 'solid' | 'unstyled'
 
 export type SliderOrientation = 'horizontal' | 'vertical'
 
-export type SliderPart = 'mark' | 'markLabel' | 'range' | 'thumb' | 'track'
-
-export interface SliderLabels {
-  thumb: (index: number) => string
-}
-
 export interface SliderOwnProps {
-  classNames?: Partial<Record<SliderPart, string>>
+  children?: ReactNode
   colorScheme?: ColorScheme
   defaultValue?: SliderValue
   disabled?: boolean
@@ -49,26 +54,13 @@ export interface SliderOwnProps {
   variant?: SliderVariant
 }
 
-type SliderRootAttributes = Pick<
-  HTMLAttributes<HTMLElement>,
-  'aria-describedby' | 'aria-invalid' | 'aria-label' | 'aria-labelledby' | 'hidden' | 'id' | 'title'
->
-
-export type SliderProps = Omit<ComponentProps, 'children' | 'index'> &
-  SliderRootAttributes &
-  SliderOwnProps
+export type SliderProps = Omit<ComponentProps, 'index'> & SliderRootAttributes & SliderOwnProps
 
 const DEFAULT_LABELS: SliderLabels = {
   thumb: (index) => (index === 0 ? 'Minimum' : 'Maximum'),
 }
 
-const sliderColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
-  ({
-    '--slider-solid': `var(--plume-color-${colorScheme}-solid)`,
-    '--slider-text': `var(--plume-color-${colorScheme}-text)`,
-    '--slider-tint': `var(--plume-color-${colorScheme}-tint)`,
-    ...style,
-  }) as CSSProperties
+const SLIDER_PARTS = [SliderBody] as const
 
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(
   (
@@ -77,8 +69,8 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       'aria-invalid': ariaInvalid,
       'aria-label': ariaLabel,
       'aria-labelledby': labelledByProp,
+      children,
       className,
-      classNames,
       colorScheme = 'primary',
       defaultValue,
       disabled = false,
@@ -112,37 +104,43 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       value: valueProp,
     })
     const isRange = Array.isArray(value)
-    const values = toValues(value).map((current) => clamp(current, min, max))
+    const values = useMemo(
+      () => toValues(value).map((current) => clamp(current, min, max)),
+      [max, min, value],
+    )
     const isStyled = variant !== 'unstyled'
     const text = useLabels('slider', DEFAULT_LABELS, labels)
     const isInvalid = invalid || ariaInvalid === true || ariaInvalid === 'true'
     const firstId = id ?? generatedId
     const fieldLabelId = field?.controlId === id ? field?.labelId : undefined
     const labelledBy = labelledByProp ?? (ariaLabel ? undefined : fieldLabelId)
-    const fractions = values.map((current) => fractionOf(current, min, max))
+    const fractions = useMemo(
+      () => values.map((current) => fractionOf(current, min, max)),
+      [max, min, values],
+    )
+    const resolvedMarks = useMemo(
+      () => resolveMarks(marks, min, max, step),
+      [marks, max, min, step],
+    )
     const Root = isRange ? 'fieldset' : 'div'
 
-    const limitsOf = (index: number): [number, number] =>
-      index === 0 ? [min, values[1] ?? max] : [values[0] ?? min, max]
+    const update = useCallback(
+      (index: number, requested: number): void => {
+        const next = snap(requested, min, max, step)
+        const [lower, upper] = index === 0 ? [min, values[1] ?? max] : [values[0] ?? min, max]
+        const bounded = isRange ? clamp(next, lower, upper) : next
+        if (bounded === values[index]) return
+        const result = values.map((current, position) => (position === index ? bounded : current))
+        setValue(isRange ? ([result[0] ?? min, result[1] ?? max] as [number, number]) : bounded)
+      },
+      [isRange, max, min, setValue, step, values],
+    )
 
-    const update = (index: number, requested: number): void => {
-      const next = snap(requested, min, max, step)
-      const bounded = isRange ? clamp(next, ...limitsOf(index)) : next
-      if (bounded === values[index]) return
-      const result = values.map((current, position) => (position === index ? bounded : current))
-      setValue(isRange ? ([result[0] ?? min, result[1] ?? max] as [number, number]) : bounded)
-    }
-
-    const register = (index: number) =>
-      mergeRefs<HTMLInputElement>(index === 0 ? (ref ?? undefined) : undefined, (node) => {
-        inputs.current[index] = node
-      })
-
-    const commit = (): void => {
+    const commit = useCallback((): void => {
       if (!onValueCommit) return
       const latest = inputs.current.map((input, index) => Number(input?.value ?? values[index]))
       onValueCommit(isRange ? [latest[0] ?? min, latest[1] ?? max] : (latest[0] ?? min))
-    }
+    }, [isRange, max, min, onValueCommit, values])
 
     const track = useTrackPress({
       commit,
@@ -157,6 +155,56 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       values,
     })
 
+    const context: SliderContextValue = useMemo(
+      () => ({
+        ariaLabel,
+        commit,
+        describedBy,
+        disabled,
+        firstId,
+        formatValue,
+        fractions,
+        inputs,
+        isInvalid,
+        isRange,
+        isStyled,
+        labelledBy,
+        marks: resolvedMarks,
+        max,
+        min,
+        name,
+        readOnly,
+        rootRef: ref ?? undefined,
+        step,
+        text,
+        update,
+        values,
+      }),
+      [
+        ariaLabel,
+        commit,
+        describedBy,
+        disabled,
+        firstId,
+        formatValue,
+        fractions,
+        isInvalid,
+        isRange,
+        isStyled,
+        labelledBy,
+        max,
+        min,
+        name,
+        readOnly,
+        ref,
+        resolvedMarks,
+        step,
+        text,
+        update,
+        values,
+      ],
+    )
+
     const rootStyle = {
       '--slider-end': fractions[fractions.length - 1],
       '--slider-start': isRange ? fractions[0] : 0,
@@ -166,80 +214,45 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       ? { 'aria-label': ariaLabel, 'aria-labelledby': labelledBy, disabled }
       : {}
 
+    const defaultParts = (
+      <>
+        {isStyled ? (
+          <>
+            <SliderTrack />
+            <SliderMarks />
+          </>
+        ) : null}
+        {values.map((_, index) => (
+          <SliderThumb index={index} key={index === 0 ? 'start' : 'end'} />
+        ))}
+      </>
+    )
+    const parts = children ?? defaultParts
+
     return (
-      <Root
-        {...rest}
-        {...rootProps}
-        className={joinClasses(
-          isStyled && styles.slider,
-          isStyled && styles[variant],
-          isStyled && styles[size],
-          isStyled && styles[orientation],
-          isStyled && isInvalid && styles.invalid,
-          isStyled && disabled && styles.disabled,
-          className,
-        )}
-        data-disabled={disabled ? '' : undefined}
-        data-orientation={orientation}
-        data-plume-slider=""
-        data-range={isRange ? '' : undefined}
-        {...track}
-        style={rootStyle}
-      >
-        <div className={joinClasses(isStyled && styles.body)} data-plume-slider-body="">
-          {isStyled ? (
-            <>
-              <span
-                className={joinClasses(styles.track, classNames?.track)}
-                data-plume-slider-track=""
-              >
-                <span
-                  className={joinClasses(styles.range, classNames?.range)}
-                  data-plume-slider-range=""
-                />
-              </span>
-              <SliderMarks
-                classNames={classNames}
-                marks={marks}
-                max={max}
-                min={min}
-                step={step}
-                values={values}
-              />
-            </>
-          ) : null}
-          {values.map((current, index) => (
-            <input
-              aria-describedby={describedBy}
-              aria-invalid={isInvalid || undefined}
-              aria-label={isRange ? text.thumb(index) : ariaLabel}
-              aria-labelledby={isRange ? undefined : labelledBy}
-              aria-readonly={readOnly || undefined}
-              aria-valuetext={formatValue?.(current)}
-              className={joinClasses(isStyled && styles.thumb, classNames?.thumb)}
-              data-front={
-                index === 0 && fractions[0] !== undefined && fractions[0] > 0.5 ? '' : undefined
-              }
-              data-plume-slider-thumb=""
-              disabled={disabled}
-              id={index === 0 ? firstId : `${firstId}-${index}`}
-              key={index === 0 ? 'start' : 'end'}
-              max={max}
-              min={min}
-              name={name}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                if (!readOnly) update(index, Number(event.target.value))
-              }}
-              onKeyUp={commit}
-              onPointerUp={commit}
-              ref={register(index)}
-              step={step}
-              type="range"
-              value={current}
-            />
-          ))}
-        </div>
-      </Root>
+      <SliderContext.Provider value={context}>
+        <Root
+          {...rest}
+          {...rootProps}
+          className={joinClasses(
+            isStyled && styles.slider,
+            isStyled && styles[variant],
+            isStyled && styles[size],
+            isStyled && styles[orientation],
+            isStyled && isInvalid && styles.invalid,
+            isStyled && disabled && styles.disabled,
+            className,
+          )}
+          data-disabled={disabled ? '' : undefined}
+          data-orientation={orientation}
+          data-plume-slider=""
+          data-range={isRange ? '' : undefined}
+          {...track}
+          style={rootStyle}
+        >
+          {hasPart(children, SLIDER_PARTS) ? children : <SliderBody>{parts}</SliderBody>}
+        </Root>
+      </SliderContext.Provider>
     )
   },
 )

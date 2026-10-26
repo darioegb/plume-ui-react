@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { Rating } from '..'
+import { Rating, RatingEmpty, RatingFilled, RatingItem, RatingRadio, RatingValueText } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -38,6 +38,22 @@ const heartOutline = (
  *
  * A **read only** rating is not a group of disabled radios, which a screen reader announces as something that
  * cannot be used: it is text (`3 out of 5`) with the icons hidden from assistive technology.
+ *
+ * Every element of a star is a part you can import and style or move. Without children the Rating renders one
+ * `RatingItem` for each star, with its `RatingEmpty`, `RatingFilled` and `RatingRadio`. When a direct child is a
+ * `RatingItem` or a `RatingValueText`, it renders your children instead, and a function child is called once for each
+ * star. A part takes `className`, `style` and `ref`, and `icon`, `emptyIcon` and `labels` of the Rating keep filling
+ * the defaults.
+ *
+ * ### Subcomponents
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `RatingItem` | `className`, `style`, `ref`, `position` (required), `children`. One star, with `data-state` (`empty`, `half` or `full`). Without any of its parts as children it renders `RatingEmpty`, `RatingFilled` and the radios. |
+ * | `RatingEmpty` | `className`, `style`, `ref`, `children`. The outline layer, hidden from assistive technology. `children` replace the `emptyIcon` of the Rating. |
+ * | `RatingFilled` | `className`, `style`, `ref`, `children`. The colored layer on top of the empty one, whole or clipped to half. `children` replace the `icon` of the Rating. |
+ * | `RatingRadio` | `className`, `style`, `ref`, `value`, `aria-label`, `title`. The radio of a star. `value` is the score it gives (the position of its item by default; with `allowHalf` use `position - 0.5` for the first half). It renders nothing when the Rating is read only. |
+ * | `RatingValueText` | `className`, `style`, `ref`, `children`. The text of a read only Rating (`labels.readOnly`), visually hidden. It renders nothing when the Rating is interactive. |
  */
 export default {
   title: 'Components/Rating',
@@ -57,12 +73,6 @@ export default {
       control: 'text',
       description: 'Custom CSS class for the Rating.',
       table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
-      description:
-        'Custom CSS classes for the parts, in every variant: `item` (each star), `empty` (the outline layer) and `filled` (the colored layer, which shows on top of it, whole or clipped to half). A star has `data-state` (`empty`, `half` or `full`) to style it. With `variant="unstyled"` they are the only classes the parts have.',
-      table: { type: { summary: `Partial<Record<RatingPart, string>>` } },
     },
     style: {
       control: false,
@@ -223,13 +233,15 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <Rating aria-label="Solid" defaultValue={3} variant="solid" />
-      <Rating
-        aria-label="Unstyled"
-        className="gap-1 text-3xl"
-        defaultValue={3}
-        classNames={{ empty: 'text-gray-300', filled: 'text-black' }}
-        variant="unstyled"
-      />
+      <Rating aria-label="Unstyled" className="gap-1 text-3xl" defaultValue={3} variant="unstyled">
+        {(position) => (
+          <RatingItem position={position}>
+            <RatingEmpty className="text-gray-300" />
+            <RatingFilled className="text-black" />
+            <RatingRadio />
+          </RatingItem>
+        )}
+      </Rating>
     </div>
   ),
 }
@@ -408,22 +420,73 @@ export const WithField: Story = {
 }
 
 /**
+ * Give the Rating its parts to style or move every element of a star. A function is called once for each star, or
+ * you write the items yourself next to a `RatingValueText`. A `RatingRadio` inside the item is what makes it
+ * clickable, so leaving it out makes the stars a display only.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Rating aria-label="Rate this product" className="gap-2" defaultValue={3}>
+  {(position) => (
+    <RatingItem position={position}>
+      <RatingEmpty style={{ opacity: 0.4 }} />
+      <RatingFilled style={{ filter: 'drop-shadow(0 1px 1px rgb(0 0 0 / 0.3))' }} />
+      <RatingRadio />
+    </RatingItem>
+  )}
+</Rating>
+
+<Rating aria-label="Rating" defaultValue={4} readOnly>
+  <RatingValueText>Four stars out of five</RatingValueText>
+  {[1, 2, 3, 4, 5].map((position) => (
+    <RatingItem key={position} position={position} />
+  ))}
+</Rating>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Rating aria-label="Rate this product" className="gap-2" defaultValue={3}>
+        {(position) => (
+          <RatingItem position={position}>
+            <RatingEmpty style={{ opacity: 0.4 }} />
+            <RatingFilled style={{ filter: 'drop-shadow(0 1px 1px rgb(0 0 0 / 0.3))' }} />
+            <RatingRadio />
+          </RatingItem>
+        )}
+      </Rating>
+      <Rating aria-label="Rating" defaultValue={4} readOnly>
+        <RatingValueText>Four stars out of five</RatingValueText>
+        {[1, 2, 3, 4, 5].map((position) => (
+          <RatingItem key={position} position={position} />
+        ))}
+      </Rating>
+    </div>
+  ),
+}
+
+/**
  * Some examples of Rating with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the stars
- * keep working: `className` styles the group and `classNames` the parts of every star: `empty` is the outline
- * and `filled` the colored layer on top of it, which a half star clips to half. A star has `data-state`
- * (`empty`, `half` or `full`), so `data-[state=full]:` styles it.
+ * keep working: `className` styles the group, and `RatingItem`, `RatingEmpty` and `RatingFilled` the parts of every
+ * star: the empty one is the outline and the filled one the colored layer on top of it, which a half star clips to
+ * half. A star has `data-state` (`empty`, `half` or `full`), so `data-[state=full]:` styles it.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Rating
-  aria-label="Rate this product"
-  className="gap-1 text-3xl"
-  classNames={{ empty: "text-gray-300 dark:text-gray-600", filled: "text-amber-500" }}
-  defaultValue={3}
-  variant="unstyled"
-/>`,
+        code: `<Rating aria-label="Rate this product" className="gap-1 text-3xl" defaultValue={3} variant="unstyled">
+  {(position) => (
+    <RatingItem position={position}>
+      <RatingEmpty className="text-gray-300 dark:text-gray-600" />
+      <RatingFilled className="text-amber-500" />
+      <RatingRadio />
+    </RatingItem>
+  )}
+</Rating>`,
       },
     },
   },
@@ -431,28 +494,37 @@ export const Tailwind: Story = {
     <Rating
       aria-label="Rate this product"
       className="gap-1 text-3xl"
-      classNames={{ empty: 'text-gray-300 dark:text-gray-600', filled: 'text-amber-500' }}
       defaultValue={3}
       variant="unstyled"
-    />
+    >
+      {(position) => (
+        <RatingItem position={position}>
+          <RatingEmpty className="text-gray-300 dark:text-gray-600" />
+          <RatingFilled className="text-amber-500" />
+          <RatingRadio />
+        </RatingItem>
+      )}
+    </Rating>
   ),
 }
 
 /**
  * Some examples of Rating with Bootstrap classes: `d-inline-flex gap-1 fs-3` on the group, which sets the size,
- * and `text-warning` and `text-body-tertiary` on the filled and the empty layer of every star.
+ * and `text-warning` and `text-body-tertiary` on the filled and the empty part of every star.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Rating
-  aria-label="Rate this product"
-  className="d-inline-flex gap-1 fs-3"
-  classNames={{ empty: "text-body-tertiary", filled: "text-warning" }}
-  defaultValue={3}
-  variant="unstyled"
-/>`,
+        code: `<Rating aria-label="Rate this product" className="d-inline-flex gap-1 fs-3" defaultValue={3} variant="unstyled">
+  {(position) => (
+    <RatingItem position={position}>
+      <RatingEmpty className="text-body-tertiary" />
+      <RatingFilled className="text-warning" />
+      <RatingRadio />
+    </RatingItem>
+  )}
+</Rating>`,
       },
     },
   },
@@ -460,9 +532,16 @@ export const Bootstrap: Story = {
     <Rating
       aria-label="Rate this product"
       className="d-inline-flex gap-1 fs-3"
-      classNames={{ empty: 'text-body-tertiary', filled: 'text-warning' }}
       defaultValue={3}
       variant="unstyled"
-    />
+    >
+      {(position) => (
+        <RatingItem position={position}>
+          <RatingEmpty className="text-body-tertiary" />
+          <RatingFilled className="text-warning" />
+          <RatingRadio />
+        </RatingItem>
+      )}
+    </Rating>
   ),
 }

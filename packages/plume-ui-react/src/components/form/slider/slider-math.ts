@@ -1,3 +1,5 @@
+import type { SliderMark } from './slider-context'
+
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max)
 
@@ -20,3 +22,17 @@ export const fractionOf = (value: number, min: number, max: number): number =>
 
 export const toValues = (value: number | readonly number[]): number[] =>
   typeof value === 'number' ? [value] : [...value]
+
+export const resolveMarks = (
+  marks: boolean | number[] | SliderMark[] | undefined,
+  min: number,
+  max: number,
+  step: number,
+): SliderMark[] => {
+  if (!marks) return []
+  if (marks === true) {
+    const count = step > 0 ? Math.floor((max - min) / step) : 0
+    return Array.from({ length: count + 1 }, (_, index) => ({ value: min + index * step }))
+  }
+  return marks.map((mark) => (typeof mark === 'number' ? { value: mark } : mark))
+}
