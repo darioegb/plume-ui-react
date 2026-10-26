@@ -17,10 +17,6 @@ export interface DatePickerLabels {
   previousYears: string
 }
 
-export interface DatePickerConfig {
-  language?: string
-}
-
 export type DatePickerVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export type DatePickerRootAttributes = Pick<

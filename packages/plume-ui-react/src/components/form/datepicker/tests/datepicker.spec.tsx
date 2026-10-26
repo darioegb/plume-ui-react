@@ -87,7 +87,7 @@ describe('DatePicker component', () => {
     render(
       <DatePicker
         calendar
-        config={{ language: 'en' }}
+        locale='en'
         labels={{ apply: 'Apply', cancel: 'Cancel' }}
         onValueChange={vi.fn()}
       />,
@@ -172,7 +172,7 @@ describe('DatePicker component', () => {
   })
 
   it('reads the language alone from the config', () => {
-    render(<DatePicker config={{ language: 'es' }} onValueChange={vi.fn()} showFooter />)
+    render(<DatePicker locale='es' onValueChange={vi.fn()} showFooter />)
 
     expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'dd/mm/yyyy')
     openCalendar()
@@ -187,7 +187,7 @@ describe('DatePicker component', () => {
   it('uses custom footer labels', () => {
     render(
       <DatePicker
-        config={{ language: 'es' }}
+        locale='es'
         labels={{ cancel: 'Cancelar', apply: 'Aplicar' }}
         onValueChange={vi.fn()}
         showFooter
@@ -404,7 +404,7 @@ describe('DatePicker component', () => {
       ['es', '31/01/2026', 'Enero'],
       ['de', '31.01.2026', 'Januar'],
     ])('reads a typed date in the %s day-first format', (language, typed, month) => {
-      render(<DatePicker config={{ language }} onValueChange={vi.fn()} />)
+      render(<DatePicker locale={language} onValueChange={vi.fn()} />)
       const input = screen.getByRole('textbox')
       fireEvent.change(input, { target: { value: '31012026' } })
       expect(input).toHaveValue(typed)

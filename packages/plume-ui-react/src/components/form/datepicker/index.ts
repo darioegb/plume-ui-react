@@ -57,7 +57,6 @@ export { DatePickerView, type DatePickerViewProps } from './datepicker-view'
 export type { DatePickerDayData, DatePickerMonthData, DatePickerYearData } from './calendar-utils'
 export type { DatePickerViewName } from './datepicker-page-context'
 export type {
-  DatePickerConfig,
   DatePickerLabels,
   DatePickerRootAttributes,
   DatePickerVariant,

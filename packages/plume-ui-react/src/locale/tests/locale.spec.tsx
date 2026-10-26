@@ -102,7 +102,7 @@ describe('LocaleProvider', () => {
   it('lets config.language win over the locale', () => {
     render(
       <LocaleProvider locale="es-AR">
-        <DatePicker config={{ language: 'en-US' }} onValueChange={() => undefined} />
+        <DatePicker locale='en-US' onValueChange={() => undefined} />
       </LocaleProvider>,
     )
     expect(screen.getByPlaceholderText('mm/dd/yyyy')).toBeInTheDocument()
