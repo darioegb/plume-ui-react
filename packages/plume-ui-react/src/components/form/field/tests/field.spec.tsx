@@ -142,7 +142,7 @@ describe('Field component', () => {
     const input = screen.getByRole('textbox', { name: 'Check-in' })
     expect(input).toBeRequired()
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveAccessibleDescription('Pick a date')
+    expect(input).toHaveAccessibleDescription(expect.stringContaining('Pick a date'))
     expect(input.className).toMatch(/invalid/)
   })
 })
@@ -186,5 +186,34 @@ describe('Field with react-hook-form', () => {
     })
     expect(input).toHaveFocus()
     expect(onSubmit).not.toHaveBeenCalled()
+  })
+})
+
+describe('Field accessibility', () => {
+  it('announces the error text when it appears', () => {
+    const { rerender } = render(
+      <Field label="Email">
+        <Input type="email" />
+      </Field>,
+    )
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+
+    rerender(
+      <Field errorText="Enter a valid email" label="Email">
+        <Input type="email" />
+      </Field>,
+    )
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Enter a valid email')
+  })
+
+  it('separates the label from the optional text in the accessible name', () => {
+    render(
+      <Field label="Nickname" optionalText="(optional)">
+        <Input />
+      </Field>,
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Nickname (optional)' })).toBeInTheDocument()
   })
 })

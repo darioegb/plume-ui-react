@@ -210,7 +210,7 @@ export const Accessibility: Story = {
     <EmptyState
       description="Check the spelling or try a shorter search."
       role="status"
-      style={{ width: '20rem' }}
+      style={{ maxWidth: '100%', width: '20rem' }}
       title={'No results for "plume"'}
       titleAs="h2"
       variant="outline"

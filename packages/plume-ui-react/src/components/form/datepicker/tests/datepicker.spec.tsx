@@ -56,7 +56,7 @@ describe('DatePicker component', () => {
     const input = screen.getByRole('textbox')
     expect(input).toHaveClass('invalid')
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input).toHaveAttribute('aria-describedby', 'hint')
+    expect(input.getAttribute('aria-describedby')?.split(' ')[0]).toBe('hint')
   })
 
   it('blocks typing and the calendar when read-only', () => {

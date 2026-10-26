@@ -17,6 +17,13 @@ describe('getContrastColor', () => {
 })
 
 describe('getContrastRatio', () => {
+  it('reads the decimal channels of the colors that getLightenColor and getDarkenColor return', () => {
+    const lightened = getLightenColor('#aab0b6', 12)
+    expect(getContrastRatio(lightened, '#18181b')).toBeGreaterThan(
+      getContrastRatio('#aab0b6', '#18181b'),
+    )
+  })
+
   it('returns the WCAG ratio regardless of the argument order', () => {
     expect(getContrastRatio('#000000', '#ffffff')).toBeCloseTo(21)
     expect(getContrastRatio('#ffffff', '#000000')).toBeCloseTo(21)

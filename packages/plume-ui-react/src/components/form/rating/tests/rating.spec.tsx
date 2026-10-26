@@ -399,3 +399,19 @@ describe('Rating component', () => {
     })
   })
 })
+
+describe('Rating contrast', () => {
+  it('outlines the filled star with the edge color of the scheme', () => {
+    render(<Rating aria-label="Score" colorScheme="primary" defaultValue={2} />)
+
+    const filled = document.querySelector<SVGElement>('[data-plume-rating-filled] svg')
+    const empty = document.querySelector<SVGElement>('[data-plume-rating-empty] svg')
+    expect(filled?.style.stroke).toBe('var(--rating-edge, currentColor)')
+    expect(empty?.style.stroke).toBe('')
+    expect(
+      document
+        .querySelector<HTMLElement>('[data-plume-rating]')
+        ?.style.getPropertyValue('--rating-edge'),
+    ).toBe('var(--plume-color-primary-text)')
+  })
+})

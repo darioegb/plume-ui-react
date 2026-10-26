@@ -9,10 +9,15 @@
   font-weight: var(--plume-font-weight-semibold);
   justify-content: center;
   padding-inline: var(--plume-space-4);
-  transition:
-  color 0.3s,
-  background-color 0.3s;
   user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button {
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+  }
 }
 
 .sm {
@@ -70,20 +75,21 @@
   padding: var(--plume-space-2);
 }
 
-:is(.outline, .ghost, .icon):enabled:hover {
+:is(.outline, .ghost, .icon):enabled:not([aria-busy]):hover {
   background-color: var(--button-hover-alt-color);
+  color: var(--button-tint-text);
 }
 
-.link:enabled:hover {
+.link:enabled:not([aria-busy]):hover {
   color: var(--button-hover-color);
   text-decoration-color: var(--button-hover-color);
 }
 
-.solid:enabled:hover {
+.solid:enabled:not([aria-busy]):hover {
   background-color: var(--button-solid-hover);
 }
 
-.outline:enabled:hover {
+.outline:enabled:not([aria-busy]):hover {
   border-color: var(--button-hover-color);
 }
 
@@ -92,20 +98,22 @@
   outline-offset: 2px;
 }
 
-:is(.outline, .ghost):enabled:active {
+:is(.outline, .ghost):enabled:not([aria-busy]):active {
   background-color: var(--button-focus-alt-color);
+  color: var(--button-tint-text);
 }
 
-:is(.icon, .link):enabled:active {
+.link:enabled:not([aria-busy]):active {
   color: var(--button-focus-color);
-}
-
-.solid:enabled:active {
-  background-color: var(--button-solid-active);
-}
-
-.link:enabled:active {
   text-decoration-color: var(--button-focus-color);
+}
+
+.icon:enabled:not([aria-busy]):active {
+  color: var(--button-tint-text);
+}
+
+.solid:enabled:not([aria-busy]):active {
+  background-color: var(--button-solid-active);
 }
 
 button.disabled {
@@ -118,9 +126,24 @@ button.disabled {
 }
 
 .hidden {
-  display: none;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 .spinnerMargin {
   margin-left: var(--plume-space-1);
+}
+
+@media (forced-colors: active) {
+  .solid,
+  .icon {
+    border: 1px solid ButtonText;
+  }
 }

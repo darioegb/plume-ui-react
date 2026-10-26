@@ -35,6 +35,7 @@ export interface SliderContextValue {
   max: number
   min: number
   name: string | undefined
+  orientation: 'horizontal' | 'vertical'
   readOnly: boolean
   rootRef: Ref<HTMLInputElement> | undefined
   step: number

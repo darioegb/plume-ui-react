@@ -4,7 +4,7 @@ import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useControllableState } from '../../../overlay/use-controllable-state'
-import { useDismiss } from '../../../overlay/use-dismiss'
+import { useDismiss, type DismissReason } from '../../../overlay/use-dismiss'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { NavbarContext, type NavbarBreakpoint, type NavbarVariant } from './navbar-context'
@@ -110,7 +110,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     const toggle = useRef<HTMLButtonElement | null>(null)
 
     const dismiss = useCallback(
-      (reason: 'escape' | 'outside'): void => {
+      (reason: DismissReason): void => {
         setOpen(false)
         if (reason === 'escape') toggle.current?.focus()
       },

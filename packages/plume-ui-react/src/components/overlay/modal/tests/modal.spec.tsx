@@ -363,6 +363,23 @@ describe('Modal component', () => {
       await userEvent.keyboard('{Escape}')
       expect(screen.queryByRole('dialog')).toBeNull()
     })
+
+    it('renders beside the first one with a backdrop of its own', async () => {
+      render(<Nested />)
+      await userEvent.click(screen.getByText('Open second'))
+      const first = screen.getByRole('dialog', { name: 'First' })
+      const second = screen.getByRole('dialog', { name: 'Second' })
+      expect(first).not.toContainElement(second)
+      expect(second.parentElement).toHaveAttribute('data-plume-modal-backdrop')
+      expect(second.parentElement).not.toBe(first.parentElement)
+    })
+
+    it('gives the focus back to its trigger when it closes', async () => {
+      render(<Nested />)
+      await userEvent.click(screen.getByText('Open second'))
+      await userEvent.keyboard('{Escape}')
+      expect(screen.getByText('Open second')).toHaveFocus()
+    })
   })
 
   describe('styling', () => {

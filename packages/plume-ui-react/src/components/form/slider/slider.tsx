@@ -99,6 +99,13 @@ export interface SliderOwnProps {
    */
   readOnly?: boolean
   /**
+   * Marks the slider as required for the `Field` that wraps it. A range input has no native or ARIA way
+   * to say so, so it only sets `data-required` on the root, to style.
+   *
+   * @default false
+   */
+  required?: boolean
+  /**
    * Size of the thumb and the track.
    * @default 'md'
    */
@@ -129,6 +136,35 @@ const DEFAULT_LABELS: SliderLabels = {
 
 const SLIDER_PARTS = [SliderBody] as const
 
+interface SliderClassOptions {
+  className?: string
+  disabled: boolean
+  isInvalid: boolean
+  isStyled: boolean
+  orientation: SliderOrientation
+  size: Size
+  variant: SliderVariant
+}
+
+const sliderClasses = ({
+  className,
+  disabled,
+  isInvalid,
+  isStyled,
+  orientation,
+  size,
+  variant,
+}: SliderClassOptions): string | undefined =>
+  joinClasses(
+    isStyled && styles.slider,
+    isStyled && styles[variant],
+    isStyled && styles[size],
+    isStyled && styles[orientation],
+    isStyled && isInvalid && styles.invalid,
+    isStyled && disabled && styles.disabled,
+    className,
+  )
+
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(
   (
     {
@@ -153,6 +189,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       onValueCommit,
       orientation = 'horizontal',
       readOnly = false,
+      required = false,
       size = 'md',
       step = 1,
       style,
@@ -240,6 +277,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         max,
         min,
         name,
+        orientation,
         readOnly,
         rootRef: ref ?? undefined,
         step,
@@ -262,6 +300,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         max,
         min,
         name,
+        orientation,
         readOnly,
         ref,
         resolvedMarks,
@@ -301,19 +340,20 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         <Root
           {...rest}
           {...rootProps}
-          className={joinClasses(
-            isStyled && styles.slider,
-            isStyled && styles[variant],
-            isStyled && styles[size],
-            isStyled && styles[orientation],
-            isStyled && isInvalid && styles.invalid,
-            isStyled && disabled && styles.disabled,
+          className={sliderClasses({
             className,
-          )}
+            disabled,
+            isInvalid,
+            isStyled,
+            orientation,
+            size,
+            variant,
+          })}
           data-disabled={disabled ? '' : undefined}
           data-orientation={orientation}
           data-plume-slider=""
           data-range={isRange ? '' : undefined}
+          data-required={required ? '' : undefined}
           {...track}
           style={rootStyle}
         >

@@ -180,3 +180,11 @@
   padding: var(--plume-space-4) var(--plume-space-2);
   border: none;
 }
+
+@media (forced-colors: active) {
+  .tab.active[data-active][data-plume-tabs-tab] {
+    background-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+}

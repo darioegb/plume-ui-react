@@ -1,8 +1,9 @@
 'use client'
 
 import type { ChangeEvent, ReactNode, Ref } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { ComponentProps } from '../../../theme'
+import { visuallyHidden } from '../../../overlay/visually-hidden'
 import { Input, InputControl, InputElement } from '../input'
 import {
   getDateFormatByLanguage,
@@ -56,6 +57,7 @@ export function DatePickerInput({
     isCalendar,
     colorScheme,
     isRange,
+    labels,
     language,
     shape,
     size,
@@ -74,6 +76,7 @@ export function DatePickerInput({
   const [isButtonClick, setIsButtonClick] = useState(true)
   const debouncedValue = useDebounce({ value: inputValue, delay: 500 })
 
+  const hintId = useId()
   const ref = useRef<HTMLInputElement>(null)
   const setRef = useCallback(
     (node: HTMLInputElement | null): void => {
@@ -143,6 +146,7 @@ export function DatePickerInput({
   const currentFormat = displayFormat ?? getDateFormatByLanguage(language)
   const singleMask = currentFormat.replace(/[a-zA-Z]/g, '#')
   const mask = isRange ? `${singleMask} - ${singleMask}` : singleMask
+  const describedBy = [rest['aria-describedby'], hintId].filter(Boolean).join(' ')
 
   const inputContext = useMemo(
     () => ({
@@ -158,6 +162,7 @@ export function DatePickerInput({
   return (
     <DatePickerInputContext.Provider value={inputContext}>
       <Input
+        autoComplete="off"
         className={className}
         colorScheme={colorScheme}
         disabled={disabled}
@@ -177,6 +182,7 @@ export function DatePickerInput({
         value={inputValue}
         variant={variant}
         {...rest}
+        aria-describedby={describedBy}
       >
         {children ?? (
           <InputControl>
@@ -187,6 +193,9 @@ export function DatePickerInput({
           </InputControl>
         )}
       </Input>
+      <span id={hintId} style={visuallyHidden}>
+        {labels.format(isRange ? `${currentFormat} - ${currentFormat}` : currentFormat)}
+      </span>
     </DatePickerInputContext.Provider>
   )
 }

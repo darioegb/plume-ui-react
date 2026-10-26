@@ -9,6 +9,7 @@ export interface DatePickerLabels {
   apply: string
   calendar: string
   cancel: string
+  format: (format: string) => string
   nextMonth: string
   nextYears: string
   openCalendar: string
@@ -26,6 +27,8 @@ export type DatePickerRootAttributes = Pick<
   InputHTMLAttributes<HTMLInputElement>,
   | 'aria-describedby'
   | 'aria-invalid'
+  | 'aria-label'
+  | 'aria-labelledby'
   | 'disabled'
   | 'readOnly'
   | 'id'

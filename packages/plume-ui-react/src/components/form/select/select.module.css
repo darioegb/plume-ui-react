@@ -164,7 +164,12 @@
 .chevron {
   align-self: stretch;
   padding-inline: var(--plume-space-3);
-  transition: transform 0.15s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chevron {
+    transition: transform 0.15s;
+  }
 }
 
 [data-open] .chevron svg {

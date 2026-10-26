@@ -21,7 +21,7 @@ function StyledTimePicker({
 }: Readonly<{ defaultValue: string; fieldClassName: string; hour12?: boolean }>): ReactNode {
   return (
     <TimePicker {...props} variant="unstyled">
-      <TimePickerInput>
+      <TimePickerInput aria-label="Time">
         <InputControl>
           <InputField className={fieldClassName} />
           <InputElement position="after">
@@ -157,6 +157,7 @@ export default {
     },
   },
   args: {
+    'aria-label': 'Time',
     disabled: false,
     hour12: false,
     readOnly: false,
@@ -196,19 +197,19 @@ export const Variants: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker variant="outline" defaultValue="09:30" />
-<TimePicker variant="underline" defaultValue="09:30" />
-<TimePicker variant="filled" defaultValue="09:30" />
-<TimePicker variant="unstyled" defaultValue="09:30" />`,
+        code: `<TimePicker aria-label="Time" variant="outline" defaultValue="09:30" />
+<TimePicker aria-label="Time" variant="underline" defaultValue="09:30" />
+<TimePicker aria-label="Time" variant="filled" defaultValue="09:30" />
+<TimePicker aria-label="Time" variant="unstyled" defaultValue="09:30" />`,
       },
     },
   },
   render: () => (
     <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
-      <TimePicker defaultValue="09:30" variant="outline" />
-      <TimePicker defaultValue="09:30" variant="underline" />
-      <TimePicker defaultValue="09:30" variant="filled" />
-      <TimePicker defaultValue="09:30" variant="unstyled" />
+      <TimePicker aria-label="Time" defaultValue="09:30" variant="outline" />
+      <TimePicker aria-label="Time" defaultValue="09:30" variant="underline" />
+      <TimePicker aria-label="Time" defaultValue="09:30" variant="filled" />
+      <TimePicker aria-label="Time" defaultValue="09:30" variant="unstyled" />
     </div>
   ),
 }
@@ -221,17 +222,17 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker size="sm" defaultValue="09:30" />
-<TimePicker size="md" defaultValue="09:30" />
-<TimePicker size="lg" defaultValue="09:30" />`,
+        code: `<TimePicker aria-label="Time" size="sm" defaultValue="09:30" />
+<TimePicker aria-label="Time" size="md" defaultValue="09:30" />
+<TimePicker aria-label="Time" size="lg" defaultValue="09:30" />`,
       },
     },
   },
   render: () => (
     <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
-      <TimePicker defaultValue="09:30" size="sm" />
-      <TimePicker defaultValue="09:30" size="md" />
-      <TimePicker defaultValue="09:30" size="lg" />
+      <TimePicker aria-label="Time" defaultValue="09:30" size="sm" />
+      <TimePicker aria-label="Time" defaultValue="09:30" size="md" />
+      <TimePicker aria-label="Time" defaultValue="09:30" size="lg" />
     </div>
   ),
 }
@@ -244,16 +245,16 @@ export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<TimePicker colorScheme="primary" defaultValue="09:30" />
-<TimePicker colorScheme="success" defaultValue="09:30" />
-<TimePicker colorScheme="error" defaultValue="09:30" />`,
+        code: `<TimePicker aria-label="Time" colorScheme="primary" defaultValue="09:30" />
+<TimePicker aria-label="Time" colorScheme="success" defaultValue="09:30" />
+<TimePicker aria-label="Time" colorScheme="error" defaultValue="09:30" />`,
       },
     },
   },
   render: () => (
     <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
       {colorSchemes.map((colorScheme) => (
-        <TimePicker colorScheme={colorScheme} defaultValue="09:30" key={colorScheme} />
+        <TimePicker aria-label="Time" colorScheme={colorScheme} defaultValue="09:30" key={colorScheme} />
       ))}
     </div>
   ),
@@ -289,7 +290,7 @@ export const Panel: Story = {
     const [value, setValue] = useState('09:30')
     return (
       <div className='flex flex-col gap-2'>
-        <TimePicker isPanel onChange={setValue} value={value} />
+        <TimePicker aria-label="Time" isPanel onChange={setValue} value={value} />
         <span className='text-sm'>Value: {value}</span>
       </div>
     )
@@ -305,7 +306,7 @@ export const Controlled: Story = {
     const [value, setValue] = useState('')
     return (
       <div className="flex flex-col gap-2">
-        <TimePicker onChange={setValue} value={value} />
+        <TimePicker aria-label="Time" onChange={setValue} value={value} />
         <span className="text-sm">Value: {value ? `"${value}"` : '(empty)'}</span>
       </div>
     )
@@ -329,8 +330,8 @@ export const WithDatePicker: Story = {
     return (
       <div className="flex flex-col gap-3">
         <div className="grid gap-3 grid-cols-[3fr_2fr]">
-          <DatePicker onChange={setDate} value={date} />
-          <TimePicker onChange={setTime} value={time} />
+          <DatePicker aria-label="Date" onChange={setDate} value={date} />
+          <TimePicker aria-label="Time" onChange={setTime} value={time} />
         </div>
         <span className="text-sm">Date and time: {label}</span>
       </div>
@@ -356,7 +357,7 @@ export const Compound: Story = {
     docs: {
       source: {
         code: `<TimePicker defaultValue="09:30" size="sm" variant="filled">
-  <TimePickerInput placeholder="Pick a time">
+  <TimePickerInput aria-label="Pick a time" placeholder="Pick a time">
     <InputControl>
       <InputElement>
         <TimePickerTrigger />
@@ -378,7 +379,7 @@ export const Compound: Story = {
   },
   render: () => (
     <TimePicker defaultValue='09:30' size='sm' variant='filled'>
-      <TimePickerInput placeholder='Pick a time'>
+      <TimePickerInput aria-label="Pick a time" placeholder='Pick a time'>
         <InputControl>
           <InputElement>
             <TimePickerTrigger />
@@ -408,7 +409,7 @@ export const Tailwind: Story = {
     docs: {
       source: {
         code: `<TimePicker variant="unstyled" defaultValue="09:30">
-  <TimePickerInput>
+  <TimePickerInput aria-label="Time">
     <InputControl>
       <InputField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       <InputElement position="after">
@@ -445,7 +446,7 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<TimePicker variant="unstyled" defaultValue="09:30">
-  <TimePickerInput>
+  <TimePickerInput aria-label="Time">
     <InputControl>
       <InputField className="form-control" />
       <InputElement position="after">

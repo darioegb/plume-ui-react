@@ -4,6 +4,7 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useMemo, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
+import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ComponentProps } from '../../../theme'
 import { DatePickerHeader } from './datepicker-header'
 import { DatePickerPageContext } from './datepicker-page-context'
@@ -47,6 +48,11 @@ export const DatePickerPage = forwardRef<HTMLDivElement, DatePickerPageProps>(
               <DatePickerHeader />
               <DatePickerView />
             </>
+          )}
+          {second ? null : (
+            <output style={visuallyHidden}>
+              {page.monthLabel} {page.year}
+            </output>
           )}
         </div>
       </DatePickerPageContext.Provider>

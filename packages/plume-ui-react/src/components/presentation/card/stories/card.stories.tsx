@@ -173,13 +173,18 @@ export const Sections: Story = {
 /**
  * To make a card clickable, put a real link inside it. Here the link in the header is stretched over the whole
  * Card with a pseudo element, so the card is one target for the pointer and still one link for the keyboard
- * and screen readers.
+ * and screen readers. The link has the focus, so the Card shows the focus ring (`focus-within`) and not just
+ * the text of the link.
  */
 export const Clickable: Story = {
   render: () => (
-    <Card style={{ maxWidth: '100%', position: 'relative', width: '20rem' }} variant="outline">
+    <Card
+      className="outline outline-0 outline-offset-2 outline-primary-solid focus-within:outline-2"
+      style={{ maxWidth: '100%', position: 'relative', width: '20rem' }}
+      variant="outline"
+    >
       <CardHeader>
-        <a className="after:absolute after:inset-0 hover:underline" href="#report">
+        <a className="outline-none after:absolute after:inset-0 hover:underline" href="#report">
           Weekly report
         </a>
       </CardHeader>

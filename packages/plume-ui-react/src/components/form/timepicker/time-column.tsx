@@ -1,7 +1,7 @@
 'use client'
 
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react'
-import { Fragment, useEffect, useMemo, useRef } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { TimeColumnContext, type TimeColumnContextValue } from './time-column-context'
@@ -52,7 +52,11 @@ export function TimeColumn<T extends number | string>({
 }: Readonly<TimeColumnProps<T>>): ReactNode {
   const { variant } = useTimePicker('TimePickerColumn')
   const list = useRef<HTMLDivElement>(null)
-  const tabStop = options.some((option) => option.value === selected) ? selected : options[0]?.value
+  const [focused, setFocused] = useState<T | undefined>(undefined)
+  const defaultStop = options.some((option) => option.value === selected)
+    ? selected
+    : options[0]?.value
+  const tabStop = options.some((option) => option.value === focused) ? focused : defaultStop
 
   useEffect(() => {
     const container = list.current
@@ -66,6 +70,9 @@ export function TimeColumn<T extends number | string>({
     () => ({
       isSelected: (value) => value === selected,
       isTabStop: (value) => value === tabStop,
+      onFocus: (value) => {
+        setFocused(value as T)
+      },
       onKeyDown: focusOption,
       select: (value) => {
         onSelect(value as T)
@@ -80,6 +87,10 @@ export function TimeColumn<T extends number | string>({
         aria-label={label}
         className={joinClasses(variant !== 'unstyled' && styles.column, className)}
         data-plume-timepicker-column=""
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget))
+            setFocused(undefined)
+        }}
         ref={mergeRefs<HTMLDivElement>(list, columnRef)}
         role="listbox"
         style={style}

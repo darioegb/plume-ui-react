@@ -64,6 +64,7 @@ export const NavLink = forwardRef<HTMLElement, NavLinkProps>(
         onClick={onClick}
         ref={ref as ForwardedRef<HTMLAnchorElement>}
         rel={rel}
+        role={disabled ? 'link' : undefined}
         tabIndex={disabled ? -1 : undefined}
         target={target}
       >

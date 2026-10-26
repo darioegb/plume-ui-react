@@ -84,14 +84,17 @@ export function ThemeProvider({
     if (!applyToBody || typeof document === 'undefined') return
     const { documentElement: html, body } = document
     const prevMode = html.dataset.plumeColorMode
+    const prevScheme = html.style.colorScheme
     const prevBackground = body.style.backgroundColor
     const prevColor = body.style.color
     html.dataset.plumeColorMode = colorMode
+    html.style.colorScheme = colorMode
     body.style.backgroundColor = activeTheme.semantic.background
     body.style.color = activeTheme.semantic.foreground
     return () => {
       if (prevMode === undefined) delete html.dataset.plumeColorMode
       else html.dataset.plumeColorMode = prevMode
+      html.style.colorScheme = prevScheme
       body.style.backgroundColor = prevBackground
       body.style.color = prevColor
     }
@@ -112,6 +115,7 @@ export function ThemeProvider({
           ...(cssVars as CSSProperties),
           backgroundColor: 'var(--plume-background)',
           color: 'var(--plume-foreground)',
+          colorScheme: colorMode,
           ...style,
         }}
       >

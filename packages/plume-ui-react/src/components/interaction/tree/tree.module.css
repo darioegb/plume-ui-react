@@ -113,6 +113,10 @@
   background-color: var(--tree-hover);
 }
 
+.solid .item[aria-selected='true']:focus-visible > .label {
+  outline-color: var(--tree-contrast);
+}
+
 .ghost .item[aria-selected='true'] > .label {
   background-color: var(--tree-tint);
   color: var(--tree-tint-text);
@@ -133,6 +137,10 @@
 }
 
 @media (forced-colors: active) {
+  .label {
+    border-inline-start-color: Canvas;
+  }
+
   .item[aria-selected='true'] > .label {
     background-color: Highlight;
     color: HighlightText;

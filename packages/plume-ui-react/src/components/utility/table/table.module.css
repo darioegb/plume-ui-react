@@ -57,6 +57,14 @@
   font: inherit;
   gap: 0.25rem;
   padding: 0;
+  position: relative;
+}
+
+:global(:where([data-plume-table-sort]))::after {
+  content: '';
+  inset-block: -0.25rem;
+  inset-inline: 0;
+  position: absolute;
 }
 
 :global(:where([data-plume-table-head][data-align='end'] [data-plume-table-sort])) {

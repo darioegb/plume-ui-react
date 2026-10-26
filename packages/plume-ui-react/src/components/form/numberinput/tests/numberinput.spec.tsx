@@ -315,6 +315,11 @@ describe('NumberInput component', () => {
       expect(spin()).toHaveValue('5')
     })
 
+    it('tells a screen reader that it is read only', () => {
+      render(<NumberInput aria-label="Quantity" defaultValue={5} readOnly />)
+      expect(spin()).toHaveAttribute('aria-readonly', 'true')
+    })
+
     it('ignores the other keys', async () => {
       render(<NumberInput aria-label="Quantity" defaultValue={5} />)
       spin().focus()

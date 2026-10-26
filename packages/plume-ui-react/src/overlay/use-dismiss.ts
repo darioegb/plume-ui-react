@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-export type DismissReason = 'escape' | 'outside'
+export type DismissReason = 'escape' | 'outside' | 'tab'
 
 export interface UseDismissOptions {
   enabled: boolean

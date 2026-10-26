@@ -32,6 +32,7 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const {
+      calendarId,
       isCalendar,
       labels,
       panelVars,
@@ -59,6 +60,7 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
     const calendar = (
       <div
         aria-label={ariaLabel ?? labels.calendar}
+        aria-modal={isCalendar ? undefined : true}
         className={joinClasses(
           styles.datePickerModal,
           pickerPanelClasses(variant, size, shape),
@@ -70,6 +72,7 @@ export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarP
         )}
         data-inline={isCalendar ? '' : undefined}
         data-plume-datepicker-calendar=""
+        id={isCalendar ? undefined : calendarId}
         ref={setRef}
         role={dialogRole}
         style={{ ...floatingStyle, ...style }}

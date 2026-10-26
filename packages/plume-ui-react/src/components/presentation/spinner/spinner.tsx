@@ -11,9 +11,8 @@ const DEFAULT_LABELS = { label: 'Loading' }
 
 export interface SpinnerOwnProps {
   /**
-   * Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`).
-   *
-   * @default 'secondary.900'
+   * Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`). Without
+   * it the Spinner takes the foreground color of the theme, so it shows in light and dark mode.
    */
   color?: ColorShade
   /**
@@ -54,7 +53,7 @@ type SpinnerRootAttributes = Pick<
   'hidden' | 'id' | 'tabIndex'
 >
 type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
-  Pick<ComponentProps, 'style'> & { color: ColorShade }
+  Pick<ComponentProps, 'style'>
 export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps
 
 const createSpinnerStyles = ({
@@ -63,7 +62,7 @@ const createSpinnerStyles = ({
   speed,
   thickness,
 }: SpinnerStylesOptions): Record<string, unknown> => ({
-  '--spinner-scheme': colorVar(color),
+  '--spinner-scheme': color ? colorVar(color) : 'var(--plume-foreground)',
   ...(thickness && { '--spinner-border-width': `${thickness}px` }),
   '--spinner-animation-duration': speed?.length ? speed : '1s',
   ...style,
@@ -72,7 +71,7 @@ const createSpinnerStyles = ({
 export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
-      color = `secondary.900`,
+      color,
       label,
       style,
       speed,

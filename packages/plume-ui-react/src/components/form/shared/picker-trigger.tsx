@@ -8,6 +8,7 @@ import styles from './picker-trigger.module.css'
 
 export interface PickerTriggerOwnProps {
   className?: string
+  controls?: string
   disabled: boolean
   icon: ReactNode
   label: string
@@ -24,6 +25,7 @@ export const PickerTrigger = forwardRef<HTMLButtonElement, PickerTriggerProps>(
   (
     {
       className,
+      controls,
       disabled,
       icon,
       label,
@@ -36,6 +38,7 @@ export const PickerTrigger = forwardRef<HTMLButtonElement, PickerTriggerProps>(
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => (
     <Button
+      aria-controls={open ? controls : undefined}
       aria-expanded={open}
       aria-haspopup="dialog"
       aria-label={label}

@@ -44,10 +44,10 @@ describe('Spinner component', () => {
     expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-primary-700)')
   })
 
-  it('defaults to the secondary 900 shade', () => {
+  it('defaults to the foreground color of the theme', () => {
     const { container } = render(<Spinner />)
     const spinnerElement = container.querySelector('.solid')
-    expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-secondary-900)')
+    expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-foreground)')
   })
 
   it('renders spinner with custom speed', () => {

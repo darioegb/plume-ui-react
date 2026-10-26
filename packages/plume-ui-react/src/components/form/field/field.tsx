@@ -91,7 +91,10 @@ function FieldLabel({
         </span>
       ) : null}
       {!required && optionalText ? (
-        <span className={styles.optionalText}>{optionalText}</span>
+        <>
+          {' '}
+          <span className={styles.optionalText}>{optionalText}</span>
+        </>
       ) : null}
     </label>
   )
@@ -162,7 +165,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
             </p>
           ) : null}
           {showError ? (
-            <p className={styles.errorText} id={errorId}>
+            <p className={styles.errorText} id={errorId} role="alert">
               {errorText}
             </p>
           ) : null}

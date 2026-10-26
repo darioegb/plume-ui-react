@@ -1,11 +1,11 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { ChevronLeftIcon, ChevronRightIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
-import { useCarouselContext } from './carousel-context'
+import { getSlideId, useCarouselContext } from './carousel-context'
 import styles from './carousel.module.css'
 
 export interface CarouselArrowOwnProps {
@@ -52,6 +52,17 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
     const isNext = direction === 'next'
     const atEdge = isNext ? carousel.index >= carousel.count - 1 : carousel.index <= 0
     const blocked = disabled || carousel.count < 2 || (!carousel.loop && atEdge)
+    const activated = useRef(false)
+    const { baseId, index } = carousel
+
+    useEffect(() => {
+      if (!blocked || !activated.current) return
+      activated.current = false
+      const frame = requestAnimationFrame(() =>
+        document.getElementById(getSlideId(baseId, index))?.focus({ preventScroll: true }),
+      )
+      return () => cancelAnimationFrame(frame)
+    }, [baseId, blocked, index])
 
     return (
       <button
@@ -70,6 +81,7 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
         onClick={(event) => {
           onClick?.(event)
           if (event.defaultPrevented) return
+          activated.current = true
           if (isNext) carousel.next()
           else carousel.prev()
         }}

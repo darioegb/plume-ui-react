@@ -89,3 +89,16 @@
   cursor: pointer;
   font: inherit;
 }
+
+@media (forced-colors: active) {
+  .selected,
+  .selected:hover {
+    background-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .option:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

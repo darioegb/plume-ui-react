@@ -28,6 +28,29 @@ describe.each(themes)('default %s theme contrast', (_, theme) => {
     expect(getContrastRatio(semantic.foreground, surface)).toBeGreaterThanOrEqual(4.5)
   })
 
+  it('keeps the contrast color of every color scheme at 4.5:1 or more on its solid fill, hovered and pressed', () => {
+    const vars = themeToCssVars(theme)
+    for (const scheme of Object.keys(theme.colors)) {
+      const contrast = vars[`--plume-color-${scheme}-solid-contrast`]
+      for (const fill of ['solid', 'solid-hover', 'solid-active']) {
+        const ratio = getContrastRatio(contrast, vars[`--plume-color-${scheme}-${fill}`])
+        expect(ratio, `${scheme} on ${fill}`).toBeGreaterThanOrEqual(4.5)
+      }
+    }
+  })
+
+  it('keeps the text of every color scheme, hovered and pressed, at 4.5:1 or more on every surface', () => {
+    const vars = themeToCssVars(theme)
+    for (const scheme of Object.keys(theme.colors)) {
+      for (const state of ['text', 'text-hover', 'text-active']) {
+        for (const surface of surfaces) {
+          const ratio = getContrastRatio(vars[`--plume-color-${scheme}-${state}`], surface)
+          expect(ratio, `${scheme} ${state} on ${surface}`).toBeGreaterThanOrEqual(4.5)
+        }
+      }
+    }
+  })
+
   it('keeps the text of every color scheme at 4.5:1 or more on its tints', () => {
     const vars = themeToCssVars(theme)
     for (const scheme of Object.keys(theme.colors)) {

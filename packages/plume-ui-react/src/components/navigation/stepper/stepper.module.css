@@ -243,6 +243,13 @@
     border-color: CanvasText;
   }
 
+  .indicator[data-state='current'] {
+    background-color: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
   .separator {
     background-color: CanvasText;
   }

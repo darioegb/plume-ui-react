@@ -47,12 +47,22 @@ export function useDatePickerPage(
   const [startYear, setStartYear] = useState(year)
   const [focusedDate, setFocusedDate] = useState<Date | null>(null)
   const shouldMoveFocus = useRef(false)
+  const toggleToFocus = useRef<'month' | 'year' | null>(null)
 
   useEffect(() => {
     if (!shouldMoveFocus.current || !focusedDate) return
     shouldMoveFocus.current = false
     calendarRef.current
       ?.querySelector<HTMLButtonElement>(`[data-date="${formatKey(focusedDate)}"]:enabled`)
+      ?.focus()
+  })
+
+  useEffect(() => {
+    const target = toggleToFocus.current
+    if (!target || view !== 'day') return
+    toggleToFocus.current = null
+    calendarRef.current
+      ?.querySelector<HTMLButtonElement>(`[data-plume-datepicker-${target}-button]`)
       ?.focus()
   })
 
@@ -155,6 +165,7 @@ export function useDatePickerPage(
   const selectMonth = useCallback(
     (selectedMonth: number): void => {
       onMonthChange(selectedMonth)
+      toggleToFocus.current = 'month'
       setView('day')
     },
     [onMonthChange],
@@ -163,6 +174,7 @@ export function useDatePickerPage(
   const selectYear = useCallback(
     (selectedYear: number): void => {
       onYearChange(selectedYear)
+      toggleToFocus.current = 'year'
       setView('day')
     },
     [onYearChange],

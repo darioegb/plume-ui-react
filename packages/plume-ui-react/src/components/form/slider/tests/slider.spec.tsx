@@ -554,3 +554,34 @@ describe('Slider component', () => {
     })
   })
 })
+
+describe('Slider accessibility', () => {
+  it('tells a screen reader that a vertical slider is vertical', () => {
+    render(<Slider aria-label="Volume" orientation="vertical" />)
+
+    expect(screen.getByRole('slider')).toHaveAttribute('aria-orientation', 'vertical')
+  })
+
+  it('does not set the orientation of a horizontal slider', () => {
+    render(<Slider aria-label="Volume" />)
+
+    expect(screen.getByRole('slider')).not.toHaveAttribute('aria-orientation')
+  })
+
+  it('keeps the required of a field on the root without forwarding the attribute', () => {
+    const { container } = render(<Slider aria-label="Volume" required />)
+
+    const root = container.querySelector('[data-plume-slider]')
+    expect(root).toHaveAttribute('data-required')
+    expect(root).not.toHaveAttribute('required')
+  })
+
+  it('marks the dots at the ends of the track', () => {
+    const { container } = render(<Slider aria-label="Volume" marks={[0, 50, 100]} />)
+
+    const edges = Array.from(container.querySelectorAll('[data-plume-slider-mark-item]')).map(
+      (mark) => mark.hasAttribute('data-edge'),
+    )
+    expect(edges).toEqual([true, false, true])
+  })
+})

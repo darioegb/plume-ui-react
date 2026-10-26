@@ -57,6 +57,7 @@ export const SliderThumb = forwardRef<HTMLInputElement, SliderThumbProps>(
       max,
       min,
       name,
+      orientation,
       readOnly,
       step,
       text,
@@ -69,6 +70,7 @@ export const SliderThumb = forwardRef<HTMLInputElement, SliderThumbProps>(
         aria-invalid={isInvalid || undefined}
         aria-label={ariaLabelProp ?? (isRange ? text.thumb(index) : ariaLabel)}
         aria-labelledby={isRange ? undefined : labelledBy}
+        aria-orientation={orientation === 'vertical' ? 'vertical' : undefined}
         aria-readonly={readOnly || undefined}
         aria-valuetext={formatValue?.(current)}
         className={joinClasses(isStyled && styles.thumb, className)}

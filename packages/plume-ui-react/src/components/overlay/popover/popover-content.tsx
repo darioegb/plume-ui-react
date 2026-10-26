@@ -35,8 +35,9 @@ export const PopoverContent = forwardRef<HTMLDialogElement, PopoverContentProps>
       onDismiss: () => setOpen(false),
       placement,
       shift,
+      tabOut: true,
     })
-    useFocusTrap(panel, { active: open, isTopmost, returnFocus: trigger })
+    useFocusTrap(panel, { active: open, isTopmost, returnFocus: trigger, trap: false })
 
     if (!open) return null
 
