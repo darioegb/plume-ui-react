@@ -1,5 +1,19 @@
 # plume-ui-react
 
+## 0.32.0
+
+### Minor Changes
+
+- [#178](https://github.com/darioegb/plume-ui-react/pull/178) [`de0350ab55f9df01c4ad74002c61b4d45f917234`](https://github.com/darioegb/plume-ui-react/commit/de0350ab55f9df01c4ad74002c61b4d45f917234) Thanks [@darioegb](https://github.com/darioegb)! - `DatePicker` takes a `locale` prop (a BCP 47 tag such as `es` or `es-AR`) instead of `config={{ language }}`, and `config` and the `DatePickerConfig` type are removed. It sets the names of the months and days, the default `displayFormat` and the day labels, and falls back to the `locale` of the `LocaleProvider`. See "Upgrading to 1.0".
+
+- [#179](https://github.com/darioegb/plume-ui-react/pull/179) [`8d5acc7c634f7c3fefcd7ff36c92b8b4c0251c44`](https://github.com/darioegb/plume-ui-react/commit/8d5acc7c634f7c3fefcd7ff36c92b8b4c0251c44) Thanks [@darioegb](https://github.com/darioegb)! - `Paginator` gets two new parts and the props to drive them.
+
+  - `PaginatorSummary` shows the range of the current page, such as `11–20 of 54`, and needs `total`. Its text is `labels.summary(from, to, total)`.
+  - `PaginatorPageSize` is a `Select` to choose how many items a page has (`options`, `labels.pageSize`). The page changes with it, to keep the first item of the old page in view.
+  - `pageSize` is now controllable: `onPageSizeChange` and `defaultPageSize` join it. A `Paginator` that only passed `pageSize` works as before.
+
+  Without children the `Paginator` still renders only the list, so nothing changes for existing code.
+
 ## 0.31.0
 
 ### Minor Changes
