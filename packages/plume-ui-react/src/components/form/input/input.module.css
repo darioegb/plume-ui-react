@@ -80,11 +80,14 @@
   background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
 }
 
-:not(.inputGroup) > .outline:enabled:focus,
-.inputGroup:has(.outline:enabled):focus-within {
-  border-color: var(--input-color);
+:not(.control) > .outline:enabled:focus,
+.control:has(.outline:enabled):focus-within {
   outline: 2px solid var(--input-color);
   outline-offset: 2px;
+}
+
+.outline:enabled:focus {
+  border-color: var(--input-color);
 }
 
 :is(.filled, .underline):enabled:focus {
@@ -108,10 +111,21 @@
 }
 
 .control {
+  border-radius: inherit;
   display: flex;
   flex: 1 1 auto;
   min-width: 0;
   position: relative;
+}
+
+.inputGroup:has(.addOnBefore) > .control {
+  border-end-start-radius: 0;
+  border-start-start-radius: 0;
+}
+
+.inputGroup:has(.addOnAfter) > .control {
+  border-end-end-radius: 0;
+  border-start-end-radius: 0;
 }
 
 .control > .input {
