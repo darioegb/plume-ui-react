@@ -283,7 +283,36 @@ function TableFooterExample(props: Readonly<PaginatorProps>): React.ReactNode {
  * `marginInlineStart: 'auto'` style to lay the toolbar out your way.
  */
 export const TableFooter: Story = {
-  parameters: { docs: { story: { inline: false, iframeHeight: 300 } } },
+  args: { count: undefined },
+  parameters: {
+    docs: {
+      story: { inline: false, iframeHeight: 300 },
+      source: {
+        code: `function ResultsFooter() {
+  const [pageSize, setPageSize] = useState(10)
+  return (
+    <Paginator
+      aria-label="Results"
+      onPageSizeChange={setPageSize}
+      pageSize={pageSize}
+      total={237}
+    >
+      <PaginatorPageSize options={[10, 25, 50]} />
+      <PaginatorSummary />
+      <PaginatorList>
+        <PaginatorItem>
+          <PaginatorPrevious />
+        </PaginatorItem>
+        <PaginatorItem>
+          <PaginatorNext />
+        </PaginatorItem>
+      </PaginatorList>
+    </Paginator>
+  )
+}`,
+      },
+    },
+  },
   render: (args) => <TableFooterExample {...args} />,
 }
 
