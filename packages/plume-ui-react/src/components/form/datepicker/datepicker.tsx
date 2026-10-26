@@ -9,7 +9,6 @@ import { customProperties } from '../shared/picker-panel'
 import { DatePickerCalendar } from './datepicker-calendar'
 import { DatePickerInput, type DatePickerInputProps } from './datepicker-input'
 import type {
-  DatePickerConfig,
   DatePickerLabels,
   DatePickerVariant,
   DateRange,
@@ -19,7 +18,6 @@ import { useDatePickerController } from './use-datepicker-controller'
 import styles from './datepicker.module.css'
 
 export type {
-  DatePickerConfig,
   DatePickerLabels,
   DatePickerRootAttributes,
   DatePickerVariant,
@@ -38,13 +36,13 @@ export interface DatePickerOwnProps {
    */
   colorScheme?: ColorScheme
   /**
-   * `language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers. It is optional and falls back to `en`.
-   */
-  config?: DatePickerConfig
-  /**
-   * Format of the typed and displayed date, built from the `dd`, `mm` and `yyyy` tokens in any order and case (e.g. `dd/mm/yyyy`, `YYYY-MM-DD`). Defaults to the format of `config.language`.
+   * Format of the typed and displayed date, built from the `dd`, `mm` and `yyyy` tokens in any order and case (e.g. `dd/mm/yyyy`, `YYYY-MM-DD`). Defaults to the format of `locale`.
    */
   displayFormat?: string
+  /**
+   * BCP 47 tag (`es`, `es-AR`, `en-US`) that sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers. Falls back to the `locale` of the `LocaleProvider`, then to `en`.
+   */
+  locale?: string
   /**
    * Renders only the calendar, always visible, without the input.
    *
@@ -114,7 +112,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       children,
       className,
       colorScheme = 'secondary',
-      config,
+      locale,
       displayFormat,
       calendar: isCalendar = false,
       range: isRange = false,
@@ -140,7 +138,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     const colorVars = datePickerColorVars(colorScheme, customProperties(style))
     const { context, handleBlur } = useDatePickerController({
       colorScheme,
-      config,
+      locale,
       displayFormat,
       isCalendar,
       isRange,
