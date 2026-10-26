@@ -46,3 +46,28 @@
 .ghost .page[data-current] {
   background-color: var(--button-hover-alt-color);
 }
+
+:global(:where([data-plume-paginator])) {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.paginator {
+  column-gap: var(--plume-space-4);
+  row-gap: var(--plume-space-2);
+}
+
+.summary {
+  color: var(--plume-muted);
+  font-size: var(--plume-font-size-sm);
+}
+
+.pageSize {
+  display: inline-flex;
+}
+
+.pageSize [data-plume-select-control] {
+  min-width: 5rem;
+  width: auto;
+}

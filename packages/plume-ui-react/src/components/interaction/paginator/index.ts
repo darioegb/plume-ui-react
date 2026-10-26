@@ -12,4 +12,10 @@ export {
   type PaginatorPageProps,
 } from './paginator-page'
 export { PaginatorPages, type PaginatorPagesProps } from './paginator-pages'
+export {
+  PaginatorPageSize,
+  type PaginatorPageSizeOwnProps,
+  type PaginatorPageSizeProps,
+} from './paginator-page-size'
 export { PaginatorPrevious, type PaginatorPreviousProps } from './paginator-previous'
+export { PaginatorSummary, type PaginatorSummaryProps } from './paginator-summary'

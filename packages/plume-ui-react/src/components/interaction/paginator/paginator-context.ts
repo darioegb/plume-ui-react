@@ -11,8 +11,10 @@ export interface PaginatorLabels {
   last: string
   next: string
   page: (page: number, current: boolean) => string
+  pageSize: string
   pagination: string
   previous: string
+  summary: (from: number, to: number, total: number) => string
 }
 
 export interface PaginatorContextValue {
@@ -24,9 +26,12 @@ export interface PaginatorContextValue {
   isStyled: boolean
   labels: PaginatorLabels
   pages: number
+  pageSize: number
+  setPageSize: (size: number) => void
   shape: Shape
   showEdges: boolean
   size: Size
+  total: number | undefined
   variants: { current: PaginatorVariant; other: PaginatorVariant }
 }
 
