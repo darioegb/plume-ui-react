@@ -254,7 +254,12 @@ export const Colors: Story = {
   render: () => (
     <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
       {colorSchemes.map((colorScheme) => (
-        <TimePicker aria-label="Time" colorScheme={colorScheme} defaultValue="09:30" key={colorScheme} />
+        <TimePicker
+          aria-label="Time"
+          colorScheme={colorScheme as keyof typeof defaultTheme.colors}
+          defaultValue="09:30"
+          key={colorScheme}
+        />
       ))}
     </div>
   ),
