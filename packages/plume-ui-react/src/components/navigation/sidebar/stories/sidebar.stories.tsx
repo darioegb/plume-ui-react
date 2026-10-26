@@ -143,7 +143,7 @@ function Shell({
  * the current page takes `active`, which sets `aria-current="page"`. With a client-side router pass `onClick` and
  * navigate there.
  */
-export default {
+const meta: Meta<typeof Sidebar> = {
   title: 'Components/Sidebar',
   component: Sidebar,
   tags: ['autodocs'],
@@ -190,7 +190,9 @@ export default {
     ),
   ],
   render: (args) => <Shell sidebar={args} />,
-} satisfies Meta<typeof Sidebar>
+}
+
+export default meta
 
 type Story = StoryObj<typeof Sidebar>
 

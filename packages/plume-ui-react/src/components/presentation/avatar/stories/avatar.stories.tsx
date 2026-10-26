@@ -215,7 +215,11 @@ export const Colors: Story = {
   render: () => (
     <div className="flex flex-wrap items-center justify-center gap-4">
       {colorSchemes.map((colorScheme) => (
-        <Avatar colorScheme={colorScheme} key={colorScheme} name={colorScheme} />
+        <Avatar
+          colorScheme={colorScheme as keyof typeof defaultTheme.colors}
+          key={colorScheme}
+          name={colorScheme}
+        />
       ))}
     </div>
   ),

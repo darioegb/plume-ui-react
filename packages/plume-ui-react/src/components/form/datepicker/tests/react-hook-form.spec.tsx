@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { Controller, useForm } from 'react-hook-form'
 import { DatePicker } from '..'
 import type { DateRange } from '../datepicker'
@@ -112,6 +113,21 @@ describe('DatePicker with react-hook-form', () => {
     const { date } = onSubmit.mock.calls[0][0] as Values
     expect(date.startDate?.getDate()).toBe(10)
     expect(date.endDate?.getDate()).toBe(12)
+    expect(screen.queryByText('Pick a date')).not.toBeInTheDocument()
+  })
+
+  it('submits a range that was typed and sent right away, without waiting', async () => {
+    const onSubmit = vi.fn()
+    render(<BookingForm isRange onSubmit={onSubmit} />)
+
+    await userEvent.type(screen.getByRole('textbox'), '10/01/2026 - 10/05/2026{Enter}')
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledTimes(1)
+    })
+    const { date } = onSubmit.mock.calls[0][0] as Values
+    expect(date.startDate?.getDate()).toBe(1)
+    expect(date.endDate?.getDate()).toBe(5)
     expect(screen.queryByText('Pick a date')).not.toBeInTheDocument()
   })
 })

@@ -6,6 +6,7 @@ import { DatePicker, type DateRange } from '../../datepicker'
 import { Checkbox } from '../../checkbox'
 import { Input } from '../../input'
 import { Radio, RadioGroup } from '../../radio'
+import { Select, SelectContent, SelectOption, SelectTrigger } from '../../select'
 import { Toggle } from '../../toggle'
 import { Field } from '..'
 
@@ -18,7 +19,7 @@ import { Field } from '..'
  * `Checkbox`, `Radio` and `Toggle` have no text of their own: their label always comes from a `Field`, with `orientation="inline"`.
  * When the control already has an `id`, Field keeps it; otherwise it generates one.
  */
-export default {
+const meta: Meta<typeof Field> = {
   title: 'Components/Field',
   component: Field,
   tags: ['autodocs'],
@@ -50,7 +51,9 @@ export default {
     label: 'Email',
     children: <Input placeholder='you@example.com' type='email' />,
   },
-} satisfies Meta<typeof Field>
+}
+
+export default meta
 
 type Story = StoryObj<typeof Field>
 
@@ -263,12 +266,16 @@ export const WithDatePicker: Story = {
 interface BookingValues {
   name: string
   email: string
+  room: string
   stay: DateRange
+  terms: boolean
 }
 
 /**
- * A form with [react-hook-form](https://react-hook-form.com/). `register` spreads straight onto `Input`;
- * `DatePicker` goes through `Controller`, with `inputRef={field.ref}` so the form can focus it.
+ * A form with [react-hook-form](https://react-hook-form.com/). The controls that are a single native
+ * element (`Input`, `Checkbox`) take `register` as it is. The ones that are not go through `Controller`:
+ * `Select` takes `value` and `onValueChange` and the `ref` goes to its `SelectTrigger`, and `DatePicker`
+ * takes `inputRef={field.ref}`, so the form can focus them.
  * Pass each error message to **errorText** and Field marks the control and links the message.
  * Submit the empty form to see the errors and the focus moving to the first invalid field.
  */
@@ -283,7 +290,13 @@ export const ReactHookForm: Story = {
   handleSubmit,
   register,
 } = useForm<BookingValues>({
-  defaultValues: { name: '', email: '', stay: { startDate: null, endDate: null } },
+  defaultValues: {
+    name: '',
+    email: '',
+    room: '',
+    stay: { startDate: null, endDate: null },
+    terms: false,
+  },
 })
 
 <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -306,6 +319,22 @@ export const ReactHookForm: Story = {
   </Field>
   <Controller
     control={control}
+    name="room"
+    render={({ field, fieldState }) => (
+      <Field errorText={fieldState.error?.message} label="Room" required>
+        <Select name={field.name} onValueChange={field.onChange} value={field.value}>
+          <SelectTrigger placeholder="Pick a room" ref={field.ref} />
+          <SelectContent>
+            <SelectOption value="single">Single</SelectOption>
+            <SelectOption value="double">Double</SelectOption>
+          </SelectContent>
+        </Select>
+      </Field>
+    )}
+    rules={{ required: 'Pick a room.' }}
+  />
+  <Controller
+    control={control}
     name="stay"
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Stay" required>
@@ -324,6 +353,9 @@ export const ReactHookForm: Story = {
         (startDate !== null && endDate !== null) || 'Pick your check-in and check-out dates.',
     }}
   />
+  <Field errorText={errors.terms?.message} label="I accept the terms" orientation="inline">
+    <Checkbox {...register('terms', { required: 'Accept the terms to book.' })} />
+  </Field>
   <Button colorScheme="primary" label="Book" type="submit" />
 </form>`,
       },
@@ -337,7 +369,13 @@ export const ReactHookForm: Story = {
       handleSubmit,
       register,
     } = useForm<BookingValues>({
-      defaultValues: { name: '', email: '', stay: { startDate: null, endDate: null } },
+      defaultValues: {
+        name: '',
+        email: '',
+        room: '',
+        stay: { startDate: null, endDate: null },
+        terms: false,
+      },
     })
 
     return (
@@ -367,6 +405,22 @@ export const ReactHookForm: Story = {
         </Field>
         <Controller
           control={control}
+          name='room'
+          render={({ field, fieldState }) => (
+            <Field errorText={fieldState.error?.message} label='Room' required>
+              <Select name={field.name} onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger placeholder='Pick a room' ref={field.ref} />
+                <SelectContent>
+                  <SelectOption value='single'>Single</SelectOption>
+                  <SelectOption value='double'>Double</SelectOption>
+                </SelectContent>
+              </Select>
+            </Field>
+          )}
+          rules={{ required: 'Pick a room.' }}
+        />
+        <Controller
+          control={control}
           name='stay'
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Stay' required>
@@ -385,12 +439,15 @@ export const ReactHookForm: Story = {
               (startDate !== null && endDate !== null) || 'Pick your check-in and check-out dates.',
           }}
         />
+        <Field errorText={errors.terms?.message} label='I accept the terms' orientation='inline'>
+          <Checkbox {...register('terms', { required: 'Accept the terms to book.' })} />
+        </Field>
         <div>
           <Button colorScheme='primary' label='Book' type='submit' />
         </div>
         {submitted ? (
           <output className='text-sm'>
-            Booked for {submitted.name} ({submitted.email}),{' '}
+            Booked a {submitted.room} room for {submitted.name} ({submitted.email}),{' '}
             {submitted.stay.startDate?.toLocaleDateString()} to{' '}
             {submitted.stay.endDate?.toLocaleDateString()}.
           </output>

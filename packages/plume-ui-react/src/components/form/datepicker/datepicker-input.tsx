@@ -11,7 +11,6 @@ import {
   getDateStringByLanguage,
   validateFormatDate,
 } from '../../../utils/dates'
-import { useDebounce } from '../../../hooks/use-debounce'
 import type { DatePickerRootAttributes, DateRange } from './datepicker-types'
 import { DatePickerField } from './datepicker-field'
 import { DatePickerInputContext } from './datepicker-input-context'
@@ -74,7 +73,6 @@ export function DatePickerInput({
     }),
   )
   const [isButtonClick, setIsButtonClick] = useState(true)
-  const debouncedValue = useDebounce({ value: inputValue, delay: 500 })
 
   const hintId = useId()
   const ref = useRef<HTMLInputElement>(null)
@@ -95,30 +93,31 @@ export function DatePickerInput({
     [commitTypedValue, endDate, startDate],
   )
 
+  // Only a complete text with a valid format commits, so there is no partial value to wait out.
   useEffect(() => {
-    if (![10, 23].includes(debouncedValue.length) || isButtonClick) {
+    if (![10, 23].includes(inputValue.length) || isButtonClick) {
       return
     }
     const format = displayFormat ?? getDateFormatByLanguage(language)
 
     if (
-      debouncedValue.length === 10 &&
+      inputValue.length === 10 &&
       !isRange &&
-      validateFormatDate(debouncedValue, language, displayFormat)
+      validateFormatDate(inputValue, language, displayFormat)
     ) {
-      commitIfChanged({ startDate: getDateFromDateString(debouncedValue, format), endDate: null })
+      commitIfChanged({ startDate: getDateFromDateString(inputValue, format), endDate: null })
     } else if (
-      debouncedValue.length === 23 &&
-      validateFormatDate(debouncedValue.split(' - ')[0], language, displayFormat) &&
-      validateFormatDate(debouncedValue.split(' - ')[1], language, displayFormat)
+      inputValue.length === 23 &&
+      validateFormatDate(inputValue.split(' - ')[0], language, displayFormat) &&
+      validateFormatDate(inputValue.split(' - ')[1], language, displayFormat)
     ) {
-      const [startDateString, endDateString] = debouncedValue.split(' - ')
+      const [startDateString, endDateString] = inputValue.split(' - ')
       commitIfChanged({
         startDate: getDateFromDateString(startDateString, format),
         endDate: getDateFromDateString(endDateString, format),
       })
     }
-  }, [commitIfChanged, debouncedValue, displayFormat, isButtonClick, isRange, language])
+  }, [commitIfChanged, displayFormat, inputValue, isButtonClick, isRange, language])
 
   useEffect(() => {
     setInputValue(
