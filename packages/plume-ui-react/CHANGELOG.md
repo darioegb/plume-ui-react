@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.29.1
+
+### Patch Changes
+
+- [#167](https://github.com/darioegb/plume-ui-react/pull/167) [`16d936f11ee417cc3d12b89b5f1e7c3f448eddd7`](https://github.com/darioegb/plume-ui-react/commit/16d936f11ee417cc3d12b89b5f1e7c3f448eddd7) Thanks [@darioegb](https://github.com/darioegb)! - `DatePicker` commits a date typed by hand as soon as the text is complete and valid, instead of 500 ms later. A form that was submitted right after typing (Enter, or a click on the submit button) used to validate the previous value, for example with react-hook-form.
+
 ## 0.29.0
 
 ### Minor Changes
