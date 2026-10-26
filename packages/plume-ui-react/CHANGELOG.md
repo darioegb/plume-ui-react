@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.33.0
+
+### Minor Changes
+
+- [#181](https://github.com/darioegb/plume-ui-react/pull/181) [`483764d4905cd46ee103f562173ca9bbbc81ff99`](https://github.com/darioegb/plume-ui-react/commit/483764d4905cd46ee103f562173ca9bbbc81ff99) Thanks [@darioegb](https://github.com/darioegb)! - `DatePicker` takes `panel` instead of `calendar` to render only the calendar, always visible, so it is the same prop as in `TimePicker`.
+
 ## 0.32.0
 
 ### Minor Changes
