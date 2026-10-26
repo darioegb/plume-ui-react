@@ -2,7 +2,16 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../field'
-import { Slider, type SliderValue } from '..'
+import {
+  Slider,
+  SliderMarkItem,
+  SliderMarkLabel,
+  SliderMarks,
+  SliderRange,
+  SliderThumb,
+  SliderTrack,
+  type SliderValue,
+} from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -35,9 +44,25 @@ const stack = (gap: string): React.CSSProperties => ({
  * **onValueChange** is called while the user drags; use **onValueCommit** to act only on the final value, for
  * example to fetch results.
  *
- * With `variant="unstyled"` only the native inputs are rendered, with the classes you give them in
- * `classNames.thumb`: the track, the filled part and the marks are Plume's, and they go away. A range then shows
- * two stacked inputs, so style them as one control or use the `solid` and `outline` variants.
+ * With `variant="unstyled"` only the native inputs are rendered, with the classes you give them in a
+ * `SliderThumb`: the track, the filled part and the marks are Plume's, and they go away unless you compose them. A
+ * range then shows two stacked inputs, so style them as one control or use the `solid` and `outline` variants.
+ *
+ * ### Subcomponents
+ *
+ * Every element of the Slider is a part with its own `className`, `style` and `ref`. Without parts the Slider renders
+ * the track with its range, the marks and a thumb for each value. With one of them among its children, it renders
+ * your composition instead, inside a `SliderBody` unless you write one.
+ *
+ * | Component | Props |
+ * | --- | --- |
+ * | `SliderBody` | `className`, `style`, `ref`, `children`. The box, as wide as the slider, that positions the track, the marks and the thumbs. |
+ * | `SliderTrack` | `className`, `style`, `ref`, `children`. The bar behind the thumbs. Without children it renders a `SliderRange`. |
+ * | `SliderRange` | `className`, `style`, `ref`. The filled part of the track, from the minimum or the first thumb to the last thumb. |
+ * | `SliderMarks` | `className`, `style`, `ref`, `children`. The container of the marks. `children` is a node, or a function that gets each mark and its position. It renders nothing without marks. |
+ * | `SliderMarkItem` | `className`, `style`, `ref`, `children`, `mark`. A mark: the dot on the track. Without children it renders a `SliderMarkLabel` when the mark has a label. |
+ * | `SliderMarkLabel` | `className`, `style`, `ref`, `children`. The text under a mark. |
+ * | `SliderThumb` | `className`, `style`, `ref`, `index`, `aria-label`, `title`. The native input. `index` picks the value (`0` by default, `1` for the second thumb of a range). The `ref` of the Slider goes to the first one. |
  */
 export default {
   title: 'Components/Slider',
@@ -55,14 +80,9 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the root.',
-      table: { type: { summary: 'string' } },
-    },
-    classNames: {
-      control: false,
       description:
-        'Custom CSS classes for the parts: `track`, `range` (the filled part), `thumb` (the native input), `mark` and `markLabel`.',
-      table: { type: { summary: 'Partial<Record<SliderPart, string>>' } },
+        'Custom CSS class for the outermost element: the group of a range, or the element that wraps a single thumb.',
+      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
@@ -235,6 +255,51 @@ type Story = StoryObj<typeof Slider>
 export const Default: Story = {}
 
 /**
+ * Use the parts to give each element its own class or style, to change what a mark shows, or to leave something
+ * out. The `SliderThumb` of a range takes the `index` of its value.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+  <SliderTrack className="h-2">
+    <SliderRange className="bg-emerald-500" />
+  </SliderTrack>
+  <SliderMarks>
+    {(mark) => (
+      <SliderMarkItem mark={mark}>
+        <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+      </SliderMarkItem>
+    )}
+  </SliderMarks>
+  <SliderThumb aria-label="From" index={0} />
+  <SliderThumb aria-label="To" index={1} />
+</Slider>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={frame}>
+      <Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+        <SliderTrack className="h-2">
+          <SliderRange className="bg-emerald-500" />
+        </SliderTrack>
+        <SliderMarks>
+          {(mark) => (
+            <SliderMarkItem mark={mark}>
+              <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+            </SliderMarkItem>
+          )}
+        </SliderMarks>
+        <SliderThumb aria-label="From" index={0} />
+        <SliderThumb aria-label="To" index={1} />
+      </Slider>
+    </div>
+  ),
+}
+
+/**
  * Use the **variant** prop to pick how the Slider looks. `unstyled` renders only the native input, to style it
  * yourself.
  */
@@ -244,12 +309,9 @@ export const Variants: Story = {
       {(['solid', 'outline'] as const).map((variant) => (
         <Slider aria-label={variant} defaultValue={40} key={variant} variant={variant} />
       ))}
-      <Slider
-        aria-label="unstyled"
-        classNames={{ thumb: 'w-full accent-purple-600' }}
-        defaultValue={40}
-        variant="unstyled"
-      />
+      <Slider aria-label="unstyled" defaultValue={40} variant="unstyled">
+        <SliderThumb className="w-full accent-purple-600" />
+      </Slider>
     </div>
   ),
 }
@@ -438,35 +500,26 @@ export const WithField: Story = {
 
 /**
  * Some examples of Slider with Tailwind classes. With `variant="unstyled"` only the native input is rendered, so
- * Tailwind's `accent-*` utilities color it, and `classNames.thumb` is where its classes go.
+ * Tailwind's `accent-*` utilities color it, and the classes go in a `SliderThumb`.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Slider
-  aria-label="Volume"
-  classNames={{ thumb: "h-2 w-full cursor-pointer accent-primary-solid" }}
-  defaultValue={40}
-  variant="unstyled"
-/>`,
+        code: `<Slider aria-label="Volume" defaultValue={40} variant="unstyled">
+  <SliderThumb className="h-2 w-full cursor-pointer accent-primary-solid" />
+</Slider>`,
       },
     },
   },
   render: () => (
     <div style={stack('1.5rem')}>
-      <Slider
-        aria-label="Volume"
-        classNames={{ thumb: 'h-2 w-full cursor-pointer accent-primary-solid' }}
-        defaultValue={40}
-        variant="unstyled"
-      />
-      <Slider
-        aria-label="Quality"
-        classNames={{ thumb: 'h-2 w-full cursor-pointer accent-success-solid' }}
-        defaultValue={70}
-        variant="unstyled"
-      />
+      <Slider aria-label="Volume" defaultValue={40} variant="unstyled">
+        <SliderThumb className="h-2 w-full cursor-pointer accent-primary-solid" />
+      </Slider>
+      <Slider aria-label="Quality" defaultValue={70} variant="unstyled">
+        <SliderThumb className="h-2 w-full cursor-pointer accent-success-solid" />
+      </Slider>
     </div>
   ),
 }
@@ -479,29 +532,20 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Slider
-  aria-label="Volume"
-  classNames={{ thumb: "form-range" }}
-  defaultValue={40}
-  variant="unstyled"
-/>`,
+        code: `<Slider aria-label="Volume" defaultValue={40} variant="unstyled">
+  <SliderThumb className="form-range" />
+</Slider>`,
       },
     },
   },
   render: () => (
     <div style={stack('1.5rem')}>
-      <Slider
-        aria-label="Volume"
-        classNames={{ thumb: 'form-range' }}
-        defaultValue={40}
-        variant="unstyled"
-      />
-      <Slider
-        aria-label="Quality"
-        classNames={{ thumb: 'form-range' }}
-        defaultValue={70}
-        variant="unstyled"
-      />
+      <Slider aria-label="Volume" defaultValue={40} variant="unstyled">
+        <SliderThumb className="form-range" />
+      </Slider>
+      <Slider aria-label="Quality" defaultValue={70} variant="unstyled">
+        <SliderThumb className="form-range" />
+      </Slider>
     </div>
   ),
 }

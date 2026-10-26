@@ -146,11 +146,11 @@
   transform: translateY(-50%);
 }
 
-.horizontal:has([data-plume-slider-mark] .markLabel) {
+.horizontal:has(.markLabel) {
   margin-block-end: 1.5rem;
 }
 
-.vertical:has([data-plume-slider-mark] .markLabel) {
+.vertical:has(.markLabel) {
   margin-inline-end: 2.5rem;
 }
 

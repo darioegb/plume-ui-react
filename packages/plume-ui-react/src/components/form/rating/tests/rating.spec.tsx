@@ -384,46 +384,18 @@ describe('Rating component', () => {
 
   describe('unstyled', () => {
     it('drops every Plume class and keeps the user ones', () => {
-      render(
-        <Rating
-          aria-label="Rating"
-          className="root"
-          classNames={{ empty: 'hollow', filled: 'solid', item: 'star' }}
-          max={2}
-          variant="unstyled"
-        />,
-      )
+      render(<Rating aria-label="Rating" className="root" max={2} variant="unstyled" />)
       expect(screen.getByRole('radiogroup')).toHaveAttribute('class', 'root')
       document
-        .querySelectorAll('[data-plume-rating-item]')
-        .forEach((item) => expect(item).toHaveAttribute('class', 'star'))
-      expect(document.querySelector('[data-plume-rating-filled]')).toHaveAttribute('class', 'solid')
-      expect(document.querySelector('[data-plume-rating-item] > span')).toHaveAttribute(
-        'class',
-        'hollow',
-      )
+        .querySelectorAll('[data-plume-rating-item], [data-plume-rating-empty]')
+        .forEach((part) => expect(part).not.toHaveAttribute('class'))
+      expect(document.querySelector('[data-plume-rating-filled]')).not.toHaveAttribute('class')
       expect(radios()[0]).not.toHaveAttribute('class')
     })
 
     it('has no class at all without any', () => {
       render(<Rating aria-label="Rating" max={1} variant="unstyled" />)
       expect(screen.getByRole('radiogroup')).not.toHaveAttribute('class')
-    })
-
-    it('adds the classes of the parts in every variant', () => {
-      render(
-        <Rating
-          aria-label="Rating"
-          classNames={{ empty: 'hollow', filled: 'solid', item: 'star' }}
-          max={1}
-        />,
-      )
-      expect(document.querySelector('[data-plume-rating-item]')).toHaveClass('item', 'star')
-      expect(document.querySelector('[data-plume-rating-filled]')).toHaveClass('filled', 'solid')
-      expect(document.querySelector('[data-plume-rating-item] > span')).toHaveClass(
-        'empty',
-        'hollow',
-      )
     })
   })
 })
