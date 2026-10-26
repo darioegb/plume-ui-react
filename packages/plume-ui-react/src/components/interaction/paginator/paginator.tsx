@@ -37,6 +37,13 @@ export interface PaginatorOwnProps {
    */
   defaultPage?: number
   /**
+   * The page size that is chosen first, when the Paginator is not controlled. A
+   * `PaginatorPageSize` changes it.
+   *
+   * @default 10
+   */
+  defaultPageSize?: number
+  /**
    * Disables every button.
    *
    * @default false
@@ -44,22 +51,27 @@ export interface PaginatorOwnProps {
   disabled?: boolean
   /**
    * The texts the Paginator adds, to translate them: `previous`, `next`, `first` and `last` name
-   * the buttons of the edges, `page(page, current)` names a page button and `pagination` names the
-   * navigation when there is no `aria-label` or `aria-labelledby`. Pass only the ones you want to
-   * change.
+   * the buttons of the edges, `page(page, current)` names a page button, `pagination` names the
+   * navigation when there is no `aria-label` or `aria-labelledby`, `summary(from, to, total)` is
+   * the text of a `PaginatorSummary` and `pageSize` names a `PaginatorPageSize`. Pass only the ones
+   * you want to change.
    */
   labels?: Partial<PaginatorLabels>
   /** Called with the new page when the user picks another one. */
   onPageChange?: (page: number) => void
+  /**
+   * Called with the new page size when the user picks another one in a `PaginatorPageSize`. The
+   * page changes too, to keep the first item of the old page in view.
+   */
+  onPageSizeChange?: (pageSize: number) => void
   /**
    * The current page, starting at 1. Makes the Paginator controlled: pass `onPageChange` to update
    * it. It is kept between 1 and the last page.
    */
   page?: number
   /**
-   * The number of items in a page, to work the pages out of **total**.
-   *
-   * @default 10
+   * The number of items in a page, to work the pages out of **total**. Makes the page size
+   * controlled: pass `onPageSizeChange` to update it.
    */
   pageSize?: number
   /**
@@ -86,7 +98,10 @@ export interface PaginatorOwnProps {
    * @default 'md'
    */
   size?: Size
-  /** The number of items in all the pages. It is used when there is no **count**. */
+  /**
+   * The number of items in all the pages. It is used when there is no **count**, and by a
+   * `PaginatorSummary`.
+   */
   total?: number
   /**
    * Visual variant. `solid` fills the current page and leaves the others flat, `outline` draws a
@@ -113,8 +128,10 @@ const DEFAULT_LABELS: PaginatorLabels = {
   last: 'Last page',
   next: 'Next page',
   page: (page, current) => (current ? `Page ${page}, current page` : `Page ${page}`),
+  pageSize: 'Items per page',
   pagination: 'Pagination',
   previous: 'Previous page',
+  summary: (from, to, total) => `${from}–${to} of ${total}`,
 }
 
 const clamp = (value: number, min: number, max: number): number =>
@@ -141,11 +158,13 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       colorScheme = 'primary',
       count,
       defaultPage = 1,
+      defaultPageSize = 10,
       disabled = false,
       labels,
       onPageChange,
+      onPageSizeChange,
       page: pageProp,
-      pageSize = 10,
+      pageSize: pageSizeProp,
       shape = 'rounded',
       showEdges = false,
       siblingCount = 1,
@@ -160,6 +179,11 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       defaultValue: defaultPage,
       onChange: onPageChange,
       value: pageProp,
+    })
+    const [pageSize, setSize] = useControllableState({
+      defaultValue: defaultPageSize,
+      onChange: onPageSizeChange,
+      value: pageSizeProp,
     })
     const pages = count ?? Math.ceil((total ?? 0) / Math.max(pageSize, 1))
     const isStyled = variant !== 'unstyled'
@@ -178,6 +202,14 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       },
       [current, setPage],
     )
+    const setPageSize = useCallback(
+      (next: number): void => {
+        if (next === pageSize) return
+        setSize(next)
+        setPage(Math.floor(((current - 1) * pageSize) / next) + 1)
+      },
+      [current, pageSize, setPage, setSize],
+    )
     const context = useMemo(
       () => ({
         colorScheme,
@@ -188,9 +220,12 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
         isStyled,
         labels: text,
         pages,
+        pageSize,
+        setPageSize,
         shape,
         showEdges,
         size,
+        total,
         variants: buttonVariants[variant],
       }),
       [
@@ -201,10 +236,13 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
         go,
         isStyled,
         pages,
+        pageSize,
+        setPageSize,
         shape,
         showEdges,
         size,
         text,
+        total,
         variant,
       ],
     )

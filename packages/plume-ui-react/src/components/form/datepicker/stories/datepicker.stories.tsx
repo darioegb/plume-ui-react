@@ -82,7 +82,6 @@ export default {
     maxDate: { control: 'date' },
     minDate: { control: 'date' },
     showFooter: { control: 'boolean' },
-    config: { control: false },
     labels: { control: false },
     readOnly: { control: 'boolean' },
     shape: { control: 'inline-radio', options: ['pill', 'rounded'] },
@@ -395,17 +394,15 @@ export const WithFooterActions: Story = {
 }
 
 /**
- * DatePicker localized to Spanish through **config** and **labels**.
- * Every key is optional: `config.language` alone localizes the month and weekday names and the date format,
+ * DatePicker localized to Spanish through **locale** and **labels**.
+ * Every key is optional: `locale` alone localizes the month and weekday names and the date format,
  * and `labels` only needs the texts you want to change.
  */
 export const CustomConfiguration: Story = {
   args: {
     ...Default.args,
     showFooter: true,
-    config: {
-      language: 'es',
-    },
+    locale: 'es',
     labels: {
       apply: 'Aplicar',
       calendar: 'Calendario',
@@ -453,7 +450,7 @@ export const CustomParts: Story = {
     },
   },
   render: ({ onValueChange: onChange }) => (
-    <DatePicker config={{ language: 'en' }} onValueChange={onChange} showFooter value={defaultDateRangeValue}>
+    <DatePicker locale='en' onValueChange={onChange} showFooter value={defaultDateRangeValue}>
       <DatePickerInput aria-label='Date' />
       <DatePickerCalendar>
         <DatePickerPages>
@@ -565,7 +562,7 @@ export const Disabled: Story = {
 export const Compound: Story = {
   render: ({ onValueChange: onChange }) => (
     <DatePicker
-      config={{ language: 'en' }}
+      locale='en'
       onValueChange={onChange}
       size='sm'
       value={defaultDateRangeValue}

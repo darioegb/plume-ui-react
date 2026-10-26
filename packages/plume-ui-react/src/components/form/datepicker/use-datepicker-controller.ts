@@ -13,7 +13,6 @@ import {
   datePickerReducer,
 } from './datepicker-reducer'
 import type {
-  DatePickerConfig,
   DateRange,
   DatePickerLabels,
   DatePickerVariant,
@@ -34,7 +33,7 @@ const DEFAULT_LABELS: DatePickerLabels = {
 
 interface DatePickerControllerOptions {
   colorScheme: ColorScheme
-  config?: DatePickerConfig
+  locale?: string
   displayFormat?: string
   isPanel: boolean
   isRange: boolean
@@ -70,7 +69,7 @@ const daysBetween = (start: Date, end: Date): Date[] => {
 
 export function useDatePickerController({
   colorScheme,
-  config,
+  locale: localeProp,
   displayFormat,
   isPanel,
   isRange,
@@ -86,8 +85,8 @@ export function useDatePickerController({
   value,
   variant,
 }: Readonly<DatePickerControllerOptions>): DatePickerController {
-  const locale = useLocale()
-  const language = config?.language ?? locale ?? DEFAULT_LANGUAGE
+  const providerLocale = useLocale()
+  const language = localeProp ?? providerLocale ?? DEFAULT_LANGUAGE
   const mergedLabels = useLabels('datePicker', DEFAULT_LABELS, labels)
   const [state, dispatch] = useReducer(datePickerReducer, value, (initialValue?: DateRange) =>
     initialValue
