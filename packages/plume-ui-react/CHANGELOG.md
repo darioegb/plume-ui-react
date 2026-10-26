@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.31.0
+
+### Minor Changes
+
+- [#175](https://github.com/darioegb/plume-ui-react/pull/175) [`41c7eab6cb0faf868866523f6a93288da3fc9371`](https://github.com/darioegb/plume-ui-react/commit/41c7eab6cb0faf868866523f6a93288da3fc9371) Thanks [@darioegb](https://github.com/darioegb)! - The focus ring of the controls is drawn against the element instead of 2px away from it, as in most component libraries. The ring inside a container (`Dropdown` items, `Tree`, `Accordion`, `Sidebar`, `List`) is unchanged.
+
 ## 0.30.0
 
 ### Minor Changes
