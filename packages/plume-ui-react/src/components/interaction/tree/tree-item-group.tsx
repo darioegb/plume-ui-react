@@ -10,6 +10,10 @@ type TreeItemGroupRootAttributes = Pick<HTMLAttributes<HTMLElement>, 'children' 
 
 export type TreeItemGroupProps = Omit<ComponentProps, 'index'> & TreeItemGroupRootAttributes
 
+/**
+ * The children of a branch: more `TreeItem`s. It opens and closes with a height animation. It must
+ * be a direct child of the `TreeItem`.
+ */
 export const TreeItemGroup = forwardRef<HTMLElement, TreeItemGroupProps>(
   (
     { children, className, style, ...rest }: TreeItemGroupProps,

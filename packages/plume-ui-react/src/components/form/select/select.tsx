@@ -17,42 +17,158 @@ import { useSelectKeyboard } from './use-select-keyboard'
 import { useSelectRegistry } from './use-select-registry'
 
 interface SelectBaseProps {
+  /**
+   * Ids of the elements that describe the select. A `Field` adds its helper text and its error.
+   */
   'aria-describedby'?: string
+  /**
+   * Marks the value as invalid, and the field draws its border with the error color. A `Field` sets
+   * it.
+   */
   'aria-invalid'?: boolean | 'true' | 'false'
+  /** The `SelectTrigger` and the `SelectContent`. */
   children: ReactNode
+  /**
+   * Shows a button to clear the value, and lets <kbd>Backspace</kbd> clear a single value.
+   * @default false
+   */
   clearable?: boolean
+  /**
+   * Whether choosing an option closes the list: `true` for one value and `false` for several.
+   * @default true
+   */
   closeOnSelect?: boolean
+  /**
+   * Color of the focus ring, from the theme palette (custom schemes included).
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Whether the list is open at first, for an uncontrolled select.
+   * @default false
+   */
   defaultOpen?: boolean
+  /**
+   * Disables the select.
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * Opens on the opposite side when there is no room on the one asked for.
+   * @default true
+   */
   flip?: boolean
+  /** Id of the button of the trigger. A `Field` sets it, to link its label to the select. */
   id?: string
+  /**
+   * The texts of the select, for other languages: `clear` is the accessible name of the clear
+   * button (`Clear`), `remove(label)` the name of the button that removes a chip (`Remove Apple`),
+   * `search` the name of the search box (`Search`) and `empty` what shows when the search finds
+   * nothing (`No results`).
+   */
   labels?: Partial<SelectLabels>
+  /**
+   * Name of the field in a form. The select adds hidden inputs with the chosen values: one for a
+   * single value, one for each value when it is `multiple`.
+   */
   name?: string
+  /**
+   * Distance in pixels between the field and the list.
+   * @default 4
+   */
   offset?: number
+  /** Called with the new state when the list opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Whether the list is open, for a controlled select. Pair it with `onOpenChange`. */
   open?: boolean
+  /**
+   * Where the list opens, relative to the field.
+   * @default 'bottom-start'
+   */
   placement?: Placement
+  /**
+   * The value is shown and focusable, but the list does not open.
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Marks the select as required for assistive technology.
+   * @default false
+   */
   required?: boolean
+  /**
+   * Adds a search box to the list that filters the options as the user types. Typing on the closed
+   * trigger opens it with that text.
+   * @default false
+   */
   searchable?: boolean
+  /**
+   * Shape of the `outline` field.
+   * @default 'rounded'
+   */
   shape?: Shape
+  /**
+   * Slides the list along its side to keep it inside the screen.
+   * @default true
+   */
   shift?: boolean
+  /**
+   * Height and text size of the field.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant, the same ones as `Input`. `unstyled` drops the Plume styles so you can bring
+   * your own.
+   * @default 'outline'
+   */
   variant?: SelectVariant
 }
 
 interface SelectSingleProps {
+  /**
+   * The value of an uncontrolled select at first: a string, or an array of strings when it is
+   * `multiple`.
+   */
   defaultValue?: string
+  /**
+   * Lets the user choose several options. The list stays open after each choice and the trigger
+   * shows the chosen options as chips.
+   * @default false
+   */
   multiple?: false
+  /**
+   * Called with the new value: a string, or an array of strings when it is `multiple`. It is an
+   * empty string, or an empty array, when the value is cleared.
+   */
   onValueChange?: (value: string) => void
+  /**
+   * The value of a controlled select: the `value` of the chosen option, or an array of them when
+   * it is `multiple`. Pair it with `onValueChange`.
+   */
   value?: string
 }
 
 interface SelectMultipleProps {
+  /**
+   * The value of an uncontrolled select at first: a string, or an array of strings when it is
+   * `multiple`.
+   */
   defaultValue?: string[]
+  /**
+   * Lets the user choose several options. The list stays open after each choice and the trigger
+   * shows the chosen options as chips.
+   */
   multiple: true
+  /**
+   * Called with the new value: a string, or an array of strings when it is `multiple`. It is an
+   * empty string, or an empty array, when the value is cleared.
+   */
   onValueChange?: (value: string[]) => void
+  /**
+   * The value of a controlled select: the `value` of the chosen option, or an array of them when it
+   * is `multiple`. Pair it with `onValueChange`.
+   */
   value?: string[]
 }
 

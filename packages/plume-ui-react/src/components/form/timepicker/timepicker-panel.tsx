@@ -14,7 +14,9 @@ import { useTimePicker } from './use-timepicker'
 import styles from './timepicker.module.css'
 
 export interface TimePickerPanelOwnProps {
+  /** Accessible name of the panel. By default it is `labels.timePicker`. */
   'aria-label'?: string
+  /** The lists of the panel, in the order they should appear. */
   children?: ReactNode
 }
 
@@ -28,6 +30,10 @@ const VARIANT_CLASS = {
   underline: 'variantUnderline',
 } as const
 
+/**
+ * The popup, or the page content when the picker is `isPanel`. Given no children it holds the
+ * hours, the minutes and, with `hour12`, the period.
+ */
 export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: TimePickerPanelProps,

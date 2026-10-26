@@ -13,6 +13,10 @@ type FileUploadInputRootAttributes = Pick<
 
 export type FileUploadInputProps = Omit<ComponentProps, 'index'> & FileUploadInputRootAttributes
 
+/**
+ * The native `<input type="file">`, invisible over the dropzone. The `ref` of the `FileUpload`
+ * goes to it as well.
+ */
 export const FileUploadInput = forwardRef<HTMLInputElement, FileUploadInputProps>(
   (
     { 'aria-describedby': describedBy, className, style, ...own }: FileUploadInputProps,

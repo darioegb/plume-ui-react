@@ -9,6 +9,7 @@ import styles from './progressbar.module.css'
 
 export type ProgressBarIndicatorProps = Omit<ComponentProps, 'index'>
 
+/** The bar. Its width follows the value. */
 export const ProgressBarIndicator = forwardRef<HTMLDivElement, ProgressBarIndicatorProps>(
   (
     { className, style }: ProgressBarIndicatorProps,

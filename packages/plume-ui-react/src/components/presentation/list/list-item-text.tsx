@@ -4,7 +4,9 @@ import type { ComponentProps } from '../../../theme'
 import styles from './list.module.css'
 
 export interface ListItemTextOwnProps {
+  /** Main text of the row. It falls back to `children`. */
   primary?: ReactNode
+  /** Smaller text under the main one. */
   secondary?: ReactNode
 }
 
@@ -14,6 +16,7 @@ export type ListItemTextProps = Omit<ComponentProps, 'index'> &
   ListItemTextRootAttributes &
   ListItemTextOwnProps
 
+/** The text of the row. */
 export const ListItemText = forwardRef<HTMLDivElement, ListItemTextProps>(
   (
     { children, className = '', primary, secondary, style, ...rest }: ListItemTextProps,

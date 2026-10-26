@@ -9,6 +9,7 @@ import { useFileUploadContext } from './fileupload-context'
 type FileUploadErrorRootAttributes = Pick<HTMLAttributes<HTMLLIElement>, 'children'>
 
 export interface FileUploadErrorOwnProps {
+  /** The rejected file and the reason it was left out. */
   rejection: FileRejection
 }
 
@@ -16,6 +17,7 @@ export type FileUploadErrorProps = Omit<ComponentProps, 'index'> &
   FileUploadErrorRootAttributes &
   FileUploadErrorOwnProps
 
+/** One of the errors. The text comes from `labels.rejection`, or from the children. */
 export const FileUploadError = forwardRef<HTMLLIElement, FileUploadErrorProps>(
   (
     { children, className, rejection, style }: FileUploadErrorProps,

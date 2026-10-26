@@ -13,9 +13,27 @@ import { joinClasses } from '../../../overlay/class-names'
 import styles from './toggle.module.css'
 
 export interface ToggleOwnProps {
+  /**
+   * Color scheme from the theme palette, custom schemes included.
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Shows the state without letting the user change it. It also silences `onChange`.
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Size of the toggle.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `solid` fills the track when on, `outline` only colors its border and thumb,
+   * and `raised` floats a bigger thumb with a shadow over a thin track. `unstyled` leaves the
+   * native switch so you can bring your own styles.
+   * @default 'solid'
+   */
   variant?: ToggleVariant
 }
 

@@ -8,6 +8,10 @@ import styles from './popover.module.css'
 
 export type PopoverCloseProps = OverlayCloseProps
 
+/**
+ * A button that closes the popover. Without children it is a small X button; with an element,
+ * such as a `Button`, it gives it the click handler.
+ */
 export const PopoverClose = forwardRef<HTMLElement, PopoverCloseProps>(
   (props: PopoverCloseProps, ref: ForwardedRef<HTMLElement>): ReactElement => {
     const { isStyled, setOpen } = usePopoverContext('PopoverClose')

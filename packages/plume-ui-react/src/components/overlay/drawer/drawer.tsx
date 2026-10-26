@@ -8,7 +8,16 @@ import { DrawerContext, type DrawerShape, type DrawerSide } from './drawer-conte
 export type { DrawerShape, DrawerSide } from './drawer-context'
 
 export interface DrawerOwnProps {
+  /**
+   * Corners of the panel: `rounded` rounds the ones that face the page and `square` leaves them
+   * sharp.
+   * @default 'rounded'
+   */
   shape?: DrawerShape
+  /**
+   * The edge of the screen the panel comes from.
+   * @default 'right'
+   */
   side?: DrawerSide
 }
 

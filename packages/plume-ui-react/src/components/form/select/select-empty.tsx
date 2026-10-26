@@ -11,6 +11,9 @@ type SelectEmptyRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'
 
 export type SelectEmptyProps = Omit<ComponentProps, 'index'> & SelectEmptyRootAttributes
 
+/**
+ * The message when the search finds nothing. Its `children` replace the text of `labels.empty`.
+ */
 export const SelectEmpty = forwardRef<HTMLDivElement, SelectEmptyProps>(
   (
     { children, className, style }: SelectEmptyProps,

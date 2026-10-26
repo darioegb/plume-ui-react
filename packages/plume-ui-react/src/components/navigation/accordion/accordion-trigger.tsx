@@ -18,7 +18,14 @@ import styles from './accordion.module.css'
 const TRIGGER_PARTS = [AccordionTitle, AccordionIcon]
 
 export interface AccordionTriggerOwnProps {
+  /**
+   * The level of the heading around the button, from `1` to `6`. Ignored inside an
+   * `AccordionHeading`.
+   *
+   * @default 3
+   */
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6
+  /** Replaces the chevron. `null` removes it. */
   icon?: ReactNode
 }
 
@@ -47,6 +54,13 @@ function nextTrigger(triggers: HTMLButtonElement[], current: HTMLElement, key: s
   return triggers[(index + step + triggers.length) % triggers.length]
 }
 
+/**
+ * The button that toggles the item. `headingLevel` (`1` to `6`, `3` by default) is the heading
+ * around it, so choose the one that fits your page. `icon` replaces the chevron, and `null` removes
+ * it. Given no parts it renders an `AccordionHeading` with the button, an `AccordionTitle` with
+ * `children` and an `AccordionIcon`; given `AccordionTitle` or `AccordionIcon` among its children
+ * it renders them as written. The button has `data-open` while its item is open.
+ */
 export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   (
     { children, className, headingLevel = 3, icon, style, ...rest }: AccordionTriggerProps,

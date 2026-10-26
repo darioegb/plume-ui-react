@@ -10,11 +10,41 @@ import styles from './spinner.module.css'
 const DEFAULT_LABELS = { label: 'Loading' }
 
 export interface SpinnerOwnProps {
+  /**
+   * Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`).
+   *
+   * @default 'secondary.900'
+   */
   color?: ColorShade
+  /**
+   * Accessible name of the Spinner, announced while it spins. Change it to translate it.
+   *
+   * @default 'Loading'
+   */
   label?: string
+  /**
+   * The size of the Spinner.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Duration of one turn, as a CSS time (e.g. `0.5s`, `800ms`).
+   *
+   * @default '1s'
+   */
   speed?: string
+  /**
+   * Border width in pixels.
+   *
+   * @default 3
+   */
   thickness?: number
+  /**
+   * The border variant of the Spinner.
+   *
+   * @default 'solid'
+   */
   variant?: SpinnerVariant
 }
 

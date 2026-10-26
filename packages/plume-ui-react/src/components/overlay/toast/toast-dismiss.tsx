@@ -15,6 +15,7 @@ type ToastDismissRootAttributes = Pick<
 
 export type ToastDismissProps = Omit<ComponentProps, 'index'> & ToastDismissRootAttributes
 
+/** The dismiss button. `children` replaces the cross. */
 export const ToastDismiss = forwardRef<HTMLButtonElement, ToastDismissProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: ToastDismissProps,

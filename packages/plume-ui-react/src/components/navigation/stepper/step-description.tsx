@@ -14,6 +14,7 @@ type StepDescriptionRootAttributes = Pick<
 
 export type StepDescriptionProps = Omit<ComponentProps, 'index'> & StepDescriptionRootAttributes
 
+/** A line of detail under the title. */
 export const StepDescription = forwardRef<HTMLSpanElement, StepDescriptionProps>(
   (
     { children, className, style, ...rest }: StepDescriptionProps,

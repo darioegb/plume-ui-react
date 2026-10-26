@@ -14,14 +14,6 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * best way to say it ("3 of 10 files"). The value is kept between `0` and `max`. An indeterminate bar has no
  * `aria-valuenow`, which is how screen readers know it is busy. The transitions and the stripes stop with
  * `prefers-reduced-motion`, and an indeterminate bar then shows a still segment.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `ProgressBarTrack` | `className`, `style`, `ref`, `children`, `id`, `title`, `hidden`, `aria-label`, `aria-labelledby`. The element with `role="progressbar"` that holds the bar. It takes the `ref` and the accessible name of the ProgressBar, and without children it renders a `ProgressBarIndicator`. |
- * | `ProgressBarIndicator` | `className`, `style`, `ref`. The bar. Its width follows the value. |
- * | `ProgressBarValue` | `className`, `style`, `ref`, `children`. The text with the value, for the eyes only. Without children it shows the result of `formatValue`, and nothing while the bar is indeterminate. |
  */
 export default {
   title: 'Components/ProgressBar',
@@ -37,113 +29,24 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description:
-        'Custom CSS class for the outermost element: the track, or the element that wraps the track and the text with the value.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the outermost element. They are applied after the color variables, so they can override them (e.g. `--progressbar-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    value: {
-      control: { type: 'range', min: 0, max: 100, step: 1 },
-      description: 'How much is done, from `0` to `max`. A value out of range is kept inside it.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
-    },
-    max: {
-      control: 'number',
-      description:
-        'The value that means the task is done. It has to be positive, or it falls back to `100`.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '100' } },
-    },
-    indeterminate: {
-      control: 'boolean',
-      description:
-        'For a task of unknown length. The bar moves back and forth and the progress bar has no value.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    animated: {
-      control: 'boolean',
-      description: 'Moves the stripes. It only applies to the `striped` variant.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    showValue: {
-      control: 'boolean',
-      description:
-        'Shows the percentage next to the bar. The text is hidden from screen readers, who already get the value from the progress bar. An indeterminate bar has no text.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    formatValue: {
-      control: false,
-      description:
-        'Returns the text that **showValue** shows, from the value (kept between 0 and `max`) and the `max`.',
-      table: {
-        type: { summary: '(value: number, max: number) => string' },
-        defaultValue: { summary: '(v, max) => `${Math.round((v / max) * 100)}%`' },
-      },
-    },
-    valueText: {
-      control: 'text',
-      description: 'A text for the value, when the number is not enough: `3 of 10 files`.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Thickness of the bar.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    shape: {
-      control: 'radio',
-      description: 'Corners of the bar.',
-      options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'pill' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` fills the bar with one color and `striped` adds stripes. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['solid', 'striped', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "striped" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the progress bar.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the progress bar.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the progress bar.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the progress bar. It needs this or `aria-labelledby`.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the progress bar.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    className: { control: 'text' },
+    style: { control: false },
+    value: { control: { type: 'range', min: 0, max: 100, step: 1 } },
+    max: { control: 'number' },
+    indeterminate: { control: 'boolean' },
+    animated: { control: 'boolean' },
+    showValue: { control: 'boolean' },
+    formatValue: { control: false },
+    valueText: { control: 'text' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    shape: { control: 'radio', options: ['rounded', 'pill'] },
+    variant: { control: 'radio', options: ['solid', 'striped', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     'aria-label': 'Upload progress',
@@ -175,36 +78,6 @@ export const Variants: Story = {
         variant="unstyled"
       >
         <ProgressBarIndicator className="rounded bg-black" />
-      </ProgressBar>
-    </div>
-  ),
-}
-
-/**
- * Use the `ProgressBarTrack`, `ProgressBarIndicator` and `ProgressBarValue` parts to give each element its own
- * class or style, or to put the text with the value before the bar. With a `ProgressBarTrack` among its children,
- * the ProgressBar wraps them in an element that takes its `className` and `style`.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<ProgressBar aria-label="Upload" className="gap-3" value={65}>
-  <ProgressBarValue className="font-semibold" />
-  <ProgressBarTrack className="h-3">
-    <ProgressBarIndicator className="bg-emerald-500" />
-  </ProgressBarTrack>
-</ProgressBar>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={{ maxWidth: '100%', width: '20rem' }}>
-      <ProgressBar aria-label="Upload" className="gap-3" value={65}>
-        <ProgressBarValue className="font-semibold" />
-        <ProgressBarTrack className="h-3">
-          <ProgressBarIndicator className="bg-emerald-500" />
-        </ProgressBarTrack>
       </ProgressBar>
     </div>
   ),
@@ -328,6 +201,36 @@ function LiveBar(): React.ReactNode {
  */
 export const Live: Story = {
   render: () => <LiveBar />,
+}
+
+/**
+ * Use the `ProgressBarTrack`, `ProgressBarIndicator` and `ProgressBarValue` parts to give each element its own
+ * class or style, or to put the text with the value before the bar. With a `ProgressBarTrack` among its children,
+ * the ProgressBar wraps them in an element that takes its `className` and `style`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<ProgressBar aria-label="Upload" className="gap-3" value={65}>
+  <ProgressBarValue className="font-semibold" />
+  <ProgressBarTrack className="h-3">
+    <ProgressBarIndicator className="bg-emerald-500" />
+  </ProgressBarTrack>
+</ProgressBar>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ maxWidth: '100%', width: '20rem' }}>
+      <ProgressBar aria-label="Upload" className="gap-3" value={65}>
+        <ProgressBarValue className="font-semibold" />
+        <ProgressBarTrack className="h-3">
+          <ProgressBarIndicator className="bg-emerald-500" />
+        </ProgressBarTrack>
+      </ProgressBar>
+    </div>
+  ),
 }
 
 /**

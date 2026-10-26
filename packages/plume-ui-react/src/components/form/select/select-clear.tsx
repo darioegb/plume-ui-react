@@ -12,6 +12,10 @@ type SelectClearRootAttributes = Pick<ButtonHTMLAttributes<HTMLButtonElement>, '
 
 export type SelectClearProps = Omit<ComponentProps, 'index'> & SelectClearRootAttributes
 
+/**
+ * The button that clears the value. It renders nothing when the select is not `clearable` or has no
+ * value.
+ */
 export const SelectClear = forwardRef<HTMLButtonElement, SelectClearProps>(
   (
     { children, className, style }: SelectClearProps,

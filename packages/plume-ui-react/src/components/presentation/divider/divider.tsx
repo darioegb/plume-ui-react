@@ -13,11 +13,37 @@ export type DividerOrientation = 'horizontal' | 'vertical'
 export type DividerVariant = 'dashed' | 'dotted' | 'solid' | 'unstyled'
 
 export interface DividerOwnProps {
+  /**
+   * Where the label sits along the line.
+   *
+   * @default 'center'
+   */
   align?: DividerAlign
+  /**
+   * Hides the line from assistive technology (`role="none"`).
+   *
+   * @default false
+   */
   decorative?: boolean
+  /**
+   * Direction of the line.
+   *
+   * @default 'horizontal'
+   */
   orientation?: DividerOrientation
+  /**
+   * Thickness of the line: 1, 2 or 3 pixels.
+   *
+   * @default 'sm'
+   */
   size?: Size
+  /** Space around the line. By default there is none. */
   spacing?: Size
+  /**
+   * Style of the line. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'solid'
+   */
   variant?: DividerVariant
 }
 

@@ -15,6 +15,10 @@ type FileUploadRemoveRootAttributes = Pick<
 
 export type FileUploadRemoveProps = Omit<ComponentProps, 'index'> & FileUploadRemoveRootAttributes
 
+/**
+ * The button that removes the file. It takes its name from `labels.remove`, children replace the
+ * icon, and it is not there when the FileUpload is disabled or read only.
+ */
 export const FileUploadRemove = forwardRef<HTMLButtonElement, FileUploadRemoveProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: FileUploadRemoveProps,

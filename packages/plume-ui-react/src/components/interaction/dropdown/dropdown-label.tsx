@@ -10,6 +10,7 @@ type DropdownLabelRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'childre
 
 export type DropdownLabelProps = Omit<ComponentProps, 'index'> & DropdownLabelRootAttributes
 
+/** A heading for the items that follow. It isn't focusable. */
 export const DropdownLabel = forwardRef<HTMLDivElement, DropdownLabelProps>(
   (
     { children, className = '', style }: DropdownLabelProps,

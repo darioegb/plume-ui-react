@@ -9,9 +9,13 @@ import { useTabIndex } from './tab-index-context'
 import { getPanelId, getTabId, useTabs } from './use-tabs'
 
 export interface TabOwnProps {
+  /** The text of the tab. */
   label?: string
+  /** Disables the tab: it can't be selected and the keyboard skips it. */
   disabled?: boolean
+  /** Content shown before the label, such as an icon or a badge. */
   extraContentLeft?: ReactNode
+  /** Content shown after the label, such as an icon or a badge. */
   extraContentRight?: ReactNode
 }
 
@@ -19,6 +23,7 @@ type TabRootAttributes = Pick<HTMLAttributes<HTMLButtonElement>, 'children'>
 
 export type TabProps = ComponentProps & TabRootAttributes & TabOwnProps
 
+/** The button that selects a panel. It has `data-active` while it is selected. */
 export const Tab = forwardRef<HTMLButtonElement, TabProps>(
   (
     {

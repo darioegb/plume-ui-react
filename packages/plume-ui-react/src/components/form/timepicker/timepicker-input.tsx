@@ -22,8 +22,17 @@ export type TimePickerRootAttributes = Pick<
 >
 
 export interface TimePickerInputOwnProps {
+  /**
+   * The parts of the input, in the order they should appear. Without children it renders the field
+   * and the trigger.
+   */
   children?: ReactNode
+  /**
+   * Ref to the `<input>`. The `ref` of the picker points to its wrapper, so pass a form library ref
+   * here (such as `field.ref` of react-hook-form) to let it focus the field on errors.
+   */
   inputRef?: Ref<HTMLInputElement>
+  /** Called with the current value when the input loses focus, after applying the typed text. */
   onBlur?: (value: string) => void
 }
 
@@ -36,6 +45,11 @@ const TIME_MASK = '##:##'
 const defaultPlaceholder = (hour12: boolean, am: string): string =>
   hour12 ? `hh:mm ${am}` : 'hh:mm'
 
+/**
+ * The field and the button that opens the panel. It is an `Input`: given children, compose
+ * `InputControl`, `InputField`, `InputElement` and `TimePickerTrigger` in any order. It renders
+ * nothing when the picker is `isPanel`.
+ */
 export function TimePickerInput({
   children,
   className,

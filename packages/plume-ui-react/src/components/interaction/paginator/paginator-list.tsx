@@ -17,6 +17,10 @@ type PaginatorListRootAttributes = Pick<HTMLAttributes<HTMLUListElement>, 'child
 
 export type PaginatorListProps = Omit<ComponentProps, 'index'> & PaginatorListRootAttributes
 
+/**
+ * The `<ul>`. Without children it builds the default: the edges, the previous button, the pages and
+ * the next button, each in a `PaginatorItem`.
+ */
 export const PaginatorList = forwardRef<HTMLUListElement, PaginatorListProps>(
   (
     { children, className, style, ...rest }: PaginatorListProps,

@@ -9,6 +9,7 @@ type TableFooterRootAttributes = Pick<
 
 export type TableFooterProps = Omit<ComponentProps, 'index'> & TableFooterRootAttributes
 
+/** The `<tfoot>`. */
 export const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
   (
     { children, className, style, ...rest }: TableFooterProps,

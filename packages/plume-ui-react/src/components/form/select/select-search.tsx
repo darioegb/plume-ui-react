@@ -11,6 +11,7 @@ type SelectSearchRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children
 
 export type SelectSearchProps = Omit<ComponentProps, 'index'> & SelectSearchRootAttributes
 
+/** The box around the search input. It renders nothing when the select is not `searchable`. */
 export const SelectSearch = forwardRef<HTMLDivElement, SelectSearchProps>(
   (
     { children, className, style }: SelectSearchProps,

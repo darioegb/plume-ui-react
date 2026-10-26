@@ -8,6 +8,10 @@ import { useRatingContext, useRatingItemContext } from './rating-context'
 import styles from './rating.module.css'
 
 export interface RatingRadioOwnProps {
+  /**
+   * The score it gives. It is the position of its item by default; with `allowHalf`, use `position
+   * - 0.5` for the first half.
+   */
   value?: number
 }
 
@@ -17,6 +21,7 @@ export type RatingRadioProps = Omit<ComponentProps, 'index'> &
   RatingRadioRootAttributes &
   RatingRadioOwnProps
 
+/** The radio of a star. It renders nothing when the rating is read only. */
 export const RatingRadio = forwardRef<HTMLInputElement, RatingRadioProps>(
   (
     { 'aria-label': ariaLabel, className, style, title, value: valueProp }: RatingRadioProps,

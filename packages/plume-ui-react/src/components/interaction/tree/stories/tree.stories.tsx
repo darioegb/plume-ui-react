@@ -124,17 +124,6 @@ function Files(
  * as everything under it. Pressing the label or <kbd>Space</kbd> or <kbd>Enter</kbd> toggles the checkbox, and the
  * chevron or the <kbd>←</kbd> <kbd>→</kbd> keys open and close the branches. Pass `cascade={false}` to check every
  * item on its own.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `TreeItem` | `value` (required, the id of the node), `disabled`, `aria-label`, `id`, `title`, `hidden`, `className`, `style`, `children`. One node. Put a `TreeItemLabel` and, for a branch, a `TreeItemGroup` as its direct children. It has `data-selected` and `data-expanded`. |
- * | `TreeItemLabel` | `icon`, `title`, `className`, `style`, `children`. The text of the node, with the chevron of a branch, the checkbox of a `checkbox` tree and an optional leading icon. Given `TreeItemChevron`, `TreeItemCheckbox` or `TreeItemIcon` as children it renders them as written, and `icon` has no effect. |
- * | `TreeItemChevron` | `className`, `style`, `children`. The arrow of a branch. It is empty on a leaf, and `children` replaces the arrow. It has `data-visible` on a branch. |
- * | `TreeItemCheckbox` | `className`, `style`, `children`. The checkbox of a `checkbox` tree, which renders nothing in the other trees. `children` replaces the check mark. It has `data-state` (`checked`, `unchecked` or `mixed`). |
- * | `TreeItemIcon` | `className`, `style`, `children`. The leading icon of the node. It renders nothing without children. |
- * | `TreeItemGroup` | `id`, `title`, `className`, `style`, `children`. The children of a branch: more `TreeItem`s. It opens and closes with a height animation. It must be a direct child of the `TreeItem`. |
  */
 export default {
   title: 'Components/Tree',
@@ -159,118 +148,25 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The root items: `TreeItem`s.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Tree.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Tree. They are applied after the color variables, so they can override them (e.g. `--tree-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    selection: {
-      control: 'radio',
-      description:
-        'How the items are picked. `single` selects one, `multiple` any number, `checkbox` shows a checkbox on every item (with `aria-checked`), and `none` selects nothing: the tree only opens and closes.',
-      options: ['single', 'multiple', 'checkbox', 'none'],
-      table: {
-        type: { summary: `"single" | "multiple" | "checkbox" | "none"` },
-        defaultValue: { summary: 'single' },
-      },
-    },
-    cascade: {
-      control: 'boolean',
-      description:
-        'Only with `selection="checkbox"`. Checking a branch checks everything under it, and a branch is checked, unchecked or mixed from the items under it. Items that are disabled keep their state.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    value: {
-      control: false,
-      description:
-        'The `value` of the selected item, or a list of them with `selection="multiple"` or `"checkbox"`. Makes the selection controlled: pass `onValueChange` to update it.',
-      table: { type: { summary: 'string | string[]' } },
-    },
-    defaultValue: {
-      control: false,
-      description: 'The selected item or items when the selection is not controlled.',
-      table: { type: { summary: 'string | string[]' } },
-    },
-    onValueChange: {
-      control: false,
-      description:
-        'Called with the new selection: a `value`, or a list of them with `selection="multiple"` or `"checkbox"`.',
-      table: { category: 'Events', type: { summary: '(value: string | string[]) => void' } },
-    },
-    expanded: {
-      control: false,
-      description:
-        'The `value` of every open branch. Makes the open state controlled: pass `onExpandedChange` to update it.',
-      table: { type: { summary: 'string[]' } },
-    },
-    defaultExpanded: {
-      control: false,
-      description: 'The branches that are open first, when the open state is not controlled.',
-      table: { type: { summary: 'string[]' } },
-    },
-    onExpandedChange: {
-      control: false,
-      description: 'Called with the list of open branches when one opens or closes.',
-      table: { category: 'Events', type: { summary: '(expanded: string[]) => void' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the text and the rows.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'How the selected item looks. `solid` fills its row with the color, `ghost` tints it and `accent` draws a bar at its start. `unstyled` drops the Plume styles so you can bring your own; the structure and the keyboard keep working.',
-      options: ['solid', 'ghost', 'accent', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "ghost" | "accent" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Tree.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Tree.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Tree.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the Tree, for example "Project files".',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Tree.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    selection: { control: 'radio', options: ['single', 'multiple', 'checkbox', 'none'] },
+    cascade: { control: 'boolean' },
+    value: { control: false },
+    defaultValue: { control: false },
+    onValueChange: { control: false },
+    expanded: { control: false },
+    defaultExpanded: { control: false },
+    onExpandedChange: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['solid', 'ghost', 'accent', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     'aria-label': 'Project files',

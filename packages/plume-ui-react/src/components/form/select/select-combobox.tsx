@@ -15,6 +15,7 @@ import styles from './select.module.css'
 type SelectComboboxRootAttributes = Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>
 
 export interface SelectComboboxOwnProps {
+  /** What it shows when nothing is chosen. */
   placeholder?: ReactNode
 }
 
@@ -22,6 +23,7 @@ export type SelectComboboxProps = Omit<ComponentProps, 'index'> &
   SelectComboboxRootAttributes &
   SelectComboboxOwnProps
 
+/** The button with `role="combobox"`. Its `children` replace what it shows. */
 export const SelectCombobox = forwardRef<HTMLButtonElement, SelectComboboxProps>(
   (
     { children, className, placeholder, style }: SelectComboboxProps,

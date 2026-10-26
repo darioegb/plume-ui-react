@@ -23,11 +23,25 @@ const OPTION_PARTS = [
 ]
 
 export interface SelectOptionOwnProps {
+  /** The text of the option, or its parts. */
   children?: ReactNode
+  /** A second line of text under the option. */
   description?: ReactNode
+  /**
+   * Makes the option impossible to choose.
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * An icon or an image before the text. Give an image `alt=""`: it is decorative and the label
+   * names the option.
+   */
   icon?: ReactNode
+  /**
+   * The text used for the search, the typeahead and the value, when the content is more than text.
+   */
   label?: string
+  /** The value the option gives to the select when it is chosen. */
   value: string
 }
 
@@ -73,6 +87,12 @@ function useOptionRecord(
   return { resolved, textRef }
 }
 
+/**
+ * An option of the list. Its `children` are its text, or, given `SelectOptionIcon`,
+ * `SelectOptionBody`, `SelectOptionText`, `SelectOptionDescription` or `SelectOptionCheck`, its
+ * parts as written. It has `data-active` while the arrows are on it, plus `aria-selected` and
+ * `aria-disabled`, to style them.
+ */
 export const SelectOption = forwardRef<HTMLDivElement, SelectOptionProps>(
   (
     {

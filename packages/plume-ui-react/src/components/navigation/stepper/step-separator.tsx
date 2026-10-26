@@ -9,6 +9,7 @@ import styles from './stepper.module.css'
 
 export type StepSeparatorProps = Omit<ComponentProps, 'index'>
 
+/** The line to the next step. The last one is not shown. */
 export const StepSeparator = forwardRef<HTMLSpanElement, StepSeparatorProps>(
   (
     { className, style, ...rest }: StepSeparatorProps,

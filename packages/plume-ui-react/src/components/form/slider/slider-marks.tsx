@@ -9,11 +9,15 @@ import { SliderMarkItem } from './slider-mark-item'
 import styles from './slider.module.css'
 
 export interface SliderMarksOwnProps {
+  /**
+   * A node, or a function that gets each mark and its position and returns what to render for it.
+   */
   children?: ReactNode | ((mark: SliderMark, index: number) => ReactNode)
 }
 
 export type SliderMarksProps = Omit<ComponentProps, 'index'> & SliderMarksOwnProps
 
+/** The container of the marks. It renders nothing without marks. */
 export const SliderMarks = forwardRef<HTMLSpanElement, SliderMarksProps>(
   (
     { children, className, style }: SliderMarksProps,

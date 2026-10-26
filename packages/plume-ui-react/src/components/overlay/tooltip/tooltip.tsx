@@ -9,19 +9,65 @@ import type { Size } from '../../../theme'
 import styles from './tooltip.module.css'
 
 export interface TooltipProps {
+  /**
+   * The element that opens the tooltip, such as a `Button`. It gets the handlers and
+   * `aria-describedby`, and it has to be able to take the focus, so keyboard users reach the
+   * tooltip too. A plain element needs a `tabIndex`.
+   */
   children: ReactElement
+  /** Class of the bubble. */
   className?: string
+  /**
+   * Milliseconds before the tooltip closes when the pointer leaves, which lets it reach the
+   * tooltip.
+   * @default 100
+   */
   closeDelay?: number
+  /** What the tooltip says. Keep it short. */
   content: ReactNode
+  /**
+   * Whether the tooltip is open at first, for an uncontrolled tooltip.
+   * @default false
+   */
   defaultOpen?: boolean
+  /**
+   * Turns the tooltip off.
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * Distance in pixels between the element and the tooltip.
+   * @default 6
+   */
   offset?: number
+  /** Called with the new state when the tooltip opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Whether the tooltip is open, for a controlled tooltip. Pair it with `onOpenChange`. */
   open?: boolean
+  /**
+   * Milliseconds the pointer has to rest on the element before the tooltip opens.
+   * @default 300
+   */
   openDelay?: number
+  /**
+   * Where the tooltip appears, relative to the element: a side, with an optional alignment
+   * (`top-start`, `bottom-end`). It flips to the opposite side when there is no room.
+   * @default 'top'
+   */
   placement?: Placement
+  /**
+   * Size of the text and of the padding of the tooltip.
+   * @default 'md'
+   */
   size?: Size
+  /** Inline style of the bubble. */
   style?: CSSProperties
+  /**
+   * Visual variant. `solid` is a dark tooltip on a light page and a light one on a dark page,
+   * and `outline` is a bordered surface. `unstyled` drops the Plume styles so you can bring your
+   * own.
+   * @default 'solid'
+   */
   variant?: TooltipVariant
 }
 

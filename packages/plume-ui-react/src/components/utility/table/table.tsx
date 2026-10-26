@@ -18,12 +18,46 @@ export interface TableLabels {
 export type TableVariant = 'plain' | 'bordered' | 'striped' | 'unstyled'
 
 export interface TableOwnProps {
+  /**
+   * Highlights the row under the pointer.
+   * @default false
+   */
   hoverable?: boolean
+  /**
+   * The texts of the Table, to translate it: `loading` is the accessible name of the spinner
+   * shown while the table is loading.
+   * @default { loading: 'Loading' }
+   */
   labels?: Partial<TableLabels>
+  /**
+   * Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading`
+   * on the `<table>`, covers the body with a translucent veil (`TableLoading`) and shows a
+   * `Spinner` in the middle.
+   * @default false
+   */
   loading?: boolean
+  /**
+   * Maximum height of the box around the table. The body scrolls inside it. A number is in
+   * pixels.
+   */
   maxHeight?: number | string
+  /**
+   * Density of the Table: the padding of its cells.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Keeps the header cells at the top of the box while the body scrolls. It needs `maxHeight`,
+   * or a height on the container, to have something to scroll.
+   * @default false
+   */
   stickyHeader?: boolean
+  /**
+   * Visual variant. `plain` draws a line under every row, `bordered` borders every cell and
+   * `striped` alternates the background of the rows. `unstyled` drops the Plume styles so you
+   * can bring your own; the scrolling box and the sticky header keep working.
+   * @default 'plain'
+   */
   variant?: TableVariant
 }
 

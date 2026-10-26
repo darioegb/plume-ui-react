@@ -15,6 +15,10 @@ type ProgressBarTrackRootAttributes = ProgressBarTrackAttributes &
 
 export type ProgressBarTrackProps = Omit<ComponentProps, 'index'> & ProgressBarTrackRootAttributes
 
+/**
+ * The element with `role="progressbar"` that holds the bar. It takes the `ref` and the
+ * accessible name of the ProgressBar, and without children it renders a `ProgressBarIndicator`.
+ */
 export const ProgressBarTrack = forwardRef<HTMLDivElement, ProgressBarTrackProps>(
   (
     { children, className, style, ...own }: ProgressBarTrackProps,

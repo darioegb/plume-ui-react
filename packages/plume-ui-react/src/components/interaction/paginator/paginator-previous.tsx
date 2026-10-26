@@ -4,6 +4,7 @@ import { PaginatorEdge, type PaginatorEdgeProps } from './paginator-edge'
 
 export type PaginatorPreviousProps = PaginatorEdgeProps
 
+/** The button that goes to the previous page. */
 export const PaginatorPrevious = forwardRef<HTMLButtonElement, PaginatorPreviousProps>(
   (props: PaginatorPreviousProps, ref: ForwardedRef<HTMLButtonElement>): ReactNode => (
     <PaginatorEdge

@@ -7,6 +7,7 @@ import styles from './emptystate.module.css'
 export type EmptyStateIconProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The decorative icon, hidden from assistive technology. */
 export const EmptyStateIcon = forwardRef<HTMLSpanElement, EmptyStateIconProps>(
   (
     { children, className, style }: EmptyStateIconProps,

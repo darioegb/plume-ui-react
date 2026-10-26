@@ -7,11 +7,21 @@ import { type SelectedOption, useSelectContext } from './select-context'
 import { useSelectTriggerContext } from './select-trigger-context'
 
 export interface SelectChipsProps {
+  /**
+   * A function of each chosen option that returns its chip: `(option) => <SelectChip
+   * className="..." option={option} />`.
+   */
   children?: (option: SelectedOption) => ReactNode
+  /**
+   * How many chips to show before the `+N` one. It defaults to the `maxDisplay` of the
+   * `SelectTrigger`.
+   */
   maxDisplay?: number
+  /** A function of the number of hidden chips that returns the `+N` chip. */
   overflow?: (hidden: number) => ReactNode
 }
 
+/** The chips of a `multiple` select. It has no element of its own. */
 export function SelectChips({
   children,
   maxDisplay,

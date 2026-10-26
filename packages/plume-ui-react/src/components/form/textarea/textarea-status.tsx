@@ -11,6 +11,7 @@ export type TextareaStatusProps = Omit<ComponentProps, 'index'>
 const isNearLimit = (remaining: number, max: number): boolean =>
   remaining <= Math.max(10, Math.ceil(max / 10))
 
+/** The invisible live region that says how many characters are left near the limit. */
 export const TextareaStatus = forwardRef<HTMLOutputElement, TextareaStatusProps>(
   ({ className, style }: TextareaStatusProps, ref: ForwardedRef<HTMLOutputElement>): ReactNode => {
     const { labels, maxLength, remaining } = useTextarea('TextareaStatus')

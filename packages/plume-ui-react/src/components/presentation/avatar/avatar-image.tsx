@@ -14,6 +14,10 @@ type AvatarImageRootAttributes = Pick<
 
 export type AvatarImageProps = Omit<ComponentProps, 'index'> & AvatarImageRootAttributes
 
+/**
+ * The `<img>` with the `src` of the Avatar. It renders nothing without a `src` or when the image
+ * fails to load.
+ */
 export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
   (
     { className, style, ...rest }: AvatarImageProps,

@@ -12,6 +12,11 @@ import {
 import styles from './accordion.module.css'
 
 export interface AccordionHeadingOwnProps {
+  /**
+   * The heading level, from `1` to `6`, so you choose the one that fits your page.
+   *
+   * @default 3
+   */
   level?: 1 | 2 | 3 | 4 | 5 | 6
 }
 
@@ -21,6 +26,11 @@ export type AccordionHeadingProps = Omit<ComponentProps, 'index'> &
   AccordionHeadingRootAttributes &
   AccordionHeadingOwnProps
 
+/**
+ * The heading (`<h1>` to `<h6>`, `3` by default) around a trigger. Use it to style the heading or
+ * to put something next to the trigger inside it. A trigger inside an `AccordionHeading` does not
+ * add its own.
+ */
 export const AccordionHeading = forwardRef<HTMLHeadingElement, AccordionHeadingProps>(
   (
     { children, className, level = 3, style, ...rest }: AccordionHeadingProps,

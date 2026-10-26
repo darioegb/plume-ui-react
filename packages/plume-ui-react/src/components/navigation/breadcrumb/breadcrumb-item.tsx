@@ -9,6 +9,7 @@ import { BreadcrumbSeparator } from './breadcrumb-separator'
 import styles from './breadcrumb.module.css'
 
 export interface BreadcrumbItemOwnProps {
+  /** Replaces the separator of the breadcrumb for this item. `null` removes it. */
   separator?: ReactNode
 }
 
@@ -21,6 +22,10 @@ export type BreadcrumbItemProps = Omit<ComponentProps, 'index'> &
   BreadcrumbItemRootAttributes &
   BreadcrumbItemOwnProps
 
+/**
+ * One `<li>`, with the separator after it. `separator` replaces the separator of the breadcrumb for
+ * this item, and `null` removes it.
+ */
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   (
     { children, className, separator, style, ...rest }: BreadcrumbItemProps,

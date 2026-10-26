@@ -9,6 +9,10 @@ type FileUploadPromptRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type FileUploadPromptProps = Omit<ComponentProps, 'index'> & FileUploadPromptRootAttributes
 
+/**
+ * The instructions. They describe the input, and without children they come from
+ * `labels.prompt`.
+ */
 export const FileUploadPrompt = forwardRef<HTMLSpanElement, FileUploadPromptProps>(
   (
     { children, className, style }: FileUploadPromptProps,

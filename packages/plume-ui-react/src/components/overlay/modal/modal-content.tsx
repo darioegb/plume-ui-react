@@ -18,6 +18,7 @@ type ModalContentRootAttributes = Pick<
 
 export type ModalContentProps = Omit<ComponentProps, 'index'> & ModalContentRootAttributes
 
+/** The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. */
 export const ModalContent = forwardRef<HTMLDialogElement, ModalContentProps>(
   (
     { children, className, style, ...rest }: ModalContentProps,

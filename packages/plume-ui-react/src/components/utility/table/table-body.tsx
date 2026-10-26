@@ -9,6 +9,7 @@ type TableBodyRootAttributes = Pick<
 
 export type TableBodyProps = Omit<ComponentProps, 'index'> & TableBodyRootAttributes
 
+/** The `<tbody>`. */
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   (
     { children, className, style, ...rest }: TableBodyProps,

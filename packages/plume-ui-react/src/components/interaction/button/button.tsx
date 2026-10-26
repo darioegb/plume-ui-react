@@ -12,15 +12,52 @@ export interface ButtonLabels {
 }
 
 export interface ButtonOwnProps {
+  /**
+   * Text shown instead of the label while `isBusy` is set.
+   *
+   * @default ''
+   */
   busyText?: string
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /** Icon to be displayed on the left side of the Button. */
   iconLeft?: ReactNode
+  /** Icon to be displayed on the right side of the Button. */
   iconRight?: ReactNode
+  /**
+   * Shows a spinner and disables the Button. Without `busyText` the label is hidden while busy.
+   *
+   * @default false
+   */
   isBusy?: boolean
+  /** Text of the Button. When `children` are also set, they render after the label. */
   label?: string
+  /**
+   * The texts the Button adds, to translate them: `busy` is the accessible name of the spinner
+   * shown while `isBusy` is set.
+   */
   labels?: Partial<ButtonLabels>
+  /**
+   * Shape style of the Button.
+   *
+   * @default 'rounded'
+   */
   shape?: Shape
+  /**
+   * Size of the Button.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual style variant of the Button.
+   *
+   * @default 'solid'
+   */
   variant?: ButtonVariant
 }
 

@@ -27,20 +27,67 @@ export type {
 } from './datepicker-types'
 
 export interface DatePickerOwnProps {
+  /**
+   * The parts of the DatePicker, to change what it shows or their order: a `DatePickerInput` and a `DatePickerCalendar`. Without them it renders both.
+   */
   children?: ReactNode
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * `language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers. It is optional and falls back to `en`.
+   */
   config?: DatePickerConfig
+  /**
+   * Format of the typed and displayed date, built from the `dd`, `mm` and `yyyy` tokens in any order and case (e.g. `dd/mm/yyyy`, `YYYY-MM-DD`). Defaults to the format of `config.language`.
+   */
   displayFormat?: string
+  /**
+   * Renders only the calendar, always visible, without the input.
+   *
+   * @default false
+   */
   isCalendar?: boolean
+  /**
+   * Selects a start and an end date, showing two consecutive months.
+   *
+   * @default false
+   */
   isRange?: boolean
+  /**
+   * `labels` sets every text the component shows or announces: the buttons of the footer (`apply`, `cancel`), the name of the calendar (`calendar`) and of the button that opens it (`openCalendar`), and the navigation buttons (`previousMonth`, `nextMonth`, `previousYears`, `nextYears`). Every key is optional and falls back to its default.
+   */
   labels?: Partial<DatePickerLabels>
+  /** Last selectable date. Later days are disabled. */
   maxDate?: Date
+  /** First selectable date. Earlier days are disabled. */
   minDate?: Date
+  /**
+   * Called with the new `{ startDate, endDate }` when a date is picked or typed, when a range is complete, or on Apply when `showFooter` is set.
+   */
   onChange: (value: DateRange) => void
+  /**
+   * Shape style of the DatePicker. `pill` rounds the `outline` input and the corners of the calendar.
+   */
   shape?: Shape
+  /**
+   * Shows Cancel and Apply buttons, so the selection is only applied (and `onChange` called) on Apply.
+   *
+   * @default false
+   */
   showFooter?: boolean
+  /** Size of the input and of the calendar days. */
   size?: Size
+  /** Selected date or range as `{ startDate, endDate }`. In single mode `endDate` is `null`. */
   value?: DateRange
+  /**
+   * Visual style variant of the input and of the calendar. `outline` has a bordered calendar, `filled` a tinted one with an accent line, `underline` a square one with an accent line and `unstyled` none of them.
+   *
+   * @default 'outline'
+   */
   variant?: DatePickerVariant
 }
 

@@ -19,9 +19,33 @@ import {
 import styles from './sidebar.module.css'
 
 export interface SidebarOwnProps {
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. It colors the active
+   * item, and the whole sidebar in the `solid` variant.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The side of the screen it opens from on a small screen. Where it sits on a wide screen depends
+   * on your layout.
+   *
+   * @default 'left'
+   */
   side?: SidebarSide
+  /**
+   * Size of the Sidebar.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `plain` has a line on the edge next to the page, `filled` a muted background
+   * and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your
+   * own; the collapsing and the off-canvas behavior keep working.
+   *
+   * @default 'plain'
+   */
   variant?: SidebarVariant
 }
 

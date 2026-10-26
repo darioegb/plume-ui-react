@@ -8,7 +8,13 @@ import { AccordionItemContext, useAccordionContext } from './accordion-context'
 import styles from './accordion.module.css'
 
 export interface AccordionItemOwnProps {
+  /**
+   * Disables the item. It can also be disabled for all items with `disabled` on the `Accordion`.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /** Identifies the item. It is what `value` and `defaultValue` of the `Accordion` refer to. */
   value: string
 }
 
@@ -21,6 +27,10 @@ export type AccordionItemProps = Omit<ComponentProps, 'index'> &
   AccordionItemRootAttributes &
   AccordionItemOwnProps
 
+/**
+ * One section. `value` identifies it and is required. It has `data-open` and `data-disabled` to
+ * style it.
+ */
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   (
     { children, className, disabled = false, style, value, ...rest }: AccordionItemProps,

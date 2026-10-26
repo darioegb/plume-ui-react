@@ -7,14 +7,44 @@ import { FieldContext } from './field-context'
 import styles from './field.module.css'
 
 export interface FieldOwnProps {
+  /**
+   * Disables the control and dims the label.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * Error message shown below the control while the field is invalid. Setting it makes the field invalid unless `invalid` says otherwise.
+   */
   errorText?: ReactNode
+  /** Hint shown below the control and read as part of its description. */
   helperText?: ReactNode
+  /**
+   * Marks the field invalid: the control gets `aria-invalid` and error colors, and `errorText` is shown. It is on
+   * when `errorText` is set, unless you pass `false`.
+   */
   invalid?: boolean
+  /** Label rendered above the control (beside it when horizontal) and linked to it. */
   label?: ReactNode
+  /** Text shown next to the label when the field is not required, e.g. `(optional)`. */
   optionalText?: ReactNode
+  /**
+   * Places the label above the control (`vertical`), beside it in a column (`horizontal`, whose width comes from `--field-label-width`, default `8rem`), or right after it (`inline`, for `Checkbox`, `Radio` and `Toggle`; the helper and error texts go under the label).
+   *
+   * @default 'vertical'
+   */
   orientation?: FieldOrientation
+  /**
+   * Passes `readOnly` to the control.
+   *
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Shows the required mark next to the label and passes `required` to the control.
+   *
+   * @default false
+   */
   required?: boolean
 }
 
@@ -30,7 +60,10 @@ export interface FieldControlProps {
   required?: boolean
 }
 
-type FieldRootAttributes = { children: ReactElement<FieldControlProps> }
+type FieldRootAttributes = {
+  /** The form control: a single element such as `Input` or `DatePicker`. */
+  children: ReactElement<FieldControlProps>
+}
 
 export type FieldProps = Omit<ComponentProps, 'index'> & FieldRootAttributes & FieldOwnProps
 

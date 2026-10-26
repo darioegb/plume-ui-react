@@ -9,16 +9,45 @@ import { RadioGroupContext } from './radio-group-context'
 import styles from './radio-group.module.css'
 
 export interface RadioGroupOwnProps {
+  /** Color scheme for the radios of the group, from the theme palette. */
   colorScheme?: ColorScheme
+  /** Value of the radio selected at first, when the group is uncontrolled. */
   defaultValue?: string
+  /**
+   * Disables every radio of the group.
+   * @default false
+   */
   disabled?: boolean
+  /** Name shared by the radios of the group. A generated one is used when it is not set. */
   name?: string
+  /** Called with the value of the radio the user selects. */
   onChange?: (value: string, event: ChangeEvent<HTMLInputElement>) => void
+  /**
+   * Direction in which the radios are laid out.
+   * @default 'vertical'
+   */
   orientation?: RadioGroupOrientation
+  /**
+   * Keeps the selection without letting the user change it.
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Marks the group as required.
+   * @default false
+   */
   required?: boolean
+  /**
+   * Size of the radios of the group.
+   * @default 'md'
+   */
   size?: Size
+  /** Value of the selected radio, for a controlled group. Pair it with `onChange`. */
   value?: string
+  /**
+   * Visual variant of the radios of the group.
+   * @default 'solid'
+   */
   variant?: RadioVariant
 }
 
@@ -33,6 +62,10 @@ export type RadioGroupProps = Omit<ComponentProps, 'index'> &
   RadioGroupRootAttributes &
   RadioGroupOwnProps
 
+/**
+ * Manages a group of radios in one place: it owns the value and the name, and passes the size,
+ * color scheme and variant down to its `Radio` children.
+ */
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {

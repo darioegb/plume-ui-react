@@ -15,6 +15,10 @@ type AlertDismissRootAttributes = Pick<
 
 export type AlertDismissProps = Omit<ComponentProps, 'index'> & AlertDismissRootAttributes
 
+/**
+ * The close button. It dismisses the `Alert`, calls `onDismiss` and takes its name from
+ * `labels.dismiss`. Children replace the icon.
+ */
 export const AlertDismiss = forwardRef<HTMLButtonElement, AlertDismissProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: AlertDismissProps,

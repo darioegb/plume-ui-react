@@ -10,6 +10,10 @@ type ListItemRootAttributes = Pick<
 
 export type ListItemProps = Omit<ComponentProps, 'index'> & ListItemRootAttributes
 
+/**
+ * A row that lines up its icon, its text and anything you add after them, like a `Badge` or a
+ * switch.
+ */
 export const ListItem = forwardRef<HTMLLIElement, ListItemProps>(
   (
     { children, className = '', style, ...rest }: ListItemProps,

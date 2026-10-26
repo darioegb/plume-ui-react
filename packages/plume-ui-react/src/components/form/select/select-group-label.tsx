@@ -12,6 +12,7 @@ type SelectGroupLabelRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'chil
 
 export type SelectGroupLabelProps = Omit<ComponentProps, 'index'> & SelectGroupLabelRootAttributes
 
+/** The title of a group. */
 export const SelectGroupLabel = forwardRef<HTMLDivElement, SelectGroupLabelProps>(
   (
     { children, className, style }: SelectGroupLabelProps,

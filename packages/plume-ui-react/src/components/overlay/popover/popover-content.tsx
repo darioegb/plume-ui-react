@@ -16,6 +16,10 @@ type PopoverContentRootAttributes = Pick<
 
 export type PopoverContentProps = Omit<ComponentProps, 'index'> & PopoverContentRootAttributes
 
+/**
+ * The panel, a non-modal `dialog`. Give it an `aria-label` or point `aria-labelledby` to its
+ * title.
+ */
 export const PopoverContent = forwardRef<HTMLDialogElement, PopoverContentProps>(
   (
     { children, className = '', style, ...rest }: PopoverContentProps,

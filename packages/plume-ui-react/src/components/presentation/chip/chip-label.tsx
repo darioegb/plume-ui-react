@@ -10,6 +10,7 @@ import styles from './chip.module.css'
 export type ChipLabelProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The text of the Chip. It names the remove button. */
 export const ChipLabel = forwardRef<HTMLSpanElement, ChipLabelProps>(
   (
     { children, className, style }: ChipLabelProps,

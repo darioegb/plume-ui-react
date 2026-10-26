@@ -5,12 +5,44 @@ import { TabsProvider } from './use-tabs'
 import styles from './tabs.module.css'
 
 export interface TabsOwnProps {
+  /**
+   * Alignment of the Tabs within the container.
+   *
+   * @default 'left'
+   */
   alignment?: TabsAlignment
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Renders the selected panel inside `Suspense`, with a Spinner as fallback. Only the selected
+   * panel is mounted either way.
+   *
+   * @default false
+   */
   isLazy?: boolean
+  /** Called with the index of the newly selected tab. */
   onChange?: (index: number) => void
+  /**
+   * Orientation of the Tabs.
+   *
+   * @default 'horizontal'
+   */
   orientation?: TabsOrientation
+  /**
+   * Size of the Tabs.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Variant of the Tabs.
+   *
+   * @default 'underline'
+   */
   variant?: TabsVariant
 }
 

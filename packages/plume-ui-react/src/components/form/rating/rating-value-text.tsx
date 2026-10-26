@@ -10,6 +10,10 @@ type RatingValueTextRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chil
 
 export type RatingValueTextProps = Omit<ComponentProps, 'index'> & RatingValueTextRootAttributes
 
+/**
+ * The text of a read only rating (`labels.readOnly`), visually hidden. It renders nothing when the
+ * rating is interactive.
+ */
 export const RatingValueText = forwardRef<HTMLSpanElement, RatingValueTextProps>(
   (
     { children, className, style }: RatingValueTextProps,

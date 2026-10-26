@@ -10,6 +10,7 @@ import styles from './input.module.css'
 export type InputControlProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
+/** Wraps the field and its elements. */
 export const InputControl = forwardRef<HTMLDivElement, InputControlProps>(
   (
     { children, className, style }: InputControlProps,

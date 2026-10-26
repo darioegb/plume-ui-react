@@ -11,6 +11,10 @@ type AccordionBodyRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'childre
 
 export type AccordionBodyProps = Omit<ComponentProps, 'index'> & AccordionBodyRootAttributes
 
+/**
+ * The box with the content and the padding of the panel. Add it to style that box, or to change its
+ * padding.
+ */
 export const AccordionBody = forwardRef<HTMLDivElement, AccordionBodyProps>(
   (
     { children, className, style, ...rest }: AccordionBodyProps,

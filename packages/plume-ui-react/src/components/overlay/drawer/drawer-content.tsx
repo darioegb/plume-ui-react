@@ -12,6 +12,7 @@ import styles from './drawer.module.css'
 
 export type DrawerContentProps = ModalContentProps
 
+/** The panel. It is named by the `DrawerHeader`, or by `aria-label` when there is none. */
 export const DrawerContent = forwardRef<HTMLDialogElement, DrawerContentProps>(
   ({ className, ...rest }: DrawerContentProps, ref: ForwardedRef<HTMLDialogElement>): ReactNode => {
     const { shape, side } = useDrawerContext('DrawerContent')

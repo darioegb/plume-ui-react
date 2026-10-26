@@ -10,6 +10,7 @@ import { fractionOf } from './slider-math'
 import styles from './slider.module.css'
 
 export interface SliderMarkItemOwnProps {
+  /** The mark it shows: its value and, optionally, its label. */
   mark: SliderMark
 }
 
@@ -17,6 +18,10 @@ export type SliderMarkItemProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'> &
   SliderMarkItemOwnProps
 
+/**
+ * A mark: the dot on the track. Without children it renders a `SliderMarkLabel` when the mark has a
+ * label.
+ */
 export const SliderMarkItem = forwardRef<HTMLSpanElement, SliderMarkItemProps>(
   (
     { children, className, mark, style }: SliderMarkItemProps,

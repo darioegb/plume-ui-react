@@ -9,6 +9,10 @@ import { FileUploadItem } from './fileupload-item'
 import styles from './fileupload.module.css'
 
 export interface FileUploadListOwnProps {
+  /**
+   * The items. A function `(file, index) => ReactNode` is called once per file. Given none, it
+   * renders a `FileUploadItem` per file.
+   */
   children?: ReactNode | ((file: File, index: number) => ReactNode)
 }
 
@@ -16,6 +20,7 @@ export type FileUploadListProps = Omit<ComponentProps, 'index'> & FileUploadList
 
 const fileKey = (file: File, position: number): string => `${file.name}-${file.size}-${position}`
 
+/** The list of the files, which is not there while there are none. */
 export const FileUploadList = forwardRef<HTMLUListElement, FileUploadListProps>(
   (
     { children, className, style }: FileUploadListProps,

@@ -11,6 +11,10 @@ type RatingFilledRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'childre
 
 export type RatingFilledProps = Omit<ComponentProps, 'index'> & RatingFilledRootAttributes
 
+/**
+ * The colored layer on top of the empty one, whole or clipped to half. Its `children` replace the
+ * `icon` of the rating.
+ */
 export const RatingFilled = forwardRef<HTMLSpanElement, RatingFilledProps>(
   (
     { children, className, style }: RatingFilledProps,

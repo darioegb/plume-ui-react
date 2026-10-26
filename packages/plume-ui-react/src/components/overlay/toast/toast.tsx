@@ -19,6 +19,7 @@ import { useToastTimer } from './use-toast-timer'
 import styles from './toast.module.css'
 
 export interface ToastOwnProps {
+  /** The data of the toast, which is what `render` of the `ToastProvider` receives. */
   toast: ToastData
 }
 
@@ -62,6 +63,7 @@ export function toastColorVars(status: ToastStatus, style?: CSSProperties): CSSP
   } as CSSProperties
 }
 
+/** One toast: the element that holds its parts and shows its status. */
 export const Toast = forwardRef<HTMLDivElement, ToastProps>(
   (
     { children, className, style, toast }: ToastProps,

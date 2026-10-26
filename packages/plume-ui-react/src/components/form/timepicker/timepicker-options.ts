@@ -4,7 +4,15 @@ import type { TimePickerOptionData } from './timepicker-option'
 import { toTwelveHour } from './time-utils'
 
 export type TimePickerColumnProps<T extends number | string> = Omit<ComponentProps, 'index'> & {
+  /**
+   * Accessible name of the list. By default it is the matching text of `labels` (`hours`, `minutes`
+   * or `period`).
+   */
   'aria-label'?: string
+  /**
+   * A function that gets each option of the list (`{ value, label }`) and returns what to render
+   * for it, usually a `TimePickerOption`.
+   */
   children?: (option: TimePickerOptionData<T>) => ReactNode
 }
 

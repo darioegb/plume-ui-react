@@ -14,6 +14,7 @@ type AvatarFallbackRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'child
 
 export type AvatarFallbackProps = Omit<ComponentProps, 'index'> & AvatarFallbackRootAttributes
 
+/** The initials, the `fallback` or an icon. It renders nothing while the image is shown. */
 export const AvatarFallback = forwardRef<HTMLSpanElement, AvatarFallbackProps>(
   (
     { children, className, style }: AvatarFallbackProps,

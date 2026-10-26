@@ -14,6 +14,7 @@ type SidebarContentRootAttributes = Pick<
 
 export type SidebarContentProps = Omit<ComponentProps, 'index'> & SidebarContentRootAttributes
 
+/** The `<nav>` with the items. */
 export const SidebarContent = forwardRef<HTMLElement, SidebarContentProps>(
   (
     { children, className, style, ...rest }: SidebarContentProps,

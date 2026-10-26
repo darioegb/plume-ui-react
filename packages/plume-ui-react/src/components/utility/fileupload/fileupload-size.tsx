@@ -11,6 +11,7 @@ type FileUploadSizeRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'child
 
 export type FileUploadSizeProps = Omit<ComponentProps, 'index'> & FileUploadSizeRootAttributes
 
+/** The size of the file, from `labels.fileSize`, or the children. */
 export const FileUploadSize = forwardRef<HTMLSpanElement, FileUploadSizeProps>(
   (
     { children, className, style }: FileUploadSizeProps,

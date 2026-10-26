@@ -9,6 +9,7 @@ type TableEmptyCellRootAttributes = Pick<
 
 export type TableEmptyCellProps = Omit<ComponentProps, 'index'> & TableEmptyCellRootAttributes
 
+/** The `<td>` of a `TableEmpty`, 100 columns wide by default. */
 export const TableEmptyCell = forwardRef<HTMLTableCellElement, TableEmptyCellProps>(
   (
     { children, className, colSpan = 100, style, ...rest }: TableEmptyCellProps,

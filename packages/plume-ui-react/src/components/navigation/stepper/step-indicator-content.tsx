@@ -11,6 +11,10 @@ type StepIndicatorContentRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 
 export type StepIndicatorContentProps = Omit<ComponentProps, 'index'> &
   StepIndicatorContentRootAttributes
 
+/**
+ * What is drawn inside the circle: the number, a check when the step is completed, or `children`.
+ * It is hidden from screen readers. It has `data-state`.
+ */
 export const StepIndicatorContent = forwardRef<HTMLSpanElement, StepIndicatorContentProps>(
   (
     { children, className, style, ...rest }: StepIndicatorContentProps,

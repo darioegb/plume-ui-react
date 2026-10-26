@@ -11,8 +11,15 @@ import styles from './sidebar.module.css'
 import { useLabels } from '../../../locale/locale-provider'
 
 export interface SidebarToggleOwnProps {
+  /** Replaces the icon of the button. */
   icon?: ReactNode
+  /** The accessible name of the button. */
   label?: string
+  /**
+   * Visual variant of the button. `unstyled` drops the Plume styles.
+   *
+   * @default 'default'
+   */
   variant?: 'default' | 'unstyled'
 }
 
@@ -27,6 +34,11 @@ export type SidebarToggleProps = Omit<ComponentProps, 'index'> &
 
 const DEFAULT_LABELS = { label: 'Toggle sidebar' }
 
+/**
+ * The button that collapses the sidebar on a wide screen and opens it on a small one, with
+ * `aria-expanded` and `aria-controls`. `label` is its accessible name (`"Toggle sidebar"`), and
+ * `variant="unstyled"` drops the Plume styles.
+ */
 export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
   (
     {

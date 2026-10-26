@@ -11,12 +11,18 @@ import { hasPart } from '../../../overlay/has-part'
 import styles from './select.module.css'
 
 export interface SelectGroupOwnProps {
+  /** The options of the group, and optionally a `SelectGroupLabel`. */
   children?: ReactNode
+  /** The title of the group. */
   label?: ReactNode
 }
 
 export type SelectGroupProps = Omit<ComponentProps, 'index'> & SelectGroupOwnProps
 
+/**
+ * A titled set of options. Given a `SelectGroupLabel` it renders it where you put it. It hides
+ * itself when the search leaves it empty.
+ */
 export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
   (
     { children, className, label, style }: SelectGroupProps,

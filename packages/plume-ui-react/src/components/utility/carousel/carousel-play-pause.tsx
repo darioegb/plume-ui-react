@@ -16,6 +16,7 @@ type CarouselPlayPauseRootAttributes = Pick<
 export type CarouselPlayPauseProps = Omit<ComponentProps, 'index'> &
   CarouselPlayPauseRootAttributes
 
+/** Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. */
 export const CarouselPlayPause = forwardRef<HTMLButtonElement, CarouselPlayPauseProps>(
   (
     {

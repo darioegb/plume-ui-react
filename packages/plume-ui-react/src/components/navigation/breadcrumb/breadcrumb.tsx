@@ -15,10 +15,37 @@ export interface BreadcrumbLabels {
 }
 
 export interface BreadcrumbOwnProps {
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. It colors the links
+   * and the current page in the `filled` variant.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The texts the Breadcrumb adds. `breadcrumb` is the accessible name of the navigation when there
+   * is no `aria-label` or `aria-labelledby`.
+   */
   labels?: Partial<BreadcrumbLabels>
+  /**
+   * What goes between the items. It can be any node, like an icon. An item can use its own.
+   *
+   * @default '/'
+   */
   separator?: ReactNode
+  /**
+   * Size of the Breadcrumb.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `plain` is text with underlined links, `filled` puts every item on a muted
+   * background. `unstyled` drops the Plume styles so you can bring your own; the list and the
+   * hidden last separator keep working.
+   *
+   * @default 'plain'
+   */
   variant?: BreadcrumbVariant
 }
 

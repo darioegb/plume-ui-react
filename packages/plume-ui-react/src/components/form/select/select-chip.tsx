@@ -9,6 +9,7 @@ import { type SelectedOption, useSelectContext } from './select-context'
 type SelectChipRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
 export interface SelectChipOwnProps {
+  /** The chosen option the chip stands for. Without it the chip has no remove button. */
   option?: SelectedOption
 }
 
@@ -16,6 +17,11 @@ export type SelectChipProps = Omit<ComponentProps, 'index'> &
   SelectChipRootAttributes &
   SelectChipOwnProps
 
+/**
+ * A chip of a chosen option. With an `option` it has a button that removes it; without one it is a
+ * plain chip, like the `+N`. Compose it with `ChipLabel`, `ChipIcon` and `ChipRemove` to style its
+ * parts.
+ */
 export const SelectChip = forwardRef<HTMLSpanElement, SelectChipProps>(
   (
     { children, className, option, style }: SelectChipProps,

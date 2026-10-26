@@ -11,6 +11,7 @@ import type { TextareaFieldAttributes } from './textarea-types'
 
 export type TextareaFieldProps = Omit<ComponentProps, 'index'> & TextareaFieldAttributes
 
+/** The native `<textarea>`. Its `ref` is set together with the `ref` of the `Textarea`. */
 export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>(
   (
     { className, onChange, style, ...own }: TextareaFieldProps,

@@ -13,6 +13,7 @@ type SelectOptionDescriptionRootAttributes = Pick<HTMLAttributes<HTMLSpanElement
 export type SelectOptionDescriptionProps = Omit<ComponentProps, 'index'> &
   SelectOptionDescriptionRootAttributes
 
+/** The description of an option. Its `children` replace the `description` of the option. */
 export const SelectOptionDescription = forwardRef<HTMLSpanElement, SelectOptionDescriptionProps>(
   (
     { children, className, style }: SelectOptionDescriptionProps,

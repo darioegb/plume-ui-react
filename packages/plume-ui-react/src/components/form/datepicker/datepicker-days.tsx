@@ -12,15 +12,25 @@ import styles from './datepicker.module.css'
 type PartProps = Omit<ComponentProps, 'index'>
 
 export type DatePickerWeekdaysProps = PartProps & {
+  /**
+   * A node, or a function of the weekday and its index that returns each `DatePickerWeekday`. Without it every weekday is rendered.
+   */
   children?: ((weekday: string, index: number) => ReactNode) | ReactNode
 }
 export type DatePickerWeekdayProps = PartProps & Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 export type DatePickerGridProps = PartProps & {
+  /**
+   * A node, or a function of the day that returns each `DatePickerDay`. Without it every day of the month is rendered.
+   */
   children?: ((day: DatePickerDayData) => ReactNode) | ReactNode
 }
 export type DatePickerDayProps = PartProps &
-  Pick<HTMLAttributes<HTMLButtonElement>, 'children'> & { day: DatePickerDayData }
+  Pick<HTMLAttributes<HTMLButtonElement>, 'children'> & {
+    /** The day this button stands for, as the `DatePickerGrid` gives it to its function. */
+    day: DatePickerDayData
+  }
 
+/** The name of one weekday. */
 export const DatePickerWeekday = forwardRef<HTMLSpanElement, DatePickerWeekdayProps>(
   (
     { children, className, style }: DatePickerWeekdayProps,
@@ -43,6 +53,7 @@ export const DatePickerWeekday = forwardRef<HTMLSpanElement, DatePickerWeekdayPr
 
 DatePickerWeekday.displayName = 'DatePickerWeekday'
 
+/** The row of weekday names above the days. */
 export const DatePickerWeekdays = forwardRef<HTMLDivElement, DatePickerWeekdaysProps>(
   (
     { children, className, style }: DatePickerWeekdaysProps,
@@ -66,6 +77,7 @@ export const DatePickerWeekdays = forwardRef<HTMLDivElement, DatePickerWeekdaysP
 
 DatePickerWeekdays.displayName = 'DatePickerWeekdays'
 
+/** One day of the grid. `children` replace the number. */
 export const DatePickerDay = forwardRef<HTMLButtonElement, DatePickerDayProps>(
   (
     { children, className, day, style }: DatePickerDayProps,
@@ -119,6 +131,7 @@ export const DatePickerDay = forwardRef<HTMLButtonElement, DatePickerDayProps>(
 
 DatePickerDay.displayName = 'DatePickerDay'
 
+/** The grid of days of the month. */
 export const DatePickerGrid = forwardRef<HTMLDivElement, DatePickerGridProps>(
   (
     { children, className, style }: DatePickerGridProps,

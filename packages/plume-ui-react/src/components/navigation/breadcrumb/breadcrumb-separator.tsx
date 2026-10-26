@@ -12,6 +12,10 @@ type BreadcrumbSeparatorRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, '
 export type BreadcrumbSeparatorProps = Omit<ComponentProps, 'index'> &
   BreadcrumbSeparatorRootAttributes
 
+/**
+ * The separator. `BreadcrumbItem` renders it for you, so use it with `separator={null}` on the item
+ * to style it or to put one in another place.
+ */
 export const BreadcrumbSeparator = forwardRef<HTMLSpanElement, BreadcrumbSeparatorProps>(
   (
     { children, className, style, ...rest }: BreadcrumbSeparatorProps,

@@ -13,6 +13,9 @@ type SelectOptionCheckRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'ch
 
 export type SelectOptionCheckProps = Omit<ComponentProps, 'index'> & SelectOptionCheckRootAttributes
 
+/**
+ * The check at the end of an option, shown while it is chosen. Its `children` replace the check.
+ */
 export const SelectOptionCheck = forwardRef<HTMLSpanElement, SelectOptionCheckProps>(
   (
     { children, className, style }: SelectOptionCheckProps,

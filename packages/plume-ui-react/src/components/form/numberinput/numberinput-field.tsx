@@ -11,6 +11,9 @@ import styles from './numberinput.module.css'
 
 export type NumberInputFieldProps = Omit<ComponentProps, 'index'> & NumberInputFieldAttributes
 
+/**
+ * The `<input>`. It takes the attributes of the `NumberInput`, and the ones it gets itself win. The `ref` of the `NumberInput` goes to it.
+ */
 export const NumberInputField = forwardRef<HTMLInputElement, NumberInputFieldProps>(
   (
     { className, onBlur, style, ...rest }: NumberInputFieldProps,

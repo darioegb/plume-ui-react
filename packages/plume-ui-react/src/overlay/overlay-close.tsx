@@ -8,7 +8,15 @@ import { CloseIcon } from './icons'
 import { cloneWithProps } from './trigger'
 
 export interface OverlayCloseOwnProps {
+  /**
+   * Replaces the corner X icon. An element, such as a `Button`, becomes the close button and
+   * gets the click handler.
+   */
   children?: ReactNode
+  /**
+   * The accessible name of the corner X button.
+   * @default 'Close'
+   */
   label?: string
 }
 

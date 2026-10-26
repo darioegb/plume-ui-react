@@ -20,17 +20,55 @@ export type { InputLabels, InputVariant } from './input-context'
 const DEFAULT_LABELS: InputLabels = { reveal: 'Show password' }
 
 export interface InputOwnProps {
+  /** Content attached before the Input, outside its border (e.g. a URL prefix). */
   addonBefore?: ReactNode
+  /** Content attached after the Input, outside its border (e.g. a domain suffix). */
   addonAfter?: ReactNode
+  /**
+   * The parts of the input, to change what it shows or their order. Without them it renders the field, wrapped in a group when it has addons, elements or the reveal button.
+   */
   children?: ReactNode
+  /** Element rendered inside the Input, before the text (e.g. an icon). */
   elementBefore?: ReactNode
+  /** Element rendered inside the Input, after the text (e.g. an icon). */
   elementAfter?: ReactNode
+  /**
+   * Color scheme for the focus border and ring, from the theme palette (custom schemes included).
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Optional input mask. `#` accepts a digit, `A` a letter and `*` a letter or digit; characters that do not fit are rejected. Any other character is a literal auto-inserted as the user types, and `\` escapes the next character (e.g. `##/##/####`, `(###) ###-####`, `AA-####`).
+   */
   mask?: string
+  /**
+   * The texts of the Input, for other languages: `reveal` is the accessible name of the reveal button (`Show password` by default). It stays the same while the password is shown, `aria-pressed` tells the state, so use a label that makes sense for both.
+   */
   labels?: Partial<InputLabels>
+  /**
+   * With `type="password"`, adds a button that shows or hides the password. It is a toggle button (`aria-pressed`) inside the Input, in the place of `elementAfter`; an `elementAfter` goes to its left. It has no effect with another type.
+   *
+   * @default false
+   */
   revealable?: boolean
+  /**
+   * Shape style of the Input. `pill` only applies to the `outline` variant.
+   *
+   * @default 'rounded'
+   */
   shape?: Shape
+  /**
+   * Size of the Input.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual style variant of the Input.
+   *
+   * @default 'outline'
+   */
   variant?: InputVariant
 }
 

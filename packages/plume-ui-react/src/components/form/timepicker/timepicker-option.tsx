@@ -14,12 +14,15 @@ export interface TimePickerOptionData<T extends number | string = number | strin
 }
 
 export interface TimePickerOptionOwnProps {
+  /** What it shows instead of the label of the option. */
   children?: ReactNode
+  /** The option it shows: its `value` and its `label`. */
   option: TimePickerOptionData
 }
 
 export type TimePickerOptionProps = Omit<ComponentProps, 'index'> & TimePickerOptionOwnProps
 
+/** One option of a list. It carries the selection and the keyboard model of the list. */
 export const TimePickerOption = forwardRef<HTMLButtonElement, TimePickerOptionProps>(
   (
     { children, className, option, style }: TimePickerOptionProps,

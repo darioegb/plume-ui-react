@@ -11,6 +11,7 @@ type StepTitleRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children' 
 
 export type StepTitleProps = Omit<ComponentProps, 'index'> & StepTitleRootAttributes
 
+/** The name of the step. */
 export const StepTitle = forwardRef<HTMLSpanElement, StepTitleProps>(
   (
     { children, className, style, ...rest }: StepTitleProps,

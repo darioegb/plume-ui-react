@@ -58,22 +58,6 @@ const stack = (gap: string): React.CSSProperties => ({
  * the dropzone with the input and the prompt, the list of files and the list of errors. Give it any of the parts as
  * direct children and it renders them as written, so you can reorder, omit or replace each one, and give it its own
  * `className`. The list and the errors take a function as children, which gets each file or each rejection.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `FileUploadDropzone` | `className`, `style`, `ref`, `children`. The area that takes the dropped files. Without children it holds the `FileUploadInput` and the `FileUploadPrompt`. It has `data-dragging`, `data-disabled` and `data-invalid`. |
- * | `FileUploadInput` | `aria-label`, `aria-labelledby`, `aria-describedby`, `id`, `name`, `title`, `className`, `style`, `ref`. The native `<input type="file">`, invisible over the dropzone. The `ref` of the `FileUpload` goes to it as well. |
- * | `FileUploadPrompt` | `className`, `style`, `ref`, `children`. The instructions. They describe the input, and without children they come from **labels.prompt**. |
- * | `FileUploadList` | `className`, `style`, `ref`, `children`. The list of the files, which is not there while there are none. Its children can be a function `(file, index) => ReactNode`. Without children it renders a `FileUploadItem` per file. |
- * | `FileUploadItem` | `file`, `className`, `style`, `ref`, `children`. A file of the list. Without children it holds the name, the size, the remove button and the progress. |
- * | `FileUploadName` | `className`, `style`, `ref`, `children`. The name of the file, or the children. |
- * | `FileUploadSize` | `className`, `style`, `ref`, `children`. The size of the file, from **labels.fileSize**, or the children. |
- * | `FileUploadRemove` | `aria-label`, `className`, `style`, `ref`, `children`. The button that removes the file. It takes its name from **labels.remove**, children replace the icon, and it is not there when the FileUpload is disabled or read only. |
- * | `FileUploadProgress` | `aria-label`, `className`, `style`, `ref`, `children`. The `ProgressBar` of the file, from **progress**. The `className` goes to its outermost element and the `ref` to the bar. Its children, such as a `ProgressBarIndicator`, go inside the bar. It is not there when **progress** gives `undefined`. |
- * | `FileUploadErrors` | `className`, `style`, `ref`, `children`. The list of the files that were left out, announced with `role="alert"`, which is not there while there are none. Its children can be a function `(rejection, index) => ReactNode`. |
- * | `FileUploadError` | `rejection`, `className`, `style`, `ref`, `children`. One of the errors. The text comes from **labels.rejection**, or from the children. |
  */
 export default {
   title: 'Components/FileUpload',
@@ -103,168 +87,33 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: 'text',
-      description:
-        'The instructions in the dropzone. It wins over `labels.prompt`. Or the parts of the FileUpload, to compose it.',
-      table: {
-        type: { summary: 'ReactNode' },
-        defaultValue: { summary: '"Drag files here, or press to choose them"' },
-      },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the root.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the root. They are applied after the color variables, so they can override them (e.g. `--fileupload-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    accept: {
-      control: 'text',
-      description:
-        'The types of file that are accepted, as in the native attribute: extensions (`.pdf`), types (`image/png`) or wildcards (`image/*`), separated by commas.',
-      table: { type: { summary: 'string' } },
-    },
-    maxSize: {
-      control: 'number',
-      description: 'The largest size of a file, in bytes.',
-      table: { type: { summary: 'number' } },
-    },
-    maxFiles: {
-      control: 'number',
-      description: 'The most files the list can have. It only applies with `multiple`.',
-      table: { type: { summary: 'number' } },
-    },
-    multiple: {
-      control: 'boolean',
-      description: 'Allows several files. Without it a new file replaces the previous one.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    value: {
-      control: false,
-      description:
-        'The chosen files. Makes the FileUpload controlled: pass `onValueChange` to update it.',
-      table: { type: { summary: 'File[]' } },
-    },
-    defaultValue: {
-      control: false,
-      description: 'The files that are there at first, when it is not controlled.',
-      table: { type: { summary: 'File[]' } },
-    },
-    onValueChange: {
-      control: false,
-      description: 'Called with the whole list of files when files are added or removed.',
-      table: { category: 'Events', type: { summary: '(files: File[]) => void' } },
-    },
-    onReject: {
-      control: false,
-      description: 'Called with the files that were left out and why: `type`, `size` or `count`.',
-      table: { category: 'Events', type: { summary: '(rejections: FileRejection[]) => void' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts of the FileUpload, to translate it: `prompt` (the instructions in the dropzone), `rejection(rejection)` (the message of a file that was left out), `remove(file)` and `progress(file)` (the accessible names of the button and the bar of a file) and `fileSize(bytes)` (the size shown next to each file).',
-      table: {
-        type: { summary: 'Partial<FileUploadLabels>' },
-        defaultValue: {
-          summary:
-            "{ prompt: 'Drag files here, or press to choose them', rejection: ({ file }) => `${file.name}: file is too large`, remove: (file) => `Remove ${file.name}`, progress: (file) => `Uploading ${file.name}`, fileSize: formatBytes }",
-        },
-      },
-    },
-    progress: {
-      control: false,
-      description:
-        'Returns the progress of the upload of a file, from 0 to 100, or `undefined` for a file that has no bar. The file shows a `ProgressBar`, in the color scheme of the FileUpload, and it turns to `success` at 100. Return `undefined` once you no longer want the bar.',
-      table: { type: { summary: '(file: File) => number | undefined' } },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables the input, the dropzone and the buttons to remove files.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    readOnly: {
-      control: 'boolean',
-      description: "Shows the files but doesn't let the user add or remove any.",
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the input as required.',
-      table: {
-        category: 'HTML attributes',
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the dropzone when it is hovered, focused or has files over it.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the FileUpload.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `outline` draws a dashed border, `bordered` a continuous line and `filled` a muted background. `unstyled` drops the Plume styles so you can bring your own; the dropzone and the list keep working.',
-      options: ['outline', 'bordered', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "bordered" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the input.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    name: {
-      control: 'text',
-      description: 'Name of the input, for a native form.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the input.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the input.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the input. It is not needed inside a `Field` with a label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the input.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-describedby': {
-      control: false,
-      description: 'Id of the elements that describe the input, after the text of the dropzone.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-invalid': {
-      control: 'boolean',
-      description: 'Marks the input as invalid, and the dropzone gets the error color.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
-    },
+    children: { control: 'text' },
+    className: { control: 'text' },
+    style: { control: false },
+    accept: { control: 'text' },
+    maxSize: { control: 'number' },
+    maxFiles: { control: 'number' },
+    multiple: { control: 'boolean' },
+    value: { control: false },
+    defaultValue: { control: false },
+    onValueChange: { control: false },
+    onReject: { control: false },
+    labels: { control: false },
+    progress: { control: false },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    required: { control: 'boolean' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['outline', 'bordered', 'filled', 'unstyled'] },
+    id: { control: false },
+    name: { control: 'text' },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    'aria-describedby': { control: false },
+    'aria-invalid': { control: 'boolean' },
   },
   args: {
     'aria-label': 'Documents',

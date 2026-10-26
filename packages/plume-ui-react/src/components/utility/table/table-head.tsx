@@ -10,8 +10,17 @@ import { TableHeadSortIcon } from './table-head-sort-icon'
 export type TableSortDirection = 'ascending' | 'descending' | 'none'
 
 export interface TableHeadOwnProps {
+  /** The alignment of the text of the cell. */
   align?: 'start' | 'center' | 'end'
+  /**
+   * Makes the head sortable: its content becomes a `TableHeadSort` button that calls this on
+   * click.
+   */
   onSort?: MouseEventHandler<HTMLButtonElement>
+  /**
+   * The sort direction of the column, which sets `aria-sort` and turns the icon.
+   * @default 'none'
+   */
   sort?: TableSortDirection
 }
 
@@ -26,6 +35,10 @@ export type TableHeadProps = Omit<ComponentProps, 'index'> &
 
 const HEAD_PARTS = [TableHeadSort, TableHeadSortIcon]
 
+/**
+ * A `<th>`. With `onSort` its content is a `TableHeadSort` with a `TableHeadSortIcon`; with a
+ * `TableHeadSort` as child it renders it as written.
+ */
 export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
   (
     { align, children, className, onSort, scope = 'col', sort, style, ...rest }: TableHeadProps,

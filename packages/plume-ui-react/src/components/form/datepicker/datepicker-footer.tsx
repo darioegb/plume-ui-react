@@ -16,6 +16,7 @@ export type DatePickerCancelProps = PartProps &
 export type DatePickerApplyProps = PartProps &
   Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>
 
+/** The footer button that closes the calendar and discards the change. */
 export const DatePickerCancel = forwardRef<HTMLButtonElement, DatePickerCancelProps>(
   (
     { children, className, style }: DatePickerCancelProps,
@@ -41,6 +42,7 @@ export const DatePickerCancel = forwardRef<HTMLButtonElement, DatePickerCancelPr
 
 DatePickerCancel.displayName = 'DatePickerCancel'
 
+/** The footer button that applies the change and closes the calendar. */
 export const DatePickerApply = forwardRef<HTMLButtonElement, DatePickerApplyProps>(
   (
     { children, className, style }: DatePickerApplyProps,
@@ -66,6 +68,7 @@ export const DatePickerApply = forwardRef<HTMLButtonElement, DatePickerApplyProp
 
 DatePickerApply.displayName = 'DatePickerApply'
 
+/** The row of actions shown with `showFooter`. */
 export const DatePickerFooter = forwardRef<HTMLDivElement, DatePickerFooterProps>(
   (
     { children, className, style }: DatePickerFooterProps,

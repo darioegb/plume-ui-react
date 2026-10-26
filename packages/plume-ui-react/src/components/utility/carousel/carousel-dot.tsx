@@ -21,6 +21,10 @@ const keyTargets = (key: string, current: number, count: number): number | undef
 
 export type CarouselDotProps = Omit<ComponentProps, 'index'> & CarouselDotRootAttributes
 
+/**
+ * One dot, a tab that goes to its slide. It must be inside `CarouselDots`, which tells it which
+ * slide it is.
+ */
 export const CarouselDot = forwardRef<HTMLButtonElement, CarouselDotProps>(
   (
     {

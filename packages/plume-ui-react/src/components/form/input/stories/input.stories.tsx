@@ -16,17 +16,6 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * change what it shows or the order, give it its parts as children, and the native props (`id`, `name`,
  * `placeholder`, `aria-*`...) go on the `InputField`, or on the `Input` to share them with it. The `ref` of the `Input`
  * always points to the `<input>`, so `register` of react-hook-form works on either of them.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `InputGroup` | `className`, `style`. The wrapper `Input` renders around its parts (its `className` and `style` are the ones of the `Input`). |
- * | `InputAddon` | `position` (`before` by default, or `after`), `className`, `style`. A block with a border and a background beside the field, like a currency or a domain. |
- * | `InputControl` | `className`, `style`. Wraps the field and its elements. |
- * | `InputElement` | `position` (`before` by default, or `after`), `className`, `style`. An icon or a small piece of content inside the field. |
- * | `InputField` | The native props of the input, `className`, `style`, `ref`. The `<input>`. |
- * | `InputReveal` | `aria-label`, `disabled`, `onClick`, `className`, `style`, `children` (another icon). The button that shows and hides a password. |
  */
 export default {
   title: 'Components/Input',
@@ -42,103 +31,20 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-    className: {
-      control: 'text',
-      description:
-        'Custom CSS class for the outermost element: the `<input>`, or the group around it when there are addons, elements or a reveal button.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme for the focus border and ring, from the theme palette (custom schemes included).',
-      options: colorSchemes,
-      table: {
-        defaultValue: { summary: 'secondary' },
-        type: { summary: 'ColorScheme' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Indicates whether the Input is disabled.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    readOnly: {
-      control: 'boolean',
-      description: 'Indicates whether the Input is readOnly.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Placeholder for the text Input.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    addonBefore: {
-      control: false,
-      description: 'Content attached before the Input, outside its border (e.g. a URL prefix).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    addonAfter: {
-      control: false,
-      description: 'Content attached after the Input, outside its border (e.g. a domain suffix).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    elementBefore: {
-      control: false,
-      description: 'Element rendered inside the Input, before the text (e.g. an icon).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    elementAfter: {
-      control: false,
-      description: 'Element rendered inside the Input, after the text (e.g. an icon).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    shape: {
-      control: 'inline-radio',
-      description: 'Shape style of the Input. `pill` only applies to the `outline` variant.',
-      options: ['pill', 'rounded'],
-      table: {
-        defaultValue: { summary: 'rounded' },
-        type: { summary: `"pill" | "rounded"` },
-      },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Input.',
-      options: ['sm', 'md', 'lg'],
-      table: {
-        type: { summary: `"sm" | "md" | "lg"` },
-      },
-    },
-    variant: {
-      control: 'select',
-      description: 'Visual style variant of the Input.',
-      options: ['outline', 'underline', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "underline" | "filled" | "unstyled"` },
-      },
-    },
+    className: { control: 'text' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    addonBefore: { control: false },
+    addonAfter: { control: false },
+    elementBefore: { control: false },
+    elementAfter: { control: false },
+    shape: { control: 'inline-radio', options: ['pill', 'rounded'] },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'select', options: ['outline', 'underline', 'filled', 'unstyled'] },
     type: {
       control: 'select',
-      description: 'Type of Input (e.g., "text", "number")',
       options: [
         'text',
         'number',
@@ -153,116 +59,27 @@ export default {
         'url',
         'week',
       ],
-      table: {
-        type: {
-          summary: `"text" | "number" | "password" | "search" | "date" | "datetime-local" | "email" | "month" | "tel" | "time" | "url" | "week"`,
-        },
-      },
     },
-    value: {
-      control: 'text',
-      description: 'Value of the text Input.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    revealable: {
-      control: 'boolean',
-      description:
-        'With `type="password"`, adds a button that shows or hides the password. It is a toggle button (`aria-pressed`) inside the Input, in the place of `elementAfter`; an `elementAfter` goes to its left. It has no effect with another type.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts of the Input, for other languages: `reveal` is the accessible name of the reveal button (`Show password` by default). It stays the same while the password is shown, `aria-pressed` tells the state, so use a label that makes sense for both.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<InputLabels>' },
-      },
-    },
-    autoComplete: {
-      control: 'text',
-      description:
-        'Native `autocomplete`. Use `current-password` or `new-password` on a password, `email`, `one-time-code`...',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    mask: {
-      control: 'text',
-      description:
-        'Optional input mask. `#` accepts a digit, `A` a letter and `*` a letter or digit; characters that do not fit are rejected. Any other character is a literal auto-inserted as the user types, and `\\` escapes the next character (e.g. `##/##/####`, `(###) ###-####`, `AA-####`).',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    defaultValue: {
-      control: false,
-      description: 'Initial value for an uncontrolled Input.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles. They are applied after the color variables, so they can override `--input-color`.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    name: {
-      control: false,
-      description: 'Name submitted with the form.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the Input as required for form validation.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
+    value: { control: 'text' },
+    revealable: { control: 'boolean' },
+    labels: { control: false },
+    autoComplete: { control: 'text' },
+    mask: { control: 'text' },
+    defaultValue: { control: false },
+    style: { control: false },
+    id: { control: false },
+    name: { control: false },
+    required: { control: 'boolean' },
     inputMode: {
       control: 'select',
       options: ['text', 'numeric', 'decimal', 'tel', 'email', 'url', 'search', 'none'],
-      description: 'Virtual keyboard to show on touch devices.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
-    pattern: {
-      control: 'text',
-      description: 'Regular expression the value must match for form validation.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    minLength: {
-      control: 'number',
-      description: 'Minimum number of characters.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
-    },
-    maxLength: {
-      control: 'number',
-      description: 'Maximum number of characters.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
-    },
-    min: {
-      control: false,
-      description: 'Minimum value for `number`, `date` and other range types.',
-      table: { category: 'HTML attributes', type: { summary: 'number | string' } },
-    },
-    max: {
-      control: false,
-      description: 'Maximum value for `number`, `date` and other range types.',
-      table: { category: 'HTML attributes', type: { summary: 'number | string' } },
-    },
-    onChange: {
-      description:
-        'Called when the value changes. With a `mask`, `event.target.value` is already formatted.',
-      action: 'changed',
-      table: { category: 'Events', type: { summary: '(event: ChangeEvent) => void' } },
-    },
-    onBlur: {
-      control: false,
-      description: 'Called when the Input loses focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
-    },
+    pattern: { control: 'text' },
+    minLength: { control: 'number' },
+    maxLength: { control: 'number' },
+    min: { control: false },
+    max: { control: false },
+    onBlur: { control: false },
   },
 } as Meta<typeof Input>
 

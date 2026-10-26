@@ -88,18 +88,6 @@ function Styled({
  * data-driven, so `PaginatorPages` takes a function that gets each entry (a page number, or `start-ellipsis` and
  * `end-ellipsis`) and returns what to render for it. In that case **showEdges** has no effect: compose
  * `PaginatorFirst` and `PaginatorLast` instead.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `PaginatorList` | `id`, `className`, `style`, `ref`, `children`. The `<ul>`. Without children it builds the default: the edges, the previous button, the pages and the next button, each in a `PaginatorItem`. |
- * | `PaginatorItem` | `id`, `className`, `style`, `ref`, `children`. A `<li>`. Every control goes in one. |
- * | `PaginatorPages` | `children`. Renders the entries of the current range, with no element of its own. Children is a function that gets the entry and its position, and returns what to render (usually a `PaginatorItem`). Without it, each entry is a page button or an ellipsis. |
- * | `PaginatorPage` | `page` (required), `aria-label`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. The button of a page. It has `aria-current="page"` and `data-current` when it is the current one, its name comes from **labels.page** and its text is the number unless you pass children. |
- * | `PaginatorEllipsis` | `id`, `className`, `style`, `ref`, `children`. The `…` that stands for the folded pages, `aria-hidden`. |
- * | `PaginatorPrevious`, `PaginatorNext` | `aria-label`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. They go to the previous and the next page, are disabled at the ends and take their name from **labels.previous** and **labels.next**. Children replace the icon. |
- * | `PaginatorFirst`, `PaginatorLast` | The same props. They go to the first and the last page, and take their name from **labels.first** and **labels.last**. |
  */
 export default {
   title: 'Components/Paginator',
@@ -115,145 +103,29 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Paginator.',
-      table: { type: { summary: 'string' } },
-    },
-    children: {
-      control: false,
-      description:
-        'The parts of the Paginator, usually a `PaginatorList`. Without it the Paginator builds the default list.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    style: {
-      control: false,
-      description: 'Inline styles for the Paginator.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    count: {
-      control: 'number',
-      description:
-        'The number of pages. Without it, the pages are worked out from **total** and **pageSize**. With no pages the Paginator renders nothing.',
-      table: { type: { summary: 'number' } },
-    },
-    total: {
-      control: 'number',
-      description: 'The number of items in all the pages. It is used when there is no **count**.',
-      table: { type: { summary: 'number' } },
-    },
-    pageSize: {
-      control: 'number',
-      description: 'The number of items in a page, to work the pages out of **total**.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '10' } },
-    },
-    page: {
-      control: false,
-      description:
-        'The current page, starting at 1. Makes the Paginator controlled: pass `onPageChange` to update it. It is kept between 1 and the last page.',
-      table: { type: { summary: 'number' } },
-    },
-    defaultPage: {
-      control: 'number',
-      description: 'The page that is current first, when the Paginator is not controlled.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
-    },
-    onPageChange: {
-      control: false,
-      description: 'Called with the new page when the user picks another one.',
-      table: { category: 'Events', type: { summary: '(page: number) => void' } },
-    },
-    siblingCount: {
-      control: 'number',
-      description: 'How many pages are shown on each side of the current one.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
-    },
-    boundaryCount: {
-      control: 'number',
-      description: 'How many pages are always shown at the start and at the end.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
-    },
-    showEdges: {
-      control: 'boolean',
-      description: 'Adds the buttons that go to the first and to the last page.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables every button.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the current page; the other buttons are neutral.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the buttons.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    shape: {
-      control: 'radio',
-      description: 'Corners of the buttons.',
-      options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` fills the current page and leaves the others flat, `outline` draws a border on every button and tints the current one, and `ghost` has no border or fill: the current page is only tinted. `unstyled` drops the Plume styles so you can bring your own; the layout keeps working.',
-      options: ['solid', 'outline', 'ghost', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "ghost" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the nav.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the nav.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Paginator.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the nav. Give a different one to each Paginator on a page.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"Pagination"' },
-      },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the nav.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts the Paginator adds, to translate them: `previous`, `next`, `first` and `last` name the buttons of the edges, `page(page, current)` names a page button and `pagination` names the navigation when there is no `aria-label` or `aria-labelledby`. Pass only the ones you want to change.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<PaginatorLabels>' },
-        defaultValue: {
-          summary:
-            '{ first: "First page", last: "Last page", next: "Next page", page: "Page 3" / "Page 3, current page", pagination: "Pagination", previous: "Previous page" }',
-        },
-      },
-    },
+    className: { control: 'text' },
+    children: { control: false },
+    style: { control: false },
+    count: { control: 'number' },
+    total: { control: 'number' },
+    pageSize: { control: 'number' },
+    page: { control: false },
+    defaultPage: { control: 'number' },
+    onPageChange: { control: false },
+    siblingCount: { control: 'number' },
+    boundaryCount: { control: 'number' },
+    showEdges: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    shape: { control: 'radio', options: ['rounded', 'pill'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'ghost', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    labels: { control: false },
   },
   args: {
     count: 10,
@@ -425,6 +297,13 @@ export const Translated: Story = {
 }
 
 /**
+ * A disabled Paginator can't be used. The current page keeps showing.
+ */
+export const Disabled: Story = {
+  args: { defaultPage: 3, disabled: true },
+}
+
+/**
  * Compose the parts to build the list yourself. Here the page is written out with its edges, the pages show a `#`
  * and the entries that fold pages are a plain dot.
  */
@@ -458,13 +337,6 @@ export const Compound: Story = {
       </PaginatorList>
     </Paginator>
   ),
-}
-
-/**
- * A disabled Paginator can't be used. The current page keeps showing.
- */
-export const Disabled: Story = {
-  args: { defaultPage: 3, disabled: true },
 }
 
 /**

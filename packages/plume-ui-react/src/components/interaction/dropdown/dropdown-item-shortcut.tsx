@@ -12,6 +12,7 @@ type DropdownItemShortcutRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 
 export type DropdownItemShortcutProps = Omit<ComponentProps, 'index'> &
   DropdownItemShortcutRootAttributes
 
+/** The shortcut of an item. It renders nothing without children. */
 export const DropdownItemShortcut = forwardRef<HTMLSpanElement, DropdownItemShortcutProps>(
   (
     { children, className, style }: DropdownItemShortcutProps,

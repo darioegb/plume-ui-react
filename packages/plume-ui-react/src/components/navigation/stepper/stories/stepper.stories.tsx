@@ -56,18 +56,6 @@ function renderSteps(withDescription = true): React.ReactNode {
  *
  * With `orientation="horizontal"` (the default) the steps share the width. On a screen narrower than 640px only the title of the current step is shown, and the descriptions are hidden (screen readers still read them all),
  * so the row fits; `vertical` has room for the text.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `Step` | `id`, `title`, `hidden`, `className`, `style`, `children`. One `<li>`. It has `data-state`. |
- * | `StepIndicator` | `className`, `style`, `children`. The circle. Given no parts it renders a `StepIndicatorContent` (the number, or a check when the step is completed; `children` replaces it, for example with an icon) and a `StepIndicatorLabel`. Given `StepIndicatorContent` or `StepIndicatorLabel` among its children it renders them as written. |
- * | `StepIndicatorContent` | `className`, `style`, `children`. What is drawn inside the circle: the number, a check when the step is completed, or `children`. It is hidden from screen readers. It has `data-state`. |
- * | `StepIndicatorLabel` | `className`, `style`, `children`. The text only a screen reader gets: `children`, or the label of the step state (`labels` of the `Stepper`). It renders nothing when there is no text. It has `data-state`. |
- * | `StepTitle` | `id`, `title`, `className`, `style`, `children`. The name of the step. |
- * | `StepDescription` | `id`, `title`, `className`, `style`, `children`. A line of detail under the title. |
- * | `StepSeparator` | `className`, `style`. The line to the next step. The last one is not shown. |
  */
 export default {
   title: 'Components/Stepper',
@@ -91,94 +79,20 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `Step` parts of the Stepper.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Stepper.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Stepper. They are applied after the color variables, so they can override them (e.g. `--stepper-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    activeStep: {
-      control: { max: 3, min: 0, type: 'number' },
-      description:
-        'Index of the current step, starting at 0. The steps before it are completed and the ones after it are upcoming. An index past the last step completes all of them.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
-    },
-    orientation: {
-      control: 'radio',
-      description: 'Whether the steps go in a row or in a column.',
-      options: ['horizontal', 'vertical'],
-      table: {
-        type: { summary: `"horizontal" | "vertical"` },
-        defaultValue: { summary: 'horizontal' },
-      },
-    },
-    labels: {
-      control: false,
-      description:
-        'The text a screen reader says for each status. Pass only the ones you want to change; use an empty string to say nothing for a status.',
-      table: {
-        type: { summary: 'Partial<StepperLabels>' },
-        defaultValue: { summary: '{ completed: "Completed", current: "", upcoming: "Not started" }' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the completed and the current steps.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Stepper.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` fills the indicators of the completed and current steps, `outline` only draws their border. `unstyled` drops the Plume styles so you can bring your own; the layout and the hidden last separator keep working.',
-      options: ['solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Stepper.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Stepper.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Stepper.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the list, for example "Checkout progress".',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the list.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    activeStep: { control: { max: 3, min: 0, type: 'number' } },
+    orientation: { control: 'radio', options: ['horizontal', 'vertical'] },
+    labels: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     'aria-label': 'Sign up progress',
@@ -309,28 +223,6 @@ export const CustomIndicator: Story = {
 }
 
 /**
- * The circle is made of two parts, **StepIndicatorContent** (what is drawn) and **StepIndicatorLabel** (what only a
- * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
- */
-export const Compound: Story = {
-  render: () => (
-    <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
-      {steps.map(({ description, title }) => (
-        <Step key={title}>
-          <StepIndicator>
-            <StepIndicatorContent className="font-bold" />
-            <StepIndicatorLabel>{`Step: ${title}`}</StepIndicatorLabel>
-          </StepIndicator>
-          <StepTitle>{title}</StepTitle>
-          <StepDescription>{description}</StepDescription>
-          <StepSeparator />
-        </Step>
-      ))}
-    </Stepper>
-  ),
-}
-
-/**
  * Use **labels** to translate what a screen reader says. Nothing is said for the current step because
  * `aria-current="step"` already announces it.
  */
@@ -379,6 +271,28 @@ function InteractiveStepper(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <InteractiveStepper />,
+}
+
+/**
+ * The circle is made of two parts, **StepIndicatorContent** (what is drawn) and **StepIndicatorLabel** (what only a
+ * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
+ */
+export const Compound: Story = {
+  render: () => (
+    <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
+      {steps.map(({ description, title }) => (
+        <Step key={title}>
+          <StepIndicator>
+            <StepIndicatorContent className="font-bold" />
+            <StepIndicatorLabel>{`Step: ${title}`}</StepIndicatorLabel>
+          </StepIndicator>
+          <StepTitle>{title}</StepTitle>
+          <StepDescription>{description}</StepDescription>
+          <StepSeparator />
+        </Step>
+      ))}
+    </Stepper>
+  ),
 }
 
 /**

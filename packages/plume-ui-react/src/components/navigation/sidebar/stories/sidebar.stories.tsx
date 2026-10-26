@@ -142,20 +142,6 @@ function Shell({
  * navigations. A `SidebarItem` with an `href` is a link and one without it is a button, for actions. The item of
  * the current page takes `active`, which sets `aria-current="page"`. With a client-side router pass `onClick` and
  * navigate there.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `SidebarProvider` | `breakpoint`, `open`, `defaultOpen`, `onOpenChange`, `collapsed`, `defaultCollapsed`, `onCollapsedChange`, `id`, `children`. The state of the sidebar. It renders no element, so the layout is yours. `id` is the id of the panel. |
- * | `SidebarToggle` | `label`, `icon`, `variant`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The button that collapses the sidebar on a wide screen and opens it on a small one, with `aria-expanded` and `aria-controls`. `label` is its accessible name (`"Toggle sidebar"`), and `variant="unstyled"` drops the Plume styles. |
- * | `SidebarContent` | `aria-label`, `aria-labelledby`, `id`, `title`, `hidden`, `className`, `style`, `children`. The `<nav>` with the items. |
- * | `SidebarItem` | `active`, `disabled`, `icon`, `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a button without `href`. Given text it renders the `icon` and the label; given `SidebarItemIcon` or `SidebarItemLabel` it renders them as written. It has `data-active` and `data-disabled`. |
- * | `SidebarItemIcon` | `className`, `style`, `children`. The icon of an item, hidden from assistive technology. |
- * | `SidebarItemLabel` | `className`, `style`, `children`. The text of an item. In the rail it is hidden visually and stays in the page for screen readers. |
- * | `SidebarBackdrop` | `onClick`, `hidden`, `id`, `title`, `className`, `style`. The layer behind the sidebar on a small screen. Put one in the `Sidebar` to replace the default; the `Sidebar` renders it before its panel, so it is never inside it. A press closes the sidebar unless `onClick` prevents the default. It has `data-open`. |
- *
- * Every element of the sidebar is a part, so `className` styles each one, and with `variant="unstyled"` the parts keep only your classes.
  */
 export default {
   title: 'Components/Sidebar',
@@ -181,74 +167,17 @@ export default {
     layout: 'padded',
   },
   argTypes: {
-    children: {
-      control: false,
-      description:
-        'What goes in the sidebar, usually a `SidebarContent`. A `SidebarBackdrop` among them replaces the default backdrop.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Sidebar panel.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Sidebar panel. They are applied after the color variables, so they can override them. `--sidebar-width` and `--sidebar-collapsed-width` set its widths.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    side: {
-      control: 'radio',
-      description:
-        'The side of the screen it opens from on a small screen. Where it sits on a wide screen depends on your layout.',
-      options: ['left', 'right'],
-      table: { type: { summary: `"left" | "right"` }, defaultValue: { summary: 'left' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the active item, and the whole sidebar in the `solid` variant.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Sidebar.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `plain` has a line on the edge next to the page, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the collapsing and the off-canvas behavior keep working.',
-      options: ['plain', 'filled', 'solid', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "filled" | "solid" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Sidebar panel.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Sidebar.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description:
-        'Accessible name of the dialog the sidebar becomes on a small screen. It only applies while it is open as a dialog.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the dialog.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    side: { control: 'radio', options: ['left', 'right'] },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['plain', 'filled', 'solid', 'unstyled'] },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     children: undefined,

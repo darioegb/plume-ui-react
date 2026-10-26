@@ -4,10 +4,24 @@ import type { ComponentProps } from '../../../theme'
 import styles from './list.module.css'
 
 export interface ListItemButtonOwnProps {
+  /**
+   * Disables the item. As a link it loses its `href` and is announced as disabled.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /** Renders the item as a link to this address. Without it the item is a `<button>`. */
   href?: string
+  /** Relationship of the linked page, for an item that has an `href`. */
   rel?: string
+  /**
+   * Highlights the item as the current one and sets `aria-current="true"` unless `aria-current` is
+   * given.
+   *
+   * @default false
+   */
   selected?: boolean
+  /** Where the linked page opens, for an item that has an `href`. */
   target?: string
 }
 
@@ -35,6 +49,10 @@ export type ListItemButtonProps = Omit<ComponentProps, 'index'> &
   ListItemButtonRootAttributes &
   ListItemButtonOwnProps
 
+/**
+ * Goes inside a `ListItem` and fills it. `selected` highlights it and sets `aria-current="true"`;
+ * for navigation pass `aria-current="page"`.
+ */
 export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
   (
     {

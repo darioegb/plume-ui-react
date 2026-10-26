@@ -39,15 +39,6 @@ const inbox = (
  * Given the **icon**, **title**, **description** and **action** props it renders them in that order. To reorder them,
  * leave one out or style each, give it its parts as children instead: the props are then ignored. The EmptyState
  * has no state to share, so it is a plain component that a Server Component can render.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `EmptyStateIcon` | `className`, `style`, `ref`, `children`. The decorative icon, hidden from assistive technology. |
- * | `EmptyStateTitle` | `className`, `style`, `ref`, `children`, `as` (`div` by default, or `h2` to `h6`). |
- * | `EmptyStateDescription` | `className`, `style`, `ref`, `children`. The `<p>` that explains. |
- * | `EmptyStateAction` | `className`, `style`, `ref`, `children`. What the user can do about it. |
  */
 export default {
   title: 'Components/EmptyState',
@@ -65,97 +56,55 @@ export default {
   argTypes: {
     title: {
       control: 'text',
-      description: 'What is empty, in a few words.',
-      table: { type: { summary: 'ReactNode' } },
     },
     description: {
       control: 'text',
-      description: 'Why it is empty, or what the user can do about it.',
-      table: { type: { summary: 'ReactNode' } },
     },
     icon: {
       control: false,
-      description:
-        'An SVG shown above the title. It is decorative and takes the size of the EmptyState.',
-      table: { type: { summary: 'ReactNode' } },
     },
     action: {
       control: false,
-      description: 'What the user can do: usually a `Button` or a link.',
-      table: { type: { summary: 'ReactNode' } },
     },
     titleAs: {
       control: 'radio',
-      description: 'Element of the title: a `div` or a heading level.',
       options: ['div', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      table: {
-        type: { summary: `"div" | "h2" | "h3" | "h4" | "h5" | "h6"` },
-        defaultValue: { summary: 'div' },
-      },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the EmptyState.',
-      table: { type: { summary: 'string' } },
     },
     children: {
       control: false,
-      description:
-        'The parts to render (`EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`, `EmptyStateAction`). When given, the `icon`, `title`, `description` and `action` props are ignored.',
-      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
-      description: 'Inline styles for the EmptyState.',
-      table: { type: { summary: 'CSSProperties' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the EmptyState: its padding, its text and the size of the icon.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `plain` has no box, `outline` draws a dashed border and `filled` gives it a muted background. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['plain', 'outline', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "outline" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
     },
     id: {
       control: false,
-      description: 'Id of the EmptyState.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: false,
-      description: 'Hides the EmptyState.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     role: {
       control: 'text',
-      description:
-        'Role of the EmptyState. Use `status` when it appears as the result of something the user did, so it is announced.',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-live': {
       control: 'radio',
-      description: 'How a change of the EmptyState is announced.',
       options: ['off', 'polite', 'assertive'],
-      table: { category: 'Accessibility', type: { summary: `"off" | "polite" | "assertive"` } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name of the EmptyState.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the EmptyState.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {
@@ -253,6 +202,23 @@ export const Parts: Story = {
 }
 
 /**
+ * Use **titleAs** when the title belongs in the outline of the page, and `role="status"` when the state shows up
+ * after something the user did, so a screen reader announces it.
+ */
+export const Accessibility: Story = {
+  render: () => (
+    <EmptyState
+      description="Check the spelling or try a shorter search."
+      role="status"
+      style={{ width: '20rem' }}
+      title={'No results for "plume"'}
+      titleAs="h2"
+      variant="outline"
+    />
+  ),
+}
+
+/**
  * Give the EmptyState its parts as children to change the order or leave one out. Here the action comes first and
  * there is no icon. The `icon`, `title`, `description` and `action` props are ignored when it has children.
  */
@@ -278,23 +244,6 @@ export const Compound: Story = {
       <EmptyStateTitle as="h3">No results</EmptyStateTitle>
       <EmptyStateDescription>Try other filters.</EmptyStateDescription>
     </EmptyState>
-  ),
-}
-
-/**
- * Use **titleAs** when the title belongs in the outline of the page, and `role="status"` when the state shows up
- * after something the user did, so a screen reader announces it.
- */
-export const Accessibility: Story = {
-  render: () => (
-    <EmptyState
-      description="Check the spelling or try a shorter search."
-      role="status"
-      style={{ width: '20rem' }}
-      title={'No results for "plume"'}
-      titleAs="h2"
-      variant="outline"
-    />
   ),
 }
 

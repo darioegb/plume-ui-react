@@ -9,6 +9,7 @@ type FileUploadNameRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'child
 
 export type FileUploadNameProps = Omit<ComponentProps, 'index'> & FileUploadNameRootAttributes
 
+/** The name of the file, or the children. */
 export const FileUploadName = forwardRef<HTMLSpanElement, FileUploadNameProps>(
   (
     { children, className, style }: FileUploadNameProps,

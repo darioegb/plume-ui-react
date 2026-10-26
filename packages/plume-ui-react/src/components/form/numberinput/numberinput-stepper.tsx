@@ -10,6 +10,9 @@ import styles from './numberinput.module.css'
 import { useHoldRepeat } from './use-hold-repeat'
 
 export interface NumberInputStepperOwnProps {
+  /**
+   * Accessible name of the button. It defaults to `labels.decrement` or `labels.increment` of the `NumberInput`.
+   */
   label?: string
 }
 

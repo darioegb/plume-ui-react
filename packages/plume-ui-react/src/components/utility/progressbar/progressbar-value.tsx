@@ -11,6 +11,10 @@ type ProgressBarValueRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type ProgressBarValueProps = Omit<ComponentProps, 'index'> & ProgressBarValueRootAttributes
 
+/**
+ * The text with the value, for the eyes only. Without children it shows the result of
+ * `formatValue`, and nothing while the bar is indeterminate.
+ */
 export const ProgressBarValue = forwardRef<HTMLSpanElement, ProgressBarValueProps>(
   (
     { children, className, style }: ProgressBarValueProps,

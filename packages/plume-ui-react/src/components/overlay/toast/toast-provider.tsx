@@ -36,14 +36,49 @@ export interface ToastLabels {
 }
 
 export interface ToastProviderProps {
+  /** The app. Any component below the provider can call `useToast()`. */
   children: ReactNode
+  /** Class of the region that holds the toasts. */
   className?: string
+  /**
+   * Milliseconds before a toast goes away, unless it sets its own. `0` keeps them until
+   * dismissed.
+   * @default 5000
+   */
   duration?: number
+  /**
+   * The icons of the toasts. `false` shows none. An object replaces the icon of a status
+   * (`success`, `info`, `warning`, `error`) and can give one to `neutral`. A toast can set its
+   * own with the `icon` option.
+   */
   icons?: false | ToastIcons
+  /**
+   * The texts the provider adds, to translate them: `region` is the accessible name of the
+   * region that holds the toasts, and `dismiss` the one of the dismiss button of each toast.
+   * @default { dismiss: 'Dismiss notification', region: 'Notifications' }
+   */
   labels?: Partial<ToastLabels>
+  /**
+   * How many toasts are shown at a time. When there are more, the oldest go first.
+   * @default 5
+   */
   max?: number
+  /**
+   * Where the toasts stack on the screen.
+   * @default 'bottom-end'
+   */
   position?: ToastPosition
+  /**
+   * Renders every toast from its data, to compose the parts yourself: `(toast) => <Toast
+   * toast={toast}>...</Toast>`. Without it every toast is the default composition.
+   */
   render?: (toast: ToastData) => ReactNode
+  /**
+   * Visual variant. `solid` fills the toast with the color of its status, `subtle` tints it and
+   * `outline` draws its border with an accent. `unstyled` drops the Plume styles so you can
+   * bring your own.
+   * @default 'subtle'
+   */
   variant?: ToastVariant
 }
 

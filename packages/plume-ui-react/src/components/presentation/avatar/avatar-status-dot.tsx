@@ -9,6 +9,9 @@ import styles from './avatar.module.css'
 
 export type AvatarStatusDotProps = Omit<ComponentProps, 'index'>
 
+/**
+ * The dot of the `status`, with a `data-status` attribute. It renders nothing without a `status`.
+ */
 export const AvatarStatusDot = forwardRef<HTMLSpanElement, AvatarStatusDotProps>(
   ({ className, style }: AvatarStatusDotProps, ref: ForwardedRef<HTMLSpanElement>): ReactNode => {
     const { isStyled, status } = useAvatarContext('AvatarStatusDot')

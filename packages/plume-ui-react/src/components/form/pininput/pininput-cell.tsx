@@ -9,6 +9,7 @@ import { usePinInputContext } from './pininput-context'
 import styles from './pininput.module.css'
 
 export interface PinInputCellOwnProps {
+  /** Position of the box in the code, starting from 0. */
   index: number
 }
 
@@ -21,6 +22,7 @@ export type PinInputCellProps = Omit<ComponentProps, 'index'> &
   PinInputCellRootAttributes &
   PinInputCellOwnProps
 
+/** One box of the code. It is filled when the position has a character. */
 export const PinInputCell = forwardRef<HTMLInputElement, PinInputCellProps>(
   (
     {

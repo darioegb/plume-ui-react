@@ -13,6 +13,11 @@ type DrawerBackdropRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'childr
 
 export type DrawerBackdropProps = Omit<ComponentProps, 'index'> & DrawerBackdropRootAttributes
 
+/**
+ * The layer behind the panel, which covers the screen and puts the panel on its side.
+ * `DrawerContent` renders it on its own; wrap `DrawerContent` in it to style it. It carries
+ * `data-side`.
+ */
 export const DrawerBackdrop = forwardRef<HTMLDivElement, DrawerBackdropProps>(
   ({ className, ...rest }: DrawerBackdropProps, ref: ForwardedRef<HTMLDivElement>): ReactNode => {
     const { side } = useDrawerContext('DrawerBackdrop')

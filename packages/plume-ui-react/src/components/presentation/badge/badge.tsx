@@ -6,10 +6,37 @@ import tag from '../shared/tag.module.css'
 import styles from './badge.module.css'
 
 export interface BadgeOwnProps {
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Shows a status dot before the content, in the color of the text. With no children it is a dot
+   * on its own. The `unstyled` variant ignores it.
+   *
+   * @default false
+   */
   dot?: boolean
+  /**
+   * Corners of the Badge.
+   *
+   * @default 'rounded'
+   */
   shape?: Shape
+  /**
+   * Size of the Badge.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `solid` fills the Badge, `subtle` tints it and `outline` only draws its
+   * border. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'solid'
+   */
   variant?: BadgeVariant
 }
 

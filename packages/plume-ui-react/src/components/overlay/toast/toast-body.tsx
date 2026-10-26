@@ -11,6 +11,7 @@ type ToastBodyRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
 export type ToastBodyProps = Omit<ComponentProps, 'index'> & ToastBodyRootAttributes
 
+/** The wrapper of the text and the action. */
 export const ToastBody = forwardRef<HTMLDivElement, ToastBodyProps>(
   (
     { children, className, style }: ToastBodyProps,

@@ -14,6 +14,7 @@ import styles from './fileupload.module.css'
 type FileUploadItemRootAttributes = Pick<HTMLAttributes<HTMLLIElement>, 'children'>
 
 export interface FileUploadItemOwnProps {
+  /** The file this item shows. */
   file: File
 }
 
@@ -21,6 +22,10 @@ export type FileUploadItemProps = Omit<ComponentProps, 'index'> &
   FileUploadItemRootAttributes &
   FileUploadItemOwnProps
 
+/**
+ * A file of the list. Without children it holds the name, the size, the remove button and the
+ * progress.
+ */
 export const FileUploadItem = forwardRef<HTMLLIElement, FileUploadItemProps>(
   (
     { children, className, file, style }: FileUploadItemProps,

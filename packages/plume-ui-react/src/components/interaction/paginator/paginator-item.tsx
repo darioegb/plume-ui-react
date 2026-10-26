@@ -11,6 +11,7 @@ type PaginatorItemRootAttributes = Pick<LiHTMLAttributes<HTMLLIElement>, 'childr
 
 export type PaginatorItemProps = Omit<ComponentProps, 'index'> & PaginatorItemRootAttributes
 
+/** A `<li>`. Every control goes in one. */
 export const PaginatorItem = forwardRef<HTMLLIElement, PaginatorItemProps>(
   (
     { children, className, style, ...rest }: PaginatorItemProps,

@@ -11,6 +11,10 @@ type BreadcrumbListRootAttributes = Pick<HTMLAttributes<HTMLOListElement>, 'chil
 
 export type BreadcrumbListProps = Omit<ComponentProps, 'index'> & BreadcrumbListRootAttributes
 
+/**
+ * The `<ol>` that holds the items. The `Breadcrumb` wraps its items in one; add it yourself to
+ * style the list.
+ */
 export const BreadcrumbList = forwardRef<HTMLOListElement, BreadcrumbListProps>(
   (
     { children, className, style, ...rest }: BreadcrumbListProps,

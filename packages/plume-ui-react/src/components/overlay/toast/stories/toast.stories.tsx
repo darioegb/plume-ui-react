@@ -92,15 +92,6 @@ function Demo({
  * Each part takes `className`, `style` and `ref`, and the ones that hold content read it from the toast, so they
  * work with no children and accept `children` to replace it. A part that has nothing to show renders nothing.
  *
- * | Part | Element | Props |
- * | --- | --- | --- |
- * | `Toast` | The toast. | `toast` (the data `render` receives, required), `children`, `className`, `style`, `ref`. |
- * | `ToastIcon` | The icon of the status. | `children` replaces it. |
- * | `ToastBody` | The wrapper of the text and the action. | `children`. |
- * | `ToastTitle`, `ToastDescription` | The text. | `children` replaces the one of the toast. |
- * | `ToastActionButton` | The action button. It runs `onClick` and dismisses the toast. | `children` replaces the label. |
- * | `ToastDismiss` | The dismiss button. | `aria-label` (defaults to `labels.dismiss`), `children` replaces the cross. |
- *
  * Every part carries `data-plume-toast-<part>`, and the toast `data-status`.
  */
 export default {
@@ -119,67 +110,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The app. Any component below the provider can call `useToast()`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    position: {
-      control: 'select',
-      description: 'Where the toasts stack on the screen.',
-      options: positions,
-      table: { type: { summary: 'ToastPosition' }, defaultValue: { summary: 'bottom-end' } },
-    },
-    duration: {
-      control: 'number',
-      description:
-        'Milliseconds before a toast goes away, unless it sets its own. `0` keeps them until dismissed.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '5000' } },
-    },
-    icons: {
-      control: false,
-      description:
-        'The icons of the toasts. `false` shows none. An object replaces the icon of a status (`success`, `info`, `warning`, `error`) and can give one to `neutral`. A toast can set its own with the `icon` option.',
-      table: { type: { summary: 'false | Partial<Record<ToastStatus, ReactNode>>' } },
-    },
-    max: {
-      control: 'number',
-      description: 'How many toasts are shown at a time. When there are more, the oldest go first.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '5' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` fills the toast with the color of its status, `subtle` tints it and `outline` draws its border with an accent. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['solid', 'subtle', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "subtle" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'subtle' },
-      },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the region that holds the toasts.',
-      table: { type: { summary: 'string' } },
-    },
-    render: {
-      control: false,
-      description:
-        'Renders every toast from its data, to compose the parts yourself: `(toast) => <Toast toast={toast}>...</Toast>`. Without it every toast is the default composition.',
-      table: { type: { summary: '(toast: ToastData) => ReactNode' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts the provider adds, to translate them: `region` is the accessible name of the region that holds the toasts, and `dismiss` the one of the dismiss button of each toast.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<ToastLabels>' },
-        defaultValue: {
-          summary: '{ dismiss: "Dismiss notification", region: "Notifications" }',
-        },
-      },
-    },
+    children: { control: false },
+    position: { control: 'select', options: positions },
+    duration: { control: 'number' },
+    icons: { control: false },
+    max: { control: 'number' },
+    variant: { control: 'radio', options: ['solid', 'subtle', 'outline', 'unstyled'] },
+    className: { control: 'text' },
+    render: { control: false },
+    labels: { control: false },
   },
   render: (args) => <Demo {...args} />,
 } satisfies Meta<typeof ToastProvider>

@@ -4,8 +4,18 @@ import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import styles from './icon.module.css'
 
 export interface IconOwnProps {
+  /** Color scheme from the theme palette. Without it the Icon takes the current text color. */
   colorScheme?: ColorScheme
+  /**
+   * Accessible name, rendered as text that only screen readers get. Without it the Icon is hidden
+   * from assistive technology.
+   */
   label?: string
+  /**
+   * Size of the Icon.
+   *
+   * @default 'md'
+   */
   size?: Size
 }
 

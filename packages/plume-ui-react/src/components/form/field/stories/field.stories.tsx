@@ -33,73 +33,18 @@ export default {
   },
   decorators: [(Story) => <div className='w-72 max-w-full'>{Story()}</div>],
   argTypes: {
-    children: {
-      control: false,
-      description: 'The form control: a single element such as `Input` or `DatePicker`.',
-      table: { type: { summary: 'ReactElement' } },
-    },
-    label: {
-      control: 'text',
-      description: 'Label rendered above the control (beside it when horizontal) and linked to it.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    helperText: {
-      control: 'text',
-      description: 'Hint shown below the control and read as part of its description.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    errorText: {
-      control: 'text',
-      description:
-        'Error message shown below the control while the field is invalid. Setting it makes the field invalid unless `invalid` says otherwise.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    invalid: {
-      control: 'boolean',
-      description:
-        'Marks the field invalid: the control gets `aria-invalid` and error colors, and `errorText` is shown.',
-      table: { defaultValue: { summary: 'Boolean(errorText)' }, type: { summary: 'boolean' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Shows the required mark next to the label and passes `required` to the control.',
-      table: { defaultValue: { summary: false }, type: { summary: 'boolean' } },
-    },
-    optionalText: {
-      control: 'text',
-      description: 'Text shown next to the label when the field is not required, e.g. `(optional)`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables the control and dims the label.',
-      table: { defaultValue: { summary: false }, type: { summary: 'boolean' } },
-    },
-    readOnly: {
-      control: 'boolean',
-      description: 'Passes `readOnly` to the control.',
-      table: { defaultValue: { summary: false }, type: { summary: 'boolean' } },
-    },
-    orientation: {
-      control: 'inline-radio',
-      options: ['vertical', 'horizontal', 'inline'],
-      description:
-        'Places the label above the control (`vertical`), beside it in a column (`horizontal`, whose width comes from `--field-label-width`, default `8rem`), or right after it (`inline`, for `Checkbox`, `Radio` and `Toggle`; the helper and error texts go under the label).',
-      table: {
-        defaultValue: { summary: 'vertical' },
-        type: { summary: '"vertical" | "horizontal" | "inline"' },
-      },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the root element.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description: 'Inline styles for the root element, e.g. `--field-label-width`.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
+    children: { control: false },
+    label: { control: 'text' },
+    helperText: { control: 'text' },
+    errorText: { control: 'text' },
+    invalid: { control: 'boolean' },
+    required: { control: 'boolean' },
+    optionalText: { control: 'text' },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    orientation: { control: 'inline-radio', options: ['vertical', 'horizontal', 'inline'] },
+    className: { control: 'text' },
+    style: { control: false },
   },
   args: {
     label: 'Email',

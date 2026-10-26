@@ -6,6 +6,7 @@ type AlertDescriptionRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'chil
 
 export type AlertDescriptionProps = Omit<ComponentProps, 'index'> & AlertDescriptionRootAttributes
 
+/** The details. */
 export const AlertDescription = forwardRef<HTMLDivElement, AlertDescriptionProps>(
   (
     { children, className, style, ...rest }: AlertDescriptionProps,

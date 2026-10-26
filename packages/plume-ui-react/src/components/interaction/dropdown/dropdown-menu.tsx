@@ -25,6 +25,7 @@ const getItems = (menu: HTMLElement): HTMLElement[] =>
 
 const focusItem = (item: HTMLElement | undefined): void => item?.focus({ preventScroll: true })
 
+/** The menu. It is named after the trigger unless you give it a name. */
 export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
   (
     { children, className = '', style, ...rest }: DropdownMenuProps,

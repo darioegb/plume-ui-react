@@ -30,81 +30,36 @@ export default {
   argTypes: {
     color: {
       control: 'select',
-      description:
-        'Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`).',
       options: allKeys,
-      table: {
-        defaultValue: { summary: 'secondary.900' },
-        type: { summary: 'ColorShade' },
-      },
     },
     className: {
       control: 'text',
-      description: `Custom CSS class for the Spinner.`,
-      table: {
-        type: { summary: 'string' },
-      },
     },
     style: {
-      description:
-        'Inline styles. They are applied after the Spinner variables, so they can override them (e.g. `--spinner-scheme`).',
       control: false,
-      table: {
-        type: { summary: 'CSSProperties' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'The size of the Spinner.',
       options: ['sm', 'md', 'lg'],
-      table: {
-        defaultValue: { summary: 'md' },
-        type: { summary: `"sm" | "md" | "lg"` },
-      },
     },
     speed: {
       control: 'text',
-      description: 'Duration of one turn, as a CSS time (e.g. `0.5s`, `800ms`).',
-      table: {
-        defaultValue: { summary: '1s' },
-        type: { summary: 'string' },
-      },
     },
     thickness: {
       control: 'number',
-      description: 'Border width in pixels.',
-      table: {
-        defaultValue: { summary: 3 },
-        type: { summary: 'number' },
-      },
     },
     variant: {
       control: 'select',
-      description: 'The border variant of the Spinner.',
       options: ['solid', 'dashed', 'dotted', 'double', 'unstyled'],
-      table: {
-        defaultValue: { summary: 'solid' },
-        type: { summary: `"solid" | "dashed" | "dotted" | "double" | "unstyled"` },
-      },
     },
     id: {
       control: false,
-      description: 'Id of the `<output>` element.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: 'boolean',
-      description: 'Hides the Spinner.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     label: {
       control: 'text',
-      description: 'Accessible name of the Spinner, announced while it spins. Change it to translate it.',
-      table: {
-        category: 'Accessibility',
-        defaultValue: { summary: 'Loading' },
-        type: { summary: 'string' },
-      },
     },
   },
 } satisfies Meta<typeof Spinner>

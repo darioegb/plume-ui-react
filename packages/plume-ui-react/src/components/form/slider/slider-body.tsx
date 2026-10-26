@@ -10,6 +10,7 @@ import styles from './slider.module.css'
 export type SliderBodyProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
+/** The box, as wide as the slider, that positions the track, the marks and the thumbs. */
 export const SliderBody = forwardRef<HTMLDivElement, SliderBodyProps>(
   (
     { children, className, style }: SliderBodyProps,

@@ -9,6 +9,7 @@ import styles from './slider.module.css'
 
 export type SliderRangeProps = Omit<ComponentProps, 'index'>
 
+/** The filled part of the track, from the minimum or the first thumb to the last thumb. */
 export const SliderRange = forwardRef<HTMLSpanElement, SliderRangeProps>(
   ({ className, style }: SliderRangeProps, ref: ForwardedRef<HTMLSpanElement>): ReactNode => {
     const { isStyled } = useSliderContext('SliderRange')

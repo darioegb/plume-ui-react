@@ -10,6 +10,7 @@ type CardBodyRootAttributes = Pick<
 
 export type CardBodyProps = Omit<ComponentProps, 'index'> & CardBodyRootAttributes
 
+/** The content, which takes the free space of the Card. */
 export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
   (
     { children, className = '', style, ...rest }: CardBodyProps,

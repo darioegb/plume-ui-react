@@ -32,15 +32,6 @@ function Trail(): React.ReactNode {
  * (rendered as text) or with one, and `current` on it. The component renders plain `<a>` elements, so with a
  * client-side router pass `onClick` and navigate there, or render the router link inside the `BreadcrumbItem`
  * yourself and add `aria-current="page"` to it.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `BreadcrumbItem` | `separator`, `id`, `title`, `hidden`, `className`, `style`, `children`. One `<li>`, with the separator after it. `separator` replaces the separator of the breadcrumb for this item, and `null` removes it. |
- * | `BreadcrumbLink` | `current`, `href`, `target`, `rel`, `hrefLang`, `referrerPolicy`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a `<span>` when it has no `href`. `current` marks the current page with `aria-current="page"` and `data-current`. |
- * | `BreadcrumbList` | `title`, `className`, `style`, `children`. The `<ol>` that holds the items. The `Breadcrumb` wraps its items in one; add it yourself to style the list. |
- * | `BreadcrumbSeparator` | `className`, `style`, `children`. The separator. `BreadcrumbItem` renders it for you, so use it with `separator={null}` on the item to style it or to put one in another place. |
  */
 export default {
   title: 'Components/Breadcrumb',
@@ -57,91 +48,19 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `BreadcrumbItem` parts of the Breadcrumb.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the `<nav>`.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the `<nav>`. They are applied after the color variables, so they can override them (e.g. `--breadcrumb-text`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts the Breadcrumb adds. `breadcrumb` is the accessible name of the navigation when there is no `aria-label` or `aria-labelledby`.',
-      table: {
-        type: { summary: 'Partial<BreadcrumbLabels>' },
-        defaultValue: { summary: '{ breadcrumb: "Breadcrumb" }' },
-      },
-    },
-    separator: {
-      control: 'text',
-      description:
-        'What goes between the items. It can be any node, like an icon. An item can use its own.',
-      table: { type: { summary: 'ReactNode' }, defaultValue: { summary: '"/"' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the links and the current page in the `filled` variant.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Breadcrumb.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `plain` is text with underlined links, `filled` puts every item on a muted background. `unstyled` drops the Plume styles so you can bring your own; the list and the hidden last separator keep working.',
-      options: ['plain', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<nav>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the `<nav>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Breadcrumb.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description:
-        'Accessible name of the navigation. It wins over `labels.breadcrumb`; use it to tell two breadcrumbs of a page apart.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-        defaultValue: { summary: '"Breadcrumb"' },
-      },
-    },
-    'aria-labelledby': {
-      control: false,
-      description:
-        'Id of the element that names the navigation. It replaces the default `aria-label`.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    labels: { control: false },
+    separator: { control: 'text' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['plain', 'filled', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     children: <Trail />,

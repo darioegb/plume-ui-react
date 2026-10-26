@@ -11,6 +11,10 @@ import styles from './chip.module.css'
 export type ChipRemoveProps = Omit<ComponentProps, 'index'> &
   Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'disabled' | 'onClick'>
 
+/**
+ * The button that removes the Chip. It calls the `onRemove` of the Chip, and `children` replace the
+ * cross.
+ */
 export const ChipRemove = forwardRef<HTMLButtonElement, ChipRemoveProps>(
   (
     { 'aria-label': ariaLabel, children, className, disabled, onClick, style }: ChipRemoveProps,

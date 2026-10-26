@@ -89,22 +89,6 @@ function Content({ selected }: Readonly<{ selected?: string }>): React.ReactNode
  * `TableHead`, a `TableHeadSort` and its `TableHeadSortIcon` replace the sort button of **onSort**, and inside a
  * `TableEmpty` a `TableEmptyCell` replaces the cell with the `EmptyState`.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `TableCaption` | `side`, `id`, `title`, `className`, `style`, `children`. The name of the table. `side` is `top` (the default) or `bottom`. |
- * | `TableHeader`, `TableBody`, `TableFooter` | `id`, `title`, `hidden`, `className`, `style`, `children`. The `<thead>`, `<tbody>` and `<tfoot>`. |
- * | `TableRow` | `selected`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<tr>`. `selected` sets `aria-selected` and `data-selected`. |
- * | `TableElement` | `id`, `title`, `hidden`, `aria-label`, `aria-labelledby`, `className`, `style`, `ref`, `children`. The `<table>`. It takes the name, the variant, the size and the states (`data-hoverable`, `data-sticky`, `data-loading`, `aria-busy`) of the `Table`, and its **ref**. |
- * | `TableLoading` | `label`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. The veil with the `Spinner`, only while the `Table` is `loading`. `label` is the name of the spinner (`labels.loading` by default); `children` replace the spinner. |
- * | `TableEmpty` | `colSpan`, `title`, `description`, `icon`, `action`, `titleAs`, `size`, `variant`, `id`, `hidden`, `className`, `style`, `ref`, `children`. A `<tr>` with one `TableEmptyCell` that holds an `EmptyState`, for when there is nothing to show. Give it a `colSpan` as wide as the table. `children` is the title when there is no `title`. It is announced as a `status`. With a `TableEmptyCell` as child it renders it as written, and those props have no effect. |
- * | `TableEmptyCell` | `colSpan`, `id`, `hidden`, `className`, `style`, `ref`, `children`. The `<td>` of a `TableEmpty`, 100 columns wide by default. |
- * | `TableHead` | `scope`, `align`, `sort`, `onSort`, `abbr`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. A `<th>`. `align` is `start`, `center` or `end`. With `onSort` its content is a `TableHeadSort` with a `TableHeadSortIcon`; with a `TableHeadSort` as child it renders it as written. |
- * | `TableHeadSort` | `onClick`, `id`, `title`, `aria-label`, `className`, `style`, `ref`, `children`. The button of a sortable head. |
- * | `TableHeadSortIcon` | `className`, `style`, `ref`, `children`. The arrow of a sortable head, which turns with `aria-sort`; `children` replace it. |
- * | `TableCell` | `align`, `colSpan`, `rowSpan`, `headers`, `id`, `title`, `hidden`, `className`, `style`, `children`. A `<td>`. |
- *
  * ### useTableState
  *
  * `useTableState({ rows, ... })` keeps the state of a table and returns it. It has two modes:
@@ -161,95 +145,21 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The caption and the row groups of the Table.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the outermost element, the box that scrolls around the `<table>`. Use `TableElement` for the `<table>`.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description: 'Inline styles for the outermost element. They go after `maxHeight`, so they can override it.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    hoverable: {
-      control: 'boolean',
-      description: 'Highlights the row under the pointer.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    loading: {
-      control: 'boolean',
-      description:
-        'Marks the table as busy while the data is on its way: it sets `aria-busy` and `data-loading` on the `<table>`, covers the body with a translucent veil (`TableLoading`) and shows a `Spinner` in the middle.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts of the Table, to translate it: `loading` is the accessible name of the spinner shown while the table is loading.',
-      table: {
-        type: { summary: 'Partial<TableLabels>' },
-        defaultValue: { summary: "{ loading: 'Loading' }" },
-      },
-    },
-    maxHeight: {
-      control: 'text',
-      description:
-        'Maximum height of the box around the table. The body scrolls inside it. A number is in pixels.',
-      table: { type: { summary: 'number | string' } },
-    },
-    stickyHeader: {
-      control: 'boolean',
-      description:
-        'Keeps the header cells at the top of the box while the body scrolls. It needs `maxHeight`, or a height on the container, to have something to scroll.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Density of the Table: the padding of its cells.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `plain` draws a line under every row, `bordered` borders every cell and `striped` alternates the background of the rows. `unstyled` drops the Plume styles so you can bring your own; the scrolling box and the sticky header keep working.',
-      options: ['plain', 'bordered', 'striped', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "bordered" | "striped" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<table>`. It is passed to the `TableElement` of the default composition.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the `<table>`. It is passed to the `TableElement` of the default composition.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the `<table>`. It is passed to the `TableElement` of the default composition.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description:
-        'Accessible name of the table, for when there is no `TableCaption`. It also names the scrolling box when the table does not fit.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the table.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    hoverable: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    labels: { control: false },
+    maxHeight: { control: 'text' },
+    stickyHeader: { control: 'boolean' },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['plain', 'bordered', 'striped', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     children: <Content />,

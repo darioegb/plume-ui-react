@@ -25,13 +25,44 @@ export interface AlertLabels {
 }
 
 export interface AlertOwnProps {
+  /** What the user can do about the message: a `Button` or a link, at the end. */
   action?: ReactNode
+  /**
+   * Shows a button that closes the Alert.
+   *
+   * @default false
+   */
   dismissible?: boolean
+  /**
+   * The icon at the start. By default, the one of the status. Pass your own, or `false` for none.
+   * It is decorative.
+   */
   icon?: ReactNode | false
+  /**
+   * The texts of the Alert, to translate it: `dismiss` is the accessible name of the dismiss
+   * button.
+   */
   labels?: Partial<AlertLabels>
+  /** Called when the dismiss button is pressed. */
   onDismiss?: () => void
+  /**
+   * Size of the Alert: its padding and its text.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * The kind of message: it sets the color, the icon and the role of the Alert.
+   *
+   * @default 'info'
+   */
   status?: AlertStatus
+  /**
+   * Visual variant. `subtle` tints the background, `solid` fills it and `outline` draws its
+   * border. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'subtle'
+   */
   variant?: AlertVariant
 }
 

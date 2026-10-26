@@ -55,31 +55,12 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description:
-        'The element that opens the tooltip, such as a `Button`. It gets the handlers and `aria-describedby`, and it has to be able to take the focus, so keyboard users reach the tooltip too. A plain element needs a `tabIndex`.',
-      table: { type: { summary: 'ReactElement' } },
-    },
-    content: {
-      control: 'text',
-      description: 'What the tooltip says. Keep it short.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the tooltip.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description: 'Inline styles for the tooltip.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
+    children: { control: false },
+    content: { control: 'text' },
+    className: { control: 'text' },
+    style: { control: false },
     placement: {
       control: 'select',
-      description:
-        'Where the tooltip appears, relative to the element: a side, with an optional alignment (`top-start`, `bottom-end`). It flips to the opposite side when there is no room.',
       options: [
         'top',
         'top-start',
@@ -94,61 +75,16 @@ export default {
         'right-start',
         'right-end',
       ],
-      table: { type: { summary: 'Placement' }, defaultValue: { summary: 'top' } },
     },
-    offset: {
-      control: 'number',
-      description: 'Distance in pixels between the element and the tooltip.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '6' } },
-    },
-    openDelay: {
-      control: 'number',
-      description: 'Milliseconds the pointer has to rest on the element before the tooltip opens.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '300' } },
-    },
-    closeDelay: {
-      control: 'number',
-      description:
-        'Milliseconds before the tooltip closes when the pointer leaves, which lets it reach the tooltip.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '100' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the text and of the padding of the tooltip.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` is a dark tooltip on a light page and a light one on a dark page, and `outline` is a bordered surface. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Turns the tooltip off.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    open: {
-      control: 'boolean',
-      description:
-        'Whether the tooltip is open, for a controlled tooltip. Pair it with `onOpenChange`.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the tooltip is open at first, for an uncontrolled tooltip.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    onOpenChange: {
-      control: false,
-      description: 'Called with the new state when the tooltip opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
-    },
+    offset: { control: 'number' },
+    openDelay: { control: 'number' },
+    closeDelay: { control: 'number' },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'unstyled'] },
+    disabled: { control: 'boolean' },
+    open: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
+    onOpenChange: { control: false },
   },
   args: {
     content: 'Save the changes',

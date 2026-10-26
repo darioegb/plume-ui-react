@@ -3,12 +3,14 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "dev": "storybook dev -p 6006",
-    "build": "NODE_ENV=prod storybook build --docs",
+    "dev": "node scripts/generate-api.mjs && storybook dev -p 6006",
+    "build": "node scripts/generate-api.mjs && NODE_ENV=prod storybook build --docs",
     "preview-storybook": "serve storybook-static",
     "clean": "rm -rf .turbo && rm -rf node_modules",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix"
+    "lint": "eslint src/ && node scripts/generate-api.mjs && node scripts/check-api.mjs",
+    "lint:fix": "eslint src/ --fix",
+    "generate:api": "node scripts/generate-api.mjs",
+    "check:api": "node scripts/generate-api.mjs && node scripts/check-api.mjs"
   },
   "dependencies": {
     "plume-ui-react": "workspace:*"

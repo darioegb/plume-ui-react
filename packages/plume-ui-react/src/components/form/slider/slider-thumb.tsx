@@ -9,6 +9,10 @@ import { useSliderContext } from './slider-context'
 import styles from './slider.module.css'
 
 export interface SliderThumbOwnProps {
+  /**
+   * Which value the thumb sets: `0` for the first or only one, `1` for the second thumb of a range.
+   * @default 0
+   */
   index?: number
 }
 
@@ -16,6 +20,7 @@ export type SliderThumbProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLInputElement>, 'aria-label' | 'title'> &
   SliderThumbOwnProps
 
+/** The native range input of a value. The `ref` of the `Slider` goes to the first one. */
 export const SliderThumb = forwardRef<HTMLInputElement, SliderThumbProps>(
   (
     { 'aria-label': ariaLabelProp, className, index = 0, style, title }: SliderThumbProps,

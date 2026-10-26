@@ -11,13 +11,38 @@ import styles from './emptystate.module.css'
 export type EmptyStateVariant = 'filled' | 'outline' | 'plain' | 'unstyled'
 
 export interface EmptyStateOwnProps {
+  /** What the user can do: usually a `Button` or a link. */
   action?: ReactNode
+  /**
+   * The parts to render (`EmptyStateIcon`, `EmptyStateTitle`, `EmptyStateDescription`,
+   * `EmptyStateAction`). When given, the `icon`, `title`, `description` and `action` props are
+   * ignored.
+   */
   children?: ReactNode
+  /** Why it is empty, or what the user can do about it. */
   description?: ReactNode
+  /** An SVG shown above the title. It is decorative and takes the size of the EmptyState. */
   icon?: ReactNode
+  /**
+   * Size of the EmptyState: its padding, its text and the size of the icon.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /** What is empty, in a few words. */
   title?: ReactNode
+  /**
+   * Element of the title: a `div` or a heading level.
+   *
+   * @default 'div'
+   */
   titleAs?: EmptyStateTitleTag
+  /**
+   * Visual variant. `plain` has no box, `outline` draws a dashed border and `filled` gives it a
+   * muted background. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'plain'
+   */
   variant?: EmptyStateVariant
 }
 

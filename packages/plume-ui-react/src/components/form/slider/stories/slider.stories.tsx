@@ -48,21 +48,9 @@ const stack = (gap: string): React.CSSProperties => ({
  * `SliderThumb`: the track, the filled part and the marks are Plume's, and they go away unless you compose them. A
  * range then shows two stacked inputs, so style them as one control or use the `solid` and `outline` variants.
  *
- * ### Subcomponents
- *
  * Every element of the Slider is a part with its own `className`, `style` and `ref`. Without parts the Slider renders
  * the track with its range, the marks and a thumb for each value. With one of them among its children, it renders
  * your composition instead, inside a `SliderBody` unless you write one.
- *
- * | Component | Props |
- * | --- | --- |
- * | `SliderBody` | `className`, `style`, `ref`, `children`. The box, as wide as the slider, that positions the track, the marks and the thumbs. |
- * | `SliderTrack` | `className`, `style`, `ref`, `children`. The bar behind the thumbs. Without children it renders a `SliderRange`. |
- * | `SliderRange` | `className`, `style`, `ref`. The filled part of the track, from the minimum or the first thumb to the last thumb. |
- * | `SliderMarks` | `className`, `style`, `ref`, `children`. The container of the marks. `children` is a node, or a function that gets each mark and its position. It renders nothing without marks. |
- * | `SliderMarkItem` | `className`, `style`, `ref`, `children`, `mark`. A mark: the dot on the track. Without children it renders a `SliderMarkLabel` when the mark has a label. |
- * | `SliderMarkLabel` | `className`, `style`, `ref`, `children`. The text under a mark. |
- * | `SliderThumb` | `className`, `style`, `ref`, `index`, `aria-label`, `title`. The native input. `index` picks the value (`0` by default, `1` for the second thumb of a range). The `ref` of the Slider goes to the first one. |
  */
 export default {
   title: 'Components/Slider',
@@ -80,164 +68,88 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description:
-        'Custom CSS class for the outermost element: the group of a range, or the element that wraps a single thumb.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the root. They are applied after the color variables, so they can override them (e.g. `--slider-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     value: {
       control: false,
-      description:
-        'The value: a number, or a pair of numbers for a range. Makes the Slider controlled: pass `onValueChange` to update it.',
-      table: { type: { summary: 'number | [number, number]' } },
     },
     defaultValue: {
       control: 'number',
-      description:
-        'The value when the Slider is not controlled: a number, or a pair for a range. It starts at the minimum without it.',
-      table: { type: { summary: 'number | [number, number]' } },
     },
     onValueChange: {
       control: false,
-      description:
-        'Called with the new value, a number or a pair, while the user drags or presses a key.',
-      table: { category: 'Events', type: { summary: '(value: SliderValue) => void' } },
     },
     onValueCommit: {
       control: false,
-      description:
-        'Called with the final value when the user lets go of a thumb or releases a key.',
-      table: { category: 'Events', type: { summary: '(value: SliderValue) => void' } },
     },
     min: {
       control: 'number',
-      description: 'The smallest value.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
     },
     max: {
       control: 'number',
-      description: 'The largest value.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '100' } },
     },
     step: {
       control: 'number',
-      description: 'The distance between two values. The value snaps to it.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
     },
     marks: {
       control: false,
-      description:
-        'Shows marks on the track. `true` puts one on every step, a list of numbers puts them there, and a list of `{ value, label }` also writes a label under each. They are hidden from assistive technology.',
-      table: { type: { summary: 'boolean | number[] | { value: number; label?: ReactNode }[]' } },
     },
     orientation: {
       control: 'radio',
-      description:
-        'Direction of the track. A vertical slider is 12rem high, and its minimum is at the bottom.',
       options: ['horizontal', 'vertical'],
-      table: {
-        type: { summary: `"horizontal" | "vertical"` },
-        defaultValue: { summary: 'horizontal' },
-      },
     },
     formatValue: {
       control: false,
-      description: 'Returns the text for a value, which screen readers read: `$40`.',
-      table: { type: { summary: '(value: number) => string' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the slider.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     readOnly: {
       control: 'boolean',
-      description:
-        'Shows the value without letting the user change it. It stays reachable, and has `aria-readonly`.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     invalid: {
       control: 'boolean',
-      description: 'Marks the slider as invalid: it turns to the error color.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the thumb and the track.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `solid` has a thick track and a filled thumb, `outline` a thin track and a hollow thumb. `unstyled` renders only the native inputs, so you can bring your own styles.',
       options: ['solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
     },
     id: {
       control: false,
-      description:
-        'Id of the input. A range gives the second thumb the same id with `-1` at the end.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     name: {
       control: 'text',
-      description: 'Name of the input in a form. A range sends both values with the same name.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Slider.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: false,
-      description: 'Hides the Slider.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
       control: 'text',
-      description:
-        'Accessible name of the slider. In a range it names the group, and the thumbs are named from `labels.thumb`.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the slider (or the group of a range).',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description: 'Id of the element that describes the slider. A `Field` sets it.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: false,
-      description: 'Marks the slider as invalid. A `Field` with an error sets it.',
-      table: { category: 'Accessibility', type: { summary: 'boolean | "true" | "false"' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Slider, for other languages: `thumb(index)` is the accessible name of a thumb of a range, from its index (`Minimum` and `Maximum` by default).',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<SliderLabels>' },
-      },
     },
   },
   args: {
@@ -253,51 +165,6 @@ type Story = StoryObj<typeof Slider>
  * This is the default Slider, from 0 to 100.
  */
 export const Default: Story = {}
-
-/**
- * Use the parts to give each element its own class or style, to change what a mark shows, or to leave something
- * out. The `SliderThumb` of a range takes the `index` of its value.
- */
-export const Compound: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
-  <SliderTrack className="h-2">
-    <SliderRange className="bg-emerald-500" />
-  </SliderTrack>
-  <SliderMarks>
-    {(mark) => (
-      <SliderMarkItem mark={mark}>
-        <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
-      </SliderMarkItem>
-    )}
-  </SliderMarks>
-  <SliderThumb aria-label="From" index={0} />
-  <SliderThumb aria-label="To" index={1} />
-</Slider>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={frame}>
-      <Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
-        <SliderTrack className="h-2">
-          <SliderRange className="bg-emerald-500" />
-        </SliderTrack>
-        <SliderMarks>
-          {(mark) => (
-            <SliderMarkItem mark={mark}>
-              <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
-            </SliderMarkItem>
-          )}
-        </SliderMarks>
-        <SliderThumb aria-label="From" index={0} />
-        <SliderThumb aria-label="To" index={1} />
-      </Slider>
-    </div>
-  ),
-}
 
 /**
  * Use the **variant** prop to pick how the Slider looks. `unstyled` renders only the native input, to style it
@@ -494,6 +361,51 @@ export const WithField: Story = {
       <Field errorText="Choose a lower price" label="Price" required>
         <Slider defaultValue={[20, 90]} />
       </Field>
+    </div>
+  ),
+}
+
+/**
+ * Use the parts to give each element its own class or style, to change what a mark shows, or to leave something
+ * out. The `SliderThumb` of a range takes the `index` of its value.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+  <SliderTrack className="h-2">
+    <SliderRange className="bg-emerald-500" />
+  </SliderTrack>
+  <SliderMarks>
+    {(mark) => (
+      <SliderMarkItem mark={mark}>
+        <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+      </SliderMarkItem>
+    )}
+  </SliderMarks>
+  <SliderThumb aria-label="From" index={0} />
+  <SliderThumb aria-label="To" index={1} />
+</Slider>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={frame}>
+      <Slider aria-label="Budget" defaultValue={[25, 75]} marks={[0, 50, 100]}>
+        <SliderTrack className="h-2">
+          <SliderRange className="bg-emerald-500" />
+        </SliderTrack>
+        <SliderMarks>
+          {(mark) => (
+            <SliderMarkItem mark={mark}>
+              <SliderMarkLabel className="font-semibold">{mark.value}%</SliderMarkLabel>
+            </SliderMarkItem>
+          )}
+        </SliderMarks>
+        <SliderThumb aria-label="From" index={0} />
+        <SliderThumb aria-label="To" index={1} />
+      </Slider>
     </div>
   ),
 }
