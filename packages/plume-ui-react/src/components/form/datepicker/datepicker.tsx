@@ -50,13 +50,13 @@ export interface DatePickerOwnProps {
    *
    * @default false
    */
-  isCalendar?: boolean
+  calendar?: boolean
   /**
    * Selects a start and an end date, showing two consecutive months.
    *
    * @default false
    */
-  isRange?: boolean
+  range?: boolean
   /**
    * `labels` sets every text the component shows or announces: the buttons of the footer (`apply`, `cancel`), the name of the calendar (`calendar`) and of the button that opens it (`openCalendar`), and the navigation buttons (`previousMonth`, `nextMonth`, `previousYears`, `nextYears`). Every key is optional and falls back to its default.
    */
@@ -68,13 +68,13 @@ export interface DatePickerOwnProps {
   /**
    * Called with the new `{ startDate, endDate }` when a date is picked or typed, when a range is complete, or on Apply when `showFooter` is set.
    */
-  onChange: (value: DateRange) => void
+  onValueChange: (value: DateRange) => void
   /**
    * Shape style of the DatePicker. `pill` rounds the `outline` input and the corners of the calendar.
    */
   shape?: Shape
   /**
-   * Shows Cancel and Apply buttons, so the selection is only applied (and `onChange` called) on Apply.
+   * Shows Cancel and Apply buttons, so the selection is only applied (and `onValueChange` called) on Apply.
    *
    * @default false
    */
@@ -116,12 +116,12 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       colorScheme = 'secondary',
       config,
       displayFormat,
-      isCalendar = false,
-      isRange = false,
+      calendar: isCalendar = false,
+      range: isRange = false,
       labels,
       maxDate,
       minDate,
-      onChange,
+      onValueChange: onChange,
       shape,
       showFooter = false,
       size,

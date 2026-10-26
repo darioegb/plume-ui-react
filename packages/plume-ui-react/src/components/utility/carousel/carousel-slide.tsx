@@ -35,7 +35,7 @@ export const CarouselSlide = forwardRef<HTMLDivElement, CarouselSlideProps>(
     return (
       <div
         aria-label={ariaLabel ?? labels.slide(position, count)}
-        aria-roledescription="slide"
+        aria-roledescription={labels.slideRoleDescription}
         className={joinClasses(isStyled && styles.slide, className)}
         data-active={active ? '' : undefined}
         data-plume-carousel-slide=""

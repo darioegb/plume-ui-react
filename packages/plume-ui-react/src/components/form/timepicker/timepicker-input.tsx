@@ -51,7 +51,7 @@ const defaultPlaceholder = (hour12: boolean, am: string): string =>
 /**
  * The field and the button that opens the panel. It is an `Input`: given children, compose
  * `InputControl`, `InputField`, `InputElement` and `TimePickerTrigger` in any order. It renders
- * nothing when the picker is `isPanel`.
+ * nothing when the picker is `panel`.
  */
 export function TimePickerInput({
   children,

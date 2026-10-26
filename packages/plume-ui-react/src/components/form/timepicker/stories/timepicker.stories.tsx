@@ -49,7 +49,7 @@ function StyledTimePicker({
  * On its own it shows an input with a button that opens the popup. Every element it renders is a part you can
  * import, with its own `className`, `style` and `ref`, so you can reorder, omit or replace it: `TimePickerInput` is
  * the field with the button, and `TimePickerPanel` the lists of hours and minutes (a popup under the input, or
- * always visible with `isPanel`). The `TimePicker` keeps the value and shares it with its parts. With children,
+ * always visible with `panel`). The `TimePicker` keeps the value and shares it with its parts. With children,
  * the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`
  * and `className`) go on the `TimePickerInput`, and the look (`variant`, `size` and `shape`) always on the
  * `TimePicker`.
@@ -103,7 +103,7 @@ export default {
     defaultValue: {
       control: 'text',
     },
-    isPanel: {
+    panel: {
       control: 'boolean',
     },
     hour12: {
@@ -285,7 +285,7 @@ export const CustomLabels: Story = {
 }
 
 /**
- * With **isPanel** only the lists of hours and minutes are shown, always visible, to put them in the page
+ * With **panel** only the lists of hours and minutes are shown, always visible, to put them in the page
  * (a booking form, a side panel). Picking a minute doesn't hide them.
  */
 export const Panel: Story = {
@@ -295,7 +295,7 @@ export const Panel: Story = {
     const [value, setValue] = useState('09:30')
     return (
       <div className='flex flex-col gap-2'>
-        <TimePicker aria-label="Time" isPanel onChange={setValue} value={value} />
+        <TimePicker aria-label="Time" panel onValueChange={setValue} value={value} />
         <span className='text-sm'>Value: {value}</span>
       </div>
     )
@@ -311,7 +311,7 @@ export const Controlled: Story = {
     const [value, setValue] = useState('')
     return (
       <div className="flex flex-col gap-2">
-        <TimePicker aria-label="Time" onChange={setValue} value={value} />
+        <TimePicker aria-label="Time" onValueChange={setValue} value={value} />
         <span className="text-sm">Value: {value ? `"${value}"` : '(empty)'}</span>
       </div>
     )
@@ -335,8 +335,8 @@ export const WithDatePicker: Story = {
     return (
       <div className="flex flex-col gap-3">
         <div className="grid gap-3 grid-cols-[3fr_2fr]">
-          <DatePicker aria-label="Date" onChange={setDate} value={date} />
-          <TimePicker aria-label="Time" onChange={setTime} value={time} />
+          <DatePicker aria-label="Date" onValueChange={setDate} value={date} />
+          <TimePicker aria-label="Time" onValueChange={setTime} value={time} />
         </div>
         <span className="text-sm">Date and time: {label}</span>
       </div>

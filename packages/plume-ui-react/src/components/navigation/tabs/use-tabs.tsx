@@ -38,7 +38,7 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
     config.baseId,
     config.colorScheme,
     config.index,
-    config.isLazy,
+    config.lazy,
     config.orientation,
     config.size,
     config.variant,

@@ -22,7 +22,7 @@ function Page(): React.ReactNode {
               <SelectOption value="b">Beta</SelectOption>
             </SelectContent>
           </Select>
-          <DatePicker onChange={() => undefined} />
+          <DatePicker onValueChange={() => undefined} />
           <Dropdown>
             <DropdownTrigger>
               <button>Menu</button>

@@ -6,7 +6,7 @@ describe('Tabs Component', () => {
   it('should call onChange with the correct index when a tab is clicked', () => {
     const onChangeMock = vi.fn()
     const { getByText } = render(
-      <Tabs onChange={onChangeMock}>
+      <Tabs onIndexChange={onChangeMock}>
         <TabList>
           <Tab>Tab 1</Tab>
           <Tab>Tab 2</Tab>
@@ -26,7 +26,7 @@ describe('Tabs Component', () => {
   it('should handle disabled tabs correctly', () => {
     const onChangeMock = vi.fn()
     const { getByText } = render(
-      <Tabs onChange={onChangeMock}>
+      <Tabs onIndexChange={onChangeMock}>
         <TabList>
           <Tab>Tab 1</Tab>
           <Tab disabled>Tab 2</Tab>
@@ -64,7 +64,7 @@ describe('Tabs Component', () => {
 
   it('should load to the correct panel when a tab is clicked on lazy mode', async () => {
     const { getByText } = render(
-      <Tabs isLazy>
+      <Tabs lazy>
         <TabList>
           <Tab>Tab 1</Tab>
           <Tab>Tab 2</Tab>
@@ -194,7 +194,7 @@ describe('Tabs Component', () => {
 
     it('moves with the arrow keys, skipping disabled tabs and wrapping around', () => {
       const onChange = vi.fn()
-      renderTabs({ onChange })
+      renderTabs({ onIndexChange: onChange })
       tab('One').focus()
 
       fireEvent.keyDown(tab('One'), { key: 'ArrowRight' })

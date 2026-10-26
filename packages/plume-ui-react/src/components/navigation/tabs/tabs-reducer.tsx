@@ -5,7 +5,7 @@ export interface TabsState extends TabsOwnProps {
   index: number
   alignment: TabsAlignment
   baseId: string
-  isLazy: boolean
+  lazy: boolean
   isStyled: boolean
   orientation: TabsOrientation
   size: Size

@@ -18,7 +18,7 @@ export type TabPanelProps = Pick<
 /** The content of a tab, shown while its `Tab` is selected. */
 export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
   ({ children, className = '', index: indexProp, style }, ref) => {
-    const { baseId, colorScheme, isLazy, isStyled } = useTabs()
+    const { baseId, colorScheme, lazy: isLazy, isStyled } = useTabs()
     const index = useTabIndex(indexProp)
 
     const tabContent = isLazy ? lazyLoadContent(children) : children

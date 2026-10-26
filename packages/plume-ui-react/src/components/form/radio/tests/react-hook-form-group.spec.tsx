@@ -22,7 +22,7 @@ function PlanForm({ onSubmit }: { onSubmit: (values: Values) => void }): React.R
           <RadioGroup
             aria-label="Plan"
             name={field.name}
-            onChange={field.onChange}
+            onValueChange={field.onChange}
             value={field.value}
           >
             <Radio aria-label="free" value="free" />

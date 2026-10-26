@@ -243,7 +243,7 @@ export const WithDatePicker: Story = {
   label="Check-in"
   required
 >
-  <DatePicker onChange={setValue} value={value} />
+  <DatePicker onValueChange={setValue} value={value} />
 </Field>`,
       },
     },
@@ -257,7 +257,7 @@ export const WithDatePicker: Story = {
         label='Check-in'
         required
       >
-        <DatePicker onChange={setValue} value={value} />
+        <DatePicker onValueChange={setValue} value={value} />
       </Field>
     )
   },
@@ -340,10 +340,10 @@ export const ReactHookForm: Story = {
       <Field errorText={fieldState.error?.message} label="Stay" required>
         <DatePicker
           inputRef={field.ref}
-          isRange
+          range
           name={field.name}
           onBlur={field.onBlur}
-          onChange={field.onChange}
+          onValueChange={field.onChange}
           value={field.value}
         />
       </Field>
@@ -426,10 +426,10 @@ export const ReactHookForm: Story = {
             <Field errorText={fieldState.error?.message} label='Stay' required>
               <DatePicker
                 inputRef={field.ref}
-                isRange
+                range
                 name={field.name}
                 onBlur={field.onBlur}
-                onChange={field.onChange}
+                onValueChange={field.onChange}
                 value={field.value}
               />
             </Field>

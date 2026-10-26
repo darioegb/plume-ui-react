@@ -73,7 +73,8 @@ function Controls(): React.ReactNode {
  *
  * It follows the WAI-ARIA carousel pattern: the root is a `region` with `aria-roledescription="carousel"` (give
  * it an `aria-label`), and every slide is a tab panel with `aria-roledescription="slide"` named "1 of 4", as in the tabbed variant of the pattern, so the dots are its tabs (change the
- * text with **labels.slide**). Only the visible slide can be reached, and it takes the focus to be scrolled with the
+ * text with **labels.slide**; **labels.roleDescription** and **labels.slideRoleDescription** translate the two
+ * `aria-roledescription` words). Only the visible slide can be reached, and it takes the focus to be scrolled with the
  * keyboard: the others are `inert`. The previous and next
  * buttons say what they do and are disabled at the ends unless there is a **loop**, and the dots are a tab list
  * where <kbd>←</kbd> and <kbd>→</kbd> move between them and <kbd>Home</kbd> and <kbd>End</kbd> go to the first

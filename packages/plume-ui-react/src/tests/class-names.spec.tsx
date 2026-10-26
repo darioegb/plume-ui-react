@@ -16,7 +16,7 @@ describe('className of the root', () => {
   describe.each<[string, () => ReactElement]>([
     ['Checkbox', () => <Checkbox className="a-root" />],
     ['Collapse', () => <Collapse className="a-root">Text</Collapse>],
-    ['DatePicker', () => <DatePicker className="a-root" onChange={() => undefined} />],
+    ['DatePicker', () => <DatePicker className="a-root" onValueChange={() => undefined} />],
     ['Input with a group', () => <Input className="a-root" elementAfter={<span />} />],
     ['Input', () => <Input className="a-root" />],
     ['PinInput', () => <PinInput aria-label="Code" className="a-root" length={2} />],

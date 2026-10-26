@@ -92,7 +92,7 @@ describe('LocaleProvider', () => {
     rerender(
       <LocaleProvider locale="es-AR">
         <Probe />
-        <DatePicker onChange={() => undefined} />
+        <DatePicker onValueChange={() => undefined} />
       </LocaleProvider>,
     )
     expect(screen.getByText('es-AR')).toBeInTheDocument()
@@ -102,7 +102,7 @@ describe('LocaleProvider', () => {
   it('lets config.language win over the locale', () => {
     render(
       <LocaleProvider locale="es-AR">
-        <DatePicker config={{ language: 'en-US' }} onChange={() => undefined} />
+        <DatePicker config={{ language: 'en-US' }} onValueChange={() => undefined} />
       </LocaleProvider>,
     )
     expect(screen.getByPlaceholderText('mm/dd/yyyy')).toBeInTheDocument()
