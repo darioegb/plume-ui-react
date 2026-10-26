@@ -7,6 +7,10 @@ import { useModalContext } from './modal-context'
 import styles from './modal.module.css'
 
 export interface ModalHeaderOwnProps {
+  /**
+   * The heading level. The title names the dialog, so choose the one that fits the page.
+   * @default 'h2'
+   */
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
@@ -16,6 +20,7 @@ export type ModalHeaderProps = Omit<ComponentProps, 'index'> &
   ModalHeaderRootAttributes &
   ModalHeaderOwnProps
 
+/** The title, which names the dialog. */
 export const ModalHeader = forwardRef<HTMLHeadingElement, ModalHeaderProps>(
   (
     { as = 'h2', children, className = '', style }: ModalHeaderProps,

@@ -73,19 +73,6 @@ function Example(props: Readonly<Omit<DropdownProps, 'children'>>): React.ReactN
  * <kbd>End</kbd> move between the items, typing a few letters jumps to the item that starts with them, and a
  * disabled item is skipped. <kbd>Esc</kbd> and <kbd>Tab</kbd> close it and give the focus back to the trigger, and so
  * does selecting an item.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `DropdownTrigger` | `children`. One element, such as a `Button`, which gets the click and keyboard handlers and the `aria-*` attributes and is what the menu is anchored to. With text, it renders a plain `<button>`. |
- * | `DropdownMenu` | `className`, `style`, `aria-label`, `aria-labelledby`, `children`. The menu. It is named after the trigger unless you give it a name. |
- * | `DropdownItem` | `onSelect`, `closeOnSelect`, `disabled`, `href`, `target`, `rel`, `icon`, `shortcut`, `className`, `style`, `children`. An action. With `href` it is a link. Given `DropdownItemIcon`, `DropdownItemLabel` or `DropdownItemShortcut` as children it renders them as written, and `icon` and `shortcut` have no effect. |
- * | `DropdownItemIcon` | `className`, `style`, `children`. The decorative icon of an item. It renders nothing without children. |
- * | `DropdownItemLabel` | `className`, `style`, `children`. The text of an item. |
- * | `DropdownItemShortcut` | `className`, `style`, `children`. The shortcut of an item. It renders nothing without children. |
- * | `DropdownSeparator` | `className`, `style`. A line between groups of items. |
- * | `DropdownLabel` | `className`, `style`, `children`. A heading for the items that follow. It isn't focusable. |
  */
 export default {
   title: 'Components/Dropdown',
@@ -113,15 +100,9 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `DropdownTrigger` and the `DropdownMenu`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
+    children: { control: false },
     placement: {
       control: 'select',
-      description:
-        'Where the menu opens, relative to the trigger: a side, with an optional alignment (`bottom-start`, `top-end`).',
       options: [
         'top',
         'top-start',
@@ -136,59 +117,16 @@ export default {
         'right-start',
         'right-end',
       ],
-      table: { type: { summary: 'Placement' }, defaultValue: { summary: 'bottom-start' } },
     },
-    offset: {
-      control: 'number',
-      description: 'Distance in pixels between the trigger and the menu.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '4' } },
-    },
-    flip: {
-      control: 'boolean',
-      description: 'Opens on the opposite side when there is no room on the one asked for.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    shift: {
-      control: 'boolean',
-      description: 'Slides the menu along its side to keep it inside the screen.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the text and of the padding of the items.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `elevated` floats the menu with a shadow and `outline` draws its border. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['elevated', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"elevated" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'elevated' },
-      },
-    },
-    closeOnSelect: {
-      control: 'boolean',
-      description: 'Whether selecting an item closes the menu. An item can override it.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    open: {
-      control: 'boolean',
-      description: 'Whether the menu is open, for a controlled menu. Pair it with `onOpenChange`.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the menu is open at first, for an uncontrolled menu.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    onOpenChange: {
-      control: false,
-      description: 'Called with the new state when the menu opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
-    },
+    offset: { control: 'number' },
+    flip: { control: 'boolean' },
+    shift: { control: 'boolean' },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['elevated', 'outline', 'unstyled'] },
+    closeOnSelect: { control: 'boolean' },
+    open: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
+    onOpenChange: { control: false },
   },
   render: (args) => <Example {...args} />,
 } satisfies Meta<typeof Dropdown>

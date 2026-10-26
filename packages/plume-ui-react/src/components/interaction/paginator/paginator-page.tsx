@@ -9,6 +9,7 @@ import { usePaginatorContext } from './paginator-context'
 import styles from './paginator.module.css'
 
 export interface PaginatorPageOwnProps {
+  /** The number of the page the button goes to, starting at 1. */
   page: number
 }
 
@@ -21,6 +22,10 @@ export type PaginatorPageProps = Omit<ComponentProps, 'index'> &
   PaginatorPageRootAttributes &
   PaginatorPageOwnProps
 
+/**
+ * The button of a page. It has `aria-current="page"` and `data-current` when it is the current one,
+ * its name comes from **labels.page** and its text is the number unless you pass children.
+ */
 export const PaginatorPage = forwardRef<HTMLButtonElement, PaginatorPageProps>(
   (
     {

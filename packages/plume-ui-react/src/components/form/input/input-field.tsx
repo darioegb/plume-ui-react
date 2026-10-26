@@ -43,6 +43,7 @@ const chain =
     second?.(event)
   }
 
+/** The native `<input>`. It takes the native props of an input. */
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   (
     { className, disabled, onBlur, onChange, readOnly, style, type, ...own }: InputFieldProps,

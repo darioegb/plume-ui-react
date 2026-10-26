@@ -19,13 +19,49 @@ export type { ChipLabels } from './chip-context'
 export type ChipVariant = 'solid' | 'outline' | 'subtle' | 'unstyled'
 
 export interface ChipOwnProps {
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Dims the Chip and disables its remove button.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * An icon or an image before the text. It is decorative, so it is hidden from screen readers:
+   * give an image `alt=""`.
+   */
   icon?: ReactNode
+  /**
+   * The texts of the Chip, to translate it: `remove` is the accessible name of the remove button.
+   * By default it is `Remove` followed by the text of the Chip; with `labels.remove` the name is
+   * exactly that text.
+   */
   labels?: Partial<ChipLabels>
+  /** Shows a remove button, and is called when it is clicked. */
   onRemove?: (event: MouseEvent<HTMLButtonElement>) => void
+  /**
+   * Corners of the Chip.
+   *
+   * @default 'pill'
+   */
   shape?: Shape
+  /**
+   * Size of the Chip.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `subtle` tints the Chip, `solid` fills it and `outline` only draws its border.
+   * `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'subtle'
+   */
   variant?: ChipVariant
 }
 

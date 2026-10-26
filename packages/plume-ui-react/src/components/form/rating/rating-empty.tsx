@@ -11,6 +11,10 @@ type RatingEmptyRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children
 
 export type RatingEmptyProps = Omit<ComponentProps, 'index'> & RatingEmptyRootAttributes
 
+/**
+ * The outline layer of a star, hidden from assistive technology. Its `children` replace the
+ * `emptyIcon` of the rating.
+ */
 export const RatingEmpty = forwardRef<HTMLSpanElement, RatingEmptyProps>(
   (
     { children, className, style }: RatingEmptyProps,

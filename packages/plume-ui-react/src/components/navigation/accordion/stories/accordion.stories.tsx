@@ -56,18 +56,6 @@ function Items({ disabled }: Readonly<{ disabled?: string }>): React.ReactNode {
  * With `type="single"` (the default) one item is open at a time; with `type="multiple"` any number. Every item
  * has a `value`, and the accordion keeps the open ones in `value` / `defaultValue` (a string, or a list of
  * strings with `multiple`).
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `AccordionItem` | `value`, `disabled`, `id`, `title`, `hidden`, `className`, `style`, `children`. One section. `value` identifies it and is required. It has `data-open` and `data-disabled` to style it. |
- * | `AccordionTrigger` | `headingLevel`, `icon`, `title`, `className`, `style`, `children`. The button that toggles the item. `headingLevel` (`1` to `6`, `3` by default) is the heading around it, so choose the one that fits your page. `icon` replaces the chevron, and `null` removes it. Given no parts it renders an `AccordionHeading` with the button, an `AccordionTitle` with `children` and an `AccordionIcon`; given `AccordionTitle` or `AccordionIcon` among its children it renders them as written. The button has `data-open` while its item is open. |
- * | `AccordionHeading` | `level`, `title`, `className`, `style`, `children`. The heading (`<h1>` to `<h6>`, `3` by default) around a trigger. Use it to style the heading or to put something next to the trigger inside it. A trigger inside an `AccordionHeading` does not add its own. |
- * | `AccordionTitle` | `title`, `className`, `style`, `children`. The text inside the trigger. |
- * | `AccordionIcon` | `className`, `style`, `children`. The decorative icon inside the trigger, a chevron by default. It has `data-open` while its item is open. |
- * | `AccordionContent` | `title`, `className`, `style`, `children`. The panel, a `<section>` that only animates its height. Its content sits in a box with the padding, unless you put an `AccordionBody` in it. |
- * | `AccordionBody` | `title`, `className`, `style`, `children`. The box with the content and the padding of the panel. Add it to style that box, or to change its padding. |
  */
 export default {
   title: 'Components/Accordion',
@@ -84,105 +72,23 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `AccordionItem` parts of the Accordion.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Accordion.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Accordion. They are applied after the color variables, so they can override them (e.g. `--accordion-text`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    type: {
-      control: 'radio',
-      description: 'With `single` one item is open at a time, with `multiple` any number can be.',
-      options: ['single', 'multiple'],
-      table: { type: { summary: `"single" | "multiple"` }, defaultValue: { summary: 'single' } },
-    },
-    value: {
-      control: false,
-      description:
-        'The open item, or the open items with `type="multiple"`. Makes the Accordion controlled: pass `onValueChange` to update it. An empty string means none.',
-      table: { type: { summary: 'string | string[]' } },
-    },
-    defaultValue: {
-      control: false,
-      description:
-        'The item that starts open, or the items with `type="multiple"`, when it is not controlled.',
-      table: { type: { summary: 'string | string[]' } },
-    },
-    onValueChange: {
-      control: false,
-      description:
-        'Called with the new value: the open item (an empty string when all close) or, with `multiple`, the list of open items.',
-      table: { category: 'Events', type: { summary: '(value: string | string[]) => void' } },
-    },
-    collapsible: {
-      control: 'boolean',
-      description:
-        'With `type="single"`, lets the user close the open item. Without it one item always stays open. It has no effect with `multiple`.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables every item. An item can also be disabled on its own.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the open title and the focus ring.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Accordion.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `outline` draws one border around the items, `filled` gives each item its own background. `unstyled` drops the Plume styles so you can bring your own; the animation keeps working.',
-      options: ['outline', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Accordion.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Accordion.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Accordion.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: false,
-      description: 'Accessible name of the Accordion.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Accordion.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    type: { control: 'radio', options: ['single', 'multiple'] },
+    value: { control: false },
+    defaultValue: { control: false },
+    onValueChange: { control: false },
+    collapsible: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['outline', 'filled', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: false },
+    'aria-labelledby': { control: false },
   },
   args: {
     children: <Items />,

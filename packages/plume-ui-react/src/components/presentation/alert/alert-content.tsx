@@ -9,6 +9,7 @@ type AlertContentRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children
 
 export type AlertContentProps = Omit<ComponentProps, 'index'> & AlertContentRootAttributes
 
+/** The block that holds the title and the description. */
 export const AlertContent = forwardRef<HTMLDivElement, AlertContentProps>(
   (
     { children, className, style }: AlertContentProps,

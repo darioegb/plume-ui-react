@@ -11,6 +11,7 @@ import styles from './input.module.css'
 export type InputRevealProps = Omit<ComponentProps, 'index'> &
   Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'disabled' | 'onClick'>
 
+/** The button that shows and hides a password. */
 export const InputReveal = forwardRef<HTMLButtonElement, InputRevealProps>(
   (
     { 'aria-label': ariaLabel, children, className, disabled, onClick, style }: InputRevealProps,

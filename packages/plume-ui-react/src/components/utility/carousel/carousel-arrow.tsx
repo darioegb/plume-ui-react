@@ -9,7 +9,12 @@ import { useCarouselContext } from './carousel-context'
 import styles from './carousel.module.css'
 
 export interface CarouselArrowOwnProps {
+  /** Replaces the arrow. `children` replaces all of the content of the button. */
   icon?: ReactNode
+  /**
+   * The accessible name of the button. It wins over `labels.previous` and `labels.next` of the
+   * Carousel.
+   */
   label?: string
 }
 

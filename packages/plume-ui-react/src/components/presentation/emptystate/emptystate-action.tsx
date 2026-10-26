@@ -7,6 +7,7 @@ import styles from './emptystate.module.css'
 export type EmptyStateActionProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
+/** What the user can do about it. */
 export const EmptyStateAction = forwardRef<HTMLDivElement, EmptyStateActionProps>(
   (
     { children, className, style }: EmptyStateActionProps,

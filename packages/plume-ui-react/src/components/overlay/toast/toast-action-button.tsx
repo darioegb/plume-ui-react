@@ -11,6 +11,7 @@ type ToastActionButtonRootAttributes = Pick<ButtonHTMLAttributes<HTMLButtonEleme
 
 export type ToastActionButtonProps = Omit<ComponentProps, 'index'> & ToastActionButtonRootAttributes
 
+/** The action button. It runs `onClick` and dismisses the toast. `children` replaces its label. */
 export const ToastActionButton = forwardRef<HTMLButtonElement, ToastActionButtonProps>(
   (
     { children, className, style }: ToastActionButtonProps,

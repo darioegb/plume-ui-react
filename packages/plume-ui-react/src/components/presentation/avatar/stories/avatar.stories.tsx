@@ -41,16 +41,6 @@ const people = [
  * in the order you write them. The content (**src**, **name**, **fallback**, **status**) stays on the `Avatar`, and the
  * parts read it, so `AvatarImage` shows the **src** while it loads and `AvatarFallback` takes its place when there is
  * no image or it fails.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `AvatarImage` | `loading`, `crossOrigin`, `decoding`, `referrerPolicy`, `className`, `style`. The `<img>` with the **src** of the Avatar. It renders nothing without a **src** or when the image fails to load. |
- * | `AvatarFallback` | `children` (replaces the content), `className`, `style`. The initials, the **fallback** or an icon. It renders nothing while the image is shown. |
- * | `AvatarStatusDot` | `className`, `style`. The dot of the **status**, with a `data-status` attribute. It renders nothing without a **status**. |
- * | `AvatarOverflow` | `count` (required), `children` (replaces `+count`), and the props of the Avatar except the content. The counter of the group. It is what the group renders when **max** hides avatars, and you can place it yourself. Its name comes from **labels.overflow** of the group. |
- * | `AvatarGroup` | `max`, `labels` (`overflow` is `(hidden) => string`, `N more` by default, and the texts of the status, which the avatars of the group inherit), `size`, `shape`, `colorScheme`, `variant`, `aria-label`, `aria-labelledby`, `id`, `title`, `className`, `style`, `children`. A `role="group"` that stacks the avatars. Name it with `aria-label` (`Team members`). |
  */
 export default {
   title: 'Components/Avatar',
@@ -76,116 +66,62 @@ export default {
   argTypes: {
     name: {
       control: 'text',
-      description:
-        'Name of the person. Its initials are the fallback, and it names the avatar for assistive technology.',
-      table: { type: { summary: 'string' } },
     },
     src: {
       control: 'text',
-      description: 'URL of the image. If it fails to load, the fallback is shown.',
-      table: { type: { summary: 'string' } },
     },
     alt: {
       control: 'text',
-      description:
-        'Accessible name of the image, when the name is not enough. It replaces the name.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     fallback: {
       control: false,
-      description:
-        'What to show when there is no image: a text, an icon... By default, the initials of the name, or an icon of a person.',
-      table: { type: { summary: 'ReactNode' } },
     },
     status: {
       control: 'radio',
-      description: 'Adds a dot with the presence of the person.',
       options: [undefined, 'online', 'busy', 'away', 'offline'],
-      table: { type: { summary: `"online" | "busy" | "away" | "offline"` } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the status for assistive technology, to translate them: `online`, `busy`, `away` and `offline`.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<AvatarLabels>' },
-        defaultValue: {
-          summary: "{ online: 'Online', busy: 'Busy', away: 'Away', offline: 'Offline' }",
-        },
-      },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Avatar. The parts take their own `className`.',
-      table: { type: { summary: 'string' } },
     },
     children: {
       control: false,
-      description:
-        'The parts to render, in the order you want: `AvatarImage`, `AvatarFallback` and `AvatarStatusDot`. Without them the Avatar renders all three.',
-      table: { type: { summary: 'ReactNode' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Avatar. They are applied after the color variables, so they can override them (e.g. `--avatar-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description:
-        'Color scheme of the fallback, from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Avatar.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     shape: {
       control: 'radio',
-      description: 'Corners of the Avatar: `pill` is a circle and `rounded` a rounded square.',
       options: ['pill', 'rounded'],
-      table: { type: { summary: `"pill" | "rounded"` }, defaultValue: { summary: 'pill' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant of the fallback. `subtle` tints it, `solid` fills it and `outline` draws its border. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['subtle', 'solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"subtle" | "solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'subtle' },
-      },
     },
     id: {
       control: false,
-      description: 'Id of the Avatar.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Avatar.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: 'boolean',
-      description: 'Hides the Avatar.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
       control: 'text',
-      description:
-        'Accessible name of the Avatar. It replaces the one made from the name and the status.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Avatar.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

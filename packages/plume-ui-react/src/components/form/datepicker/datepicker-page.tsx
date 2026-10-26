@@ -12,6 +12,11 @@ import { useDatePickerPage } from './use-datepicker-page'
 import styles from './datepicker.module.css'
 
 export interface DatePickerPageOwnProps {
+  /**
+   * Marks the second page of a range, the one that shows the month after.
+   *
+   * @default false
+   */
   second?: boolean
 }
 
@@ -19,6 +24,7 @@ export type DatePickerPageProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'> &
   DatePickerPageOwnProps
 
+/** One month of the calendar. It keeps the view: days, months or years. */
 export const DatePickerPage = forwardRef<HTMLDivElement, DatePickerPageProps>(
   (
     { children, className, second = false, style }: DatePickerPageProps,

@@ -6,9 +6,13 @@ import { DatePickerMonths, DatePickerYears } from './datepicker-months'
 import { useDatePickerPage, type DatePickerViewName } from './datepicker-page-context'
 
 export interface DatePickerViewProps {
+  /**
+   * A node, or a function of the current view (`day`, `month` or `year`) that returns what to render. Without it the view is rendered with its default parts.
+   */
   children?: ((view: DatePickerViewName) => ReactNode) | ReactNode
 }
 
+/** Renders the current view of the page: days, months or years. */
 export function DatePickerView({ children }: Readonly<DatePickerViewProps>): ReactNode {
   const { view } = useDatePickerPage('DatePickerView')
 

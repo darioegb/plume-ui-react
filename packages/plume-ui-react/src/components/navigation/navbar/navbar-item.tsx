@@ -9,8 +9,19 @@ import { useNavbarContext } from './navbar-context'
 import styles from './navbar.module.css'
 
 export interface NavbarItemOwnProps {
+  /**
+   * Marks the item as the current one, with `aria-current="page"` and `data-active`.
+   *
+   * @default false
+   */
   active?: boolean
+  /**
+   * Disables the item: it can't be activated and the keyboard skips it.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /** Called when the item is clicked. */
   onClick?: MouseEventHandler<HTMLElement>
 }
 
@@ -23,6 +34,7 @@ export type NavbarItemProps = Omit<ComponentProps, 'index'> &
   NavbarItemRootAttributes &
   NavbarItemOwnProps
 
+/** A link, or a button without `href`. It has `data-active` and `data-disabled`. */
 export const NavbarItem = forwardRef<HTMLElement, NavbarItemProps>(
   (
     { active = false, className, disabled = false, ...rest }: NavbarItemProps,

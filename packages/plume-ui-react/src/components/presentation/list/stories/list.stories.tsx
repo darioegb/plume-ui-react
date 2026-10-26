@@ -46,19 +46,6 @@ const files = ['Annual report.pdf', 'Budget.xlsx', 'Meeting notes.md']
  *
  * The `variant` picks the container: `plain` has none, `bordered` is a bordered box with dividers, like a list
  * group, and `filled` has a muted background. `marker` adds bullets or numbers to a list of plain text items.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `ListItem` | `className`, `style`, `id`, `value` (the number of an item in a numbered list), `children`. A row that lines up its icon, its text and anything you add after them, like a `Badge` or a switch. |
- * | `ListItemButton` | `selected`, `disabled`, `href` (renders a link instead of a button), `target`, `rel`, `onClick`, `aria-current`, `className`, `style`, `children`. Goes inside a `ListItem` and fills it. `selected` highlights it and sets `aria-current="true"`; for navigation pass `aria-current="page"`. |
- * | `ListItemIcon` | `className`, `style`, `children`. An icon at the start of the row. It is hidden from screen readers. |
- * | `ListItemText` | `primary`, `secondary`, `className`, `style`. The text of the row. |
- * | `ListSubheader` | `className`, `style`, `id`, `children`. A small title for the items that follow. |
- * | `ListDivider` | `className`, `style`, `id`. A line between two items. It is presentational: it doesn't count as an item of the list. |
- *
- * None of the parts needs JavaScript, so a List can be rendered in a Server Component.
  */
 export default {
   title: 'Components/List',
@@ -85,91 +72,50 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The `ListItem`, `ListSubheader` and `ListDivider` elements of the List.',
-      table: { type: { summary: 'ReactNode' } },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the List.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the List. They are applied after the color variables, so they can override them (e.g. `--list-tint`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description:
-        'Color scheme from the theme palette, used for the selected item and the focus ring.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the text and of the padding of the items.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `plain` has no container, `bordered` draws a border and divides the items, and `filled` gives the List a muted background. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['plain', 'bordered', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "bordered" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
     },
     divided: {
       control: 'boolean',
-      description:
-        'Draws a line between the items. It is on by default for `bordered` and off for the other variants.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'variant === "bordered"' } },
     },
     marker: {
       control: 'radio',
-      description:
-        'Bullets or numbers for a list of plain text items. `number` renders an `<ol>`. The markers go with text items: a row with an icon or a button is a flex row and has none.',
       options: ['none', 'bullet', 'number'],
-      table: {
-        type: { summary: `"none" | "bullet" | "number"` },
-        defaultValue: { summary: 'none' },
-      },
     },
     as: {
       control: 'radio',
-      description:
-        'The element to render. By default it follows the marker: `ol` for `number` and `ul` for the rest. Use it to get an `<ol>` with the `unstyled` variant.',
       options: [undefined, 'ul', 'ol'],
-      table: { type: { summary: `"ul" | "ol"` } },
     },
     id: {
       control: false,
-      description: 'Id of the List.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the List.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     role: {
       control: 'text',
-      description:
-        'Role of the List. A List without markers gets `list` by default, because some browsers drop the list role when the markers are gone.',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name of the List.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the List.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

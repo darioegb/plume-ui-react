@@ -7,6 +7,7 @@ import styles from './divider.module.css'
 export type DividerLabelProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The text between the two lines of a horizontal Divider. */
 export const DividerLabel = forwardRef<HTMLSpanElement, DividerLabelProps>(
   (
     { children, className, style }: DividerLabelProps,

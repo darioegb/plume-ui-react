@@ -13,6 +13,7 @@ type SelectChevronRootAttributes = Pick<ButtonHTMLAttributes<HTMLButtonElement>,
 
 export type SelectChevronProps = Omit<ComponentProps, 'index'> & SelectChevronRootAttributes
 
+/** The button with the arrow that opens the list. Its `children` replace the arrow. */
 export const SelectChevron = forwardRef<HTMLButtonElement, SelectChevronProps>(
   (
     { children, className, style }: SelectChevronProps,

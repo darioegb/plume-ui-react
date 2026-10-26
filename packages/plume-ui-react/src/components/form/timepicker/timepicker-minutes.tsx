@@ -9,6 +9,7 @@ import { useTimePicker } from './use-timepicker'
 
 export type TimePickerMinutesProps = TimePickerColumnProps<number>
 
+/** The list of minutes, spaced by `minuteStep`. */
 export const TimePickerMinutes = forwardRef<HTMLDivElement, TimePickerMinutesProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: TimePickerMinutesProps,

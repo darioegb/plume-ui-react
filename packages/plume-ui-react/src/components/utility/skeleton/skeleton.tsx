@@ -10,10 +10,33 @@ export type SkeletonShape = 'text' | 'rect' | 'circle'
 export type SkeletonVariant = 'pulse' | 'wave' | 'unstyled'
 
 export interface SkeletonOwnProps {
+  /**
+   * Height, in pixels as a number or with any CSS unit as a string. A text is one line tall, a
+   * rect 6rem and a circle 3rem.
+   */
   height?: number | string
+  /**
+   * How many lines of text to show. The last one is shorter. It only applies to the `text`
+   * shape.
+   * @default 1
+   */
   lines?: number
+  /**
+   * What the Skeleton stands for: a line of `text`, a `rect` (an image or a card) or a `circle`
+   * (an avatar).
+   * @default 'text'
+   */
   shape?: SkeletonShape
+  /**
+   * Animation. `pulse` fades it in and out, `wave` sweeps a light across it. `unstyled` drops
+   * the Plume styles, the animation too, and keeps the structure so you can bring your own.
+   * @default 'pulse'
+   */
   variant?: SkeletonVariant
+  /**
+   * Width, in pixels as a number or with any CSS unit as a string. A text fills its container by
+   * default, a circle is 3rem.
+   */
   width?: number | string
 }
 

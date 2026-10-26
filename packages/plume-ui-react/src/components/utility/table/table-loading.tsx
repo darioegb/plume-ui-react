@@ -9,6 +9,7 @@ import styles from './table.module.css'
 import { useTableContext } from './table-context'
 
 export interface TableLoadingOwnProps {
+  /** The accessible name of the spinner. By default it is `labels.loading` of the `Table`. */
   label?: string
 }
 
@@ -21,6 +22,10 @@ export type TableLoadingProps = Omit<ComponentProps, 'index'> &
   TableLoadingRootAttributes &
   TableLoadingOwnProps
 
+/**
+ * The veil with the `Spinner`, only while the `Table` is `loading`. `children` replace the
+ * spinner.
+ */
 export const TableLoading = forwardRef<HTMLDivElement, TableLoadingProps>(
   (
     { children, className, label, style, ...rest }: TableLoadingProps,

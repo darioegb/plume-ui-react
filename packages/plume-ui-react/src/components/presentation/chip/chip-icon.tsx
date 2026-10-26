@@ -10,6 +10,7 @@ import styles from './chip.module.css'
 export type ChipIconProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The decorative icon or image, hidden from screen readers. */
 export const ChipIcon = forwardRef<HTMLSpanElement, ChipIconProps>(
   (
     { children, className, style }: ChipIconProps,

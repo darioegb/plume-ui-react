@@ -44,16 +44,6 @@ const heartOutline = (
  * `RatingItem` or a `RatingValueText`, it renders your children instead, and a function child is called once for each
  * star. A part takes `className`, `style` and `ref`, and `icon`, `emptyIcon` and `labels` of the Rating keep filling
  * the defaults.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `RatingItem` | `className`, `style`, `ref`, `position` (required), `children`. One star, with `data-state` (`empty`, `half` or `full`). Without any of its parts as children it renders `RatingEmpty`, `RatingFilled` and the radios. |
- * | `RatingEmpty` | `className`, `style`, `ref`, `children`. The outline layer, hidden from assistive technology. `children` replace the `emptyIcon` of the Rating. |
- * | `RatingFilled` | `className`, `style`, `ref`, `children`. The colored layer on top of the empty one, whole or clipped to half. `children` replace the `icon` of the Rating. |
- * | `RatingRadio` | `className`, `style`, `ref`, `value`, `aria-label`, `title`. The radio of a star. `value` is the score it gives (the position of its item by default; with `allowHalf` use `position - 0.5` for the first half). It renders nothing when the Rating is read only. |
- * | `RatingValueText` | `className`, `style`, `ref`, `children`. The text of a read only Rating (`labels.readOnly`), visually hidden. It renders nothing when the Rating is interactive. |
  */
 export default {
   title: 'Components/Rating',
@@ -71,145 +61,81 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Rating.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Rating. They are applied after the color variables, so they can override them (e.g. `--rating-solid` and `--rating-empty`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     value: {
       control: false,
-      description:
-        'The score, from `0` to `max`. Makes the Rating controlled: pass `onValueChange` to update it.',
-      table: { type: { summary: 'number' } },
     },
     defaultValue: {
       control: { type: 'number', min: 0, max: 5, step: 0.5 },
-      description:
-        'The score the Rating starts with, when it is not controlled. It is rounded to a whole number, or to a half with `allowHalf`.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
     },
     onValueChange: {
       control: false,
-      description: 'Called with the new score. It is `0` when the score is cleared.',
-      table: { category: 'Events', type: { summary: '(value: number) => void' } },
     },
     max: {
       control: { type: 'number', min: 1, max: 10 },
-      description: 'How many stars there are, which is also the highest score.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '5' } },
     },
     allowHalf: {
       control: 'boolean',
-      description: 'Lets the user pick half a star: every star gets two radios, one for each half.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     clearable: {
       control: 'boolean',
-      description:
-        'Lets the user remove the score, by clicking the chosen star again or pressing <kbd>Backspace</kbd> or <kbd>Delete</kbd>. The score goes to `0`.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     readOnly: {
       control: 'boolean',
-      description:
-        "Shows the score without letting the user change it. It renders text, not radio buttons, so it can't be focused.",
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the radios and dims the Rating.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     icon: {
       control: false,
-      description:
-        'The icon of a star, in the color of the Rating. A custom one is also used for the empty stars unless you give `emptyIcon`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     emptyIcon: {
       control: false,
-      description:
-        'The icon of an empty star. By default it is an outline of the star, or of your `icon`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Rating, for other languages. `item(value, max)` is the accessible name of a star, from its score and the max; the default says `3 stars`, and it can also name the scores: `Good`. `readOnly(value, max)` is the text a read only Rating says; the default says `3 out of 5`.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<RatingLabels>' },
-      },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'warning' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the stars.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `solid` colors the stars. `unstyled` drops the Plume styles so you can bring your own; the stars keep working and have `data-state`.',
       options: ['solid', 'unstyled'],
-      table: { type: { summary: `"solid" | "unstyled"` }, defaultValue: { summary: 'solid' } },
     },
     name: {
       control: 'text',
-      description:
-        "Name of the radios in a form. It is generated when you don't give one. A form submits the chosen score.",
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the group as required (`aria-required`).',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     id: {
       control: false,
-      description: 'Id of the group.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Rating.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: false,
-      description: 'Hides the Rating.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
       control: 'text',
-      description:
-        'Accessible name of the group. It needs this, an `aria-labelledby` or a `Field` label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the group.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description: 'Id of the element that describes the group.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description: 'Marks the group as invalid.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
   },
   args: {

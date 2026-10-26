@@ -44,27 +44,6 @@ const toDate = (value?: Date): Date | undefined => (value === undefined ? undefi
  * repeat (weekdays, days, months and years) take a function as children, like
  * `<DatePickerGrid>{(day) => <DatePickerDay day={day} />}</DatePickerGrid>`, to render each one yourself.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `DatePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button) and `children` (the `Input` parts you want instead of the default ones). It renders nothing when the `DatePicker` is `isCalendar`. |
- * | `DatePickerField` | The props of `InputField`, `className`, `style`, `ref`. The `<input>` inside a `DatePickerInput`. |
- * | `DatePickerTrigger` | `className`, `style`, `ref`, `children` (another icon). The button that opens the calendar, inside a `DatePickerInput`. |
- * | `DatePickerCalendar` | `aria-label` (`Calendar` by default, or `labels.calendar`), `className`, `style`, `ref`. The popup that opens under the input, or the page content when the `DatePicker` is `isCalendar`. |
- * | `DatePickerPages` | `className`, `style`, `ref`. Holds one `DatePickerPage`, or two in a range. |
- * | `DatePickerPage` | `second` (the second page of a range), `className`, `style`, `ref`. One month: it keeps the view (days, months or years). |
- * | `DatePickerHeader`, `DatePickerNav` | `className`, `style`, `ref`. The top row and the row of controls inside it. |
- * | `DatePickerPrevious`, `DatePickerNext` | `aria-label`, `className`, `style`, `ref`, `children`. Step a month, or 20 years in the year view. |
- * | `DatePickerMonthButton`, `DatePickerYearButton` | `aria-label`, `className`, `style`, `ref`, `children`. Open the list of months or years. |
- * | `DatePickerSeparator` | `className`, `style`, `ref`, `children`. The `/` between month and year. |
- * | `DatePickerView` | `children`, a node or a function of the view (`day`, `month` or `year`). Renders the current view. |
- * | `DatePickerWeekdays`, `DatePickerWeekday` | `className`, `style`, `ref`, `children` (a function of the weekday and its index, on `DatePickerWeekdays`). |
- * | `DatePickerGrid`, `DatePickerDay` | `className`, `style`, `ref`, `children` (a function of the day on `DatePickerGrid`; the content of the day on `DatePickerDay`, which also takes `day`). |
- * | `DatePickerMonths`, `DatePickerMonthOption` | The same, with `month` on the option. |
- * | `DatePickerYears`, `DatePickerYearOption` | The same, with `year` on the option. |
- * | `DatePickerFooter`, `DatePickerCancel`, `DatePickerApply` | `className`, `style`, `ref`, `children`. The actions of `showFooter`. |
- *
  * ### Closing
  *
  * The popup closes with <kbd>Esc</kbd> (the focus goes back to the input), with a press outside of the
@@ -93,190 +72,28 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the root element of the DatePicker.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    value: {
-      control: false,
-      description:
-        'Selected date or range as `{ startDate, endDate }`. In single mode `endDate` is `null`.',
-      table: {
-        type: { summary: 'DateRange' },
-      },
-    },
-    isCalendar: {
-      control: 'boolean',
-      description: 'Renders only the calendar, always visible, without the input.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    isRange: {
-      control: 'boolean',
-      description: 'Selects a start and an end date, showing two consecutive months.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      options: colorSchemes,
-      table: {
-        defaultValue: { summary: 'secondary' },
-        type: { summary: 'ColorScheme' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Indicates whether the DatePicker is disabled.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    displayFormat: {
-      control: 'text',
-      description:
-        'Format of the typed and displayed date, built from the `dd`, `mm` and `yyyy` tokens in any order and case (e.g. `dd/mm/yyyy`, `YYYY-MM-DD`). Defaults to the format of `config.language`.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    maxDate: {
-      control: 'date',
-      description: 'Last selectable date. Later days are disabled.',
-      table: {
-        type: { summary: 'Date' },
-      },
-    },
-    minDate: {
-      control: 'date',
-      description: 'First selectable date. Earlier days are disabled.',
-      table: {
-        type: { summary: 'Date' },
-      },
-    },
-    showFooter: {
-      control: 'boolean',
-      description:
-        'Shows Cancel and Apply buttons, so the selection is only applied (and `onChange` called) on Apply.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    config: {
-      control: false,
-      description:
-        '`language` sets the month and weekday names, the default `displayFormat` and the day labels read by screen readers. It is optional and falls back to `en`.',
-      table: {
-        defaultValue: { summary: 'object', detail: "{ language: 'en' }" },
-        type: { summary: 'DatePickerConfig', detail: '{ language?: string }' },
-      },
-    },
-    labels: {
-      control: false,
-      description:
-        '`labels` sets every text the component shows or announces: the buttons of the footer (`apply`, `cancel`), the name of the calendar (`calendar`) and of the button that opens it (`openCalendar`), and the navigation buttons (`previousMonth`, `nextMonth`, `previousYears`, `nextYears`). Every key is optional and falls back to its default.',
-      table: {
-        defaultValue: {
-          summary: 'object',
-          detail:
-            "{ apply: 'Apply', calendar: 'Calendar', cancel: 'Cancel', nextMonth: 'Next month', nextYears: 'Next years', openCalendar: 'Open calendar', previousMonth: 'Previous month', previousYears: 'Previous years' }",
-        },
-        type: {
-          summary: 'Partial<DatePickerLabels>',
-          detail:
-            '{ apply?: string; calendar?: string; cancel?: string; nextMonth?: string; nextYears?: string; openCalendar?: string; previousMonth?: string; previousYears?: string }',
-        },
-      },
-    },
-    readOnly: {
-      control: 'boolean',
-      description: 'Shows the value but blocks typing and the calendar button.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    shape: {
-      control: 'inline-radio',
-      description:
-        'Shape style of the DatePicker. `pill` rounds the `outline` input and the corners of the calendar.',
-      options: ['pill', 'rounded'],
-      table: {
-        defaultValue: { summary: 'rounded' },
-        type: { summary: `"pill" | "rounded"` },
-      },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the input and of the calendar days.',
-      options: ['sm', 'md', 'lg'],
-      table: {
-        defaultValue: { summary: 'md' },
-        type: { summary: `"sm" | "md" | "lg"` },
-      },
-    },
-    variant: {
-      control: 'select',
-      description:
-        'Visual style variant of the input and of the calendar. `outline` has a bordered calendar, `filled` a tinted one with an accent line, `underline` a square one with an accent line and `unstyled` none of them.',
-      options: ['outline', 'underline', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "underline" | "filled" | "unstyled"` },
-      },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Placeholder of the input. Defaults to the display format.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles. They are applied after the color variables, so they can override them (e.g. `--datepicker-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    name: {
-      control: false,
-      description: 'Name of the `<input>`, submitted with the form as the formatted date.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    inputRef: {
-      control: false,
-      description:
-        'Ref to the `<input>`. The component `ref` points to the wrapper, so pass a form library ref here (e.g. `field.ref` from react-hook-form) to let it focus the field on errors.',
-      table: { category: 'HTML attributes', type: { summary: 'Ref<HTMLInputElement>' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the input as required for form validation.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    onChange: {
-      action: 'changed',
-      description:
-        'Called with the new `{ startDate, endDate }` when a date is picked or typed, when a range is complete, or on Apply when `showFooter` is set.',
-      table: { category: 'Events', type: { summary: '(value: DateRange) => void' } },
-    },
-    onBlur: {
-      action: 'blurred',
-      description: 'Called with the current value when the input loses focus.',
-      table: { category: 'Events', type: { summary: '(value?: DateRange) => void' } },
-    },
+    className: { control: 'text' },
+    value: { control: false },
+    isCalendar: { control: 'boolean' },
+    isRange: { control: 'boolean' },
+    colorScheme: { control: 'select', options: colorSchemes },
+    disabled: { control: 'boolean' },
+    displayFormat: { control: 'text' },
+    maxDate: { control: 'date' },
+    minDate: { control: 'date' },
+    showFooter: { control: 'boolean' },
+    config: { control: false },
+    labels: { control: false },
+    readOnly: { control: 'boolean' },
+    shape: { control: 'inline-radio', options: ['pill', 'rounded'] },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'select', options: ['outline', 'underline', 'filled', 'unstyled'] },
+    placeholder: { control: 'text' },
+    style: { control: false },
+    id: { control: false },
+    name: { control: false },
+    inputRef: { control: false },
+    required: { control: 'boolean' },
   },
   render: ({ minDate, maxDate, ...args }) => (
     <DatePicker {...args} maxDate={toDate(maxDate)} minDate={toDate(minDate)} />

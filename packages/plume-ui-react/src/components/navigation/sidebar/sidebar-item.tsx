@@ -18,9 +18,21 @@ import { SidebarItemLabel } from './sidebar-item-label'
 import styles from './sidebar.module.css'
 
 export interface SidebarItemOwnProps {
+  /**
+   * Marks the item as the current one, with `aria-current="page"` and `data-active`.
+   *
+   * @default false
+   */
   active?: boolean
+  /**
+   * Disables the item: it can't be activated and the keyboard skips it.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /** Icon shown before the text. It has no effect when the item is composed with parts. */
   icon?: ReactNode
+  /** Called when the item is clicked. */
   onClick?: MouseEventHandler<HTMLElement>
 }
 
@@ -35,6 +47,11 @@ export type SidebarItemProps = Omit<ComponentProps, 'index'> &
 
 const ITEM_PARTS: readonly ElementType[] = [SidebarItemIcon, SidebarItemLabel]
 
+/**
+ * A link, or a button without `href`. Given text it renders the `icon` and the label; given
+ * `SidebarItemIcon` or `SidebarItemLabel` it renders them as written. It has `data-active` and
+ * `data-disabled`.
+ */
 export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
   (
     { active = false, children, className, disabled = false, icon, ...rest }: SidebarItemProps,

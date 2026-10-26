@@ -11,6 +11,7 @@ export type TabListProps = Pick<
   'aria-label' | 'aria-labelledby' | 'className' | 'id' | 'children' | 'style'
 >
 
+/** The `tablist` that holds the `Tab` items. It has `data-orientation`. */
 export const TabList = forwardRef<HTMLDivElement, TabListProps>(
   ({ children, ...rest }: TabListProps, ref: Ref<HTMLDivElement>) => {
     const { alignmentClass, isStyled, orientation, variantClass } = useTabs()

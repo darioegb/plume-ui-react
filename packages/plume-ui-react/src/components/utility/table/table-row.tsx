@@ -3,6 +3,10 @@ import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
 
 export interface TableRowOwnProps {
+  /**
+   * Marks the row as selected: it sets `aria-selected` and `data-selected`.
+   * @default false
+   */
   selected?: boolean
 }
 
@@ -15,6 +19,7 @@ export type TableRowProps = Omit<ComponentProps, 'index'> &
   TableRowRootAttributes &
   TableRowOwnProps
 
+/** A `<tr>`. */
 export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
   (
     { children, className, selected = false, style, ...rest }: TableRowProps,

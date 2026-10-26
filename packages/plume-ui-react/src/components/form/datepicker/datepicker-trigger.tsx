@@ -11,6 +11,7 @@ import { useDatePicker } from './use-datepicker'
 export type DatePickerTriggerProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLButtonElement>, 'children'>
 
+/** The button that opens the calendar, inside a `DatePickerInput`. `children` replace the icon. */
 export const DatePickerTrigger = forwardRef<HTMLButtonElement, DatePickerTriggerProps>(
   (
     { children, className, style }: DatePickerTriggerProps,

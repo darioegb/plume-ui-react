@@ -27,13 +27,6 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * hidden input of a `name`. The `PinInput` keeps the code and the focus and shares them with its parts, so the
  * boxes can be in any order and wrapped in other elements. The look (`variant`, `size`, `shape`), the type, the
  * mask and the labels always go on the `PinInput`.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `PinInputCell` | `index` (required, from 0), `className`, `style`, `ref`, `aria-label`, `autoComplete`, `inputMode`, `placeholder`, `id`, `title`. One box. It has `data-filled`, `data-disabled` and `data-invalid`. |
- * | `PinInputHidden` | `name` (the `name` of the `PinInput` by default), `form`, `ref`. The hidden input that carries the whole code. The default composition renders it when the `PinInput` has a `name`; in a composition you add it yourself. |
  */
 export default {
   title: 'Components/PinInput',
@@ -49,182 +42,35 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the group (the `<fieldset>`). `style` goes there too.',
-      table: { type: { summary: 'string' } },
-    },
-    children: {
-      control: false,
-      description:
-        'The parts of the PinInput: `PinInputCell` for each box and `PinInputHidden` for the hidden input of a `name`. Without children it renders the boxes.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the group. They are applied after the color variables, so they can override them (e.g. `--pininput-color`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    length: {
-      control: { type: 'number', min: 1, max: 10 },
-      description: 'How many boxes, that is, how many characters the code has.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '6' } },
-    },
-    type: {
-      control: 'radio',
-      description:
-        'What the boxes accept: `numeric` digits (and asks the phone for the numeric keyboard), `alphanumeric` letters and digits, or `text` anything but spaces.',
-      options: ['numeric', 'alphanumeric', 'text'],
-      table: {
-        type: { summary: `"numeric" | "alphanumeric" | "text"` },
-        defaultValue: { summary: 'numeric' },
-      },
-    },
-    mask: {
-      control: 'boolean',
-      description:
-        'Hides what is typed, as a password does. Use it for a PIN, not for a code that is sent to the user.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'A character shown in the empty boxes, like `○`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    value: {
-      control: false,
-      description:
-        'The code. Makes the PinInput controlled: pass `onValueChange` to update it. The characters are always one after another, with no empty box in between.',
-      table: { type: { summary: 'string' } },
-    },
-    defaultValue: {
-      control: 'text',
-      description: 'The code the boxes start with, when it is not controlled.',
-      table: { type: { summary: 'string' } },
-    },
-    onValueChange: {
-      control: false,
-      description: 'Called with the code every time it changes, complete or not.',
-      table: { category: 'Events', type: { summary: '(value: string) => void' } },
-    },
-    onComplete: {
-      control: false,
-      description: 'Called with the code when the last box is filled.',
-      table: { category: 'Events', type: { summary: '(value: string) => void' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts of the PinInput, for other languages: `input(index, length)` is the accessible name of a box, from its position (counting from 1) and the length. The default says `Digit 1 of 6`, or `Character` when the type is not numeric.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<PinInputLabels>' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme for the focus ring, from the theme palette (custom schemes included).',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the boxes.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    shape: {
-      control: 'radio',
-      description: 'Corners of the boxes.',
-      options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant of the boxes, the same as the `Input`. `unstyled` drops the Plume styles so you can bring your own; the row stays.',
-      options: ['outline', 'filled', 'underline', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "filled" | "underline" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables every box.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    readOnly: {
-      control: 'boolean',
-      description: 'The code can be read and focused but not changed, typed or pasted.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    focusOnMount: {
-      control: 'boolean',
-      description:
-        'Gives the focus to the first box when the component mounts. It is `autoFocus` with another name: moving the focus on its own is only right on a screen that exists to enter the code.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    autoComplete: {
-      control: 'text',
-      description:
-        'Native `autocomplete` of the boxes. `one-time-code` lets a phone suggest the code from an SMS; use `off` for a PIN.',
-      table: {
-        category: 'HTML attributes',
-        type: { summary: 'string' },
-        defaultValue: { summary: 'one-time-code' },
-      },
-    },
-    name: {
-      control: 'text',
-      description:
-        'Name of the code in a form. It is submitted in a hidden input; the boxes have no name.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the boxes as required (`aria-required`).',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    id: {
-      control: false,
-      description:
-        'Id of the first box. A `<label htmlFor>` pointing to it gives the focus to the code.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the group.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the group.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description:
-        'Accessible name of the group. It needs this, an `aria-labelledby` or a `Field` label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the group.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-describedby': {
-      control: false,
-      description: 'Id of the element that describes the group.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-invalid': {
-      control: 'boolean',
-      description: 'Marks the boxes as invalid.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
-    },
+    className: { control: 'text' },
+    children: { control: false },
+    style: { control: false },
+    length: { control: { type: 'number', min: 1, max: 10 } },
+    type: { control: 'radio', options: ['numeric', 'alphanumeric', 'text'] },
+    mask: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    value: { control: false },
+    defaultValue: { control: 'text' },
+    onValueChange: { control: false },
+    onComplete: { control: false },
+    labels: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    shape: { control: 'radio', options: ['rounded', 'pill'] },
+    variant: { control: 'radio', options: ['outline', 'filled', 'underline', 'unstyled'] },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    focusOnMount: { control: 'boolean' },
+    autoComplete: { control: 'text' },
+    name: { control: 'text' },
+    required: { control: 'boolean' },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    'aria-describedby': { control: false },
+    'aria-invalid': { control: 'boolean' },
   },
   args: {
     'aria-label': 'Verification code',

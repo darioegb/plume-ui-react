@@ -11,6 +11,7 @@ type ToastIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
 export type ToastIconProps = Omit<ComponentProps, 'index'> & ToastIconRootAttributes
 
+/** The icon of the status. `children` replaces it. */
 export const ToastIcon = forwardRef<HTMLSpanElement, ToastIconProps>(
   (
     { children, className, style }: ToastIconProps,

@@ -94,17 +94,6 @@ function Controls(): React.ReactNode {
  *
  * Each slide takes the full width. Give a `CarouselSlide` a width (`className` or `style`, like `flex-basis: 50%`)
  * to show several at once.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `CarouselSlides` | `id`, `title`, `className`, `style`, `children`. The strip that holds and scrolls the slides. Each child is one slide. |
- * | `CarouselSlide` | `aria-label`, `title`, `hidden`, `className`, `style`, `children`. One slide. It has `data-active` while it is the visible one. |
- * | `CarouselPrev`, `CarouselNext` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `ref`, `children`. The buttons that go to the previous and the next slide. `label` is the accessible name (`"Previous slide"`, `"Next slide"`), `icon` replaces the arrow and `children` replaces all of its content. |
- * | `CarouselDots` | `aria-label`, `id`, `title`, `hidden`, `className`, `style`, `ref`, `children`. The tab list of the dots. Given no children it renders one `CarouselDot` per slide. Children can be a function that gets the position of the dot, called once per slide, or the `CarouselDot` elements themselves. |
- * | `CarouselDot` | `aria-label`, `disabled`, `onClick`, `onKeyDown`, `id`, `title`, `className`, `style`, `ref`, `children`. One dot, a tab that goes to its slide. It must be inside `CarouselDots`, which tells it which slide it is. Its name comes from `labels.dot` (`"Slide 1 of 4"`) and it has `data-active` while its slide is the visible one. The arrow keys, `Home` and `End` move between dots. |
- * | `CarouselPlayPause` | `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. Pauses and resumes the autoplay. It has `data-playing` while the carousel moves. |
  */
 export default {
   title: 'Components/Carousel',
@@ -130,112 +119,23 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description:
-        'The parts of the Carousel: a `CarouselSlides` with the slides, and the buttons and dots you want.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Carousel.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Carousel. They are applied after the color variables, so they can override them (e.g. `--carousel-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    index: {
-      control: false,
-      description:
-        'The visible slide, starting at 0. Makes the Carousel controlled: pass `onIndexChange` to update it.',
-      table: { type: { summary: 'number' } },
-    },
-    defaultIndex: {
-      control: 'number',
-      description: 'The slide that is visible first, when it is not controlled.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '0' } },
-    },
-    onIndexChange: {
-      control: false,
-      description:
-        'Called with the new index when the visible slide changes, by a button, a dot, autoplay or a swipe.',
-      table: { category: 'Events', type: { summary: '(index: number) => void' } },
-    },
-    loop: {
-      control: 'boolean',
-      description:
-        'Makes the buttons go from the last slide to the first, and the other way round, instead of stopping.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    autoplay: {
-      control: false,
-      description:
-        'Time in milliseconds between slides. Without it the Carousel only moves when the user asks. It pauses on hover and focus and never runs with `prefers-reduced-motion`.',
-      table: { type: { summary: 'number | false' }, defaultValue: { summary: 'false' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts the Carousel shows to assistive technology: `slide(index, count)` and `dot(index, count)` name each slide and dot, `dots` names the group of dots, `previous` and `next` name the arrows, `play` and `pause` name the autoplay button. The `label` of an arrow and the `aria-label` of a dots group or slide win over these.',
-      table: {
-        type: { summary: 'Partial<CarouselLabels>' },
-        defaultValue: {
-          summary:
-            "{ slide: (i, n) => `${i + 1} of ${n}`, dot: (i, n) => `Slide ${i + 1} of ${n}`, dots: 'Choose a slide', previous: 'Previous slide', next: 'Next slide', play: 'Start the slideshow', pause: 'Pause the slideshow' }",
-        },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the buttons and the active dot.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the buttons and the dots.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant of the buttons. `solid` fills them with the color, `outline` draws a border on a neutral background, `ghost` has no background until it is hovered, and `overlay` puts a dark translucent circle behind a white arrow, to read over a photo. `unstyled` drops the Plume styles so you can bring your own; the scrolling and the snapping keep working.',
-      options: ['solid', 'outline', 'ghost', 'overlay', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "ghost" | "overlay" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Carousel. The slides and the controls take their ids from it.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Carousel.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Carousel.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the Carousel, for example "Featured places".',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Carousel.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    index: { control: false },
+    defaultIndex: { control: 'number' },
+    onIndexChange: { control: false },
+    loop: { control: 'boolean' },
+    autoplay: { control: false },
+    labels: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'ghost', 'overlay', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     'aria-label': 'Featured places',

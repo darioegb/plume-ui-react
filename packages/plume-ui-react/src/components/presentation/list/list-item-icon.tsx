@@ -10,6 +10,7 @@ type ListItemIconRootAttributes = Pick<
 
 export type ListItemIconProps = Omit<ComponentProps, 'index'> & ListItemIconRootAttributes
 
+/** An icon at the start of the row. It is hidden from screen readers. */
 export const ListItemIcon = forwardRef<HTMLSpanElement, ListItemIconProps>(
   (
     { children, className = '', style, ...rest }: ListItemIconProps,

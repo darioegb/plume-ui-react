@@ -3,6 +3,7 @@ import { forwardRef } from 'react'
 import type { ComponentProps } from '../../../theme'
 
 export interface TableCellOwnProps {
+  /** The alignment of the text of the cell. */
   align?: 'start' | 'center' | 'end'
 }
 
@@ -15,6 +16,7 @@ export type TableCellProps = Omit<ComponentProps, 'index'> &
   TableCellRootAttributes &
   TableCellOwnProps
 
+/** A `<td>`. */
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
   (
     { align, children, className, style, ...rest }: TableCellProps,

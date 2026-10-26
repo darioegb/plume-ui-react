@@ -10,6 +10,7 @@ type SelectOptionTextRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type SelectOptionTextProps = Omit<ComponentProps, 'index'> & SelectOptionTextRootAttributes
 
+/** The text of an option. */
 export const SelectOptionText = forwardRef<HTMLSpanElement, SelectOptionTextProps>(
   (
     { children, className, style }: SelectOptionTextProps,

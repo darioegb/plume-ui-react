@@ -6,10 +6,16 @@ import { cloneWithProps, mergeRefs } from '../../../overlay/trigger'
 import { useDropdownContext } from './dropdown-context'
 
 export interface DropdownTriggerProps {
+  /** The element that opens the menu, such as a `Button`. Text renders a plain `<button>`. */
   children: ReactNode
+  /** Class of the plain `<button>` it renders when `children` is text. */
   className?: string
 }
 
+/**
+ * One element, such as a `Button`, which gets the click and keyboard handlers and the `aria-*`
+ * attributes and is what the menu is anchored to. With text, it renders a plain `<button>`.
+ */
 export const DropdownTrigger = forwardRef<HTMLElement, DropdownTriggerProps>(
   ({ children, className }: DropdownTriggerProps, ref: ForwardedRef<HTMLElement>): ReactElement => {
     const { open, openMenu, setOpen, setTrigger, triggerId } = useDropdownContext('DropdownTrigger')

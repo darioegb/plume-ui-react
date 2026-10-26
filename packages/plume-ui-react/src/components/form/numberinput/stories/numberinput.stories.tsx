@@ -37,14 +37,6 @@ const readEuros = (text: string): number | null => {
  * `NumberInputIncrement` are the buttons. The `NumberInput` keeps the number and shares it with its parts, so a
  * part can go anywhere inside it, and be left out. With children the `steppers` prop has no effect, since you
  * choose the buttons yourself.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `NumberInputField` | `className`, `style`, `ref`, `id`, `placeholder`, `title`, `required`, `onBlur`, `onFocus`, `aria-*`. The `<input>`. It takes the attributes of the `NumberInput` and the ones it gets itself win. The `ref` of the `NumberInput` goes to it. |
- * | `NumberInputDecrement` | `className`, `style`, `ref`, `label`, `children`, `disabled`, `id`, `title`. The button that subtracts. `label` is its accessible name (`labels.decrement` by default) and `children` replace the icon. |
- * | `NumberInputIncrement` | The same props, for the button that adds (`labels.increment`). |
  */
 export default {
   title: 'Components/NumberInput',
@@ -60,187 +52,37 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description:
-        'Custom CSS class for the control, the box that holds the input and the buttons. `style` goes there too. The parts take their own `className`.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the control. They are applied after the color variables, so they can override them (e.g. `--numberinput-color`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    value: {
-      control: false,
-      description:
-        'The number, or `null` when it is empty. Makes the NumberInput controlled: pass `onValueChange` to update it.',
-      table: { type: { summary: 'number | null' } },
-    },
-    defaultValue: {
-      control: 'number',
-      description: 'The number the field starts with, when it is not controlled.',
-      table: { type: { summary: 'number | null' } },
-    },
-    onValueChange: {
-      control: false,
-      description:
-        'Called with the new number, or `null` when the field is empty. It is called while the user types, with what was typed; the clamped and rounded number comes when the field is committed.',
-      table: { category: 'Events', type: { summary: '(value: number | null) => void' } },
-    },
-    min: {
-      control: 'number',
-      description:
-        'The lowest number. A value under it is raised to it on blur, and the decrease button is disabled at it.',
-      table: { type: { summary: 'number' } },
-    },
-    max: {
-      control: 'number',
-      description:
-        'The highest number. A value over it is lowered to it on blur, and the increase button is disabled at it.',
-      table: { type: { summary: 'number' } },
-    },
-    step: {
-      control: 'number',
-      description: 'How much the arrows and the buttons add or subtract.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
-    },
-    largeStep: {
-      control: 'number',
-      description:
-        'How much <kbd>PageUp</kbd> and <kbd>PageDown</kbd> add or subtract. Ten steps by default.',
-      table: { type: { summary: 'number' } },
-    },
-    precision: {
-      control: 'number',
-      description:
-        'Decimals to keep. A typed number is rounded to them on blur and the text is padded with zeros. Without it a typed number keeps its decimals, and a step keeps those of the step. `0` allows only whole numbers and asks for the numeric keyboard.',
-      table: { type: { summary: 'number' } },
-    },
-    format: {
-      control: false,
-      description:
-        'How a number is shown when the field is not being edited: a currency, a unit, thousands separators. It is exposed to screen readers as `aria-valuetext`.',
-      table: { type: { summary: '(value: number) => string' } },
-    },
-    parse: {
-      control: false,
-      description:
-        'Turns the text of the field into a number, or `null`. The default accepts a dot or a comma as the decimal separator. Use it with `format` so what `format` shows can be read back.',
-      table: { type: { summary: '(text: string) => number | null' } },
-    },
-    steppers: {
-      control: 'boolean',
-      description:
-        'Shows the buttons to subtract and add. The keyboard keeps working without them.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts of the NumberInput, for other languages: `increment` and `decrement` are the accessible names of the buttons (`Increase` and `Decrease` by default).',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<NumberInputLabels>' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme for the focus ring, from the theme palette (custom schemes included).',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the NumberInput.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    shape: {
-      control: 'radio',
-      description: 'Corners of the NumberInput.',
-      options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant, the same as the `Input`. `unstyled` drops the Plume styles so you can bring your own; the row of the input and the buttons stays.',
-      options: ['outline', 'filled', 'underline', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "filled" | "underline" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables the field and its buttons.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    readOnly: {
-      control: 'boolean',
-      description:
-        'The number can be read and focused but not changed, by typing or by the buttons.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    placeholder: {
-      control: 'text',
-      description: 'Text shown while the field is empty.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    name: {
-      control: 'text',
-      description:
-        'Name of the field in a form. The plain number goes in a hidden input, an empty string when the field is empty, and the visible input has no name.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the field as required.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<input>`. Use it to point a `<label>` to the field.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the input.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    onBlur: {
-      control: false,
-      description: 'Called when the input loses focus, after the number is committed.',
-      table: { category: 'Events', type: { summary: 'FocusEventHandler<HTMLInputElement>' } },
-    },
-    onFocus: {
-      control: false,
-      description: 'Called when the input gets focus.',
-      table: { category: 'Events', type: { summary: 'FocusEventHandler<HTMLInputElement>' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the field, when there is no label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the field.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-describedby': {
-      control: false,
-      description: 'Id of the element that describes the field.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-invalid': {
-      control: 'boolean',
-      description: 'Marks the field as invalid.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
-    },
+    className: { control: 'text' },
+    style: { control: false },
+    value: { control: false },
+    defaultValue: { control: 'number' },
+    onValueChange: { control: false },
+    min: { control: 'number' },
+    max: { control: 'number' },
+    step: { control: 'number' },
+    largeStep: { control: 'number' },
+    precision: { control: 'number' },
+    format: { control: false },
+    parse: { control: false },
+    steppers: { control: 'boolean' },
+    labels: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    shape: { control: 'radio', options: ['rounded', 'pill'] },
+    variant: { control: 'radio', options: ['outline', 'filled', 'underline', 'unstyled'] },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    placeholder: { control: 'text' },
+    name: { control: 'text' },
+    required: { control: 'boolean' },
+    id: { control: false },
+    title: { control: 'text' },
+    onBlur: { control: false },
+    onFocus: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    'aria-describedby': { control: false },
+    'aria-invalid': { control: 'boolean' },
   },
   args: {
     'aria-label': 'Quantity',

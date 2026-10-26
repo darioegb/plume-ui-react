@@ -15,6 +15,10 @@ type TableElementRootAttributes = Pick<
 
 export type TableElementProps = Omit<ComponentProps, 'index'> & TableElementRootAttributes
 
+/**
+ * The `<table>`. It takes the name, the variant, the size and the states (`data-hoverable`,
+ * `data-sticky`, `data-loading`, `aria-busy`) of the `Table`, and its `ref`.
+ */
 export const TableElement = forwardRef<HTMLTableElement, TableElementProps>(
   (
     {

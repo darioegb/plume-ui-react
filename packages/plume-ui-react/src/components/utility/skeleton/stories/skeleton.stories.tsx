@@ -14,12 +14,6 @@ import { Skeleton, SkeletonLine } from '..'
  * For a paragraph, **lines** renders several lines. To set the width of each one, or to give them classes, give the
  * Skeleton its lines as `SkeletonLine` children instead. The Skeleton has no state to share, so it is a plain
  * component that a Server Component can render.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `SkeletonLine` | `className`, `style`, `ref`, `width`, `height`. One line of text in a Skeleton with several. The last line of a group is shorter unless you give it a `width`. |
  */
 export default {
   title: 'Components/Skeleton',
@@ -35,68 +29,16 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Skeleton.',
-      table: { type: { summary: 'string' } },
-    },
-    children: {
-      control: false,
-      description:
-        'The lines to render, as `SkeletonLine` parts. When given, `lines` and `shape` have no effect.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Skeleton. They are applied after the size variables, so they can override them.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    shape: {
-      control: 'radio',
-      description:
-        'What the Skeleton stands for: a line of `text`, a `rect` (an image or a card) or a `circle` (an avatar).',
-      options: ['text', 'rect', 'circle'],
-      table: { type: { summary: `"text" | "rect" | "circle"` }, defaultValue: { summary: 'text' } },
-    },
-    width: {
-      control: 'text',
-      description:
-        'Width, in pixels as a number or with any CSS unit as a string. A text fills its container by default, a circle is 3rem.',
-      table: { type: { summary: 'number | string' } },
-    },
-    height: {
-      control: 'text',
-      description:
-        'Height, in pixels as a number or with any CSS unit as a string. A text is one line tall, a rect 6rem and a circle 3rem.',
-      table: { type: { summary: 'number | string' } },
-    },
-    lines: {
-      control: 'number',
-      description:
-        'How many lines of text to show. The last one is shorter. It only applies to the `text` shape.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '1' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Animation. `pulse` fades it in and out, `wave` sweeps a light across it. `unstyled` drops the Plume styles, the animation too, and keeps the structure so you can bring your own.',
-      options: ['pulse', 'wave', 'unstyled'],
-      table: {
-        type: { summary: `"pulse" | "wave" | "unstyled"` },
-        defaultValue: { summary: 'pulse' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Skeleton.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Skeleton.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
+    className: { control: 'text' },
+    children: { control: false },
+    style: { control: false },
+    shape: { control: 'radio', options: ['text', 'rect', 'circle'] },
+    width: { control: 'text' },
+    height: { control: 'text' },
+    lines: { control: 'number' },
+    variant: { control: 'radio', options: ['pulse', 'wave', 'unstyled'] },
+    id: { control: false },
+    hidden: { control: false },
   },
   args: {
     style: { width: '16rem' },

@@ -14,6 +14,11 @@ type SidebarBackdropRootAttributes = Pick<
 
 export type SidebarBackdropProps = Omit<ComponentProps, 'index'> & SidebarBackdropRootAttributes
 
+/**
+ * The layer behind the sidebar on a small screen. Put one in the `Sidebar` to replace the default;
+ * the `Sidebar` renders it before its panel, so it is never inside it. A press closes the sidebar
+ * unless `onClick` prevents the default. It has `data-open`.
+ */
 export const SidebarBackdrop = forwardRef<HTMLDivElement, SidebarBackdropProps>(
   (
     { className, onClick, style, ...rest }: SidebarBackdropProps,

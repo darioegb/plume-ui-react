@@ -8,6 +8,7 @@ type ListDividerRootAttributes = Pick<LiHTMLAttributes<HTMLLIElement>, 'hidden' 
 
 export type ListDividerProps = Omit<ComponentProps, 'index'> & ListDividerRootAttributes
 
+/** A line between two items. It is presentational: it doesn't count as an item of the list. */
 export const ListDivider = forwardRef<HTMLLIElement, ListDividerProps>(
   ({ className = '', style, ...rest }: ListDividerProps, ref: ForwardedRef<HTMLLIElement>) => (
     <li

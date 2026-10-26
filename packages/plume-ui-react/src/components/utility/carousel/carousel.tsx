@@ -11,14 +11,59 @@ import { CarouselContext, type CarouselLabels, type CarouselVariant } from './ca
 import styles from './carousel.module.css'
 
 export interface CarouselOwnProps {
+  /**
+   * Time in milliseconds between slides. Without it the Carousel only moves when the user asks.
+   * It pauses on hover and focus and never runs with `prefers-reduced-motion`.
+   * @default false
+   */
   autoplay?: number | false
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. It colors the
+   * buttons and the active dot.
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The slide that is visible first, when it is not controlled.
+   * @default 0
+   */
   defaultIndex?: number
+  /**
+   * The visible slide, starting at 0. Makes the Carousel controlled: pass `onIndexChange` to
+   * update it.
+   */
   index?: number
+  /**
+   * The texts the Carousel shows to assistive technology: `slide(index, count)` and `dot(index,
+   * count)` name each slide and dot, `dots` names the group of dots, `previous` and `next` name
+   * the arrows, `play` and `pause` name the autoplay button. The `label` of an arrow and the
+   * `aria-label` of a dots group or slide win over these.
+   * @default { slide: (i, n) => `${i + 1} of ${n}`, dot: (i, n) => `Slide ${i + 1} of ${n}`, dots: 'Choose a slide', previous: 'Previous slide', next: 'Next slide', play: 'Start the slideshow', pause: 'Pause the slideshow' }
+   */
   labels?: Partial<CarouselLabels>
+  /**
+   * Makes the buttons go from the last slide to the first, and the other way round, instead of
+   * stopping.
+   * @default false
+   */
   loop?: boolean
+  /**
+   * Called with the new index when the visible slide changes, by a button, a dot, autoplay or a
+   * swipe.
+   */
   onIndexChange?: (index: number) => void
+  /**
+   * Size of the buttons and the dots.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant of the buttons. `solid` fills them with the color, `outline` draws a border
+   * on a neutral background, `ghost` has no background until it is hovered, and `overlay` puts a
+   * dark translucent circle behind a white arrow, to read over a photo. `unstyled` drops the
+   * Plume styles so you can bring your own; the scrolling and the snapping keep working.
+   * @default 'solid'
+   */
   variant?: CarouselVariant
 }
 

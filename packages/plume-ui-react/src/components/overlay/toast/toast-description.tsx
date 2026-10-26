@@ -11,6 +11,7 @@ type ToastDescriptionRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type ToastDescriptionProps = Omit<ComponentProps, 'index'> & ToastDescriptionRootAttributes
 
+/** The description of the toast. `children` replaces the one of the toast. */
 export const ToastDescription = forwardRef<HTMLSpanElement, ToastDescriptionProps>(
   (
     { children, className, style }: ToastDescriptionProps,

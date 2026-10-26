@@ -14,6 +14,11 @@ type FileUploadProgressRootAttributes = Pick<
 export type FileUploadProgressProps = Omit<ComponentProps, 'index'> &
   FileUploadProgressRootAttributes
 
+/**
+ * The `ProgressBar` of the file, from `progress`. The `className` goes to its outermost element
+ * and the `ref` to the bar. Its children, such as a `ProgressBarIndicator`, go inside the bar.
+ * It is not there when `progress` gives `undefined`.
+ */
 export const FileUploadProgress = forwardRef<HTMLDivElement, FileUploadProgressProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: FileUploadProgressProps,

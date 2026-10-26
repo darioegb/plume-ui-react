@@ -11,7 +11,9 @@ import styles from './navbar.module.css'
 import { useLabels } from '../../../locale/locale-provider'
 
 export interface NavbarToggleOwnProps {
+  /** Replaces the menu and close icons of the button. */
   icon?: ReactNode
+  /** The accessible name of the button. */
   label?: string
 }
 
@@ -26,6 +28,11 @@ export type NavbarToggleProps = Omit<ComponentProps, 'index'> &
 
 const DEFAULT_LABELS = { label: 'Toggle navigation' }
 
+/**
+ * The button that opens and closes the content. It is only shown below the breakpoint. `label` is
+ * its accessible name (`"Toggle navigation"`), `icon` replaces the menu and close icons, and
+ * `children` replaces all of its content.
+ */
 export const NavbarToggle = forwardRef<HTMLButtonElement, NavbarToggleProps>(
   (
     {

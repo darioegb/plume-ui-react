@@ -12,6 +12,7 @@ type SelectOptionIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type SelectOptionIconProps = Omit<ComponentProps, 'index'> & SelectOptionIconRootAttributes
 
+/** The icon of an option. Its `children` replace the `icon` of the option. */
 export const SelectOptionIcon = forwardRef<HTMLSpanElement, SelectOptionIconProps>(
   (
     { children, className, style }: SelectOptionIconProps,

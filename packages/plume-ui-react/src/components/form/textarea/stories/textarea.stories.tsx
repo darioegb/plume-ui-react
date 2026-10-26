@@ -17,14 +17,6 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * points to the `<textarea>` (it stays empty if there is no `TextareaField`), and `className` and `style` go to its
  * outermost element, the wrapper when it has parts. The props of the field (`value`, `defaultValue`, `maxLength`,
  * `placeholder`, `rows`...) may go on the `Textarea` or on `TextareaField`, and so can the `register` of react-hook-form.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `TextareaField` | The attributes of a `<textarea>`, `className`, `style` and `ref`, which is set together with the `ref` of the `Textarea`. The field itself. |
- * | `TextareaCount` | `children` (what it shows instead of the count), `className`, `style` and `ref`. The counter, which describes the field to a screen reader. |
- * | `TextareaStatus` | `className`, `style` and `ref`. The invisible live region that says how many characters are left near the limit. |
  */
 export default {
   title: 'Components/Textarea',
@@ -42,178 +34,99 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description:
-        'Custom CSS class for the outermost element: the `<textarea>`, or the wrapper around it when `showCount` is on or it has children.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Textarea. They are applied after the color variable, so they can override it (`--textarea-color`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme used for the focus ring and the border while focused.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
     },
     variant: {
       control: 'radio',
-      description: 'Visual variant. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['outline', 'filled', 'underline', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "filled" | "underline" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Textarea.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     shape: {
       control: 'radio',
-      description: 'Shape of the corners.',
       options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
     },
     showCount: {
       control: 'boolean',
-      description:
-        'Shows how many characters there are under the Textarea, as `12` or, with `maxLength`, as `12 / 200`. The count describes the textarea (`aria-describedby`), and near the limit a polite message says how many characters are left. The count turns red at the limit.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     children: {
       control: false,
-      description:
-        'The parts of the Textarea (`TextareaField`, `TextareaCount` and `TextareaStatus`), in the order they should appear. Without children it renders the field, and the count with `showCount`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Textarea, for other languages. `count(count, max)` is the text of the count; the default says `12 / 200`, or `12` without a limit, and it can also show what is left: `188 left`. `remaining(remaining)` is the message a screen reader gets when there are few characters left, at ten or at a tenth of the `maxLength` if that is more; the default says `8 characters left`.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<TextareaLabels>' },
-      },
     },
     resize: {
       control: 'radio',
-      description: 'Which way the user can resize the Textarea.',
       options: ['none', 'vertical', 'horizontal', 'both'],
-      table: {
-        type: { summary: `"none" | "vertical" | "horizontal" | "both"` },
-        defaultValue: { summary: 'vertical' },
-      },
     },
     rows: {
       control: 'number',
-      description: 'Number of visible text lines.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '3' } },
     },
     cols: {
       control: 'number',
-      description: 'Visible width in average character widths.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
     },
     placeholder: {
       control: 'text',
-      description: 'Hint shown while the Textarea is empty.',
-      table: { type: { summary: 'string' } },
     },
     value: {
       control: 'text',
-      description: 'Value, for a controlled Textarea. Pair it with `onChange`.',
-      table: { type: { summary: 'string' } },
     },
     defaultValue: {
       control: 'text',
-      description: 'Initial value, for an uncontrolled Textarea.',
-      table: { type: { summary: 'string' } },
     },
     maxLength: {
       control: 'number',
-      description: 'Maximum number of characters.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
     },
     minLength: {
       control: 'number',
-      description: 'Minimum number of characters for the value to be valid.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
     },
     name: {
       control: 'text',
-      description: 'Name used when the form is submitted.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     wrap: {
       control: 'radio',
-      description: 'How the text wraps when the form is submitted.',
       options: ['soft', 'hard', 'off'],
-      table: { category: 'HTML attributes', type: { summary: `"soft" | "hard" | "off"` } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the Textarea.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     readOnly: {
       control: 'boolean',
-      description: 'Lets the user read and select the text but not change it.',
-      table: { type: { summary: 'boolean' } },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the Textarea as required.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<textarea>`. A Field sets it so its label points to the Textarea.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Textarea has no visible label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Textarea.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description:
-        'Ids of the elements that describe the Textarea. A Field sets it for its helper and error text.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description:
-        'Marks the Textarea as invalid, which also switches it to the error color scheme.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     onChange: {
       control: false,
-      description: 'Called when the user changes the text.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: ChangeEvent<HTMLTextAreaElement>) => void' },
-      },
     },
     onBlur: {
       control: false,
-      description: 'Called when the Textarea loses focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
     },
     onFocus: {
       control: false,
-      description: 'Called when the Textarea receives focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
     },
   },
   args: {

@@ -27,116 +27,66 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the `<input>`, in every variant.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the `<input>`. They are applied after the color variables, so they can override them (e.g. `--toggle-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Toggle.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `solid` fills the track when on, `outline` only colors its border and thumb, and `raised` floats a bigger thumb with a shadow over a thin track. `unstyled` leaves the native switch so you can bring your own styles.',
       options: ['solid', 'outline', 'raised', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "raised" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
     },
     checked: {
       control: 'boolean',
-      description: 'On state, for a controlled Toggle. Pair it with `onChange`.',
-      table: { type: { summary: 'boolean' } },
     },
     defaultChecked: {
       control: 'boolean',
-      description: 'Initial on state, for an uncontrolled Toggle.',
-      table: { type: { summary: 'boolean' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the Toggle.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     readOnly: {
       control: 'boolean',
-      description:
-        'Shows the state without letting the user change it. It also silences `onChange`.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the Toggle as required.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     name: {
       control: 'text',
-      description: 'Name used when the form is submitted.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     value: {
       control: 'text',
-      description: 'Value submitted when the Toggle is on.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<input>`. A Field sets it so its label points to the Toggle.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Toggle is not inside a Field with a label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Toggle.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description:
-        'Ids of the elements that describe the Toggle. A Field sets it for its helper and error text.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description: 'Marks the Toggle as invalid, which also switches it to the error color scheme.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     onChange: {
       control: false,
-      description: 'Called when the user turns the Toggle on or off.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
-      },
     },
     onBlur: {
       control: false,
-      description: 'Called when the Toggle loses focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
     },
     onFocus: {
       control: false,
-      description: 'Called when the Toggle receives focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
     },
   },
   args: {

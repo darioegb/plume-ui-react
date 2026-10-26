@@ -20,22 +20,81 @@ export interface PinInputLabels {
 export type PinInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface PinInputOwnProps {
+  /**
+   * Native `autocomplete` of the boxes. `one-time-code` lets a phone suggest the code from an SMS; use `off` for a PIN.
+   *
+   * @default 'one-time-code'
+   */
   autoComplete?: string
+  /**
+   * The parts of the PinInput: `PinInputCell` for each box and `PinInputHidden` for the hidden input of a `name`. Without children it renders the boxes.
+   */
   children?: ReactNode
+  /**
+   * Gives the focus to the first box when the component mounts. It is `autoFocus` with another name: moving the focus on its own is only right on a screen that exists to enter the code.
+   *
+   * @default false
+   */
   focusOnMount?: boolean
+  /**
+   * Color scheme for the focus ring, from the theme palette (custom schemes included).
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /** The code the boxes start with, when it is not controlled. */
   defaultValue?: string
+  /**
+   * The texts of the PinInput, for other languages: `input(index, length)` is the accessible name of a box, from its position (counting from 1) and the length. The default says `Digit 1 of 6`, or `Character` when the type is not numeric.
+   */
   labels?: Partial<PinInputLabels>
+  /**
+   * How many boxes, that is, how many characters the code has.
+   *
+   * @default 6
+   */
   length?: number
+  /**
+   * Hides what is typed, as a password does. Use it for a PIN, not for a code that is sent to the user.
+   *
+   * @default false
+   */
   mask?: boolean
+  /** Name of the code in a form. It is submitted in a hidden input; the boxes have no name. */
   name?: string
+  /** Called with the code when the last box is filled. */
   onComplete?: (value: string) => void
+  /** Called with the code every time it changes, complete or not. */
   onValueChange?: (value: string) => void
+  /** A character shown in the empty boxes, like `○`. */
   placeholder?: string
+  /**
+   * Corners of the boxes.
+   *
+   * @default 'rounded'
+   */
   shape?: Shape
+  /**
+   * Size of the boxes.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * What the boxes accept: `numeric` digits (and asks the phone for the numeric keyboard), `alphanumeric` letters and digits, or `text` anything but spaces.
+   *
+   * @default 'numeric'
+   */
   type?: PinInputType
+  /**
+   * The code. Makes the PinInput controlled: pass `onValueChange` to update it. The characters are always one after another, with no empty box in between.
+   */
   value?: string
+  /**
+   * Visual variant of the boxes, the same as the `Input`. `unstyled` drops the Plume styles so you can bring your own; the row stays.
+   *
+   * @default 'outline'
+   */
   variant?: PinInputVariant
 }
 

@@ -12,6 +12,10 @@ type AccordionIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'childr
 
 export type AccordionIconProps = Omit<ComponentProps, 'index'> & AccordionIconRootAttributes
 
+/**
+ * The decorative icon inside the trigger, a chevron by default. It has `data-open` while its item
+ * is open.
+ */
 export const AccordionIcon = forwardRef<HTMLSpanElement, AccordionIconProps>(
   (
     { children, className, style, ...rest }: AccordionIconProps,

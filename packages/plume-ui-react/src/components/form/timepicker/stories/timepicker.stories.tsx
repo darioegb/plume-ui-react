@@ -54,16 +54,6 @@ function StyledTimePicker({
  * and `className`) go on the `TimePickerInput`, and the look (`variant`, `size` and `shape`) always on the
  * `TimePicker`.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `TimePickerInput` | `placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`, `aria-describedby`, `aria-invalid`, `className` (the field with its button), `children`. The field and the button that opens the panel. It is an `Input`: given children, compose `InputControl`, `InputField`, `InputElement` and `TimePickerTrigger` in any order. It renders nothing when the `TimePicker` is `isPanel`. |
- * | `TimePickerTrigger` | `aria-label` (`Open time picker` by default, or `labels.openTimePicker`), `disabled`, `className`, `style`, `children` (another icon). The button that opens and closes the panel. It is disabled with its `TimePickerInput`, or on its own. |
- * | `TimePickerPanel` | `aria-label` (`Time picker` by default, or `labels.timePicker`), `className`, `style`, `children`. The popup, or the page content when the `TimePicker` is `isPanel`. Given no children it holds the hours, the minutes and, with `hour12`, the period. |
- * | `TimePickerHours`, `TimePickerMinutes`, `TimePickerPeriod` | `aria-label`, `className`, `style`, `children`. A list of options. `TimePickerPeriod` renders nothing without `hour12`. |
- * | `TimePickerOption` | `option`, `className`, `style`, `children` (replaces the label). One option of a list; it carries the selection and the keyboard model. |
- *
  * The options of a list are rendered with a function as children, which receives each `option` (`{ label, value }`):
  * `<TimePickerHours>{(option) => <TimePickerOption key={option.value} option={option} />}</TimePickerHours>`. The
  * function can render something else than a `TimePickerOption`, but then that element has no selection or keyboard
@@ -106,135 +96,64 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the root element of the TimePicker.',
-      table: { type: { summary: 'string' } },
     },
     value: {
       control: 'text',
-      description:
-        'Selected time in `HH:mm` (24 hours), or `""` when empty. Makes the component controlled; use `defaultValue` otherwise.',
-      table: { type: { summary: 'string' } },
     },
     defaultValue: {
       control: 'text',
-      description: 'Initial time of the uncontrolled component.',
-      table: { defaultValue: { summary: '""' }, type: { summary: 'string' } },
     },
     isPanel: {
       control: 'boolean',
-      description: 'Renders only the lists of hours and minutes, always visible, without the input.',
-      table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
     hour12: {
       control: 'boolean',
-      description:
-        'Shows and accepts the time as `hh:mm AM/PM` and adds a list for the period. The value stays in 24 hours.',
-      table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
     minuteStep: {
       control: 'number',
-      description:
-        'Distance between the minutes of the list (for example `15` lists 00, 15, 30 and 45).',
-      table: { defaultValue: { summary: '1' }, type: { summary: 'number' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { defaultValue: { summary: 'secondary' }, type: { summary: 'ColorScheme' } },
     },
     variant: {
       control: 'select',
-      description:
-        'Visual style variant of the input and of the popup. `outline` has a bordered popup, `filled` a tinted one with an accent line, `underline` a square one with an accent line and `unstyled` none of them.',
       options: ['outline', 'underline', 'filled', 'unstyled'],
-      table: {
-        defaultValue: { summary: 'outline' },
-        type: { summary: `"outline" | "underline" | "filled" | "unstyled"` },
-      },
     },
     shape: {
       control: 'inline-radio',
-      description: 'Shape style. `pill` rounds the `outline` input and the corners of the popup.',
       options: ['pill', 'rounded'],
-      table: { defaultValue: { summary: 'rounded' }, type: { summary: `"pill" | "rounded"` } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the input and of the popup text.',
       options: ['sm', 'md', 'lg'],
-      table: { defaultValue: { summary: 'md' }, type: { summary: `"sm" | "md" | "lg"` } },
     },
     placeholder: {
       control: 'text',
-      description: 'Placeholder of the input. Defaults to `hh:mm`, or `hh:mm AM` with `hour12`.',
-      table: { type: { summary: 'string' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Indicates whether the TimePicker is disabled.',
-      table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
     readOnly: {
       control: 'boolean',
-      description: 'Shows the value but blocks typing and the button that opens the popup.',
-      table: { defaultValue: { summary: 'false' }, type: { summary: 'boolean' } },
     },
     labels: {
       control: false,
-      description:
-        '`labels` sets every text the component shows or announces: the names of the popup (`timePicker`), of its lists (`hours`, `minutes`, `period`), of the button that opens it (`openTimePicker`) and the `am` and `pm` texts. Every key is optional and falls back to its default.',
-      table: {
-        defaultValue: {
-          summary: 'object',
-          detail:
-            "{ am: 'AM', hours: 'Hours', minutes: 'Minutes', openTimePicker: 'Open time picker', period: 'Period', pm: 'PM', timePicker: 'Time picker' }",
-        },
-        type: {
-          summary: 'Partial<TimePickerLabels>',
-          detail:
-            '{ am?: string; hours?: string; minutes?: string; openTimePicker?: string; period?: string; pm?: string; timePicker?: string }',
-        },
-      },
     },
     style: {
       control: false,
-      description:
-        'Inline styles of the wrapper. They are applied after the color variables, so they can override them (e.g. `--timepicker-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<input>`, to link it with a `<label htmlFor>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     name: {
       control: false,
-      description: 'Name of the `<input>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the input as required for form validation.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     inputRef: {
       control: false,
-      description:
-        'Ref to the `<input>`. The component `ref` points to the wrapper, so pass a form library ref here (e.g. `field.ref` from react-hook-form) to let it focus the field on errors.',
-      table: { category: 'HTML attributes', type: { summary: 'Ref<HTMLInputElement>' } },
-    },
-    onChange: {
-      action: 'changed',
-      description:
-        'Called with the new `HH:mm` value when a complete valid time is typed, when an option is picked, or with `""` when the input is cleared.',
-      table: { category: 'Events', type: { summary: '(value: string) => void' } },
-    },
-    onBlur: {
-      action: 'blurred',
-      description:
-        'Called with the current value when the input loses focus, after applying the typed text.',
-      table: { category: 'Events', type: { summary: '(value: string) => void' } },
     },
   },
   args: {

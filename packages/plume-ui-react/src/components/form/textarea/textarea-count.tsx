@@ -8,8 +8,14 @@ import type { ComponentProps } from '../../../theme'
 import { useTextarea } from './textarea-context'
 import styles from './textarea.module.css'
 
-export type TextareaCountProps = Omit<ComponentProps, 'index'> & { children?: ReactNode }
+export interface TextareaCountOwnProps {
+  /** What it shows instead of the count. */
+  children?: ReactNode
+}
 
+export type TextareaCountProps = Omit<ComponentProps, 'index'> & TextareaCountOwnProps
+
+/** The counter under the field, which describes the textarea to a screen reader. */
 export const TextareaCount = forwardRef<HTMLSpanElement, TextareaCountProps>(
   (
     { children, className, style }: TextareaCountProps,

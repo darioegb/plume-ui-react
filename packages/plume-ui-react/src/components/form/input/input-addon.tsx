@@ -10,6 +10,11 @@ import styles from './input.module.css'
 export type InputSide = 'before' | 'after'
 
 export interface InputAddonOwnProps {
+  /**
+   * Which side of the field the addon goes on.
+   *
+   * @default 'before'
+   */
   position?: InputSide
 }
 
@@ -17,6 +22,7 @@ export type InputAddonProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'> &
   InputAddonOwnProps
 
+/** A block with a border and a background beside the field, like a currency or a domain. */
 export const InputAddon = forwardRef<HTMLSpanElement, InputAddonProps>(
   (
     { children, className, position = 'before', style }: InputAddonProps,

@@ -14,6 +14,10 @@ type AccordionContentRootAttributes = Pick<HTMLAttributes<HTMLElement>, 'childre
 
 export type AccordionContentProps = Omit<ComponentProps, 'index'> & AccordionContentRootAttributes
 
+/**
+ * The panel, a `<section>` that only animates its height. Its content sits in a box with the
+ * padding, unless you put an `AccordionBody` in it.
+ */
 export const AccordionContent = forwardRef<HTMLElement, AccordionContentProps>(
   (
     { children, className, style, ...rest }: AccordionContentProps,

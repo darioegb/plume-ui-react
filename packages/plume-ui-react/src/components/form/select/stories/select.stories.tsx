@@ -117,30 +117,6 @@ function Example({
  * The options are mounted (and hidden) while the list is closed, so the trigger can show the label of the value
  * from the start, but the server renders no label: it appears when the page hydrates.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `SelectTrigger` | `placeholder`, `display`, `maxDisplay`, `aria-label`, `aria-labelledby`, `className`, `style`, `children`. The control the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field` label. `className` and `style` go to the control and `ref` to its button. `display` is how a `multiple` value shows (`chips`, each with a button to remove it, or `text`) and `maxDisplay` how many chips before a `+N`. Given no `children`, it renders `SelectField` (with `SelectChips` for a `multiple` select and `SelectCombobox`), `SelectClear`, `SelectChevron` and `SelectHidden`; given those parts, it renders them in the order you write them. `children` that are not parts (a `SelectValue`) are the content of the `SelectCombobox`. |
- * | `SelectField` | `className`, `style`, `children`. The row that holds the chips and the combobox. |
- * | `SelectChips` | `children`, `maxDisplay`, `overflow`. The chips of a `multiple` select: no element of its own. `children` is a function of each chosen option that returns the chip (`(option) => <SelectChip className="..." option={option} />`) and `overflow` a function of the hidden count for the `+N` chip. |
- * | `SelectChip` | `option`, `className`, `style`, `children`. A `Chip`. With an `option` it has a button that removes it; without one it is a plain chip, like the `+N`. Compose it with `ChipLabel`, `ChipIcon` and `ChipRemove` to style its parts. |
- * | `SelectCombobox` | `placeholder`, `className`, `style`, `children`. The button with `role="combobox"`. Its `children` replace what it shows. |
- * | `SelectValue` | `placeholder`, `children`. What the combobox shows: the chosen option with its icon, or the labels of a `multiple` select as text. `SelectCombobox` renders one by default; use your own to render the value yourself with a function of the chosen options. It is made of `SelectPlaceholder`, `SelectValueOption`, `SelectValueIcon` and `SelectValueText`, which take `className` and `style`. |
- * | `SelectClear` | `className`, `style`, `children`. The button that clears the value. It renders nothing when the select is not `clearable` or has no value. |
- * | `SelectChevron` | `className`, `style`, `children`. The button with the arrow. `children` replace the arrow. |
- * | `SelectHidden` | `name`, `form`. The hidden inputs that carry the value in a form. It renders nothing without a `name`. |
- * | `SelectContent` | `searchPlaceholder`, `aria-label`, `className`, `style`, `children`. The panel. It is as wide as the trigger and scrolls when it is long. Given `children` that are not parts, they are the options of a `SelectList`; given `SelectSearch`, `SelectList` or `SelectEmpty` it renders them as written. |
- * | `SelectSearch` | `className`, `style`, `children`. The box around the search input. It renders nothing when the select is not `searchable`. |
- * | `SelectSearchInput` | `placeholder`, `className`, `style`. The search input. |
- * | `SelectList` | `aria-label`, `className`, `style`, `children`. The listbox that holds the options. |
- * | `SelectEmpty` | `className`, `style`, `children`. The message when the search finds nothing. `children` replace the text of `labels.empty`. |
- * | `SelectOption` | `value`, `label`, `description`, `icon`, `disabled`, `className`, `style`, `children`. An option. Its `children` are its text, or, given `SelectOptionIcon`, `SelectOptionBody`, `SelectOptionText`, `SelectOptionDescription` or `SelectOptionCheck`, its parts as written. `label` is the text used for the search, the typeahead and the value, when the content is more than text. An `icon` can be an icon or an image (give it `alt=""`: it is decorative and the label names the option). The option has `data-active` while the arrows are on it, plus `aria-selected` and `aria-disabled`, to style them. |
- * | `SelectOptionIcon`, `SelectOptionText`, `SelectOptionDescription`, `SelectOptionCheck` | `className`, `style`, `children`. The icon, the text, the description and the mark of a chosen option, in a single and in a `multiple` select. The icon and the description show the `icon` and `description` props of the option unless you give `children`. |
- * | `SelectOptionBody` | `className`, `style`, `children`. The column that holds the text and the description. |
- * | `SelectGroup` | `label`, `className`, `style`, `children`. A titled set of options. Given a `SelectGroupLabel` it renders it where you put it. It hides itself when the search leaves it empty. |
- * | `SelectGroupLabel` | `className`, `style`, `children`. The title of a group. |
- *
  * Every part takes `className`, `style` and `ref`, carries a `data-plume-select-<part>` attribute, and with `variant="unstyled"` it has no Plume class.
  */
 export default {
@@ -168,168 +144,89 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The `SelectTrigger` and the `SelectContent`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Select, for other languages, used by its parts: `clear` is the accessible name of the clear button (`Clear`), `remove(label)` the name of the button that removes a chip (`Remove Apple`), `search` the name of the search box (`Search`) and `empty` what shows when the search finds nothing (`No results`).',
-      table: { category: 'Accessibility', type: { summary: 'Partial<SelectLabels>' } },
     },
     value: {
       control: false,
-      description:
-        'The value of a controlled select: the `value` of the chosen option, or an array of them when it is `multiple`. Pair it with `onValueChange`.',
-      table: { type: { summary: 'string | string[]' } },
     },
     defaultValue: {
       control: false,
-      description: 'The value of an uncontrolled select at first.',
-      table: { type: { summary: 'string | string[]' } },
     },
     onValueChange: {
       control: false,
-      description:
-        'Called with the new value: a string, or an array of strings when it is `multiple`. It is an empty string, or an empty array, when the value is cleared.',
-      table: {
-        category: 'Events',
-        type: { summary: '(value: string) => void | (value: string[]) => void' },
-      },
     },
     multiple: {
       control: 'boolean',
-      description:
-        'Lets the user choose several options. The list stays open after each choice, each option shows a check box and the trigger shows the chosen options as chips.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     searchable: {
       control: 'boolean',
-      description:
-        'Adds a search box to the list that filters the options as the user types. Typing on the closed trigger opens it with that text.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     clearable: {
       control: 'boolean',
-      description: 'Shows a button to clear the value, and lets Backspace clear a single value.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     closeOnSelect: {
       control: 'boolean',
-      description:
-        'Whether choosing an option closes the list. `true` for one value, `false` for several.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true (false when multiple)' },
-      },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant, the same ones as `Input`. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['outline', 'filled', 'underline', 'unstyled'],
-      table: {
-        type: { summary: `"outline" | "filled" | "underline" | "unstyled"` },
-        defaultValue: { summary: 'outline' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'Height and text size of the field.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     shape: {
       control: 'radio',
-      description: 'Shape of the `outline` field.',
       options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color of the focus ring, from the theme palette (custom schemes included).',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
     },
     placement: {
       control: 'select',
-      description: 'Where the list opens, relative to the field.',
       options: ['bottom-start', 'bottom', 'bottom-end', 'top-start', 'top', 'top-end'],
-      table: { type: { summary: 'Placement' }, defaultValue: { summary: 'bottom-start' } },
     },
     offset: {
       control: 'number',
-      description: 'Distance in pixels between the field and the list.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '4' } },
     },
     flip: {
       control: 'boolean',
-      description: 'Opens on the opposite side when there is no room on the one asked for.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
     },
     shift: {
       control: 'boolean',
-      description: 'Slides the list along its side to keep it inside the screen.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
     },
     name: {
       control: 'text',
-      description:
-        'Name of the field in a form. The select adds hidden inputs with the chosen values: one for a single value, one for each value when it is `multiple`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Indicates whether the select is disabled.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     readOnly: {
       control: 'boolean',
-      description: 'The value is shown and focusable, but the list does not open.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     id: {
       control: false,
-      description:
-        'Id of the button of the trigger. A `Field` sets it, to link its label to the select.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description:
-        'Id of the elements that describe the select. A `Field` adds its helper text and its error.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description:
-        'Marks the value as invalid, and the field draws its border with the error color. A `Field` sets it.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the select as required for assistive technology.',
-      table: {
-        category: 'HTML attributes',
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     open: {
       control: 'boolean',
-      description:
-        'Whether the list is open, for a controlled select. Pair it with `onOpenChange`.',
-      table: { type: { summary: 'boolean' } },
     },
     defaultOpen: {
       control: 'boolean',
-      description: 'Whether the list is open at first, for an uncontrolled select.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     onOpenChange: {
       control: false,
-      description: 'Called with the new state when the list opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
     },
   },
   render: (args) => <Example {...args} />,

@@ -8,16 +8,61 @@ import type { Size } from '../../../theme'
 import { DropdownContext, type DropdownInitialItem, type DropdownVariant } from './dropdown-context'
 
 export interface DropdownProps {
+  /** The `DropdownTrigger` and the `DropdownMenu`. */
   children: ReactNode
+  /**
+   * Whether selecting an item closes the menu. An item can override it.
+   *
+   * @default true
+   */
   closeOnSelect?: boolean
+  /**
+   * Whether the menu is open at first, for an uncontrolled menu.
+   *
+   * @default false
+   */
   defaultOpen?: boolean
+  /**
+   * Opens on the opposite side when there is no room on the one asked for.
+   *
+   * @default true
+   */
   flip?: boolean
+  /**
+   * Distance in pixels between the trigger and the menu.
+   *
+   * @default 4
+   */
   offset?: number
+  /** Called with the new state when the menu opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Whether the menu is open, for a controlled menu. Pair it with `onOpenChange`. */
   open?: boolean
+  /**
+   * Where the menu opens, relative to the trigger: a side, with an optional alignment
+   * (`bottom-start`, `top-end`).
+   *
+   * @default 'bottom-start'
+   */
   placement?: Placement
+  /**
+   * Slides the menu along its side to keep it inside the screen.
+   *
+   * @default true
+   */
   shift?: boolean
+  /**
+   * Size of the text and of the padding of the items.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `elevated` floats the menu with a shadow and `outline` draws its border.
+   * `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'elevated'
+   */
   variant?: DropdownVariant
 }
 

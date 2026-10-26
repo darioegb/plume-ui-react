@@ -6,6 +6,10 @@ type CollapseClipRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children
 
 export type CollapseClipProps = Omit<ComponentProps, 'index'> & CollapseClipRootAttributes
 
+/**
+ * The element that clips the content while the height animates. Without it, the Collapse wraps
+ * its content in one.
+ */
 export const CollapseClip = forwardRef<HTMLDivElement, CollapseClipProps>(
   (
     { children, className, style, ...rest }: CollapseClipProps,

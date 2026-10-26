@@ -25,196 +25,38 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'Content of the Button (text, HTML elements, etc.).',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    className: {
-      control: 'text',
-      description: `Custom CSS class for the Button.`,
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    style: {
-      description:
-        'Inline styles for the Button. They are applied after the color variables, so they can override them (e.g. `--button-solid-bg`).',
-      control: false,
-      table: {
-        type: { summary: 'CSSProperties' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Indicates whether the Button is disabled.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    onClick: {
-      action: 'clicked',
-      description: 'Called when the Button is clicked.',
-      table: { category: 'Events', type: { summary: '(event: MouseEvent) => void' } },
-    },
-    type: {
-      control: 'radio',
-      description: 'Type of the Button (e.g., "button" or "submit").',
-      options: ['button', 'submit', 'reset'],
-      table: {
-        type: { summary: `"button" | "submit" | "reset"` },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      options: colorSchemes,
-      table: {
-        type: { summary: 'ColorScheme' },
-      },
-    },
-    label: {
-      control: 'text',
-      description: 'Text of the Button. When `children` are also set, they render after the label.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    iconLeft: {
-      control: false,
-      description: 'Icon to be displayed on the left side of the Button.',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    iconRight: {
-      control: false,
-      description: 'Icon to be displayed on the right side of the Button.',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    isBusy: {
-      control: 'boolean',
-      description:
-        'Shows a spinner and disables the Button. Without `busyText` the label is hidden while busy.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    busyText: {
-      control: 'text',
-      description: 'Text shown instead of the label while `isBusy` is set.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    labels: {
-      control: false,
-      description:
-        'The texts the Button adds, to translate them: `busy` is the accessible name of the spinner shown while `isBusy` is set.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<ButtonLabels>' },
-        defaultValue: { summary: '{ busy: "Loading" }' },
-      },
-    },
-    shape: {
-      control: 'inline-radio',
-      description: 'Shape style of the Button.',
-      options: ['pill', 'rounded'],
-      table: {
-        type: { summary: `"pill" | "rounded"` },
-      },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Button.',
-      options: ['sm', 'md', 'lg'],
-      table: {
-        type: { summary: `"sm" | "md" | "lg"` },
-      },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    disabled: { control: 'boolean' },
+    onClick: { action: 'clicked' },
+    type: { control: 'radio', options: ['button', 'submit', 'reset'] },
+    colorScheme: { control: 'select', options: colorSchemes },
+    label: { control: 'text' },
+    iconLeft: { control: false },
+    iconRight: { control: false },
+    isBusy: { control: 'boolean' },
+    busyText: { control: 'text' },
+    labels: { control: false },
+    shape: { control: 'inline-radio', options: ['pill', 'rounded'] },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
     variant: {
       control: 'select',
-      description: 'Visual style variant of the Button.',
       options: ['solid', 'outline', 'link', 'icon', 'ghost', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "link" | "icon" | "ghost" | "unstyled"` },
-      },
     },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name. Required for `icon` buttons, which have no visible text.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Button.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-expanded': {
-      control: false,
-      description: 'Whether the element the Button controls (a menu, a popover) is open.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
-    },
-    'aria-haspopup': {
-      control: false,
-      description: 'Kind of popup the Button opens.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: `boolean | "menu" | "listbox" | "tree" | "grid" | "dialog"` },
-      },
-    },
-    role: {
-      control: false,
-      description: 'ARIA role, when the Button acts as another widget (e.g. `"tab"`).',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<button>` element.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Tooltip text shown on hover.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    tabIndex: {
-      control: false,
-      description: 'Position in the tab order.',
-      table: { category: 'HTML attributes', type: { summary: 'number' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Button.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    onBlur: {
-      control: false,
-      description: 'Called when the Button loses focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
-    },
-    onFocus: {
-      control: false,
-      description: 'Called when the Button receives focus.',
-      table: { category: 'Events', type: { summary: '(event: FocusEvent) => void' } },
-    },
-    onKeyDown: {
-      control: false,
-      description: 'Called when a key is pressed while the Button has focus.',
-      table: { category: 'Events', type: { summary: '(event: KeyboardEvent) => void' } },
-    },
-    onMouseEnter: {
-      control: false,
-      description: 'Called when the pointer enters the Button.',
-      table: { category: 'Events', type: { summary: '(event: MouseEvent) => void' } },
-    },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    'aria-expanded': { control: false },
+    'aria-haspopup': { control: false },
+    role: { control: false },
+    id: { control: false },
+    title: { control: 'text' },
+    tabIndex: { control: false },
+    hidden: { control: false },
+    onBlur: { control: false },
+    onFocus: { control: false },
+    onKeyDown: { control: false },
+    onMouseEnter: { control: false },
   },
   args: {
     disabled: false,

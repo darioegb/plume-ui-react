@@ -18,8 +18,15 @@ import { DatePickerTrigger } from './datepicker-trigger'
 import { useDatePicker } from './use-datepicker'
 
 export interface DatePickerInputOwnProps {
+  /**
+   * The `Input` parts to show instead of the default field and button, for example a `DatePickerField` and a `DatePickerTrigger` inside an `InputControl`.
+   */
   children?: ReactNode
+  /**
+   * Ref to the `<input>`. The component `ref` points to the wrapper, so pass a form library ref here (e.g. `field.ref` from react-hook-form) to let it focus the field on errors.
+   */
   inputRef?: Ref<HTMLInputElement>
+  /** Called with the current value when the input loses focus. */
   onBlur?: (value?: DateRange) => void
 }
 
@@ -29,6 +36,7 @@ export type DatePickerInputProps = Omit<ComponentProps, 'index' | 'style'> &
 
 const sameTime = (a: Date | null, b: Date | null): boolean => a?.getTime() === b?.getTime()
 
+/** The field with its button. It renders nothing when the `DatePicker` is `isCalendar`. */
 export function DatePickerInput({
   children,
   className,

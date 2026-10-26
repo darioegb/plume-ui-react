@@ -13,6 +13,7 @@ type SelectSearchInputRootAttributes = Pick<InputHTMLAttributes<HTMLInputElement
 
 export type SelectSearchInputProps = Omit<ComponentProps, 'index'> & SelectSearchInputRootAttributes
 
+/** The search input. */
 export const SelectSearchInput = forwardRef<HTMLInputElement, SelectSearchInputProps>(
   (
     { className, placeholder, style }: SelectSearchInputProps,

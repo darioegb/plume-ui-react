@@ -14,11 +14,37 @@ export interface AvatarGroupLabels extends AvatarLabels {
 }
 
 export interface AvatarGroupOwnProps {
+  /**
+   * Color scheme of the fallback, from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The texts of the status for assistive technology, to translate them: `online`, `busy`, `away`
+   * and `offline`.
+   */
   labels?: Partial<AvatarGroupLabels>
+  /** Most avatars shown. The rest collapse into an overflow counter. */
   max?: number
+  /**
+   * Corners of the Avatar: `pill` is a circle and `rounded` a rounded square.
+   *
+   * @default 'pill'
+   */
   shape?: Shape
+  /**
+   * Size of the Avatar.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant of the fallback. `subtle` tints it, `solid` fills it and `outline` draws its
+   * border. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'subtle'
+   */
   variant?: AvatarVariant
 }
 
@@ -33,6 +59,7 @@ export type AvatarGroupProps = Omit<ComponentProps, 'index'> &
 
 const groupRole = 'group'
 
+/** A `role="group"` that stacks the avatars. Name it with `aria-label` (`Team members`). */
 export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
   (
     {

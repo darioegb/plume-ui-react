@@ -53,17 +53,6 @@ function Parts({
  * The parts are plain `<a>` and `<button>` elements. A `NavbarItem` with an `href` is a link and one without it is
  * a button, for actions. With a client-side router pass `onClick` and navigate there, or render the router link
  * inside the content yourself.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `NavbarBrand` | `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. The name or the logo. A link with `href`, a `<span>` without it. |
- * | `NavbarToggle` | `label`, `icon`, `disabled`, `onClick`, `id`, `title`, `className`, `style`, `children`. The button that opens and closes the content. It is only shown below the breakpoint. `label` is its accessible name (`"Toggle navigation"`), `icon` replaces the menu and close icons, and `children` replaces all of its content. |
- * | `NavbarContent` | `align`, `id`, `title`, `hidden`, `className`, `style`, `children`. What folds: the links and anything else you want in the menu. `align` (`start`, `center` or `end`) places them in the bar. It has `data-open` while the menu is open. |
- * | `NavbarItem` | `active`, `disabled`, `href`, `target`, `rel`, `onClick`, `id`, `title`, `hidden`, `className`, `style`, `children`. A link, or a button without `href`. It has `data-active` and `data-disabled`. |
- *
- * The `Navbar` renders the `<nav>` and nothing else: every other element is one of these parts, so `className` styles each one, and with `variant="unstyled"` the parts keep only your classes.
  */
 export default {
   title: 'Components/Navbar',
@@ -80,101 +69,22 @@ export default {
     layout: 'padded',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The parts of the Navbar: `NavbarBrand`, `NavbarToggle` and `NavbarContent`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Navbar.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the Navbar. They are applied after the color variables, so they can override them (e.g. `--navbar-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    breakpoint: {
-      control: 'radio',
-      description:
-        'Below this width the content folds behind the toggle: `sm` is 640px, `md` 768px and `lg` 1024px. `never` keeps it always visible.',
-      options: ['sm', 'md', 'lg', 'never'],
-      table: {
-        type: { summary: `"sm" | "md" | "lg" | "never"` },
-        defaultValue: { summary: 'md' },
-      },
-    },
-    sticky: {
-      control: 'boolean',
-      description: 'Keeps the Navbar at the top of the page when it scrolls.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    open: {
-      control: false,
-      description:
-        'Whether the menu is open below the breakpoint. Makes the Navbar controlled: pass `onOpenChange` to update it.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the menu starts open, when it is not controlled.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    onOpenChange: {
-      control: false,
-      description: 'Called with the new state when the menu opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. It colors the active item, and the whole bar in the `solid` variant.',
-      options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the Navbar.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `plain` has a line under the bar and underlines the active item, `filled` a muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you can bring your own; the layout and the folding keep working.',
-      options: ['plain', 'filled', 'solid', 'unstyled'],
-      table: {
-        type: { summary: `"plain" | "filled" | "solid" | "unstyled"` },
-        defaultValue: { summary: 'plain' },
-      },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Navbar. The content takes its own id from it.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Navbar.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Navbar.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name of the navigation. Needed when the page has more than one.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the navigation.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    style: { control: false },
+    breakpoint: { control: 'radio', options: ['sm', 'md', 'lg', 'never'] },
+    sticky: { control: 'boolean' },
+    open: { control: false },
+    defaultOpen: { control: 'boolean' },
+    onOpenChange: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['plain', 'filled', 'solid', 'unstyled'] },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
   },
   args: {
     'aria-label': 'Main',

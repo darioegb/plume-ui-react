@@ -12,6 +12,7 @@ import { TreeItemIcon } from './tree-item-icon'
 import styles from './tree.module.css'
 
 export interface TreeItemLabelOwnProps {
+  /** Icon shown before the text. It has no effect when the label is composed with parts. */
   icon?: ReactNode
 }
 
@@ -23,6 +24,11 @@ export type TreeItemLabelProps = Omit<ComponentProps, 'index'> &
 
 const LABEL_PARTS = [TreeItemChevron, TreeItemCheckbox, TreeItemIcon]
 
+/**
+ * The text of the node, with the chevron of a branch, the checkbox of a `checkbox` tree and an
+ * optional leading icon. Given `TreeItemChevron`, `TreeItemCheckbox` or `TreeItemIcon` as children
+ * it renders them as written, and `icon` has no effect.
+ */
 export const TreeItemLabel = forwardRef<HTMLSpanElement, TreeItemLabelProps>(
   (
     { children, className, icon, style, ...rest }: TreeItemLabelProps,

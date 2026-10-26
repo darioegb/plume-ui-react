@@ -32,6 +32,7 @@ const closestSlide = (scroller: HTMLElement): number => {
   return closest
 }
 
+/** The strip that holds and scrolls the slides. Each child is one slide. */
 export const CarouselSlides = forwardRef<HTMLDivElement, CarouselSlidesProps>(
   (
     { children, className, id, style, ...rest }: CarouselSlidesProps,

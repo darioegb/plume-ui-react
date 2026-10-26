@@ -21,6 +21,7 @@ const CONTENT_PARTS = [SelectEmpty, SelectList, SelectSearch, SelectSearchInput]
 type SelectContentRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'aria-label' | 'children'>
 
 export interface SelectContentOwnProps {
+  /** Placeholder of the search box, when the select is `searchable`. */
   searchPlaceholder?: string
 }
 
@@ -28,6 +29,11 @@ export type SelectContentProps = Omit<ComponentProps, 'index'> &
   SelectContentRootAttributes &
   SelectContentOwnProps
 
+/**
+ * The panel with the list. It is as wide as the trigger and scrolls when it is long. Given
+ * `children` that are not parts, they are the options of a `SelectList`; given `SelectSearch`,
+ * `SelectList` or `SelectEmpty` it renders them as written.
+ */
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   (
     { 'aria-label': ariaLabel, children, className, searchPlaceholder, style }: SelectContentProps,

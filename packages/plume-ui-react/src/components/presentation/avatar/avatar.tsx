@@ -26,15 +26,51 @@ export interface AvatarLabels {
 }
 
 export interface AvatarOwnProps {
+  /** Accessible name of the image, when the name is not enough. It replaces the name. */
   alt?: string
+  /**
+   * Color scheme of the fallback, from the theme palette, including custom schemes added to it.
+   *
+   * @default 'secondary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * What to show when there is no image: a text, an icon... By default, the initials of the name,
+   * or an icon of a person.
+   */
   fallback?: ReactNode
+  /**
+   * The texts of the status for assistive technology, to translate them: `online`, `busy`, `away`
+   * and `offline`.
+   */
   labels?: Partial<AvatarLabels>
+  /**
+   * Name of the person. Its initials are the fallback, and it names the avatar for assistive
+   * technology.
+   */
   name?: string
+  /**
+   * Corners of the Avatar: `pill` is a circle and `rounded` a rounded square.
+   *
+   * @default 'pill'
+   */
   shape?: Shape
+  /**
+   * Size of the Avatar.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /** URL of the image. If it fails to load, the fallback is shown. */
   src?: string
+  /** Adds a dot with the presence of the person. */
   status?: AvatarStatus
+  /**
+   * Visual variant of the fallback. `subtle` tints it, `solid` fills it and `outline` draws its
+   * border. `unstyled` drops the Plume styles so you can bring your own.
+   *
+   * @default 'subtle'
+   */
   variant?: AvatarVariant
 }
 

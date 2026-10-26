@@ -11,6 +11,7 @@ type AlertActionRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'
 
 export type AlertActionProps = Omit<ComponentProps, 'index'> & AlertActionRootAttributes
 
+/** Where an action, such as a button or a link, goes. */
 export const AlertAction = forwardRef<HTMLDivElement, AlertActionProps>(
   (
     { children, className, style }: AlertActionProps,

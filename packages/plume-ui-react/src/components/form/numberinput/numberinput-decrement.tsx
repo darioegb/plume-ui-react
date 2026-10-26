@@ -5,6 +5,7 @@ import { NumberInputStepper } from './numberinput-stepper'
 
 export type NumberInputDecrementProps = NumberInputStepperProps
 
+/** The button that subtracts. `children` replace the icon. */
 export const NumberInputDecrement = forwardRef<HTMLButtonElement, NumberInputDecrementProps>(
   (props: NumberInputDecrementProps, ref: ForwardedRef<HTMLButtonElement>): ReactNode => (
     <NumberInputStepper {...props} direction={-1} part="NumberInputDecrement" ref={ref} />

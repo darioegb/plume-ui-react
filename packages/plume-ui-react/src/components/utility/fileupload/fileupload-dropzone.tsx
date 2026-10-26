@@ -14,6 +14,10 @@ type FileUploadDropzoneRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'ch
 export type FileUploadDropzoneProps = Omit<ComponentProps, 'index'> &
   FileUploadDropzoneRootAttributes
 
+/**
+ * The area that takes the dropped files. Without children it holds the `FileUploadInput` and the
+ * `FileUploadPrompt`. It has `data-dragging`, `data-disabled` and `data-invalid`.
+ */
 export const FileUploadDropzone = forwardRef<HTMLDivElement, FileUploadDropzoneProps>(
   (
     { children, className, style }: FileUploadDropzoneProps,

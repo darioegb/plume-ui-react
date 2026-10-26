@@ -10,6 +10,9 @@ import styles from './input.module.css'
 export type InputGroupProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
+/**
+ * The wrapper `Input` renders around its parts. Its `className` and `style` are the ones of the `Input`.
+ */
 export const InputGroup = forwardRef<HTMLDivElement, InputGroupProps>(
   (
     { children, className, style }: InputGroupProps,

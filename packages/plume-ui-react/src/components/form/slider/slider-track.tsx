@@ -11,6 +11,7 @@ import styles from './slider.module.css'
 export type SliderTrackProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The bar behind the thumbs. Without children it renders a `SliderRange`. */
 export const SliderTrack = forwardRef<HTMLSpanElement, SliderTrackProps>(
   (
     { children, className, style }: SliderTrackProps,

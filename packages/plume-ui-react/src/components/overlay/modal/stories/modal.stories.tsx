@@ -49,18 +49,6 @@ function Example(props: Readonly<Omit<ModalProps, 'children'>>): React.ReactNode
  * keeps the state and shares it with its parts. `ModalContent` draws the backdrop around itself; to style or
  * replace the layer, wrap `ModalContent` in a `ModalBackdrop`.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `ModalTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes. With text, it renders a plain `<button>`. |
- * | `ModalBackdrop` | `className`, `style`, `children`. The layer behind the dialog, which covers the screen and centers it. `ModalContent` renders it on its own; wrap `ModalContent` in it to style it, or to put other elements next to the dialog. It renders nothing while the Modal is closed. |
- * | `ModalContent` | `className`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The dialog. It is named by the `ModalHeader`, or by `aria-label` when there is none. |
- * | `ModalHeader` | `as` (`h1` to `h6`, `h2` by default), `className`, `style`, `children`. The title, which names the dialog. |
- * | `ModalBody` | `className`, `style`, `children`. The content. It scrolls when it is taller than the screen. |
- * | `ModalFooter` | `className`, `style`, `children`. A row for the actions. |
- * | `ModalClose` | `label`, `className`, `style`, `children`. A button that closes the Modal. Without children it is the corner X button, named by `label` (`Close` by default). With an element, such as a `Button`, it gives it the click handler. |
- *
  * The page behind the Modal is not hidden from screen readers with `inert`, because the Modal lives inside the
  * same root as the app. `aria-modal` and the focus trap keep the user inside.
  */
@@ -89,59 +77,15 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `ModalTrigger` and the `ModalContent`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Maximum width of the dialog.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `default` has the backdrop, the surface and the spacing of the parts. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['default', 'unstyled'],
-      table: {
-        type: { summary: `"default" | "unstyled"` },
-        defaultValue: { summary: 'default' },
-      },
-    },
-    open: {
-      control: 'boolean',
-      description:
-        'Whether the Modal is open, for a controlled Modal. Pair it with `onOpenChange`.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the Modal is open at first, for an uncontrolled Modal.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    closeOnEscape: {
-      control: 'boolean',
-      description: 'Whether <kbd>Esc</kbd> closes the Modal.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    closeOnOutside: {
-      control: 'boolean',
-      description: 'Whether a click on the backdrop closes the Modal.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    initialFocus: {
-      control: false,
-      description:
-        'A ref to the element that gets the focus when the Modal opens. By default, the first element that can be focused.',
-      table: { type: { summary: 'RefObject<HTMLElement | null>' } },
-    },
-    onOpenChange: {
-      control: false,
-      description: 'Called with the new state when the Modal opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
-    },
+    children: { control: false },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['default', 'unstyled'] },
+    open: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
+    closeOnEscape: { control: 'boolean' },
+    closeOnOutside: { control: 'boolean' },
+    initialFocus: { control: false },
+    onOpenChange: { control: false },
   },
   render: (args) => <Example {...args} />,
 } satisfies Meta<typeof Modal>

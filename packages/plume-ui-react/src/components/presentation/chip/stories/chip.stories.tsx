@@ -31,12 +31,6 @@ const noop = (): void => undefined
  * Every element of the Chip is a part you can import. Without parts as children the Chip renders its text with the
  * `icon` before it and the remove button after it when it has `onRemove`. With parts, it renders them as written, so
  * you can reorder, leave out or replace each one.
- *
- * | Component | Props |
- * | --- | --- |
- * | `ChipIcon` | `className`, `style`, `children`. The decorative icon or image, hidden from screen readers. |
- * | `ChipLabel` | `className`, `style`, `children`. The text of the Chip. It names the remove button. |
- * | `ChipRemove` | `aria-label`, `disabled`, `onClick`, `className`, `style`, `children`. The button that removes the Chip. It calls the `onRemove` of the Chip, and `children` replace the cross. |
  */
 export default {
   title: 'Components/Chip',
@@ -54,98 +48,55 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description: 'Text of the Chip.',
-      table: { type: { summary: 'ReactNode' } },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Chip.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Chip. They are applied after the color variables, so they can override them (e.g. `--chip-tint`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'secondary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Chip.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     shape: {
       control: 'radio',
-      description: 'Corners of the Chip.',
       options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'pill' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `subtle` tints the Chip, `solid` fills it and `outline` only draws its border. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['solid', 'outline', 'subtle', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "subtle" | "unstyled"` },
-        defaultValue: { summary: 'subtle' },
-      },
     },
     icon: {
       control: false,
-      description:
-        'An icon or an image before the text. It is decorative, so it is hidden from screen readers: give an image `alt=""`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     onRemove: {
       control: false,
-      description: 'Shows a remove button, and is called when it is clicked.',
-      table: { type: { summary: '(event: MouseEvent<HTMLButtonElement>) => void' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Chip, to translate it: `remove` is the accessible name of the remove button. By default it is `Remove` followed by the text of the Chip; with `labels.remove` the name is exactly that text.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<ChipLabels>' },
-        defaultValue: { summary: "{ remove: 'Remove' }" },
-      },
     },
     disabled: {
       control: 'boolean',
-      description: 'Dims the Chip and disables its remove button.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<span>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Chip.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: false,
-      description: 'Hides the Chip.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
       control: false,
-      description: 'Accessible name of the Chip, when its text is not enough.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Chip.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

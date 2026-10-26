@@ -8,6 +8,7 @@ import { useNavbarContext } from './navbar-context'
 import styles from './navbar.module.css'
 
 export interface NavbarBrandOwnProps {
+  /** Called when the brand is clicked. */
   onClick?: MouseEventHandler<HTMLElement>
 }
 
@@ -20,6 +21,7 @@ export type NavbarBrandProps = Omit<ComponentProps, 'index'> &
   NavbarBrandRootAttributes &
   NavbarBrandOwnProps
 
+/** The name or the logo. A link with `href`, a `<span>` without it. */
 export const NavbarBrand = forwardRef<HTMLElement, NavbarBrandProps>(
   (
     { children, className, href, onClick, rel, style, target, ...rest }: NavbarBrandProps,

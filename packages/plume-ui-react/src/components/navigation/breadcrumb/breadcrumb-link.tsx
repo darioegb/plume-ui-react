@@ -8,6 +8,11 @@ import { useBreadcrumbContext } from './breadcrumb-context'
 import styles from './breadcrumb.module.css'
 
 export interface BreadcrumbLinkOwnProps {
+  /**
+   * Marks the link as the current page, with `aria-current="page"` and `data-current`.
+   *
+   * @default false
+   */
   current?: boolean
 }
 
@@ -29,6 +34,10 @@ export type BreadcrumbLinkProps = Omit<ComponentProps, 'index'> &
   BreadcrumbLinkRootAttributes &
   BreadcrumbLinkOwnProps
 
+/**
+ * A link, or a `<span>` when it has no `href`. `current` marks the current page with
+ * `aria-current="page"` and `data-current`.
+ */
 export const BreadcrumbLink = forwardRef<HTMLElement, BreadcrumbLinkProps>(
   (
     {

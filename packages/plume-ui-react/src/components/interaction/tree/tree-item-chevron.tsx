@@ -12,6 +12,10 @@ type TreeItemChevronRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chil
 
 export type TreeItemChevronProps = Omit<ComponentProps, 'index'> & TreeItemChevronRootAttributes
 
+/**
+ * The arrow of a branch. It is empty on a leaf, and `children` replaces the arrow. It has
+ * `data-visible` on a branch.
+ */
 export const TreeItemChevron = forwardRef<HTMLSpanElement, TreeItemChevronProps>(
   (
     { children, className, style }: TreeItemChevronProps,

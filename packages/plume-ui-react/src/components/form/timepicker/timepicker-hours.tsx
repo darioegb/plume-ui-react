@@ -9,6 +9,7 @@ import { useTimePicker } from './use-timepicker'
 
 export type TimePickerHoursProps = TimePickerColumnProps<number>
 
+/** The list of hours. With `hour12` it lists 1 to 12. */
 export const TimePickerHours = forwardRef<HTMLDivElement, TimePickerHoursProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: TimePickerHoursProps,

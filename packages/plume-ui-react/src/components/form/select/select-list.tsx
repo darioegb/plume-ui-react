@@ -13,6 +13,7 @@ type SelectListRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'aria-label
 
 export type SelectListProps = Omit<ComponentProps, 'index'> & SelectListRootAttributes
 
+/** The listbox that holds the options. */
 export const SelectList = forwardRef<HTMLDivElement, SelectListProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: SelectListProps,

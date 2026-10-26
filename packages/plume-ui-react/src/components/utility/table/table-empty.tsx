@@ -13,6 +13,10 @@ import type { EmptyStateProps } from '../../presentation/emptystate'
 import { TableEmptyCell } from './table-empty-cell'
 
 export interface TableEmptyOwnProps {
+  /**
+   * How many columns the cell spans. Give it as many as the table has.
+   * @default 100
+   */
   colSpan?: number
 }
 
@@ -31,6 +35,11 @@ export type TableEmptyProps = Omit<ComponentProps, 'index'> &
 
 const EMPTY_PARTS = [TableEmptyCell]
 
+/**
+ * A `<tr>` with one `TableEmptyCell` that holds an `EmptyState`, for when there is nothing to
+ * show. It is announced as a `status`. With a `TableEmptyCell` as child it renders it as
+ * written, and the props of the `EmptyState` have no effect.
+ */
 export const TableEmpty = forwardRef<HTMLTableRowElement, TableEmptyProps>(
   (
     {

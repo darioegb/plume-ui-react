@@ -11,6 +11,7 @@ type TreeItemIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'childre
 
 export type TreeItemIconProps = Omit<ComponentProps, 'index'> & TreeItemIconRootAttributes
 
+/** The leading icon of the node. It renders nothing without children. */
 export const TreeItemIcon = forwardRef<HTMLSpanElement, TreeItemIconProps>(
   (
     { children, className, style }: TreeItemIconProps,

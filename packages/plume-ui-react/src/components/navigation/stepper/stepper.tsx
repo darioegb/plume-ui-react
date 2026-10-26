@@ -15,11 +15,44 @@ import {
 import styles from './stepper.module.css'
 
 export interface StepperOwnProps {
+  /**
+   * Index of the current step, starting at 0. The steps before it are completed and the ones after
+   * it are upcoming. An index past the last step completes all of them.
+   *
+   * @default 0
+   */
   activeStep?: number
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. It colors the
+   * completed and the current steps.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The text a screen reader says for each status. Pass only the ones you want to change; use an
+   * empty string to say nothing for a status.
+   */
   labels?: Partial<StepperLabels>
+  /**
+   * Whether the steps go in a row or in a column.
+   *
+   * @default 'horizontal'
+   */
   orientation?: StepperOrientation
+  /**
+   * Size of the Stepper.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `solid` fills the indicators of the completed and current steps, `outline` only
+   * draws their border. `unstyled` drops the Plume styles so you can bring your own; the layout and
+   * the hidden last separator keep working.
+   *
+   * @default 'solid'
+   */
   variant?: StepperVariant
 }
 

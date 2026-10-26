@@ -11,6 +11,10 @@ type AlertIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
 export type AlertIconProps = Omit<ComponentProps, 'index'> & AlertIconRootAttributes
 
+/**
+ * The icon, `aria-hidden`. Without children it shows the icon of the status, or the `icon` of the
+ * `Alert`; it renders nothing when `icon` is `false`.
+ */
 export const AlertIcon = forwardRef<HTMLSpanElement, AlertIconProps>(
   (
     { children, className, style }: AlertIconProps,

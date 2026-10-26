@@ -14,9 +14,28 @@ import { useRadioGroupContext } from './radio-group-context'
 import styles from './radio.module.css'
 
 export interface RadioOwnProps {
+  /**
+   * Color scheme from the theme palette, custom schemes included. Inside a `RadioGroup` it defaults
+   * to the group color scheme.
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Keeps the state without letting the user change it. It also silences `onChange`.
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Size of the radio. Inside a `RadioGroup` it defaults to the group size.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `solid` fills the circle when selected and `outline` only colors its border and
+   * dot. `unstyled` leaves the native radio so you can bring your own styles. Inside a `RadioGroup`
+   * it defaults to the group variant.
+   * @default 'solid'
+   */
   variant?: RadioVariant
 }
 

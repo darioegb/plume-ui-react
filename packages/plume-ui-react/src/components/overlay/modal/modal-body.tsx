@@ -11,6 +11,7 @@ type ModalBodyRootAttributes = Pick<HTMLAttributes<HTMLElement>, 'children'>
 
 export type ModalBodyProps = Omit<ComponentProps, 'index'> & ModalBodyRootAttributes
 
+/** The content. It scrolls when it is taller than the screen. */
 export const ModalBody = forwardRef<HTMLElement, ModalBodyProps>(
   ({ children, className = '', style }: ModalBodyProps, ref: ForwardedRef<HTMLElement>) => {
     const { bodyId, isStyled, titleId } = useModalContext('ModalBody')

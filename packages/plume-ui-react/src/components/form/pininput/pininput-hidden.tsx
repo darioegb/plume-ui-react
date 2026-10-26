@@ -6,6 +6,9 @@ import { usePinInputContext } from './pininput-context'
 
 export type PinInputHiddenProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'form' | 'name'>
 
+/**
+ * The hidden input that carries the whole code in a form. The default composition renders it when the `PinInput` has a `name`; in a composition you add it yourself.
+ */
 export const PinInputHidden = forwardRef<HTMLInputElement, PinInputHiddenProps>(
   ({ name, ...rest }: PinInputHiddenProps, ref: ForwardedRef<HTMLInputElement>): ReactNode => {
     const context = usePinInputContext('PinInputHidden')

@@ -27,11 +27,23 @@ const TRIGGER_PARTS = [
 ]
 
 export interface SelectTriggerOwnProps {
+  /** Accessible name of the control, when there is no `Field` label. */
   'aria-label'?: string
+  /** Id of the element that names the control. */
   'aria-labelledby'?: string
+  /** The parts of the trigger, or a `SelectValue` to render the value yourself. */
   children?: ReactNode
+  /**
+   * How a `multiple` value shows: `chips`, each with a button to remove it, or `text`.
+   * @default 'chips'
+   */
   display?: SelectDisplay
+  /**
+   * How many chips to show before a `+N` one.
+   * @default Number.POSITIVE_INFINITY
+   */
   maxDisplay?: number
+  /** What the control shows when nothing is chosen. */
   placeholder?: ReactNode
 }
 
@@ -70,6 +82,13 @@ function useLabelledBy(
   return labelledBy
 }
 
+/**
+ * The control the user clicks. It needs a name: an `aria-label`, an `aria-labelledby` or a `Field`
+ * label. Given no `children` it renders `SelectField` (with `SelectChips` for a `multiple` select
+ * and `SelectCombobox`), `SelectClear`, `SelectChevron` and `SelectHidden`; given those parts it
+ * renders them in the order you write them, and any other `children` (a `SelectValue`) are the
+ * content of the `SelectCombobox`.
+ */
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   (
     {

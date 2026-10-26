@@ -9,7 +9,15 @@ import { TreeItemGroup } from './tree-item-group'
 import styles from './tree.module.css'
 
 export interface TreeItemOwnProps {
+  /**
+   * Disables the node: it can't be selected, expanded or focused with the keyboard.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /**
+   * The id of the node. It is what `value`, `defaultValue` and `expanded` of the `Tree` refer to.
+   */
   value: string
 }
 
@@ -27,6 +35,10 @@ const hasSelectedState = (selection: string): boolean =>
 
 const isGroup = (child: ReactNode): boolean => isValidElement(child) && child.type === TreeItemGroup
 
+/**
+ * One node. Put a `TreeItemLabel` and, for a branch, a `TreeItemGroup` as its direct children. It
+ * has `data-selected` and `data-expanded`.
+ */
 export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
     {

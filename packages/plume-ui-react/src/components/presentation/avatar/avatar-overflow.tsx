@@ -12,6 +12,7 @@ export type AvatarOverflowProps = Omit<
   AvatarProps,
   'alt' | 'fallback' | 'name' | 'src' | 'status'
 > & {
+  /** Number of avatars that are hidden. It fills the counter and its accessible name. */
   count: number
 }
 
@@ -19,6 +20,10 @@ const DEFAULT_LABELS: Pick<AvatarGroupLabels, 'overflow'> = {
   overflow: (hidden) => `${hidden} more`,
 }
 
+/**
+ * The counter of the group. It is what the group renders when `max` hides avatars, and you can
+ * place it yourself. Its name comes from `labels.overflow` of the group.
+ */
 export const AvatarOverflow = forwardRef<HTMLSpanElement, AvatarOverflowProps>(
   (
     { children, count, ...rest }: AvatarOverflowProps,

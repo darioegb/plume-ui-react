@@ -10,10 +10,34 @@ import styles from './collapse.module.css'
 export type CollapseVariant = 'accent' | 'filled' | 'outline' | 'unstyled'
 
 export interface CollapseOwnProps {
+  /**
+   * The element the Collapse renders. Use `section` with a name (`aria-label` or
+   * `aria-labelledby`) when the content is a landmark.
+   * @default 'div'
+   */
   as?: 'div' | 'section'
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. Without it the
+   * box is neutral. It tints the background of `filled` and `accent`, and colors the border of
+   * `outline` and `accent`.
+   */
   colorScheme?: ColorScheme
+  /**
+   * Whether the content is shown.
+   * @default false
+   */
   open?: boolean
+  /**
+   * Size of the text and of the padding of the box.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant of the box with the content. `filled` gives it a background, `outline` a
+   * border and `accent` a bar at the start. `unstyled` drops the Plume styles so you can bring
+   * your own; the height animation keeps working.
+   * @default 'filled'
+   */
   variant?: CollapseVariant
 }
 

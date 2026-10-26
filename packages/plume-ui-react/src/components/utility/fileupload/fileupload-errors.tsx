@@ -10,6 +10,10 @@ import { FileUploadError } from './fileupload-error'
 import styles from './fileupload.module.css'
 
 export interface FileUploadErrorsOwnProps {
+  /**
+   * The errors. A function `(rejection, index) => ReactNode` is called once per rejected file.
+   * Given none, it renders a `FileUploadError` per rejection.
+   */
   children?: ReactNode | ((rejection: FileRejection, index: number) => ReactNode)
 }
 
@@ -18,6 +22,10 @@ export type FileUploadErrorsProps = Omit<ComponentProps, 'index'> & FileUploadEr
 const rejectionKey = (rejection: FileRejection, position: number): string =>
   `${rejection.file.name}-${position}`
 
+/**
+ * The list of the files that were left out, announced with `role="alert"`, which is not there
+ * while there are none.
+ */
 export const FileUploadErrors = forwardRef<HTMLUListElement, FileUploadErrorsProps>(
   (
     { children, className, style }: FileUploadErrorsProps,

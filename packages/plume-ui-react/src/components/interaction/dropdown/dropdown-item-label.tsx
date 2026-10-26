@@ -11,6 +11,7 @@ type DropdownItemLabelRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'ch
 
 export type DropdownItemLabelProps = Omit<ComponentProps, 'index'> & DropdownItemLabelRootAttributes
 
+/** The text of an item. */
 export const DropdownItemLabel = forwardRef<HTMLSpanElement, DropdownItemLabelProps>(
   (
     { children, className, style }: DropdownItemLabelProps,

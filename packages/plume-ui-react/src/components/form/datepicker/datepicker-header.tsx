@@ -22,6 +22,7 @@ export type DatePickerNextProps = PartProps & ButtonAttributes
 export type DatePickerMonthButtonProps = PartProps & ButtonAttributes
 export type DatePickerYearButtonProps = PartProps & ButtonAttributes
 
+/** The top row of a page. */
 export const DatePickerHeader = forwardRef<HTMLDivElement, DatePickerHeaderProps>(
   (
     { children, className, style }: DatePickerHeaderProps,
@@ -44,6 +45,7 @@ export const DatePickerHeader = forwardRef<HTMLDivElement, DatePickerHeaderProps
 
 DatePickerHeader.displayName = 'DatePickerHeader'
 
+/** The row of controls inside the header. */
 export const DatePickerNav = forwardRef<HTMLDivElement, DatePickerNavProps>(
   (
     { children, className, style }: DatePickerNavProps,
@@ -74,6 +76,7 @@ export const DatePickerNav = forwardRef<HTMLDivElement, DatePickerNavProps>(
 
 DatePickerNav.displayName = 'DatePickerNav'
 
+/** The `/` between the month and the year in the header. */
 export const DatePickerSeparator = forwardRef<HTMLElement, DatePickerSeparatorProps>(
   (
     { children, className, style }: DatePickerSeparatorProps,
@@ -91,6 +94,7 @@ export const DatePickerSeparator = forwardRef<HTMLElement, DatePickerSeparatorPr
 
 DatePickerSeparator.displayName = 'DatePickerSeparator'
 
+/** The button that goes back a month, or 20 years in the year view. */
 export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPreviousProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerPreviousProps,
@@ -118,6 +122,7 @@ export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPrevio
 
 DatePickerPrevious.displayName = 'DatePickerPrevious'
 
+/** The button that goes forward a month, or 20 years in the year view. */
 export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerNextProps,
@@ -145,6 +150,7 @@ export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>
 
 DatePickerNext.displayName = 'DatePickerNext'
 
+/** The button that opens the list of months. */
 export const DatePickerMonthButton = forwardRef<HTMLButtonElement, DatePickerMonthButtonProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerMonthButtonProps,
@@ -174,6 +180,7 @@ export const DatePickerMonthButton = forwardRef<HTMLButtonElement, DatePickerMon
 
 DatePickerMonthButton.displayName = 'DatePickerMonthButton'
 
+/** The button that opens the list of years. */
 export const DatePickerYearButton = forwardRef<HTMLButtonElement, DatePickerYearButtonProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerYearButtonProps,

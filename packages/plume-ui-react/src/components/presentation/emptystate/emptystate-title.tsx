@@ -7,6 +7,11 @@ import styles from './emptystate.module.css'
 export type EmptyStateTitleTag = 'div' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
 export interface EmptyStateTitleOwnProps {
+  /**
+   * Element of the title. Use a heading when it belongs in the outline of the page.
+   *
+   * @default 'div'
+   */
   as?: EmptyStateTitleTag
 }
 
@@ -14,6 +19,7 @@ export type EmptyStateTitleProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLElement>, 'children'> &
   EmptyStateTitleOwnProps
 
+/** The title of the empty state, in bold. */
 export const EmptyStateTitle = forwardRef<HTMLElement, EmptyStateTitleProps>(
   (
     { as: Tag = 'div', children, className, style }: EmptyStateTitleProps,

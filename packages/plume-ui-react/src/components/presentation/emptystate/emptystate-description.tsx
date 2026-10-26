@@ -7,6 +7,7 @@ import styles from './emptystate.module.css'
 export type EmptyStateDescriptionProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLParagraphElement>, 'children'>
 
+/** The `<p>` that explains. */
 export const EmptyStateDescription = forwardRef<HTMLParagraphElement, EmptyStateDescriptionProps>(
   (
     { children, className, style }: EmptyStateDescriptionProps,

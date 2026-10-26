@@ -14,12 +14,41 @@ import { useTreeState } from './use-tree-state'
 export type { TreeSelection, TreeVariant } from './tree-context'
 
 interface TreeBaseProps {
+  /**
+   * Only with `selection="checkbox"`. Checking a branch checks everything under it, and a branch is
+   * checked, unchecked or mixed from the items under it. Items that are disabled keep their state.
+   *
+   * @default true
+   */
   cascade?: boolean
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /** The branches that are open first, when the open state is not controlled. */
   defaultExpanded?: string[]
+  /**
+   * The `value` of every open branch. Makes the open state controlled: pass `onExpandedChange` to
+   * update it.
+   */
   expanded?: string[]
+  /** Called with the list of open branches when one opens or closes. */
   onExpandedChange?: (expanded: string[]) => void
+  /**
+   * Size of the text and the rows.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * How the selected item looks. `solid` fills its row with the color, `ghost` tints it and
+   * `accent` draws a bar at its start. `unstyled` drops the Plume styles so you can bring your own;
+   * the structure and the keyboard keep working.
+   *
+   * @default 'solid'
+   */
   variant?: TreeVariant
 }
 
@@ -31,9 +60,25 @@ interface TreeSingleProps {
 }
 
 interface TreeMultipleProps {
+  /** The selected item or items when the selection is not controlled. */
   defaultValue?: string[]
+  /**
+   * Called with the new selection: a `value`, or a list of them with `selection="multiple"` or
+   * `"checkbox"`.
+   */
   onValueChange?: (value: string[]) => void
+  /**
+   * How the items are picked. `single` selects one, `multiple` any number, `checkbox` shows a
+   * checkbox on every item (with `aria-checked`), and `none` selects nothing: the tree only opens
+   * and closes.
+   *
+   * @default 'single'
+   */
   selection: 'checkbox' | 'multiple'
+  /**
+   * The `value` of the selected item, or a list of them with `selection="multiple"` or
+   * `"checkbox"`. Makes the selection controlled: pass `onValueChange` to update it.
+   */
   value?: string[]
 }
 

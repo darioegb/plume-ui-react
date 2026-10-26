@@ -13,10 +13,35 @@ import { joinClasses } from '../../../overlay/class-names'
 import styles from './checkbox.module.css'
 
 export interface CheckboxOwnProps {
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Shows a mixed state, for a parent that selects some of its children.
+   *
+   * @default false
+   */
   indeterminate?: boolean
+  /**
+   * Shows the state without letting the user change it. It also silences `onChange`.
+   *
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Size of the box.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `solid` fills the box when checked and `outline` only colors its border and mark. `unstyled` leaves the native checkbox so you can bring your own styles.
+   *
+   * @default 'solid'
+   */
   variant?: CheckboxVariant
 }
 

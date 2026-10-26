@@ -30,6 +30,68 @@ table.docblock-argstable {
   overflow-x: auto;
 }
 
+/* API reference (see src/api-reference.tsx): one table per component and part. */
+.api-table-wrapper {
+  margin-block: 0.75rem 0.5rem;
+  overflow-x: auto;
+}
+
+.api-table {
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.api-table th,
+.api-table td {
+  border-block-end: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.api-table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.api-table td:first-child,
+.api-table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+.sbdocs-content .api-table td:first-child code,
+.sbdocs-content .api-table td:nth-child(3) code {
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.api-table td p {
+  margin: 0;
+}
+
+.sbdocs-content .api-table .api-type {
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: normal;
+}
+
+.api-table td:nth-child(2) {
+  min-width: 9rem;
+}
+
+.api-required {
+  color: #dc2626;
+  margin-inline-start: 0.2em;
+}
+
+.api-native {
+  font-size: 0.8125rem;
+  margin-block: 0.25rem 1.5rem;
+  opacity: 0.8;
+}
+
 @media (min-width: 768px) {
   div.sbdocs-wrapper {
     gap: 5rem;

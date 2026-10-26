@@ -26,146 +26,27 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the `<input>`.',
-      table: { type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles for the `<input>`. They are applied after the color variables, so they can override them (e.g. `--checkbox-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    colorScheme: {
-      control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      options: colorSchemes,
-      table: {
-        type: { summary: 'ColorScheme' },
-        defaultValue: { summary: 'primary' },
-      },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the box.',
-      options: ['sm', 'md', 'lg'],
-      table: {
-        type: { summary: `"sm" | "md" | "lg"` },
-        defaultValue: { summary: 'md' },
-      },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `solid` fills the box when checked and `outline` only colors its border and mark. `unstyled` leaves the native checkbox so you can bring your own styles.',
-      options: ['solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
-    },
-    checked: {
-      control: 'boolean',
-      description: 'Checked state, for a controlled Checkbox. Pair it with `onChange`.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultChecked: {
-      control: 'boolean',
-      description: 'Initial checked state, for an uncontrolled Checkbox.',
-      table: { type: { summary: 'boolean' } },
-    },
-    indeterminate: {
-      control: 'boolean',
-      description: 'Shows a mixed state, for a parent that selects some of its children.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables the Checkbox.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    readOnly: {
-      control: 'boolean',
-      description:
-        'Shows the state without letting the user change it. It also silences `onChange`.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    required: {
-      control: 'boolean',
-      description: 'Marks the Checkbox as required.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    name: {
-      control: 'text',
-      description: 'Name used when the form is submitted.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    value: {
-      control: 'text',
-      description: 'Value submitted when the Checkbox is checked.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the `<input>`. A Field sets it so its label points to the Checkbox.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'Accessible name when the Checkbox is not inside a Field with a label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Checkbox.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-describedby': {
-      control: false,
-      description:
-        'Ids of the elements that describe the Checkbox. A Field sets it for its helper and error text.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-invalid': {
-      control: 'boolean',
-      description:
-        'Marks the Checkbox as invalid, which also switches it to the error color scheme.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
-    },
-    onChange: {
-      control: false,
-      description: 'Called when the user checks or unchecks the Checkbox.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
-      },
-    },
-    onBlur: {
-      control: false,
-      description: 'Called when the Checkbox loses focus.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: FocusEvent) => void' },
-      },
-    },
-    onFocus: {
-      control: false,
-      description: 'Called when the Checkbox receives focus.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: FocusEvent) => void' },
-      },
-    },
+    className: { control: 'text' },
+    style: { control: false },
+    colorScheme: { control: 'select', options: colorSchemes },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'unstyled'] },
+    checked: { control: 'boolean' },
+    defaultChecked: { control: 'boolean' },
+    indeterminate: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
+    required: { control: 'boolean' },
+    name: { control: 'text' },
+    value: { control: 'text' },
+    id: { control: false },
+    'aria-label': { control: 'text' },
+    'aria-labelledby': { control: false },
+    'aria-describedby': { control: false },
+    'aria-invalid': { control: 'boolean' },
+    onChange: { control: false },
+    onBlur: { control: false },
+    onFocus: { control: false },
   },
   args: {
     'aria-label': 'Accept the terms',

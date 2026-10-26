@@ -56,13 +56,6 @@ function Toggle({
  * `accent` adds a bar at the start, like a note. They take a **colorScheme** and a **size** (the padding), and
  * `unstyled` draws nothing: it is only the height animation, and you style the box with `CollapseBody`.
  *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `CollapseClip` | `className`, `style`, `ref`, `children`. The element that clips the content while the height animates. Without it, the Collapse wraps its content in one. |
- * | `CollapseBody` | `className`, `style`, `ref`, `children`. The box that holds the content and takes the variant, the color scheme and the size. Without it, the Collapse wraps its content in one. |
- *
  * The parts don't read a context: they are plain elements, so a Server Component can render them.
  */
 export default {
@@ -79,80 +72,19 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: 'text',
-      description: 'What is shown when it is open.',
-      table: { type: { summary: 'ReactNode' } },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Collapse, the element that animates its height.',
-      table: { type: { summary: 'string' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant of the box with the content. `filled` gives it a background, `outline` a border and `accent` a bar at the start. `unstyled` drops the Plume styles so you can bring your own; the height animation keeps working.',
-      options: ['filled', 'outline', 'accent', 'unstyled'],
-      table: {
-        type: { summary: `"filled" | "outline" | "accent" | "unstyled"` },
-        defaultValue: { summary: 'filled' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      description:
-        'Color scheme from the theme palette, including custom schemes added to it. Without it the box is neutral. It tints the background of `filled` and `accent`, and colors the border of `outline` and `accent`.',
-      options: [undefined, ...colorSchemes],
-      table: { type: { summary: 'ColorScheme' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Size of the text and of the padding of the box.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    style: {
-      control: false,
-      description: 'Inline styles for the Collapse.',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    open: {
-      control: 'boolean',
-      description: 'Whether the content is shown.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    id: {
-      control: false,
-      description: 'Id of the Collapse. Point `aria-controls` of the button at it.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    title: {
-      control: 'text',
-      description: 'Native tooltip of the Collapse.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Collapse.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
-    role: {
-      control: 'text',
-      description:
-        'Role of the Collapse. Use `region` with a name when the content is important enough to be a landmark.',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
-    },
-    'aria-label': {
-      control: false,
-      description: 'Accessible name of the Collapse.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
-    'aria-labelledby': {
-      control: false,
-      description: 'Id of the element that names the Collapse.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
-    },
+    children: { control: 'text' },
+    className: { control: 'text' },
+    variant: { control: 'radio', options: ['filled', 'outline', 'accent', 'unstyled'] },
+    colorScheme: { control: 'select', options: [undefined, ...colorSchemes] },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    style: { control: false },
+    open: { control: 'boolean' },
+    id: { control: false },
+    title: { control: 'text' },
+    hidden: { control: false },
+    role: { control: 'text' },
+    'aria-label': { control: false },
+    'aria-labelledby': { control: false },
   },
   args: {
     children: text,

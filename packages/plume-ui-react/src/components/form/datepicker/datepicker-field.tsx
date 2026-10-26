@@ -8,6 +8,7 @@ import { useDatePickerInput } from './datepicker-input-context'
 
 export type DatePickerFieldProps = InputFieldProps
 
+/** The `<input>` inside a `DatePickerInput`. It takes the props of `InputField`. */
 export const DatePickerField = forwardRef<HTMLInputElement, DatePickerFieldProps>(
   (props: DatePickerFieldProps, ref: ForwardedRef<HTMLInputElement>): ReactNode => {
     const { setRef } = useDatePickerInput('DatePickerField')

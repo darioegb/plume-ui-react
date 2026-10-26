@@ -33,24 +33,91 @@ export type SliderVariant = 'outline' | 'solid' | 'unstyled'
 export type SliderOrientation = 'horizontal' | 'vertical'
 
 export interface SliderOwnProps {
+  /**
+   * The parts of the slider, in the order they should appear. Without children it renders the
+   * track, the marks and one `SliderThumb` per value.
+   */
   children?: ReactNode
+  /**
+   * Color scheme from the theme palette, custom schemes included.
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * The value when the slider is not controlled: a number, or a pair for a range. It starts at the
+   * minimum without it.
+   */
   defaultValue?: SliderValue
+  /**
+   * Disables the slider.
+   * @default false
+   */
   disabled?: boolean
+  /** Returns the text for a value, which screen readers read: `$40`. */
   formatValue?: (value: number) => string
+  /**
+   * Marks the slider as invalid: it turns to the error color.
+   * @default false
+   */
   invalid?: boolean
+  /**
+   * The texts of the slider, for other languages: `thumb(index)` is the accessible name of a thumb
+   * of a range, from its index (`Minimum` and `Maximum` by default).
+   */
   labels?: Partial<SliderLabels>
+  /**
+   * Shows marks on the track. `true` puts one on every step, a list of numbers puts them there, and
+   * a list of `{ value, label }` also writes a label under each. They are hidden from assistive
+   * technology.
+   */
   marks?: boolean | number[] | SliderMark[]
+  /**
+   * The largest value.
+   * @default 100
+   */
   max?: number
+  /**
+   * The smallest value.
+   * @default 0
+   */
   min?: number
+  /** Name of the input in a form. A range sends both values with the same name. */
   name?: string
+  /** Called with the new value, a number or a pair, while the user drags or presses a key. */
   onValueChange?: (value: SliderValue) => void
+  /** Called with the final value when the user lets go of a thumb or releases a key. */
   onValueCommit?: (value: SliderValue) => void
+  /**
+   * Direction of the track. A vertical slider is 12rem high, and its minimum is at the bottom.
+   * @default 'horizontal'
+   */
   orientation?: SliderOrientation
+  /**
+   * Shows the value without letting the user change it. It stays reachable, and has
+   * `aria-readonly`.
+   * @default false
+   */
   readOnly?: boolean
+  /**
+   * Size of the thumb and the track.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * The distance between two values. The value snaps to it.
+   * @default 1
+   */
   step?: number
+  /**
+   * The value: a number, or a pair of numbers for a range. Makes the slider controlled: pass
+   * `onValueChange` to update it.
+   */
   value?: SliderValue
+  /**
+   * Visual variant. `solid` has a thick track and a filled thumb, `outline` a thin track and a
+   * hollow thumb. `unstyled` renders only the native inputs, so you can bring your own styles.
+   * @default 'solid'
+   */
   variant?: SliderVariant
 }
 

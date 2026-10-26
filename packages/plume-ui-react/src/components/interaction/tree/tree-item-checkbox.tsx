@@ -23,6 +23,10 @@ const checkboxState = (checked: TreeCheckState | undefined): string => {
   return checked ? 'checked' : 'unchecked'
 }
 
+/**
+ * The checkbox of a `checkbox` tree, which renders nothing in the other trees. `children` replaces
+ * the check mark. It has `data-state` (`checked`, `unchecked` or `mixed`).
+ */
 export const TreeItemCheckbox = forwardRef<HTMLSpanElement, TreeItemCheckboxProps>(
   (
     { children, className, style }: TreeItemCheckboxProps,

@@ -20,14 +20,35 @@ import styles from './dropdown.module.css'
 const ITEM_PARTS = [DropdownItemIcon, DropdownItemLabel, DropdownItemShortcut]
 
 export interface DropdownItemOwnProps {
+  /**
+   * The text of the item, or the `DropdownItemIcon`, `DropdownItemLabel` and `DropdownItemShortcut`
+   * parts.
+   */
   children?: ReactNode
+  /**
+   * Whether selecting this item closes the menu. It overrides the `closeOnSelect` of the
+   * `Dropdown`.
+   */
   closeOnSelect?: boolean
+  /**
+   * Disables the item: it can't be selected and the keyboard skips it.
+   *
+   * @default false
+   */
   disabled?: boolean
+  /** Renders the item as a link to this URL instead of an action. */
   href?: string
+  /** Icon shown before the text. It has no effect when the item is composed with parts. */
   icon?: ReactNode
+  /** Called when the item is selected with a click or the keyboard. */
   onSelect?: (event: MouseEvent<HTMLElement>) => void
+  /** The `rel` of the link, when the item has an `href`. */
   rel?: string
+  /**
+   * Keyboard shortcut shown after the text. It has no effect when the item is composed with parts.
+   */
   shortcut?: ReactNode
+  /** The `target` of the link, when the item has an `href`. */
   target?: string
 }
 
@@ -37,6 +58,11 @@ export type DropdownItemProps = Omit<ComponentProps, 'index'> &
   DropdownItemRootAttributes &
   DropdownItemOwnProps
 
+/**
+ * An action. With `href` it is a link. Given `DropdownItemIcon`, `DropdownItemLabel` or
+ * `DropdownItemShortcut` as children it renders them as written, and `icon` and `shortcut` have no
+ * effect.
+ */
 export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
   (
     {

@@ -16,6 +16,12 @@ const INDICATOR_PARTS = [StepIndicatorContent, StepIndicatorLabel]
 
 export type StepIndicatorProps = Omit<ComponentProps, 'index'> & StepIndicatorRootAttributes
 
+/**
+ * The circle. Given no parts it renders a `StepIndicatorContent` (the number, or a check when the
+ * step is completed; `children` replaces it, for example with an icon) and a `StepIndicatorLabel`.
+ * Given `StepIndicatorContent` or `StepIndicatorLabel` among its children it renders them as
+ * written.
+ */
 export const StepIndicator = forwardRef<HTMLSpanElement, StepIndicatorProps>(
   (
     { children, className, style, ...rest }: StepIndicatorProps,

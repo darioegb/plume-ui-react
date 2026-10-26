@@ -11,6 +11,7 @@ import styles from './datepicker.module.css'
 export type DatePickerPagesProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
+/** Holds one `DatePickerPage`, or two in a range. */
 export const DatePickerPages = forwardRef<HTMLDivElement, DatePickerPagesProps>(
   (
     { children, className, style }: DatePickerPagesProps,

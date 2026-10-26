@@ -9,6 +9,10 @@ import { CarouselDotIndexContext, useCarouselContext } from './carousel-context'
 import styles from './carousel.module.css'
 
 export interface CarouselDotsOwnProps {
+  /**
+   * The dots. A function gets the position of the dot and is called once per slide; nodes are
+   * the `CarouselDot` elements themselves. Given none, there is one `CarouselDot` per slide.
+   */
   children?: ((position: number) => ReactNode) | ReactNode
 }
 
@@ -21,6 +25,7 @@ export type CarouselDotsProps = Omit<ComponentProps, 'index'> &
   CarouselDotsRootAttributes &
   CarouselDotsOwnProps
 
+/** The tab list of the dots. */
 export const CarouselDots = forwardRef<HTMLDivElement, CarouselDotsProps>(
   (
     { 'aria-label': ariaLabel, children, className, style, ...rest }: CarouselDotsProps,

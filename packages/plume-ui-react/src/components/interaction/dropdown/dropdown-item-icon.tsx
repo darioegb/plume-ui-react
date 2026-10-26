@@ -11,6 +11,7 @@ type DropdownItemIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type DropdownItemIconProps = Omit<ComponentProps, 'index'> & DropdownItemIconRootAttributes
 
+/** The decorative icon of an item. It renders nothing without children. */
 export const DropdownItemIcon = forwardRef<HTMLSpanElement, DropdownItemIconProps>(
   (
     { children, className, style }: DropdownItemIconProps,

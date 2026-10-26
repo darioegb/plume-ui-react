@@ -9,6 +9,7 @@ import { useTimePicker } from './use-timepicker'
 
 export type TimePickerPeriodProps = TimePickerColumnProps<Period>
 
+/** The list of the period (AM and PM). It only exists with `hour12`. */
 export const TimePickerPeriod = forwardRef<HTMLDivElement, TimePickerPeriodProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: TimePickerPeriodProps,

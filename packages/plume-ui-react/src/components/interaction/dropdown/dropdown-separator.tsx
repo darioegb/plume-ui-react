@@ -9,6 +9,7 @@ import styles from './dropdown.module.css'
 
 export type DropdownSeparatorProps = Omit<ComponentProps, 'index'>
 
+/** A line between groups of items. */
 export const DropdownSeparator = forwardRef<HTMLHRElement, DropdownSeparatorProps>(
   (
     { className = '', style }: DropdownSeparatorProps,

@@ -9,6 +9,7 @@ type AccordionTitleRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'child
 
 export type AccordionTitleProps = Omit<ComponentProps, 'index'> & AccordionTitleRootAttributes
 
+/** The text inside the trigger. */
 export const AccordionTitle = forwardRef<HTMLSpanElement, AccordionTitleProps>(
   (
     { children, className, style, ...rest }: AccordionTitleProps,

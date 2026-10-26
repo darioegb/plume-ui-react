@@ -30,17 +30,6 @@ const statuses = ['info', 'success', 'warning', 'error'] as const
  * children and it renders them as written, so you can reorder, omit or replace each one, and give it its own
  * `className`. In that case **action** and **dismissible** have no effect: compose `AlertAction` and `AlertDismiss`
  * instead.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `AlertIcon` | `className`, `style`, `ref`, `children`. The icon, `aria-hidden`. Without children it shows the icon of the status, or the **icon** of the `Alert`; it renders nothing when **icon** is `false`. |
- * | `AlertContent` | `className`, `style`, `ref`, `children`. The block that holds the title and the description. |
- * | `AlertAction` | `className`, `style`, `ref`, `children`. Where an action, such as a button or a link, goes. |
- * | `AlertDismiss` | `aria-label`, `className`, `style`, `ref`, `children`. The close button. It dismisses the `Alert`, calls **onDismiss** and takes its name from **labels.dismiss**. Children replace the icon. |
- * | `AlertTitle` | `as` (`div` by default, or `h2` to `h6`), `id`, `className`, `style`, `children`. The title, in bold. Use a heading when it belongs in the outline of the page. |
- * | `AlertDescription` | `id`, `className`, `style`, `children`. The details. |
  */
 export default {
   title: 'Components/Alert',
@@ -67,106 +56,57 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The `AlertTitle` and `AlertDescription` of the Alert, or plain text.',
-      table: { type: { summary: 'ReactNode' } },
     },
     status: {
       control: 'radio',
-      description: 'The kind of message: it sets the color, the icon and the role of the Alert.',
       options: statuses,
-      table: {
-        type: { summary: `"info" | "success" | "warning" | "error"` },
-        defaultValue: { summary: 'info' },
-      },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `subtle` tints the background, `solid` fills it and `outline` draws its border. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['subtle', 'solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"subtle" | "solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'subtle' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Alert: its padding and its text.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     icon: {
       control: false,
-      description:
-        'The icon at the start. By default, the one of the status. Pass your own, or `false` for none. It is decorative.',
-      table: { type: { summary: 'ReactNode | false' } },
     },
     action: {
       control: false,
-      description: 'What the user can do about the message: a `Button` or a link, at the end.',
-      table: { type: { summary: 'ReactNode' } },
     },
     dismissible: {
       control: 'boolean',
-      description: 'Shows a button that closes the Alert.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     labels: {
       control: false,
-      description:
-        'The texts of the Alert, to translate it: `dismiss` is the accessible name of the dismiss button.',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'Partial<AlertLabels>' },
-        defaultValue: { summary: "{ dismiss: 'Dismiss' }" },
-      },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the root element of the Alert.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Alert. They are applied after the color variables, so they can override them (e.g. `--alert-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     onDismiss: {
       control: false,
-      description: 'Called when the dismiss button is pressed.',
-      table: { category: 'Events', type: { summary: '() => void' } },
     },
     id: {
       control: false,
-      description: 'Id of the Alert.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Alert.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: 'boolean',
-      description: 'Hides the Alert.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     role: {
       control: 'text',
-      description:
-        "Role of the Alert. By default `alert` for an error and `status` for the rest. Use `note` for a message that is part of the page and doesn't need to be announced.",
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name of the Alert.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Alert, such as its title.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

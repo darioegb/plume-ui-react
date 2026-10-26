@@ -9,6 +9,7 @@ import { PickerTrigger } from '../shared/picker-trigger'
 import { useTimePicker } from './use-timepicker'
 
 export interface TimePickerTriggerOwnProps {
+  /** Another icon for the button. */
   children?: ReactNode
 }
 
@@ -21,6 +22,10 @@ export type TimePickerTriggerProps = Omit<ComponentProps, 'index'> &
   TimePickerTriggerRootAttributes &
   TimePickerTriggerOwnProps
 
+/**
+ * The button that opens and closes the panel. It is disabled with its `TimePickerInput`, or on its
+ * own.
+ */
 export const TimePickerTrigger = forwardRef<HTMLButtonElement, TimePickerTriggerProps>(
   (
     {

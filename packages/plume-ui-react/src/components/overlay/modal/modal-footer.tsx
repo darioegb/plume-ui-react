@@ -10,6 +10,7 @@ type ModalFooterRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'
 
 export type ModalFooterProps = Omit<ComponentProps, 'index'> & ModalFooterRootAttributes
 
+/** A row for the actions. */
 export const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>(
   ({ children, className = '', style }: ModalFooterProps, ref: ForwardedRef<HTMLDivElement>) => {
     const { isStyled } = useModalContext('ModalFooter')

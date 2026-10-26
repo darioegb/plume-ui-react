@@ -45,48 +45,29 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The SVG to show.',
-      table: { type: { summary: 'ReactNode' } },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Icon.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Icon. They are applied after the color variable, so they can override it (e.g. `--icon-color`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description:
-        'Color scheme from the theme palette. Without it the Icon takes the current text color.',
       options: [undefined, ...colorSchemes],
-      table: { type: { summary: 'ColorScheme' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Icon.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     label: {
       control: 'text',
-      description:
-        'Accessible name, rendered as text that only screen readers get. Without it the Icon is hidden from assistive technology.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<span>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Icon.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
   },
   args: {

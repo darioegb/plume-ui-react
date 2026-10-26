@@ -26,80 +26,46 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description: 'Content of the Badge.',
-      table: { type: { summary: 'ReactNode' } },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Badge.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Badge. They are applied after the color variables, so they can override them (e.g. `--badge-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: { type: { summary: 'ColorScheme' }, defaultValue: { summary: 'primary' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Badge.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     shape: {
       control: 'radio',
-      description: 'Corners of the Badge.',
       options: ['rounded', 'pill'],
-      table: { type: { summary: `"rounded" | "pill"` }, defaultValue: { summary: 'rounded' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `solid` fills the Badge, `subtle` tints it and `outline` only draws its border. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['solid', 'outline', 'subtle', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "subtle" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
     },
     dot: {
       control: 'boolean',
-      description:
-        'Shows a status dot before the content, in the color of the text. With no children it is a dot on its own. The `unstyled` variant ignores it.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<span>`.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Badge.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     role: {
       control: 'text',
-      description:
-        'Role of the Badge. A Badge with an `aria-label` or an `aria-labelledby` gets `img` by default. Use `status` for a badge that changes while the user is on the page.',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
       control: 'text',
-      description:
-        'Accessible name when the Badge has no text, as with a dot on its own, or to say more than its text does (`99+` and `99 notifications`).',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Badge.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

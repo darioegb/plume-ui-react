@@ -4,11 +4,42 @@ import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import styles from './list.module.css'
 
 export interface ListOwnProps {
+  /**
+   * The element to render. By default it follows the marker: `ol` for `number` and `ul` for the
+   * rest. Use it to get an `<ol>` with the `unstyled` variant.
+   */
   as?: 'ul' | 'ol'
+  /**
+   * Color scheme from the theme palette, used for the selected item and the focus ring.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Draws a line between the items. It is on by default for `bordered` and off for the other
+   * variants.
+   */
   divided?: boolean
+  /**
+   * Bullets or numbers for a list of plain text items. `number` renders an `<ol>`. The markers go
+   * with text items: a row with an icon or a button is a flex row and has none.
+   *
+   * @default 'none'
+   */
   marker?: ListMarker
+  /**
+   * Size of the text and of the padding of the items.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `plain` has no container, `bordered` draws a border and divides the items, and
+   * `filled` gives the List a muted background. `unstyled` drops the Plume styles so you can bring
+   * your own.
+   *
+   * @default 'plain'
+   */
   variant?: ListVariant
 }
 

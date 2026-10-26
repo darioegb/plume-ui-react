@@ -11,6 +11,7 @@ type ToastTitleRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'children'
 
 export type ToastTitleProps = Omit<ComponentProps, 'index'> & ToastTitleRootAttributes
 
+/** The title of the toast. `children` replaces the one of the toast. */
 export const ToastTitle = forwardRef<HTMLSpanElement, ToastTitleProps>(
   (
     { children, className, style }: ToastTitleProps,

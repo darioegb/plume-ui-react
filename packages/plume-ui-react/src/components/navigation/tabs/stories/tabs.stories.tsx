@@ -40,17 +40,6 @@ const commonTabs = (
  * Inside the tab list, <kbd>←</kbd> <kbd>→</kbd> (<kbd>↑</kbd> <kbd>↓</kbd> when vertical) select the previous or next tab,
  * and <kbd>Home</kbd> / <kbd>End</kbd> the first or last one. Disabled tabs are skipped.
  * Give the `TabList` an `aria-label` (or `aria-labelledby`) that describes the group.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `TabList` | `aria-label`, `aria-labelledby`, `className`, `style`, `id`, `children` (the `Tab` items). It has `data-plume-tabs-list` and `data-orientation`. |
- * | `Tab` | `index` (its position, which it only needs when a wrapper holds several tabs), `label`, `disabled`, `extraContentLeft` and `extraContentRight` (content beside the label, e.g. an icon or a badge), `className`, `style`, `children`. It has `data-plume-tabs-tab`, and `data-active` while it is selected. |
- * | `TabPanels` | `className`, `style`, `id`, `children` (one `TabPanel` per `Tab`, in the same order). It has `data-plume-tabs-panels`. |
- * | `TabPanel` | `index` (its position, only needed inside a wrapper that holds several panels), `className`, `style`, `children`. It has `data-plume-tabs-panel`. |
- *
- * Tab and panel ids are generated, and derive from the `Tabs` `id` when you set one (`settings` → `settings-tab-0`, `settings-panel-0`).
  */
 export default {
   title: 'Components/Tabs',
@@ -66,103 +55,22 @@ export default {
     layout: 'padded',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'A TabList with its Tab items and the matching TabPanels.',
-      table: {
-        type: { summary: 'ReactNode' },
-      },
-    },
-    className: {
-      control: 'text',
-      description: 'Custom CSS class for the Tabs.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    index: {
-      control: 'number',
-      description:
-        'Index of the selected tab. Changing it selects that tab; pair it with `onChange` to keep it in sync with user selection.',
-      table: {
-        defaultValue: { summary: 0 },
-        type: { summary: 'number' },
-      },
-    },
-    alignment: {
-      control: 'radio',
-      options: ['left', 'center', 'right'],
-      description: 'Alignment of the Tabs within the container.',
-      table: {
-        defaultValue: { summary: 'left' },
-        type: { summary: '"left" | "center" | "right"' },
-      },
-    },
-    colorScheme: {
-      control: 'select',
-      options: colorSchemes,
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
-      table: {
-        type: { summary: 'ColorScheme' },
-      },
-    },
-    isLazy: {
-      control: 'boolean',
-      description:
-        'Renders the selected panel inside `Suspense`, with a Spinner as fallback. Only the selected panel is mounted either way.',
-      table: {
-        defaultValue: { summary: false },
-        type: { summary: 'boolean' },
-      },
-    },
-    onChange: {
-      action: 'tabChanged',
-      description: 'Called with the index of the newly selected tab.',
-      table: { category: 'Events', type: { summary: '(index: number) => void' } },
-    },
-    orientation: {
-      control: 'radio',
-      options: ['horizontal', 'vertical'],
-      description: 'Orientation of the Tabs.',
-      table: {
-        defaultValue: { summary: 'horizontal' },
-        type: { summary: '"horizontal" | "vertical"' },
-      },
-    },
-    size: {
-      control: 'radio',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size of the Tabs.',
-      table: {
-        defaultValue: { summary: 'md' },
-        type: { summary: '"sm" | "md" | "lg"' },
-      },
-    },
+    children: { control: false },
+    className: { control: 'text' },
+    index: { control: 'number' },
+    alignment: { control: 'radio', options: ['left', 'center', 'right'] },
+    colorScheme: { control: 'select', options: colorSchemes },
+    isLazy: { control: 'boolean' },
+    onChange: { action: 'tabChanged' },
+    orientation: { control: 'radio', options: ['horizontal', 'vertical'] },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
     variant: {
       control: 'select',
       options: ['underline', 'rounded', 'enclosed', 'segment', 'unstyled'],
-      description: 'Variant of the Tabs.',
-      table: {
-        defaultValue: { summary: 'underline' },
-        type: { summary: '"underline" | "rounded" | "enclosed" | "segment" | "unstyled"' },
-      },
     },
-    id: {
-      control: false,
-      description: 'Id of the root element, also used as the base for the tab and panel ids.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
-    },
-    style: {
-      control: false,
-      description:
-        'Inline styles. They are applied after the color variables, so they can override them (e.g. `--tabs-scheme`).',
-      table: { type: { summary: 'CSSProperties' } },
-    },
-    hidden: {
-      control: false,
-      description: 'Hides the Tabs.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
-    },
+    id: { control: false },
+    style: { control: false },
+    hidden: { control: false },
   },
 } satisfies Meta<typeof Tabs>
 

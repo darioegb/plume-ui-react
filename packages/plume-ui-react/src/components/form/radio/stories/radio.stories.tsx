@@ -46,134 +46,66 @@ export default {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Custom CSS class for the `<input>`.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the `<input>`. They are applied after the color variables, so they can override them (e.g. `--radio-solid`).',
-      table: { type: { summary: 'CSSProperties' } },
     },
     colorScheme: {
       control: 'select',
-      description: 'Color scheme from the theme palette, including custom schemes added to it.',
       options: colorSchemes,
-      table: {
-        type: { summary: 'ColorScheme' },
-        defaultValue: { summary: 'primary' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Radio.',
       options: ['sm', 'md', 'lg'],
-      table: {
-        type: { summary: `"sm" | "md" | "lg"` },
-        defaultValue: { summary: 'md' },
-      },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `solid` fills the circle when selected and `outline` only colors its border and dot. `unstyled` leaves the native radio so you can bring your own styles. Inside a RadioGroup it defaults to the group variant.',
       options: ['solid', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
     },
     checked: {
       control: 'boolean',
-      description: 'Selected state, for a controlled Radio. Pair it with `onChange`.',
-      table: { type: { summary: 'boolean' } },
     },
     defaultChecked: {
       control: 'boolean',
-      description: 'Initial selected state, for an uncontrolled Radio.',
-      table: { type: { summary: 'boolean' } },
     },
     disabled: {
       control: 'boolean',
-      description: 'Disables the Radio.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     readOnly: {
       control: 'boolean',
-      description:
-        'Keeps the state without letting the user change it. It also silences `onChange`.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     required: {
       control: 'boolean',
-      description: 'Marks the Radio as required.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     name: {
       control: 'text',
-      description: 'Name that groups the radios. Only one radio of a group can be selected.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     value: {
       control: 'text',
-      description: 'Value submitted when the Radio is selected.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     id: {
       control: false,
-      description: 'Id of the `<input>`. A Field sets it so its label points to the Radio.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name when the Radio is not inside a Field with a label.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Radio.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-describedby': {
       control: false,
-      description:
-        'Ids of the elements that describe the Radio. A Field sets it for its helper and error text.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-invalid': {
       control: 'boolean',
-      description: 'Marks the Radio as invalid, which also switches it to the error color scheme.',
-      table: { category: 'Accessibility', type: { summary: 'boolean' } },
     },
     onChange: {
       control: false,
-      description: 'Called when the user selects the Radio.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: ChangeEvent<HTMLInputElement>) => void' },
-      },
     },
     onBlur: {
       control: false,
-      description: 'Called when the Radio loses focus.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: FocusEvent) => void' },
-      },
     },
     onFocus: {
       control: false,
-      description: 'Called when the Radio receives focus.',
-      table: {
-        category: 'Events',
-        type: { summary: '(event: FocusEvent) => void' },
-      },
     },
   },
   args: {

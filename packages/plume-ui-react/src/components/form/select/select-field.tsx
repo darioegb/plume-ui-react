@@ -11,6 +11,7 @@ type SelectFieldRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'
 
 export type SelectFieldProps = Omit<ComponentProps, 'index'> & SelectFieldRootAttributes
 
+/** The row that holds the chips and the combobox. */
 export const SelectField = forwardRef<HTMLDivElement, SelectFieldProps>(
   (
     { children, className, style }: SelectFieldProps,

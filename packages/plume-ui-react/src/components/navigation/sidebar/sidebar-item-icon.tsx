@@ -10,6 +10,7 @@ import styles from './sidebar.module.css'
 export type SidebarItemIconProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The icon of an item, hidden from assistive technology. */
 export const SidebarItemIcon = forwardRef<HTMLSpanElement, SidebarItemIconProps>(
   (
     { children, className, style }: SidebarItemIconProps,

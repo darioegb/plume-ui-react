@@ -10,6 +10,7 @@ export type TabPanelsProps = Pick<
   'className' | 'id' | 'children' | 'style'
 >
 
+/** The box that holds the `TabPanel` items, one per `Tab` and in the same order. */
 export const TabPanels = forwardRef(
   ({ children, ...rest }: TabPanelsProps, ref: Ref<HTMLDivElement>) => {
     const { index } = useTabs()

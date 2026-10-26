@@ -10,6 +10,7 @@ type CardFooterRootAttributes = Pick<
 
 export type CardFooterProps = Omit<ComponentProps, 'index'> & CardFooterRootAttributes
 
+/** A row for actions. */
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   (
     { children, className = '', style, ...rest }: CardFooterProps,

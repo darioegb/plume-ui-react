@@ -24,6 +24,7 @@ const statusOf = (index: number, activeStep: number): StepStatus => {
   return index === activeStep ? 'current' : 'upcoming'
 }
 
+/** One `<li>`. It has `data-state`. */
 export const Step = forwardRef<HTMLLIElement, StepProps>(
   (
     { children, className, style, ...rest }: StepProps,

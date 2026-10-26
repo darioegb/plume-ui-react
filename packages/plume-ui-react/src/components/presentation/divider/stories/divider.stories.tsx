@@ -17,12 +17,6 @@ import { Divider, DividerLabel } from '..'
  * `<Divider><DividerLabel>or</DividerLabel></Divider>` render the same. Use the part when you want its own class,
  * style or ref, or to put something else (an icon) next to the text. The Divider has no state to share, so it is
  * a plain component that a Server Component can render.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `DividerLabel` | `className`, `style`, `ref`, `children`. The text between the two lines of a horizontal Divider. |
  */
 export default {
   title: 'Components/Divider',
@@ -40,94 +34,50 @@ export default {
   argTypes: {
     children: {
       control: 'text',
-      description:
-        'A label shown between two lines, as text or as a `DividerLabel`. It only works with a horizontal Divider, and without it the Divider is an `<hr>`.',
-      table: { type: { summary: 'ReactNode' } },
     },
     align: {
       control: 'radio',
-      description: 'Where the label sits along the line.',
       options: ['start', 'center', 'end'],
-      table: {
-        type: { summary: `"start" | "center" | "end"` },
-        defaultValue: { summary: 'center' },
-      },
     },
     orientation: {
       control: 'radio',
-      description: 'Direction of the line.',
       options: ['horizontal', 'vertical'],
-      table: {
-        type: { summary: `"horizontal" | "vertical"` },
-        defaultValue: { summary: 'horizontal' },
-      },
     },
     variant: {
       control: 'radio',
-      description:
-        'Style of the line. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['solid', 'dashed', 'dotted', 'unstyled'],
-      table: {
-        type: { summary: `"solid" | "dashed" | "dotted" | "unstyled"` },
-        defaultValue: { summary: 'solid' },
-      },
     },
     size: {
       control: 'radio',
-      description: 'Thickness of the line: 1, 2 or 3 pixels.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'sm' } },
     },
     spacing: {
       control: 'radio',
-      description: 'Space around the line. By default there is none.',
       options: [undefined, 'sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` } },
     },
     decorative: {
       control: 'boolean',
-      description: 'Hides the line from assistive technology (`role="none"`).',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Divider.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description:
-        'Inline styles for the Divider. Set `--divider-color` to change the color of the line.',
-      table: { type: { summary: 'CSSProperties' } },
     },
     id: {
       control: false,
-      description: 'Id of the Divider.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Divider.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     hidden: {
       control: 'boolean',
-      description: 'Hides the Divider.',
-      table: { category: 'HTML attributes', type: { summary: 'boolean' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name of the separator.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the separator.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

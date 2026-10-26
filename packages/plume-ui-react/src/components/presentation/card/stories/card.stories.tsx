@@ -22,17 +22,6 @@ const sample = (
  * a heading inside it (`<h3>`, at the level that fits the page).
  *
  * To make a card clickable, put a real link or button inside it. The Card doesn't take an `onClick`.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `CardHeader` | `className`, `style`, `id`, `children`. The title area, in a larger and bolder type. |
- * | `CardBody` | `className`, `style`, `id`, `children`. The content, which takes the free space of the Card. |
- * | `CardFooter` | `className`, `style`, `id`, `children`. A row for actions. |
- *
- * The parts take their padding and text size from the `size` of the Card, and none of them needs JavaScript, so
- * a Card can be rendered in a Server Component.
  */
 export default {
   title: 'Components/Card',
@@ -51,59 +40,35 @@ export default {
   argTypes: {
     children: {
       control: false,
-      description: 'The `CardHeader`, `CardBody` and `CardFooter` of the Card.',
-      table: { type: { summary: 'ReactNode' } },
     },
     className: {
       control: 'text',
-      description: 'Custom CSS class for the Card.',
-      table: { type: { summary: 'string' } },
     },
     style: {
       control: false,
-      description: 'Inline styles for the Card.',
-      table: { type: { summary: 'CSSProperties' } },
     },
     size: {
       control: 'radio',
-      description: 'Size of the Card: the padding of its parts and the size of its text.',
       options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
     },
     variant: {
       control: 'radio',
-      description:
-        'Visual variant. `elevated` floats the Card with a shadow, `outline` draws its border and divides its parts, and `filled` gives it a muted background. `unstyled` drops the Plume styles so you can bring your own.',
       options: ['elevated', 'outline', 'filled', 'unstyled'],
-      table: {
-        type: { summary: `"elevated" | "outline" | "filled" | "unstyled"` },
-        defaultValue: { summary: 'elevated' },
-      },
     },
     id: {
       control: false,
-      description: 'Id of the Card.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     title: {
       control: 'text',
-      description: 'Native tooltip of the Card.',
-      table: { category: 'HTML attributes', type: { summary: 'string' } },
     },
     role: {
       control: 'text',
-      description: 'Role of the Card, for when it is a landmark (`region`) or a group (`group`).',
-      table: { category: 'Accessibility', type: { summary: 'AriaRole' } },
     },
     'aria-label': {
       control: 'text',
-      description: 'Accessible name of the Card.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
     'aria-labelledby': {
       control: false,
-      description: 'Id of the element that names the Card, such as its header.',
-      table: { category: 'Accessibility', type: { summary: 'string' } },
     },
   },
   args: {

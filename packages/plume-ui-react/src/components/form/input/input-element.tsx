@@ -9,6 +9,11 @@ import type { InputSide } from './input-addon'
 import styles from './input.module.css'
 
 export interface InputElementOwnProps {
+  /**
+   * Which side of the field the element goes on.
+   *
+   * @default 'before'
+   */
   position?: InputSide
 }
 
@@ -16,6 +21,7 @@ export type InputElementProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'> &
   InputElementOwnProps
 
+/** An icon or a small piece of content inside the field. */
 export const InputElement = forwardRef<HTMLSpanElement, InputElementProps>(
   (
     { children, className, position = 'before', style }: InputElementProps,

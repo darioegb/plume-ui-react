@@ -11,6 +11,7 @@ type SelectValueTextRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chil
 
 export type SelectValueTextProps = Omit<ComponentProps, 'index'> & SelectValueTextRootAttributes
 
+/** The text of the chosen option inside the combobox. */
 export const SelectValueText = forwardRef<HTMLSpanElement, SelectValueTextProps>(
   (
     { children, className, style }: SelectValueTextProps,
@@ -35,6 +36,7 @@ SelectValueText.displayName = 'SelectValueText'
 
 export type SelectValueIconProps = Omit<ComponentProps, 'index'> & SelectValueTextRootAttributes
 
+/** The icon of the chosen option inside the combobox. */
 export const SelectValueIcon = forwardRef<HTMLSpanElement, SelectValueIconProps>(
   (
     { children, className, style }: SelectValueIconProps,
@@ -59,6 +61,7 @@ export const SelectValueIcon = forwardRef<HTMLSpanElement, SelectValueIconProps>
 SelectValueIcon.displayName = 'SelectValueIcon'
 
 export interface SelectValueOptionOwnProps {
+  /** The chosen option it shows. */
   option: SelectedOption
 }
 
@@ -66,6 +69,9 @@ export type SelectValueOptionProps = Omit<ComponentProps, 'index'> &
   SelectValueTextRootAttributes &
   SelectValueOptionOwnProps
 
+/**
+ * The chosen option inside the combobox, with its icon and its text. Its `children` replace them.
+ */
 export const SelectValueOption = forwardRef<HTMLSpanElement, SelectValueOptionProps>(
   (
     { children, className, option, style }: SelectValueOptionProps,

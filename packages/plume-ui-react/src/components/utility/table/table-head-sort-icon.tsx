@@ -7,6 +7,7 @@ type TableHeadSortIconRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'ch
 
 export type TableHeadSortIconProps = Omit<ComponentProps, 'index'> & TableHeadSortIconRootAttributes
 
+/** The arrow of a sortable head, which turns with `aria-sort`. `children` replace it. */
 export const TableHeadSortIcon = forwardRef<HTMLSpanElement, TableHeadSortIconProps>(
   (
     { children, className, style }: TableHeadSortIconProps,

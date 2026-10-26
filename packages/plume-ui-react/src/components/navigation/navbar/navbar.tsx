@@ -11,13 +11,52 @@ import { NavbarContext, type NavbarBreakpoint, type NavbarVariant } from './navb
 import styles from './navbar.module.css'
 
 export interface NavbarOwnProps {
+  /**
+   * Below this width the content folds behind the toggle: `sm` is 640px, `md` 768px and `lg`
+   * 1024px. `never` keeps it always visible.
+   *
+   * @default 'md'
+   */
   breakpoint?: NavbarBreakpoint
+  /**
+   * Color scheme from the theme palette, including custom schemes added to it. It colors the active
+   * item, and the whole bar in the `solid` variant.
+   *
+   * @default 'primary'
+   */
   colorScheme?: ColorScheme
+  /**
+   * Whether the menu starts open, when it is not controlled.
+   *
+   * @default false
+   */
   defaultOpen?: boolean
+  /** Called with the new state when the menu opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /**
+   * Whether the menu is open below the breakpoint. Makes the Navbar controlled: pass `onOpenChange`
+   * to update it.
+   */
   open?: boolean
+  /**
+   * Size of the Navbar.
+   *
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Keeps the Navbar at the top of the page when it scrolls.
+   *
+   * @default false
+   */
   sticky?: boolean
+  /**
+   * Visual variant. `plain` has a line under the bar and underlines the active item, `filled` a
+   * muted background and `solid` the color of the scheme. `unstyled` drops the Plume styles so you
+   * can bring your own; the layout and the folding keep working.
+   *
+   * @default 'plain'
+   */
   variant?: NavbarVariant
 }
 

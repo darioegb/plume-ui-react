@@ -9,6 +9,7 @@ type TableHeaderRootAttributes = Pick<
 
 export type TableHeaderProps = Omit<ComponentProps, 'index'> & TableHeaderRootAttributes
 
+/** The `<thead>`. */
 export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
   (
     { children, className, style, ...rest }: TableHeaderProps,

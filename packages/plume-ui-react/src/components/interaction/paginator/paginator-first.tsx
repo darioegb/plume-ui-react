@@ -4,6 +4,9 @@ import { PaginatorEdge, type PaginatorEdgeProps } from './paginator-edge'
 
 export type PaginatorFirstProps = PaginatorEdgeProps
 
+/**
+ * The button that goes to the first page. It is part of the default list when `showEdges` is set.
+ */
 export const PaginatorFirst = forwardRef<HTMLButtonElement, PaginatorFirstProps>(
   (props: PaginatorFirstProps, ref: ForwardedRef<HTMLButtonElement>): ReactNode => (
     <PaginatorEdge

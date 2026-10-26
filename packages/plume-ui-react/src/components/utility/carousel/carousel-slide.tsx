@@ -15,6 +15,7 @@ type CarouselSlideRootAttributes = Pick<
 
 export type CarouselSlideProps = Omit<ComponentProps, 'index'> & CarouselSlideRootAttributes
 
+/** One slide. It has `data-active` while it is the visible one. */
 export const CarouselSlide = forwardRef<HTMLDivElement, CarouselSlideProps>(
   (
     { 'aria-label': ariaLabel, children, className, style, ...rest }: CarouselSlideProps,

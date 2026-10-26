@@ -11,6 +11,7 @@ type SelectOptionBodyRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'chi
 
 export type SelectOptionBodyProps = Omit<ComponentProps, 'index'> & SelectOptionBodyRootAttributes
 
+/** The column that holds the text and the description of an option. */
 export const SelectOptionBody = forwardRef<HTMLSpanElement, SelectOptionBodyProps>(
   (
     { children, className, style }: SelectOptionBodyProps,

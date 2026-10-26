@@ -38,14 +38,6 @@ function Example(props: Readonly<Omit<PopoverProps, 'children'>>): React.ReactNo
  *
  * The focus moves into it when it opens and goes back to the trigger when it closes. <kbd>Esc</kbd> and a click
  * outside close it, and the trigger toggles it. Unlike a `Modal`, the page behind keeps scrolling.
- *
- * ### Subcomponents
- *
- * | Component | Props |
- * | --- | --- |
- * | `PopoverTrigger` | `children`. One element, such as a `Button`, which gets the click handler and the `aria-*` attributes and is what the popover is anchored to. With text, it renders a plain `<button>`. |
- * | `PopoverContent` | `className`, `style`, `aria-label`, `aria-labelledby`, `aria-describedby`, `children`. The panel, a non-modal `dialog`. Give it an `aria-label` or point `aria-labelledby` to its title. |
- * | `PopoverClose` | `label`, `className`, `style`, `children`. A button that closes the popover. Without children it is a small X button, named by `label` (`Close` by default). With an element, such as a `Button`, it gives it the click handler. |
  */
 export default {
   title: 'Components/Popover',
@@ -63,15 +55,9 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      control: false,
-      description: 'The `PopoverTrigger` and the `PopoverContent`.',
-      table: { type: { summary: 'ReactNode' } },
-    },
+    children: { control: false },
     placement: {
       control: 'select',
-      description:
-        'Where the panel opens, relative to the trigger: a side, with an optional alignment (`top-start`, `bottom-end`).',
       options: [
         'top',
         'top-start',
@@ -86,55 +72,15 @@ export default {
         'right-start',
         'right-end',
       ],
-      table: { type: { summary: 'Placement' }, defaultValue: { summary: 'bottom' } },
     },
-    offset: {
-      control: 'number',
-      description: 'Distance in pixels between the trigger and the panel.',
-      table: { type: { summary: 'number' }, defaultValue: { summary: '8' } },
-    },
-    flip: {
-      control: 'boolean',
-      description: 'Opens on the opposite side when there is no room on the one asked for.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    shift: {
-      control: 'boolean',
-      description: 'Slides the panel along its side to keep it inside the screen.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } },
-    },
-    size: {
-      control: 'radio',
-      description: 'Maximum width of the panel.',
-      options: ['sm', 'md', 'lg'],
-      table: { type: { summary: `"sm" | "md" | "lg"` }, defaultValue: { summary: 'md' } },
-    },
-    variant: {
-      control: 'radio',
-      description:
-        'Visual variant. `elevated` floats the panel with a shadow and `outline` draws its border. `unstyled` drops the Plume styles so you can bring your own.',
-      options: ['elevated', 'outline', 'unstyled'],
-      table: {
-        type: { summary: `"elevated" | "outline" | "unstyled"` },
-        defaultValue: { summary: 'elevated' },
-      },
-    },
-    open: {
-      control: 'boolean',
-      description:
-        'Whether the popover is open, for a controlled popover. Pair it with `onOpenChange`.',
-      table: { type: { summary: 'boolean' } },
-    },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the popover is open at first, for an uncontrolled popover.',
-      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
-    },
-    onOpenChange: {
-      control: false,
-      description: 'Called with the new state when the popover opens or closes.',
-      table: { category: 'Events', type: { summary: '(open: boolean) => void' } },
-    },
+    offset: { control: 'number' },
+    flip: { control: 'boolean' },
+    shift: { control: 'boolean' },
+    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    variant: { control: 'radio', options: ['elevated', 'outline', 'unstyled'] },
+    open: { control: 'boolean' },
+    defaultOpen: { control: 'boolean' },
+    onOpenChange: { control: false },
   },
   render: (args) => <Example {...args} />,
 } satisfies Meta<typeof Popover>

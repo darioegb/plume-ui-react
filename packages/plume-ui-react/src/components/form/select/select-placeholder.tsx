@@ -11,6 +11,7 @@ type SelectPlaceholderRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'ch
 
 export type SelectPlaceholderProps = Omit<ComponentProps, 'index'> & SelectPlaceholderRootAttributes
 
+/** What the combobox shows when nothing is chosen. */
 export const SelectPlaceholder = forwardRef<HTMLSpanElement, SelectPlaceholderProps>(
   (
     { children, className, style }: SelectPlaceholderProps,

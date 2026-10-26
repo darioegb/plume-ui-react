@@ -10,6 +10,7 @@ type ListSubheaderRootAttributes = Pick<
 
 export type ListSubheaderProps = Omit<ComponentProps, 'index'> & ListSubheaderRootAttributes
 
+/** A small title for the items that follow. */
 export const ListSubheader = forwardRef<HTMLLIElement, ListSubheaderProps>(
   (
     { children, className = '', style, ...rest }: ListSubheaderProps,

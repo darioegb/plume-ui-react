@@ -9,6 +9,7 @@ type TableHeadSortRootAttributes = Pick<
 
 export type TableHeadSortProps = Omit<ComponentProps, 'index'> & TableHeadSortRootAttributes
 
+/** The button of a sortable head. */
 export const TableHeadSort = forwardRef<HTMLButtonElement, TableHeadSortProps>(
   (
     { children, className, style, ...rest }: TableHeadSortProps,

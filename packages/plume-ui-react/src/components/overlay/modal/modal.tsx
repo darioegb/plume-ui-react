@@ -7,14 +7,42 @@ import type { Size } from '../../../theme'
 import { ModalContext } from './modal-context'
 
 export interface ModalProps {
+  /** The `ModalTrigger` and the `ModalContent`. */
   children: ReactNode
+  /**
+   * Whether <kbd>Esc</kbd> closes the Modal.
+   * @default true
+   */
   closeOnEscape?: boolean
+  /**
+   * Whether a click on the backdrop closes the Modal.
+   * @default true
+   */
   closeOnOutside?: boolean
+  /**
+   * Whether the Modal is open at first, for an uncontrolled Modal.
+   * @default false
+   */
   defaultOpen?: boolean
+  /**
+   * A ref to the element that gets the focus when the Modal opens. By default, the first element
+   * that can be focused.
+   */
   initialFocus?: RefObject<HTMLElement | null>
+  /** Called with the new state when the Modal opens or closes. */
   onOpenChange?: (open: boolean) => void
+  /** Whether the Modal is open, for a controlled Modal. Pair it with `onOpenChange`. */
   open?: boolean
+  /**
+   * Maximum width of the dialog.
+   * @default 'md'
+   */
   size?: Size
+  /**
+   * Visual variant. `default` has the backdrop, the surface and the spacing of the parts.
+   * `unstyled` drops the Plume styles so you can bring your own.
+   * @default 'default'
+   */
   variant?: ModalVariant
 }
 

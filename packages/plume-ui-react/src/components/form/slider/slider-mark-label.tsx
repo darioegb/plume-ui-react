@@ -10,6 +10,7 @@ import styles from './slider.module.css'
 export type SliderMarkLabelProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 
+/** The text under a mark. */
 export const SliderMarkLabel = forwardRef<HTMLSpanElement, SliderMarkLabelProps>(
   (
     { children, className, style }: SliderMarkLabelProps,

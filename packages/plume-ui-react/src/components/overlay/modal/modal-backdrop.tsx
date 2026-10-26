@@ -13,6 +13,11 @@ type ModalBackdropRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'childre
 
 export type ModalBackdropProps = Omit<ComponentProps, 'index'> & ModalBackdropRootAttributes
 
+/**
+ * The layer behind the dialog, which covers the screen and centers it. `ModalContent` renders it
+ * on its own; wrap `ModalContent` in it to style it, or to put other elements next to the
+ * dialog. It renders nothing while the Modal is closed.
+ */
 export const ModalBackdrop = forwardRef<HTMLDivElement, ModalBackdropProps>(
   (
     { children, className, style, ...rest }: ModalBackdropProps,

@@ -13,6 +13,7 @@ import type { RatingItemContextValue } from './rating-context'
 import styles from './rating.module.css'
 
 export interface RatingItemOwnProps {
+  /** Position of the star, from `1` to `max`. */
   position: number
 }
 
@@ -22,6 +23,10 @@ export type RatingItemProps = Omit<ComponentProps, 'index'> &
   RatingItemRootAttributes &
   RatingItemOwnProps
 
+/**
+ * One star, with `data-state` (`empty`, `half` or `full`). Without any of its parts as children it
+ * renders `RatingEmpty`, `RatingFilled` and the radios.
+ */
 export const RatingItem = forwardRef<HTMLSpanElement, RatingItemProps>(
   (
     { children, className, position, style }: RatingItemProps,
