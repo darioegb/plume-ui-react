@@ -12,6 +12,7 @@ export function StarIcon({ filled }: Readonly<{ filled: boolean }>): ReactNode {
       stroke="currentColor"
       strokeLinejoin="round"
       strokeWidth="1.5"
+      style={filled ? { stroke: 'var(--rating-edge, currentColor)' } : undefined}
       viewBox="0 0 24 24"
       width="1em"
     >

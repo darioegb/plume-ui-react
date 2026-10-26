@@ -113,6 +113,21 @@ describe('ThemeProvider', () => {
     expect(document.body.style.backgroundColor).toBe('')
   })
 
+  it('tells the browser the color scheme, for the native controls and the scrollbars', () => {
+    document.documentElement.style.colorScheme = 'light'
+    const { container, unmount } = render(
+      <ThemeProvider defaultColorMode="dark">
+        <ColorModeProbe />
+      </ThemeProvider>,
+    )
+    expect(document.documentElement.style.colorScheme).toBe('dark')
+    expect(container.querySelector('.plume-root')).toHaveStyle({ colorScheme: 'dark' })
+
+    unmount()
+    expect(document.documentElement.style.colorScheme).toBe('light')
+    document.documentElement.style.colorScheme = ''
+  })
+
   it('removes the page attribute on unmount when there was none', () => {
     const { unmount } = render(
       <ThemeProvider>

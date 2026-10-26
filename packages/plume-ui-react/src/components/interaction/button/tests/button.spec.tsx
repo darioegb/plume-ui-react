@@ -1,4 +1,5 @@
 import { render, fireEvent } from '@testing-library/react'
+import type { FormEvent } from 'react'
 import { Button } from '..'
 
 describe('Button component', () => {
@@ -126,6 +127,49 @@ describe('Button component', () => {
     expect(buttonElement.querySelector('output')).toHaveStyle(
       '--spinner-scheme: var(--button-contrast-color)',
     )
+  })
+
+  it('stays focusable and announced as busy while busy', () => {
+    const { getByRole } = render(<Button isBusy label="Save" />)
+    const button = getByRole('button', { name: /Save/ })
+    expect(button).toHaveAttribute('aria-busy', 'true')
+    expect(button).toHaveAttribute('aria-disabled', 'true')
+    expect(button).not.toBeDisabled()
+    button.focus()
+    expect(button).toHaveFocus()
+  })
+
+  it('keeps the label in its accessible name while busy without busy text', () => {
+    const { getByRole } = render(<Button isBusy label="Save" />)
+    expect(getByRole('button')).toHaveAccessibleName(/Save/)
+  })
+
+  it('ignores the clicks while busy and does not submit the form', () => {
+    const onClick = vi.fn()
+    const onSubmit = vi.fn((event: FormEvent) => event.preventDefault())
+    const parentClick = vi.fn()
+    const { container, getByRole } = render(
+      <form onSubmit={onSubmit}>
+        <Button isBusy label="Save" onClick={onClick} type="submit" />
+      </form>,
+    )
+    container.addEventListener('click', parentClick)
+    fireEvent.click(getByRole('button'))
+    expect(onClick).not.toHaveBeenCalled()
+    expect(onSubmit).not.toHaveBeenCalled()
+    expect(parentClick).not.toHaveBeenCalled()
+  })
+
+  it('does not set aria-busy or aria-disabled when it is not busy', () => {
+    const { getByRole } = render(<Button label="Save" />)
+    expect(getByRole('button')).not.toHaveAttribute('aria-busy')
+    expect(getByRole('button')).not.toHaveAttribute('aria-disabled')
+  })
+
+  it('stays natively disabled when it is disabled and busy', () => {
+    const { getByRole } = render(<Button disabled isBusy label="Save" />)
+    expect(getByRole('button')).toBeDisabled()
+    expect(getByRole('button')).not.toHaveAttribute('aria-disabled')
   })
 
   it('renders solid button', () => {

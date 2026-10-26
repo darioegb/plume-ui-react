@@ -73,7 +73,7 @@ describe('DatePicker with react-hook-form', () => {
 
     const input = screen.getByRole('textbox')
     await waitFor(() => {
-      expect(input).toHaveAccessibleDescription('Pick a date')
+      expect(input).toHaveAccessibleDescription(/^Pick a date/)
     })
     expect(onSubmit).not.toHaveBeenCalled()
     expect(input).toHaveFocus()

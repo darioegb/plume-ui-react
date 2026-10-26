@@ -1,6 +1,12 @@
 'use client'
 
-import type { ButtonHTMLAttributes, CSSProperties, ForwardedRef, ReactNode } from 'react'
+import type {
+  ButtonHTMLAttributes,
+  CSSProperties,
+  ForwardedRef,
+  MouseEvent,
+  ReactNode,
+} from 'react'
 import { forwardRef } from 'react'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
@@ -29,7 +35,9 @@ export interface ButtonOwnProps {
   /** Icon to be displayed on the right side of the Button. */
   iconRight?: ReactNode
   /**
-   * Shows a spinner and disables the Button. Without `busyText` the label is hidden while busy.
+   * Shows a spinner and makes the Button ignore its clicks, so it keeps the focus. It is announced
+   * as busy and disabled. Without `busyText` the label is hidden while busy, but still names the
+   * Button.
    *
    * @default false
    */
@@ -88,6 +96,13 @@ export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
 
 const DEFAULT_LABELS: ButtonLabels = { busy: 'Loading' }
 
+const ignoreClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  event.preventDefault()
+  event.stopPropagation()
+  // stopPropagation only blocks React handlers; the native one stops any DOM listener too.
+  event.nativeEvent.stopImmediatePropagation()
+}
+
 const renderContent = (
   busyText: string,
   isBusy: boolean,
@@ -136,6 +151,7 @@ const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
     '--button-focus-color': `var(--plume-color-${colorScheme}-text-active)`,
     '--button-hover-alt-color': `var(--plume-color-${colorScheme}-tint)`,
     '--button-focus-alt-color': `var(--plume-color-${colorScheme}-tint-strong)`,
+    '--button-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
   }) as CSSProperties
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -165,12 +181,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
+        aria-busy={isBusy || undefined}
+        aria-disabled={isBusy && !disabled ? true : undefined}
         className={buttonClasses}
-        disabled={disabled || isBusy}
+        disabled={disabled}
         ref={ref}
         style={{ ...buttonColorVars(colorScheme), ...style }}
         type={type}
         {...rest}
+        onClick={isBusy ? ignoreClick : rest.onClick}
       >
         {renderContent(busyText, isBusy, iconLeft, iconRight, variant === 'unstyled', label)}
         {children}

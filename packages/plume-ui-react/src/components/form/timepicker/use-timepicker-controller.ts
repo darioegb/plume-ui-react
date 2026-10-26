@@ -1,11 +1,12 @@
 'use client'
 
 import type { CSSProperties, FocusEvent } from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useId, useMemo, useState } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
+import { useFocusTrap } from '../../../overlay/use-focus-trap'
 import { customProperties, type PickerVariant } from '../shared/picker-panel'
 import type { TimePickerContextProps } from './use-timepicker'
 import { useTimePicks } from './use-time-picks'
@@ -13,6 +14,7 @@ import type { TimePickerLabels } from './timepicker-types'
 
 const DEFAULT_LABELS: TimePickerLabels = {
   am: 'AM',
+  format: (format) => `Format: ${format}`,
   hours: 'Hours',
   minutes: 'Minutes',
   openTimePicker: 'Open time picker',
@@ -71,8 +73,9 @@ export function useTimePickerController({
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState<HTMLInputElement | null>(null)
   const popupOpen = !isPanel && open
+  const panelId = useId()
 
-  const { panel, position, setPanel } = useFloatingPanel({
+  const { isTopmost, panel, position, setPanel } = useFloatingPanel({
     anchor: root,
     enabled: popupOpen,
     offset: 8,
@@ -83,9 +86,15 @@ export function useTimePickerController({
     placement: 'bottom-start',
   })
 
-  useEffect(() => {
-    if (popupOpen) panel?.querySelector<HTMLElement>('[role="option"][tabindex="0"]')?.focus()
-  }, [popupOpen, panel])
+  const initialOption = popupOpen
+    ? (panel?.querySelector<HTMLElement>('[role="option"][tabindex="0"]') ?? null)
+    : null
+  useFocusTrap(panel, {
+    active: popupOpen,
+    initialFocus: initialOption,
+    isTopmost,
+    restoreFocus: false,
+  })
 
   const { pickHours, pickMinutes, pickPeriod } = useTimePicks({
     hour12,
@@ -128,6 +137,7 @@ export function useTimePickerController({
       labels,
       minuteStep,
       open,
+      panelId,
       panelStyle,
       pickHours,
       pickMinutes,
@@ -148,6 +158,7 @@ export function useTimePickerController({
       labels,
       minuteStep,
       open,
+      panelId,
       panelStyle,
       pickHours,
       pickMinutes,

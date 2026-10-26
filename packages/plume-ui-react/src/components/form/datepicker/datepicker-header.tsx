@@ -22,6 +22,9 @@ export type DatePickerNextProps = PartProps & ButtonAttributes
 export type DatePickerMonthButtonProps = PartProps & ButtonAttributes
 export type DatePickerYearButtonProps = PartProps & ButtonAttributes
 
+const isText = (children: ReactNode): boolean =>
+  typeof children === 'string' || typeof children === 'number'
+
 /** The top row of a page. */
 export const DatePickerHeader = forwardRef<HTMLDivElement, DatePickerHeaderProps>(
   (
@@ -94,7 +97,10 @@ export const DatePickerSeparator = forwardRef<HTMLElement, DatePickerSeparatorPr
 
 DatePickerSeparator.displayName = 'DatePickerSeparator'
 
-/** The button that goes back a month, or 20 years in the year view. */
+/**
+ * The button that goes back a month, or 20 years in the year view. Its name is `labels.previousMonth`
+ * or `labels.previousYears`, unless `children` are text, which then name it.
+ */
 export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPreviousProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerPreviousProps,
@@ -103,10 +109,11 @@ export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPrevio
     const { labels } = useDatePicker('DatePickerPrevious')
     const { previous, view } = useDatePickerPage('DatePickerPrevious')
     const years = view === 'year'
+    const fallback = years ? labels.previousYears : labels.previousMonth
 
     return (
       <Button
-        aria-label={ariaLabel ?? (years ? labels.previousYears : labels.previousMonth)}
+        aria-label={ariaLabel ?? (isText(children) ? undefined : fallback)}
         className={className}
         data-plume-datepicker-previous=""
         onClick={previous}
@@ -122,7 +129,10 @@ export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPrevio
 
 DatePickerPrevious.displayName = 'DatePickerPrevious'
 
-/** The button that goes forward a month, or 20 years in the year view. */
+/**
+ * The button that goes forward a month, or 20 years in the year view. Its name is `labels.nextMonth`
+ * or `labels.nextYears`, unless `children` are text, which then name it.
+ */
 export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerNextProps,
@@ -131,10 +141,11 @@ export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>
     const { labels } = useDatePicker('DatePickerNext')
     const { next, view } = useDatePickerPage('DatePickerNext')
     const years = view === 'year'
+    const fallback = years ? labels.nextYears : labels.nextMonth
 
     return (
       <Button
-        aria-label={ariaLabel ?? (years ? labels.nextYears : labels.nextMonth)}
+        aria-label={ariaLabel ?? (isText(children) ? undefined : fallback)}
         className={className}
         data-plume-datepicker-next=""
         onClick={next}
@@ -160,6 +171,7 @@ export const DatePickerMonthButton = forwardRef<HTMLButtonElement, DatePickerMon
 
     return (
       <Button
+        aria-expanded={view === 'month'}
         aria-label={ariaLabel}
         className={joinClasses(styles.monthSelector, className)}
         data-active={view === 'month' ? '' : undefined}
@@ -190,6 +202,7 @@ export const DatePickerYearButton = forwardRef<HTMLButtonElement, DatePickerYear
 
     return (
       <Button
+        aria-expanded={view === 'year'}
         aria-label={ariaLabel}
         className={joinClasses(styles.yearSelector, className)}
         data-active={view === 'year' ? '' : undefined}

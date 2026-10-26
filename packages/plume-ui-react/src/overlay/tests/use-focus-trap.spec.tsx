@@ -179,6 +179,16 @@ describe('useFocusTrap', () => {
     expect(screen.getByText('last')).toHaveFocus()
   })
 
+  it('only moves the focus in and out when it does not trap', () => {
+    render(<Trap trap={false} />)
+    expect(screen.getByText('first')).toHaveFocus()
+    screen.getByText('last').focus()
+    const event = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true })
+    document.activeElement?.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(false)
+    expect(screen.getByText('last')).toHaveFocus()
+  })
+
   it('leaves the trapping to the topmost layer', () => {
     render(<Trap isTopmost={() => false} />)
     screen.getByText('last').focus()

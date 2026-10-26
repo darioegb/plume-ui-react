@@ -96,7 +96,7 @@ export function useSelectKeyboard(options: UseSelectKeyboardOptions): SelectKeyb
       const active = enabled.find((option) => option.id === activeId)
       if (active?.dataset.value !== undefined) latest.current.select(active.dataset.value)
     } else if (event.key === 'Tab') {
-      latest.current.close(false)
+      latest.current.close(isTextInput)
     } else if (!isTextInput && isTypeaheadKey(event)) {
       typeaheadOpen(event.key)
     }

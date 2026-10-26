@@ -221,13 +221,44 @@ describe('Popover component', () => {
       expect(trigger).toHaveFocus()
     })
 
-    it('keeps the focus inside while tabbing', async () => {
+    it('moves between its elements with Tab', async () => {
       render(<Example defaultOpen />)
       expect(screen.getByLabelText('Name')).toHaveFocus()
       await userEvent.tab()
       expect(screen.getByText('Done')).toHaveFocus()
-      await userEvent.tab()
+      await userEvent.tab({ shift: true })
       expect(screen.getByLabelText('Name')).toHaveFocus()
+      expect(panel()).toBeInTheDocument()
+    })
+
+    it('closes and gives the focus back to the trigger when Tab leaves from the last element', async () => {
+      render(<Example defaultOpen />)
+      await userEvent.tab()
+      await userEvent.tab()
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(screen.getByText('Open')).toHaveFocus()
+    })
+
+    it('closes and gives the focus back to the trigger when Shift+Tab leaves from the first element', async () => {
+      render(<Example defaultOpen />)
+      await userEvent.tab({ shift: true })
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(screen.getByText('Open')).toHaveFocus()
+    })
+
+    it('closes with Tab when the panel has nothing to focus', async () => {
+      render(
+        <Popover defaultOpen>
+          <PopoverTrigger>
+            <button>Open</button>
+          </PopoverTrigger>
+          <PopoverContent aria-label="Details">Just text</PopoverContent>
+        </Popover>,
+      )
+      expect(panel()).toHaveFocus()
+      await userEvent.tab()
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(screen.getByText('Open')).toHaveFocus()
     })
   })
 

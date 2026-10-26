@@ -42,7 +42,8 @@ export interface ToastProviderProps {
   className?: string
   /**
    * Milliseconds before a toast goes away, unless it sets its own. `0` keeps them until
-   * dismissed.
+   * dismissed. A longer text gets more time to be read, and a toast with an `action` stays until
+   * it is dismissed or acted on, unless it sets its own `duration`.
    * @default 5000
    */
   duration?: number
@@ -85,6 +86,19 @@ export interface ToastProviderProps {
 const DEFAULT_LABELS: ToastLabels = {
   dismiss: 'Dismiss notification',
   region: 'Notifications',
+}
+
+const READING_BASE = 1500
+const READING_PER_CHARACTER = 50
+
+const textLength = (...nodes: ReactNode[]): number =>
+  nodes.reduce<number>((total, node) => total + (typeof node === 'string' ? node.length : 0), 0)
+
+function defaultDuration(base: number, options: ToastOptions): number {
+  if (options.action) return 0
+  if (!Number.isFinite(base) || base <= 0) return base
+  const reading = READING_BASE + READING_PER_CHARACTER * textLength(options.title, options.description)
+  return Math.max(base, reading)
 }
 
 const isOptions = (content: ToastContent): content is ToastOptions =>
@@ -132,7 +146,7 @@ export function ToastProvider({
         action: merged.action,
         description: merged.description,
         dismissible: merged.dismissible ?? true,
-        duration: merged.duration ?? defaults.current.duration,
+        duration: merged.duration ?? defaultDuration(defaults.current.duration, merged),
         icon: merged.icon,
         id,
         onDismiss: merged.onDismiss,

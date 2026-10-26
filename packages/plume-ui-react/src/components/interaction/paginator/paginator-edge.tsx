@@ -1,7 +1,7 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import {
   ChevronLeftIcon,
@@ -9,6 +9,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../../../overlay/icons'
+import { mergeRefs } from '../../../overlay/trigger'
 import type { ComponentProps } from '../../../theme'
 import { Button } from '../button'
 import { type PaginatorContextValue, usePaginatorContext } from './paginator-context'
@@ -75,18 +76,32 @@ export const PaginatorEdge = forwardRef<HTMLButtonElement, PaginatorEdgeInternal
   ): ReactNode => {
     const paginator = usePaginatorContext(part)
     const { icon, target, unavailable } = edges[edge]
+    const button = useRef<HTMLButtonElement | null>(null)
+    const activated = useRef(false)
+    const atEnd = unavailable(paginator)
+
+    useEffect(() => {
+      if (!atEnd || !activated.current) return
+      activated.current = false
+      button.current
+        ?.closest('[data-plume-paginator]')
+        ?.querySelector<HTMLElement>('[data-plume-paginator-page][data-current]')
+        ?.focus()
+    }, [atEnd])
 
     return (
       <Button
         aria-label={ariaLabel ?? paginator.labels[edge]}
         className={joinClasses(paginator.isStyled && styles.edge, className)}
         colorScheme="secondary"
-        disabled={paginator.disabled || disabled || unavailable(paginator)}
+        disabled={paginator.disabled || disabled || atEnd}
         onClick={(event) => {
           onClick?.(event)
-          if (!event.defaultPrevented) paginator.go(target(paginator))
+          if (event.defaultPrevented) return
+          activated.current = true
+          paginator.go(target(paginator))
         }}
-        ref={ref}
+        ref={mergeRefs(ref, button)}
         shape={paginator.shape}
         size={paginator.size}
         style={style}

@@ -22,6 +22,7 @@ export interface UseFocusTrapOptions {
   restoreFocus?: boolean
   returnFocus?: HTMLElement | null
   isTopmost?: () => boolean
+  trap?: boolean
 }
 
 export function getTabbableElements(container: HTMLElement): HTMLElement[] {
@@ -43,6 +44,7 @@ export function useFocusTrap(
     restoreFocus = true,
     returnFocus,
     isTopmost = () => true,
+    trap = true,
   }: UseFocusTrapOptions,
 ): void {
   const latest = useRef({ initialFocus, restoreFocus, returnFocus, isTopmost })
@@ -85,11 +87,11 @@ export function useFocusTrap(
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown)
+    if (trap) document.addEventListener('keydown', handleKeyDown)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
       const target = latest.current.returnFocus ?? previouslyFocused
       if (latest.current.restoreFocus && target?.isConnected) target.focus()
     }
-  }, [active, container])
+  }, [active, container, trap])
 }

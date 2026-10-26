@@ -1,10 +1,11 @@
 'use client'
 
 import type { CSSProperties, FocusEvent } from 'react'
-import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
+import { useCallback, useEffect, useId, useMemo, useReducer, useRef } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useLabels, useLocale } from '../../../locale/locale-provider'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
+import { useFocusTrap } from '../../../overlay/use-focus-trap'
 import type { DatePickerContextProps } from './use-datepicker'
 import {
   DATE_PICKER_INITIAL_STATE,
@@ -23,6 +24,7 @@ const DEFAULT_LABELS: DatePickerLabels = {
   apply: 'Apply',
   calendar: 'Calendar',
   cancel: 'Cancel',
+  format: (format) => `Format: ${format}`,
   nextMonth: 'Next month',
   nextYears: 'Next years',
   openCalendar: 'Open calendar',
@@ -94,12 +96,13 @@ export function useDatePickerController({
   )
   const isFirstRender = useRef(true)
   const popoverOpen = !isCalendar && state.modalOpen
+  const calendarId = useId()
 
   const focusInput = useCallback((): void => {
     root?.querySelector('input')?.focus()
   }, [root])
 
-  const { panel, position, setPanel } = useFloatingPanel({
+  const { isTopmost, panel, position, setPanel } = useFloatingPanel({
     anchor: root,
     enabled: popoverOpen,
     offset: 8,
@@ -126,10 +129,15 @@ export function useDatePickerController({
     dispatch({ type: 'SET_VALUE', payload: value ?? DEFAULT_DATE_PICKER_VALUE })
   }, [value])
 
-  useEffect(() => {
-    if (!modalOpen) return
-    panel?.querySelector<HTMLButtonElement>('[data-date][tabindex="0"]')?.focus()
-  }, [modalOpen, panel])
+  const initialDay = popoverOpen
+    ? (panel?.querySelector<HTMLButtonElement>('[data-date][tabindex="0"]') ?? null)
+    : null
+  useFocusTrap(panel, {
+    active: popoverOpen,
+    initialFocus: initialDay,
+    isTopmost,
+    restoreFocus: false,
+  })
 
   const latestOnChange = useRef(onChange)
   useEffect(() => {
@@ -252,6 +260,7 @@ export function useDatePickerController({
 
   const context = useMemo<DatePickerContextProps>(
     () => ({
+      calendarId,
       closeAndRestoreFocus,
       commitTypedValue,
       colorScheme,
@@ -280,6 +289,7 @@ export function useDatePickerController({
       variant,
     }),
     [
+      calendarId,
       closeAndRestoreFocus,
       commitTypedValue,
       colorScheme,

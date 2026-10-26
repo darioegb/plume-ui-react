@@ -10,7 +10,7 @@ function getRgbFromColor(color: string): number[] {
 }
 
 function getRgbMatch(rgbColor: string): RegExpMatchArray | null {
-  return rgbColor.match(/\d+/g)
+  return rgbColor.match(/\d+(?:\.\d+)?/g)
 }
 
 function getHexMatch(hexColor: string): RegExpExecArray | null {

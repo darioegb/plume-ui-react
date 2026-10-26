@@ -99,6 +99,13 @@ export interface SliderOwnProps {
    */
   readOnly?: boolean
   /**
+   * Marks the slider as required for the `Field` that wraps it. A range input has no native or ARIA way
+   * to say so, so it only sets `data-required` on the root, to style.
+   *
+   * @default false
+   */
+  required?: boolean
+  /**
    * Size of the thumb and the track.
    * @default 'md'
    */
@@ -153,6 +160,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
       onValueCommit,
       orientation = 'horizontal',
       readOnly = false,
+      required = false,
       size = 'md',
       step = 1,
       style,
@@ -240,6 +248,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         max,
         min,
         name,
+        orientation,
         readOnly,
         rootRef: ref ?? undefined,
         step,
@@ -262,6 +271,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         max,
         min,
         name,
+        orientation,
         readOnly,
         ref,
         resolvedMarks,
@@ -314,6 +324,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
           data-orientation={orientation}
           data-plume-slider=""
           data-range={isRange ? '' : undefined}
+          data-required={required ? '' : undefined}
           {...track}
           style={rootStyle}
         >

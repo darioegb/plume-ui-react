@@ -12,7 +12,8 @@ type SelectEmptyRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'
 export type SelectEmptyProps = Omit<ComponentProps, 'index'> & SelectEmptyRootAttributes
 
 /**
- * The message when the search finds nothing. Its `children` replace the text of `labels.empty`.
+ * The message when the search finds nothing. Its `children` replace the text of `labels.empty`. It is
+ * always in the page, as a live region, so a screen reader announces the message when it appears.
  */
 export const SelectEmpty = forwardRef<HTMLDivElement, SelectEmptyProps>(
   (
@@ -24,16 +25,17 @@ export const SelectEmpty = forwardRef<HTMLDivElement, SelectEmptyProps>(
     const hasMatches = options.some(
       (option) => !query || option.label.toLowerCase().includes(needle),
     )
-    if (!query || hasMatches) return null
+    const isEmpty = Boolean(query) && !hasMatches
 
     return (
       <div
-        className={joinClasses(isStyled && styles.empty, className)}
+        className={joinClasses(isStyled && isEmpty && styles.empty, className)}
         data-plume-select-empty=""
         ref={ref}
+        role="status"
         style={style}
       >
-        {children ?? labels.empty}
+        {isEmpty ? (children ?? labels.empty) : null}
       </div>
     )
   },

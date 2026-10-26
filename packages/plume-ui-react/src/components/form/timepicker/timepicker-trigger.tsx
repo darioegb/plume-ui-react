@@ -39,13 +39,14 @@ export const TimePickerTrigger = forwardRef<HTMLButtonElement, TimePickerTrigger
     }: TimePickerTriggerProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { labels, open, toggle, variant } = useTimePicker('TimePickerTrigger')
+    const { labels, open, panelId, toggle, variant } = useTimePicker('TimePickerTrigger')
     const input = useContext(InputContext)
     const blocked = Boolean(disabled ?? (input?.disabled || input?.readOnly))
 
     return (
       <PickerTrigger
         className={className}
+        controls={panelId}
         data-plume-timepicker-trigger=""
         disabled={blocked}
         icon={children ?? <ClockIcon />}

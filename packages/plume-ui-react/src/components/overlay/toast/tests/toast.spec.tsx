@@ -175,6 +175,55 @@ describe('ToastProvider component', () => {
       expect(screen.queryByRole('status')).toBeNull()
     })
 
+    it('gives a long text more time than the duration of the provider', () => {
+      setup({ duration: 1000 })
+      const title = 'x'.repeat(100)
+      run(() => api.toast({ title, description: 'y'.repeat(100) }))
+      advance(11499)
+      expect(screen.getByRole('status')).toBeInTheDocument()
+
+      advance(1)
+      expect(screen.queryByRole('status')).toBeNull()
+    })
+
+    it('keeps the duration of the provider when the text is short', () => {
+      setup({ duration: 8000 })
+      run(() => api.toast('Saved'))
+      advance(7999)
+      expect(screen.getByRole('status')).toBeInTheDocument()
+
+      advance(1)
+      expect(screen.queryByRole('status')).toBeNull()
+    })
+
+    it('does not extend a duration that the toast sets', () => {
+      setup()
+      run(() => api.toast('x'.repeat(300), { duration: 1000 }))
+      advance(1000)
+      expect(screen.queryByRole('status')).toBeNull()
+    })
+
+    it('does not extend a provider that keeps the toasts until dismissed', () => {
+      setup({ duration: 0 })
+      run(() => api.toast('Saved'))
+      advance(60000)
+      expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('keeps a toast with an action until it is dismissed or acted on', () => {
+      setup()
+      run(() => api.toast('Deleted', { action: { label: 'Undo' } }))
+      advance(60000)
+      expect(screen.getByRole('status')).toBeInTheDocument()
+    })
+
+    it('lets a toast with an action set its own duration', () => {
+      setup()
+      run(() => api.toast('Deleted', { action: { label: 'Undo' }, duration: 2000 }))
+      advance(2000)
+      expect(screen.queryByRole('status')).toBeNull()
+    })
+
     it.each([0, Infinity])('stays when the duration is %s', (duration) => {
       setup()
       run(() => api.toast('Saved', { duration }))
@@ -183,8 +232,8 @@ describe('ToastProvider component', () => {
     })
 
     it('stops the timer while the pointer is on the toast', () => {
-      setup({ duration: 1000 })
-      run(() => api.toast('Saved'))
+      setup()
+      run(() => api.toast('Saved', { duration: 1000 }))
       advance(600)
       fireEvent.pointerEnter(screen.getByRole('status'))
       advance(5000)
@@ -198,8 +247,8 @@ describe('ToastProvider component', () => {
     })
 
     it('stops the timer while the focus is inside the toast', () => {
-      setup({ duration: 1000 })
-      run(() => api.toast('Saved'))
+      setup()
+      run(() => api.toast('Saved', { duration: 1000 }))
       const toast = screen.getByRole('status')
       act(() => {
         screen.getByRole('button', { name: 'Dismiss notification' }).focus()
@@ -215,8 +264,8 @@ describe('ToastProvider component', () => {
     })
 
     it('waits for both the pointer and the focus to leave', () => {
-      setup({ duration: 1000 })
-      run(() => api.toast('Saved'))
+      setup()
+      run(() => api.toast('Saved', { duration: 1000 }))
       const toast = screen.getByRole('status')
       fireEvent.pointerEnter(toast)
       act(() => {
@@ -228,10 +277,10 @@ describe('ToastProvider component', () => {
     })
 
     it('restarts the timer when the toast is updated', () => {
-      setup({ duration: 1000 })
-      run(() => api.toast({ id: 'upload', title: 'Uploading' }))
+      setup()
+      run(() => api.toast({ id: 'upload', title: 'Uploading', duration: 1000 }))
       advance(800)
-      run(() => api.success({ id: 'upload', title: 'Done' }))
+      run(() => api.success({ id: 'upload', title: 'Done', duration: 1000 }))
       advance(800)
       expect(screen.getByText('Done')).toBeInTheDocument()
 

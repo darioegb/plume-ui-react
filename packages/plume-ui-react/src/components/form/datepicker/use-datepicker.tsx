@@ -8,6 +8,7 @@ import type { DatePickerAction, DatePickerState } from './datepicker-reducer'
 import type { DatePickerLabels, DatePickerVariant, DateRange } from './datepicker-types'
 
 export interface DatePickerContextProps {
+  calendarId: string
   closeAndRestoreFocus: () => void
   commitTypedValue: (value: DateRange) => void
   colorScheme: ColorScheme

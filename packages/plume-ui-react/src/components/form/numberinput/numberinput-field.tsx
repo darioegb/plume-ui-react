@@ -36,6 +36,7 @@ export const NumberInputField = forwardRef<HTMLInputElement, NumberInputFieldPro
 
     return (
       <input
+        aria-readonly={readOnly || undefined}
         aria-valuemax={max}
         aria-valuemin={min}
         aria-valuenow={number.value ?? undefined}

@@ -18,6 +18,7 @@ export const DatePickerTrigger = forwardRef<HTMLButtonElement, DatePickerTrigger
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
     const {
+      calendarId,
       labels,
       state: { modalOpen },
       variant,
@@ -27,6 +28,7 @@ export const DatePickerTrigger = forwardRef<HTMLButtonElement, DatePickerTrigger
     return (
       <PickerTrigger
         className={className}
+        controls={calendarId}
         data-plume-datepicker-trigger=""
         disabled={disabled}
         icon={children ?? <CalendarIcon />}

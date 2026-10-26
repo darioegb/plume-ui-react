@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useCallback, useId, useMemo, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useState } from 'react'
 import type { Placement } from '../../../overlay'
 import { useLabels } from '../../../locale/locale-provider'
 import { useOpenState } from '../../../overlay/use-open-state'
@@ -190,6 +190,11 @@ function nextSelection(
   return selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value]
 }
 
+function initialSelection(defaultValue: string | string[] | undefined): string[] {
+  if (Array.isArray(defaultValue)) return defaultValue
+  return defaultValue ? [defaultValue] : []
+}
+
 export function Select({
   'aria-describedby': describedBy,
   'aria-invalid': ariaInvalid,
@@ -273,6 +278,15 @@ export function Select({
     },
     [canEdit, close, commit, multiple, selected, shouldClose],
   )
+
+  const isControlled = value !== undefined
+  useEffect(() => {
+    const form = trigger?.closest('form')
+    if (!form || isControlled) return undefined
+    const reset = (): void => commit(initialSelection(defaultValue))
+    form.addEventListener('reset', reset)
+    return () => form.removeEventListener('reset', reset)
+  }, [commit, defaultValue, isControlled, trigger])
 
   const clear = useCallback((): void => {
     if (canEdit && selected.length > 0) commit([])

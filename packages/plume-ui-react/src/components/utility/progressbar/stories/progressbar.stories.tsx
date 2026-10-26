@@ -50,7 +50,7 @@ export default {
   },
   args: {
     'aria-label': 'Upload progress',
-    style: { width: '20rem' },
+    style: { maxWidth: '100%', width: '20rem' },
     value: 40,
   },
 } satisfies Meta<typeof ProgressBar>
@@ -68,7 +68,7 @@ export const Default: Story = {}
  */
 export const Variants: Story = {
   render: () => (
-    <div className="flex flex-col gap-4" style={{ width: '20rem' }}>
+    <div className="flex flex-col gap-4" style={{ maxWidth: '100%', width: '20rem' }}>
       <ProgressBar aria-label="Solid" value={60} variant="solid" />
       <ProgressBar aria-label="Striped" value={60} variant="striped" />
       <ProgressBar
@@ -88,7 +88,7 @@ export const Variants: Story = {
  */
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-4" style={{ width: '20rem' }}>
+    <div className="flex flex-col gap-4" style={{ maxWidth: '100%', width: '20rem' }}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <ProgressBar aria-label={size} key={size} size={size} value={60} />
       ))}
@@ -101,7 +101,7 @@ export const Sizes: Story = {
  */
 export const Colors: Story = {
   render: () => (
-    <div className="flex flex-col gap-3" style={{ width: '20rem' }}>
+    <div className="flex flex-col gap-3" style={{ maxWidth: '100%', width: '20rem' }}>
       {colorSchemes.map((scheme) => (
         <ProgressBar
           aria-label={scheme}
@@ -119,7 +119,7 @@ export const Colors: Story = {
  */
 export const Shapes: Story = {
   render: () => (
-    <div className="flex flex-col gap-4" style={{ width: '20rem' }}>
+    <div className="flex flex-col gap-4" style={{ maxWidth: '100%', width: '20rem' }}>
       <ProgressBar aria-label="Pill" shape="pill" size="lg" value={60} />
       <ProgressBar aria-label="Rounded" shape="rounded" size="lg" value={60} />
     </div>
@@ -189,7 +189,7 @@ function LiveBar(): React.ReactNode {
   return (
     <ProgressBar
       aria-label="Upload progress"
-      style={{ width: '20rem' }}
+      style={{ maxWidth: '100%', width: '20rem' }}
       value={value}
       valueText={`${value}%`}
     />
@@ -242,7 +242,7 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<div className="flex w-80 flex-col gap-4">
+        code: `<div className="flex w-80 max-w-full flex-col gap-4">
   <ProgressBar aria-label="Storage" className="h-2 rounded-full bg-surface-muted" value={70} variant="unstyled">
     <ProgressBarIndicator className="rounded-full bg-primary-solid" />
   </ProgressBar>
@@ -254,7 +254,7 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <div className="flex w-80 flex-col gap-4">
+    <div className="flex w-80 max-w-full flex-col gap-4">
       <ProgressBar
         aria-label="Storage"
         className="h-2 rounded-full bg-surface-muted"
@@ -295,7 +295,7 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className="d-flex flex-column gap-3" style={{ width: '20rem' }}>
+    <div className="d-flex flex-column gap-3" style={{ maxWidth: '100%', width: '20rem' }}>
       <ProgressBar aria-label="Storage" className="progress" value={70} variant="unstyled">
         <ProgressBarIndicator className="progress-bar" />
       </ProgressBar>

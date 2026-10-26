@@ -155,31 +155,38 @@
 }
 
 .dots {
-  gap: var(--plume-space-2);
-  padding-block: var(--plume-space-3);
+  padding-block: var(--plume-space-1);
 }
 
 .dot {
-  background-color: var(--plume-border);
-  block-size: var(--carousel-dot);
+  align-items: center;
+  block-size: 1.5rem;
   border-radius: var(--plume-radius-full);
-  inline-size: var(--carousel-dot);
+  display: inline-flex;
+  inline-size: max(1.5rem, var(--carousel-dot));
+  justify-content: center;
   position: relative;
 }
 
-.dot::after {
+.dot::before {
+  background-color: var(--plume-border-strong, var(--plume-border));
+  block-size: var(--carousel-dot);
+  border-radius: var(--plume-radius-full);
   content: '';
-  inset: -0.5rem -0.2rem;
-  position: absolute;
+  inline-size: var(--carousel-dot);
 }
 
 .dot[data-active] {
+  inline-size: max(1.5rem, calc(var(--carousel-dot) * 2.2));
+}
+
+.dot[data-active]::before {
   background-color: var(--carousel-solid);
   inline-size: calc(var(--carousel-dot) * 2.2);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .dot {
+  .dot::before {
     transition:
       background-color 0.2s ease,
       inline-size 0.2s ease;
@@ -188,11 +195,11 @@
 
 @media (forced-colors: active) {
   .arrow,
-  .dot {
+  .dot::before {
     border: 1px solid CanvasText;
   }
 
-  .dot[data-active] {
+  .dot[data-active]::before {
     background-color: Highlight;
   }
 }

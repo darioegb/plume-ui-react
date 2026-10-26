@@ -45,6 +45,27 @@
   border-style: double;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-name: spinner-pulse;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@media (forced-colors: active) {
+  .spinner {
+    border-color: CanvasText;
+    border-top-color: transparent;
+    forced-color-adjust: none;
+  }
+}
+
+@keyframes spinner-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

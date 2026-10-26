@@ -14,6 +14,7 @@ export interface TimePickerContextProps {
   labels: TimePickerLabels
   minuteStep: number
   open: boolean
+  panelId: string
   panelStyle: CSSProperties
   pickHours: (hours: number) => void
   pickMinutes: (minutes: number) => void

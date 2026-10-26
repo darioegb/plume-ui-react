@@ -19,7 +19,7 @@ export type SliderMarkItemProps = Omit<ComponentProps, 'index'> &
   SliderMarkItemOwnProps
 
 /**
- * A mark: the dot on the track. Without children it renders a `SliderMarkLabel` when the mark has a
+ * A mark: the dot on the track, which has `data-edge` at the ends of the track, where the style hides it. Without children it renders a `SliderMarkLabel` when the mark has a
  * label.
  */
 export const SliderMarkItem = forwardRef<HTMLSpanElement, SliderMarkItemProps>(
@@ -35,6 +35,7 @@ export const SliderMarkItem = forwardRef<HTMLSpanElement, SliderMarkItemProps>(
       <span
         className={joinClasses(isStyled && styles.mark, className)}
         data-active={mark.value > lower && mark.value < upper ? '' : undefined}
+        data-edge={mark.value <= min || mark.value >= max ? '' : undefined}
         data-plume-slider-mark-item=""
         ref={ref}
         style={{ '--slider-mark': fractionOf(mark.value, min, max), ...style } as CSSProperties}

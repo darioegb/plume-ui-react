@@ -163,6 +163,7 @@ export const Rating = forwardRef<HTMLElement, RatingProps>(
       className,
     )
     const colorVars = {
+      '--rating-edge': `var(--plume-color-${colorScheme}-text)`,
       '--rating-solid': `var(--plume-color-${colorScheme}-solid)`,
       '--rating-empty': 'var(--plume-border-strong)',
       ...style,

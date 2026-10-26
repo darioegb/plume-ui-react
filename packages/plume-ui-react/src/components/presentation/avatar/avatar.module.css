@@ -59,7 +59,9 @@
   background-color: var(--avatar-status-color);
   block-size: 28%;
   border-radius: var(--plume-radius-full);
-  box-shadow: 0 0 0 2px var(--plume-surface);
+  box-shadow:
+    0 0 0 2px var(--plume-surface),
+    inset 0 0 0 1px color-mix(in srgb, var(--avatar-status-color) 55%, var(--plume-foreground));
   inline-size: 28%;
   inset-block-end: 0;
   inset-inline-end: 0;
@@ -97,6 +99,27 @@
   }
 
   .status {
+    background-image: none;
     border: 1px solid CanvasText;
+    box-shadow: none;
+    forced-color-adjust: none;
+  }
+
+  .avatar[data-status='online'] .status {
+    background-color: CanvasText;
+  }
+
+  .avatar[data-status='offline'] .status {
+    background-color: Canvas;
+  }
+
+  .avatar[data-status='busy'] .status {
+    background:
+      linear-gradient(Canvas, Canvas) center / 60% 20% no-repeat,
+      CanvasText;
+  }
+
+  .avatar[data-status='away'] .status {
+    background: conic-gradient(Canvas 0 25%, CanvasText 0);
   }
 }

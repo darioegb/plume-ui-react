@@ -39,7 +39,7 @@ export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
     { 'aria-label': ariaLabel, children, className, style }: TimePickerPanelProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { isPanel, labels, open, panelStyle, setPanel, shape, size, variant } =
+    const { isPanel, labels, open, panelId, panelStyle, setPanel, shape, size, variant } =
       useTimePicker('TimePickerPanel')
 
     if (!isPanel && !open) return null
@@ -47,6 +47,7 @@ export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
     const panel = (
       <div
         aria-label={ariaLabel ?? labels.timePicker}
+        aria-modal={isPanel ? undefined : true}
         className={joinClasses(
           styles.panel,
           pickerPanelClasses(variant, size, shape),
@@ -56,6 +57,7 @@ export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
         )}
         data-open={open ? '' : undefined}
         data-plume-timepicker-panel=""
+        id={isPanel ? undefined : panelId}
         ref={mergeRefs<HTMLDivElement>(setPanel, ref)}
         role={dialogRole}
         style={{ ...panelStyle, ...style }}

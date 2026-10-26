@@ -6,6 +6,7 @@ import { createContext, useContext } from 'react'
 export interface TimeColumnContextValue {
   isSelected: (value: number | string) => boolean
   isTabStop: (value: number | string) => boolean
+  onFocus: (value: number | string) => void
   onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void
   select: (value: number | string) => void
 }

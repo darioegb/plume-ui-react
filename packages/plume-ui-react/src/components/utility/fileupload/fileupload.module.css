@@ -86,7 +86,7 @@
 
 .dropzone {
   align-items: center;
-  border: 2px dashed var(--plume-border);
+  border: 2px dashed var(--plume-border-strong);
   border-radius: var(--plume-radius-4);
   color: var(--plume-muted);
   justify-content: center;
@@ -101,6 +101,7 @@
 .filled .dropzone {
   background-color: var(--plume-surface-muted);
   border-color: transparent;
+  border-block-end-color: var(--plume-border-strong);
 }
 
 .dropzone:hover,

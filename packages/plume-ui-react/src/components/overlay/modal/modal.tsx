@@ -4,6 +4,7 @@ import type { ReactNode, RefObject } from 'react'
 import { useId, useMemo, useState } from 'react'
 import { useOpenState } from '../../../overlay/use-open-state'
 import type { Size } from '../../../theme'
+import { ModalBackdropProvider } from './modal-backdrop-context'
 import { ModalContext } from './modal-context'
 
 export interface ModalProps {
@@ -81,5 +82,9 @@ export function Modal({
     [baseId, closeOnEscape, closeOnOutside, initialFocus, open, setOpen, size, trigger, variant],
   )
 
-  return <ModalContext.Provider value={context}>{children}</ModalContext.Provider>
+  return (
+    <ModalContext.Provider value={context}>
+      <ModalBackdropProvider value={false}>{children}</ModalBackdropProvider>
+    </ModalContext.Provider>
+  )
 }

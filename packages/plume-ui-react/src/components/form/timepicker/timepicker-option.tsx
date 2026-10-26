@@ -45,6 +45,9 @@ export const TimePickerOption = forwardRef<HTMLButtonElement, TimePickerOptionPr
         onClick={() => {
           column.select(option.value)
         }}
+        onFocus={() => {
+          column.onFocus(option.value)
+        }}
         onKeyDown={column.onKeyDown}
         ref={ref}
         role="option"
