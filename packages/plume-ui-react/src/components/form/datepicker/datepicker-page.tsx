@@ -50,9 +50,9 @@ export const DatePickerPage = forwardRef<HTMLDivElement, DatePickerPageProps>(
             </>
           )}
           {second ? null : (
-            <span role="status" style={visuallyHidden}>
+            <output style={visuallyHidden}>
               {page.monthLabel} {page.year}
-            </span>
+            </output>
           )}
         </div>
       </DatePickerPageContext.Provider>

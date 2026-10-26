@@ -136,6 +136,35 @@ const DEFAULT_LABELS: SliderLabels = {
 
 const SLIDER_PARTS = [SliderBody] as const
 
+interface SliderClassOptions {
+  className?: string
+  disabled: boolean
+  isInvalid: boolean
+  isStyled: boolean
+  orientation: SliderOrientation
+  size: Size
+  variant: SliderVariant
+}
+
+const sliderClasses = ({
+  className,
+  disabled,
+  isInvalid,
+  isStyled,
+  orientation,
+  size,
+  variant,
+}: SliderClassOptions): string | undefined =>
+  joinClasses(
+    isStyled && styles.slider,
+    isStyled && styles[variant],
+    isStyled && styles[size],
+    isStyled && styles[orientation],
+    isStyled && isInvalid && styles.invalid,
+    isStyled && disabled && styles.disabled,
+    className,
+  )
+
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(
   (
     {
@@ -311,15 +340,15 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(
         <Root
           {...rest}
           {...rootProps}
-          className={joinClasses(
-            isStyled && styles.slider,
-            isStyled && styles[variant],
-            isStyled && styles[size],
-            isStyled && styles[orientation],
-            isStyled && isInvalid && styles.invalid,
-            isStyled && disabled && styles.disabled,
+          className={sliderClasses({
             className,
-          )}
+            disabled,
+            isInvalid,
+            isStyled,
+            orientation,
+            size,
+            variant,
+          })}
           data-disabled={disabled ? '' : undefined}
           data-orientation={orientation}
           data-plume-slider=""

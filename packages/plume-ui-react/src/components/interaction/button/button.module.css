@@ -105,6 +105,7 @@
 
 .link:enabled:not([aria-busy]):active {
   color: var(--button-focus-color);
+  text-decoration-color: var(--button-focus-color);
 }
 
 .icon:enabled:not([aria-busy]):active {
@@ -113,10 +114,6 @@
 
 .solid:enabled:not([aria-busy]):active {
   background-color: var(--button-solid-active);
-}
-
-.link:enabled:not([aria-busy]):active {
-  text-decoration-color: var(--button-focus-color);
 }
 
 button.disabled {
