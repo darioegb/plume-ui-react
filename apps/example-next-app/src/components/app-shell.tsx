@@ -35,6 +35,8 @@ const pages = [
   { href: '/settings', icon: <SettingsIcon />, label: 'Settings' },
 ]
 
+const subpages: Record<string, string> = { '/projects/new': 'New project' }
+
 const isCurrent = (pathname: string, href: string): boolean =>
   href === '/' ? pathname === '/' : pathname.startsWith(href)
 
@@ -48,6 +50,7 @@ export function AppShell({
   const [open, setOpen] = useState(false)
   const [, startTransition] = useTransition()
   const current = pages.find((page) => isCurrent(pathname, page.href))
+  const subpage = subpages[pathname]
 
   // Plain clicks navigate on the client; modified ones keep the browser's behavior.
   const go =
@@ -101,7 +104,18 @@ export function AppShell({
                 </BreadcrumbItem>
                 {current && current.href !== '/' ? (
                   <BreadcrumbItem>
-                    <BreadcrumbLink current>{current.label}</BreadcrumbLink>
+                    <BreadcrumbLink
+                      current={!subpage}
+                      href={subpage ? current.href : undefined}
+                      onClick={subpage ? go(current.href) : undefined}
+                    >
+                      {current.label}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                ) : null}
+                {subpage ? (
+                  <BreadcrumbItem>
+                    <BreadcrumbLink current>{subpage}</BreadcrumbLink>
                   </BreadcrumbItem>
                 ) : null}
               </Breadcrumb>

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   Avatar,
   AvatarGroup,
@@ -70,6 +71,7 @@ const sortFns = {
 
 export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Project[] }>): ReactNode {
   const toast = useToast()
+  const router = useRouter()
   const [projects, setProjects] = useState(initial)
   const [detailId, setDetailId] = useState<string | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
@@ -153,6 +155,9 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             Clear filters
           </Button>
         ) : null}
+        <Button className={styles.create} onClick={() => router.push('/projects/new')}>
+          New project
+        </Button>
       </div>
 
       <Table aria-label="Projects" hoverable>

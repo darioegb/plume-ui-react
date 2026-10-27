@@ -10,6 +10,20 @@ export interface Project {
   progress: number
   status: ProjectStatus
   team: string[]
+  visibility: Visibility
+}
+
+export type Visibility = 'Private' | 'Workspace'
+
+export interface NewProjectInput {
+  description: string
+  /** ISO date, `YYYY-MM-DD`. */
+  due: string
+  name: string
+  notify: boolean
+  owner: string
+  team: string[]
+  visibility: Visibility
 }
 
 export interface Metric {
@@ -20,7 +34,7 @@ export interface Metric {
   value: string
 }
 
-const projects: Project[] = [
+const seed: Omit<Project, 'visibility'>[] = [
   {
     description: 'A new marketing site with a faster build and an updated brand.',
     due: '2026-11-14',
@@ -143,6 +157,21 @@ const projects: Project[] = [
   },
 ]
 
+// The simulated database: it lives in the server process and is shared by every user.
+const projects: Project[] = seed.map((project) => ({ ...project, visibility: 'Workspace' }))
+
+export const members = [
+  'Ana Ruiz',
+  'Marco Silva',
+  'Lena Fischer',
+  'Priya Nair',
+  'Tom Becker',
+  'Sara Lind',
+  'Ken Ito',
+  'Noor Haddad',
+  'Diego Alvarez',
+]
+
 const metrics: Metric[] = [
   { change: '+3 this month', id: 'active', label: 'Active projects', trend: 'up', value: '12' },
   { change: '+18%', id: 'completed', label: 'Tasks completed', trend: 'up', value: '248' },
@@ -160,5 +189,22 @@ export async function getDashboard(): Promise<{ metrics: Metric[]; projects: Pro
 
 export async function getProjects(): Promise<Project[]> {
   await latency(600)
-  return projects
+  return [...projects]
+}
+
+export async function addProject(input: NewProjectInput): Promise<Project> {
+  await latency(500)
+  const project: Project = {
+    description: input.description || 'No description yet.',
+    due: input.due,
+    id: `${input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
+    name: input.name,
+    owner: input.owner,
+    progress: 0,
+    status: 'On track',
+    team: input.team,
+    visibility: input.visibility,
+  }
+  projects.unshift(project)
+  return project
 }

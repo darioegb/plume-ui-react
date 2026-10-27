@@ -81,6 +81,8 @@ export function ProjectDrawer({
                             ))}
                           </AvatarGroup>
                         </dd>
+                        <dt>Visibility</dt>
+                        <dd>{project.visibility}</dd>
                       </dl>
                       <ProgressBar
                         aria-label="Progress"
