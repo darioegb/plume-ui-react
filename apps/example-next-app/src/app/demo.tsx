@@ -223,20 +223,28 @@ export function Demo(): React.ReactElement {
       </Section>
 
       <Section title="Checkbox, Radio and Toggle">
-        <Checkbox defaultChecked>I accept the terms</Checkbox>
-        <Checkbox indeterminate variant="outline">
-          Select all
-        </Checkbox>
+        <Field label="I accept the terms" orientation="inline">
+          <Checkbox defaultChecked />
+        </Field>
+        <Field label="Select all" orientation="inline">
+          <Checkbox indeterminate variant="outline" />
+        </Field>
         <Field label="Plan">
-          <RadioGroup value={plan} onChange={setPlan}>
-            <Radio value="solo">Solo</Radio>
-            <Radio value="team">Team</Radio>
-            <Radio value="company">Company</Radio>
+          <RadioGroup value={plan} onValueChange={setPlan}>
+            <Field label="Solo" orientation="inline">
+              <Radio value="solo" />
+            </Field>
+            <Field label="Team" orientation="inline">
+              <Radio value="team" />
+            </Field>
+            <Field label="Company" orientation="inline">
+              <Radio value="company" />
+            </Field>
           </RadioGroup>
         </Field>
-        <Toggle checked={notify} onChange={(event) => setNotify(event.target.checked)}>
-          Email notifications {notify ? 'on' : 'off'}
-        </Toggle>
+        <Field label={`Email notifications ${notify ? 'on' : 'off'}`} orientation="inline">
+          <Toggle checked={notify} onChange={(event) => setNotify(event.target.checked)} />
+        </Field>
       </Section>
 
       <Section title="Tabs">
@@ -298,7 +306,7 @@ export function Demo(): React.ReactElement {
       </Section>
 
       <Section title="DatePicker">
-        <DatePicker colorScheme="primary" value={date} onChange={setDate} />
+        <DatePicker colorScheme="primary" value={date} onValueChange={setDate} />
         <small style={{ color: 'var(--plume-muted-foreground, #71717a)' }}>
           Selected: {date.startDate ? date.startDate.toLocaleDateString() : '—'}
         </small>
