@@ -195,6 +195,33 @@ function ControlledExample(): React.ReactNode {
  * after something happens inside it.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Popover onOpenChange={setOpen} open={open}>
+        <PopoverTrigger>
+          <Button label="Open popover" />
+        </PopoverTrigger>
+        <PopoverContent aria-label="Controlled popover">
+          Opened and closed from the outside.
+        </PopoverContent>
+      </Popover>
+      <div className="flex gap-2">
+        <Button label="Open" onClick={() => setOpen(true)} size="sm" variant="outline" />
+        <Button label="Close" onClick={() => setOpen(false)} size="sm" variant="outline" />
+      </div>
+      <p>The popover is {open ? 'open' : 'closed'}.</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 

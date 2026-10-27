@@ -393,6 +393,30 @@ function ControlledPaginator(): React.ReactNode {
  * from outside.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [page, setPage] = useState(3)
+  return (
+    <div className="flex flex-col gap-3">
+      <Paginator onPageChange={setPage} page={page} total={120} />
+      <p className="text-sm">
+        Showing items {(page - 1) * 10 + 1} to {page * 10}
+      </p>
+      <button
+        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        onClick={() => setPage(1)}
+        type="button"
+      >
+        Back to the first page
+      </button>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledPaginator />,
 }
 

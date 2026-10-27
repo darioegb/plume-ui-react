@@ -270,6 +270,42 @@ function InteractiveStepper(): React.ReactNode {
  * The Stepper doesn't move by itself: keep the index in your state and change it from your own buttons.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [active, setActive] = useState(0)
+  return (
+    <>
+      <Stepper activeStep={active} aria-label="Sign up progress">
+        <Step>
+          <StepIndicator />
+          <StepTitle>Account</StepTitle>
+          <StepSeparator />
+        </Step>
+        <Step>
+          <StepIndicator />
+          <StepTitle>Profile</StepTitle>
+          <StepSeparator />
+        </Step>
+        <Step>
+          <StepIndicator />
+          <StepTitle>Review</StepTitle>
+          <StepSeparator />
+        </Step>
+      </Stepper>
+      <button disabled={active === 0} onClick={() => setActive(active - 1)} type="button">
+        Back
+      </button>
+      <button disabled={active === 3} onClick={() => setActive(active + 1)} type="button">
+        {active === 2 ? 'Finish' : 'Next'}
+      </button>
+    </>
+  )
+}`,
+      },
+    },
+  },
   render: () => <InteractiveStepper />,
 }
 

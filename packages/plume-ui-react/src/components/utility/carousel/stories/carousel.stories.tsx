@@ -324,6 +324,42 @@ function ControlledCarousel(): React.ReactNode {
  * Pass **index** and **onIndexChange** to control the visible slide, for example to show one from outside.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const slides = ['Mountains', 'Forest', 'Desert', 'Canyon']
+  const [index, setIndex] = useState(1)
+  return (
+    <div className="flex flex-col gap-4">
+      <Carousel aria-label="Controlled" index={index} onIndexChange={setIndex}>
+        <CarouselSlides>
+          {slides.map((title) => (
+            <CarouselSlide key={title}>
+              <div className="grid h-44 place-items-center bg-primary-solid text-primary-on-solid">
+                {title}
+              </div>
+            </CarouselSlide>
+          ))}
+        </CarouselSlides>
+        <CarouselPrev />
+        <CarouselNext />
+        <CarouselDots />
+      </Carousel>
+      <div className="flex flex-wrap items-center gap-2">
+        {slides.map((title, position) => (
+          <button key={title} onClick={() => setIndex(position)} type="button">
+            Show {title}
+          </button>
+        ))}
+      </div>
+      <p>Slide: {slides[index]}</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledCarousel />,
 }
 

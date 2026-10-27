@@ -352,6 +352,42 @@ function SortableTable(): React.ReactNode {
  * original order.
  */
 export const Sortable: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const { getSortProps, rows } = useTableState({
+    defaultSort: { column: 'name', direction: 'ascending' },
+    rows: people,
+  })
+
+  return (
+    <Table aria-label="Sortable people" hoverable>
+      <TableCaption>Click a header to sort</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead {...getSortProps('name')}>Name</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead align="end" {...getSortProps('age')}>
+            Age
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {rows.map(({ age, name, role }) => (
+          <TableRow key={name}>
+            <TableCell>{name}</TableCell>
+            <TableCell>{role}</TableCell>
+            <TableCell align="end">{age}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )
+}`,
+      },
+    },
+  },
   render: () => <SortableTable />,
 }
 
@@ -491,7 +527,90 @@ function FilteredTable(): React.ReactNode {
  * `Paginator` gets its `page`, `total` and `pageSize` from the hook, and `TableEmpty` offers to clear the filters when no row matches.
  */
 export const Filtered: Story = {
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      source: {
+        code: `function Example() {
+  const state = useTableState({ rows: members, defaultPageSize: 5 })
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-end gap-4">
+        <Field label="Name">
+          <Input
+            onChange={(event) => state.setFilter('name', event.target.value)}
+            placeholder="Search"
+            value={String(state.filters.name ?? '')}
+          />
+        </Field>
+        <Field label="Role">
+          <Select
+            clearable
+            onValueChange={(value) => state.setFilter('role', value)}
+            value={String(state.filters.role ?? '')}
+          >
+            <SelectTrigger placeholder="Any role" />
+            <SelectContent>
+              {['Admin', 'Editor', 'Viewer'].map((role) => (
+                <SelectOption key={role} value={role}>
+                  {role}
+                </SelectOption>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+        <Button disabled={!state.hasFilters} onClick={state.resetFilters} variant="outline">
+          Clear filters
+        </Button>
+      </div>
+      <Table aria-label="Members" hoverable>
+        <TableCaption>{state.total} members</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead {...state.getSortProps('name')}>Name</TableHead>
+            <TableHead {...state.getSortProps('role')}>Role</TableHead>
+            <TableHead align="end" {...state.getSortProps('age')}>
+              Age
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {state.rows.length === 0 ? (
+            <TableEmpty
+              action={
+                <Button onClick={state.resetFilters} size="sm" variant="outline">
+                  Clear filters
+                </Button>
+              }
+              colSpan={3}
+              description="Try other words or another role."
+              title="No members match the filters"
+            />
+          ) : (
+            state.rows.map(({ age, id, name, role }) => (
+              <TableRow key={id}>
+                <TableCell>{name}</TableCell>
+                <TableCell>{role}</TableCell>
+                <TableCell align="end">{age}</TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+      <Paginator
+        aria-label="Members pages"
+        onPageChange={state.setPage}
+        page={state.page}
+        pageSize={state.pageSize}
+        total={state.total}
+      />
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <FilteredTable />,
 }
 
@@ -596,7 +715,76 @@ function ServerSideTable(): React.ReactNode {
  * `loading` prop marks the table as busy while the request is on its way. Here the server is simulated.
  */
 export const ServerSide: Story = {
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      source: {
+        code: `function Example() {
+  const [data, setData] = useState({ rows: [], total: 0 })
+  const [loading, setLoading] = useState(true)
+  const state = useTableState({
+    manual: true,
+    rows: data.rows,
+    total: data.total,
+    defaultPageSize: 5,
+  })
+  const { params } = state
+
+  useEffect(() => {
+    let current = true
+    setLoading(true)
+    fetchMembers(params).then((result) => {
+      if (!current) return
+      setData(result)
+      setLoading(false)
+    })
+    return () => {
+      current = false
+    }
+  }, [params])
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Input
+        aria-label="Name"
+        onChange={(event) => state.setFilter('name', event.target.value)}
+        placeholder="Search"
+        value={String(state.filters.name ?? '')}
+      />
+      <Table aria-label="Members from the server" hoverable loading={loading}>
+        <TableCaption>{loading ? 'Loading…' : \`\${state.total} members\`}</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead {...state.getSortProps('name')}>Name</TableHead>
+            <TableHead {...state.getSortProps('role')}>Role</TableHead>
+            <TableHead align="end" {...state.getSortProps('age')}>
+              Age
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {state.rows.map(({ age, id, name, role }) => (
+            <TableRow key={id}>
+              <TableCell>{name}</TableCell>
+              <TableCell>{role}</TableCell>
+              <TableCell align="end">{age}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Paginator
+        aria-label="Members pages"
+        onPageChange={state.setPage}
+        page={state.page}
+        pageSize={state.pageSize}
+        total={state.total}
+      />
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ServerSideTable />,
 }
 
@@ -685,7 +873,75 @@ function SelectableTable(): React.ReactNode {
  * refer to the current page, which suits the checkbox of the header.
  */
 export const Selectable: Story = {
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    docs: {
+      source: {
+        code: `function Example() {
+  const state = useTableState({ rows: members, defaultPageSize: 5 })
+
+  return (
+    <div className="flex flex-col gap-4">
+      <Table aria-label="Selectable members">
+        <TableCaption>{state.selected.length} selected</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              <Checkbox
+                aria-label="Select the page"
+                checked={state.allSelected}
+                indeterminate={state.someSelected}
+                onChange={state.toggleAll}
+              />
+            </TableHead>
+            <TableHead {...state.getSortProps('name')}>Name</TableHead>
+            <TableHead>Role</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {state.rows.map((member) => (
+            <TableRow key={member.id} selected={state.isSelected(member)}>
+              <TableCell>
+                <Checkbox
+                  aria-label={\`Select \${member.name}\`}
+                  checked={state.isSelected(member)}
+                  onChange={() => state.toggleRow(member)}
+                />
+              </TableCell>
+              <TableCell>{member.name}</TableCell>
+              <TableCell>{member.role}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Paginator
+          aria-label="Members pages"
+          onPageChange={state.setPage}
+          page={state.page}
+          pageSize={state.pageSize}
+          total={state.total}
+        />
+        <Select
+          onValueChange={(value) => state.setPageSize(Number(value))}
+          value={String(state.pageSize)}
+        >
+          <SelectTrigger aria-label="Rows per page" />
+          <SelectContent>
+            {[5, 10, 20].map((size) => (
+              <SelectOption key={size} value={String(size)}>
+                {\`\${size} per page\`}
+              </SelectOption>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <SelectableTable />,
 }
 

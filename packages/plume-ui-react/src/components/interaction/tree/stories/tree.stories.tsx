@@ -251,6 +251,60 @@ export const Colors: Story = {
  * from assistive technology.
  */
 export const Icons: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Glyph({ path }) {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height="1em"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="1em"
+    >
+      <path d={path} />
+    </svg>
+  )
+}
+
+const folder = 'M3 7h6l2 2h10v10H3z'
+const file = 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5'
+
+<Tree aria-label="Project files" defaultExpanded={['src', 'components']}>
+  <TreeItem value="src">
+    <TreeItemLabel icon={<Glyph path={folder} />}>src</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="components">
+        <TreeItemLabel icon={<Glyph path={folder} />}>components</TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="button">
+            <TreeItemLabel icon={<Glyph path={file} />}>button.tsx</TreeItemLabel>
+          </TreeItem>
+          <TreeItem value="tree">
+            <TreeItemLabel icon={<Glyph path={file} />}>tree.tsx</TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+      <TreeItem value="index">
+        <TreeItemLabel icon={<Glyph path={file} />}>index.ts</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="readme">
+    <TreeItemLabel icon={<Glyph path={file} />}>README.md</TreeItemLabel>
+  </TreeItem>
+  <TreeItem disabled value="secret">
+    <TreeItemLabel icon={<Glyph path={file} />}>.env</TreeItemLabel>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
   render: () => <Files defaultExpanded={['src', 'components']} icons style={frame} />,
 }
 
@@ -326,6 +380,53 @@ function CheckboxTree({
  * toggled. The chevron opens and closes a branch without changing its checkbox.
  */
 export const Checkboxes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(['users:read', 'reports'])
+  return (
+    <div className="flex flex-col gap-3">
+      <Tree
+        aria-label="Sections"
+        defaultExpanded={['users']}
+        onValueChange={setValue}
+        selection="checkbox"
+        value={value}
+      >
+        <TreeItem value="users">
+          <TreeItemLabel>Users</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="users:read">
+              <TreeItemLabel>Read</TreeItemLabel>
+            </TreeItem>
+            <TreeItem value="users:edit">
+              <TreeItemLabel>Edit</TreeItemLabel>
+            </TreeItem>
+            <TreeItem disabled value="users:delete">
+              <TreeItemLabel>Delete</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+        <TreeItem value="reports">
+          <TreeItemLabel>Reports</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="reports:read">
+              <TreeItemLabel>Read</TreeItemLabel>
+            </TreeItem>
+            <TreeItem value="reports:export">
+              <TreeItemLabel>Export</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+      </Tree>
+      <p className="text-sm">Checked: {value.join(', ') || 'nothing'}</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <CheckboxTree defaultValue={['users:read', 'reports']} />,
 }
 
@@ -334,6 +435,54 @@ export const Checkboxes: Story = {
  * a branch does not show the mixed state.
  */
 export const IndependentCheckboxes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(['users'])
+  return (
+    <div className="flex flex-col gap-3">
+      <Tree
+        aria-label="Sections"
+        cascade={false}
+        defaultExpanded={['users']}
+        onValueChange={setValue}
+        selection="checkbox"
+        value={value}
+      >
+        <TreeItem value="users">
+          <TreeItemLabel>Users</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="users:read">
+              <TreeItemLabel>Read</TreeItemLabel>
+            </TreeItem>
+            <TreeItem value="users:edit">
+              <TreeItemLabel>Edit</TreeItemLabel>
+            </TreeItem>
+            <TreeItem disabled value="users:delete">
+              <TreeItemLabel>Delete</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+        <TreeItem value="reports">
+          <TreeItemLabel>Reports</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="reports:read">
+              <TreeItemLabel>Read</TreeItemLabel>
+            </TreeItem>
+            <TreeItem value="reports:export">
+              <TreeItemLabel>Export</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+      </Tree>
+      <p className="text-sm">Checked: {value.join(', ') || 'nothing'}</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <CheckboxTree cascade={false} defaultValue={['users']} />,
 }
 
@@ -376,6 +525,70 @@ function ControlledTree(): React.ReactNode {
  * control the open branches, for example to open or close all of them from a button.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [expanded, setExpanded] = useState(['src'])
+  const [selected, setSelected] = useState('index')
+  return (
+    <div className="flex flex-col gap-3">
+      <Tree
+        aria-label="Project files"
+        expanded={expanded}
+        onExpandedChange={setExpanded}
+        onValueChange={setSelected}
+        value={selected}
+      >
+        <TreeItem value="src">
+          <TreeItemLabel>src</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="components">
+              <TreeItemLabel>components</TreeItemLabel>
+              <TreeItemGroup>
+                <TreeItem value="button">
+                  <TreeItemLabel>button.tsx</TreeItemLabel>
+                </TreeItem>
+              </TreeItemGroup>
+            </TreeItem>
+            <TreeItem value="index">
+              <TreeItemLabel>index.ts</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+        <TreeItem value="public">
+          <TreeItemLabel>public</TreeItemLabel>
+          <TreeItemGroup>
+            <TreeItem value="logo">
+              <TreeItemLabel>logo.svg</TreeItemLabel>
+            </TreeItem>
+          </TreeItemGroup>
+        </TreeItem>
+      </Tree>
+      <p className="text-sm">Selected: {selected || 'nothing'}</p>
+      <p className="text-sm">Open: {expanded.join(', ') || 'nothing'}</p>
+      <div className="flex gap-2">
+        <button
+          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          onClick={() => setExpanded(['src', 'components', 'public'])}
+          type="button"
+        >
+          Open all
+        </button>
+        <button
+          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          onClick={() => setExpanded([])}
+          type="button"
+        >
+          Close all
+        </button>
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledTree />,
 }
 

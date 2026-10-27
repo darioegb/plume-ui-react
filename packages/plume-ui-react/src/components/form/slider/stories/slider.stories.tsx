@@ -300,6 +300,33 @@ function ControlledSlider(): React.ReactNode {
  * outside.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<SliderValue>(40)
+  return (
+    <div className="flex flex-col gap-3">
+      <Slider aria-label="Opacity" onValueChange={setValue} value={value} />
+      <p className="text-sm">Opacity: {value}%</p>
+      <div className="flex gap-2">
+        {[0, 50, 100].map((preset) => (
+          <button
+            className="rounded border border-gray-400 px-2 py-1 text-sm"
+            key={preset}
+            onClick={() => setValue(preset)}
+            type="button"
+          >
+            {preset}%
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledSlider />,
 }
 
@@ -326,6 +353,29 @@ function CommitSlider(): React.ReactNode {
  * value: to save it or to fetch results.
  */
 export const Commit: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<SliderValue>(30)
+  const [committed, setCommitted] = useState<SliderValue>(30)
+  return (
+    <div className="flex flex-col gap-3">
+      <Slider
+        aria-label="Zoom"
+        onValueChange={setValue}
+        onValueCommit={setCommitted}
+        value={value}
+      />
+      <p className="text-sm">
+        Dragging: {value}. Last committed: {committed}.
+      </p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <CommitSlider />,
 }
 

@@ -493,6 +493,43 @@ function ControlledExample(): React.ReactNode {
  * list, from your own state.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(['apple'])
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Select multiple onOpenChange={setOpen} onValueChange={setValue} open={open} value={value}>
+        <SelectTrigger aria-label="Fruits" placeholder="Pick fruits" />
+        <SelectContent>
+          <SelectOption value="apple">Apple</SelectOption>
+          <SelectOption value="banana">Banana</SelectOption>
+          <SelectOption value="cherry">Cherry</SelectOption>
+        </SelectContent>
+      </Select>
+      <small>Chosen: {value.length > 0 ? value.join(', ') : 'nothing'}</small>
+      <div className="flex gap-2">
+        <Button
+          label="Choose all"
+          onClick={() => setValue(['apple', 'banana', 'cherry'])}
+          size="sm"
+          variant="outline"
+        />
+        <Button
+          label={open ? 'Close the list' : 'Open the list'}
+          onClick={() => setOpen(!open)}
+          size="sm"
+          variant="outline"
+        />
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 
@@ -556,6 +593,44 @@ function FormExample(): React.ReactNode {
  * to them, so validate `required` yourself.
  */
 export const InAForm: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [data, setData] = useState('Submit the form to see what it sends.')
+  return (
+    <form
+      className="flex flex-col gap-3"
+      onSubmit={(event) => {
+        event.preventDefault()
+        const entries = new FormData(event.currentTarget)
+        setData(JSON.stringify({ colors: entries.getAll('colors'), size: entries.get('size') }))
+      }}
+    >
+      <Select defaultValue="m" name="size">
+        <SelectTrigger aria-label="Size" />
+        <SelectContent>
+          <SelectOption value="s">Small</SelectOption>
+          <SelectOption value="m">Medium</SelectOption>
+          <SelectOption value="l">Large</SelectOption>
+        </SelectContent>
+      </Select>
+      <Select defaultValue={['red']} multiple name="colors">
+        <SelectTrigger aria-label="Colors" placeholder="Colors" />
+        <SelectContent>
+          <SelectOption value="red">Red</SelectOption>
+          <SelectOption value="green">Green</SelectOption>
+          <SelectOption value="blue">Blue</SelectOption>
+        </SelectContent>
+      </Select>
+      <Button label="Submit" type="submit" />
+      <small>{data}</small>
+    </form>
+  )
+}`,
+      },
+    },
+  },
   render: () => <FormExample />,
 }
 

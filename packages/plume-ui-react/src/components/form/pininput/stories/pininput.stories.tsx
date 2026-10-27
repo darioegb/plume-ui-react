@@ -206,6 +206,36 @@ function OtpExample(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <OtpExample />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState('')
+  const [done, setDone] = useState<string | null>(null)
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <PinInput
+        aria-label="One-time code"
+        focusOnMount
+        onComplete={setDone}
+        onValueChange={(next) => {
+          setValue(next)
+          setDone(null)
+        }}
+        value={value}
+      />
+      <p className="text-sm">
+        {done ? \`Code entered: \${done}\` : \`Typed: \${value || 'nothing yet'}\`}
+      </p>
+      <button onClick={() => setValue('')} type="button">
+        Clear
+      </button>
+    </div>
+  )
+}`,
+      },
+    },
+  },
 }
 
 /**

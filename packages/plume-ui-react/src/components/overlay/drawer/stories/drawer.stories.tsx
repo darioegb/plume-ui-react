@@ -177,6 +177,32 @@ function ControlledExample(): React.ReactNode {
  * that is not a trigger.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button
+        label={open ? 'Close the drawer' : 'Open the drawer'}
+        onClick={() => setOpen(!open)}
+      />
+      <p className="text-sm">The drawer is {open ? 'open' : 'closed'}.</p>
+      <Drawer onOpenChange={setOpen} open={open}>
+        <DrawerContent>
+          <DrawerHeader>Controlled drawer</DrawerHeader>
+          <DrawerBody>Its state lives in the component that renders it.</DrawerBody>
+          <DrawerClose />
+        </DrawerContent>
+      </Drawer>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 
@@ -214,6 +240,37 @@ export const LongContent: Story = {
  * suits a form the user must finish or cancel.
  */
 export const Persistent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Drawer closeOnEscape={false} closeOnOutside={false}>
+  <DrawerTrigger>
+    <Button label="Open drawer" />
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>Filters</DrawerHeader>
+    <DrawerBody>
+      <Field label="Name">
+        <Input />
+      </Field>
+      <Field label="Email">
+        <Input type="email" />
+      </Field>
+    </DrawerBody>
+    <DrawerFooter>
+      <DrawerClose>
+        <Button label="Cancel" variant="ghost" />
+      </DrawerClose>
+      <DrawerClose>
+        <Button label="Apply" />
+      </DrawerClose>
+    </DrawerFooter>
+    <DrawerClose />
+  </DrawerContent>
+</Drawer>`,
+      },
+    },
+  },
   render: () => <Example closeOnEscape={false} closeOnOutside={false} />,
 }
 

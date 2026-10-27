@@ -258,6 +258,31 @@ function ControlledPlan(): React.ReactNode {
  */
 export const GroupControlled: Story = {
   render: () => <ControlledPlan />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [plan, setPlan] = useState('pro')
+  return (
+    <div className="flex flex-col gap-3">
+      <RadioGroup aria-label="Plan" onValueChange={setPlan} value={plan}>
+        <Field label="Free" orientation="inline">
+          <Radio value="free" />
+        </Field>
+        <Field label="Pro" orientation="inline">
+          <Radio value="pro" />
+        </Field>
+        <Field label="Team" orientation="inline">
+          <Radio value="team" />
+        </Field>
+      </RadioGroup>
+      <p>Selected plan: {plan}</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
 }
 
 /**

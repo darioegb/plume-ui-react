@@ -289,6 +289,21 @@ export const CustomLabels: Story = {
  * (a booking form, a side panel). Picking a minute doesn't hide them.
  */
 export const Panel: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState('09:30')
+  return (
+    <div className="flex flex-col gap-2">
+      <TimePicker aria-label="Time" panel onValueChange={setValue} value={value} />
+      <span className="text-sm">Value: {value}</span>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   decorators: [(Story) => <div className='w-72 max-w-full'>{Story()}</div>],
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
@@ -306,6 +321,21 @@ export const Panel: Story = {
  * A controlled TimePicker, with the value shown below it.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState('')
+  return (
+    <div className="flex flex-col gap-2">
+      <TimePicker aria-label="Time" onValueChange={setValue} value={value} />
+      <span className="text-sm">Value: {value ? \`"\${value}"\` : '(empty)'}</span>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function
     const [value, setValue] = useState('')
@@ -322,6 +352,29 @@ export const Controlled: Story = {
  * To pick a date and a time, put a `DatePicker` and a `TimePicker` together and join their values.
  */
 export const WithDatePicker: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [date, setDate] = useState<DateRange>({ startDate: null, endDate: null })
+  const [time, setTime] = useState('')
+  const { startDate } = date
+  const label = startDate
+    ? \`\${startDate.toDateString()}\${time ? \` at \${time}\` : ''}\`
+    : '(no date)'
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="grid gap-3 grid-cols-[3fr_2fr]">
+        <DatePicker aria-label="Date" onValueChange={setDate} value={date} />
+        <TimePicker aria-label="Time" onValueChange={setTime} value={time} />
+      </div>
+      <span className="text-sm">Date and time: {label}</span>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   decorators: [(Story) => <div className="w-[28rem] max-w-full pb-[24rem]">{Story()}</div>],
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks -- Render is valid storybook function

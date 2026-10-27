@@ -284,6 +284,30 @@ export const Colors: Story = {
  * With **defaultCollapsed** it starts as a rail of icons. The labels are still read by screen readers.
  */
 export const Collapsed: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider breakpoint="never" defaultCollapsed>
+  <div className="flex">
+    <Sidebar aria-label="Application">
+      <SidebarContent aria-label="Pages">
+        <SidebarItem active href="#home" icon={<HomeIcon />}>
+          Home
+        </SidebarItem>
+        <SidebarItem href="#projects" icon={<FolderIcon />}>
+          Projects
+        </SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+    <main className="flex-1 p-4">
+      <SidebarToggle />
+      <p>The page.</p>
+    </main>
+  </div>
+</SidebarProvider>`,
+      },
+    },
+  },
   render: () => <Shell compact defaultCollapsed />,
 }
 
@@ -319,6 +343,33 @@ export const Right: Story = {
  * page.
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider breakpoint="never">
+  <div className="flex">
+    <Sidebar aria-label="Application">
+      <SidebarContent aria-label="Pages">
+        <SidebarItem active href="#home" icon={<HomeIcon />}>
+          Home
+        </SidebarItem>
+        <SidebarItem disabled href="#team" icon={<UsersIcon />}>
+          Team
+        </SidebarItem>
+        <SidebarItem icon={<ArrowRightIcon />} onClick={() => undefined}>
+          Sign out
+        </SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+    <main className="flex-1 p-4">
+      <SidebarToggle />
+      <p>The page.</p>
+    </main>
+  </div>
+</SidebarProvider>`,
+      },
+    },
+  },
   render: () => (
     <Shell compact>
       <SidebarContent aria-label="Pages">
@@ -353,6 +404,45 @@ function ControlledSidebar(): React.ReactNode {
  * **onOpenChange** for the off-canvas panel on a small one, for example to close it after the user picks a link.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [collapsed, setCollapsed] = useState(false)
+  return (
+    <>
+      <SidebarProvider breakpoint="never" collapsed={collapsed} onCollapsedChange={setCollapsed}>
+        <div className="flex">
+          <Sidebar aria-label="Application">
+            <SidebarContent aria-label="Pages">
+              <SidebarItem active href="#home" icon={<HomeIcon />}>
+                Home
+              </SidebarItem>
+              <SidebarItem href="#projects" icon={<FolderIcon />}>
+                Projects
+              </SidebarItem>
+            </SidebarContent>
+          </Sidebar>
+          <main className="flex-1 p-4">
+            <SidebarToggle />
+            <p>The page.</p>
+          </main>
+        </div>
+      </SidebarProvider>
+      <label>
+        <input
+          checked={collapsed}
+          onChange={(event) => setCollapsed(event.target.checked)}
+          type="checkbox"
+        />{' '}
+        Collapsed
+      </label>
+    </>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledSidebar />,
 }
 

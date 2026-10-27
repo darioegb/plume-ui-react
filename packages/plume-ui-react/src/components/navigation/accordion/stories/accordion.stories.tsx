@@ -219,6 +219,33 @@ function ControlledAccordion(): React.ReactNode {
  * `type="single"` the value is a string, and an empty one means that none is open.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState('Can I use Tailwind?')
+  return (
+    <>
+      <button onClick={() => setValue('How do I install it?')} type="button">
+        Open “How do I install it?”
+      </button>
+      <Accordion onValueChange={setValue} value={value}>
+        <AccordionItem value="How do I install it?">
+          <AccordionTrigger>How do I install it?</AccordionTrigger>
+          <AccordionContent>Install the package and wrap your app.</AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="Can I use Tailwind?">
+          <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+          <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <p>Open item: {value || 'none'}</p>
+    </>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledAccordion />,
 }
 

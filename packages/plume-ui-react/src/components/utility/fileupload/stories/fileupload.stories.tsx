@@ -218,6 +218,30 @@ function RestrictedUpload(): React.ReactNode {
  * why. **onReject** also gives you the rejected files and the reason, to show your own message.
  */
 export const Restrictions: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [rejected, setRejected] = useState<FileRejection[]>([])
+  return (
+    <div className="flex flex-col gap-3">
+      <FileUpload
+        accept="image/*,.pdf"
+        aria-label="Images and PDFs"
+        maxFiles={3}
+        maxSize={2 * 1024 * 1024}
+        multiple
+        onReject={setRejected}
+      >
+        Images or PDFs, up to 2 MB each and 3 files
+      </FileUpload>
+      <p>Rejected at the last attempt: {rejected.length}</p>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <RestrictedUpload />,
 }
 
@@ -277,6 +301,38 @@ function UploadingFiles(): React.ReactNode {
  * progress is simulated: choose some files to see it move.
  */
 export const Progress: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [files, setFiles] = useState<File[]>([])
+  const [progress, setProgress] = useState({})
+  const keyOf = (file) => \`\${file.name}-\${file.size}\`
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((current) => {
+        const next = { ...current }
+        for (const file of files) {
+          next[keyOf(file)] = Math.min(100, (next[keyOf(file)] ?? 0) + 6 + Math.random() * 14)
+        }
+        return next
+      })
+    }, 500)
+    return () => clearInterval(timer)
+  }, [files])
+  return (
+    <FileUpload
+      aria-label="Attachments"
+      multiple
+      onValueChange={setFiles}
+      progress={(file) => progress[keyOf(file)] ?? 0}
+      value={files}
+    />
+  )
+}`,
+      },
+    },
+  },
   render: () => <UploadingFiles />,
 }
 
@@ -318,6 +374,23 @@ function ControlledUpload(): React.ReactNode {
  * Pass **value** and **onValueChange** to control the list, for example to clear it from outside.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [files, setFiles] = useState<File[]>([])
+  return (
+    <div className="flex flex-col gap-3">
+      <FileUpload aria-label="Attachments" multiple onValueChange={setFiles} value={files} />
+      <button disabled={files.length === 0} onClick={() => setFiles([])} type="button">
+        Clear the list
+      </button>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledUpload />,
 }
 

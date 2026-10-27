@@ -293,6 +293,24 @@ function ControlledRating(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <ControlledRating />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(2)
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <Rating aria-label="Rate this product" onValueChange={setValue} value={value} />
+      <p className="text-sm">Score: {value}</p>
+      <button onClick={() => setValue(5)} type="button">
+        Give it five
+      </button>
+    </div>
+  )
+}`,
+      },
+    },
+  },
 }
 
 /**

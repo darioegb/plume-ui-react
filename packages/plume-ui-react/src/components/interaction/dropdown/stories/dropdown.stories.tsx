@@ -315,6 +315,33 @@ function ControlledExample(): React.ReactNode {
  * stays open after an item is chosen, and one item turns it back on for itself.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+  const [last, setLast] = useState('nothing yet')
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Dropdown closeOnSelect={false} onOpenChange={setOpen} open={open}>
+        <DropdownTrigger>
+          <Button label={open ? 'Close the menu' : 'Open the menu'} variant="outline" />
+        </DropdownTrigger>
+        <DropdownMenu>
+          <DropdownItem onSelect={() => setLast('Copy')}>Copy</DropdownItem>
+          <DropdownItem onSelect={() => setLast('Paste')}>Paste</DropdownItem>
+          <DropdownItem closeOnSelect onSelect={() => setLast('Done')}>
+            Done
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      <small>You chose: {last}</small>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 

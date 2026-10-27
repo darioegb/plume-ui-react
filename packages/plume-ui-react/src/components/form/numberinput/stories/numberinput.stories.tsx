@@ -248,6 +248,29 @@ function ControlledNumberInput(): React.ReactNode {
  */
 export const Controlled: Story = {
   render: () => <ControlledNumberInput />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState<number | null>(3)
+  return (
+    <div className="flex flex-col items-start gap-3" style={{ width: '12rem' }}>
+      <NumberInput aria-label="Quantity" max={10} min={0} onValueChange={setValue} value={value} />
+      <p className="text-sm">Value: {value === null ? 'empty' : value}</p>
+      <div className="flex gap-2">
+        <button onClick={() => setValue(0)} type="button">
+          Reset
+        </button>
+        <button onClick={() => setValue(null)} type="button">
+          Clear
+        </button>
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
 }
 
 /**

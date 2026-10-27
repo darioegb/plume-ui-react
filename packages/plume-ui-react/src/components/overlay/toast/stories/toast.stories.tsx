@@ -185,6 +185,58 @@ export const Variants: Story = {
  * at once (`role="alert"`) and the others politely.
  */
 export const Statuses: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      <Button
+        label="Neutral"
+        onClick={() => toast.toast({ title: 'Something happened' })}
+        variant="outline"
+      />
+      <Button
+        label="Info"
+        onClick={() => toast.info({ title: 'A new version is out' })}
+        variant="outline"
+      />
+      <Button
+        label="Success"
+        onClick={() =>
+          toast.success({ description: 'Your changes were saved.', title: 'Saved' })
+        }
+        variant="outline"
+      />
+      <Button
+        label="Warning"
+        onClick={() =>
+          toast.warning({ description: 'You are close to the limit.', title: 'Almost full' })
+        }
+        variant="outline"
+      />
+      <Button
+        label="Error"
+        onClick={() =>
+          toast.error({
+            description: 'Check your connection and try again.',
+            title: 'Could not save',
+          })
+        }
+        variant="outline"
+      />
+    </div>
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <div className="flex flex-wrap justify-center gap-2">
@@ -315,6 +367,33 @@ export const Positions: Story = {
  * an action a long **duration**, or none, so the user has time to use it.
  */
 export const WithAction: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Delete the file"
+      onClick={() =>
+        toast.toast({
+          action: { label: 'Undo', onClick: () => toast.success('The file is back') },
+          description: 'Annual report.pdf was moved to the trash.',
+          duration: 10000,
+          title: 'File deleted',
+        })
+      }
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -337,6 +416,32 @@ export const WithAction: Story = {
  * acted on, such as an error.
  */
 export const Persistent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Show a persistent toast"
+      onClick={() =>
+        toast.error({
+          description: 'The connection was lost. We will keep trying.',
+          duration: 0,
+          title: 'You are offline',
+        })
+      }
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -358,6 +463,29 @@ export const Persistent: Story = {
  * stacking another one. It fits a task that goes from running to done.
  */
 export const UpdatingAToast: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Start the upload"
+      onClick={() => {
+        toast.info({ duration: 0, id: 'upload', title: 'Uploading…' })
+        window.setTimeout(() => toast.success({ id: 'upload', title: 'Upload complete' }), 1500)
+      }}
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -376,6 +504,30 @@ export const UpdatingAToast: Story = {
  * dismissible with **dismissible: false**, which takes away its dismiss button.
  */
 export const Dismissing: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      <Button
+        label="Add a toast"
+        onClick={() => toast.info({ duration: 0, title: 'A toast that stays' })}
+        variant="outline"
+      />
+      <Button label="Dismiss all" onClick={() => toast.dismissAll()} variant="ghost" />
+    </div>
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <div className="flex flex-wrap justify-center gap-2">
@@ -394,6 +546,26 @@ export const Dismissing: Story = {
  * **max** limits how many toasts are on the screen at a time. The oldest one goes first.
  */
 export const Limit: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Add a toast"
+      onClick={() => toast.info({ title: \`Toast at \${new Date().toLocaleTimeString()}\` })}
+    />
+  )
+}
+
+<ToastProvider duration={0} max={3}>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo duration={0} max={3}>
       <Fire

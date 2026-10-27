@@ -229,6 +229,33 @@ function ControlledNavbar(): React.ReactNode {
  * is shown under the bar.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(true)
+  return (
+    <>
+      <Navbar aria-label="Controlled" breakpoint="never" onOpenChange={setOpen} open={open}>
+        <NavbarBrand href="#home">Plume</NavbarBrand>
+        <NavbarToggle />
+        <NavbarContent>
+          <NavbarItem active href="#home">
+            Home
+          </NavbarItem>
+          <NavbarItem href="#docs">Docs</NavbarItem>
+        </NavbarContent>
+      </Navbar>
+      <button onClick={() => setOpen(!open)} type="button">
+        {open ? 'Close' : 'Open'} the menu from outside
+      </button>
+      <p>Open: {String(open)}</p>
+    </>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledNavbar />,
 }
 

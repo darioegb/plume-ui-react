@@ -176,6 +176,32 @@ function ControlledExample(): React.ReactNode {
  * back to the element that had it before.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button label="Open from outside the Modal" onClick={() => setOpen(true)} />
+      <p>The Modal is {open ? 'open' : 'closed'}.</p>
+      <Modal onOpenChange={setOpen} open={open}>
+        <ModalContent aria-label="Controlled modal">
+          <ModalBody>This cannot be undone.</ModalBody>
+          <ModalFooter>
+            <ModalClose>
+              <Button label="Close" />
+            </ModalClose>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 
@@ -209,6 +235,37 @@ function InitialFocusExample(): React.ReactNode {
  * as the field of a form.
  */
 export const InitialFocus: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const input = useRef<HTMLInputElement>(null)
+
+  return (
+    <Modal initialFocus={input}>
+      <ModalTrigger>
+        <Button label="Rename project" />
+      </ModalTrigger>
+      <ModalContent>
+        <ModalHeader>Rename project</ModalHeader>
+        <ModalBody>
+          <Input aria-label="Name" defaultValue="My project" ref={input} />
+        </ModalBody>
+        <ModalFooter>
+          <ModalClose>
+            <Button label="Cancel" variant="ghost" />
+          </ModalClose>
+          <ModalClose>
+            <Button label="Save" />
+          </ModalClose>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  )
+}`,
+      },
+    },
+  },
   render: () => <InitialFocusExample />,
 }
 
@@ -246,6 +303,32 @@ export const LongContent: Story = {
  * Modal. Leave a way out inside it.
  */
 export const Persistent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Modal closeOnEscape={false} closeOnOutside={false}>
+  <ModalTrigger>
+    <Button label="Open modal" />
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader>Delete project</ModalHeader>
+    <ModalBody>
+      Deleting a project removes its files, its history and its members. This cannot be undone.
+    </ModalBody>
+    <ModalFooter>
+      <ModalClose>
+        <Button label="Cancel" variant="ghost" />
+      </ModalClose>
+      <ModalClose>
+        <Button colorScheme="error" label="Delete" />
+      </ModalClose>
+    </ModalFooter>
+    <ModalClose />
+  </ModalContent>
+</Modal>`,
+      },
+    },
+  },
   render: () => <Example closeOnEscape={false} closeOnOutside={false} />,
 }
 

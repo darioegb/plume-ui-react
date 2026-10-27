@@ -160,6 +160,26 @@ export const Colors: Story = {
  * Keep the state next to the button that controls it, and link them with `aria-expanded` and `aria-controls`.
  */
 export const WithButton: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+  const id = useId()
+  return (
+    <div>
+      <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
+        {open ? 'Hide' : 'Show'} details
+      </button>
+      <Collapse id={id} open={open}>
+        Plume is a set of accessible React components.
+      </Collapse>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <Toggle />,
 }
 
@@ -167,6 +187,26 @@ export const WithButton: Story = {
  * Any variant can be the box of a "show more", with its own **colorScheme**.
  */
 export const Accent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(true)
+  const id = useId()
+  return (
+    <div>
+      <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
+        {open ? 'Hide' : 'Show'} warning
+      </button>
+      <Collapse colorScheme="warning" id={id} open={open} variant="accent">
+        This action cannot be undone. Check the details before you go on.
+      </Collapse>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => (
     <Toggle colorScheme="warning" defaultOpen label="warning" variant="accent">
       This action cannot be undone. Check the details before you go on.
@@ -178,6 +218,26 @@ export const Accent: Story = {
  * It starts closed by default, which keeps the content out of the page and out of the keyboard until it is opened.
  */
 export const StartsOpen: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(true)
+  const id = useId()
+  return (
+    <div>
+      <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
+        {open ? 'Hide' : 'Show'} details
+      </button>
+      <Collapse id={id} open={open}>
+        Plume is a set of accessible React components.
+      </Collapse>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <Toggle defaultOpen />,
 }
 
@@ -185,6 +245,32 @@ export const StartsOpen: Story = {
  * The height follows the content, whatever it is, and the Collapse can hold other Collapses.
  */
 export const Nested: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [outer, setOuter] = useState(true)
+  const [inner, setInner] = useState(false)
+  return (
+    <div className="flex flex-col gap-2">
+      <button aria-expanded={outer} onClick={() => setOuter(!outer)} type="button">
+        Outer
+      </button>
+      <Collapse open={outer} variant="outline">
+        <div className="flex flex-col gap-2">
+          <p>Plume is a set of accessible React components.</p>
+          <button aria-expanded={inner} onClick={() => setInner(!inner)} type="button">
+            Inner
+          </button>
+          <Collapse open={inner}>Content of the inner Collapse.</Collapse>
+        </div>
+      </Collapse>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => {
     function Example(): React.ReactNode {
       const [outer, setOuter] = useState(true)
