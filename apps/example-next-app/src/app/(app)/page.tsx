@@ -9,16 +9,11 @@ import {
   ProgressBar,
 } from 'plume-ui-react'
 import { PageHeader } from '@/components/page-header'
-import { getDashboard, type ProjectStatus } from '@/lib/data'
+import { getDashboard } from '@/lib/data'
+import { formatDue } from '@/lib/format'
 import { getUser } from '@/lib/session'
+import { statusColor } from '@/lib/status'
 import styles from './dashboard.module.css'
-
-const statusColor = {
-  'At risk': 'warning',
-  Delayed: 'error',
-  Done: 'success',
-  'On track': 'primary',
-} as const satisfies Record<ProjectStatus, string>
 
 // A Server Component: Card, Badge and ProgressBar render on the server, and only the Avatars hydrate.
 export default async function DashboardPage(): Promise<ReactNode> {
@@ -53,7 +48,7 @@ export default async function DashboardPage(): Promise<ReactNode> {
               <li className={styles.project} key={project.id}>
                 <div className={styles.projectInfo}>
                   <span className={styles.projectName}>{project.name}</span>
-                  <span className={styles.label}>Due {project.due}</span>
+                  <span className={styles.label}>Due {formatDue(project.due)}</span>
                 </div>
                 <Badge className={styles.status} colorScheme={statusColor[project.status]} dot variant="subtle">
                   {project.status}
