@@ -316,6 +316,13 @@ describe('Modal component', () => {
       expect(screen.getByRole('region', { name: 'Title' })).toBe(body)
     })
 
+    it('does not measure the body again where ResizeObserver is missing', () => {
+      vi.stubGlobal('ResizeObserver', undefined)
+      render(<Example defaultOpen />)
+      expect(screen.getByLabelText('Name')).toBeInTheDocument()
+      vi.unstubAllGlobals()
+    })
+
     it('is not a stop for the keyboard when it fits', () => {
       render(<Example defaultOpen />)
       const body = screen.getByLabelText('Name').parentElement as HTMLElement

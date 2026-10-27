@@ -106,6 +106,15 @@ describe('PaginatorPageSize', () => {
     expect(screen.getByRole('combobox', { name: 'Items per page' })).toHaveTextContent('20')
   })
 
+  it('is named by aria-label when one is given', () => {
+    render(
+      <Paginator total={100}>
+        <PaginatorPageSize aria-label="Rows" />
+      </Paginator>,
+    )
+    expect(screen.getByRole('combobox', { name: 'Rows' })).toBeInTheDocument()
+  })
+
   it('offers the options, with the current size added when it is missing', async () => {
     render(
       <Paginator defaultPageSize={25} total={100}>
