@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import type { ColorModeSetting } from 'plume-ui-react'
 import { defaultBrand, isBrand, type BrandId } from '@/theme'
 
 export const SESSION_COOKIE = 'plume-session'
@@ -23,8 +24,10 @@ export async function getUser(): Promise<User | null> {
   return email ? userFromEmail(email) : null
 }
 
-export async function getColorMode(): Promise<'light' | 'dark'> {
-  return (await cookies()).get(COLOR_MODE_COOKIE)?.value === 'dark' ? 'dark' : 'light'
+// Without a saved choice the app follows the browser's color scheme.
+export async function getColorMode(): Promise<ColorModeSetting> {
+  const value = (await cookies()).get(COLOR_MODE_COOKIE)?.value
+  return value === 'light' || value === 'dark' ? value : 'system'
 }
 
 export async function getBrand(): Promise<BrandId> {

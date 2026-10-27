@@ -2,19 +2,22 @@
 
 import type { ReactNode } from 'react'
 import { createContext, useContext, useMemo, useState } from 'react'
-import { ThemeProvider, ToastProvider } from 'plume-ui-react'
+import { ThemeProvider, ToastProvider, type ColorModeSetting } from 'plume-ui-react'
 import { themeFor, type BrandId } from '@/theme'
 
-interface BrandContextValue {
+interface PreferencesContextValue {
   brand: BrandId
+  colorModeSetting: ColorModeSetting
   setBrand: (brand: BrandId) => void
+  setColorModeSetting: (setting: ColorModeSetting) => void
 }
 
-const BrandContext = createContext<BrandContextValue | null>(null)
+const PreferencesContext = createContext<PreferencesContextValue | null>(null)
 
-export function useBrand(): BrandContextValue {
-  const context = useContext(BrandContext)
-  if (!context) throw new Error('useBrand must be used within <Providers>')
+// The saved choices; `useTheme()` only has the resolved mode, never `system`.
+export function usePreferences(): PreferencesContextValue {
+  const context = useContext(PreferencesContext)
+  if (!context) throw new Error('usePreferences must be used within <Providers>')
   return context
 }
 
@@ -22,16 +25,20 @@ export function Providers({
   brand: initialBrand,
   children,
   colorMode,
-}: Readonly<{ brand: BrandId; children: ReactNode; colorMode: 'light' | 'dark' }>): ReactNode {
+}: Readonly<{ brand: BrandId; children: ReactNode; colorMode: ColorModeSetting }>): ReactNode {
   const [brand, setBrand] = useState(initialBrand)
+  const [colorModeSetting, setColorModeSetting] = useState(colorMode)
   const theme = useMemo(() => themeFor(brand), [brand])
-  const value = useMemo(() => ({ brand, setBrand }), [brand])
+  const value = useMemo(
+    () => ({ brand, colorModeSetting, setBrand, setColorModeSetting }),
+    [brand, colorModeSetting],
+  )
 
   return (
-    <BrandContext.Provider value={value}>
+    <PreferencesContext.Provider value={value}>
       <ThemeProvider defaultColorMode={colorMode} style={{ minHeight: '100vh' }} theme={theme}>
         <ToastProvider>{children}</ToastProvider>
       </ThemeProvider>
-    </BrandContext.Provider>
+    </PreferencesContext.Provider>
   )
 }

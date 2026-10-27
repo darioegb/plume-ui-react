@@ -7,7 +7,7 @@ simulated sign in, a sidebar, a top bar and a dashboard, and it shows that
 server-rendered from a cookie, so dark mode has no flash and no per-request global state
 leaks between users. It grows with each step of the 1.0 plan.
 
-Sign in with any email and a password of 6 or more characters.
+Sign in with any email and a password of 6 or more characters. The color mode follows the browser's color scheme until you pick light or dark (top bar or Settings); with `system` the server renders light and the client switches on hydration, so a dark browser can flash on the very first visit.
 
 ## Structure
 

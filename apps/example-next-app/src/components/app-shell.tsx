@@ -25,6 +25,7 @@ import {
   useTheme,
 } from 'plume-ui-react'
 import { saveColorMode, signOut } from '@/app/actions'
+import { usePreferences } from '@/app/providers'
 import { DashboardIcon, MoonIcon, ProjectsIcon, SettingsIcon, SignOutIcon, SunIcon, TeamIcon } from './icons'
 import styles from './app-shell.module.css'
 
@@ -47,6 +48,7 @@ export function AppShell({
   const pathname = usePathname()
   const router = useRouter()
   const { colorMode, setColorMode } = useTheme()
+  const { setColorModeSetting } = usePreferences()
   const [open, setOpen] = useState(false)
   const [, startTransition] = useTransition()
   const current = pages.find((page) => isCurrent(pathname, page.href))
@@ -65,6 +67,7 @@ export function AppShell({
   const toggleColorMode = (): void => {
     const next = colorMode === 'dark' ? 'light' : 'dark'
     setColorMode(next)
+    setColorModeSetting(next)
     startTransition(() => saveColorMode(next))
   }
 
