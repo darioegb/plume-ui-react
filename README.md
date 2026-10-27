@@ -119,13 +119,13 @@ Coming from a 0.x version? See the [upgrading guide](https://darioegb.github.io/
 
 ## Examples
 
-Standalone apps that consume the **published npm packages** (not the workspace sources). Both render the same demo and use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
+Standalone apps that consume the **published npm packages** (not the workspace sources). Both use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
 
 - **[Vite playground](apps/example-vite)**: try the components live and edit the code.
 
   [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite)
 
-- **[Next.js App Router](apps/example-next-app)**: SSR/RSC-safe `<ThemeProvider>` usage, deployed on Vercel.
+- **[Next.js App Router](apps/example-next-app)**: a project dashboard with a sign in, a sidebar and dark mode, rendered on the server with no theme flash. Deployed on Vercel.
 
 ## Development
 

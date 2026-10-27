@@ -1,19 +1,33 @@
 # Plume UI React — Next.js App Router example
 
 A [Next.js](https://nextjs.org) **App Router** app that consumes the **published npm
-package** (`plume-ui-react`). It demonstrates that
+package** (`plume-ui-react`). It is a small project dashboard ("Plume Projects") with a
+simulated sign in, a sidebar, a top bar and a dashboard, and it shows that
 `<ThemeProvider>` is **SSR/RSC-safe**: the theme is serialized to CSS variables and
-server-rendered, with no flash and no per-request global state leaking between users.
+server-rendered from a cookie, so dark mode has no flash and no per-request global state
+leaks between users. It grows with each step of the 1.0 plan.
+
+Sign in with any email and a password of 6 or more characters.
 
 ## Structure
 
-- `src/app/layout.tsx` — Server Component. Imports `plume-ui-react/styles.css`
-  and wraps the app in `<Providers>`.
-- `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>`.
-- `src/app/page.tsx` — Server Component that renders the client `<Demo />`.
-- `src/app/demo.tsx` — `'use client'` interactive showcase (`useTheme()` + components).
-- A custom theme in `src/theme.ts` (imported by `providers.tsx`), passed to `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon` color scheme.
-- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"` (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
+- `src/app/layout.tsx` — Server Component. Reads the color mode cookie, imports
+  `plume-ui-react/styles.css` and wraps the app in `<Providers>`.
+- `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>` and
+  `<ToastProvider>`.
+- `src/app/login` — the sign in page: `Card`, `Field`, `Input` and `Alert`, with a Server
+  Action that validates the form.
+- `src/app/(app)` — the pages behind the session: the layout redirects to `/login`, and
+  the dashboard is a Server Component made of `Card`, `Badge` and `ProgressBar`, with a
+  `Skeleton` while its data loads.
+- `src/components/app-shell.tsx` — `'use client'` shell: `Sidebar`, `Navbar`, `Breadcrumb`,
+  a `Dropdown` account menu and the light/dark switch.
+- `src/lib` — the simulated session and data.
+- A custom theme in `src/theme.ts` (imported by `providers.tsx`), passed to
+  `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon`
+  color scheme.
+- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"`
+  (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
 ## Run locally
 
