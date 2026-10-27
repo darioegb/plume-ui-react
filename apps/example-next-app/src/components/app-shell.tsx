@@ -69,7 +69,12 @@ export function AppShell({
     <SidebarProvider onOpenChange={setOpen} open={open}>
       <div className={styles.layout}>
         <Sidebar aria-label="Application">
-          <div className={styles.brand}>Plume Projects</div>
+          <div className={styles.brand}>
+            <span aria-hidden="true" className={styles.mark}>
+              P
+            </span>
+            <span className={styles.name}>Plume Projects</span>
+          </div>
           <SidebarContent aria-label="Pages">
             {pages.map((page) => (
               <SidebarItem

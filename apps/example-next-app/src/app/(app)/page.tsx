@@ -55,7 +55,7 @@ export default async function DashboardPage(): Promise<ReactNode> {
                   <span className={styles.projectName}>{project.name}</span>
                   <span className={styles.label}>Due {project.due}</span>
                 </div>
-                <Badge colorScheme={statusColor[project.status]} dot variant="subtle">
+                <Badge className={styles.status} colorScheme={statusColor[project.status]} dot variant="subtle">
                   {project.status}
                 </Badge>
                 <ProgressBar
@@ -65,7 +65,7 @@ export default async function DashboardPage(): Promise<ReactNode> {
                   showValue
                   value={project.progress}
                 />
-                <AvatarGroup max={3} size="sm">
+                <AvatarGroup className={styles.team} max={3} size="sm">
                   {project.team.map((member) => (
                     <Avatar key={member} name={member} />
                   ))}
