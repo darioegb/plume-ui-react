@@ -38,7 +38,11 @@ const meta: Meta<typeof Field> = {
     },
     layout: 'centered',
   },
-  decorators: [(Story) => <div className='w-72 max-w-full'>{Story()}</div>],
+  decorators: [
+    (Story, { parameters }) => (
+      <div className={parameters.wide ? 'w-[42rem] max-w-[90vw]' : 'w-72 max-w-full'}>{Story()}</div>
+    ),
+  ],
   argTypes: {
     children: { control: false },
     label: { control: 'text' },
@@ -314,14 +318,9 @@ const bookingDefaults: BookingValues = {
  * Submit the empty form to see the errors.
  */
 export const ReactHookForm: Story = {
-  decorators: [
-    (Story) => (
-      <div className='relative left-1/2 w-[42rem] max-w-[90vw] -translate-x-1/2 pb-[22rem]'>
-        {Story()}
-      </div>
-    ),
-  ],
+  decorators: [(Story) => <div className='pb-[22rem]'>{Story()}</div>],
   parameters: {
+    wide: true,
     docs: {
       source: {
         code: `const {
