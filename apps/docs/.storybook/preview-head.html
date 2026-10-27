@@ -51,6 +51,13 @@
     color: #f4f4f5;
   }
 
+  /* The docs skeleton imitates a stock Storybook page, which looks nothing like these pages: keep
+     only the spinner. */
+  .sb-preparing-docs .sb-previewBlock,
+  .sb-preparing-docs .sb-argstableBlock {
+    display: none;
+  }
+
   /* Dark-mode overrides for Storybook docs blocks that the DocsContainer theme
      prop leaves white, plus the body text color Bootstrap forces to #212529. The loading
      skeleton covers the page while a page not visited yet loads, so it is themed too. */
@@ -61,21 +68,8 @@
 
   html[data-plume-color-mode='dark'] .sb-preparing-story,
   html[data-plume-color-mode='dark'] .sb-preparing-docs,
-  html[data-plume-color-mode='dark'] .sb-previewBlock,
   html[data-plume-color-mode='dark'] .docs-story {
     background-color: #18181b;
-  }
-
-  html[data-plume-color-mode='dark'] .sb-previewBlock {
-    border-color: #3f3f46;
-  }
-
-  html[data-plume-color-mode='dark'] .sb-previewBlock_header {
-    box-shadow: #3f3f46 0 -1px 0 0 inset;
-  }
-
-  html[data-plume-color-mode='dark'] .sb-previewBlock_icon {
-    background: #3f3f46;
   }
 
   html[data-plume-color-mode='dark'] .sb-argstableBlock,
