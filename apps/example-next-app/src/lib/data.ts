@@ -208,3 +208,33 @@ export async function addProject(input: NewProjectInput): Promise<Project> {
   projects.unshift(project)
   return project
 }
+
+export type Department = 'Design' | 'Engineering' | 'Product' | 'Support'
+export type Presence = 'away' | 'busy' | 'offline' | 'online'
+
+export interface TeamMember {
+  department: Department
+  email: string
+  name: string
+  pending?: boolean
+  presence: Presence
+  role: string
+  skills: string[]
+}
+
+const team: TeamMember[] = [
+  { department: 'Product', email: 'ana.ruiz@plume.dev', name: 'Ana Ruiz', presence: 'online', role: 'Product Manager', skills: ['Roadmaps', 'Research'] },
+  { department: 'Engineering', email: 'marco.silva@plume.dev', name: 'Marco Silva', presence: 'busy', role: 'Frontend Engineer', skills: ['React', 'Accessibility', 'CSS'] },
+  { department: 'Design', email: 'lena.fischer@plume.dev', name: 'Lena Fischer', presence: 'online', role: 'Product Designer', skills: ['Figma', 'Design systems'] },
+  { department: 'Engineering', email: 'priya.nair@plume.dev', name: 'Priya Nair', presence: 'away', role: 'Backend Engineer', skills: ['Node.js', 'PostgreSQL'] },
+  { department: 'Product', email: 'tom.becker@plume.dev', name: 'Tom Becker', presence: 'offline', role: 'Data Analyst', skills: ['SQL', 'Dashboards'] },
+  { department: 'Support', email: 'sara.lind@plume.dev', name: 'Sara Lind', presence: 'online', role: 'Support Lead', skills: ['Onboarding', 'Docs'] },
+  { department: 'Engineering', email: 'ken.ito@plume.dev', name: 'Ken Ito', presence: 'busy', role: 'Staff Engineer', skills: ['Architecture', 'Security', 'Go'] },
+  { department: 'Design', email: 'noor.haddad@plume.dev', name: 'Noor Haddad', presence: 'away', role: 'UX Researcher', skills: ['Interviews', 'Surveys'] },
+  { department: 'Support', email: 'diego.alvarez@plume.dev', name: 'Diego Alvarez', presence: 'offline', role: 'Customer Success', skills: ['Accounts', 'Training'] },
+]
+
+export async function getTeam(): Promise<TeamMember[]> {
+  await latency(400)
+  return team
+}
