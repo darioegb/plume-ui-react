@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import type { LayerCheck } from './layer'
 
 const tabbableSelector = [
   'a[href]',
@@ -21,7 +22,7 @@ export interface UseFocusTrapOptions {
   initialFocus?: HTMLElement | null
   restoreFocus?: boolean
   returnFocus?: HTMLElement | null
-  isTopmost?: () => boolean
+  isTopmost?: (() => boolean) | LayerCheck
   trap?: boolean
 }
 
@@ -35,6 +36,9 @@ export function getTabbableElements(container: HTMLElement): HTMLElement[] {
     return style.display !== 'none' && style.visibility !== 'hidden'
   })
 }
+
+const ownsTab = (check: (() => boolean) | LayerCheck): boolean =>
+  'ownsFocus' in check ? check.ownsFocus() : check()
 
 export function useFocusTrap(
   container: HTMLElement | null,
@@ -67,7 +71,7 @@ export function useFocusTrap(
     else focusContainer()
 
     const handleKeyDown = (event: KeyboardEvent): void => {
-      if (event.key !== 'Tab' || !latest.current.isTopmost()) return
+      if (event.key !== 'Tab' || !ownsTab(latest.current.isTopmost)) return
       const tabbables = getTabbableElements(container)
       if (tabbables.length === 0) {
         event.preventDefault()

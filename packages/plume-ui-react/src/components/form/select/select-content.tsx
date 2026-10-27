@@ -49,6 +49,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       flip,
       offset,
       onDismiss: (reason) => close(reason === 'escape'),
+      ownsFocus: false,
       placement,
       shift,
     })
