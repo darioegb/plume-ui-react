@@ -115,6 +115,55 @@ table.docblock-argstable {
   overflow-x: auto;
 }
 
+/* Previous and next page (see src/page-nav.tsx) */
+.plume-page-nav {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 4rem;
+}
+
+.sbdocs a.plume-page-nav-link {
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem 1.125rem;
+  text-decoration: none;
+}
+
+.sbdocs a.plume-page-nav-link:hover {
+  border-color: #10b981;
+}
+
+.sbdocs a.plume-page-nav-next {
+  align-items: flex-end;
+  grid-column: 2;
+  text-align: end;
+}
+
+.plume-page-nav-hint {
+  font-size: 0.8125rem;
+  opacity: 0.65;
+}
+
+.plume-page-nav-title {
+  align-items: center;
+  display: flex;
+  font-weight: 600;
+  gap: 0.5rem;
+}
+
+html[data-plume-color-mode='dark'] .sbdocs a.plume-page-nav-link {
+  border-color: #27272a;
+}
+
+html[data-plume-color-mode='dark'] .sbdocs a.plume-page-nav-link:hover {
+  border-color: #34d399;
+}
+
 @media (max-width: 767px) {
   div.sbdocs-wrapper {
     padding-inline: 1rem;
@@ -130,6 +179,12 @@ table.docblock-argstable {
   }
   div.sbdocs-content {
     max-width: 100%;
+  }
+  .plume-page-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sbdocs a.plume-page-nav-next {
+    grid-column: 1;
   }
   div.container {
     padding-inline: 0;
