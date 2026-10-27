@@ -11,20 +11,20 @@ const current = (): HTMLElement | null => document.querySelector('[aria-current=
 
 function Controlled(props: Readonly<Partial<PaginatorProps>>) {
   const [page, setPage] = useState(1)
-  return <Paginator count={10} onPageChange={setPage} page={page} {...props} />
+  return <Paginator onPageChange={setPage} page={page} pageSize={1} total={10} {...props} />
 }
 
 describe('Paginator component', () => {
   describe('rendering', () => {
     it('is a navigation landmark named Pagination with a list inside', () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       const nav = screen.getByRole('navigation', { name: 'Pagination' })
       expect(within(nav).getByRole('list')).toBeInTheDocument()
       expect(within(nav).getAllByRole('listitem').length).toBeGreaterThan(0)
     })
 
     it('uses the name of the user', () => {
-      render(<Paginator aria-label="Results" count={5} />)
+      render(<Paginator aria-label="Results" total={5} pageSize={1} />)
       expect(screen.getByRole('navigation', { name: 'Results' })).toBeInTheDocument()
     })
 
@@ -32,21 +32,21 @@ describe('Paginator component', () => {
       render(
         <>
           <h2 id="results">Results</h2>
-          <Paginator aria-labelledby="results" count={5} />
+          <Paginator aria-labelledby="results" total={5} pageSize={1} />
         </>,
       )
       expect(screen.getByRole('navigation', { name: 'Results' })).toBeInTheDocument()
     })
 
     it('shows the pages, the previous button and the next button', () => {
-      render(<Paginator count={3} />)
+      render(<Paginator total={3} pageSize={1} />)
       expect(screen.getByRole('button', { name: 'Previous page' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Next page' })).toBeInTheDocument()
       expect(pageButtons().map((button) => button.textContent)).toEqual(['1', '2', '3'])
     })
 
-    it('renders nothing without pages', () => {
-      const { container } = render(<Paginator count={0} />)
+    it('renders nothing without a total', () => {
+      const { container } = render(<Paginator />)
       expect(container).toBeEmptyDOMElement()
     })
 
@@ -60,13 +60,8 @@ describe('Paginator component', () => {
       expect(pageButtons()).toHaveLength(3)
     })
 
-    it('prefers count over total', () => {
-      render(<Paginator count={2} total={500} />)
-      expect(pageButtons()).toHaveLength(2)
-    })
-
     it('folds the middle of a long list behind ellipses', () => {
-      render(<Paginator count={20} defaultPage={10} />)
+      render(<Paginator total={20} pageSize={1} defaultPage={10} />)
       expect(pageButtons().map((button) => button.textContent)).toEqual([
         '1',
         '9',
@@ -78,14 +73,14 @@ describe('Paginator component', () => {
     })
 
     it('hides the ellipses from assistive technology', () => {
-      render(<Paginator count={20} defaultPage={10} />)
+      render(<Paginator total={20} pageSize={1} defaultPage={10} />)
       document
         .querySelectorAll('[data-plume-paginator-ellipsis]')
         .forEach((node) => expect(node).toHaveAttribute('aria-hidden', 'true'))
     })
 
     it('shows more siblings and boundaries on request', () => {
-      render(<Paginator boundaryCount={2} count={20} defaultPage={10} siblingCount={2} />)
+      render(<Paginator boundaryCount={2} total={20} pageSize={1} defaultPage={10} siblingCount={2} />)
       expect(pageButtons().map((button) => button.textContent)).toEqual([
         '1',
         '2',
@@ -100,44 +95,44 @@ describe('Paginator component', () => {
     })
 
     it('adds the first and last buttons with showEdges', () => {
-      render(<Paginator count={5} showEdges />)
+      render(<Paginator total={5} pageSize={1} showEdges />)
       expect(screen.getByRole('button', { name: 'First page' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Last page' })).toBeInTheDocument()
     })
 
     it('does not show the edges by default', () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       expect(screen.queryByRole('button', { name: 'First page' })).not.toBeInTheDocument()
     })
   })
 
   describe('current page', () => {
     it('starts on the first page', () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       expect(current()).toHaveTextContent('1')
     })
 
     it('starts on defaultPage', () => {
-      render(<Paginator count={5} defaultPage={3} />)
+      render(<Paginator total={5} pageSize={1} defaultPage={3} />)
       expect(current()).toHaveTextContent('3')
     })
 
     it('marks only the current page with aria-current', () => {
-      render(<Paginator count={5} defaultPage={2} />)
+      render(<Paginator total={5} pageSize={1} defaultPage={2} />)
       expect(document.querySelectorAll('[aria-current]')).toHaveLength(1)
       expect(current()).toHaveAttribute('data-current')
     })
 
     it('says that a page is the current one in its name', () => {
-      render(<Paginator count={5} defaultPage={2} />)
+      render(<Paginator total={5} pageSize={1} defaultPage={2} />)
       expect(screen.getByRole('button', { name: 'Page 2, current page' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Page 3' })).toBeInTheDocument()
     })
 
     it('keeps the page between the first and the last', () => {
-      const { rerender } = render(<Paginator count={5} page={99} />)
+      const { rerender } = render(<Paginator total={5} pageSize={1} page={99} />)
       expect(current()).toHaveTextContent('5')
-      rerender(<Paginator count={5} page={-4} />)
+      rerender(<Paginator total={5} pageSize={1} page={-4} />)
       expect(current()).toHaveTextContent('1')
     })
   })
@@ -145,14 +140,14 @@ describe('Paginator component', () => {
   describe('navigation', () => {
     it('goes to the page that is pressed', async () => {
       const onPageChange = vi.fn()
-      render(<Paginator count={5} onPageChange={onPageChange} />)
+      render(<Paginator total={5} pageSize={1} onPageChange={onPageChange} />)
       await userEvent.click(screen.getByRole('button', { name: 'Page 4' }))
       expect(onPageChange).toHaveBeenCalledWith(4)
       expect(current()).toHaveTextContent('4')
     })
 
     it('goes to the next and the previous page', async () => {
-      render(<Paginator count={5} defaultPage={3} />)
+      render(<Paginator total={5} pageSize={1} defaultPage={3} />)
       await userEvent.click(screen.getByRole('button', { name: 'Next page' }))
       expect(current()).toHaveTextContent('4')
       await userEvent.click(screen.getByRole('button', { name: 'Previous page' }))
@@ -161,7 +156,7 @@ describe('Paginator component', () => {
     })
 
     it('goes to the first and the last page', async () => {
-      render(<Paginator count={9} defaultPage={5} showEdges />)
+      render(<Paginator total={9} pageSize={1} defaultPage={5} showEdges />)
       await userEvent.click(screen.getByRole('button', { name: 'Last page' }))
       expect(current()).toHaveTextContent('9')
       await userEvent.click(screen.getByRole('button', { name: 'First page' }))
@@ -169,14 +164,14 @@ describe('Paginator component', () => {
     })
 
     it('disables the previous and first buttons on the first page', () => {
-      render(<Paginator count={5} showEdges />)
+      render(<Paginator total={5} pageSize={1} showEdges />)
       expect(screen.getByRole('button', { name: 'Previous page' })).toBeDisabled()
       expect(screen.getByRole('button', { name: 'First page' })).toBeDisabled()
       expect(screen.getByRole('button', { name: 'Next page' })).toBeEnabled()
     })
 
     it('disables the next and last buttons on the last page', () => {
-      render(<Paginator count={5} defaultPage={5} showEdges />)
+      render(<Paginator total={5} pageSize={1} defaultPage={5} showEdges />)
       expect(screen.getByRole('button', { name: 'Next page' })).toBeDisabled()
       expect(screen.getByRole('button', { name: 'Last page' })).toBeDisabled()
       expect(screen.getByRole('button', { name: 'Previous page' })).toBeEnabled()
@@ -184,13 +179,13 @@ describe('Paginator component', () => {
 
     it('does not call onPageChange for the page that is already current', async () => {
       const onPageChange = vi.fn()
-      render(<Paginator count={5} onPageChange={onPageChange} />)
+      render(<Paginator total={5} pageSize={1} onPageChange={onPageChange} />)
       await userEvent.click(screen.getByRole('button', { name: 'Page 1, current page' }))
       expect(onPageChange).not.toHaveBeenCalled()
     })
 
     it('can be reached and used with the keyboard', async () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       await userEvent.tab()
       expect(screen.getByRole('button', { name: 'Page 1, current page' })).toHaveFocus()
       await userEvent.tab()
@@ -202,7 +197,7 @@ describe('Paginator component', () => {
   describe('controlled', () => {
     it('follows page and reports changes without changing by itself', async () => {
       const onPageChange = vi.fn()
-      render(<Paginator count={5} onPageChange={onPageChange} page={2} />)
+      render(<Paginator total={5} pageSize={1} onPageChange={onPageChange} page={2} />)
       await userEvent.click(screen.getByRole('button', { name: 'Page 4' }))
       expect(onPageChange).toHaveBeenCalledWith(4)
       expect(current()).toHaveTextContent('2')
@@ -217,14 +212,14 @@ describe('Paginator component', () => {
 
   describe('disabled', () => {
     it('disables every button', () => {
-      render(<Paginator count={5} defaultPage={2} disabled showEdges />)
+      render(<Paginator total={5} pageSize={1} defaultPage={2} disabled showEdges />)
       screen.getAllByRole('button').forEach((button) => expect(button).toBeDisabled())
     })
   })
 
   describe('translation', () => {
     it('names the navigation with labels.pagination', () => {
-      render(<Paginator count={5} labels={{ pagination: 'Paginación' }} />)
+      render(<Paginator total={5} pageSize={1} labels={{ pagination: 'Paginación' }} />)
       expect(screen.getByRole('navigation', { name: 'Paginación' })).toBeInTheDocument()
     })
 
@@ -232,7 +227,7 @@ describe('Paginator component', () => {
       render(
         <Paginator
           aria-label="Paginación"
-          count={5}
+          total={5} pageSize={1}
           defaultPage={2}
           labels={{
             first: 'Primera',
@@ -253,28 +248,28 @@ describe('Paginator component', () => {
 
   describe('appearance', () => {
     it('is solid and medium by default', () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       expect(screen.getByRole('navigation')).toHaveClass('paginator', 'solid', 'md')
     })
 
     it.each(['ghost', 'outline', 'solid'] as const)('applies the %s variant', (variant) => {
-      render(<Paginator count={5} variant={variant} />)
+      render(<Paginator total={5} pageSize={1} variant={variant} />)
       expect(screen.getByRole('navigation')).toHaveClass(variant)
     })
 
     it('fills the current page of the solid variant and leaves the others flat', () => {
-      render(<Paginator count={5} />)
+      render(<Paginator total={5} pageSize={1} />)
       expect(current()).toHaveClass('solid')
       expect(screen.getByRole('button', { name: 'Page 2' })).toHaveClass('ghost')
     })
 
     it('outlines every page of the outline variant', () => {
-      render(<Paginator count={5} variant="outline" />)
+      render(<Paginator total={5} pageSize={1} variant="outline" />)
       pageButtons().forEach((button) => expect(button).toHaveClass('outline'))
     })
 
     it('colors only the current page', () => {
-      render(<Paginator colorScheme="success" count={5} />)
+      render(<Paginator colorScheme="success" total={5} pageSize={1} />)
       expect(current()).toHaveStyle('--button-solid-bg: var(--plume-color-success-solid)')
       expect(screen.getByRole('button', { name: 'Page 2' })).toHaveStyle(
         '--button-color: var(--plume-color-secondary-text)',
@@ -282,20 +277,20 @@ describe('Paginator component', () => {
     })
 
     it('applies the size and the shape to the buttons', () => {
-      render(<Paginator count={5} shape="pill" size="lg" />)
+      render(<Paginator total={5} pageSize={1} shape="pill" size="lg" />)
       expect(screen.getByRole('navigation')).toHaveClass('lg')
       expect(current()).toHaveClass('lg', 'pill')
     })
 
     it('keeps the class and the style of the user on the root', () => {
-      render(<Paginator className="mine" count={5} style={{ color: 'red' }} />)
+      render(<Paginator className="mine" total={5} pageSize={1} style={{ color: 'red' }} />)
       const nav = screen.getByRole('navigation')
       expect(nav).toHaveClass('paginator', 'mine')
       expect(nav).toHaveStyle({ color: 'rgb(255, 0, 0)' })
     })
 
     it('drops every Plume class when it is unstyled and keeps the user ones', () => {
-      render(<Paginator className="root" count={20} defaultPage={10} variant="unstyled" />)
+      render(<Paginator className="root" total={20} pageSize={1} defaultPage={10} variant="unstyled" />)
       expect(screen.getByRole('navigation')).toHaveAttribute('class', 'root')
       expect(screen.getByRole('list')).not.toHaveAttribute('class')
       expect(current()?.className).toBe('')
@@ -307,12 +302,12 @@ describe('Paginator component', () => {
   describe('root', () => {
     it('forwards the ref to the nav', () => {
       const ref = createRef<HTMLElement>()
-      render(<Paginator count={5} ref={ref} />)
+      render(<Paginator total={5} pageSize={1} ref={ref} />)
       expect(ref.current).toBe(screen.getByRole('navigation'))
     })
 
     it('forwards the id, the title and hidden', () => {
-      render(<Paginator count={5} id="pages" title="Pages" />)
+      render(<Paginator total={5} pageSize={1} id="pages" title="Pages" />)
       expect(screen.getByRole('navigation')).toHaveAttribute('id', 'pages')
       expect(screen.getByRole('navigation')).toHaveAttribute('title', 'Pages')
     })

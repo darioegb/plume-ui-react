@@ -26,11 +26,6 @@ export interface PaginatorOwnProps {
    */
   colorScheme?: ColorScheme
   /**
-   * The number of pages. Without it, the pages are worked out from **total** and **pageSize**. With
-   * no pages the Paginator renders nothing.
-   */
-  count?: number
-  /**
    * The page that is current first, when the Paginator is not controlled.
    *
    * @default 1
@@ -99,8 +94,8 @@ export interface PaginatorOwnProps {
    */
   size?: Size
   /**
-   * The number of items in all the pages. It is used when there is no **count**, and by a
-   * `PaginatorSummary`.
+   * The number of items to page through. The pages are **total** divided by **pageSize**, and a
+   * `PaginatorSummary` reads it. Without it the Paginator renders nothing.
    */
   total?: number
   /**
@@ -156,7 +151,6 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       children,
       className,
       colorScheme = 'primary',
-      count,
       defaultPage = 1,
       defaultPageSize = 10,
       disabled = false,
@@ -185,7 +179,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       onChange: onPageSizeChange,
       value: pageSizeProp,
     })
-    const pages = count ?? Math.ceil((total ?? 0) / Math.max(pageSize, 1))
+    const pages = total === undefined ? 0 : Math.max(1, Math.ceil(total / Math.max(pageSize, 1)))
     const isStyled = variant !== 'unstyled'
     const current = clamp(page, 1, Math.max(pages, 1))
     const text = useLabels('paginator', DEFAULT_LABELS, labels)
@@ -225,7 +219,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
         shape,
         showEdges,
         size,
-        total,
+        total: total ?? 0,
         variants: buttonVariants[variant],
       }),
       [

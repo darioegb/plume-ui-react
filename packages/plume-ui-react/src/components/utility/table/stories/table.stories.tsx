@@ -476,9 +476,10 @@ function FilteredTable(): React.ReactNode {
       </Table>
       <Paginator
         aria-label="Members pages"
-        count={state.pageCount}
         onPageChange={state.setPage}
         page={state.page}
+        pageSize={state.pageSize}
+        total={state.total}
       />
     </div>
   )
@@ -487,7 +488,7 @@ function FilteredTable(): React.ReactNode {
 /**
  * In client mode `useTableState` sorts, filters and pages the rows you give it. The filters are ordinary controls
  * that call `setFilter(column, value)`: a text matches anywhere in the cell and a value must be equal. The
- * `Paginator` gets its `page` and `count` from the hook, and `TableEmpty` offers to clear the filters when no row matches.
+ * `Paginator` gets its `page`, `total` and `pageSize` from the hook, and `TableEmpty` offers to clear the filters when no row matches.
  */
 export const Filtered: Story = {
   parameters: { layout: 'padded' },
@@ -580,9 +581,10 @@ function ServerSideTable(): React.ReactNode {
       </Table>
       <Paginator
         aria-label="Members pages"
-        count={state.pageCount}
         onPageChange={state.setPage}
         page={state.page}
+        pageSize={state.pageSize}
+        total={state.total}
       />
     </div>
   )
@@ -654,9 +656,10 @@ function SelectableTable(): React.ReactNode {
       >
         <Paginator
           aria-label="Members pages"
-          count={state.pageCount}
           onPageChange={state.setPage}
           page={state.page}
+          pageSize={state.pageSize}
+          total={state.total}
         />
         <Select
           onValueChange={(value) => state.setPageSize(Number(value))}
