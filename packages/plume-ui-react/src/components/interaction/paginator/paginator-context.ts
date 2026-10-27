@@ -31,7 +31,7 @@ export interface PaginatorContextValue {
   shape: Shape
   showEdges: boolean
   size: Size
-  total: number | undefined
+  total: number
   variants: { current: PaginatorVariant; other: PaginatorVariant }
 }
 

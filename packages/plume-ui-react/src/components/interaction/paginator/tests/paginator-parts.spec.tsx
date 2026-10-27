@@ -19,7 +19,7 @@ const attr = (name: string): HTMLElement[] =>
 
 describe('Paginator parts', () => {
   it('builds the default from the same parts', () => {
-    render(<Paginator count={20} defaultPage={10} showEdges />)
+    render(<Paginator total={20} pageSize={1} defaultPage={10} showEdges />)
     expect(attr('list')).toHaveLength(1)
     expect(attr('item')).toHaveLength(attr('page').length + attr('ellipsis').length + 4)
     expect(attr('first')).toHaveLength(1)
@@ -31,14 +31,14 @@ describe('Paginator parts', () => {
   })
 
   it('leaves out the edges when showEdges is off', () => {
-    render(<Paginator count={5} />)
+    render(<Paginator total={5} pageSize={1} />)
     expect(attr('first')).toHaveLength(0)
     expect(attr('last')).toHaveLength(0)
   })
 
   it('renders its children instead of the default', () => {
     render(
-      <Paginator count={5}>
+      <Paginator total={5} pageSize={1}>
         <PaginatorList>
           <PaginatorItem>
             <PaginatorNext />
@@ -65,7 +65,7 @@ describe('Paginator parts', () => {
       )
     }
     render(
-      <Paginator count={3}>
+      <Paginator total={3} pageSize={1}>
         <PaginatorList>
           <Mine />
         </PaginatorList>
@@ -77,7 +77,7 @@ describe('Paginator parts', () => {
 
   it('composes the pages with a function', () => {
     render(
-      <Paginator count={20} defaultPage={10}>
+      <Paginator total={20} pageSize={1} defaultPage={10}>
         <PaginatorList>
           <PaginatorPages>
             {(entry, position) =>
@@ -124,7 +124,7 @@ describe('Paginator parts', () => {
   ])('%s', (name, part, bare) => {
     it('takes the class and the style, and carries its data attribute', () => {
       render(
-        <Paginator count={5}>
+        <Paginator total={5} pageSize={1}>
           {part === 'list' ? bare() : <PaginatorList>{bare()}</PaginatorList>}
         </Paginator>,
       )
@@ -152,7 +152,7 @@ describe('Paginator parts', () => {
       previous: createRef<HTMLButtonElement>(),
     }
     render(
-      <Paginator count={5}>
+      <Paginator total={5} pageSize={1}>
         <PaginatorList ref={refs.list}>
           <PaginatorItem ref={refs.item}>
             <PaginatorFirst ref={refs.first} />
@@ -171,7 +171,7 @@ describe('Paginator parts', () => {
   describe('PaginatorPage', () => {
     it('shows the number, marks the current page and goes to its page', async () => {
       render(
-        <Paginator count={5} defaultPage={2}>
+        <Paginator total={5} pageSize={1} defaultPage={2}>
           <PaginatorList>
             <PaginatorPage page={2} />
             <PaginatorPage page={3} />
@@ -190,7 +190,7 @@ describe('Paginator parts', () => {
 
     it('uses the name and the children of the user', () => {
       render(
-        <Paginator count={5}>
+        <Paginator total={5} pageSize={1}>
           <PaginatorList>
             <PaginatorPage aria-label="First one" page={1}>
               one
@@ -204,7 +204,7 @@ describe('Paginator parts', () => {
     it('runs onClick first and stays when it prevents the default', async () => {
       const onClick = vi.fn((event: React.MouseEvent) => event.preventDefault())
       render(
-        <Paginator count={5}>
+        <Paginator total={5} pageSize={1}>
           <PaginatorList>
             <PaginatorPage onClick={onClick} page={1} />
             <PaginatorPage onClick={onClick} page={2} />
@@ -218,7 +218,7 @@ describe('Paginator parts', () => {
 
     it('is disabled with the root or by itself', () => {
       render(
-        <Paginator count={5} disabled>
+        <Paginator total={5} pageSize={1} disabled>
           <PaginatorList>
             <PaginatorPage page={1} />
           </PaginatorList>
@@ -226,7 +226,7 @@ describe('Paginator parts', () => {
       )
       expect(attr('page')[0]).toBeDisabled()
       render(
-        <Paginator count={5}>
+        <Paginator total={5} pageSize={1}>
           <PaginatorList>
             <PaginatorPage disabled page={1} />
           </PaginatorList>
@@ -238,7 +238,7 @@ describe('Paginator parts', () => {
 
   describe('edges', () => {
     const edges = (): React.ReactNode => (
-      <Paginator count={5} defaultPage={3}>
+      <Paginator total={5} pageSize={1} defaultPage={3}>
         <PaginatorList>
           <PaginatorFirst />
           <PaginatorPrevious />
@@ -251,7 +251,7 @@ describe('Paginator parts', () => {
     it('go to the first, previous, next and last page', async () => {
       const onPageChange = vi.fn<(page: number) => void>()
       render(
-        <Paginator count={5} defaultPage={3} onPageChange={onPageChange}>
+        <Paginator total={5} pageSize={1} defaultPage={3} onPageChange={onPageChange}>
           <PaginatorList>
             <PaginatorFirst />
             <PaginatorPrevious />
@@ -269,7 +269,7 @@ describe('Paginator parts', () => {
 
     it('are disabled where there is nowhere to go', () => {
       render(
-        <Paginator count={3} defaultPage={1}>
+        <Paginator total={3} pageSize={1} defaultPage={1}>
           <PaginatorList>
             <PaginatorFirst />
             <PaginatorPrevious />
@@ -286,7 +286,7 @@ describe('Paginator parts', () => {
 
     it('have a name from the labels, and the children replace the icon', () => {
       render(
-        <Paginator count={5} defaultPage={3} labels={{ next: 'Siguiente' }}>
+        <Paginator total={5} pageSize={1} defaultPage={3} labels={{ next: 'Siguiente' }}>
           <PaginatorList>
             <PaginatorNext>Go</PaginatorNext>
             <PaginatorPrevious aria-label="Back" />
@@ -300,7 +300,7 @@ describe('Paginator parts', () => {
     it('run onClick first and stay when it prevents the default', async () => {
       const onClick = vi.fn((event: React.MouseEvent) => event.preventDefault())
       render(
-        <Paginator count={5} defaultPage={3}>
+        <Paginator total={5} pageSize={1} defaultPage={3}>
           <PaginatorList>
             <PaginatorNext onClick={onClick} />
             <PaginatorPage page={3} />
@@ -314,7 +314,7 @@ describe('Paginator parts', () => {
 
     it('are disabled with the root', () => {
       render(
-        <Paginator count={5} defaultPage={3} disabled>
+        <Paginator total={5} pageSize={1} defaultPage={3} disabled>
           <PaginatorList>
             <PaginatorNext />
           </PaginatorList>
@@ -335,7 +335,7 @@ describe('Paginator parts', () => {
     it('drops the Plume classes of every part and keeps the structure', () => {
       const style: CSSProperties = { opacity: 0.5 }
       render(
-        <Paginator count={20} defaultPage={10} variant="unstyled">
+        <Paginator total={20} pageSize={1} defaultPage={10} variant="unstyled">
           <PaginatorList className="mine" style={style}>
             <PaginatorItem>
               <PaginatorEllipsis />

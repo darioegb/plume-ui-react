@@ -27,7 +27,7 @@ describe('LocaleProvider', () => {
       <LocaleProvider messages={es}>
         <Spinner />
         <Alert dismissible>Saved</Alert>
-        <Paginator count={3} page={1} />
+        <Paginator page={1} pageSize={1} total={3} />
       </LocaleProvider>,
     )
     expect(screen.getByRole('status', { name: 'Cargando' })).toBeInTheDocument()
@@ -41,7 +41,7 @@ describe('LocaleProvider', () => {
     render(
       <LocaleProvider messages={es}>
         <Spinner label="Espere" />
-        <Paginator count={3} labels={{ next: 'Avanzar' }} page={1} />
+        <Paginator labels={{ next: 'Avanzar' }} page={1} pageSize={1} total={3} />
       </LocaleProvider>,
     )
     expect(screen.getByRole('status', { name: 'Espere' })).toBeInTheDocument()

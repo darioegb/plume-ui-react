@@ -36,20 +36,11 @@ describe('PaginatorSummary', () => {
 
   it('starts at zero when there is nothing to show', () => {
     render(
-      <Paginator count={1} total={0}>
+      <Paginator total={0}>
         <PaginatorSummary />
       </Paginator>,
     )
     expect(attr('summary')).toHaveTextContent('0–0 of 0')
-  })
-
-  it('renders nothing without a total', () => {
-    render(
-      <Paginator count={5}>
-        <PaginatorSummary />
-      </Paginator>,
-    )
-    expect(attr('summary')).toBeNull()
   })
 
   it('takes its text from labels.summary', () => {

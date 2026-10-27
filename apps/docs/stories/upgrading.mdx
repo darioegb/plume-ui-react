@@ -425,6 +425,19 @@ you compose the list, write `PaginatorFirst` and `PaginatorLast` yourself. The a
 and `data-plume-paginator-part="x"` are now `data-plume-fileupload-item` and `data-plume-paginator-x`, and the
 attribute of the `<table>` is `data-plume-table-element`. `ProgressBar` is now a client component.
 
+## The `Paginator` counts items, not pages
+
+The `count` prop (the number of pages) is removed. Give the `Paginator` the `total` of items and the `pageSize`, and
+it works the pages out (`total / pageSize`). If you only have the number of pages, pass `total={pages * pageSize}`.
+The `total` also feeds the new `PaginatorSummary`, and a `Paginator` with no `total` renders nothing.
+
+```tsx
+// before
+<Paginator count={10} />
+// after
+<Paginator total={100} pageSize={10} />
+```
+
 ## `Slider` and `Rating` are made of parts
 
 `Slider` and `Rating` no longer take `classNames`. Every element they render is a part with its own `className`, `style`

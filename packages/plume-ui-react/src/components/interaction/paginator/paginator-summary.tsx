@@ -21,7 +21,6 @@ export const PaginatorSummary = forwardRef<HTMLSpanElement, PaginatorSummaryProp
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
     const { current, isStyled, labels, pageSize, total } = usePaginatorContext('PaginatorSummary')
-    if (total === undefined) return null
 
     const from = total === 0 ? 0 : (current - 1) * pageSize + 1
     const to = Math.min(current * pageSize, total)

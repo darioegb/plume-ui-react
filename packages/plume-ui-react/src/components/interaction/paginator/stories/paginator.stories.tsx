@@ -75,11 +75,10 @@ function Styled({
  * usual: <kbd>Tab</kbd> to move and <kbd>Enter</kbd> or <kbd>Space</kbd> to press. The buttons are `Button`
  * components, so they share its sizes, shapes and colors.
  *
- * Pass the number of pages in **count**, or the **total** of items and the **pageSize** and it works the number of
- * pages out. When there are many pages only some are shown, and the rest are folded behind an ellipsis: the
+ * Pass the **total** of items and the **pageSize**; the Paginator works the number of pages out. When there are
+ * many pages only some are shown, and the rest are folded behind an ellipsis: the
  * **siblingCount** pages around the current one and the **boundaryCount** pages at each end. The list always has
- * the same number of items, so the buttons don't move while the user pages. It renders nothing when there are no
- * pages.
+ * the same number of items, so the buttons don't move while the user pages. It renders nothing without a **total**.
  *
  * It keeps the page itself, or follows **page** when you control it. It doesn't load anything: use
  * **onPageChange** to fetch the page, for example from a `Table`.
@@ -108,11 +107,10 @@ export default {
     className: { control: 'text' },
     children: { control: false },
     style: { control: false },
-    count: { control: 'number' },
-    defaultPageSize: { control: 'number' },
-    onPageSizeChange: { control: false },
     total: { control: 'number' },
     pageSize: { control: 'number' },
+    defaultPageSize: { control: 'number' },
+    onPageSizeChange: { control: false },
     page: { control: false },
     defaultPage: { control: 'number' },
     onPageChange: { control: false },
@@ -132,7 +130,7 @@ export default {
     labels: { control: false },
   },
   args: {
-    count: 10,
+    total: 100,
   },
 } satisfies Meta<typeof Paginator>
 
@@ -153,7 +151,7 @@ export const Variants: Story = {
       {(['solid', 'outline', 'ghost'] as const).map((variant) => (
         <Paginator
           aria-label={variant}
-          count={10}
+          total={100}
           defaultPage={4}
           key={variant}
           variant={variant}
@@ -165,7 +163,7 @@ export const Variants: Story = {
           list: 'flex gap-2',
           page: 'rounded border border-gray-400 px-3 py-1 data-[current]:bg-gray-900 data-[current]:text-white',
         }}
-        count={10}
+        total={100}
         defaultPage={4}
         variant="unstyled"
       />
@@ -180,7 +178,7 @@ export const Sizes: Story = {
   render: () => (
     <div style={stack('1.5rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Paginator aria-label={`Size ${size}`} count={10} defaultPage={4} key={size} size={size} />
+        <Paginator aria-label={`Size ${size}`} total={100} defaultPage={4} key={size} size={size} />
       ))}
     </div>
   ),
@@ -196,7 +194,7 @@ export const Colors: Story = {
         <Paginator
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
-          count={5}
+          total={50}
           defaultPage={2}
           key={scheme}
           size="sm"
@@ -213,7 +211,7 @@ export const Shapes: Story = {
   render: () => (
     <div style={stack('1.5rem')}>
       {(['rounded', 'pill'] as const).map((shape) => (
-        <Paginator aria-label={shape} count={6} defaultPage={3} key={shape} shape={shape} />
+        <Paginator aria-label={shape} total={60} defaultPage={3} key={shape} shape={shape} />
       ))}
     </div>
   ),
@@ -227,12 +225,12 @@ export const Shapes: Story = {
 export const ManyPages: Story = {
   render: () => (
     <div style={stack('1.5rem')}>
-      <Paginator aria-label="Default" count={50} defaultPage={25} />
-      <Paginator aria-label="Two siblings" count={50} defaultPage={25} siblingCount={2} />
+      <Paginator aria-label="Default" total={500} defaultPage={25} />
+      <Paginator aria-label="Two siblings" total={500} defaultPage={25} siblingCount={2} />
       <Paginator
         aria-label="Two siblings and boundaries"
         boundaryCount={2}
-        count={50}
+        total={500}
         defaultPage={25}
       />
     </div>
@@ -240,14 +238,14 @@ export const ManyPages: Story = {
 }
 
 /**
- * Pass the **total** of items and the **pageSize** instead of the number of pages. Here there are 237 items in
- * pages of 25.
+ * The number of pages comes from the **total** of items and the **pageSize**. Here there are 237 items in pages of
+ * 25, so ten pages.
  */
 export const WithTotal: Story = {
-  args: { count: undefined, pageSize: 25, total: 237 },
+  args: { pageSize: 25, total: 237 },
 }
 
-function TableFooterExample(props: Readonly<PaginatorProps>): React.ReactNode {
+function CompactExample(props: Readonly<PaginatorProps>): React.ReactNode {
   const [pageSize, setPageSize] = useState(10)
   return (
     <div style={{ inlineSize: 'min(32rem, 100%)' }}>
@@ -282,8 +280,7 @@ function TableFooterExample(props: Readonly<PaginatorProps>): React.ReactNode {
  * `labels.pageSize` and `labels.summary`. The parts sit in source order, so reorder them or push one aside with a
  * `marginInlineStart: 'auto'` style to lay the toolbar out your way.
  */
-export const TableFooter: Story = {
-  args: { count: undefined },
+export const Compact: Story = {
   parameters: {
     docs: {
       story: { inline: false, iframeHeight: 300 },
@@ -313,7 +310,56 @@ export const TableFooter: Story = {
       },
     },
   },
-  render: (args) => <TableFooterExample {...args} />,
+  render: (args) => <CompactExample {...args} />,
+}
+
+function PageSizeExample(props: Readonly<PaginatorProps>): React.ReactNode {
+  const [pageSize, setPageSize] = useState(10)
+  return (
+    <div style={{ inlineSize: 'min(40rem, 100%)' }}>
+      <Paginator
+        {...props}
+        aria-label="Products"
+        onPageSizeChange={setPageSize}
+        pageSize={pageSize}
+        total={237}
+      >
+        <PaginatorList />
+        <PaginatorPageSize options={[10, 25, 50]} style={{ marginInlineStart: 'auto' }} />
+      </Paginator>
+    </div>
+  )
+}
+
+/**
+ * `PaginatorPageSize` is not tied to the compact form: drop it next to the numbered pages to let the user change how
+ * many items a page has. It is a `Select`; pass **pageSize** and **onPageSizeChange** to control it, or
+ * **defaultPageSize** to leave it to the Paginator. Changing the size keeps the first item of the old page in view.
+ * Here it is pushed to the trailing edge with a `marginInlineStart: 'auto'` style.
+ */
+export const WithPageSize: Story = {
+  parameters: {
+    docs: {
+      story: { inline: false, iframeHeight: 300 },
+      source: {
+        code: `function Products() {
+  const [pageSize, setPageSize] = useState(10)
+  return (
+    <Paginator
+      aria-label="Products"
+      onPageSizeChange={setPageSize}
+      pageSize={pageSize}
+      total={237}
+    >
+      <PaginatorList />
+      <PaginatorPageSize options={[10, 25, 50]} style={{ marginInlineStart: 'auto' }} />
+    </Paginator>
+  )
+}`,
+      },
+    },
+  },
+  render: (args) => <PageSizeExample {...args} />,
 }
 
 /**
@@ -327,7 +373,7 @@ function ControlledPaginator(): React.ReactNode {
   const [page, setPage] = useState(3)
   return (
     <div style={stack('0.75rem')}>
-      <Paginator count={12} onPageChange={setPage} page={page} />
+      <Paginator total={120} onPageChange={setPage} page={page} />
       <p className="text-sm">
         Showing items {(page - 1) * 10 + 1} to {page * 10}
       </p>
@@ -382,7 +428,7 @@ export const Disabled: Story = {
  */
 export const Compound: Story = {
   render: () => (
-    <Paginator aria-label="Compound" count={20} defaultPage={10}>
+    <Paginator aria-label="Compound" total={200} defaultPage={10}>
       <PaginatorList>
         <PaginatorItem>
           <PaginatorFirst />
@@ -421,7 +467,7 @@ export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Paginator count={10} variant="unstyled">
+        code: `<Paginator total={100} variant="unstyled">
   <PaginatorList className="gap-1">
     <PaginatorItem>
       <PaginatorPrevious className="grid size-9 place-items-center rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40" />
@@ -458,7 +504,7 @@ export const Tailwind: Story = {
         previous:
           'grid size-9 place-items-center rounded-md text-foreground hover:bg-surface-muted disabled:opacity-40',
       }}
-      count={10}
+      total={100}
       defaultPage={4}
       variant="unstyled"
     />
@@ -475,7 +521,7 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<style>{'.bs-pagination [aria-current="page"]{background-color:var(--bs-primary);border-color:var(--bs-primary);color:#fff}.bs-pagination .page-link:disabled{color:var(--bs-secondary-color);pointer-events:none}'}</style>
-<Paginator className="bs-pagination" count={10} variant="unstyled">
+<Paginator className="bs-pagination" total={100} variant="unstyled">
   <PaginatorList className="pagination mb-0">
     <PaginatorItem className="page-item">
       <PaginatorPrevious className="page-link" />
@@ -516,7 +562,7 @@ export const Bootstrap: Story = {
           page: 'page-link',
           previous: 'page-link',
         }}
-        count={10}
+        total={100}
         defaultPage={4}
         variant="unstyled"
       />
