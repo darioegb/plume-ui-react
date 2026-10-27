@@ -5,8 +5,14 @@ import { Button } from '../../../interaction/button'
 import { DatePicker, type DateRange } from '../../datepicker'
 import { Checkbox } from '../../checkbox'
 import { Input } from '../../input'
+import { NumberInput } from '../../numberinput'
+import { PinInput } from '../../pininput'
 import { Radio, RadioGroup } from '../../radio'
+import { Rating } from '../../rating'
 import { Select, SelectContent, SelectOption, SelectTrigger } from '../../select'
+import { Slider } from '../../slider'
+import { Textarea } from '../../textarea'
+import { TimePicker } from '../../timepicker'
 import { Toggle } from '../../toggle'
 import { Field } from '..'
 
@@ -266,21 +272,55 @@ export const WithDatePicker: Story = {
 interface BookingValues {
   name: string
   email: string
+  guests: number | null
   room: string
+  extras: string[]
+  bed: string
   stay: DateRange
+  arrival: string
+  budget: number
+  stars: number
+  notes: string
+  pin: string
+  offers: boolean
   terms: boolean
 }
 
+const bookingDefaults: BookingValues = {
+  name: '',
+  email: '',
+  guests: null,
+  room: '',
+  extras: [],
+  bed: 'queen',
+  stay: { startDate: null, endDate: null },
+  arrival: '',
+  budget: 200,
+  stars: 3,
+  notes: '',
+  pin: '',
+  offers: false,
+  terms: false,
+}
+
 /**
- * A form with [react-hook-form](https://react-hook-form.com/). The controls that are a single native
- * element (`Input`, `Checkbox`) take `register` as it is. The ones that are not go through `Controller`:
- * `Select` takes `value` and `onValueChange` and the `ref` goes to its `SelectTrigger`, and `DatePicker`
- * takes `inputRef={field.ref}`, so the form can focus them.
+ * A form with [react-hook-form](https://react-hook-form.com/) that uses every form control of the library.
+ * The controls that are a single native element (`Input`, `Textarea`, `Checkbox`, `Toggle`) take `register`
+ * as it is. The ones that are not go through `Controller` with `value` and `onValueChange`: `Select` (also with
+ * `multiple`), `RadioGroup`, `NumberInput`, `Slider`, `Rating`, `PinInput`, `DatePicker` and `TimePicker`.
+ * Where the control has an input to focus, give it the `ref`: on the `SelectTrigger`, on `NumberInput`, or as
+ * `inputRef` on the pickers, so the form can focus the first invalid field.
  * Pass each error message to **errorText** and Field marks the control and links the message.
- * Submit the empty form to see the errors and the focus moving to the first invalid field.
+ * Submit the empty form to see the errors.
  */
 export const ReactHookForm: Story = {
-  decorators: [(Story) => <div className='w-[24rem] max-w-full pb-[22rem]'>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div className='relative left-1/2 w-[42rem] max-w-[90vw] -translate-x-1/2 pb-[22rem]'>
+        {Story()}
+      </div>
+    ),
+  ],
   parameters: {
     docs: {
       source: {
@@ -290,13 +330,7 @@ export const ReactHookForm: Story = {
   handleSubmit,
   register,
 } = useForm<BookingValues>({
-  defaultValues: {
-    name: '',
-    email: '',
-    room: '',
-    stay: { startDate: null, endDate: null },
-    terms: false,
-  },
+  defaultValues: bookingDefaults,
 })
 
 <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -319,6 +353,23 @@ export const ReactHookForm: Story = {
   </Field>
   <Controller
     control={control}
+    name="guests"
+    render={({ field, fieldState }) => (
+      <Field errorText={fieldState.error?.message} label="Guests" required>
+        <NumberInput
+          max={6}
+          min={1}
+          onBlur={field.onBlur}
+          onValueChange={field.onChange}
+          ref={field.ref}
+          value={field.value}
+        />
+      </Field>
+    )}
+    rules={{ required: 'Enter the number of guests.' }}
+  />
+  <Controller
+    control={control}
     name="room"
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Room" required>
@@ -327,11 +378,44 @@ export const ReactHookForm: Story = {
           <SelectContent>
             <SelectOption value="single">Single</SelectOption>
             <SelectOption value="double">Double</SelectOption>
+            <SelectOption value="suite">Suite</SelectOption>
           </SelectContent>
         </Select>
       </Field>
     )}
     rules={{ required: 'Pick a room.' }}
+  />
+  <Controller
+    control={control}
+    name="extras"
+    render={({ field }) => (
+      <Field label="Extras">
+        <Select multiple name={field.name} onValueChange={field.onChange} value={field.value}>
+          <SelectTrigger placeholder="Add extras" />
+          <SelectContent>
+            <SelectOption value="breakfast">Breakfast</SelectOption>
+            <SelectOption value="parking">Parking</SelectOption>
+            <SelectOption value="spa">Spa access</SelectOption>
+          </SelectContent>
+        </Select>
+      </Field>
+    )}
+  />
+  <Controller
+    control={control}
+    name="bed"
+    render={({ field }) => (
+      <Field label="Bed">
+        <RadioGroup name={field.name} onValueChange={field.onChange} value={field.value}>
+          <Field label="Queen" orientation="inline">
+            <Radio value="queen" />
+          </Field>
+          <Field label="Twin" orientation="inline">
+            <Radio value="twin" />
+          </Field>
+        </RadioGroup>
+      </Field>
+    )}
   />
   <Controller
     control={control}
@@ -353,6 +437,72 @@ export const ReactHookForm: Story = {
         (startDate !== null && endDate !== null) || 'Pick your check-in and check-out dates.',
     }}
   />
+  <Controller
+    control={control}
+    name="arrival"
+    render={({ field, fieldState }) => (
+      <Field errorText={fieldState.error?.message} label="Arrival time" required>
+        <TimePicker
+          inputRef={field.ref}
+          minuteStep={15}
+          onValueChange={field.onChange}
+          value={field.value}
+        />
+      </Field>
+    )}
+    rules={{ required: 'Pick an arrival time.' }}
+  />
+  <Controller
+    control={control}
+    name="budget"
+    render={({ field }) => (
+      <Field helperText={<>Up to {field.value} per night.</>} label="Budget">
+        <Slider
+          max={500}
+          min={50}
+          name={field.name}
+          onValueChange={field.onChange}
+          step={10}
+          value={field.value}
+        />
+      </Field>
+    )}
+  />
+  <Controller
+    control={control}
+    name="stars"
+    render={({ field }) => (
+      <Field label="Minimum stars">
+        <Rating name={field.name} onValueChange={field.onChange} value={field.value} />
+      </Field>
+    )}
+  />
+  <Field label="Notes" helperText="Anything we should know?">
+    <Textarea {...register('notes')} />
+  </Field>
+  <Controller
+    control={control}
+    name="pin"
+    render={({ field, fieldState }) => (
+      <Field
+        errorText={fieldState.error?.message}
+        helperText="The 4 digits you will give at the desk."
+        label="Check-in PIN"
+        required
+      >
+        <PinInput
+          length={4}
+          name={field.name}
+          onValueChange={field.onChange}
+          value={field.value}
+        />
+      </Field>
+    )}
+    rules={{ validate: (pin) => pin.length === 4 || 'Enter the 4 digits.' }}
+  />
+  <Field label="Send me offers" orientation="inline">
+    <Toggle {...register('offers')} />
+  </Field>
   <Field errorText={errors.terms?.message} label="I accept the terms" orientation="inline">
     <Checkbox {...register('terms', { required: 'Accept the terms to book.' })} />
   </Field>
@@ -368,19 +518,11 @@ export const ReactHookForm: Story = {
       formState: { errors },
       handleSubmit,
       register,
-    } = useForm<BookingValues>({
-      defaultValues: {
-        name: '',
-        email: '',
-        room: '',
-        stay: { startDate: null, endDate: null },
-        terms: false,
-      },
-    })
+    } = useForm<BookingValues>({ defaultValues: bookingDefaults })
 
     return (
       <form
-        className='flex flex-col gap-4'
+        className='grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-4'
         noValidate
         onSubmit={(event) => {
           void handleSubmit(setSubmitted)(event)
@@ -405,6 +547,23 @@ export const ReactHookForm: Story = {
         </Field>
         <Controller
           control={control}
+          name='guests'
+          render={({ field, fieldState }) => (
+            <Field errorText={fieldState.error?.message} label='Guests' required>
+              <NumberInput
+                max={6}
+                min={1}
+                onBlur={field.onBlur}
+                onValueChange={field.onChange}
+                ref={field.ref}
+                value={field.value}
+              />
+            </Field>
+          )}
+          rules={{ required: 'Enter the number of guests.' }}
+        />
+        <Controller
+          control={control}
           name='room'
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Room' required>
@@ -413,11 +572,44 @@ export const ReactHookForm: Story = {
                 <SelectContent>
                   <SelectOption value='single'>Single</SelectOption>
                   <SelectOption value='double'>Double</SelectOption>
+                  <SelectOption value='suite'>Suite</SelectOption>
                 </SelectContent>
               </Select>
             </Field>
           )}
           rules={{ required: 'Pick a room.' }}
+        />
+        <Controller
+          control={control}
+          name='extras'
+          render={({ field }) => (
+            <Field label='Extras'>
+              <Select multiple name={field.name} onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger placeholder='Add extras' />
+                <SelectContent>
+                  <SelectOption value='breakfast'>Breakfast</SelectOption>
+                  <SelectOption value='parking'>Parking</SelectOption>
+                  <SelectOption value='spa'>Spa access</SelectOption>
+                </SelectContent>
+              </Select>
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name='bed'
+          render={({ field }) => (
+            <Field label='Bed'>
+              <RadioGroup name={field.name} onValueChange={field.onChange} value={field.value}>
+                <Field label='Queen' orientation='inline'>
+                  <Radio value='queen' />
+                </Field>
+                <Field label='Twin' orientation='inline'>
+                  <Radio value='twin' />
+                </Field>
+              </RadioGroup>
+            </Field>
+          )}
         />
         <Controller
           control={control}
@@ -439,17 +631,81 @@ export const ReactHookForm: Story = {
               (startDate !== null && endDate !== null) || 'Pick your check-in and check-out dates.',
           }}
         />
+        <Controller
+          control={control}
+          name='arrival'
+          render={({ field, fieldState }) => (
+            <Field errorText={fieldState.error?.message} label='Arrival time' required>
+              <TimePicker
+                inputRef={field.ref}
+                minuteStep={15}
+                onValueChange={field.onChange}
+                value={field.value}
+              />
+            </Field>
+          )}
+          rules={{ required: 'Pick an arrival time.' }}
+        />
+        <Controller
+          control={control}
+          name='budget'
+          render={({ field }) => (
+            <Field helperText={<>Up to {field.value} per night.</>} label='Budget'>
+              <Slider
+                max={500}
+                min={50}
+                name={field.name}
+                onValueChange={field.onChange}
+                step={10}
+                value={field.value}
+              />
+            </Field>
+          )}
+        />
+        <Controller
+          control={control}
+          name='stars'
+          render={({ field }) => (
+            <Field label='Minimum stars'>
+              <Rating name={field.name} onValueChange={field.onChange} value={field.value} />
+            </Field>
+          )}
+        />
+        <Field label='Notes' helperText='Anything we should know?'>
+          <Textarea {...register('notes')} />
+        </Field>
+        <Controller
+          control={control}
+          name='pin'
+          render={({ field, fieldState }) => (
+            <Field
+              errorText={fieldState.error?.message}
+              helperText='The 4 digits you will give at the desk.'
+              label='Check-in PIN'
+              required
+            >
+              <PinInput
+                length={4}
+                name={field.name}
+                onValueChange={field.onChange}
+                value={field.value}
+              />
+            </Field>
+          )}
+          rules={{ validate: (pin) => pin.length === 4 || 'Enter the 4 digits.' }}
+        />
+        <Field label='Send me offers' orientation='inline'>
+          <Toggle {...register('offers')} />
+        </Field>
         <Field errorText={errors.terms?.message} label='I accept the terms' orientation='inline'>
           <Checkbox {...register('terms', { required: 'Accept the terms to book.' })} />
         </Field>
-        <div>
-          <Button colorScheme='primary' label='Book' type='submit' />
-        </div>
+        <Button colorScheme='primary' label='Book' type='submit' />
         {submitted ? (
-          <output className='text-sm'>
+          <output className='col-span-full text-sm'>
             Booked a {submitted.room} room for {submitted.name} ({submitted.email}),{' '}
             {submitted.stay.startDate?.toLocaleDateString()} to{' '}
-            {submitted.stay.endDate?.toLocaleDateString()}.
+            {submitted.stay.endDate?.toLocaleDateString()}, arriving at {submitted.arrival}.
           </output>
         ) : null}
       </form>
