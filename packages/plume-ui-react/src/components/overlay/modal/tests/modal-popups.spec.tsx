@@ -115,6 +115,26 @@ describe('popups inside a Modal', () => {
     expect(form()).toBeInTheDocument()
   })
 
+  it('keeps the focus inside the Modal when tabbing from the last control while a Tooltip is open', async () => {
+    render(<Page />)
+    await userEvent.hover(screen.getByText('Hint'))
+    expect(await screen.findByRole('tooltip')).toBeInTheDocument()
+    screen.getByText('Last').focus()
+    await userEvent.keyboard('{Tab}')
+    expect(form()).toContainElement(document.activeElement as HTMLElement)
+    expect(screen.getByText('Behind')).not.toHaveFocus()
+  })
+
+  it('keeps the focus inside the Modal when tabbing out of an open Select', async () => {
+    render(<Page />)
+    const combobox = screen.getByRole('combobox')
+    combobox.focus()
+    await userEvent.keyboard('{ArrowDown}')
+    await userEvent.tab({ shift: true })
+    expect(screen.getByText('Behind')).not.toHaveFocus()
+    expect(form()).toContainElement(document.activeElement as HTMLElement)
+  })
+
   it('wraps the focus inside the Modal when nothing else is open', async () => {
     render(<Page />)
     screen.getByText('Last').focus()

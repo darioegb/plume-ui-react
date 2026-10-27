@@ -130,7 +130,7 @@ export function Tooltip({
 
   useEffect(() => clearTimer, [clearTimer])
 
-  const isTopmost = useLayer(open)
+  const isTopmost = useLayer(open, false)
   const position = usePosition({
     anchor: trigger,
     floating: panel,
