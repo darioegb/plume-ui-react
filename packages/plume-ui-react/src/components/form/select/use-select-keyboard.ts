@@ -15,6 +15,11 @@ const steps: Record<string, number> = {
   PageUp: -10,
 }
 
+const picksActive = (event: KeyboardEvent, isTextInput: boolean): boolean =>
+  event.key === 'Enter' ||
+  (event.key === ' ' && !isTextInput) ||
+  (event.altKey && event.key === 'ArrowUp')
+
 interface UseSelectKeyboardOptions {
   canEdit: boolean
   canRemove: boolean
@@ -83,18 +88,22 @@ export function useSelectKeyboard(options: UseSelectKeyboardOptions): SelectKeyb
     if (match >= 0) latest.current.commit(records[match].value)
   }
 
+  const selectActive = (enabled: HTMLElement[]): void => {
+    const value = enabled.find((option) => option.id === activeId)?.dataset.value
+    if (value !== undefined) latest.current.select(value)
+  }
+
   const handleOpenKey = (event: KeyboardEvent, isTextInput: boolean): void => {
     const enabled = getEnabledOptions(listbox)
-    if (event.key in steps) {
+    if (picksActive(event, isTextInput)) {
+      event.preventDefault()
+      selectActive(enabled)
+    } else if (event.key in steps) {
       event.preventDefault()
       focusOption(stepOption(enabled, activeId, steps[event.key]))
     } else if (!isTextInput && (event.key === 'Home' || event.key === 'End')) {
       event.preventDefault()
       focusOption(event.key === 'Home' ? enabled[0] : enabled[enabled.length - 1])
-    } else if (event.key === 'Enter' || (event.key === ' ' && !isTextInput)) {
-      event.preventDefault()
-      const active = enabled.find((option) => option.id === activeId)
-      if (active?.dataset.value !== undefined) latest.current.select(active.dataset.value)
     } else if (event.key === 'Tab') {
       latest.current.close(isTextInput)
     } else if (!isTextInput && isTypeaheadKey(event)) {
