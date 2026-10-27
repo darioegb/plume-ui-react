@@ -18,6 +18,9 @@ jobs:
       - name: Install
         uses: ./.github/composite-actions/common
       
+      - name: Lint
+        run: pnpm lint
+
       - name: Test and coverage
         run: pnpm run test:coverage    
       
