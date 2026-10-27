@@ -244,6 +244,56 @@ export const Default: Story = {}
  * `unstyled` drops the Plume styles so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select variant="outline">
+    <SelectTrigger aria-label="Outline" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select variant="filled">
+    <SelectTrigger aria-label="Filled" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select variant="unstyled">
+    <SelectTrigger
+      aria-label="Unstyled"
+      className="w-full rounded border border-border bg-surface px-3 py-2 text-foreground"
+      placeholder="Unstyled"
+    >
+      <SelectField>
+        <SelectCombobox className="data-[placeholder]:text-[var(--plume-muted)]" />
+      </SelectField>
+      <SelectChevron className="text-[var(--plume-muted)]" />
+    </SelectTrigger>
+    <SelectContent className="rounded border border-border bg-surface p-1 text-foreground shadow">
+      <SelectOption
+        className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
+        value="apple"
+      >
+        Apple
+      </SelectOption>
+      <SelectOption
+        className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
+        value="banana"
+      >
+        Banana
+      </SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Example label="Outline" variant="outline" />
@@ -280,6 +330,38 @@ export const Variants: Story = {
  * Use the **size** prop to change the height and the text of the field.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select size="sm">
+    <SelectTrigger aria-label="Size sm" placeholder="Size sm" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select size="md">
+    <SelectTrigger aria-label="Size md" placeholder="Size md" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select size="lg">
+    <SelectTrigger aria-label="Size lg" placeholder="Size lg" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -294,6 +376,38 @@ export const Sizes: Story = {
  * the ones you add. Tab to a field to see it.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select colorScheme="primary">
+    <SelectTrigger aria-label="primary" placeholder="primary" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select colorScheme="success">
+    <SelectTrigger aria-label="success" placeholder="success" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select colorScheme="error">
+    <SelectTrigger aria-label="error" placeholder="error" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {(['primary', 'success', 'error'] as const).map((colorScheme) => (
@@ -315,6 +429,41 @@ export const Colors: Story = {
  * chips with a `+N` for the rest, and `display="text"` shows the labels as text instead of chips.
  */
 export const Multiple: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select defaultValue={['apple', 'mango']} multiple>
+    <SelectTrigger aria-label="Fruits" placeholder="Pick fruits" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+      <SelectOption value="mango">Mango</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select defaultValue={['apple', 'banana', 'cherry', 'mango']} multiple>
+    <SelectTrigger aria-label="At most two chips" maxDisplay={2} />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+      <SelectOption value="mango">Mango</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select defaultValue={['apple', 'banana']} multiple>
+    <SelectTrigger aria-label="As text" display="text" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+      <SelectOption value="mango">Mango</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Example
@@ -388,7 +537,37 @@ export const ImagesAndDescriptions: Story = {
  * on the closed trigger opens it with that text. The text of an option, or its `label`, is what is searched.
  */
 export const Searchable: Story = {
-  parameters: { docs: { story: { inline: false, iframeHeight: 420 } } },
+  parameters: {
+    docs: {
+      story: { inline: false, iframeHeight: 420 },
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select labels={{ empty: 'Nobody with that name', search: 'Search people' }} searchable>
+    <SelectTrigger aria-label="Person" placeholder="Search a person" />
+    <SelectContent searchPlaceholder="Search…">
+      <SelectOption description="Engineering" value="ada">
+        Ada Lovelace
+      </SelectOption>
+      <SelectOption description="Design" value="grace">
+        Grace Hopper
+      </SelectOption>
+      <SelectOption description="Research" value="linus">
+        Linus Torvalds
+      </SelectOption>
+    </SelectContent>
+  </Select>
+  <Select clearable labels={{ search: 'Search fruits' }} multiple searchable>
+    <SelectTrigger aria-label="Fruits" placeholder="Search fruits" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Select labels={{ empty: 'Nobody with that name', search: 'Search people' }} searchable>
@@ -450,6 +629,30 @@ export const Groups: Story = {
  * string, or an empty array when it is `multiple`.
  */
 export const Clearable: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select clearable defaultValue="mango">
+    <SelectTrigger aria-label="Single" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="mango">Mango</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select clearable defaultValue={['apple', 'mango']} multiple>
+    <SelectTrigger aria-label="Multiple" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="mango">Mango</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Example clearable defaultValue="mango" label="Single" />
@@ -493,6 +696,43 @@ function ControlledExample(): React.ReactNode {
  * list, from your own state.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(['apple'])
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Select multiple onOpenChange={setOpen} onValueChange={setValue} open={open} value={value}>
+        <SelectTrigger aria-label="Fruits" placeholder="Pick fruits" />
+        <SelectContent>
+          <SelectOption value="apple">Apple</SelectOption>
+          <SelectOption value="banana">Banana</SelectOption>
+          <SelectOption value="cherry">Cherry</SelectOption>
+        </SelectContent>
+      </Select>
+      <small>Chosen: {value.length > 0 ? value.join(', ') : 'nothing'}</small>
+      <div className="flex gap-2">
+        <Button
+          label="Choose all"
+          onClick={() => setValue(['apple', 'banana', 'cherry'])}
+          size="sm"
+          variant="outline"
+        />
+        <Button
+          label={open ? 'Close the list' : 'Open the list'}
+          onClick={() => setOpen(!open)}
+          size="sm"
+          variant="outline"
+        />
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 
@@ -501,6 +741,48 @@ export const Controlled: Story = {
  * disabled option stays in the list, can't be chosen and is skipped by the arrows.
  */
 export const States: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Select defaultValue="apple" disabled>
+    <SelectTrigger aria-label="Disabled" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select defaultValue="apple" readOnly>
+    <SelectTrigger aria-label="Read only" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select aria-invalid required>
+    <SelectTrigger aria-label="Invalid" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption value="banana">Banana</SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+  <Select>
+    <SelectTrigger aria-label="With a disabled option" placeholder="Pick a fruit" />
+    <SelectContent>
+      <SelectOption value="apple">Apple</SelectOption>
+      <SelectOption disabled value="banana">
+        Banana (sold out)
+      </SelectOption>
+      <SelectOption value="cherry">Cherry</SelectOption>
+    </SelectContent>
+  </Select>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <Example defaultValue="apple" disabled label="Disabled" />
@@ -556,6 +838,44 @@ function FormExample(): React.ReactNode {
  * to them, so validate `required` yourself.
  */
 export const InAForm: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [data, setData] = useState('Submit the form to see what it sends.')
+  return (
+    <form
+      className="flex flex-col gap-3"
+      onSubmit={(event) => {
+        event.preventDefault()
+        const entries = new FormData(event.currentTarget)
+        setData(JSON.stringify({ colors: entries.getAll('colors'), size: entries.get('size') }))
+      }}
+    >
+      <Select defaultValue="m" name="size">
+        <SelectTrigger aria-label="Size" />
+        <SelectContent>
+          <SelectOption value="s">Small</SelectOption>
+          <SelectOption value="m">Medium</SelectOption>
+          <SelectOption value="l">Large</SelectOption>
+        </SelectContent>
+      </Select>
+      <Select defaultValue={['red']} multiple name="colors">
+        <SelectTrigger aria-label="Colors" placeholder="Colors" />
+        <SelectContent>
+          <SelectOption value="red">Red</SelectOption>
+          <SelectOption value="green">Green</SelectOption>
+          <SelectOption value="blue">Blue</SelectOption>
+        </SelectContent>
+      </Select>
+      <Button label="Submit" type="submit" />
+      <small>{data}</small>
+    </form>
+  )
+}`,
+      },
+    },
+  },
   render: () => <FormExample />,
 }
 
@@ -564,7 +884,35 @@ export const InAForm: Story = {
  * links its helper text and sets `disabled`, `readOnly`, `required` and `aria-invalid`.
  */
 export const WithField: Story = {
-  parameters: { docs: { story: { inline: false, iframeHeight: 460 } } },
+  parameters: {
+    docs: {
+      story: { inline: false, iframeHeight: 460 },
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Field helperText="You can change it later." label="Favorite fruit">
+    <Select>
+      <SelectTrigger placeholder="Pick a fruit" />
+      <SelectContent>
+        <SelectOption value="apple">Apple</SelectOption>
+        <SelectOption value="banana">Banana</SelectOption>
+        <SelectOption value="cherry">Cherry</SelectOption>
+      </SelectContent>
+    </Select>
+  </Field>
+  <Field errorText="Pick at least one fruit." invalid label="Fruits" required>
+    <Select multiple>
+      <SelectTrigger placeholder="Pick fruits" />
+      <SelectContent>
+        <SelectOption value="apple">Apple</SelectOption>
+        <SelectOption value="banana">Banana</SelectOption>
+        <SelectOption value="cherry">Cherry</SelectOption>
+      </SelectContent>
+    </Select>
+  </Field>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       <Field helperText="You can change it later." label="Favorite fruit">

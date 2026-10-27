@@ -207,6 +207,79 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" variant="plain">
+        <SidebarContent aria-label="Pages plain">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" variant="solid">
+        <SidebarContent aria-label="Pages solid">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar
+        aria-label="Application"
+        className="rounded-r-2xl bg-slate-900 p-3 text-slate-100"
+        variant="unstyled"
+      >
+        <SidebarContent aria-label="Pages unstyled" className="gap-1">
+          <SidebarItem
+            active
+            className="rounded-lg px-3 py-2 hover:bg-slate-700 data-[active]:bg-slate-700"
+            href="#home"
+          >
+            Home
+          </SidebarItem>
+          <SidebarItem
+            className="rounded-lg px-3 py-2 hover:bg-slate-700 data-[active]:bg-slate-700"
+            href="#projects"
+          >
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['plain', 'filled', 'solid'] as const).map((variant) => (
@@ -248,6 +321,50 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" size="sm">
+        <SidebarContent aria-label="Pages sm">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" size="lg">
+        <SidebarContent aria-label="Pages lg">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -262,6 +379,50 @@ export const Sizes: Story = {
  * `solid` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" colorScheme="primary" size="sm">
+        <SidebarContent aria-label="Pages primary">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+  <SidebarProvider breakpoint="never">
+    <div className="flex">
+      <Sidebar aria-label="Application" colorScheme="success" size="sm">
+        <SidebarContent aria-label="Pages success">
+          <SidebarItem active href="#home" icon={<HomeIcon />}>
+            Home
+          </SidebarItem>
+          <SidebarItem href="#projects" icon={<FolderIcon />}>
+            Projects
+          </SidebarItem>
+        </SidebarContent>
+      </Sidebar>
+      <main className="flex-1 p-4">
+        <SidebarToggle />
+        <p>The page.</p>
+      </main>
+    </div>
+  </SidebarProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
@@ -284,6 +445,30 @@ export const Colors: Story = {
  * With **defaultCollapsed** it starts as a rail of icons. The labels are still read by screen readers.
  */
 export const Collapsed: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider breakpoint="never" defaultCollapsed>
+  <div className="flex">
+    <Sidebar aria-label="Application">
+      <SidebarContent aria-label="Pages">
+        <SidebarItem active href="#home" icon={<HomeIcon />}>
+          Home
+        </SidebarItem>
+        <SidebarItem href="#projects" icon={<FolderIcon />}>
+          Projects
+        </SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+    <main className="flex-1 p-4">
+      <SidebarToggle />
+      <p>The page.</p>
+    </main>
+  </div>
+</SidebarProvider>`,
+      },
+    },
+  },
   render: () => <Shell compact defaultCollapsed />,
 }
 
@@ -292,6 +477,33 @@ export const Collapsed: Story = {
  * layout.
  */
 export const Right: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider>
+  <div className="flex">
+    <main className="flex-1 p-4">
+      <SidebarToggle />
+      <p>The sidebar is on the right.</p>
+    </main>
+    <Sidebar aria-label="Application" side="right">
+      <SidebarContent aria-label="Pages">
+        <SidebarItem active href="#home" icon={<HomeIcon />}>
+          Home
+        </SidebarItem>
+        <SidebarItem href="#projects" icon={<FolderIcon />}>
+          Projects
+        </SidebarItem>
+        <SidebarItem href="#team" icon={<UsersIcon />}>
+          Team
+        </SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+  </div>
+</SidebarProvider>`,
+      },
+    },
+  },
   render: () => (
     <SidebarProvider>
       <div
@@ -319,6 +531,33 @@ export const Right: Story = {
  * page.
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<SidebarProvider breakpoint="never">
+  <div className="flex">
+    <Sidebar aria-label="Application">
+      <SidebarContent aria-label="Pages">
+        <SidebarItem active href="#home" icon={<HomeIcon />}>
+          Home
+        </SidebarItem>
+        <SidebarItem disabled href="#team" icon={<UsersIcon />}>
+          Team
+        </SidebarItem>
+        <SidebarItem icon={<ArrowRightIcon />} onClick={() => undefined}>
+          Sign out
+        </SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+    <main className="flex-1 p-4">
+      <SidebarToggle />
+      <p>The page.</p>
+    </main>
+  </div>
+</SidebarProvider>`,
+      },
+    },
+  },
   render: () => (
     <Shell compact>
       <SidebarContent aria-label="Pages">
@@ -353,6 +592,45 @@ function ControlledSidebar(): React.ReactNode {
  * **onOpenChange** for the off-canvas panel on a small one, for example to close it after the user picks a link.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [collapsed, setCollapsed] = useState(false)
+  return (
+    <>
+      <SidebarProvider breakpoint="never" collapsed={collapsed} onCollapsedChange={setCollapsed}>
+        <div className="flex">
+          <Sidebar aria-label="Application">
+            <SidebarContent aria-label="Pages">
+              <SidebarItem active href="#home" icon={<HomeIcon />}>
+                Home
+              </SidebarItem>
+              <SidebarItem href="#projects" icon={<FolderIcon />}>
+                Projects
+              </SidebarItem>
+            </SidebarContent>
+          </Sidebar>
+          <main className="flex-1 p-4">
+            <SidebarToggle />
+            <p>The page.</p>
+          </main>
+        </div>
+      </SidebarProvider>
+      <label>
+        <input
+          checked={collapsed}
+          onChange={(event) => setCollapsed(event.target.checked)}
+          type="checkbox"
+        />{' '}
+        Collapsed
+      </label>
+    </>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledSidebar />,
 }
 

@@ -228,19 +228,19 @@ export const Colors: Story = {
 <Tabs colorScheme="primary">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="secondary">
+<Tabs colorScheme="secondary">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="info">
+<Tabs colorScheme="info">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="warning">
+<Tabs colorScheme="warning">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="error">
+<Tabs colorScheme="error">
   {commonTabs}
 </Tabs>
-<Tabs rScheme="success">
+<Tabs colorScheme="success">
   {commonTabs}
 </Tabs>
   `,
@@ -442,7 +442,7 @@ export const ExtraContent: Story = {
         code: `<Tabs>
   <TabList>
     <Tab 
-      extraContent={
+      extraContentLeft={
         <svg
           fill="none"
           height="1rem"
@@ -461,7 +461,7 @@ export const ExtraContent: Story = {
       label="One" 
     />
     <Tab
-      extraContent={
+      extraContentLeft={
         <svg
           fill="none"
           height="1rem"
@@ -481,7 +481,7 @@ export const ExtraContent: Story = {
       label="Two" 
     />
     <Tab
-      extraContent={
+      extraContentRight={
         <svg
           fill="none"
           height="1rem"
@@ -497,7 +497,6 @@ export const ExtraContent: Story = {
           <circle cx="12" cy="12" r="3" />
         </svg>
       }
-      isExtraContentRight 
       label="Three" 
     />
   </TabList>

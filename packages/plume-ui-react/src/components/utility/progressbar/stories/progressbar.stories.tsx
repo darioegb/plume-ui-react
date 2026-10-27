@@ -200,6 +200,27 @@ function LiveBar(): React.ReactNode {
  * The bar follows `value` with a short transition, so it can be fed from state, an upload or a timer.
  */
 export const Live: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    const timer = setInterval(() => setValue((current) => (current >= 100 ? 0 : current + 5)), 400)
+    return () => clearInterval(timer)
+  }, [])
+  return (
+    <ProgressBar
+      aria-label="Upload progress"
+      style={{ maxWidth: '100%', width: '20rem' }}
+      value={value}
+      valueText={\`\${value}%\`}
+    />
+  )
+}`,
+      },
+    },
+  },
   render: () => <LiveBar />,
 }
 

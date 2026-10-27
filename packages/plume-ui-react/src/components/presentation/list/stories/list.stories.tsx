@@ -371,6 +371,32 @@ function SelectableMailbox(): React.ReactNode {
  * The List doesn't keep the selection: you set **selected** on the button, from your own state.
  */
 export const Selectable: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [selected, setSelected] = useState('inbox')
+  const boxes = [
+    { id: 'inbox', icon: inboxIcon, label: 'Inbox' },
+    { id: 'sent', icon: sendIcon, label: 'Sent' },
+    { id: 'trash', icon: trashIcon, label: 'Trash' },
+  ]
+  return (
+    <List aria-label="Mailbox" style={{ maxWidth: '100%', width: '20rem' }} variant="bordered">
+      {boxes.map((box) => (
+        <ListItem key={box.id}>
+          <ListItemButton onClick={() => setSelected(box.id)} selected={selected === box.id}>
+            <ListItemIcon>{box.icon}</ListItemIcon>
+            <ListItemText primary={box.label} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  )
+}`,
+      },
+    },
+  },
   render: () => <SelectableMailbox />,
 }
 

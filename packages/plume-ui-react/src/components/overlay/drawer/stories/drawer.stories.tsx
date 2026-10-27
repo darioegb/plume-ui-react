@@ -115,6 +115,64 @@ export const Default: Story = {}
  * Use the **side** prop to choose the edge it comes from: `left`, `right`, `top` or `bottom`.
  */
 export const Sides: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer side="left">
+    <DrawerTrigger>
+      <Button label="From the left" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer side="bottom">
+    <DrawerTrigger>
+      <Button label="From the bottom" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['left', 'right', 'top', 'bottom'] as const).map((side) => (
@@ -128,6 +186,64 @@ export const Sides: Story = {
  * Use the **shape** prop to choose between `rounded` corners, which is the default, and `square` ones.
  */
 export const Shapes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer shape="rounded">
+    <DrawerTrigger>
+      <Button label="Shape rounded" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer shape="square">
+    <DrawerTrigger>
+      <Button label="Shape square" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['rounded', 'square'] as const).map((shape) => (
@@ -142,6 +258,64 @@ export const Shapes: Story = {
  * bottom.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer size="sm">
+    <DrawerTrigger>
+      <Button label="Size sm" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer size="lg">
+    <DrawerTrigger>
+      <Button label="Size lg" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -177,6 +351,32 @@ function ControlledExample(): React.ReactNode {
  * that is not a trigger.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button
+        label={open ? 'Close the drawer' : 'Open the drawer'}
+        onClick={() => setOpen(!open)}
+      />
+      <p className="text-sm">The drawer is {open ? 'open' : 'closed'}.</p>
+      <Drawer onOpenChange={setOpen} open={open}>
+        <DrawerContent>
+          <DrawerHeader>Controlled drawer</DrawerHeader>
+          <DrawerBody>Its state lives in the component that renders it.</DrawerBody>
+          <DrawerClose />
+        </DrawerContent>
+      </Drawer>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 
@@ -214,6 +414,37 @@ export const LongContent: Story = {
  * suits a form the user must finish or cancel.
  */
 export const Persistent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Drawer closeOnEscape={false} closeOnOutside={false}>
+  <DrawerTrigger>
+    <Button label="Open drawer" />
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>Filters</DrawerHeader>
+    <DrawerBody>
+      <Field label="Name">
+        <Input />
+      </Field>
+      <Field label="Email">
+        <Input type="email" />
+      </Field>
+    </DrawerBody>
+    <DrawerFooter>
+      <DrawerClose>
+        <Button label="Cancel" variant="ghost" />
+      </DrawerClose>
+      <DrawerClose>
+        <Button label="Apply" />
+      </DrawerClose>
+    </DrawerFooter>
+    <DrawerClose />
+  </DrawerContent>
+</Drawer>`,
+      },
+    },
+  },
   render: () => <Example closeOnEscape={false} closeOnOutside={false} />,
 }
 

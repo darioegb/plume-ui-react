@@ -146,6 +146,18 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col items-start gap-6">
+  <Paginator aria-label="solid" defaultPage={4} total={100} variant="solid" />
+  <Paginator aria-label="outline" defaultPage={4} total={100} variant="outline" />
+  <Paginator aria-label="ghost" defaultPage={4} total={100} variant="ghost" />
+  <Paginator aria-label="unstyled" defaultPage={4} total={100} variant="unstyled" />
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['solid', 'outline', 'ghost'] as const).map((variant) => (
@@ -393,6 +405,30 @@ function ControlledPaginator(): React.ReactNode {
  * from outside.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [page, setPage] = useState(3)
+  return (
+    <div className="flex flex-col gap-3">
+      <Paginator onPageChange={setPage} page={page} total={120} />
+      <p className="text-sm">
+        Showing items {(page - 1) * 10 + 1} to {page * 10}
+      </p>
+      <button
+        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        onClick={() => setPage(1)}
+        type="button"
+      >
+        Back to the first page
+      </button>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledPaginator />,
 }
 

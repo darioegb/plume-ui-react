@@ -177,6 +177,25 @@ function RemovableExample(): React.ReactNode {
  * a screen reader says which one goes away, or give it your own with **labels.remove**.
  */
 export const Removable: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [tags, setTags] = useState(['Design', 'Research', 'Engineering', 'Product'])
+  return (
+    <div className="flex max-w-sm flex-wrap items-center justify-center gap-2">
+      {tags.map((tag) => (
+        <Chip key={tag} onRemove={() => setTags(tags.filter((item) => item !== tag))}>
+          {tag}
+        </Chip>
+      ))}
+      {tags.length === 0 ? <small>No tags left.</small> : null}
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <RemovableExample />,
 }
 

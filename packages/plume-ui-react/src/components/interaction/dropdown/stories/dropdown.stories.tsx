@@ -143,6 +143,47 @@ export const Default: Story = {}
  * border, and `unstyled` drops the Plume styles so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <Dropdown variant="elevated">
+    <DropdownTrigger>
+      <Button label="Actions" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+      <DropdownItem>Sign out</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown variant="outline">
+    <DropdownTrigger>
+      <Button label="Actions" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+      <DropdownItem>Sign out</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown variant="unstyled">
+    <DropdownTrigger>
+      <Button label="Unstyled" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu className="min-w-40 rounded border border-border bg-surface p-1 text-foreground shadow">
+      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+        Profile
+      </DropdownItem>
+      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+        Settings
+      </DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       <Example variant="elevated" />
@@ -315,6 +356,33 @@ function ControlledExample(): React.ReactNode {
  * stays open after an item is chosen, and one item turns it back on for itself.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+  const [last, setLast] = useState('nothing yet')
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Dropdown closeOnSelect={false} onOpenChange={setOpen} open={open}>
+        <DropdownTrigger>
+          <Button label={open ? 'Close the menu' : 'Open the menu'} variant="outline" />
+        </DropdownTrigger>
+        <DropdownMenu>
+          <DropdownItem onSelect={() => setLast('Copy')}>Copy</DropdownItem>
+          <DropdownItem onSelect={() => setLast('Paste')}>Paste</DropdownItem>
+          <DropdownItem closeOnSelect onSelect={() => setLast('Done')}>
+            Done
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+      <small>You chose: {last}</small>
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 

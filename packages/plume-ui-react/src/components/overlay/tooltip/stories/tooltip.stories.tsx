@@ -235,6 +235,28 @@ function ControlledExample(): React.ReactNode {
  * Pass **open** and **onOpenChange** to control the tooltip from your own state.
  */
 export const Controlled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Tooltip content="Controlled tooltip" onOpenChange={setOpen} open={open}>
+        <Button label="Hover or focus me" variant="outline" />
+      </Tooltip>
+      <Button
+        label={open ? 'Close the tooltip' : 'Open the tooltip'}
+        onClick={() => setOpen(!open)}
+        size="sm"
+      />
+    </div>
+  )
+}`,
+      },
+    },
+  },
   render: () => <ControlledExample />,
 }
 

@@ -157,6 +157,44 @@ function SelectAll(): React.ReactNode {
 
 export const Indeterminate: Story = {
   render: () => <SelectAll />,
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const options = ['Email', 'SMS', 'Push']
+  const [selected, setSelected] = useState<string[]>(['Email'])
+  const all = selected.length === options.length
+  return (
+    <div className="flex flex-col gap-2">
+      <Field label="All notifications" orientation="inline">
+        <Checkbox
+          checked={all}
+          indeterminate={!all && selected.length > 0}
+          onChange={() => setSelected(all ? [] : options)}
+        />
+      </Field>
+      <div className="flex flex-col gap-2 ps-6">
+        {options.map((option) => (
+          <Field key={option} label={option} orientation="inline">
+            <Checkbox
+              checked={selected.includes(option)}
+              onChange={() =>
+                setSelected((current) =>
+                  current.includes(option)
+                    ? current.filter((item) => item !== option)
+                    : [...current, option],
+                )
+              }
+            />
+          </Field>
+        ))}
+      </div>
+    </div>
+  )
+}`,
+      },
+    },
+  },
 }
 
 /**

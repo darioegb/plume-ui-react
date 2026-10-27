@@ -137,6 +137,65 @@ export const Default: Story = {}
  * `labels.region`: with several providers on a page, each region needs a name of its own.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example({ variant }: { variant: 'solid' | 'subtle' | 'outline' }) {
+  const toast = useToast()
+
+  return (
+    <Button
+      label={variant[0].toUpperCase() + variant.slice(1)}
+      onClick={() => toast.success({ description: \`A \${variant} toast.\`, title: 'Saved' })}
+      variant="outline"
+    />
+  )
+}
+
+function UnstyledExample() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Unstyled"
+      onClick={() => toast.toast({ title: 'An unstyled toast' })}
+      variant="outline"
+    />
+  )
+}
+
+<div className="flex flex-wrap justify-center gap-4">
+  <ToastProvider
+    labels={{ region: 'solid notifications' }}
+    position="top-start"
+    variant="solid"
+  >
+    <Example variant="solid" />
+  </ToastProvider>
+  <ToastProvider
+    labels={{ region: 'subtle notifications' }}
+    position="top-end"
+    variant="subtle"
+  >
+    <Example variant="subtle" />
+  </ToastProvider>
+  <ToastProvider
+    className="fixed bottom-4 right-4 flex flex-col gap-2"
+    labels={{ region: 'unstyled notifications' }}
+    render={(toast) => (
+      <Toast
+        className="flex items-center gap-3 rounded bg-black px-4 py-2 text-white"
+        toast={toast}
+      />
+    )}
+    variant="unstyled"
+  >
+    <UnstyledExample />
+  </ToastProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       {(
@@ -185,6 +244,58 @@ export const Variants: Story = {
  * at once (`role="alert"`) and the others politely.
  */
 export const Statuses: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      <Button
+        label="Neutral"
+        onClick={() => toast.toast({ title: 'Something happened' })}
+        variant="outline"
+      />
+      <Button
+        label="Info"
+        onClick={() => toast.info({ title: 'A new version is out' })}
+        variant="outline"
+      />
+      <Button
+        label="Success"
+        onClick={() =>
+          toast.success({ description: 'Your changes were saved.', title: 'Saved' })
+        }
+        variant="outline"
+      />
+      <Button
+        label="Warning"
+        onClick={() =>
+          toast.warning({ description: 'You are close to the limit.', title: 'Almost full' })
+        }
+        variant="outline"
+      />
+      <Button
+        label="Error"
+        onClick={() =>
+          toast.error({
+            description: 'Check your connection and try again.',
+            title: 'Could not save',
+          })
+        }
+        variant="outline"
+      />
+    </div>
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <div className="flex flex-wrap justify-center gap-2">
@@ -247,6 +358,70 @@ const bell = (
  * readers: the status is announced by the role of the toast.
  */
 export const Icons: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function SavedExample() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="No icons"
+      onClick={() => toast.success({ description: 'Your changes were saved.', title: 'Saved' })}
+      variant="outline"
+    />
+  )
+}
+
+function CustomIconsExample() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Custom icons"
+      onClick={() => {
+        toast.toast({ title: 'A neutral toast with an icon' })
+        toast.success({ title: 'Saved' })
+      }}
+      variant="outline"
+    />
+  )
+}
+
+function OneToastExample() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="One toast"
+      onClick={() => toast.info({ icon: <BellIcon />, title: 'This toast has its own icon' })}
+      variant="outline"
+    />
+  )
+}
+
+<div className="flex flex-wrap justify-center gap-4">
+  <ToastProvider
+    icons={false}
+    labels={{ region: 'no icons notifications' }}
+    position="top-start"
+  >
+    <SavedExample />
+  </ToastProvider>
+  <ToastProvider
+    icons={{ neutral: <BellIcon />, success: <span>🎉</span> }}
+    labels={{ region: 'custom icons notifications' }}
+    position="bottom"
+  >
+    <CustomIconsExample />
+  </ToastProvider>
+  <ToastProvider labels={{ region: 'one icon notifications' }} position="top-end">
+    <OneToastExample />
+  </ToastProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       <ToastProvider
@@ -290,6 +465,36 @@ export const Icons: Story = {
  * one is the closest to the edge of the screen.
  */
 export const Positions: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example({ position }: { position: ToastPosition }) {
+  const toast = useToast()
+
+  return (
+    <Button
+      className="w-full whitespace-nowrap"
+      label={position}
+      onClick={() => toast.info({ title: position })}
+      variant="outline"
+    />
+  )
+}
+
+<div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+  <ToastProvider labels={{ region: 'top-start notifications' }} position="top-start">
+    <Example position="top-start" />
+  </ToastProvider>
+  <ToastProvider labels={{ region: 'center notifications' }} position="center">
+    <Example position="center" />
+  </ToastProvider>
+  <ToastProvider labels={{ region: 'bottom-end notifications' }} position="bottom-end">
+    <Example position="bottom-end" />
+  </ToastProvider>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {positions.map((position) => (
@@ -315,6 +520,33 @@ export const Positions: Story = {
  * an action a long **duration**, or none, so the user has time to use it.
  */
 export const WithAction: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Delete the file"
+      onClick={() =>
+        toast.toast({
+          action: { label: 'Undo', onClick: () => toast.success('The file is back') },
+          description: 'Annual report.pdf was moved to the trash.',
+          duration: 10000,
+          title: 'File deleted',
+        })
+      }
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -337,6 +569,32 @@ export const WithAction: Story = {
  * acted on, such as an error.
  */
 export const Persistent: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Show a persistent toast"
+      onClick={() =>
+        toast.error({
+          description: 'The connection was lost. We will keep trying.',
+          duration: 0,
+          title: 'You are offline',
+        })
+      }
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -358,6 +616,29 @@ export const Persistent: Story = {
  * stacking another one. It fits a task that goes from running to done.
  */
 export const UpdatingAToast: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Start the upload"
+      onClick={() => {
+        toast.info({ duration: 0, id: 'upload', title: 'Uploading…' })
+        window.setTimeout(() => toast.success({ id: 'upload', title: 'Upload complete' }), 1500)
+      }}
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <Fire
@@ -376,6 +657,30 @@ export const UpdatingAToast: Story = {
  * dismissible with **dismissible: false**, which takes away its dismiss button.
  */
 export const Dismissing: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      <Button
+        label="Add a toast"
+        onClick={() => toast.info({ duration: 0, title: 'A toast that stays' })}
+        variant="outline"
+      />
+      <Button label="Dismiss all" onClick={() => toast.dismissAll()} variant="ghost" />
+    </div>
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo>
       <div className="flex flex-wrap justify-center gap-2">
@@ -394,6 +699,26 @@ export const Dismissing: Story = {
  * **max** limits how many toasts are on the screen at a time. The oldest one goes first.
  */
 export const Limit: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Add a toast"
+      onClick={() => toast.info({ title: \`Toast at \${new Date().toLocaleTimeString()}\` })}
+    />
+  )
+}
+
+<ToastProvider duration={0} max={3}>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <Demo duration={0} max={3}>
       <Fire
@@ -409,6 +734,44 @@ export const Limit: Story = {
  * with nothing to show renders nothing, and the dismiss button and the action keep their behavior.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Show a toast"
+      onClick={() =>
+        toast.success({
+          action: { label: 'Undo' },
+          description: 'The action sits before the icon, and there is no dismiss button.',
+          title: 'Saved',
+        })
+      }
+      variant="outline"
+    />
+  )
+}
+
+<ToastProvider
+  render={(toast) => (
+    <Toast toast={toast}>
+      <ToastBody>
+        <ToastTitle />
+        <ToastDescription />
+      </ToastBody>
+      <ToastActionButton>Undo</ToastActionButton>
+      <ToastIcon />
+    </Toast>
+  )}
+>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
   render: () => (
     <ToastProvider
       render={(toast: ToastData) => (
