@@ -22,10 +22,10 @@ Sign in with any email and a password of 6 or more characters.
   `Skeleton` while its data loads.
 - `src/components/app-shell.tsx` — `'use client'` shell: `Sidebar`, `Navbar`, `Breadcrumb`,
   a `Dropdown` account menu and the light/dark switch.
+- `src/app/(app)/projects` — a `Table` with sorting, filters and paging, a detail `Drawer`, and a `Stepper` form to create a project (validated in the browser and again in a Server Action).
+- `src/app/(app)/settings` — an `Accordion` with the appearance (light/dark and a **brand color** that recolors the whole app, saved in a cookie and server-rendered), notifications and the workspace.
 - `src/lib` — the simulated session and data.
-- A custom theme in `src/theme.ts` (imported by `providers.tsx`), passed to
-  `<ThemeProvider theme={theme}>`: it overrides the `primary` palette and adds a `salmon`
-  color scheme.
+- `src/theme.ts` — the brand palettes for `primary` (the one in Settings) and a custom `salmon` color scheme, passed to `<ThemeProvider theme={...}>`.
 - `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"`
   (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 

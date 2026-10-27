@@ -4,7 +4,8 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { addProject, getProjects, type NewProjectInput } from '@/lib/data'
-import { COLOR_MODE_COOKIE, SESSION_COOKIE, getUser } from '@/lib/session'
+import { BRAND_COOKIE, COLOR_MODE_COOKIE, SESSION_COOKIE, getUser } from '@/lib/session'
+import { isBrand } from '@/theme'
 import { validateNewProject, type NewProjectErrors } from '@/lib/validation'
 
 export interface SignInState {
@@ -53,4 +54,13 @@ export async function createProject(
   revalidatePath('/')
   revalidatePath('/projects')
   return { name: project.name }
+}
+
+export async function saveBrand(brand: string): Promise<void> {
+  if (!isBrand(brand)) return
+  ;(await cookies()).set(BRAND_COOKIE, brand, {
+    maxAge: 60 * 60 * 24 * 365,
+    path: '/',
+    sameSite: 'lax',
+  })
 }
