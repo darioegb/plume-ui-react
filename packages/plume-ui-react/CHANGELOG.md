@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.36.0
+
+### Minor Changes
+
+- [#190](https://github.com/darioegb/plume-ui-react/pull/190) [`4f342b40ae1fea6bfe214480ab24ba0fe42daa2c`](https://github.com/darioegb/plume-ui-react/commit/4f342b40ae1fea6bfe214480ab24ba0fe42daa2c) Thanks [@darioegb](https://github.com/darioegb)! - Pick the active option and close the Select with Alt+ArrowUp, as the listbox keyboard pattern asks.
+
 ## 0.35.0
 
 ### Minor Changes
