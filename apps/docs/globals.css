@@ -135,47 +135,58 @@ table.docblock-argstable {
   overflow-x: auto;
 }
 
-/* Footer (see src/footer.tsx) */
-.plume-footer {
-  border-top: 1px solid #e4e4e7;
-  color: #71717a;
-  font-size: 0.8125rem;
-  margin-top: 3rem;
-  padding: 1.5rem 1.25rem 2rem;
+/* Previous and next page (see src/page-nav.tsx) */
+.plume-page-nav {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 4rem;
 }
 
-.plume-footer a {
+.sbdocs a.plume-page-nav-link {
+  border: 1px solid #a1a1aa;
+  border-radius: 0.5rem;
   color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.875rem 1.125rem;
   text-decoration: none;
 }
 
-.plume-footer a:hover {
-  color: #10b981;
+.sbdocs a.plume-page-nav-link:hover {
+  border-color: #10b981;
 }
 
-.plume-footer-content {
+.sbdocs a.plume-page-nav-link:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.sbdocs a.plume-page-nav-next {
+  align-items: flex-end;
+  grid-column: 2;
+  text-align: end;
+}
+
+.plume-page-nav-hint {
+  font-size: 0.8125rem;
+  opacity: 0.65;
+}
+
+.plume-page-nav-title {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2rem;
-  justify-content: space-between;
-  margin-inline: auto;
-  max-width: 64rem;
+  font-weight: 600;
+  gap: 0.5rem;
 }
 
-.plume-footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
+html[data-plume-color-mode='dark'] .sbdocs a.plume-page-nav-link {
+  border-color: #52525b;
 }
 
-html[data-plume-color-mode='dark'] .plume-footer {
-  border-top-color: #3f3f46;
-  color: #a1a1aa;
-}
-
-html[data-plume-color-mode='dark'] .plume-footer a:hover {
-  color: #34d399;
+html[data-plume-color-mode='dark'] .sbdocs a.plume-page-nav-link:hover {
+  border-color: #34d399;
 }
 
 @media (max-width: 767px) {
@@ -191,11 +202,14 @@ html[data-plume-color-mode='dark'] .plume-footer a:hover {
   .docblock-colorpalette > div:first-child {
     display: none;
   }
-  .plume-footer {
-    padding-inline: 1rem;
-  }
   div.sbdocs-content {
     max-width: 100%;
+  }
+  .plume-page-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sbdocs a.plume-page-nav-next {
+    grid-column: 1;
   }
   div.container {
     padding-inline: 0;
