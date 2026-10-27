@@ -1,0 +1,106 @@
+{/* forms.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Forms' />
+
+# Forms
+
+Plume does not depend on any form library. Its controls follow two rules, so they work with react-hook-form,
+Formik, TanStack Form or plain state:
+
+- A control that is a single native element (`Input`, `Textarea`, `Checkbox`, `Toggle`, `Radio`) takes `name`, `onChange`,
+  `onBlur` and `ref` like the element does.
+- Every other control reports its value with `onValueChange(value)` and takes it back with `value`.
+
+The examples use [react-hook-form](https://react-hook-form.com/), which is not a dependency of the library.
+
+## Which control takes which wiring
+
+<table>
+  <thead>
+    <tr><th>Control</th><th>With react-hook-form</th><th>Value</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Input</code>, <code>Textarea</code></td><td><code>register('name')</code></td><td><code>string</code></td></tr>
+    <tr><td><code>Checkbox</code>, <code>Toggle</code></td><td><code>register('name')</code></td><td><code>boolean</code></td></tr>
+    <tr><td><code>Radio</code> (one by one)</td><td><code>register('name')</code></td><td><code>string</code></td></tr>
+    <tr><td><code>RadioGroup</code></td><td><code>Controller</code>, <code>value</code> and <code>onValueChange</code></td><td><code>string</code></td></tr>
+    <tr><td><code>Select</code></td><td><code>Controller</code>, <code>value</code> and <code>onValueChange</code></td><td><code>string</code>, or <code>string[]</code> with <code>multiple</code></td></tr>
+    <tr><td><code>NumberInput</code></td><td><code>Controller</code>, <code>value</code>, <code>onValueChange</code> and <code>ref</code></td><td><code>number</code> or <code>null</code></td></tr>
+    <tr><td><code>Slider</code></td><td><code>Controller</code>, <code>value</code> and <code>onValueChange</code></td><td><code>number</code>, or <code>[number, number]</code> for a range</td></tr>
+    <tr><td><code>Rating</code></td><td><code>Controller</code>, <code>value</code> and <code>onValueChange</code></td><td><code>number</code></td></tr>
+    <tr><td><code>PinInput</code></td><td><code>Controller</code>, <code>value</code> and <code>onValueChange</code></td><td><code>string</code></td></tr>
+    <tr><td><code>DatePicker</code></td><td><code>Controller</code>, <code>value</code>, <code>onValueChange</code> and <code>inputRef</code></td><td><code>{'{ startDate, endDate }'}</code></td></tr>
+    <tr><td><code>TimePicker</code></td><td><code>Controller</code>, <code>value</code>, <code>onValueChange</code> and <code>inputRef</code></td><td><code>string</code> as <code>HH:mm</code></td></tr>
+  </tbody>
+</table>
+
+## Native controls: `register`
+
+```tsx
+const { register, handleSubmit, formState: { errors } } = useForm<Values>()
+
+<form noValidate onSubmit={handleSubmit(onSubmit)}>
+  <Field errorText={errors.email?.message} label='Email' required>
+    <Input type='email' {...register('email', { required: 'Enter your email.' })} />
+  </Field>
+  <Field label='Notify me' orientation='inline'>
+    <Toggle {...register('notify')} />
+  </Field>
+</form>
+```
+
+`register` hands the `ref` to the `<input>`, so a failed rule focuses it. The `ref` of `Input`, `Textarea`, `Checkbox`,
+`Toggle` and `Radio` is always the native element, with or without parts.
+
+## The other controls: `Controller`
+
+```tsx
+const { control, handleSubmit } = useForm<Values>({ defaultValues: { room: '', volume: 40 } })
+
+<Controller
+  control={control}
+  name='room'
+  render={({ field, fieldState }) => (
+    <Field errorText={fieldState.error?.message} label='Room' required>
+      <Select name={field.name} onValueChange={field.onChange} value={field.value}>
+        <SelectTrigger placeholder='Pick a room' ref={field.ref} />
+        <SelectContent>
+          <SelectOption value='single'>Single</SelectOption>
+          <SelectOption value='double'>Double</SelectOption>
+        </SelectContent>
+      </Select>
+    </Field>
+  )}
+  rules={{ required: 'Pick a room.' }}
+/>
+
+<Controller
+  control={control}
+  name='volume'
+  render={({ field }) => (
+    <Field label='Volume'>
+      <Slider name={field.name} onValueChange={field.onChange} value={field.value} />
+    </Field>
+  )}
+/>
+```
+
+Where the `ref` goes, so the form can focus the control when a rule fails:
+
+- `Select`: `ref` on its `SelectTrigger`.
+- `NumberInput`: `ref` on the root, which is the native input.
+- `DatePicker` and `TimePicker`: `inputRef`.
+
+`reset()` puts every control above back to its default value, because each one is controlled through `value`.
+
+## Errors
+
+Pass the message to the `errorText` of a `Field`. It marks the control as invalid and links the message with
+`aria-describedby`, so a screen reader reads it with the control.
+
+Without a `Field`, give the control `aria-invalid` and `aria-describedby` and render the message yourself.
+
+A live example with `Input`, `Select`, `DatePicker` and `Checkbox`, with validation, is in the
+<a href='./?path=/story/components-field--react-hook-form' target='_top'>Field</a> page.
