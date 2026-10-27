@@ -1,7 +1,7 @@
 // .storybook/manager.ts
 
 import { addons } from 'storybook/manager-api'
-import { GLOBALS_UPDATED, SET_GLOBALS } from 'storybook/internal/core-events'
+import { SET_GLOBALS } from 'storybook/internal/core-events'
 import { darkTheme, lightTheme } from './theme'
 import { currentVersion, versions } from './versions'
 
@@ -157,10 +157,6 @@ addons.register('plume/theme-sync', (api) => {
     channel.emit(COLOR_MODE_EVENT, mode)
   }
 
-  const syncTheme = ({ globals }: { globals?: { colorMode?: string } }): void => {
-    applyMode(globals?.colorMode === 'dark' ? 'dark' : 'light')
-  }
-
   const applyPreferredMode = (): void => {
     const target = getStoredMode() ?? (prefersDark() ? 'dark' : 'light')
     if (target !== colorMode) {
@@ -169,15 +165,7 @@ addons.register('plume/theme-sync', (api) => {
     }
   }
 
-  let initialized = false
-  channel.on(SET_GLOBALS, (payload: { globals?: { colorMode?: string } }) => {
-    syncTheme(payload)
-    if (!initialized) {
-      initialized = true
-      applyPreferredMode()
-    }
-  })
-  channel.on(GLOBALS_UPDATED, syncTheme)
+  channel.on(SET_GLOBALS, applyPreferredMode)
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
     if (!getStoredMode()) applyPreferredMode()
