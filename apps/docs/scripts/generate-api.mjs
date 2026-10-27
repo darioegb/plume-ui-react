@@ -42,6 +42,12 @@ const tagOf = (symbol, name) =>
     .join('')
     .trim()
 
+// Only tagged symbols carry `since`, so the generated file does not change for the rest.
+const sinceOf = (symbol) => {
+  const since = tagOf(symbol, 'since')
+  return since ? { since } : {}
+}
+
 const typeToString = (type, location) =>
   checker.typeToString(
     type,
@@ -77,6 +83,7 @@ const mergeProps = (lists) => {
       known.required = known.required && prop.required
       known.description = known.description || prop.description
       known.default = known.default ?? prop.default
+      known.since = known.since ?? prop.since
       const parts = (type) => (type.includes('=>') ? [`(${type})`] : type.split(' | '))
       const combined = [...new Set([...parts(known.type), ...parts(prop.type)])]
       known.type = combined.join(' | ')
@@ -117,6 +124,7 @@ const propsOfMember = (propsType, location) => {
       description: docOf(property),
       name,
       required: !optional,
+      ...sinceOf(property),
       type: describeType(annotation, shown, location),
     })
   }
@@ -154,6 +162,7 @@ for (const file of program.getRootFileNames().sort()) {
       native: native.length > NATIVE_LIST_LIMIT ? [] : native,
       nativeAll: native.length > NATIVE_LIST_LIMIT,
       props: own,
+      ...sinceOf(target),
     })
   }
   if (components.length > 0) api[folder] = components

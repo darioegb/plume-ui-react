@@ -7,6 +7,7 @@ interface ApiProp {
   description: string
   name: string
   required: boolean
+  since?: string
   type: string
 }
 
@@ -16,6 +17,12 @@ interface ApiComponent {
   native: string[]
   nativeAll: boolean
   props: ApiProp[]
+  since?: string
+}
+
+function Since({ version }: Readonly<{ version?: string }>): ReactNode {
+  if (!version) return null
+  return <span className="api-since">Since {version}</span>
 }
 
 const folders = api as Record<string, ApiComponent[]>
@@ -78,6 +85,7 @@ function PropsTable({ component }: Readonly<{ component: ApiComponent }>): React
                     *
                   </span>
                 ) : null}
+                <Since version={prop.since} />
               </td>
               <td>
                 <code className="api-type">{prop.type}</code>
@@ -114,7 +122,10 @@ export function ApiReference({
       </p>
       {components.map((component, index) => (
         <section key={component.name}>
-          <h4 id={`api-${component.name}`}>{component.name}</h4>
+          <h4 id={`api-${component.name}`}>
+            {component.name}
+            <Since version={component.since} />
+          </h4>
           {index > 0 && component.description ? <Markdown>{component.description}</Markdown> : null}
           <PropsTable component={component} />
           <NativeNote component={component} />

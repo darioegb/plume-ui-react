@@ -45,6 +45,7 @@ The folder is the lowercase name (`datepicker`), which is also what Storybook us
 - **Ids** come from React's `useId` (React 18 is the minimum), never from a module counter.
 - **One name for each thing.** A component reports its value with `onValueChange(value)`, and the component that tracks an index or a page names what changed (`onIndexChange`, `onPageChange`, `onExpandedChange`, `onOpenChange`). Only a component that is a single native `<input>` or `<textarea>` (`Input`, `Textarea`, `Checkbox`, `Toggle`, `Radio`) takes the `onChange` of the element, with its event. A boolean prop is a plain adjective (`disabled`, `loop`, `multiple`, `busy`, `range`, `lazy`), never `isX`: the `is` prefix is only for the local variables of a component.
 - **Server rendering:** don't touch `window` or `document` while rendering. Use effects. See [Server and client components](#server-and-client-components) for the `'use client'` rule.
+- **`@since` for what ships after 1.0.** Everything in 1.0 carries no tag. A component, part or prop added in a later minor gets `@since <major>.<minor>` in its JSDoc, with the version of its changeset (`@since 1.2`), and the API reference shows it as a "Since 1.2" badge. Don't tag a change to something that already exists, the changelog covers that. `pnpm lint` rejects a tag that is not `major.minor`.
 
 ## Theming
 
@@ -172,6 +173,7 @@ Copy it into the pull request description.
 **Docs**
 - [ ] Story with `autodocs`, a description, every prop in `argTypes` and the main variations, in the usual order (the docs page and its Source link are generated from it)
 - [ ] The component is listed alphabetically in `packages/plume-ui-react/README.md` (the scaffold already adds it to the root README)
+- [ ] Added after 1.0: the component, part or prop has `@since <major>.<minor>` in its JSDoc
 
 **Release**
 - [ ] Exported from `src/index.ts` and listed in `src/tests/index.spec.ts` (the scaffold does both)
