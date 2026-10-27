@@ -115,49 +115,6 @@ table.docblock-argstable {
   overflow-x: auto;
 }
 
-/* Footer (see src/footer.tsx) */
-.plume-footer {
-  border-top: 1px solid #e4e4e7;
-  color: #71717a;
-  font-size: 0.8125rem;
-  margin-top: 3rem;
-  padding: 1.5rem 1.25rem 2rem;
-}
-
-.plume-footer a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.plume-footer a:hover {
-  color: #10b981;
-}
-
-.plume-footer-content {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2rem;
-  justify-content: space-between;
-  margin-inline: auto;
-  max-width: 64rem;
-}
-
-.plume-footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-}
-
-html[data-plume-color-mode='dark'] .plume-footer {
-  border-top-color: #3f3f46;
-  color: #a1a1aa;
-}
-
-html[data-plume-color-mode='dark'] .plume-footer a:hover {
-  color: #34d399;
-}
-
 @media (max-width: 767px) {
   div.sbdocs-wrapper {
     padding-inline: 1rem;
@@ -170,9 +127,6 @@ html[data-plume-color-mode='dark'] .plume-footer a:hover {
   /* Header row ("Name" / "Swatches") makes no sense once the columns stack. */
   .docblock-colorpalette > div:first-child {
     display: none;
-  }
-  .plume-footer {
-    padding-inline: 1rem;
   }
   div.sbdocs-content {
     max-width: 100%;

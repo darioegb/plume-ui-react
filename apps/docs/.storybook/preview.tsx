@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../globals.css'
 import DocsTemplate from '../src/docs-template'
-import Footer from '../src/footer'
 import { darkTheme, lightTheme } from './theme'
 
 // Mirrors the colorMode toggle onto docs pages.
@@ -31,7 +30,6 @@ const PlumeDocsContainer = ({
   return (
     <DocsContainer context={context} theme={colorMode === 'dark' ? darkTheme : lightTheme}>
       {children}
-      <Footer />
     </DocsContainer>
   )
 }
