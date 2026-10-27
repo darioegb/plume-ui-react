@@ -32,3 +32,10 @@ export const SunIcon = (): ReactNode => (
 export const MoonIcon = (): ReactNode => <Glyph path="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8" />
 export const SignOutIcon = (): ReactNode => <Glyph path="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
 export const FolderIcon = (): ReactNode => <Glyph path="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+export const SearchIcon = (): ReactNode => <Glyph path="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16M21 21l-4.3-4.3" />
+export const MoreIcon = (): ReactNode => (
+  <Glyph path="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2M19 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2M5 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+)
+export const CheckIcon = (): ReactNode => <Glyph path="M20 6 9 17l-5-5" />
+export const TrashIcon = (): ReactNode => <Glyph path="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5" />
+export const EyeIcon = (): ReactNode => <Glyph path="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
