@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.35.0
+
+### Minor Changes
+
+- [#187](https://github.com/darioegb/plume-ui-react/pull/187) [`4bcac84f53a3e1cb903afbe00a74e437bedd12e0`](https://github.com/darioegb/plume-ui-react/commit/4bcac84f53a3e1cb903afbe00a74e437bedd12e0) Thanks [@darioegb](https://github.com/darioegb)! - Fix the Modal letting the focus escape with Tab while a Select or a Tooltip is open inside it.
+
 ## 0.34.0
 
 ### Minor Changes
