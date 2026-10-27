@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import 'plume-ui-react/styles.css'
-import { getColorMode } from '@/lib/session'
+import { getBrand, getColorMode } from '@/lib/session'
 import { Providers } from './providers'
 
 export const metadata: Metadata = {
@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>): Promise<ReactNode> {
-  // The mode comes from a cookie, so the server renders the right theme with no flash.
-  const colorMode = await getColorMode()
+  // The mode and the brand come from cookies, so the server renders the right theme with no flash.
+  const [colorMode, brand] = await Promise.all([getColorMode(), getBrand()])
   return (
     <html lang="en">
       <body style={{ margin: 0, fontFamily: 'system-ui, sans-serif' }}>
-        <Providers colorMode={colorMode}>{children}</Providers>
+        <Providers brand={brand} colorMode={colorMode}>{children}</Providers>
       </body>
     </html>
   )
