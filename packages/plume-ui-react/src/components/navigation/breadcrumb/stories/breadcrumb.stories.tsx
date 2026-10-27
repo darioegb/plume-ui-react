@@ -79,6 +79,58 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Breadcrumb aria-label="Plain" variant="plain">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="Filled" variant="filled">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb
+    aria-label="Unstyled"
+    className="text-sm"
+    separator={<span className="mx-2 text-gray-400">/</span>}
+    variant="unstyled"
+  >
+    <BreadcrumbItem>
+      <BreadcrumbLink className="underline" href="/">
+        Home
+      </BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink className="underline" href="/components">
+        Components
+      </BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink className="font-bold" current>
+        Breadcrumb
+      </BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       <Breadcrumb aria-label="Plain" variant="plain">
@@ -117,6 +169,47 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Breadcrumb aria-label="Size sm" size="sm" variant="filled">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="Size md" size="md" variant="filled">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="Size lg" size="lg" variant="filled">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -133,6 +226,36 @@ export const Sizes: Story = {
  * `filled` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Breadcrumb aria-label="primary" colorScheme="primary">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="success" colorScheme="success">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
@@ -153,6 +276,47 @@ export const Colors: Story = {
  * can have its own, and `separator={null}` removes it.
  */
 export const Separators: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Breadcrumb aria-label="Arrow" separator="›">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="Long arrow" separator="→">
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+  <Breadcrumb aria-label="Per item">
+    <BreadcrumbItem separator="»">
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem separator={null}>
+      <BreadcrumbLink href="/components">Components (no separator)</BreadcrumbLink>
+    </BreadcrumbItem>
+    <BreadcrumbItem>
+      <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+    </BreadcrumbItem>
+  </Breadcrumb>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       <Breadcrumb aria-label="Arrow" separator="›">

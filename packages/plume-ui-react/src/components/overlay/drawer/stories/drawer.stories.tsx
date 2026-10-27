@@ -115,6 +115,64 @@ export const Default: Story = {}
  * Use the **side** prop to choose the edge it comes from: `left`, `right`, `top` or `bottom`.
  */
 export const Sides: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer side="left">
+    <DrawerTrigger>
+      <Button label="From the left" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer side="bottom">
+    <DrawerTrigger>
+      <Button label="From the bottom" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['left', 'right', 'top', 'bottom'] as const).map((side) => (
@@ -128,6 +186,64 @@ export const Sides: Story = {
  * Use the **shape** prop to choose between `rounded` corners, which is the default, and `square` ones.
  */
 export const Shapes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer shape="rounded">
+    <DrawerTrigger>
+      <Button label="Shape rounded" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer shape="square">
+    <DrawerTrigger>
+      <Button label="Shape square" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['rounded', 'square'] as const).map((shape) => (
@@ -142,6 +258,64 @@ export const Shapes: Story = {
  * bottom.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-3">
+  <Drawer size="sm">
+    <DrawerTrigger>
+      <Button label="Size sm" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+  <Drawer size="lg">
+    <DrawerTrigger>
+      <Button label="Size lg" />
+    </DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>Filters</DrawerHeader>
+      <DrawerBody>
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </DrawerBody>
+      <DrawerFooter>
+        <DrawerClose>
+          <Button label="Cancel" variant="ghost" />
+        </DrawerClose>
+        <DrawerClose>
+          <Button label="Apply" />
+        </DrawerClose>
+      </DrawerFooter>
+      <DrawerClose />
+    </DrawerContent>
+  </Drawer>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (

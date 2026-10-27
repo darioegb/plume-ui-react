@@ -103,6 +103,48 @@ export const Default: Story = {}
  * surface and the parts are yours to style.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <Modal variant="default">
+    <ModalTrigger>
+      <Button label="Open modal" />
+    </ModalTrigger>
+    <ModalContent>
+      <ModalHeader>Delete project</ModalHeader>
+      <ModalBody>
+        Deleting a project removes its files, its history and its members. This cannot be undone.
+      </ModalBody>
+      <ModalFooter>
+        <ModalClose>
+          <Button label="Cancel" variant="ghost" />
+        </ModalClose>
+        <ModalClose>
+          <Button colorScheme="error" label="Delete" />
+        </ModalClose>
+      </ModalFooter>
+      <ModalClose />
+    </ModalContent>
+  </Modal>
+  <Modal variant="unstyled">
+    <ModalTrigger>
+      <Button label="Open unstyled modal" variant="outline" />
+    </ModalTrigger>
+    <ModalContent className="fixed inset-0 m-auto h-fit max-w-sm rounded-xl bg-white p-6 text-black shadow-2xl">
+      <ModalHeader className="mb-2 text-lg font-bold">Unstyled</ModalHeader>
+      <ModalBody className="mb-4">The Plume styles are gone.</ModalBody>
+      <ModalFooter className="flex justify-end">
+        <ModalClose>
+          <Button label="Close" />
+        </ModalClose>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       <Example variant="default" />

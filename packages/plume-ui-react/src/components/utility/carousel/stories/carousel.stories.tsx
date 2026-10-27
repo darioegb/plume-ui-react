@@ -162,6 +162,69 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Carousel aria-label="solid" variant="solid">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="outline" variant="outline">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-surface p-4 text-foreground">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-surface p-4 text-foreground">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="unstyled" variant="unstyled">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <div className="mt-2 flex items-center justify-between">
+      <CarouselPrev
+        className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+        label="Back"
+      >
+        Back
+      </CarouselPrev>
+      <CarouselDots className="flex gap-2">
+        {() => (
+          <CarouselDot className="size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800" />
+        )}
+      </CarouselDots>
+      <CarouselNext
+        className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+        label="Next"
+      >
+        Next
+      </CarouselNext>
+    </div>
+  </Carousel>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
       {(['solid', 'outline', 'ghost', 'overlay'] as const).map((variant) => (
@@ -200,6 +263,53 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the buttons and the dots.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Carousel aria-label="Size sm" size="sm">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="Size md" size="md">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="Size lg" size="lg">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -216,6 +326,53 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme. It colors the buttons and the active dot.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Carousel aria-label="primary" colorScheme="primary" size="sm">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="success" colorScheme="success" size="sm">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="error" colorScheme="error" size="sm">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', ...frame }}>
       {colorSchemes.map((scheme) => (
@@ -246,6 +403,34 @@ export const Loop: Story = {
  * next one peeks out. The strip still snaps slide by slide.
  */
 export const Peek: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Several slides">
+  <CarouselSlides style={{ gap: '0.75rem' }}>
+    <CarouselSlide style={{ flexBasis: '45%' }}>
+      <div className="grid h-32 place-items-center rounded-lg bg-primary-solid text-primary-on-solid">
+        Mountains
+      </div>
+    </CarouselSlide>
+    <CarouselSlide style={{ flexBasis: '45%' }}>
+      <div className="grid h-32 place-items-center rounded-lg bg-success-solid text-success-on-solid">
+        Forest
+      </div>
+    </CarouselSlide>
+    <CarouselSlide style={{ flexBasis: '45%' }}>
+      <div className="grid h-32 place-items-center rounded-lg bg-error-solid text-error-on-solid">
+        Desert
+      </div>
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>`,
+      },
+    },
+  },
   render: () => (
     <Carousel aria-label="Several slides" style={frame}>
       <CarouselSlides style={{ gap: '0.75rem' }}>
@@ -367,6 +552,34 @@ export const Controlled: Story = {
  * Use **labels** to translate what a screen reader says.
  */
 export const Translated: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel
+  aria-label="Lugares destacados"
+  labels={{
+    dot: (index, count) => \`Diapositiva \${index + 1} de \${count}\`,
+    dots: 'Elegir una diapositiva',
+    next: 'Siguiente',
+    previous: 'Anterior',
+    slide: (index, count) => \`\${index + 1} de \${count}\`,
+  }}
+>
+  <CarouselSlides>
+    <CarouselSlide>
+      <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Montañas</div>
+    </CarouselSlide>
+    <CarouselSlide>
+      <div className="h-44 bg-success-solid p-4 text-success-on-solid">Bosque</div>
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>`,
+      },
+    },
+  },
   render: () => (
     <Carousel
       aria-label="Lugares destacados"
@@ -393,6 +606,29 @@ export const Translated: Story = {
  * themselves. Here the dots show the number of their slide.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places">
+  <CarouselSlides>
+    <CarouselSlide>
+      <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+    </CarouselSlide>
+    <CarouselSlide>
+      <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots>
+    {(position) => (
+      <CarouselDot className="size-6 rounded-full text-xs">{position + 1}</CarouselDot>
+    )}
+  </CarouselDots>
+</Carousel>`,
+      },
+    },
+  },
   render: () => (
     <Carousel aria-label="Featured places" style={frame}>
       <Panels />

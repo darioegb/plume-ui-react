@@ -108,6 +108,44 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Accordion defaultValue="How do I install it?" variant="outline">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Accordion defaultValue="Can I use Tailwind?" variant="filled">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Accordion defaultValue="Is it accessible?" variant="unstyled">
+    <AccordionItem className="border-b border-gray-300" value="Is it accessible?">
+      <AccordionTrigger className="py-2 text-left font-bold">
+        Is it accessible?
+      </AccordionTrigger>
+      <AccordionContent>
+        <AccordionBody className="pb-2">It follows the WAI-ARIA accordion pattern.</AccordionBody>
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6" style={{ width: '28rem', maxWidth: '100%' }}>
       <Accordion defaultValue={questions[0].title} variant="outline">
@@ -134,6 +172,44 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Accordion defaultValue="How do I install it?" size="sm">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Accordion defaultValue="Can I use Tailwind?" size="md">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Accordion defaultValue="How do I install it?" size="lg">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6" style={{ width: '28rem', maxWidth: '100%' }}>
       {(['sm', 'md', 'lg'] as const).map((size, position) => (
@@ -273,6 +349,34 @@ export const CustomIcon: Story = {
  * A disabled item can't be opened or focused. Use **disabled** on the Accordion to disable all of them.
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Accordion defaultValue="How do I install it?">
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem disabled value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+  <Accordion disabled>
+    <AccordionItem value="How do I install it?">
+      <AccordionTrigger>How do I install it?</AccordionTrigger>
+      <AccordionContent>Install the package and wrap your app.</AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="Can I use Tailwind?">
+      <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+      <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6" style={{ width: '28rem', maxWidth: '100%' }}>
       <Accordion defaultValue={questions[0].title}>

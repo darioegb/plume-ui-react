@@ -143,6 +143,47 @@ export const Default: Story = {}
  * border, and `unstyled` drops the Plume styles so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <Dropdown variant="elevated">
+    <DropdownTrigger>
+      <Button label="Actions" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+      <DropdownItem>Sign out</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown variant="outline">
+    <DropdownTrigger>
+      <Button label="Actions" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+      <DropdownItem>Sign out</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown variant="unstyled">
+    <DropdownTrigger>
+      <Button label="Unstyled" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu className="min-w-40 rounded border border-border bg-surface p-1 text-foreground shadow">
+      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+        Profile
+      </DropdownItem>
+      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+        Settings
+      </DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       <Example variant="elevated" />

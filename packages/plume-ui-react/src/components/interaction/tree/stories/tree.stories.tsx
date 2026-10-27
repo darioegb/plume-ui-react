@@ -189,6 +189,53 @@ export const Default: Story = {}
  * it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Tree aria-label="solid" defaultExpanded={['src']} defaultValue="index" variant="solid">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="ghost" defaultExpanded={['src']} defaultValue="index" variant="ghost">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="accent" defaultExpanded={['src']} defaultValue="index" variant="accent">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['solid', 'ghost', 'accent'] as const).map((variant) => (
@@ -208,6 +255,53 @@ export const Variants: Story = {
  * Use the **size** prop to change the text and the rows.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Tree aria-label="Size sm" defaultExpanded={['src']} defaultValue="index" size="sm">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="Size md" defaultExpanded={['src']} defaultValue="index" size="md">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="Size lg" defaultExpanded={['src']} defaultValue="index" size="lg">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -605,6 +699,44 @@ export const Disabled: Story = {
  * reorder them or give each its own class: here the icon comes first and the chevron last.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tree aria-label="Files" selection="checkbox">
+  <TreeItem value="docs">
+    <TreeItemLabel>
+      <TreeItemCheckbox />
+      <TreeItemIcon>
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="1em"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="1em"
+        >
+          <path d="M3 7h6l2 2h10v10H3z" />
+        </svg>
+      </TreeItemIcon>
+      Documents
+      <TreeItemChevron />
+    </TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="alpha">
+        <TreeItemLabel>
+          <TreeItemCheckbox />
+          Alpha
+        </TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
   render: () => (
     <Tree aria-label="Files" selection="checkbox" style={frame}>
       <TreeItem value="docs">

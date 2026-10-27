@@ -146,6 +146,23 @@ export const Variants: Story = {
       <Option defaultChecked label="Unstyled" name="variant-unstyled" variant="unstyled" />
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center items-center gap-6">
+  <Field label="Solid" orientation="inline">
+    <Radio defaultChecked name="variant-solid" variant="solid" />
+  </Field>
+  <Field label="Outline" orientation="inline">
+    <Radio defaultChecked name="variant-outline" variant="outline" />
+  </Field>
+  <Field label="Unstyled" orientation="inline">
+    <Radio defaultChecked name="variant-unstyled" variant="unstyled" />
+  </Field>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -159,6 +176,23 @@ export const Sizes: Story = {
       <Option defaultChecked label="Large" size="lg" />
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center items-center gap-6">
+  <Field label="Small" orientation="inline">
+    <Radio defaultChecked size="sm" />
+  </Field>
+  <Field label="Medium" orientation="inline">
+    <Radio defaultChecked size="md" />
+  </Field>
+  <Field label="Large" orientation="inline">
+    <Radio defaultChecked size="lg" />
+  </Field>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -177,6 +211,23 @@ export const Colors: Story = {
       ))}
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center items-center gap-6">
+  <Field label="primary" orientation="inline">
+    <Radio colorScheme="primary" defaultChecked />
+  </Field>
+  <Field label="success" orientation="inline">
+    <Radio colorScheme="success" defaultChecked />
+  </Field>
+  <Field label="purple" orientation="inline">
+    <Radio colorScheme="purple" defaultChecked />
+  </Field>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -190,6 +241,23 @@ export const DisabledAndReadOnly: Story = {
       <Option defaultChecked label="Read only and selected" name="readonly-demo" readOnly />
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-2">
+  <Field label="Disabled" orientation="inline">
+    <Radio disabled name="disabled-demo" />
+  </Field>
+  <Field label="Disabled and selected" orientation="inline">
+    <Radio defaultChecked disabled name="disabled-demo" />
+  </Field>
+  <Field label="Read only and selected" orientation="inline">
+    <Radio defaultChecked name="readonly-demo" readOnly />
+  </Field>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -237,6 +305,33 @@ export const Group: Story = {
       </RadioGroup>
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <RadioGroup aria-label="Plan" defaultValue="pro">
+    <Field label="Free" orientation="inline">
+      <Radio value="free" />
+    </Field>
+    <Field label="Pro" orientation="inline">
+      <Radio value="pro" />
+    </Field>
+    <Field label="Team" orientation="inline">
+      <Radio value="team" />
+    </Field>
+  </RadioGroup>
+  <RadioGroup aria-label="Billing" defaultValue="monthly" orientation="horizontal">
+    <Field label="Monthly" orientation="inline">
+      <Radio value="monthly" />
+    </Field>
+    <Field label="Yearly" orientation="inline">
+      <Radio value="yearly" />
+    </Field>
+  </RadioGroup>
+</div>`,
+      },
+    },
+  },
 }
 
 function ControlledPlan(): React.ReactNode {
@@ -314,6 +409,43 @@ export const GroupSizesAndColors: Story = {
       </RadioGroup>
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <RadioGroup
+    aria-label="Large"
+    colorScheme="success"
+    defaultValue="a"
+    orientation="horizontal"
+    size="lg"
+  >
+    <Field label="Large" orientation="inline">
+      <Radio value="a" />
+    </Field>
+    <Field label="Success" orientation="inline">
+      <Radio value="b" />
+    </Field>
+  </RadioGroup>
+  <RadioGroup
+    aria-label="Small"
+    colorScheme="purple"
+    defaultValue="a"
+    orientation="horizontal"
+    size="sm"
+    variant="outline"
+  >
+    <Field label="Small" orientation="inline">
+      <Radio value="a" />
+    </Field>
+    <Field label="Its own size and color" orientation="inline">
+      <Radio colorScheme="warning" size="md" value="b" />
+    </Field>
+  </RadioGroup>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -337,6 +469,38 @@ export const GroupDisabledAndReadOnly: Story = {
       </RadioGroup>
     </div>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <RadioGroup aria-label="Disabled group" defaultValue="free" disabled>
+    <Field label="Free" orientation="inline">
+      <Radio value="free" />
+    </Field>
+    <Field label="Pro" orientation="inline">
+      <Radio value="pro" />
+    </Field>
+  </RadioGroup>
+  <RadioGroup aria-label="One disabled option" defaultValue="free">
+    <Field label="Free" orientation="inline">
+      <Radio value="free" />
+    </Field>
+    <Field label="Pro (unavailable)" orientation="inline">
+      <Radio disabled value="pro" />
+    </Field>
+  </RadioGroup>
+  <RadioGroup aria-label="Read only group" defaultValue="pro" readOnly>
+    <Field label="Free" orientation="inline">
+      <Radio value="free" />
+    </Field>
+    <Field label="Pro" orientation="inline">
+      <Radio value="pro" />
+    </Field>
+  </RadioGroup>
+</div>`,
+      },
+    },
+  },
 }
 
 /**
@@ -350,6 +514,23 @@ export const GroupInvalid: Story = {
       <Option label="Team" value="team" />
     </RadioGroup>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<RadioGroup aria-invalid aria-label="Plan">
+  <Field label="Free" orientation="inline">
+    <Radio value="free" />
+  </Field>
+  <Field label="Pro" orientation="inline">
+    <Radio value="pro" />
+  </Field>
+  <Field label="Team" orientation="inline">
+    <Radio value="team" />
+  </Field>
+</RadioGroup>`,
+      },
+    },
+  },
 }
 
 /**
@@ -372,6 +553,30 @@ export const GroupWithField: Story = {
       </RadioGroup>
     </Field>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field
+  errorText="Pick a plan to continue"
+  helperText="You can change it later"
+  label="Plan"
+  required
+>
+  <RadioGroup>
+    <Field label="Free" orientation="inline">
+      <Radio value="free" />
+    </Field>
+    <Field label="Pro" orientation="inline">
+      <Radio value="pro" />
+    </Field>
+    <Field label="Team" orientation="inline">
+      <Radio value="team" />
+    </Field>
+  </RadioGroup>
+</Field>`,
+      },
+    },
+  },
 }
 
 /**

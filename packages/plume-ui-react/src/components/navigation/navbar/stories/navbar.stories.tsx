@@ -104,6 +104,59 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Navbar aria-label="plain" variant="plain">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="solid" variant="solid">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar
+    aria-label="unstyled"
+    className="gap-4 rounded-xl bg-slate-900 px-4 py-2 text-slate-100"
+    variant="unstyled"
+  >
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent className="gap-2">
+      <NavbarItem
+        active
+        className="rounded-lg px-3 py-1 hover:bg-slate-700 data-[active]:bg-slate-700 data-[active]:font-bold"
+        href="/"
+      >
+        Home
+      </NavbarItem>
+      <NavbarItem
+        className="rounded-lg px-3 py-1 hover:bg-slate-700 data-[active]:bg-slate-700 data-[active]:font-bold"
+        href="/docs"
+      >
+        Docs
+      </NavbarItem>
+    </NavbarContent>
+  </Navbar>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['plain', 'filled', 'solid'] as const).map((variant) => (
@@ -135,6 +188,47 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Navbar aria-label="sm" size="sm">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="md" size="md">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="lg" size="lg">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -151,6 +245,36 @@ export const Sizes: Story = {
  * `solid` variant. Here every scheme is shown in the default `plain` variant.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Navbar aria-label="primary" colorScheme="primary">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="success" colorScheme="success">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent>
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (
@@ -171,6 +295,47 @@ export const Colors: Story = {
  * the `end`.
  */
 export const Alignment: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Navbar aria-label="start">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent align="start">
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="center">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent align="center">
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+  <Navbar aria-label="end">
+    <NavbarBrand href="/">Plume</NavbarBrand>
+    <NavbarToggle />
+    <NavbarContent align="end">
+      <NavbarItem active href="/">
+        Home
+      </NavbarItem>
+      <NavbarItem href="/components">Components</NavbarItem>
+      <NavbarItem href="/docs">Docs</NavbarItem>
+    </NavbarContent>
+  </Navbar>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-6">
       {(['start', 'center', 'end'] as const).map((align) => (
@@ -187,6 +352,25 @@ export const Alignment: Story = {
  * not a page.
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Navbar aria-label="With a disabled item">
+  <NavbarBrand href="/">Plume</NavbarBrand>
+  <NavbarToggle />
+  <NavbarContent>
+    <NavbarItem active href="/">
+      Home
+    </NavbarItem>
+    <NavbarItem disabled href="/pricing">
+      Pricing (soon)
+    </NavbarItem>
+    <NavbarItem onClick={() => undefined}>Action</NavbarItem>
+  </NavbarContent>
+</Navbar>`,
+      },
+    },
+  },
   render: () => (
     <Navbar aria-label="With a disabled item">
       <NavbarBrand href="#home">Plume</NavbarBrand>

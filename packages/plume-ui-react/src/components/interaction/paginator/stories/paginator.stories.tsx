@@ -146,6 +146,18 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col items-start gap-6">
+  <Paginator aria-label="solid" defaultPage={4} total={100} variant="solid" />
+  <Paginator aria-label="outline" defaultPage={4} total={100} variant="outline" />
+  <Paginator aria-label="ghost" defaultPage={4} total={100} variant="ghost" />
+  <Paginator aria-label="unstyled" defaultPage={4} total={100} variant="unstyled" />
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['solid', 'outline', 'ghost'] as const).map((variant) => (

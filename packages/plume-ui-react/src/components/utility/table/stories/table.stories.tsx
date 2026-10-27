@@ -179,6 +179,88 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Table aria-label="plain" variant="plain">
+    <TableCaption>plain</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+  <Table aria-label="striped" variant="striped">
+    <TableCaption>striped</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+  <Table aria-label="unstyled" className="w-full text-left text-sm" variant="unstyled">
+    <TableCaption className="pb-2 text-left font-bold">
+      unstyled, with Tailwind classes
+    </TableCaption>
+    <TableHeader>
+      <TableRow className="border-b-2 border-gray-400">
+        <TableHead className="py-1">Name</TableHead>
+        <TableHead className="py-1">Role</TableHead>
+        <TableHead align="end" className="py-1">
+          Age
+        </TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow className="border-b border-gray-300">
+        <TableCell className="py-1">Ada Lovelace</TableCell>
+        <TableCell className="py-1">Mathematician</TableCell>
+        <TableCell align="end" className="py-1">
+          36
+        </TableCell>
+      </TableRow>
+      <TableRow className="border-b border-gray-300">
+        <TableCell className="py-1">Grace Hopper</TableCell>
+        <TableCell className="py-1">Rear admiral</TableCell>
+        <TableCell align="end" className="py-1">
+          45
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div
       style={{
@@ -237,6 +319,80 @@ export const Variants: Story = {
  * Use the **size** prop to change the density: the padding of the cells.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Table aria-label="Size sm" size="sm">
+    <TableCaption>sm</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+  <Table aria-label="Size md" size="md">
+    <TableCaption>md</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+  <Table aria-label="Size lg" size="lg">
+    <TableCaption>lg</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div
       style={{
@@ -951,6 +1107,34 @@ export const Selectable: Story = {
  * new data arrives.
  */
 export const Loading: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Table aria-label="Loading people" loading>
+  <TableCaption>People of the team</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Role</TableHead>
+      <TableHead align="end">Age</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Ada Lovelace</TableCell>
+      <TableCell>Mathematician</TableCell>
+      <TableCell align="end">36</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Grace Hopper</TableCell>
+      <TableCell>Rear admiral</TableCell>
+      <TableCell align="end">45</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`,
+      },
+    },
+  },
   render: () => (
     <Table aria-label="Loading people" loading style={{ maxWidth: '100%', width: '28rem' }}>
       <Content />
