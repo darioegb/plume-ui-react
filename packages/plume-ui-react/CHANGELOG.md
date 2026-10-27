@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.34.0
+
+### Minor Changes
+
+- [#183](https://github.com/darioegb/plume-ui-react/pull/183) [`9e75372923ccfe03ca8708758af6852426942e97`](https://github.com/darioegb/plume-ui-react/commit/9e75372923ccfe03ca8708758af6852426942e97) Thanks [@darioegb](https://github.com/darioegb)! - `Paginator` drops the `count` prop (number of pages). Give it the `total` of items and the `pageSize`, and it works the pages out; if you only know the number of pages, pass `total={pages * pageSize}`. A `Paginator` with a `total` of `0` now renders an empty pager (so `PaginatorSummary` can show `0–0 of 0`), and one without a `total` renders nothing.
+
 ## 0.33.0
 
 ### Minor Changes
