@@ -85,7 +85,12 @@ export function useSelectKeyboard(options: UseSelectKeyboardOptions): SelectKeyb
 
   const handleOpenKey = (event: KeyboardEvent, isTextInput: boolean): void => {
     const enabled = getEnabledOptions(listbox)
-    if (event.key in steps) {
+    if (event.altKey && event.key === 'ArrowUp') {
+      event.preventDefault()
+      const active = enabled.find((option) => option.id === activeId)
+      if (active?.dataset.value === undefined) latest.current.close(true)
+      else latest.current.select(active.dataset.value)
+    } else if (event.key in steps) {
       event.preventDefault()
       focusOption(stepOption(enabled, activeId, steps[event.key]))
     } else if (!isTextInput && (event.key === 'Home' || event.key === 'End')) {

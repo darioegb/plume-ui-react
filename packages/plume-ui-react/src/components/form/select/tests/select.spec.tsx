@@ -332,6 +332,14 @@ describe('Select component', () => {
       expect(trigger()).toHaveFocus()
     })
 
+    it('picks the active option and closes with Alt+ArrowUp', async () => {
+      render(<Example />)
+      await userEvent.tab()
+      await userEvent.keyboard('{Enter}{ArrowDown}{Alt>}{ArrowUp}{/Alt}')
+      expect(screen.queryByRole('listbox')).toBeNull()
+      expect(trigger()).toHaveTextContent('Banana')
+    })
+
     it('closes with Tab', async () => {
       render(<Example />)
       await userEvent.tab()
