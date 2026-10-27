@@ -2,7 +2,10 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { COLOR_MODE_COOKIE, SESSION_COOKIE } from '@/lib/session'
+import { revalidatePath } from 'next/cache'
+import { addProject, getProjects, type NewProjectInput } from '@/lib/data'
+import { COLOR_MODE_COOKIE, SESSION_COOKIE, getUser } from '@/lib/session'
+import { validateNewProject, type NewProjectErrors } from '@/lib/validation'
 
 export interface SignInState {
   email?: string
@@ -33,4 +36,21 @@ export async function saveColorMode(mode: string): Promise<void> {
     path: '/',
     sameSite: 'lax',
   })
+}
+
+export async function createProject(
+  input: NewProjectInput,
+): Promise<{ errors?: NewProjectErrors; name?: string }> {
+  if (!(await getUser())) redirect('/login')
+  const existing = await getProjects()
+  const errors = validateNewProject(
+    input,
+    existing.map((project) => project.name),
+  )
+  if (Object.keys(errors).length > 0) return { errors }
+
+  const project = await addProject({ ...input, name: input.name.trim() })
+  revalidatePath('/')
+  revalidatePath('/projects')
+  return { name: project.name }
 }

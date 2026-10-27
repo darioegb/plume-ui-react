@@ -17,6 +17,10 @@
   width: 15rem;
 }
 
+.create {
+  margin-inline-start: auto;
+}
+
 .name {
   background: none;
   border: 0;
