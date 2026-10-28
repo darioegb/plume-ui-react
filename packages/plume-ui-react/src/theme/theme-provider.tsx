@@ -8,6 +8,7 @@ import type { DeepPartial, Theme } from './theme.types'
 import type { ColorMode, ColorModeSetting, ThemeContextValue } from './theme-context'
 import { ThemeContext } from './theme-context'
 import { ThemeRootContext } from './theme-root'
+import { getCssVarOverrides, getDefaultCssVars } from './default-css-vars'
 import { themeToCssVars } from './theme-to-css-vars'
 
 export { useTheme } from './theme-context'
@@ -64,7 +65,10 @@ export function ThemeProvider({
   }, [setting])
 
   const activeTheme = colorMode === 'dark' ? resolvedDarkTheme : lightTheme
-  const cssVars = useMemo(() => themeToCssVars(activeTheme), [activeTheme])
+  const cssVars = useMemo(
+    () => getCssVarOverrides(themeToCssVars(activeTheme), getDefaultCssVars(colorMode)),
+    [activeTheme, colorMode],
+  )
 
   useEffect(() => {
     if (!applyToBody || typeof document === 'undefined') return

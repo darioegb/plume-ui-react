@@ -7,7 +7,8 @@ import { defaultTheme } from 'plume-ui-react'
 
 # Design tokens
 
-Every token below is serialized to a CSS variable by `<ThemeProvider>` and is
+Every token below is a CSS variable: the default values are declared in `plume-ui-react/styles.css`
+(and alone in `plume-ui-react/tokens.css`), and `<ThemeProvider>` declares only the ones your theme changes. It is
 also available as a Tailwind utility through the Plume preset. Colors live on the
 dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> page.
 

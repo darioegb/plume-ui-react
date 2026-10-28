@@ -50,14 +50,29 @@ describe('ThemeProvider', () => {
     document.body.removeAttribute('style')
   })
 
-  it('emits the theme as CSS variables on its root element', () => {
+  it('leaves the default values to tokens.css and only emits what the theme changes', () => {
     render(
       <ThemeProvider>
         <ColorModeProbe />
       </ThemeProvider>,
     )
-    expect(root()).toHaveStyle(`--plume-color-primary-500: ${defaultTheme.colors.primary[500]}`)
+    expect(root().style.getPropertyValue('--plume-color-primary-500')).toBe('')
+    expect(root().style.getPropertyValue('--plume-space-4')).toBe('')
     expect(root()).toHaveAttribute('data-plume-color-mode', 'light')
+  })
+
+  it('declares again the variables that point to another one', () => {
+    render(
+      <ThemeProvider>
+        <ColorModeProbe />
+      </ThemeProvider>,
+    )
+    expect(root().style.getPropertyValue('--plume-focus-ring-color')).toBe(
+      defaultTheme.focusRing.color,
+    )
+    expect(root().style.getPropertyValue('--plume-text-heading-1-size')).toBe(
+      defaultTheme.textStyles['heading-1'].fontSize,
+    )
   })
 
   it('merges a partial theme over the default one', () => {
@@ -67,7 +82,7 @@ describe('ThemeProvider', () => {
       </ThemeProvider>,
     )
     expect(root()).toHaveStyle('--plume-color-primary-500: #ff0000')
-    expect(root()).toHaveStyle(`--plume-color-primary-600: ${defaultTheme.colors.primary[600]}`)
+    expect(root().style.getPropertyValue('--plume-color-primary-600')).toBe('')
   })
 
   it('switches between light and dark at runtime', async () => {

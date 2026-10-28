@@ -525,3 +525,15 @@ The other side is that CSS with no layer also beats Plume. If you use Bootstrap,
 Tailwind v3, import it into a layer that comes before `plume` (`@import '...' layer(reset)`, after
 `@layer reset, base, plume, components, utilities;`), or the reset will remove the padding of the buttons and the
 borders of the inputs. See **Customizing styles**.
+
+## The default theme is in the stylesheet
+
+`plume-ui-react/styles.css` declares the default tokens (`:root` for light mode and
+`[data-plume-color-mode='dark']` for what changes in dark mode), so the components render with their colors, spacing
+and shadows even without a `<ThemeProvider>`. The provider is still the way to change the theme and the color mode,
+and it now writes inline only the variables that differ from the default, so the HTML it renders on the server is
+much smaller (a default theme emits about 40 variables instead of more than 300).
+
+Because the default values no longer come from the provider, a variable that is not in your theme is not on the
+element: read it with `getComputedStyle` instead of `element.style`. `plume-ui-react/tokens.css` has only the tokens,
+for an app that builds its own components over them.

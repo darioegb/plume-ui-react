@@ -104,7 +104,9 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
     theme.typography.letterSpacings as unknown as TokenRecord,
     vars,
   )
-  for (const [name, style] of Object.entries(theme.textStyles as unknown as Record<string, TextStyle>)) {
+  for (const [name, style] of Object.entries(
+    theme.textStyles as unknown as Record<string, TextStyle>,
+  )) {
     vars[`${PREFIX}-text-${name}-size`] = style.fontSize
     vars[`${PREFIX}-text-${name}-weight`] = String(style.fontWeight)
     vars[`${PREFIX}-text-${name}-line-height`] = String(style.lineHeight)

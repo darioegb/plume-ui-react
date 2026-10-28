@@ -3,6 +3,7 @@ import { promises as fsPromises } from 'node:fs'
 import path from 'node:path'
 import { defineConfig, type Options } from 'tsup'
 import postcss from 'postcss'
+import { buildTokensCss } from './scripts/tokens-css'
 import postcssModules from 'postcss-modules'
 
 type Plugin = NonNullable<Options['esbuildPlugins']>[number]
@@ -77,9 +78,11 @@ const moduleEntries = ['src/**/*.{ts,tsx}', '!src/**/tests/**', '!src/**/stories
 
 async function emitStylesheet(): Promise<void> {
   const css = await fsPromises.readFile('dist/index.css', 'utf8')
+  const tokens = buildTokensCss()
+  await fsPromises.writeFile('dist/tokens.css', `@layer base,plume,components,utilities;@layer plume{${tokens}}`)
   await fsPromises.writeFile(
     'dist/styles.css',
-    `@layer base,plume,components,utilities;@layer plume{${css}}`,
+    `@layer base,plume,components,utilities;@layer plume{${tokens}${css}}`,
   )
   await fsPromises.rm('dist/index.css')
 }

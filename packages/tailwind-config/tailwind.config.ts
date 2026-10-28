@@ -1,9 +1,9 @@
 import type { Config } from 'tailwindcss'
 
 // Plume design tokens exposed as Tailwind utilities. Every value points to a CSS
-// variable emitted by <ThemeProvider>, so utilities stay in sync with the active
-// theme and flip automatically in dark mode. The provider must wrap the app for
-// these variables to resolve.
+// variable declared by plume-ui-react/styles.css (the default theme) and by
+// <ThemeProvider> (what the theme changes), so utilities stay in sync with the
+// active theme and flip automatically in dark mode.
 const SCHEMES = [
   'primary',
   'secondary',
