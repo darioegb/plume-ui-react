@@ -80,6 +80,11 @@ function Styled({
  * **siblingCount** pages around the current one and the **boundaryCount** pages at each end. The list always has
  * the same number of items, so the buttons don't move while the user pages. It renders nothing without a **total**.
  *
+ * The row always stays on one line: **siblingCount** and **boundaryCount** are the most pages it shows, and when the
+ * width left (after the page size or any other part next to the list) is not enough, it shows fewer, down to just
+ * the current page, instead of wrapping. It measures the buttons, so it adapts to a narrow phone, a sidebar or a
+ * resized window.
+ *
  * It keeps the page itself, or follows **page** when you control it. It doesn't load anything: use
  * **onPageChange** to fetch the page, for example from a `Table`.
  *
