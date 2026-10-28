@@ -10,30 +10,35 @@ import {
   Radio,
   RadioGroup,
   useTheme,
+  type ColorModeSetting,
 } from 'plume-ui-react'
 import { saveBrand, saveColorMode } from '@/app/actions'
-import { useBrand } from '@/app/providers'
+import { usePreferences } from '@/app/providers'
 import { brands, type BrandId } from '@/theme'
 import styles from './settings.module.css'
 
 const brandIds = Object.keys(brands) as BrandId[]
 
 export function AppearanceSettings(): ReactNode {
-  const { colorMode, setColorMode } = useTheme()
-  const { brand, setBrand } = useBrand()
+  const { setColorMode } = useTheme()
+  const { brand, colorModeSetting, setBrand, setColorModeSetting } = usePreferences()
   const [, startTransition] = useTransition()
 
   return (
     <div className={styles.section}>
-      <Field label="Color mode">
+      <Field helperText="System follows the color scheme of your browser or device." label="Color mode">
         <RadioGroup
           onValueChange={(value) => {
-            setColorMode(value as 'light' | 'dark')
+            setColorMode(value as ColorModeSetting)
+            setColorModeSetting(value as ColorModeSetting)
             startTransition(() => saveColorMode(value))
           }}
           orientation="horizontal"
-          value={colorMode}
+          value={colorModeSetting}
         >
+          <Field label="System" orientation="inline">
+            <Radio value="system" />
+          </Field>
           <Field label="Light" orientation="inline">
             <Radio value="light" />
           </Field>

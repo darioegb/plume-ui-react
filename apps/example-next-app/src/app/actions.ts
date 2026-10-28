@@ -31,7 +31,7 @@ export async function signOut(): Promise<void> {
 }
 
 export async function saveColorMode(mode: string): Promise<void> {
-  if (mode !== 'light' && mode !== 'dark') return
+  if (mode !== 'light' && mode !== 'dark' && mode !== 'system') return
   ;(await cookies()).set(COLOR_MODE_COOKIE, mode, {
     maxAge: 60 * 60 * 24 * 365,
     path: '/',
