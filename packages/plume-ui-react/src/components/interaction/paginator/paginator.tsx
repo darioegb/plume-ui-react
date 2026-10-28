@@ -1,19 +1,22 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useCallback, useMemo } from 'react'
+import { forwardRef, useCallback, useMemo, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
+import { mergeRefs } from '../../../overlay/trigger'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { PaginatorContext, type PaginatorLabels, type PaginatorVariant } from './paginator-context'
 import { PaginatorList } from './paginator-list'
 import styles from './paginator.module.css'
 import { getPaginatorItems } from './paginator-range'
+import { usePaginatorFit } from './use-paginator-fit'
 
 export interface PaginatorOwnProps {
   /**
-   * How many pages are always shown at the start and at the end.
+   * How many pages are always shown at the start and at the end. It is the most it shows: when the
+   * row has no room, the Paginator shows fewer so that it stays on one line.
    *
    * @default 1
    */
@@ -82,7 +85,8 @@ export interface PaginatorOwnProps {
    */
   showEdges?: boolean
   /**
-   * How many pages are shown on each side of the current one.
+   * How many pages are shown on each side of the current one. It is the most it shows: when the
+   * row has no room, the Paginator shows fewer so that it stays on one line.
    *
    * @default 1
    */
@@ -183,12 +187,25 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     const isStyled = variant !== 'unstyled'
     const current = clamp(page, 1, Math.max(pages, 1))
     const text = useLabels('paginator', DEFAULT_LABELS, labels)
+    const [root, setRoot] = useState<HTMLElement | null>(null)
+    const fit = useMemo(() => ({ boundaryCount, siblingCount }), [boundaryCount, siblingCount])
+    const shown = usePaginatorFit({
+      ...fit,
+      current,
+      pages: Math.max(pages, 1),
+      root,
+    })
     const entries = useMemo(
       () =>
         pages < 1
           ? []
-          : getPaginatorItems({ boundaryCount, count: pages, page: current, siblingCount }),
-      [boundaryCount, current, pages, siblingCount],
+          : getPaginatorItems({
+              boundaryCount: shown.boundaryCount,
+              count: pages,
+              page: current,
+              siblingCount: shown.siblingCount,
+            }),
+      [current, pages, shown.boundaryCount, shown.siblingCount],
     )
     const go = useCallback(
       (target: number): void => {
@@ -255,7 +272,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
             className,
           )}
           data-plume-paginator=""
-          ref={ref}
+          ref={mergeRefs(ref, setRoot)}
           {...rest}
         >
           {children ?? <PaginatorList />}

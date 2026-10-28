@@ -25,6 +25,7 @@
 }
 
 .list {
+  flex-wrap: nowrap;
   gap: var(--plume-space-1);
 }
 
@@ -55,16 +56,22 @@
 
 .paginator {
   column-gap: var(--plume-space-4);
+  flex-wrap: nowrap;
   row-gap: var(--plume-space-2);
 }
 
 .summary {
   color: var(--plume-muted);
   font-size: var(--plume-font-size-sm);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pageSize {
   display: inline-flex;
+  flex-shrink: 0;
 }
 
 .pageSize [data-plume-select-control] {
@@ -90,5 +97,9 @@
   .page,
   .edge {
     padding-inline: var(--plume-space-1);
+  }
+
+  .pageSize [data-plume-select-control] {
+    min-width: 3.5rem;
   }
 }
