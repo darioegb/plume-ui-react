@@ -29,7 +29,7 @@
   max-width: calc(100vw - var(--plume-space-4));
   padding: var(--plume-space-4);
   width: max-content;
-  z-index: var(--plume-z-7);
+  z-index: var(--plume-z-popover);
 }
 
 .sm {

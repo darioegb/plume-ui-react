@@ -106,7 +106,7 @@
     overscroll-behavior: contain;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-6);
+    z-index: var(--plume-z-modal);
   }
 
   :global(:where([data-plume-sidebar][data-breakpoint='sm'][data-side='left'])) {
@@ -129,7 +129,7 @@
     inset: 0;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-5);
+    z-index: var(--plume-z-overlay);
   }
 
   :global(:where([data-plume-sidebar-backdrop][data-breakpoint='sm'][data-open])) {
@@ -170,7 +170,7 @@
     overscroll-behavior: contain;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-6);
+    z-index: var(--plume-z-modal);
   }
 
   :global(:where([data-plume-sidebar][data-breakpoint='md'][data-side='left'])) {
@@ -193,7 +193,7 @@
     inset: 0;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-5);
+    z-index: var(--plume-z-overlay);
   }
 
   :global(:where([data-plume-sidebar-backdrop][data-breakpoint='md'][data-open])) {
@@ -234,7 +234,7 @@
     overscroll-behavior: contain;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-6);
+    z-index: var(--plume-z-modal);
   }
 
   :global(:where([data-plume-sidebar][data-breakpoint='lg'][data-side='left'])) {
@@ -257,7 +257,7 @@
     inset: 0;
     position: fixed;
     visibility: hidden;
-    z-index: var(--plume-z-5);
+    z-index: var(--plume-z-overlay);
   }
 
   :global(:where([data-plume-sidebar-backdrop][data-breakpoint='lg'][data-open])) {

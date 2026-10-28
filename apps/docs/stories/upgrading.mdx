@@ -490,3 +490,27 @@ useEffect(() => {
   return () => document.removeEventListener('pointerdown', close)
 }, [onClose])
 ```
+
+## The theme: `zIndices`, `breakpoints` in `rem`, and fewer variables
+
+The z-index scale has names instead of numbers, and the typo is fixed: `theme.zIndeces` is now `theme.zIndices`, with
+`sticky`, `overlay`, `modal`, `popover`, `dropdown`, `tooltip` and `toast`. They keep the order the layers had, so a
+`Select` still opens over a `Modal`. The variables are `--plume-z-<name>` and the Tailwind utilities `z-<name>`.
+
+<table>
+  <thead>
+    <tr><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>theme.zIndeces</code>, <code>ZIndeces</code></td><td><code>theme.zIndices</code>, <code>ZIndices</code></td></tr>
+    <tr><td><code>--plume-z-1</code> … <code>--plume-z-10</code>, <code>z-1</code> … <code>z-10</code></td><td><code>--plume-z-sticky</code> … <code>--plume-z-toast</code>, <code>z-sticky</code> … <code>z-toast</code></td></tr>
+    <tr><td><code>theme.breakpoints</code> in <code>px</code> (<code>'768px'</code>)</td><td>in <code>rem</code> (<code>'48rem'</code>)</td></tr>
+    <tr><td><code>--plume-breakpoint-*</code></td><td>not emitted: a <code>var()</code> does not work inside <code>@media</code>; read <code>useTheme().theme.breakpoints</code></td></tr>
+    <tr><td><code>theme.sizes</code>, <code>--plume-size-*</code></td><td>removed, nothing used them</td></tr>
+    <tr><td><code>--plume-color-&lt;scheme&gt;-contrast</code></td><td>removed: use <code>--plume-color-&lt;scheme&gt;-solid-contrast</code></td></tr>
+  </tbody>
+</table>
+
+The `Sidebar` reads `theme.breakpoints` (`sm`, `md` and `lg`) to know when it becomes a panel. The CSS of the
+`Sidebar` and the `Navbar` use `@media` queries, which cannot read a variable, so they keep the default values: change
+those three breakpoints only if you also override the styles.

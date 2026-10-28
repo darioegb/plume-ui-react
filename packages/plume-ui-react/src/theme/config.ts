@@ -223,11 +223,6 @@ export const defaultTheme: Theme = {
     92: '23rem',
     96: '24rem',
   },
-  sizes: {
-    max: 'max-content',
-    min: 'min-content',
-    full: '100%',
-  },
   radii: {
     0: '0px',
     1: '0.125rem',
@@ -238,18 +233,14 @@ export const defaultTheme: Theme = {
     6: '0.75rem',
     full: '9999px',
   },
-  zIndeces: {
-    0: 0,
-    1: 10,
-    2: 20,
-    3: 30,
-    4: 40,
-    5: 50,
-    6: 60,
-    7: 70,
-    8: 80,
-    9: 90,
-    10: 100,
+  zIndices: {
+    sticky: 1000,
+    overlay: 1100,
+    modal: 1200,
+    popover: 1300,
+    dropdown: 1400,
+    tooltip: 1500,
+    toast: 1600,
   },
   shadows: {
     none: 'none',
@@ -260,11 +251,11 @@ export const defaultTheme: Theme = {
     '2xl': '0 25px 50px rgba(0, 0, 0, 0.25)',
   },
   breakpoints: {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
-    '2xl': '1536px',
+    sm: '40rem',
+    md: '48rem',
+    lg: '64rem',
+    xl: '80rem',
+    '2xl': '96rem',
   },
 }
 

@@ -38,19 +38,25 @@ describe('themeToCssVars', () => {
   it('emits the typography, spacing and layout scales', () => {
     const vars = themeToCssVars(defaultTheme)
     expect(vars['--plume-font-family']).toBe(defaultTheme.typography.fontFamily)
-    expect(vars['--plume-breakpoint-xl']).toBe(defaultTheme.breakpoints.xl)
+    expect(vars['--plume-z-modal']).toBe(String(defaultTheme.zIndices.modal))
     for (const scale of [
       'font-size',
       'font-weight',
       'line-height',
       'space',
-      'size',
       'radius',
       'z',
       'shadow',
     ]) {
       expect(Object.keys(vars).some((key) => key.startsWith(`--plume-${scale}-`))).toBe(true)
     }
+  })
+
+  it('does not emit the breakpoints, the sizes or the contrast of the base shade', () => {
+    const keys = Object.keys(themeToCssVars(defaultTheme))
+    expect(keys.some((key) => key.startsWith('--plume-breakpoint-'))).toBe(false)
+    expect(keys.some((key) => key.startsWith('--plume-size-'))).toBe(false)
+    expect(keys).not.toContain('--plume-color-primary-contrast')
   })
 
   it('includes custom color schemes', () => {
@@ -86,7 +92,13 @@ describe('themeToCssVars', () => {
   it('lightens the text and uses dark tints on dark themes', () => {
     const vars = themeToCssVars(
       withColors(
-        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        {
+          ink: ramp('#1e3a8a', {
+            200: '#bfdbfe',
+            800: '#1e40af',
+            900: '#1e3a5f',
+          }),
+        },
         darkTheme,
       ),
     )
@@ -102,7 +114,13 @@ describe('themeToCssVars', () => {
 
     const dark = themeToCssVars(
       withColors(
-        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        {
+          ink: ramp('#1e3a8a', {
+            200: '#bfdbfe',
+            800: '#1e40af',
+            900: '#1e3a5f',
+          }),
+        },
         darkTheme,
       ),
     )

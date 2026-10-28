@@ -1,9 +1,4 @@
-import {
-  getContrastColor,
-  getContrastRatio,
-  getDarkenColor,
-  getLightenColor,
-} from '../utils/colors'
+import { getContrastRatio, getDarkenColor, getLightenColor } from '../utils/colors'
 import type { Theme } from './theme.types'
 
 const PREFIX = '--plume'
@@ -69,7 +64,6 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   const colors = theme.colors as unknown as Record<string, TokenRecord>
   for (const [scheme, shades] of Object.entries(colors)) {
     flatten(`${PREFIX}-color-${scheme}`, shades, vars)
-    vars[`${PREFIX}-color-${scheme}-contrast`] = getContrastColor(String(shades['500']))
 
     const { bg: solid, fg: onSolid } = pickSolidPair(shades)
     vars[`${PREFIX}-color-${scheme}-solid`] = solid
@@ -102,11 +96,9 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   flatten(`${PREFIX}-font-weight`, theme.typography.fontWeights as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-line-height`, theme.typography.lineHeights as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-space`, theme.spaces, vars)
-  flatten(`${PREFIX}-size`, theme.sizes, vars)
   flatten(`${PREFIX}-radius`, theme.radii, vars)
-  flatten(`${PREFIX}-z`, theme.zIndeces, vars)
+  flatten(`${PREFIX}-z`, theme.zIndices as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-shadow`, theme.shadows as unknown as TokenRecord, vars)
-  flatten(`${PREFIX}-breakpoint`, theme.breakpoints as unknown as TokenRecord, vars)
 
   return vars
 }

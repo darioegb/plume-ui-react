@@ -104,7 +104,10 @@ const boxShadow = {
 }
 
 const zIndex = Object.fromEntries(
-  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => [n, `var(--plume-z-${n})`]),
+  ['sticky', 'overlay', 'modal', 'popover', 'dropdown', 'tooltip', 'toast'].map((name) => [
+    name,
+    `var(--plume-z-${name})`,
+  ]),
 )
 
 const config: Config = {
@@ -134,12 +137,10 @@ const config: Config = {
       zIndex,
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },
   plugins: [],
 }
 export default config
-

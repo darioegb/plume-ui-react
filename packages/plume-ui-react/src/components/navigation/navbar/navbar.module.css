@@ -8,7 +8,7 @@
 :global(:where([data-plume-navbar][data-sticky])) {
   inset-block-start: 0;
   position: sticky;
-  z-index: var(--plume-z-4);
+  z-index: var(--plume-z-sticky);
 }
 
 :global(:where([data-plume-navbar-brand])) {

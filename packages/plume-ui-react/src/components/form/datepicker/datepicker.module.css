@@ -18,7 +18,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   position: absolute;
-  z-index: var(--plume-z-1);
+  z-index: var(--plume-z-dropdown);
 }
 
 .variantOutline :is(.month, .year),

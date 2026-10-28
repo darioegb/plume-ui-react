@@ -251,7 +251,7 @@
   max-height: min(22rem, var(--plume-available-height, calc(100vh - var(--plume-space-4))));
   max-width: calc(100vw - var(--plume-space-4));
   overflow: hidden;
-  z-index: var(--plume-z-8);
+  z-index: var(--plume-z-dropdown);
 }
 
 .panel[hidden] {

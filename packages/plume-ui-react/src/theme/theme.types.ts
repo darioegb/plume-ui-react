@@ -1,7 +1,5 @@
 type RadiusValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 'full'
 
-type SizeValue = 'max' | 'min' | 'full'
-
 type SpaceValue =
   | 0
   | 1
@@ -39,8 +37,6 @@ type SpaceValue =
   | 88
   | 92
   | 96
-
-type ZIndexValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 
 export interface ShadeLevel {
   50: string
@@ -111,16 +107,18 @@ export type Spaces = {
   [key in SpaceValue]: string
 }
 
-export type Sizes = {
-  [key in SizeValue]: string
-}
-
 export type Radii = {
   [key in RadiusValue]: string
 }
 
-export type ZIndeces = {
-  [key in ZIndexValue]: number
+export interface ZIndices {
+  sticky: number
+  overlay: number
+  modal: number
+  popover: number
+  dropdown: number
+  tooltip: number
+  toast: number
 }
 
 export interface Shadows {
@@ -155,9 +153,8 @@ export interface Theme {
   semantic: SemanticColors
   typography: Typography
   spaces: Spaces // Padding & margin
-  sizes: Sizes // Width & height
   radii: Radii
-  zIndeces: ZIndeces
+  zIndices: ZIndices
   shadows: Shadows
   breakpoints: Breakpoints
 }

@@ -92,14 +92,12 @@ dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> pa
 
 ## Z‑index
 
-`--plume-z-*` · Tailwind `z-*`
+`--plume-z-*` · Tailwind `z-*`. Names, not numbers, in the order the layers stack (a `Select` opens over a `Modal`).
 
 <ul>
-  {Object.entries(defaultTheme.zIndeces)
-    .filter(([key]) => Number(key) >= 1)
-    .map(([key, value]) => (
-      <li key={key}>
-        <code>z.{key}</code> → {value}
-      </li>
-    ))}
+  {Object.entries(defaultTheme.zIndices).map(([key, value]) => (
+    <li key={key}>
+      <code>z.{key}</code> → {value}
+    </li>
+  ))}
 </ul>
