@@ -13,7 +13,7 @@ module augmentation.
 
 ## Next.js App Router
 
-A small project dashboard ("Plume Projects") with a simulated sign in, a sidebar, a top bar, a table with sorting and
+The Plume Projects dashboard with a simulated sign in, a sidebar, a top bar, a table with sorting and
 filters, a detail drawer, a team directory and settings. It shows that `ThemeProvider` is **SSR/RSC-safe**: the theme is
 serialized to CSS variables and rendered on the server from a cookie, so dark mode has no flash.
 
@@ -22,8 +22,10 @@ serialized to CSS variables and rendered on the server from a cookie, so dark mo
 
 ## Vite
 
-A Vite and React app to try the components and edit the code. It shows where `ThemeProvider` and `ToastProvider` go in a
-client-side app, how to import the bundled stylesheet and how to pass a custom theme.
+A client-only Vite and React SPA with a slice of the same Plume Projects product, without a server or a sign in: a
+responsive sidebar and top bar, a dashboard, a projects table with filters, sorting and a detail drawer, and more. It shows
+where `ThemeProvider` and `ToastProvider` go in a client-side app, how to import the bundled stylesheet and how to pass
+a custom theme.
 
 - [Open it in StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite), to edit it in the browser with nothing to install
 - [Read the source](https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite)
@@ -38,7 +40,7 @@ client-side app, how to import the bundled stylesheet and how to pass a custom t
     <tr><td>See the components in a full application, with a server and a session</td><td>Next.js App Router</td></tr>
     <tr><td>Check there is no theme flash on the server</td><td>Next.js App Router</td></tr>
     <tr><td>Change the code and see the result right away</td><td>Vite, in StackBlitz</td></tr>
-    <tr><td>Copy the minimal setup of a client-side app</td><td>Vite</td></tr>
+    <tr><td>Copy the setup of a client-side app</td><td>Vite</td></tr>
   </tbody>
 </table>
 
