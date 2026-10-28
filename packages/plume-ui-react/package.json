@@ -33,6 +33,7 @@
     "dev": "tsup --watch",
     "lint": "eslint src/ && stylelint \"src/**/*.module.css\" && node scripts/check-story-snippets.mjs",
     "lint:fix": "eslint src/ --fix",
+    "check:package": "publint && attw --pack . --profile node16 --exclude-entrypoints styles.css tokens.css",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -61,6 +62,7 @@
   ],
   "author": "Dario E Gonzalez B <darioegb@gmail.com>",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
@@ -74,6 +76,7 @@
     "postcss": "^8.4.29",
     "postcss-modules": "^6.0.0",
     "prettier-config": "workspace:*",
+    "publint": "^0.3.25",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-hook-form": "7.89.0",

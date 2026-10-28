@@ -33,15 +33,15 @@
 }
 
 .sm {
-  max-width: min(14rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-3xs), calc(100vw - var(--plume-space-4)));
 }
 
 .md {
-  max-width: min(20rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-xs), calc(100vw - var(--plume-space-4)));
 }
 
 .lg {
-  max-width: min(28rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-md), calc(100vw - var(--plume-space-4)));
 }
 
 .elevated {

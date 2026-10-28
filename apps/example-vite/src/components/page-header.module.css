@@ -10,6 +10,6 @@
 }
 
 .description {
-  color: var(--plume-muted-foreground);
+  color: var(--plume-muted);
   margin: 0;
 }

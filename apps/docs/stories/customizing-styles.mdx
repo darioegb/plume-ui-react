@@ -62,6 +62,9 @@ one of Plume.
 
 Tailwind v4's preflight is already in `base`, which comes before `plume`, so it needs nothing.
 
+The sizes of one component are local variables you can override, like `--sidebar-width` or `--skeleton-height`, and the
+widths that components share come from the `--plume-container-*` scale.
+
 Adding what Plume does not set (`mt-4`, `max-w-md`, `ring-2`, `hidden`) always works.
 
 ## `variant='unstyled'`

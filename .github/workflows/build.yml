@@ -22,7 +22,13 @@ jobs:
         run: pnpm lint
 
       - name: Test and coverage
-        run: pnpm run test:coverage    
+        run: pnpm run test:coverage
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check the package
+        run: pnpm --filter plume-ui-react check:package
       
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v8

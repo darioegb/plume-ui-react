@@ -158,6 +158,7 @@ Copy it into the pull request description.
 
 **Styling**
 - [ ] Only `--plume-*` tokens and local variables, no color math in JavaScript
+- [ ] A measure is a theme token only when several components share it or it is part of a scale (`--plume-space-*`, `--plume-container-*`); the size of one component is a local variable with a default (`--sidebar-width`), documented in its story if the user can override it
 - [ ] Media queries use the named breakpoints, `@media (--md)` and `@media (--below-md)` (`sm`, `md`, `lg`, `xl`, `2xl`), which the build writes from `defaultTheme.breakpoints`; stylelint rejects a literal width
 - [ ] No literal `rem` in `padding`, `margin` or `gap`, no literal `font-size`, `z-index` of 10 or more, or transition time under a second: use `--plume-space-*`, `--plume-font-size-*`, `--plume-z-*` and `--plume-duration-*` (`pnpm lint` runs stylelint on the `*.module.css`)
 - [ ] Looks right in light and dark mode, and with a custom `colorScheme`
