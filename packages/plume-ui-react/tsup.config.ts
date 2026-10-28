@@ -1,8 +1,10 @@
 // tsup.config.ts
 import { promises as fsPromises } from 'node:fs'
 import path from 'node:path'
+import { transform } from 'esbuild'
 import { defineConfig, type Options } from 'tsup'
 import postcss from 'postcss'
+import { buildCssUnits } from './scripts/component-css'
 import { buildTokensCss } from './scripts/tokens-css'
 import postcssModules from 'postcss-modules'
 
@@ -85,6 +87,24 @@ async function emitStylesheet(): Promise<void> {
     `@layer base,plume,components,utilities;@layer plume{${tokens}${css}}`,
   )
   await fsPromises.rm('dist/index.css')
+  await emitComponentStylesheets()
+}
+
+async function emitComponentStylesheets(): Promise<void> {
+  const units = await buildCssUnits(path.resolve('src'))
+  await fsPromises.mkdir('dist/css', { recursive: true })
+  await Promise.all(
+    Object.entries(units).map(async ([name, unit]) => {
+      const { code } = await transform(unit.css, { loader: 'css', minify: true })
+      const imports = ['../tokens.css', ...unit.imports.map((dep) => `./${dep}.css`)]
+        .map((file) => `@import '${file}';`)
+        .join('')
+      await fsPromises.writeFile(
+        `dist/css/${name}.css`,
+        `@layer base,plume,components,utilities;${imports}@layer plume{${code}}`,
+      )
+    }),
+  )
 }
 
 export default defineConfig((options) => {

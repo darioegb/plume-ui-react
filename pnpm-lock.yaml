@@ -335,6 +335,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^5.0.5
         version: 5.0.5(vitest@5.0.5)
+      esbuild:
+        specifier: ^0.27.7
+        version: 0.27.7
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom

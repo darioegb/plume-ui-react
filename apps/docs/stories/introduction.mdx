@@ -48,6 +48,21 @@ export function App() {
 }
 ```
 
+### Only the CSS you use
+
+`plume-ui-react/styles.css` has the CSS of every component (about 20 KB gzipped). To load only some of them, import
+the stylesheet of each component instead of it. Each one brings the tokens and the CSS of the components it renders, so
+`css/button.css` also carries the `Spinner`, and `css/paginator.css` the `Button`, the `Select` and the `Chip`:
+
+```tsx
+import 'plume-ui-react/css/button.css'
+import 'plume-ui-react/css/input.css'
+```
+
+The files of the parts are the ones of the component (`css/modal.css` styles `ModalContent`, `ModalHeader`...). The
+imports of the sheets are plain CSS `@import`, so your bundler removes the repeated ones. Do not mix them with
+`styles.css`: it already has everything.
+
 ### Theming
 
 `theme` is a deep‑partial of the default theme, so you override only what you need:
