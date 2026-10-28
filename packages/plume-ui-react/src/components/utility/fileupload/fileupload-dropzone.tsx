@@ -5,6 +5,7 @@ import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import { useFileUploadContext } from './fileupload-context'
+import { FileUploadIcon } from './fileupload-icon'
 import { FileUploadInput } from './fileupload-input'
 import { FileUploadPrompt } from './fileupload-prompt'
 import styles from './fileupload.module.css'
@@ -15,8 +16,8 @@ export type FileUploadDropzoneProps = Omit<ComponentProps, 'index'> &
   FileUploadDropzoneRootAttributes
 
 /**
- * The area that takes the dropped files. Without children it holds the `FileUploadInput` and the
- * `FileUploadPrompt`. It has `data-dragging`, `data-disabled` and `data-invalid`.
+ * The area that takes the dropped files. Without children it holds the `FileUploadInput`, the
+ * `FileUploadIcon` and the `FileUploadPrompt`. It has `data-dragging`, `data-disabled` and `data-invalid`.
  */
 export const FileUploadDropzone = forwardRef<HTMLDivElement, FileUploadDropzoneProps>(
   (
@@ -59,6 +60,7 @@ export const FileUploadDropzone = forwardRef<HTMLDivElement, FileUploadDropzoneP
         {children ?? (
           <>
             <FileUploadInput />
+            <FileUploadIcon />
             <FileUploadPrompt />
           </>
         )}

@@ -77,6 +77,14 @@ export function MenuIcon(): ReactNode {
   )
 }
 
+export function ChevronUpIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  )
+}
+
 export function ChevronLeftIcon(): ReactNode {
   return (
     <svg {...strokeProps} strokeWidth="2">
@@ -148,6 +156,14 @@ export function CalendarIcon(): ReactNode {
     <svg {...strokeProps} strokeWidth="2">
       <rect height="18" rx="2" width="18" x="3" y="4" />
       <path d="M16 2v4M8 2v4M3 10h18" />
+    </svg>
+  )
+}
+
+export function UploadIcon(): ReactNode {
+  return (
+    <svg {...strokeProps} strokeWidth="2">
+      <path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" />
     </svg>
   )
 }

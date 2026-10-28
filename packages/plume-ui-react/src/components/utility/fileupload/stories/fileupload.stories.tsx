@@ -8,6 +8,7 @@ import {
   FileUploadDropzone,
   FileUploadError,
   FileUploadErrors,
+  FileUploadIcon,
   FileUploadInput,
   FileUploadItem,
   FileUploadList,
@@ -70,6 +71,7 @@ export default {
         'FileUploadDropzone',
         'FileUploadError',
         'FileUploadErrors',
+        'FileUploadIcon',
         'FileUploadInput',
         'FileUploadItem',
         'FileUploadList',
@@ -438,7 +440,7 @@ export const WithField: Story = {
 
 /**
  * Every element is a part. Here the list goes above the dropzone, each file gets its own layout with the size under
- * the name, the prompt has its own class and the errors are written by hand with a function. Omit a part and it is
+ * the name, the icon and the prompt have their own class and the errors are written by hand with a function. Omit a part and it is
  * not there.
  */
 export const Compound: Story = {
@@ -458,6 +460,7 @@ export const Compound: Story = {
   </FileUploadList>
   <FileUploadDropzone>
     <FileUploadInput />
+    <FileUploadIcon className="text-primary-text" />
     <FileUploadPrompt className="font-semibold">Drop your PDFs here</FileUploadPrompt>
   </FileUploadDropzone>
   <FileUploadErrors>
@@ -491,6 +494,7 @@ export const Compound: Story = {
       </FileUploadList>
       <FileUploadDropzone>
         <FileUploadInput />
+        <FileUploadIcon style={{ color: 'var(--plume-color-primary-text)' }} />
         <FileUploadPrompt style={{ fontWeight: 600 }}>Drop your PDFs here</FileUploadPrompt>
       </FileUploadDropzone>
       <FileUploadErrors>

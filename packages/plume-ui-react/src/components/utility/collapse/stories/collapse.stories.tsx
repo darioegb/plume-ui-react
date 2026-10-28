@@ -1,5 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Collapse, CollapseBody, CollapseClip, type CollapseProps } from '..'
 
@@ -10,10 +10,32 @@ const text =
 
 const frame = { maxWidth: '100%', width: '26rem' }
 
+const triggerClass =
+  'flex w-full items-center justify-between gap-2 rounded border border-gray-300 px-3 py-2 text-start text-sm font-medium'
+
+function Chevron({ open }: Readonly<{ open: boolean }>): React.ReactNode {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height="1em"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      style={{ flexShrink: 0, transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 0.2s' }}
+      viewBox="0 0 24 24"
+      width="1em"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  )
+}
+
 function Toggle({
   children,
   defaultOpen = false,
-  label = 'details',
+  label = 'Details',
   ...collapse
 }: Readonly<
   Pick<CollapseProps, 'colorScheme' | 'size' | 'variant'> & {
@@ -29,15 +51,62 @@ function Toggle({
       <button
         aria-controls={id}
         aria-expanded={open}
-        className="mb-2 rounded border border-gray-400 px-3 py-1 text-sm"
+        className={`${triggerClass} mb-2`}
         onClick={() => setOpen(!open)}
         type="button"
       >
-        {open ? 'Hide' : 'Show'} {label}
+        {label}
+        <Chevron open={open} />
       </button>
       <Collapse id={id} open={open} {...collapse}>
         {children ?? text}
       </Collapse>
+    </div>
+  )
+}
+
+function Showcase({
+  children,
+  label,
+}: Readonly<{ children: React.ReactNode; label: string }>): React.ReactNode {
+  const [open, setOpen] = useState(true)
+  const id = useId()
+  return (
+    <div style={frame}>
+      <button
+        aria-controls={id}
+        aria-expanded={open}
+        className={`${triggerClass} mb-3`}
+        onClick={() => setOpen(!open)}
+        type="button"
+      >
+        {open ? 'Hide' : 'Show'} {label}
+        <Chevron open={open} />
+      </button>
+      <Collapse id={id} open={open} variant="unstyled">
+        <CollapseBody className="flex flex-col gap-3">{children}</CollapseBody>
+      </Collapse>
+    </div>
+  )
+}
+
+function ControlledExample({ open: initial, ...args }: Readonly<CollapseProps>): React.ReactNode {
+  const [open, setOpen] = useState(initial ?? false)
+  const id = useId()
+  useEffect(() => setOpen(initial ?? false), [initial])
+  return (
+    <div style={frame}>
+      <button
+        aria-controls={id}
+        aria-expanded={open}
+        className={`${triggerClass} mb-2`}
+        onClick={() => setOpen(!open)}
+        type="button"
+      >
+        Details
+        <Chevron open={open} />
+      </button>
+      <Collapse {...args} id={id} open={open} />
     </div>
   )
 }
@@ -88,25 +157,55 @@ export default {
   },
   args: {
     children: text,
-    open: true,
-    style: frame,
+    open: false,
   },
+  render: (args) => <ControlledExample {...args} />,
 } satisfies Meta<typeof Collapse>
 
 type Story = StoryObj<typeof Collapse>
 
 /**
- * This is the default Collapse, open. Use the control to close it.
+ * This is the default Collapse, closed. Press the button to open it, or use the **open** control.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(false)
+const id = useId()
+
+<button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
+  Details
+</button>
+<Collapse id={id} open={open}>
+  Plume is a set of accessible React components.
+</Collapse>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the box looks. `unstyled` drops the Plume styles: it keeps the animation and
  * leaves the box to you.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(true)
+
+<Collapse open={open} variant="filled">Content</Collapse>
+<Collapse open={open} variant="outline">Content</Collapse>
+<Collapse open={open} variant="accent">Content</Collapse>
+<Collapse open={open} variant="unstyled">
+  <CollapseBody className="rounded-lg bg-gray-900 p-3 text-sm text-gray-100">Content</CollapseBody>
+</Collapse>`,
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-4" style={frame}>
+    <Showcase label="variants">
       {(['filled', 'outline', 'accent'] as const).map((variant) => (
         <Collapse key={variant} open variant={variant}>
           {variant}: {text}
@@ -117,7 +216,7 @@ export const Variants: Story = {
           unstyled: {text}
         </CollapseBody>
       </Collapse>
-    </div>
+    </Showcase>
   ),
 }
 
@@ -125,14 +224,25 @@ export const Variants: Story = {
  * Use the **size** prop to change the text and the padding of the box.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(true)
+
+<Collapse open={open} size="sm">Content</Collapse>
+<Collapse open={open} size="md">Content</Collapse>
+<Collapse open={open} size="lg">Content</Collapse>`,
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-4" style={frame}>
+    <Showcase label="sizes">
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <Collapse key={size} open size={size}>
           {size}: {text}
         </Collapse>
       ))}
-    </div>
+    </Showcase>
   ),
 }
 
@@ -140,8 +250,18 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme. It tints the box.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `const [open, setOpen] = useState(true)
+
+<Collapse colorScheme="primary" open={open} size="sm">Content</Collapse>
+<Collapse colorScheme="success" open={open} size="sm">Content</Collapse>`,
+      },
+    },
+  },
   render: () => (
-    <div className="flex flex-col gap-3" style={frame}>
+    <Showcase label="colors">
       {colorSchemes.map((scheme) => (
         <Collapse
           colorScheme={scheme as keyof typeof defaultTheme.colors}
@@ -152,7 +272,7 @@ export const Colors: Story = {
           {scheme}: {text}
         </Collapse>
       ))}
-    </div>
+    </Showcase>
   ),
 }
 
@@ -169,7 +289,7 @@ export const WithButton: Story = {
   return (
     <div>
       <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
-        {open ? 'Hide' : 'Show'} details
+        Details
       </button>
       <Collapse id={id} open={open}>
         Plume is a set of accessible React components.
@@ -191,12 +311,12 @@ export const Accent: Story = {
     docs: {
       source: {
         code: `function Example() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const id = useId()
   return (
     <div>
       <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
-        {open ? 'Hide' : 'Show'} warning
+        Warning
       </button>
       <Collapse colorScheme="warning" id={id} open={open} variant="accent">
         This action cannot be undone. Check the details before you go on.
@@ -208,7 +328,7 @@ export const Accent: Story = {
     },
   },
   render: () => (
-    <Toggle colorScheme="warning" defaultOpen label="warning" variant="accent">
+    <Toggle colorScheme="warning" label="Warning" variant="accent">
       This action cannot be undone. Check the details before you go on.
     </Toggle>
   ),
@@ -216,6 +336,7 @@ export const Accent: Story = {
 
 /**
  * It starts closed by default, which keeps the content out of the page and out of the keyboard until it is opened.
+ * Start the state as `true` to render it open.
  */
 export const StartsOpen: Story = {
   parameters: {
@@ -227,7 +348,7 @@ export const StartsOpen: Story = {
   return (
     <div>
       <button aria-controls={id} aria-expanded={open} onClick={() => setOpen(!open)} type="button">
-        {open ? 'Hide' : 'Show'} details
+        Details
       </button>
       <Collapse id={id} open={open}>
         Plume is a set of accessible React components.
@@ -325,13 +446,15 @@ export const Compound: Story = {
     },
   },
   render: () => (
-    <Collapse open style={frame}>
-      <CollapseClip>
-        <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
-          {text}
-        </CollapseBody>
-      </CollapseClip>
-    </Collapse>
+    <Showcase label="box">
+      <Collapse open variant="unstyled">
+        <CollapseClip>
+          <CollapseBody className="shadow-lg" style={{ borderRadius: 16 }}>
+            {text}
+          </CollapseBody>
+        </CollapseClip>
+      </Collapse>
+    </Showcase>
   ),
 }
 
@@ -359,7 +482,7 @@ export const Tailwind: Story = {
   },
   render: () => {
     function Example(): React.ReactNode {
-      const [open, setOpen] = useState(true)
+      const [open, setOpen] = useState(false)
       return (
         <div style={{ maxWidth: '100%', width: '26rem' }}>
           <button
@@ -404,7 +527,7 @@ export const Bootstrap: Story = {
   },
   render: () => {
     function Example(): React.ReactNode {
-      const [open, setOpen] = useState(true)
+      const [open, setOpen] = useState(false)
       return (
         <div style={{ maxWidth: '100%', width: '26rem' }}>
           <button

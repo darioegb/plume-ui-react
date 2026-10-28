@@ -6,6 +6,7 @@ import {
   FileUploadDropzone,
   FileUploadError,
   FileUploadErrors,
+  FileUploadIcon,
   FileUploadInput,
   FileUploadItem,
   FileUploadList,
@@ -127,6 +128,32 @@ describe('FileUpload parts', () => {
     )
     expect(rootRef.current).toBe(input())
     expect(inputRef.current).toBe(input())
+  })
+
+  it('shows an upload icon in the default dropzone, hidden from assistive technology', () => {
+    render(<FileUpload aria-label="Documents" />)
+    const icon = document.querySelector('[data-plume-fileupload-icon]')
+    expect(icon).toHaveAttribute('aria-hidden', 'true')
+    expect(icon?.querySelector('svg')).not.toBeNull()
+  })
+
+  it('renders the children of FileUploadIcon, with its className, style and ref', () => {
+    const ref = createRef<HTMLSpanElement>()
+    render(
+      <FileUpload aria-label="Documents">
+        <FileUploadDropzone>
+          <FileUploadInput />
+          <FileUploadIcon className="ic" ref={ref} style={{ color: 'red' }}>
+            ★
+          </FileUploadIcon>
+          <FileUploadPrompt />
+        </FileUploadDropzone>
+      </FileUpload>,
+    )
+    expect(ref.current).toHaveTextContent('★')
+    expect(ref.current).toHaveClass('ic')
+    expect(ref.current).toHaveStyle({ color: 'rgb(255, 0, 0)' })
+    expect(ref.current?.querySelector('svg')).toBeNull()
   })
 
   it('sends the className, the style and the ref of every part to its element', () => {
@@ -414,6 +441,7 @@ describe('FileUpload parts', () => {
   it.each([
     ['FileUploadDropzone', <FileUploadDropzone key="a" />],
     ['FileUploadErrors', <FileUploadErrors key="b" />],
+    ['FileUploadIcon', <FileUploadIcon key="f" />],
     ['FileUploadInput', <FileUploadInput key="c" />],
     ['FileUploadList', <FileUploadList key="d" />],
     ['FileUploadPrompt', <FileUploadPrompt key="e" />],

@@ -3,7 +3,12 @@
 import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useEffect, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
-import { ChevronLeftIcon, ChevronRightIcon } from '../../../overlay/icons'
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+} from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { getSlideId, useCarouselContext } from './carousel-context'
 import styles from './carousel.module.css'
@@ -30,6 +35,11 @@ export type CarouselArrowProps = Omit<ComponentProps, 'index'> &
 interface CarouselArrowInternalProps extends CarouselArrowProps {
   direction: 'next' | 'prev'
   part: string
+}
+
+const defaultIcon = (isNext: boolean, vertical: boolean): ReactNode => {
+  if (vertical) return isNext ? <ChevronDownIcon /> : <ChevronUpIcon />
+  return isNext ? <ChevronRightIcon /> : <ChevronLeftIcon />
 }
 
 export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternalProps>(
@@ -74,6 +84,7 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
           className,
         )}
         data-direction={direction}
+        data-orientation={carousel.orientation}
         data-plume-carousel-arrow=""
         data-plume-carousel-next={isNext ? '' : undefined}
         data-plume-carousel-prev={isNext ? undefined : ''}
@@ -90,7 +101,7 @@ export const CarouselArrow = forwardRef<HTMLButtonElement, CarouselArrowInternal
         type="button"
         {...rest}
       >
-        {children ?? icon ?? (isNext ? <ChevronRightIcon /> : <ChevronLeftIcon />)}
+        {children ?? icon ?? defaultIcon(isNext, carousel.orientation === 'vertical')}
       </button>
     )
   },

@@ -36,7 +36,7 @@ Components ship their own scoped styles and are themed entirely through CSS vari
 
 ## Documentation
 
-The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for every component, plus the color palette, design tokens and framework integration guides.
+The [documentation site](https://darioegb.github.io/plume-ui-react/) has a live playground, props and examples for every component, plus the color palette, design tokens, framework integration guides and the [examples](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-examples--docs).
 
 ## Installation
 
@@ -121,11 +121,13 @@ Coming from a 0.x version? See the [upgrading guide](https://darioegb.github.io/
 
 Standalone apps that consume the **published npm packages** (not the workspace sources). Both use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
 
-- **[Vite playground](apps/example-vite)**: try the components live and edit the code.
+- **[Vite](apps/example-vite)**: a client-only SPA with a slice of the same product, to try the components and edit the code.
 
   [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite)
 
-- **[Next.js App Router](apps/example-next-app)**: a project dashboard with a sign in, a sidebar and dark mode, rendered on the server with no theme flash. Deployed on Vercel.
+- **[Next.js App Router](apps/example-next-app)**: a project dashboard with a sign in, a sidebar and dark mode, rendered on the server with no theme flash. [Live demo](https://plume-ui-react.vercel.app), deployed on Vercel.
+
+Both are also linked from the [Examples page of the docs](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-examples--docs).
 
 ## Development
 

@@ -13,6 +13,7 @@ import { FileUploadDropzone } from './fileupload-dropzone'
 import { FileUploadErrors } from './fileupload-errors'
 import { FileUploadInput } from './fileupload-input'
 import { FileUploadList } from './fileupload-list'
+import { FileUploadIcon } from './fileupload-icon'
 import { FileUploadPrompt } from './fileupload-prompt'
 import { useFileUploadState } from './use-fileupload-state'
 import styles from './fileupload.module.css'
@@ -122,6 +123,7 @@ const DEFAULT_LABELS: FileUploadLabels = {
 const FILE_UPLOAD_PARTS = [
   FileUploadDropzone,
   FileUploadErrors,
+  FileUploadIcon,
   FileUploadInput,
   FileUploadList,
   FileUploadPrompt,
@@ -251,6 +253,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             <>
               <FileUploadDropzone>
                 <FileUploadInput />
+                <FileUploadIcon />
                 <FileUploadPrompt>{children}</FileUploadPrompt>
               </FileUploadDropzone>
               <FileUploadList />

@@ -4,6 +4,12 @@ import { createContext, useContext } from 'react'
 
 export type CarouselVariant = 'ghost' | 'outline' | 'overlay' | 'solid' | 'unstyled'
 
+export type CarouselOrientation = 'horizontal' | 'vertical'
+
+export type CarouselControls = 'inline' | 'overlay'
+
+export type CarouselDotsAppearance = 'bars' | 'dots' | 'numbers' | 'thumbnails'
+
 export interface CarouselLabels {
   dot: (index: number, count: number) => string
   dots: string
@@ -23,6 +29,7 @@ export interface CarouselContextValue {
   isStyled: boolean
   labels: CarouselLabels
   loop: boolean
+  orientation: CarouselOrientation
   next: () => void
   playing: boolean
   prev: () => void
