@@ -4,17 +4,18 @@ import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { getPaginatorItems } from './paginator-range'
 
 interface FitOptions {
-  boundaryCount: number
   current: number
   pages: number
   root: HTMLElement | null
-  siblingCount: number
 }
 
 interface Fit {
   boundaryCount: number
   siblingCount: number
 }
+
+const MAX_BOUNDARY = 1
+const MAX_SIBLINGS = 1
 
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
@@ -29,13 +30,12 @@ const gapOf = (element: Element): number =>
  */
 const roomForEntries = (root: HTMLElement): number | undefined => {
   const list = root.querySelector('[data-plume-paginator-list]')
-  const items = Array.from(list?.children ?? []).filter((item) =>
-    item.hasAttribute('data-plume-paginator-item'),
-  )
+  if (!list) return undefined
+  const items = Array.from(list.querySelectorAll(':scope > [data-plume-paginator-item]'))
   const fixed = items.filter(
     (item) => !item.querySelector('[data-plume-paginator-page], [data-plume-paginator-ellipsis]'),
   ).length
-  if (!list || items.length === fixed || root.clientWidth === 0) return undefined
+  if (items.length === fixed || root.clientWidth === 0) return undefined
 
   const listGap = gapOf(list)
   const unit = items.reduce((sum, item) => sum + width(item), 0) / items.length + listGap
@@ -45,13 +45,10 @@ const roomForEntries = (root: HTMLElement): number | undefined => {
   return Math.floor((available + listGap) / unit) - fixed
 }
 
-const pickFit = (
-  { boundaryCount, current, pages, siblingCount }: FitOptions,
-  room: number,
-): Fit => {
+const pickFit = ({ current, pages }: Pick<FitOptions, 'current' | 'pages'>, room: number): Fit => {
   let best: Fit & { count: number } | undefined
-  for (let siblings = siblingCount; siblings >= 0; siblings -= 1) {
-    for (let boundary = boundaryCount; boundary >= 0; boundary -= 1) {
+  for (let siblings = MAX_SIBLINGS; siblings >= 0; siblings -= 1) {
+    for (let boundary = MAX_BOUNDARY; boundary >= 0; boundary -= 1) {
       const count = getPaginatorItems({
         boundaryCount: boundary,
         count: pages,
@@ -71,26 +68,26 @@ const pickFit = (
 }
 
 /**
- * The page numbers stay on one row: when the list has no room for `siblingCount` and
- * `boundaryCount`, it shows fewer pages. It measures the rendered buttons, so it does nothing
+ * The page numbers stay on one row. It shows the current page, one on each side and the first and
+ * the last, and when the list has no room for them it shows fewer pages. It measures the rendered buttons, so it does nothing
  * until it is in the page.
  */
 export function usePaginatorFit(options: FitOptions): Fit {
-  const { boundaryCount, current, pages, root, siblingCount } = options
+  const { current, pages, root } = options
   const [fit, setFit] = useState<Fit | null>(null)
 
   const measure = useCallback((): void => {
     if (!root) return
     const room = roomForEntries(root)
     if (room === undefined) return
-    const next = pickFit({ boundaryCount, current, pages, root, siblingCount }, room)
+    const next = pickFit({ current, pages }, room)
     setFit((previous) =>
       previous?.boundaryCount === next.boundaryCount &&
       previous.siblingCount === next.siblingCount
         ? previous
         : next,
     )
-  }, [boundaryCount, current, pages, root, siblingCount])
+  }, [current, pages, root])
 
   useIsomorphicLayoutEffect(measure, [measure])
 
@@ -101,5 +98,5 @@ export function usePaginatorFit(options: FitOptions): Fit {
     return () => observer.disconnect()
   }, [measure, root])
 
-  return fit ?? { boundaryCount, siblingCount }
+  return fit ?? { boundaryCount: MAX_BOUNDARY, siblingCount: MAX_SIBLINGS }
 }
