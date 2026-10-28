@@ -82,7 +82,11 @@ export function ProjectDrawer({
                           </AvatarGroup>
                         </dd>
                         <dt>Visibility</dt>
-                        <dd>{project.visibility}</dd>
+                        <dd>
+                          <Badge colorScheme="salmon" variant="subtle">
+                            {project.visibility}
+                          </Badge>
+                        </dd>
                       </dl>
                       <ProgressBar
                         aria-label="Progress"

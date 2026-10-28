@@ -28,7 +28,8 @@ Sign in with any email and a password of 6 or more characters. The color mode fo
 - `src/app/(app)/settings` — an `Accordion` with the appearance (light/dark and a **brand color** that recolors the whole app, saved in a cookie and server-rendered), notifications and the workspace.
 - `src/lib` — the simulated session and data.
 - `src/theme.ts` — the brand palettes for `primary` (the one in Settings) and a custom `salmon` color scheme, passed to `<ThemeProvider theme={...}>`.
-- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"`
+- `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"`,
+  which the visibility badge of the project detail uses
   (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
 ## Run locally

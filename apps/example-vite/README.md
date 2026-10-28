@@ -31,7 +31,7 @@ to serve `index.html` for client-side routes such as `/projects`.
 - `ThemeProvider`, `ToastProvider`, and only the CSS of the components it uses, one
   `plume-ui-react/css/<component>.css` import each in `src/main.tsx` (the Next.js
   example loads the whole `plume-ui-react/styles.css` instead). `src/theme.ts` defines the brand palettes and a
-  custom `salmon` color scheme, and `src/plume-ui.d.ts` extends `ColorPalette`
+  custom `salmon` color scheme (the visibility badge of the project detail uses it), and `src/plume-ui.d.ts` extends `ColorPalette`
   (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
 This is a demo, not a production backend: validation and persistence run in the
