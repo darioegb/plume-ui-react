@@ -38,19 +38,79 @@ describe('themeToCssVars', () => {
   it('emits the typography, spacing and layout scales', () => {
     const vars = themeToCssVars(defaultTheme)
     expect(vars['--plume-font-family']).toBe(defaultTheme.typography.fontFamily)
-    expect(vars['--plume-breakpoint-xl']).toBe(defaultTheme.breakpoints.xl)
+    expect(vars['--plume-z-modal']).toBe(String(defaultTheme.zIndices.modal))
     for (const scale of [
       'font-size',
       'font-weight',
       'line-height',
       'space',
-      'size',
       'radius',
       'z',
       'shadow',
     ]) {
       expect(Object.keys(vars).some((key) => key.startsWith(`--plume-${scale}-`))).toBe(true)
     }
+  })
+
+  it('does not emit the breakpoints, the sizes or the contrast of the base shade', () => {
+    const keys = Object.keys(themeToCssVars(defaultTheme))
+    expect(keys.some((key) => key.startsWith('--plume-breakpoint-'))).toBe(false)
+    expect(keys.some((key) => key.startsWith('--plume-size-'))).toBe(false)
+    expect(keys).not.toContain('--plume-color-primary-contrast')
+  })
+
+  it('emits motion, focus ring, border, control and opacity tokens', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-container-lg']).toBe('32rem')
+    expect(vars['--plume-container-3xl']).toBe('48rem')
+    expect(vars['--plume-duration-normal']).toBe(defaultTheme.motion.durations.normal)
+    expect(vars['--plume-easing-in-out']).toBe(defaultTheme.motion.easings.inOut)
+    expect(vars['--plume-focus-ring-width']).toBe(defaultTheme.focusRing.width)
+    expect(vars['--plume-focus-ring-offset']).toBe(defaultTheme.focusRing.offset)
+    expect(vars['--plume-focus-ring-color']).toBe(defaultTheme.focusRing.color)
+    expect(vars['--plume-border-width-thin']).toBe(defaultTheme.borderWidths.thin)
+    expect(vars['--plume-border-width-medium']).toBe(defaultTheme.borderWidths.medium)
+    expect(vars['--plume-border-width-thick']).toBe(defaultTheme.borderWidths.thick)
+    expect(vars['--plume-control-height-md']).toBe(defaultTheme.controlHeights.md)
+    expect(vars['--plume-opacity-disabled']).toBe('0.5')
+    expect(vars['--plume-backdrop']).toBe(defaultTheme.semantic.backdrop)
+  })
+
+  it('names the half steps of the spacing scale without a dot', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-space-0-5']).toBe('0.125rem')
+    expect(vars['--plume-space-1-5']).toBe('0.375rem')
+    expect(vars['--plume-space-2-5']).toBe('0.625rem')
+    expect(Object.keys(vars).some((key) => key.includes('.'))).toBe(false)
+  })
+
+  it('emits the larger sizes, the letter spacings and the monospace family', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-font-size-5xl']).toBe('3rem')
+    expect(vars['--plume-letter-spacing-tight']).toBe('-0.025em')
+    expect(vars['--plume-font-family-mono']).toBe(defaultTheme.typography.fontFamilyMono)
+  })
+
+  it('emits the four properties of every text style', () => {
+    const vars = themeToCssVars(defaultTheme)
+    for (const name of Object.keys(defaultTheme.textStyles)) {
+      for (const property of ['size', 'weight', 'line-height', 'letter-spacing']) {
+        expect(vars[`--plume-text-${name}-${property}`]).toBeTruthy()
+      }
+    }
+    expect(vars['--plume-text-heading-1-size']).toBe('var(--plume-font-size-4xl)')
+  })
+
+  it('keeps the shadows of the slider thumb and of the pickers the same in dark mode', () => {
+    const vars = themeToCssVars(darkTheme)
+    expect(vars['--plume-shadow-raised']).toBe(defaultTheme.shadows.raised)
+    expect(vars['--plume-shadow-panel']).toBe(defaultTheme.shadows.panel)
+  })
+
+  it('has its own shadows and backdrop in dark mode', () => {
+    const vars = themeToCssVars(darkTheme)
+    expect(vars['--plume-shadow-md']).not.toBe(themeToCssVars(defaultTheme)['--plume-shadow-md'])
+    expect(vars['--plume-backdrop']).not.toBe(defaultTheme.semantic.backdrop)
   })
 
   it('includes custom color schemes', () => {
@@ -86,7 +146,13 @@ describe('themeToCssVars', () => {
   it('lightens the text and uses dark tints on dark themes', () => {
     const vars = themeToCssVars(
       withColors(
-        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        {
+          ink: ramp('#1e3a8a', {
+            200: '#bfdbfe',
+            800: '#1e40af',
+            900: '#1e3a5f',
+          }),
+        },
         darkTheme,
       ),
     )
@@ -102,7 +168,13 @@ describe('themeToCssVars', () => {
 
     const dark = themeToCssVars(
       withColors(
-        { ink: ramp('#1e3a8a', { 200: '#bfdbfe', 800: '#1e40af', 900: '#1e3a5f' }) },
+        {
+          ink: ramp('#1e3a8a', {
+            200: '#bfdbfe',
+            800: '#1e40af',
+            900: '#1e3a5f',
+          }),
+        },
         darkTheme,
       ),
     )

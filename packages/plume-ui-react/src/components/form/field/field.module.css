@@ -87,5 +87,5 @@
 }
 
 .disabled .label {
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }

@@ -1,4 +1,26 @@
-import type { DeepPartial, Theme } from './theme.types'
+import type {
+  DeepPartial,
+  FontSizes,
+  FontWeights,
+  LetterSpacings,
+  LineHeights,
+  TextStyle,
+  Theme,
+} from './theme.types'
+
+const token = (group: string, key: string): string => `var(--plume-${group}-${key})`
+
+const textStyle = (
+  size: keyof FontSizes,
+  weight: keyof FontWeights,
+  lineHeight: keyof LineHeights,
+  letterSpacing: keyof LetterSpacings,
+): TextStyle => ({
+  fontSize: token('font-size', size),
+  fontWeight: token('font-weight', weight),
+  lineHeight: token('line-height', lineHeight),
+  letterSpacing: token('letter-spacing', letterSpacing),
+})
 
 export const defaultTheme: Theme = {
   colors: {
@@ -154,9 +176,11 @@ export const defaultTheme: Theme = {
     muted: '#6e6e77',
     border: '#d4d4d8',
     borderStrong: '#80808a',
+    backdrop: 'rgb(0 0 0 / 50%)',
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
+    fontFamilyMono: "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace",
     fontSizes: {
       xs: '0.75rem',
       sm: '0.875rem',
@@ -164,6 +188,9 @@ export const defaultTheme: Theme = {
       lg: '1.125rem',
       xl: '1.25rem',
       '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem',
+      '5xl': '3rem',
     },
     fontWeights: {
       thin: 100,
@@ -184,11 +211,31 @@ export const defaultTheme: Theme = {
       relaxed: 1.625,
       loose: 2,
     },
+    letterSpacings: {
+      tight: '-0.025em',
+      normal: '0em',
+      wide: '0.025em',
+    },
+  },
+  textStyles: {
+    'heading-1': textStyle('4xl', 'bold', 'tight', 'tight'),
+    'heading-2': textStyle('3xl', 'bold', 'tight', 'tight'),
+    'heading-3': textStyle('2xl', 'semibold', 'tight', 'tight'),
+    'heading-4': textStyle('xl', 'semibold', 'snug', 'normal'),
+    'heading-5': textStyle('lg', 'semibold', 'snug', 'normal'),
+    'heading-6': textStyle('base', 'semibold', 'snug', 'normal'),
+    body: textStyle('base', 'normal', 'normal', 'normal'),
+    'body-sm': textStyle('sm', 'normal', 'normal', 'normal'),
+    label: textStyle('sm', 'medium', 'normal', 'normal'),
+    caption: textStyle('xs', 'normal', 'normal', 'normal'),
   },
   spaces: {
     0: '0rem',
+    0.5: '0.125rem',
     1: '0.25rem',
+    1.5: '0.375rem',
     2: '0.5rem',
+    2.5: '0.625rem',
     3: '0.75rem',
     4: '1rem',
     5: '1.25rem',
@@ -223,11 +270,6 @@ export const defaultTheme: Theme = {
     92: '23rem',
     96: '24rem',
   },
-  sizes: {
-    max: 'max-content',
-    min: 'min-content',
-    full: '100%',
-  },
   radii: {
     0: '0px',
     1: '0.125rem',
@@ -238,18 +280,14 @@ export const defaultTheme: Theme = {
     6: '0.75rem',
     full: '9999px',
   },
-  zIndeces: {
-    0: 0,
-    1: 10,
-    2: 20,
-    3: 30,
-    4: 40,
-    5: 50,
-    6: 60,
-    7: 70,
-    8: 80,
-    9: 90,
-    10: 100,
+  zIndices: {
+    sticky: 1000,
+    overlay: 1100,
+    modal: 1200,
+    popover: 1300,
+    dropdown: 1400,
+    tooltip: 1500,
+    toast: 1600,
   },
   shadows: {
     none: 'none',
@@ -258,13 +296,60 @@ export const defaultTheme: Theme = {
     lg: '0 10px 15px rgba(0, 0, 0, 0.15)',
     xl: '0 20px 25px rgba(0, 0, 0, 0.2)',
     '2xl': '0 25px 50px rgba(0, 0, 0, 0.25)',
+    raised: '0 1px 3px rgb(0 0 0 / 30%)',
+    panel: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   },
   breakpoints: {
-    sm: '640px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
-    '2xl': '1536px',
+    sm: '40rem',
+    md: '48rem',
+    lg: '64rem',
+    xl: '80rem',
+    '2xl': '96rem',
+  },
+  containers: {
+    '3xs': '16rem',
+    '2xs': '18rem',
+    xs: '20rem',
+    sm: '24rem',
+    md: '28rem',
+    lg: '32rem',
+    xl: '36rem',
+    '2xl': '42rem',
+    '3xl': '48rem',
+    '4xl': '56rem',
+    '5xl': '64rem',
+    '6xl': '72rem',
+    '7xl': '80rem',
+  },
+  motion: {
+    durations: {
+      fast: '0.15s',
+      normal: '0.2s',
+      slow: '0.3s',
+    },
+    easings: {
+      standard: 'ease',
+      out: 'ease-out',
+      inOut: 'ease-in-out',
+    },
+  },
+  focusRing: {
+    width: '2px',
+    offset: '1px',
+    color: 'var(--plume-color-primary-text)',
+  },
+  borderWidths: {
+    thin: '1px',
+    medium: '2px',
+    thick: '4px',
+  },
+  controlHeights: {
+    sm: '2rem',
+    md: '2.5rem',
+    lg: '3rem',
+  },
+  opacities: {
+    disabled: 0.5,
   },
 }
 
@@ -277,5 +362,13 @@ export const defaultDarkTheme: DeepPartial<Theme> = {
     muted: '#acacb5',
     border: '#3f3f46',
     borderStrong: '#9a9aa3',
+    backdrop: 'rgb(0 0 0 / 65%)',
+  },
+  shadows: {
+    sm: '0 1px 2px rgba(0, 0, 0, 0.4)',
+    md: '0 4px 6px rgba(0, 0, 0, 0.5)',
+    lg: '0 10px 15px rgba(0, 0, 0, 0.55)',
+    xl: '0 20px 25px rgba(0, 0, 0, 0.6)',
+    '2xl': '0 25px 50px rgba(0, 0, 0, 0.7)',
   },
 }

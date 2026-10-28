@@ -29,19 +29,19 @@
   max-width: calc(100vw - var(--plume-space-4));
   padding: var(--plume-space-4);
   width: max-content;
-  z-index: var(--plume-z-7);
+  z-index: var(--plume-z-popover);
 }
 
 .sm {
-  max-width: min(14rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-3xs), calc(100vw - var(--plume-space-4)));
 }
 
 .md {
-  max-width: min(20rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-xs), calc(100vw - var(--plume-space-4)));
 }
 
 .lg {
-  max-width: min(28rem, calc(100vw - var(--plume-space-4)));
+  max-width: min(var(--plume-container-md), calc(100vw - var(--plume-space-4)));
 }
 
 .elevated {
@@ -49,7 +49,7 @@
 }
 
 .outline {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .close {
@@ -65,8 +65,8 @@
   justify-content: center;
   padding: 0;
   transition:
-    background-color 0.15s,
-    color 0.15s;
+    background-color var(--plume-duration-fast),
+    color var(--plume-duration-fast);
   width: var(--plume-space-6);
 }
 
@@ -76,13 +76,13 @@
 }
 
 .close:focus-visible {
-  outline: 2px solid var(--plume-color-primary-text);
+  outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
   outline-offset: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .content {
-    animation: content-in 0.12s ease-out;
+    animation: content-in var(--plume-duration-fast) var(--plume-easing-out);
   }
 }
 
@@ -94,6 +94,6 @@
 
 @media (forced-colors: active) {
   .content {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

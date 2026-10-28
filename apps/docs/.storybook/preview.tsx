@@ -3,9 +3,8 @@ import type { Preview } from '@storybook/react-vite'
 import { DocsContainer } from '@storybook/addon-docs/blocks'
 import { addons } from 'storybook/preview-api'
 import { ThemeProvider, useTheme } from 'plume-ui-react'
+import '../layers.css'
 import 'plume-ui-react/styles.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
 import '../globals.css'
 import DocsTemplate from '../src/docs-template'
 import PageNav from '../src/page-nav'
@@ -173,7 +172,7 @@ const preview: Preview = {
           'Theme',
           ['Colors', 'Tokens'],
           'Guides',
-          ['Framework Integration', 'Examples', 'Customizing Styles', 'Forms', 'Internationalization', 'Upgrading to 1.0'],
+          ['Framework Integration', 'Examples', 'Customizing Styles', 'Forms', 'Internationalization', 'Public API', 'Upgrading to 1.0'],
           'Components',
         ],
       },

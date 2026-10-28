@@ -1,8 +1,12 @@
 // tsup.config.ts
 import { promises as fsPromises } from 'node:fs'
 import path from 'node:path'
+import { transform } from 'esbuild'
 import { defineConfig, type Options } from 'tsup'
 import postcss from 'postcss'
+import { buildCssUnits } from './scripts/component-css'
+import { breakpoints } from './scripts/postcss-breakpoints'
+import { buildTokensCss } from './scripts/tokens-css'
 import postcssModules from 'postcss-modules'
 
 type Plugin = NonNullable<Options['esbuildPlugins']>[number]
@@ -25,6 +29,7 @@ function cssModulePlugin({ emitCss }: { emitCss: boolean }): Plugin {
         const source = await fsPromises.readFile(pluginData.pathDir, 'utf8')
         let cssModule = {}
         const result = await postcss([
+          breakpoints(),
           postcssModules({
             getJSON(_, json) {
               cssModule = json
@@ -76,7 +81,32 @@ function preserveModulesPlugin(): Plugin {
 const moduleEntries = ['src/**/*.{ts,tsx}', '!src/**/tests/**', '!src/**/stories/**']
 
 async function emitStylesheet(): Promise<void> {
-  await fsPromises.rename('dist/index.css', 'dist/styles.css')
+  const css = await fsPromises.readFile('dist/index.css', 'utf8')
+  const tokens = buildTokensCss()
+  await fsPromises.writeFile('dist/tokens.css', `@layer base,plume,components,utilities;@layer plume{${tokens}}`)
+  await fsPromises.writeFile(
+    'dist/styles.css',
+    `@layer base,plume,components,utilities;@layer plume{${tokens}${css}}`,
+  )
+  await fsPromises.rm('dist/index.css')
+  await emitComponentStylesheets()
+}
+
+async function emitComponentStylesheets(): Promise<void> {
+  const units = await buildCssUnits(path.resolve('src'))
+  await fsPromises.mkdir('dist/css', { recursive: true })
+  await Promise.all(
+    Object.entries(units).map(async ([name, unit]) => {
+      const { code } = await transform(unit.css, { loader: 'css', minify: true })
+      const imports = ['../tokens.css', ...unit.imports.map((dep) => `./${dep}.css`)]
+        .map((file) => `@import '${file}';`)
+        .join('')
+      await fsPromises.writeFile(
+        `dist/css/${name}.css`,
+        `@layer base,plume,components,utilities;${imports}@layer plume{${code}}`,
+      )
+    }),
+  )
 }
 
 export default defineConfig((options) => {

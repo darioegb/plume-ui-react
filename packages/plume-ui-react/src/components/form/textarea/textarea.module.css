@@ -1,7 +1,7 @@
 :where(.base) {
   background: transparent;
   border: none;
-  outline: 2px solid transparent;
+  outline: var(--plume-focus-ring-width) solid transparent;
   outline-offset: 0;
 }
 
@@ -44,13 +44,13 @@
 
 .outline {
   composes: textarea;
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .filled {
   composes: textarea;
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -58,7 +58,7 @@
 .underline {
   composes: textarea;
   border-radius: 0;
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .none {
@@ -92,18 +92,18 @@
 
 .outline:enabled:focus {
   border-color: var(--textarea-color);
-  outline: 2px solid var(--textarea-color);
+  outline: var(--plume-focus-ring-width) solid var(--textarea-color);
   outline-offset: 0;
 }
 
 :is(.filled, .underline):enabled:focus {
   border-block-end-color: var(--textarea-color);
-  border-block-end-width: 2px;
+  border-block-end-width: var(--plume-border-width-medium);
 }
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 :global(:where([data-plume-textarea-group])) {

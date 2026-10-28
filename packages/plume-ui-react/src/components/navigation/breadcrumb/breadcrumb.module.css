@@ -75,7 +75,7 @@ a.link:hover {
 }
 
 .link:focus-visible {
-  outline: 2px solid var(--breadcrumb-text);
+  outline: var(--plume-focus-ring-width) solid var(--breadcrumb-text);
   outline-offset: 0;
 }
 

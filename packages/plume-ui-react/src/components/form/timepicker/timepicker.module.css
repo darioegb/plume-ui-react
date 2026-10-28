@@ -10,7 +10,7 @@
   max-width: calc(100vw - var(--plume-space-4));
   padding: var(--plume-space-2);
   position: absolute;
-  z-index: var(--plume-z-1);
+  z-index: var(--plume-z-dropdown);
 }
 
 .inline {
@@ -48,8 +48,8 @@
 }
 
 .option:focus-visible {
-  outline: 2px solid var(--picker-scheme);
-  outline-offset: 1px;
+  outline: var(--plume-focus-ring-width) solid var(--picker-scheme);
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .variantFilled .option:not(.selected) {
@@ -61,7 +61,7 @@
 }
 
 .variantUnderline .selected {
-  border-block-end: 2px solid var(--picker-scheme);
+  border-block-end: var(--plume-border-width-medium) solid var(--picker-scheme);
 }
 
 .selected {
@@ -99,6 +99,6 @@
   }
 
   .option:focus-visible {
-    outline: 2px solid Highlight;
+    outline: var(--plume-focus-ring-width) solid Highlight;
   }
 }

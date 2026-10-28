@@ -48,7 +48,7 @@
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation-name: spinner-pulse;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: var(--plume-easing-in-out);
   }
 }
 

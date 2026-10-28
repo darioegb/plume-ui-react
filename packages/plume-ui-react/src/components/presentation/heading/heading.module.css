@@ -1,0 +1,52 @@
+.heading {
+  font-family: var(--plume-font-family);
+  margin: 0;
+}
+
+.size1 {
+  font-size: var(--plume-text-heading-1-size);
+  font-weight: var(--plume-text-heading-1-weight);
+  letter-spacing: var(--plume-text-heading-1-letter-spacing);
+  line-height: var(--plume-text-heading-1-line-height);
+}
+
+.size2 {
+  font-size: var(--plume-text-heading-2-size);
+  font-weight: var(--plume-text-heading-2-weight);
+  letter-spacing: var(--plume-text-heading-2-letter-spacing);
+  line-height: var(--plume-text-heading-2-line-height);
+}
+
+.size3 {
+  font-size: var(--plume-text-heading-3-size);
+  font-weight: var(--plume-text-heading-3-weight);
+  letter-spacing: var(--plume-text-heading-3-letter-spacing);
+  line-height: var(--plume-text-heading-3-line-height);
+}
+
+.size4 {
+  font-size: var(--plume-text-heading-4-size);
+  font-weight: var(--plume-text-heading-4-weight);
+  letter-spacing: var(--plume-text-heading-4-letter-spacing);
+  line-height: var(--plume-text-heading-4-line-height);
+}
+
+.size5 {
+  font-size: var(--plume-text-heading-5-size);
+  font-weight: var(--plume-text-heading-5-weight);
+  letter-spacing: var(--plume-text-heading-5-letter-spacing);
+  line-height: var(--plume-text-heading-5-line-height);
+}
+
+.size6 {
+  font-size: var(--plume-text-heading-6-size);
+  font-weight: var(--plume-text-heading-6-weight);
+  letter-spacing: var(--plume-text-heading-6-letter-spacing);
+  line-height: var(--plume-text-heading-6-line-height);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

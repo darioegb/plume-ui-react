@@ -490,3 +490,53 @@ useEffect(() => {
   return () => document.removeEventListener('pointerdown', close)
 }, [onClose])
 ```
+
+## The theme: `zIndices`, `breakpoints` in `rem`, and fewer variables
+
+The z-index scale has names instead of numbers, and the typo is fixed: `theme.zIndeces` is now `theme.zIndices`, with
+`sticky`, `overlay`, `modal`, `popover`, `dropdown`, `tooltip` and `toast`. They keep the order the layers had, so a
+`Select` still opens over a `Modal`. The variables are `--plume-z-<name>` and the Tailwind utilities `z-<name>`.
+
+<table>
+  <thead>
+    <tr><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>theme.zIndeces</code>, <code>ZIndeces</code></td><td><code>theme.zIndices</code>, <code>ZIndices</code></td></tr>
+    <tr><td><code>--plume-z-1</code> … <code>--plume-z-10</code>, <code>z-1</code> … <code>z-10</code></td><td><code>--plume-z-sticky</code> … <code>--plume-z-toast</code>, <code>z-sticky</code> … <code>z-toast</code></td></tr>
+    <tr><td><code>theme.breakpoints</code> in <code>px</code> (<code>'768px'</code>)</td><td>in <code>rem</code> (<code>'48rem'</code>)</td></tr>
+    <tr><td><code>--plume-breakpoint-&#42;</code></td><td>not emitted: a <code>var()</code> does not work inside <code>@media</code>; read <code>useTheme().theme.breakpoints</code></td></tr>
+    <tr><td><code>theme.sizes</code>, <code>--plume-size-&#42;</code></td><td>removed, nothing used them</td></tr>
+    <tr><td><code>--plume-color-&lt;scheme&gt;-contrast</code></td><td>removed: use <code>--plume-color-&lt;scheme&gt;-solid-contrast</code></td></tr>
+  </tbody>
+</table>
+
+`theme.breakpoints` is for your own code (`useTheme().theme.breakpoints`, a `useMediaQuery`). The `Sidebar` and the
+`Navbar` fold at the `sm`, `md` and `lg` of the default theme, because their CSS uses `@media` queries, which cannot
+read a variable. The build writes those queries from `defaultTheme.breakpoints` (`@media (--md)` in the source), so the
+widths of every component come from one place: `sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem and `2xl` 96rem, the
+same as Tailwind v4. The calendars of the `DatePicker` now stack below `md` (48rem, before 45rem) and the `Paginator`
+tightens its spacing below `sm` (40rem, before 30rem).
+
+## The CSS of Plume is in the layer `plume`
+
+`plume-ui-react/styles.css` now puts all its rules in `@layer plume`, after declaring `@layer base, plume, components,
+utilities;`. A `className` or a rule of yours wins over Plume without `variant='unstyled'` and without raising the
+specificity, and Tailwind v4 utilities such as `px-5` win too.
+
+The other side is that CSS with no layer also beats Plume. If you use Bootstrap, `normalize.css` or the preflight of
+Tailwind v3, import it into a layer that comes before `plume` (`@import '...' layer(reset)`, after
+`@layer reset, base, plume, components, utilities;`), or the reset will remove the padding of the buttons and the
+borders of the inputs. See **Customizing styles**.
+
+## The default theme is in the stylesheet
+
+`plume-ui-react/styles.css` declares the default tokens (`:root` for light mode and
+`[data-plume-color-mode='dark']` for what changes in dark mode), so the components render with their colors, spacing
+and shadows even without a `<ThemeProvider>`. The provider is still the way to change the theme and the color mode,
+and it now writes inline only the variables that differ from the default, so the HTML it renders on the server is
+much smaller (a default theme emits about 40 variables instead of more than 300).
+
+Because the default values no longer come from the provider, a variable that is not in your theme is not on the
+element: read it with `getComputedStyle` instead of `element.style`. `plume-ui-react/tokens.css` has only the tokens,
+for an app that builds its own components over them.

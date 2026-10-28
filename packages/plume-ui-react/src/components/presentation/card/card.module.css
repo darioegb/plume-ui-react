@@ -30,7 +30,7 @@
 
 .outline {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border);
+  border: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 .filled {
@@ -71,11 +71,11 @@
 }
 
 .outline .header {
-  border-block-end: 1px solid var(--plume-border);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 .outline .footer {
-  border-block-start: 1px solid var(--plume-border);
+  border-block-start: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 .outline .header + .body,
@@ -86,6 +86,6 @@
 
 @media (forced-colors: active) {
   .card {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

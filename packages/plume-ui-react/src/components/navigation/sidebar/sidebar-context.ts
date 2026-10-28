@@ -2,15 +2,18 @@
 
 import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
+import { defaultTheme } from '../../../theme/config'
 
 export type SidebarVariant = 'plain' | 'filled' | 'solid' | 'unstyled'
 export type SidebarBreakpoint = 'sm' | 'md' | 'lg' | 'never'
 export type SidebarSide = 'left' | 'right'
 
+const { sm, md, lg } = defaultTheme.breakpoints
+
 export const sidebarQueries: Record<SidebarBreakpoint, string> = {
-  sm: '(width < 40rem)',
-  md: '(width < 48rem)',
-  lg: '(width < 64rem)',
+  sm: `(width < ${sm})`,
+  md: `(width < ${md})`,
+  lg: `(width < ${lg})`,
   never: 'not all',
 }
 

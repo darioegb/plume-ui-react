@@ -41,8 +41,8 @@ import { Button, Input } from 'plume-ui-react'
  * ```
  *
  * Because the utilities resolve to the live CSS variables, they re-theme
- * automatically and flip in dark mode. Wrap your app in `<ThemeProvider>` for the
- * variables to resolve. Every token is available as `--plume-<group>-<name>`
+ * automatically and flip in dark mode. The stylesheet declares the default values, and
+ * `<ThemeProvider>` the ones your theme changes. Every token is available as `--plume-<group>-<name>`
  * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-shadow-md`).
  *
  * For filled surfaces use `solid` with `on-solid`, and for colored text use `text`:

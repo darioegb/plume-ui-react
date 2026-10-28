@@ -55,7 +55,7 @@
 }
 
 .role {
-  color: var(--plume-muted-foreground);
+  color: var(--plume-muted);
   font-size: 0.875rem;
 }
 

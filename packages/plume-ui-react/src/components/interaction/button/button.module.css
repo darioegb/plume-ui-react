@@ -15,25 +15,25 @@
 @media (prefers-reduced-motion: no-preference) {
   .button {
     transition:
-      color 0.3s,
-      background-color 0.3s;
+      color var(--plume-duration-slow),
+      background-color var(--plume-duration-slow);
   }
 }
 
 .sm {
   font-size: var(--plume-font-size-xs);
-  height: var(--plume-space-8);
+  height: var(--plume-control-height-sm);
   padding-inline: var(--plume-space-2);
 }
 
 .md {
-  height: var(--plume-space-10);
+  height: var(--plume-control-height-md);
   padding-inline: var(--plume-space-4);
 }
 
 .lg {
   font-size: var(--plume-font-size-lg);
-  height: var(--plume-space-12);
+  height: var(--plume-control-height-lg);
   padding-inline: var(--plume-space-6);
 }
 
@@ -53,7 +53,7 @@
 
 .outline {
   composes: button;
-  border: 1px solid var(--button-color);
+  border: var(--plume-border-width-thin) solid var(--button-color);
   color: var(--button-color);
 }
 
@@ -94,7 +94,7 @@
 }
 
 .button:enabled:focus-visible {
-  outline: 2px solid var(--button-color);
+  outline: var(--plume-focus-ring-width) solid var(--button-color);
   outline-offset: 0;
 }
 
@@ -117,7 +117,7 @@
 }
 
 button.disabled {
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
   cursor: not-allowed;
 }
 
@@ -144,6 +144,6 @@ button.disabled {
 @media (forced-colors: active) {
   .solid,
   .icon {
-    border: 1px solid ButtonText;
+    border: var(--plume-border-width-thin) solid ButtonText;
   }
 }

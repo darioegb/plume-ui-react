@@ -5,24 +5,22 @@
 .panelOutline,
 .panelFilled,
 .panelUnderline {
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--plume-shadow-panel);
   border-radius: var(--plume-radius-6);
 }
 
 .panelOutline {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .panelFilled {
   background-color: var(--plume-surface-muted);
-  border-block-end: 2px solid var(--picker-scheme);
+  border-block-end: var(--plume-border-width-medium) solid var(--picker-scheme);
 }
 
 .panelUnderline {
   border-radius: 0;
-  border-block-end: 2px solid var(--picker-scheme);
+  border-block-end: var(--plume-border-width-medium) solid var(--picker-scheme);
 }
 
 .panelPill:is(.panelOutline, .panelFilled) {

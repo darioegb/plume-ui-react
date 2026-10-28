@@ -1,0 +1,49 @@
+{/* public-api.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Public API' />
+
+# Public API
+
+From 1.0 on, `plume-ui-react` follows semver: a breaking change only arrives in a major version. This page says what
+that covers, so you know what you can build on and what can change in any release.
+
+## What is public
+
+<table>
+  <thead>
+    <tr><th>Surface</th><th>What is covered</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Components and parts</td><td>The names exported from <code>plume-ui-react</code>, their props and what they accept as <code>children</code> and <code>ref</code>.</td></tr>
+    <tr><td>Hooks and utilities</td><td>The exported hooks and functions, with their arguments and what they return.</td></tr>
+    <tr><td>The theme</td><td>The shape of the <code>Theme</code> type and the keys of <code>defaultTheme</code>: what you can pass to <code>ThemeProvider</code>.</td></tr>
+    <tr><td>Tokens</td><td>The names of the <code>--plume-&#42;</code> CSS variables of the <a href='./?path=/docs/theme-tokens--docs' target='_top'>Tokens</a> page, and the Tailwind utilities of the preset. A test keeps the list, so a rename is always a decision.</td></tr>
+    <tr><td>Hooks to style</td><td>The <code>data-plume-&#42;</code> attributes of every part and the state attributes that the story of a component lists (<code>data-open</code>, <code>data-disabled</code>, <code>data-invalid</code>…), and the ARIA attributes.</td></tr>
+    <tr><td>Stylesheets</td><td>The files <code>styles.css</code>, <code>tokens.css</code> and <code>css/&lt;component&gt;.css</code>, and the name of the cascade layer, <code>plume</code>.</td></tr>
+    <tr><td>Local variables</td><td>Only the component variables that the story or the API reference of the component documents (<code>--datepicker-solid</code>, <code>--sidebar-width</code>…).</td></tr>
+  </tbody>
+</table>
+
+## What is not
+
+- The class names of the CSS. They have a hash (`_button_q0nr6_3`) that changes with the CSS. Style with
+  `className`, the `data-plume-*` attributes or the tokens.
+- The component variables that no page documents, and the structure of the HTML a component renders beyond its parts
+  and their order.
+- The files inside `dist`. Import only from the paths of the table above.
+- The look of the default theme, to a point: its colors, sizes and shadows can be adjusted in a minor release, for
+  accessibility or to fix a defect, and the change is in the changelog. A token is never removed or renamed in a minor.
+
+## What is a breaking change
+
+- Removing or renaming an export, a prop, a part, a token, a `data-plume-*` attribute or a documented variable.
+- Changing the type of a prop in a way that makes code that compiled stop compiling.
+- Changing the default of a prop, or the element a part renders.
+- Moving a breakpoint of the scale (`sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem, `2xl` 96rem).
+
+These are not: a new prop, part, token or variant, a new default theme value that keeps the contrast, a fix for a
+behavior that did not match its documentation, and a change in anything of the previous list.
+
+Something deprecated stays at least one major version, with a note in the API reference and in the changelog.

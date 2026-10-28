@@ -53,7 +53,7 @@
 :where(.outline)
   > :global(:where([data-plume-collapse-clip]))
   > :global([data-plume-collapse-body]) {
-  border: 1px solid var(--collapse-solid, var(--plume-border));
+  border: var(--plume-border-width-thin) solid var(--collapse-solid, var(--plume-border));
   border-radius: var(--plume-radius-4);
 }
 
@@ -61,7 +61,7 @@
   > :global(:where([data-plume-collapse-clip]))
   > :global([data-plume-collapse-body]) {
   background-color: var(--collapse-tint, var(--plume-surface-muted));
-  border-inline-start: 4px solid
+  border-inline-start: var(--plume-border-width-thick) solid
     var(--collapse-solid, var(--plume-border-strong, var(--plume-border)));
   border-radius: 0 var(--plume-radius-4) var(--plume-radius-4) 0;
   color: var(--collapse-tint-text, var(--plume-foreground));
@@ -71,15 +71,15 @@
   :where(.filled)
     > :global(:where([data-plume-collapse-clip]))
     > :global([data-plume-collapse-body]) {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   :global(:where([data-plume-collapse])) {
     transition:
-      grid-template-rows 0.2s ease,
-      visibility 0s linear 0.2s;
+      grid-template-rows var(--plume-duration-normal) var(--plume-easing-standard),
+      visibility 0s linear var(--plume-duration-normal);
   }
 
   :global(:where([data-plume-collapse][data-open])) {

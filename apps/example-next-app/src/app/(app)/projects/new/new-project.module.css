@@ -20,7 +20,7 @@
 }
 
 .summary dt {
-  color: var(--plume-muted-foreground);
+  color: var(--plume-muted);
 }
 
 .summary dd {

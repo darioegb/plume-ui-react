@@ -5,7 +5,7 @@
   inset: 0;
   justify-content: center;
   position: fixed;
-  z-index: var(--plume-z-6);
+  z-index: var(--plume-z-modal);
 }
 
 :global(:where(dialog[data-plume-dialog])) {
@@ -24,14 +24,14 @@
 
 .backdrop {
   align-items: center;
-  background-color: rgb(0 0 0 / 50%);
+  background-color: var(--plume-backdrop);
   box-sizing: border-box;
   display: flex;
   inset: 0;
   justify-content: center;
   padding: var(--plume-space-4);
   position: fixed;
-  z-index: var(--plume-z-6);
+  z-index: var(--plume-z-modal);
 }
 
 .content {
@@ -51,21 +51,22 @@
 }
 
 .sm {
-  max-width: 24rem;
+  max-width: var(--plume-container-sm);
 }
 
 .md {
-  max-width: 32rem;
+  max-width: var(--plume-container-lg);
 }
 
 .lg {
-  max-width: 48rem;
+  max-width: var(--plume-container-3xl);
 }
 
 .header {
-  font-size: var(--plume-font-size-lg);
-  font-weight: var(--plume-font-weight-semibold);
-  line-height: var(--plume-line-height-snug);
+  font-size: var(--plume-text-heading-5-size);
+  font-weight: var(--plume-text-heading-5-weight);
+  letter-spacing: var(--plume-text-heading-5-letter-spacing);
+  line-height: var(--plume-text-heading-5-line-height);
   margin: 0;
   padding: var(--plume-space-5) var(--plume-space-12) var(--plume-space-3) var(--plume-space-6);
 }
@@ -77,8 +78,8 @@
 }
 
 .body:focus-visible {
-  outline: 2px solid var(--plume-color-primary-text);
-  outline-offset: -2px;
+  outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .footer {
@@ -106,8 +107,8 @@
   padding: 0;
   position: absolute;
   transition:
-    background-color 0.15s,
-    color 0.15s;
+    background-color var(--plume-duration-fast),
+    color var(--plume-duration-fast);
   width: var(--plume-space-8);
 }
 
@@ -117,17 +118,17 @@
 }
 
 .close:focus-visible {
-  outline: 2px solid var(--plume-color-primary-text);
+  outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
   outline-offset: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .backdrop {
-    animation: backdrop-in 0.15s ease-out;
+    animation: backdrop-in var(--plume-duration-fast) var(--plume-easing-out);
   }
 
   .content {
-    animation: content-in 0.18s ease-out;
+    animation: content-in var(--plume-duration-normal) var(--plume-easing-out);
   }
 }
 
@@ -146,6 +147,6 @@
 
 @media (forced-colors: active) {
   .content {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

@@ -66,7 +66,7 @@
 }
 
 .lg {
-  font-size: 2.5rem;
+  font-size: calc(var(--plume-font-size-4xl) + var(--plume-space-1));
 }
 
 .empty {
@@ -88,18 +88,18 @@
 
 .item:has(:focus-visible) {
   border-radius: var(--plume-radius-3);
-  outline: 2px solid var(--rating-edge, currentColor);
+  outline: var(--plume-focus-ring-width) solid var(--rating-edge, currentColor);
   outline-offset: 0;
 }
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .interactive .item {
-    transition: transform 0.1s ease;
+    transition: transform var(--plume-duration-fast) var(--plume-easing-standard);
   }
 
   .interactive .item:hover {

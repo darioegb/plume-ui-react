@@ -189,7 +189,10 @@ describe('Sidebar component', () => {
           </Sidebar>
         </SidebarProvider>,
       )
-      expect(document.querySelector('[data-plume-sidebar-item-icon]')).toHaveClass('icon', 'my-icon')
+      expect(document.querySelector('[data-plume-sidebar-item-icon]')).toHaveClass(
+        'icon',
+        'my-icon',
+      )
       expect(screen.getByText('Name')).toHaveClass('label', 'my-label')
     })
   })
@@ -347,6 +350,13 @@ describe('Sidebar component', () => {
     })
   })
 
+  describe('breakpoint', () => {
+    it('switches to a panel below the width of the breakpoint', () => {
+      render(<Demo breakpoint="lg" />)
+      expect(vi.mocked(window.matchMedia)).toHaveBeenCalledWith('(width < 64rem)')
+    })
+  })
+
   describe('without matchMedia', () => {
     it('behaves as a wide screen', async () => {
       Reflect.deleteProperty(window, 'matchMedia')
@@ -380,7 +390,13 @@ describe('Sidebar component', () => {
     })
 
     it('lets style override a variable', () => {
-      render(<Demo sidebar={{ style: { '--sidebar-tint': 'red' } as React.CSSProperties }} />)
+      render(
+        <Demo
+          sidebar={{
+            style: { '--sidebar-tint': 'red' } as React.CSSProperties,
+          }}
+        />,
+      )
       expect(panel()).toHaveStyle('--sidebar-tint: red')
     })
 

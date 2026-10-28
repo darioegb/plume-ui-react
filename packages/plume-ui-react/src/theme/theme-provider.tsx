@@ -1,31 +1,18 @@
 'use client'
 
 import type { CSSProperties, ReactNode } from 'react'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { deepMerge } from '../utils/merge'
 import { defaultDarkTheme, defaultTheme } from './config'
 import type { DeepPartial, Theme } from './theme.types'
+import type { ColorMode, ColorModeSetting, ThemeContextValue } from './theme-context'
+import { ThemeContext } from './theme-context'
 import { ThemeRootContext } from './theme-root'
+import { getCssVarOverrides, getDefaultCssVars } from './default-css-vars'
 import { themeToCssVars } from './theme-to-css-vars'
 
-export type ColorMode = 'light' | 'dark'
-export type ColorModeSetting = ColorMode | 'system'
-
-export interface ThemeContextValue {
-  theme: Theme
-  colorMode: ColorMode
-  setColorMode: (mode: ColorModeSetting) => void
-}
-
-const ThemeContext = createContext<ThemeContextValue | null>(null)
-
-export function useTheme(): ThemeContextValue {
-  const context = useContext(ThemeContext)
-  if (!context) {
-    throw new Error('useTheme must be used within a <ThemeProvider>')
-  }
-  return context
-}
+export { useTheme } from './theme-context'
+export type { ColorMode, ColorModeSetting, ThemeContextValue } from './theme-context'
 
 export interface ThemeProviderProps {
   children: ReactNode
@@ -78,7 +65,10 @@ export function ThemeProvider({
   }, [setting])
 
   const activeTheme = colorMode === 'dark' ? resolvedDarkTheme : lightTheme
-  const cssVars = useMemo(() => themeToCssVars(activeTheme), [activeTheme])
+  const cssVars = useMemo(
+    () => getCssVarOverrides(themeToCssVars(activeTheme), getDefaultCssVars(colorMode)),
+    [activeTheme, colorMode],
+  )
 
   useEffect(() => {
     if (!applyToBody || typeof document === 'undefined') return

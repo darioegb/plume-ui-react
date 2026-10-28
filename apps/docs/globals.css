@@ -1,4 +1,5 @@
-@import './reset.css';
+@import 'bootstrap/dist/css/bootstrap.min.css' layer(reset);
+@import './reset.css' layer(reset);
 
 @tailwind base;
 @tailwind components;

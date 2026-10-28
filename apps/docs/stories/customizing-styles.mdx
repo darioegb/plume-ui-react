@@ -36,18 +36,34 @@ import, and each part takes its own `className`, `style` and `ref`:
 ```
 
 The class is added **next to** the Plume classes of the part, in the `outline`, `filled`, `solid` and every other
-variant. It does not replace them, so a declaration of Plume and one of yours for the same property compete in the
-cascade: the more specific one wins, and at the same specificity the one that comes later in the stylesheets.
+variant. It does not replace them, but it wins: the CSS of Plume is in the cascade layer `plume`, and CSS with no layer
+beats CSS in a layer whatever its specificity, so `px-5` or a rule of yours for the same property always overrides the
+one of Plume.
 
-This is where utility classes can lose. The classes of Plume are plain CSS with a single selector. Tailwind CSS v4
-puts its utilities in a cascade layer, and CSS with no layer beats CSS in a layer, so `px-5` on a styled `ModalContent`
-can lose against the padding of Plume. With Tailwind v3 and Bootstrap the order of the stylesheets decides.
+## Cascade layers
 
-When your class loses, you have three ways out:
+`plume-ui-react/styles.css` starts with `@layer base, plume, components, utilities;` and puts everything inside
+`@layer plume`. The order is the one of the layers that come before, so:
 
-1. Use `variant='unstyled'` on the component, which drops the Plume classes of every part (see below).
-2. Raise the specificity of your declaration: Tailwind's important modifier (`!px-5`), or a more specific selector.
-3. Change the value Plume reads, if the component exposes it as a CSS variable, instead of fighting the declaration.
+- **Your own CSS and the utilities of Tailwind v3**: no layer, so they win over Plume. Nothing to do.
+- **Tailwind v4**: its utilities are in the layer `utilities`, which comes after `plume`, so they win. Declare the
+  order first if you import Tailwind before Plume: `@layer theme, base, plume, components, utilities;`.
+- **A reset with no layer** (Bootstrap's reboot, `normalize.css`, and the **preflight of Tailwind v3**) **also beats
+  Plume**: its `button { padding: 0 }` or `* { border-width: 0 }` would strip the styles of the buttons and the inputs.
+  Import it into a layer that comes before `plume`. With Tailwind v3, turn the preflight off (`corePlugins: {
+  preflight: false }`) and import a reset of your own the same way:
+
+```css
+@layer reset, base, plume, components, utilities;
+
+@import 'bootstrap/dist/css/bootstrap.min.css' layer(reset);
+@import 'plume-ui-react/styles.css';
+```
+
+Tailwind v4's preflight is already in `base`, which comes before `plume`, so it needs nothing.
+
+The sizes of one component are local variables you can override, like `--sidebar-width` or `--skeleton-height`, and the
+widths that components share come from the `--plume-container-*` scale.
 
 Adding what Plume does not set (`mt-4`, `max-w-md`, `ring-2`, `hidden`) always works.
 
