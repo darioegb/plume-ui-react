@@ -87,7 +87,7 @@
 }
 
 .slides:focus-visible {
-  outline: 2px solid var(--carousel-text);
+  outline: var(--plume-focus-ring-width) solid var(--carousel-text);
   outline-offset: 0;
 }
 
@@ -126,7 +126,7 @@
 
 .outline .arrow {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border-strong, var(--plume-border));
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong, var(--plume-border));
   color: var(--plume-foreground);
 }
 
@@ -159,7 +159,7 @@
 
 .arrow:focus-visible,
 .dot:focus-visible {
-  outline: 2px solid var(--carousel-text);
+  outline: var(--plume-focus-ring-width) solid var(--carousel-text);
   outline-offset: 0;
 }
 
@@ -296,7 +296,7 @@
   block-size: var(--carousel-control);
   color: var(--plume-muted);
   font-size: calc(var(--carousel-control) * 0.4);
-  font-weight: 600;
+  font-weight: var(--plume-font-weight-semibold);
   inline-size: var(--carousel-control);
 }
 
@@ -324,7 +324,7 @@
 .vertical .thumbnails .dot,
 .vertical .thumbnails .dot[data-active] {
   block-size: 3.5rem;
-  border: 2px solid transparent;
+  border: var(--plume-border-width-medium) solid transparent;
   border-radius: var(--plume-radius-3);
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -356,27 +356,27 @@
 @media (prefers-reduced-motion: no-preference) {
   .thumbnails .dot {
     transition:
-      border-color 0.2s ease,
-      opacity 0.2s ease;
+      border-color var(--plume-duration-normal) var(--plume-easing-standard),
+      opacity var(--plume-duration-normal) var(--plume-easing-standard);
   }
 
   .dot::before {
     transition:
-      background-color 0.2s ease,
-      inline-size 0.2s ease;
+      background-color var(--plume-duration-normal) var(--plume-easing-standard),
+      inline-size var(--plume-duration-normal) var(--plume-easing-standard);
   }
 }
 
 @media (forced-colors: active) {
   .arrow,
   .dot::before {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 
   .numbers .dot[data-active],
   .thumbnails .dot[data-active] {
     border-color: Highlight;
-    outline: 2px solid Highlight;
+    outline: var(--plume-focus-ring-width) solid Highlight;
   }
 
   .dot[data-active]::before {

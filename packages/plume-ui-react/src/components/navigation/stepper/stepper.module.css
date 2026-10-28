@@ -16,7 +16,7 @@
 
 :global(:where([data-plume-stepper][data-orientation='horizontal'] > [data-plume-step])) {
   align-items: center;
-  column-gap: 0.75rem;
+  column-gap: var(--plume-space-3);
   flex: 1 1 0;
   grid-template-columns: auto auto 1fr;
 }
@@ -62,7 +62,7 @@
 }
 
 :global(:where([data-plume-stepper][data-orientation='vertical'] [data-plume-step])) {
-  column-gap: 0.75rem;
+  column-gap: var(--plume-space-3);
   grid-template-columns: auto 1fr;
 }
 
@@ -141,7 +141,7 @@
 
 .indicator {
   block-size: var(--stepper-indicator);
-  border: 2px solid var(--plume-border);
+  border: var(--plume-border-width-medium) solid var(--plume-border);
   border-radius: var(--plume-radius-full);
   font-weight: var(--plume-font-weight-semibold);
   inline-size: var(--stepper-indicator);
@@ -219,7 +219,7 @@
 
 @media (width < 40rem) {
   .stepper[data-orientation='horizontal'] .step {
-    column-gap: 0.5rem;
+    column-gap: var(--plume-space-2);
     flex: 1 1 auto;
   }
 

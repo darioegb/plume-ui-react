@@ -13,7 +13,7 @@
 .radio {
   appearance: none;
   background-color: var(--plume-surface);
-  border: 2px solid var(--plume-border-strong);
+  border: var(--plume-border-width-medium) solid var(--plume-border-strong);
   border-radius: var(--plume-radius-full);
   box-sizing: border-box;
   cursor: pointer;
@@ -22,8 +22,8 @@
   margin: 0;
   position: relative;
   transition:
-    background-color 0.15s,
-    border-color 0.15s;
+    background-color var(--plume-duration-fast),
+    border-color var(--plume-duration-fast);
   width: var(--radio-size);
 }
 
@@ -33,7 +33,7 @@
   inset: 27.5%;
   position: absolute;
   transform: scale(0);
-  transition: transform 0.12s;
+  transition: transform var(--plume-duration-fast);
 }
 
 .solid::before {
@@ -62,7 +62,7 @@
 }
 
 .radio:focus-visible {
-  outline: 2px solid var(--radio-text);
+  outline: var(--plume-focus-ring-width) solid var(--radio-text);
   outline-offset: 0;
 }
 
@@ -72,7 +72,7 @@
 
 .radio:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 @media (prefers-reduced-motion: reduce) {

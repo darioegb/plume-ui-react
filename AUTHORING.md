@@ -158,6 +158,7 @@ Copy it into the pull request description.
 
 **Styling**
 - [ ] Only `--plume-*` tokens and local variables, no color math in JavaScript
+- [ ] No literal `rem` in `padding`, `margin` or `gap`, no literal `font-size`, `z-index` of 10 or more, or transition time under a second: use `--plume-space-*`, `--plume-font-size-*`, `--plume-z-*` and `--plume-duration-*` (`pnpm lint` runs stylelint on the `*.module.css`)
 - [ ] Looks right in light and dark mode, and with a custom `colorScheme`
 
 **Accessibility**

@@ -23,7 +23,7 @@
 
 .variantOutline :is(.month, .year),
 .variantOutline .monthYearSelectors button:not([class*='icon']) {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .variantFilled
@@ -40,11 +40,11 @@
 
 .variantUnderline :is(.month, .year),
 .variantUnderline .monthYearSelectors button:not([class*='icon']) {
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .variantUnderline :is(.month, .year, .day).selected {
-  border-block-end: 2px solid var(--datepicker-scheme);
+  border-block-end: var(--plume-border-width-medium) solid var(--datepicker-scheme);
 }
 
 .inline {
@@ -108,7 +108,7 @@
 .year:focus-visible,
 .month:focus-visible,
 .monthYearSelectors button:focus-visible {
-  outline: 2px solid var(--datepicker-scheme);
+  outline: var(--plume-focus-ring-width) solid var(--datepicker-scheme);
   outline-offset: 1px;
 }
 
@@ -135,7 +135,7 @@
 
 .monthSelector,
 .yearSelector {
-  font-weight: bold;
+  font-weight: var(--plume-font-weight-bold);
 }
 
 .yearSelectorGrid {
@@ -172,7 +172,7 @@
   display: flex;
   justify-content: center;
   column-gap: var(--plume-space-1);
-  padding-bottom: 0.375rem;
+  padding-bottom: var(--plume-space-1-5);
 }
 
 .dayOfWeek {
@@ -238,7 +238,7 @@
   display: flex;
   justify-content: flex-end;
   padding: var(--plume-space-3);
-  border-top: 1px solid var(--plume-border);
+  border-top: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 button.footerButton {
@@ -272,6 +272,6 @@ button.footerButtonApply {
   .year:focus-visible,
   .month:focus-visible,
   .monthYearSelectors button:focus-visible {
-    outline: 2px solid Highlight;
+    outline: var(--plume-focus-ring-width) solid Highlight;
   }
 }

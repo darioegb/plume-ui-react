@@ -8,7 +8,7 @@
   display: flex;
   flex: 1 1 auto;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: var(--plume-space-1);
   min-width: 0;
 }
 
@@ -21,7 +21,7 @@
   display: flex;
   flex: 1 1 3rem;
   font: inherit;
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
   min-width: 3rem;
   padding: 0;
   text-align: start;
@@ -51,7 +51,7 @@
 :global(:where([data-plume-select-option])) {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
 }
 
 :global(:where([data-plume-select-option]:not([hidden]))) {
@@ -76,7 +76,7 @@
   color: var(--plume-foreground);
   font-family: var(--plume-font-family);
   font-size: var(--plume-font-size-base);
-  min-height: var(--plume-space-10);
+  min-height: var(--plume-control-height-md);
   min-width: min(18rem, calc(100vw - var(--plume-space-8)));
   position: relative;
   width: 100%;
@@ -84,27 +84,27 @@
 
 .sm {
   font-size: var(--plume-font-size-xs);
-  min-height: var(--plume-space-8);
+  min-height: var(--plume-control-height-sm);
 }
 
 .lg {
   font-size: var(--plume-font-size-lg);
-  min-height: var(--plume-space-12);
+  min-height: var(--plume-control-height-lg);
 }
 
 .outline {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .filled {
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-end-end-radius: 0;
   border-end-start-radius: 0;
 }
 
 .underline {
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-radius: 0;
 }
 
@@ -118,13 +118,13 @@
 
 .outline:focus-within {
   border-color: var(--select-color);
-  outline: 2px solid var(--select-color);
+  outline: var(--plume-focus-ring-width) solid var(--select-color);
   outline-offset: 0;
 }
 
 :is(.filled, .underline):focus-within {
   border-block-end-color: var(--select-color);
-  border-block-end-width: 2px;
+  border-block-end-width: var(--plume-border-width-medium);
 }
 
 :is(.outline, .filled, .underline).invalid {
@@ -133,7 +133,7 @@
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .field {
@@ -168,7 +168,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .chevron {
-    transition: transform 0.15s;
+    transition: transform var(--plume-duration-fast);
   }
 }
 
@@ -196,7 +196,7 @@
 }
 
 .clear:focus-visible {
-  outline: 2px solid var(--select-color);
+  outline: var(--plume-focus-ring-width) solid var(--select-color);
   outline-offset: 1px;
 }
 
@@ -238,7 +238,7 @@
 
 .panel {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-radius: var(--plume-radius-4);
   box-shadow: var(--plume-shadow-lg);
   box-sizing: border-box;
@@ -259,13 +259,13 @@
 }
 
 .search {
-  border-block-end: 1px solid var(--plume-border);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border);
   padding: var(--plume-space-2);
 }
 
 .searchInput {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-radius: var(--plume-radius-3);
   box-sizing: border-box;
   color: var(--plume-foreground);
@@ -279,7 +279,7 @@
 }
 
 .searchInput:focus {
-  outline: 2px solid var(--plume-color-primary-text);
+  outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
   outline-offset: 1px;
 }
 
@@ -311,7 +311,7 @@
 
 .option[aria-disabled='true'] {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .optionBody {
@@ -353,7 +353,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .panel:not([hidden]) {
-    animation: panel-in 0.12s ease-out;
+    animation: panel-in var(--plume-duration-fast) var(--plume-easing-out);
   }
 }
 
@@ -365,11 +365,11 @@
 
 @media (forced-colors: active) {
   .option[data-active] {
-    outline: 2px solid Highlight;
+    outline: var(--plume-focus-ring-width) solid Highlight;
     outline-offset: -2px;
   }
 
   .panel {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

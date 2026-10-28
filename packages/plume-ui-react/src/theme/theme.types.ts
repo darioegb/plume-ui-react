@@ -185,6 +185,7 @@ export interface FocusRing {
 
 export interface BorderWidths {
   thin: string
+  medium: string
   thick: string
 }
 

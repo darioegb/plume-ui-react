@@ -67,6 +67,7 @@ describe('themeToCssVars', () => {
     expect(vars['--plume-focus-ring-offset']).toBe(defaultTheme.focusRing.offset)
     expect(vars['--plume-focus-ring-color']).toBe(defaultTheme.focusRing.color)
     expect(vars['--plume-border-width-thin']).toBe(defaultTheme.borderWidths.thin)
+    expect(vars['--plume-border-width-medium']).toBe(defaultTheme.borderWidths.medium)
     expect(vars['--plume-border-width-thick']).toBe(defaultTheme.borderWidths.thick)
     expect(vars['--plume-control-height-md']).toBe(defaultTheme.controlHeights.md)
     expect(vars['--plume-opacity-disabled']).toBe('0.5')

@@ -26,7 +26,7 @@
 
 .sm {
   padding: var(--plume-space-1) var(--plume-space-2);
-  font-size: small;
+  font-size: var(--plume-font-size-sm);
 }
 
 .md {
@@ -35,17 +35,17 @@
 
 .lg {
   padding: var(--plume-space-3) var(--plume-space-4);
-  font-size: large;
+  font-size: var(--plume-font-size-lg);
 }
 
 .vertical .underline {
-  border-inline-end: solid 1px var(--plume-border);
+  border-inline-end: solid var(--plume-border-width-thin) var(--plume-border);
   border-block-end: none;
 }
 
 .underline {
   gap: var(--plume-space-4);
-  border-block-end: solid 1px var(--plume-border);
+  border-block-end: solid var(--plume-border-width-thin) var(--plume-border);
 }
 
 .vertical .tablist {
@@ -71,7 +71,7 @@
   justify-content: center;
   align-items: center;
   gap: var(--plume-space-2);
-  outline: 2px solid transparent;
+  outline: var(--plume-focus-ring-width) solid transparent;
   outline-offset: 0;
 }
 
@@ -80,55 +80,55 @@
 }
 
 .vertical .underline .tab {
-  border-inline-end: 2px solid transparent;
+  border-inline-end: var(--plume-border-width-medium) solid transparent;
   border-block-end: none;
-  transition: border-inline-end 0.2s;
+  transition: border-inline-end var(--plume-duration-normal);
 }
 
 .underline .tab {
-  border-block-end: 2px solid transparent;
-  transition: border-block-end 0.2s;
+  border-block-end: var(--plume-border-width-medium) solid transparent;
+  transition: border-block-end var(--plume-duration-normal);
 }
 
 .vertical .underline .tab.active {
-  border-inline-end: 2px solid var(--tabs-scheme);
+  border-inline-end: var(--plume-border-width-medium) solid var(--tabs-scheme);
   border-block-end: none;
 }
 
 .underline .tab.active {
-  border-block-end: 2px solid var(--tabs-scheme);
+  border-block-end: var(--plume-border-width-medium) solid var(--tabs-scheme);
   color: var(--tabs-scheme);
-  transition: color 0.2s;
+  transition: color var(--plume-duration-normal);
 }
 
 .rounded .tab.active {
   background-color: var(--tabs-solid);
   color: var(--tabs-text-color);
   border-radius: var(--plume-radius-4);
-  transition: color 0.2s;
+  transition: color var(--plume-duration-normal);
 }
 
 .vertical .enclosed {
-  border-inline-end: 1px solid var(--tabs-scheme);
+  border-inline-end: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-block-end: none;
 }
 
 .enclosed {
-  border-block-end: 1px solid var(--tabs-scheme);
+  border-block-end: var(--plume-border-width-thin) solid var(--tabs-scheme);
 }
 
 .vertical .enclosed .tab.active {
-  border: 1px solid var(--tabs-scheme);
+  border: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-radius: var(--plume-radius-4);
   border-inline-end: none;
   border-end-end-radius: 0;
   border-start-end-radius: 0;
   margin-inline-end: -1px;
-  transition: color 0.2s;
+  transition: color var(--plume-duration-normal);
 }
 
 .enclosed .tab.active {
-  border: 1px solid var(--tabs-scheme);
+  border: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-radius: var(--plume-radius-4);
   background: var(--plume-surface);
   border-block-end: none;
@@ -136,7 +136,7 @@
   border-bottom-right-radius: 0;
   color: var(--tabs-scheme);
   margin-block-end: -1px;
-  transition: color 0.2s;
+  transition: color var(--plume-duration-normal);
 }
 
 .segment {
@@ -144,7 +144,7 @@
   color: var(--tabs-text-color);
   gap: var(--plume-space-1);
   padding: var(--plume-space-3) var(--plume-space-4);
-  transition: background-color 0.2s;
+  transition: background-color var(--plume-duration-normal);
   border-radius: var(--plume-radius-4);
 }
 
@@ -152,7 +152,7 @@
   background-color: var(--tabs-solid-active);
   color: var(--tabs-text-color);
   border-radius: var(--plume-radius-4);
-  transition: color 0.2s;
+  transition: color var(--plume-duration-normal);
 }
 
 .tab:not(.active, :disabled):hover {
@@ -168,7 +168,7 @@
 }
 
 .panel:focus-visible {
-  outline: 2px solid var(--tabs-scheme);
+  outline: var(--plume-focus-ring-width) solid var(--tabs-scheme);
   outline-offset: 0;
 }
 

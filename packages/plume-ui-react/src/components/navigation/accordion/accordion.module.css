@@ -7,7 +7,7 @@
   cursor: pointer;
   display: flex;
   font: inherit;
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
   justify-content: space-between;
   padding: 0;
   text-align: start;
@@ -51,13 +51,13 @@
 }
 
 .outline {
-  border: 1px solid var(--plume-border);
+  border: var(--plume-border-width-thin) solid var(--plume-border);
   border-radius: var(--plume-radius-4);
   overflow: hidden;
 }
 
 .outline .item + .item {
-  border-block-start: 1px solid var(--plume-border);
+  border-block-start: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 .filled {
@@ -91,13 +91,13 @@
 }
 
 .trigger:focus-visible {
-  outline: 2px solid var(--accordion-text);
+  outline: var(--plume-focus-ring-width) solid var(--accordion-text);
   outline-offset: -2px;
 }
 
 .trigger:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .icon {
@@ -114,13 +114,13 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .icon {
-    transition: transform 0.2s ease;
+    transition: transform var(--plume-duration-normal) var(--plume-easing-standard);
   }
 }
 
 @media (forced-colors: active) {
   .outline,
   .filled .item {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

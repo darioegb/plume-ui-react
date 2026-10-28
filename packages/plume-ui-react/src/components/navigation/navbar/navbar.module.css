@@ -155,7 +155,7 @@
 
 .plain {
   background-color: var(--plume-surface);
-  border-block-end: 1px solid var(--plume-border);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border);
 }
 
 .filled {
@@ -212,13 +212,13 @@
 .item:disabled,
 .item[aria-disabled='true'] {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .item:focus-visible,
 .brand:focus-visible,
 .toggle:focus-visible {
-  outline: 2px solid var(--navbar-text);
+  outline: var(--plume-focus-ring-width) solid var(--navbar-text);
   outline-offset: 0;
 }
 
@@ -242,6 +242,6 @@
   .plain,
   .filled,
   .solid {
-    border-block-end: 1px solid CanvasText;
+    border-block-end: var(--plume-border-width-thin) solid CanvasText;
   }
 }

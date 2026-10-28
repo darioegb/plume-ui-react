@@ -37,7 +37,7 @@
 }
 
 .outline {
-  border: 1px dashed var(--plume-border);
+  border: var(--plume-border-width-thin) dashed var(--plume-border);
 }
 
 .filled {

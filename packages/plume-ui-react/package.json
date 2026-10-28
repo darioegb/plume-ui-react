@@ -29,7 +29,7 @@
   "scripts": {
     "build": "rm -rf dist && tsup && node scripts/check-client-directives.mjs",
     "dev": "tsup --watch",
-    "lint": "eslint src/ && node scripts/check-story-snippets.mjs",
+    "lint": "eslint src/ && stylelint \"src/**/*.module.css\" && node scripts/check-story-snippets.mjs",
     "lint:fix": "eslint src/ --fix",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest run",
@@ -74,6 +74,7 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-hook-form": "7.89.0",
+    "stylelint": "^17.16.0",
     "tsconfig": "workspace:*",
     "tsup": "^8.5.1",
     "typescript": "^5.2.2",

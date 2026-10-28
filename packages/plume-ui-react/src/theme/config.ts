@@ -334,7 +334,7 @@ export const defaultTheme: Theme = {
   },
   motion: {
     durations: {
-      fast: '0.12s',
+      fast: '0.15s',
       normal: '0.2s',
       slow: '0.3s',
     },
@@ -351,7 +351,8 @@ export const defaultTheme: Theme = {
   },
   borderWidths: {
     thin: '1px',
-    thick: '3px',
+    medium: '2px',
+    thick: '4px',
   },
   controlHeights: {
     sm: '2rem',

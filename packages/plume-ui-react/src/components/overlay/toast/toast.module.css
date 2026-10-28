@@ -86,8 +86,8 @@
 
 .outline .toast {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border-strong);
-  border-inline-start: 4px solid var(--toast-solid);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
+  border-inline-start: var(--plume-border-width-thick) solid var(--toast-solid);
   color: var(--plume-foreground);
 }
 
@@ -113,7 +113,7 @@
 
 .action {
   background-color: transparent;
-  border: 1px solid currentcolor;
+  border: var(--plume-border-width-thin) solid currentcolor;
   border-radius: var(--plume-radius-3);
   color: inherit;
   cursor: pointer;
@@ -147,13 +147,13 @@
 
 .action:focus-visible,
 .dismiss:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: var(--plume-focus-ring-width) solid currentcolor;
   outline-offset: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .toast {
-    animation: toast-in 0.2s ease-out;
+    animation: toast-in var(--plume-duration-normal) var(--plume-easing-out);
   }
 }
 
@@ -166,6 +166,6 @@
 
 @media (forced-colors: active) {
   .toast {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

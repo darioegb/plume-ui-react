@@ -25,7 +25,7 @@
   color: var(--plume-foreground);
   font-size: var(--plume-font-size-lg);
   height: var(--plume-space-12);
-  outline: 2px solid transparent;
+  outline: var(--plume-focus-ring-width) solid transparent;
   outline-offset: 0;
   padding: 0;
   width: var(--plume-space-10);
@@ -48,20 +48,20 @@
 }
 
 .outline .cell {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .filled .cell {
   background-color: var(--plume-surface-muted);
   border: 0;
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-end-end-radius: 0;
   border-end-start-radius: 0;
 }
 
 .underline .cell {
   border: 0;
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-radius: 0;
 }
 
@@ -75,7 +75,7 @@
 }
 
 :is(.filled, .underline) .cell:enabled:focus {
-  border-block-end: 2px solid var(--pininput-color);
+  border-block-end: var(--plume-border-width-medium) solid var(--pininput-color);
 }
 
 .invalid .cell {
@@ -84,11 +84,11 @@
 
 .cell:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 @media (forced-colors: active) {
   .cell {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

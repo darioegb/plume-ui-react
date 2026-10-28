@@ -31,7 +31,7 @@
   color: var(--plume-foreground);
   font-family: var(--plume-font-family);
   font-size: var(--plume-font-size-base);
-  height: var(--plume-space-10);
+  height: var(--plume-control-height-md);
   min-width: min(12rem, 100%);
   overflow: hidden;
   width: 100%;
@@ -39,27 +39,27 @@
 
 .sm {
   font-size: var(--plume-font-size-xs);
-  height: var(--plume-space-8);
+  height: var(--plume-control-height-sm);
 }
 
 .lg {
   font-size: var(--plume-font-size-lg);
-  height: var(--plume-space-12);
+  height: var(--plume-control-height-lg);
 }
 
 .outline {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .filled {
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-end-end-radius: 0;
   border-end-start-radius: 0;
 }
 
 .underline {
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-radius: 0;
 }
 
@@ -73,13 +73,13 @@
 
 .outline:focus-within {
   border-color: var(--numberinput-color);
-  outline: 2px solid var(--numberinput-color);
+  outline: var(--plume-focus-ring-width) solid var(--numberinput-color);
   outline-offset: 0;
 }
 
 :is(.filled, .underline):focus-within {
   border-block-end-color: var(--numberinput-color);
-  border-block-end-width: 2px;
+  border-block-end-width: var(--plume-border-width-medium);
 }
 
 :is(.outline, .filled, .underline).invalid {
@@ -88,7 +88,7 @@
 
 .disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .input {
@@ -116,7 +116,7 @@
 }
 
 .stepper:focus-visible {
-  outline: 2px solid var(--numberinput-color);
+  outline: var(--plume-focus-ring-width) solid var(--numberinput-color);
   outline-offset: -2px;
 }
 
@@ -127,6 +127,6 @@
 
 @media (forced-colors: active) {
   .control {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }

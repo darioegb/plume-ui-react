@@ -9,7 +9,7 @@
   align-items: center;
   box-sizing: border-box;
   display: flex;
-  gap: 0.5rem;
+  gap: var(--plume-space-2);
   width: 100%;
 }
 
@@ -89,7 +89,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .indicator {
-    transition: inline-size 0.3s ease;
+    transition: inline-size var(--plume-duration-slow) var(--plume-easing-standard);
   }
 
   .animated {
@@ -97,7 +97,7 @@
   }
 
   [data-indeterminate] .indicator {
-    animation: progressbar-indeterminate 1.4s ease-in-out infinite;
+    animation: progressbar-indeterminate 1.4s var(--plume-easing-in-out) infinite;
   }
 }
 
@@ -106,7 +106,7 @@
     :where([data-plume-progressbar-track][data-indeterminate] [data-plume-progressbar-indicator])
   ) {
     inline-size: 100%;
-    opacity: 0.5;
+    opacity: var(--plume-opacity-disabled);
   }
 }
 
@@ -128,7 +128,7 @@
 
 @media (forced-colors: active) {
   .progressbar {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 
   .indicator {

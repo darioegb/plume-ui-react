@@ -63,7 +63,7 @@
 .checkbox {
   background-color: var(--plume-surface);
   block-size: 1.125em;
-  border: 2px solid var(--plume-border-strong, var(--plume-border));
+  border: var(--plume-border-width-medium) solid var(--plume-border-strong, var(--plume-border));
   border-radius: var(--plume-radius-2);
   color: var(--tree-contrast);
   font-size: 0.875em;
@@ -91,13 +91,13 @@
 }
 
 .item:focus-visible > .label {
-  outline: 2px solid var(--tree-text);
+  outline: var(--plume-focus-ring-width) solid var(--tree-text);
   outline-offset: -2px;
 }
 
 .item[aria-disabled='true'] > .label {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .item[aria-disabled='true'] > .label:hover {
@@ -132,7 +132,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .chevron {
-    transition: transform 0.15s ease;
+    transition: transform var(--plume-duration-fast) var(--plume-easing-standard);
   }
 }
 

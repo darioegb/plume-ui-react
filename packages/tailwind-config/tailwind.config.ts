@@ -132,6 +132,7 @@ const transitionTimingFunction = {
 const borderWidth = {
   DEFAULT: 'var(--plume-border-width-thin)',
   thin: 'var(--plume-border-width-thin)',
+  medium: 'var(--plume-border-width-medium)',
   thick: 'var(--plume-border-width-thick)',
 }
 

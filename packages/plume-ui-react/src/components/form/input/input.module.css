@@ -3,7 +3,7 @@
 :where(.base) {
   background: transparent;
   border: none;
-  outline: 2px solid transparent;
+  outline: var(--plume-focus-ring-width) solid transparent;
   outline-offset: 0;
 }
 
@@ -12,7 +12,7 @@
   box-sizing: border-box;
   color: var(--plume-foreground);
   display: block;
-  height: var(--plume-space-10);
+  height: var(--plume-control-height-md);
   min-width: min(18rem, 100%);
   padding-inline: var(--plume-space-4);
   position: relative;
@@ -25,18 +25,18 @@
 
 .sm {
   font-size: var(--plume-font-size-xs);
-  height: var(--plume-space-8);
+  height: var(--plume-control-height-sm);
   padding-inline: var(--plume-space-2);
 }
 
 .md {
-  height: var(--plume-space-10);
+  height: var(--plume-control-height-md);
   padding-inline: var(--plume-space-4);
 }
 
 .lg {
   font-size: var(--plume-font-size-lg);
-  height: var(--plume-space-12);
+  height: var(--plume-control-height-lg);
   padding-inline: var(--plume-space-6);
 }
 
@@ -50,13 +50,13 @@
 
 .outline {
   composes: input;
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .filled {
   composes: input;
   background-color: var(--plume-surface-muted);
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
@@ -64,7 +64,7 @@
 .underline {
   composes: input;
   border-radius: 0;
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 :is(.outline, .filled, .underline):enabled:hover {
@@ -82,7 +82,7 @@
 
 :not(.control) > .outline:enabled:focus,
 .control:has(.outline:enabled):focus-within {
-  outline: 2px solid var(--input-color);
+  outline: var(--plume-focus-ring-width) solid var(--input-color);
   outline-offset: 0;
 }
 
@@ -92,11 +92,11 @@
 
 :is(.filled, .underline):enabled:focus {
   border-block-end-color: var(--input-color);
-  border-block-end-width: 2px;
+  border-block-end-width: var(--plume-border-width-medium);
 }
 
 .disabled {
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
   cursor: not-allowed;
 }
 
@@ -145,7 +145,7 @@
   color: var(--plume-foreground);
   flex-shrink: 0;
   font-size: var(--plume-font-size-sm);
-  padding-inline: 0.75rem;
+  padding-inline: var(--plume-space-3);
   white-space: nowrap;
 }
 
@@ -154,11 +154,11 @@
 }
 
 .inputGroup:has(.outline) > .addOn {
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .inputGroup:has(.filled, .underline) > .addOn {
-  border-block-end: 1px solid var(--plume-border-strong);
+  border-block-end: var(--plume-border-width-thin) solid var(--plume-border-strong);
 }
 
 .addOnBefore {
@@ -226,11 +226,11 @@
 }
 
 .control:has(.elementBefore) > .input {
-  padding-inline-start: 2.5rem;
+  padding-inline-start: var(--plume-space-10);
 }
 
 .control:has(.elementAfter) > .input {
-  padding-inline-end: 2.5rem;
+  padding-inline-end: var(--plume-space-10);
 }
 
 :global(:where([data-plume-input-group])) {
@@ -276,7 +276,7 @@
 }
 
 .revealButton:focus-visible {
-  outline: 2px solid var(--input-color);
+  outline: var(--plume-focus-ring-width) solid var(--input-color);
   outline-offset: 1px;
 }
 
@@ -285,9 +285,9 @@
 }
 
 .control:has(> .revealSlot) > .elementAfter:not(.revealSlot) {
-  inset-inline-end: 2.5rem;
+  inset-inline-end: var(--plume-space-10);
 }
 
 .control:has(> .revealSlot):has(> .elementAfter:not(.revealSlot)) > .input {
-  padding-inline-end: 5rem;
+  padding-inline-end: var(--plume-space-20);
 }

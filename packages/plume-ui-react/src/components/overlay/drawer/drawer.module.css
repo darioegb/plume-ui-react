@@ -113,19 +113,19 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .left.drawer[data-plume-dialog] {
-    animation: drawer-in-left 0.22s ease-out;
+    animation: drawer-in-left var(--plume-duration-normal) var(--plume-easing-out);
   }
 
   .right.drawer[data-plume-dialog] {
-    animation: drawer-in-right 0.22s ease-out;
+    animation: drawer-in-right var(--plume-duration-normal) var(--plume-easing-out);
   }
 
   .top.drawer[data-plume-dialog] {
-    animation: drawer-in-top 0.22s ease-out;
+    animation: drawer-in-top var(--plume-duration-normal) var(--plume-easing-out);
   }
 
   .bottom.drawer[data-plume-dialog] {
-    animation: drawer-in-bottom 0.22s ease-out;
+    animation: drawer-in-bottom var(--plume-duration-normal) var(--plume-easing-out);
   }
 }
 

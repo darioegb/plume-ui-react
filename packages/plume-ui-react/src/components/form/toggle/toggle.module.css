@@ -24,7 +24,7 @@
   height: var(--toggle-height);
   margin: 0;
   position: relative;
-  transition: background-color 0.15s;
+  transition: background-color var(--plume-duration-fast);
   width: calc(var(--toggle-height) * 1.8);
 }
 
@@ -37,8 +37,8 @@
   inset-inline-start: var(--toggle-gap);
   position: absolute;
   transition:
-    inset-inline-start 0.15s,
-    background-color 0.15s;
+    inset-inline-start var(--plume-duration-fast),
+    background-color var(--plume-duration-fast);
   width: var(--toggle-thumb);
 }
 
@@ -93,7 +93,7 @@
   inset-block: calc(var(--toggle-height) * 0.2);
   inset-inline: calc(var(--toggle-height) * 0.25);
   position: absolute;
-  transition: background-color 0.15s;
+  transition: background-color var(--plume-duration-fast);
 }
 
 .raised:checked::before {
@@ -105,18 +105,18 @@
 }
 
 .toggle:focus-visible {
-  outline: 2px solid var(--toggle-text);
+  outline: var(--plume-focus-ring-width) solid var(--toggle-text);
   outline-offset: 0;
 }
 
 .invalid:not(:checked) {
-  outline: 2px solid var(--toggle-text);
+  outline: var(--plume-focus-ring-width) solid var(--toggle-text);
   outline-offset: 1px;
 }
 
 .toggle:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--plume-opacity-disabled);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -130,7 +130,7 @@
 @media (forced-colors: active) {
   .toggle {
     --toggle-border: 2px;
-    border: 2px solid CanvasText;
+    border: var(--plume-border-width-medium) solid CanvasText;
     forced-color-adjust: none;
   }
 
@@ -162,7 +162,7 @@
 
   .raised::before {
     background-color: Canvas;
-    border: 2px solid CanvasText;
+    border: var(--plume-border-width-medium) solid CanvasText;
     box-sizing: border-box;
   }
 

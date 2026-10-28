@@ -30,14 +30,14 @@
 
 .outline {
   background-color: var(--plume-surface);
-  border: 1px solid var(--plume-border-strong);
+  border: var(--plume-border-width-thin) solid var(--plume-border-strong);
   box-shadow: var(--plume-shadow-md);
   color: var(--plume-foreground);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .tooltip {
-    animation: tooltip-in 0.1s ease-out;
+    animation: tooltip-in var(--plume-duration-fast) var(--plume-easing-out);
   }
 }
 
@@ -49,6 +49,6 @@
 
 @media (forced-colors: active) {
   .tooltip {
-    border: 1px solid CanvasText;
+    border: var(--plume-border-width-thin) solid CanvasText;
   }
 }
