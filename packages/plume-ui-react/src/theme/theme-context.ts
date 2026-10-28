@@ -21,5 +21,3 @@ export function useTheme(): ThemeContextValue {
   }
   return context
 }
-
-export const useOptionalTheme = (): ThemeContextValue | null => useContext(ThemeContext)

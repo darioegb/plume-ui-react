@@ -5,7 +5,7 @@
 .panelOutline,
 .panelFilled,
 .panelUnderline {
-  box-shadow: var(--plume-shadow-md);
+  box-shadow: var(--plume-shadow-panel);
   border-radius: var(--plume-radius-6);
 }
 

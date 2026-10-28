@@ -511,9 +511,9 @@ The z-index scale has names instead of numbers, and the typo is fixed: `theme.zI
   </tbody>
 </table>
 
-The `Sidebar` reads `theme.breakpoints` (`sm`, `md` and `lg`) to know when it becomes a panel. The CSS of the
-`Sidebar` and the `Navbar` use `@media` queries, which cannot read a variable, so they keep the default values: change
-those three breakpoints only if you also override the styles.
+`theme.breakpoints` is for your own code (`useTheme().theme.breakpoints`, a `useMediaQuery`). The `Sidebar` and the
+`Navbar` fold at the `sm`, `md` and `lg` of the default theme, because their CSS uses `@media` queries, which cannot
+read a variable; a test keeps those widths equal to the defaults.
 
 ## The CSS of Plume is in the layer `plume`
 

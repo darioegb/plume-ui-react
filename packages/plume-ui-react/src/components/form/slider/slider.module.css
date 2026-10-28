@@ -197,7 +197,7 @@
   block-size: var(--slider-thumb);
   border: var(--plume-border-width-medium) solid var(--plume-surface);
   border-radius: var(--plume-radius-full);
-  box-shadow: var(--plume-shadow-sm);
+  box-shadow: var(--plume-shadow-raised);
   box-sizing: border-box;
   cursor: grab;
   inline-size: var(--slider-thumb);
@@ -209,7 +209,7 @@
   block-size: var(--slider-thumb);
   border: var(--plume-border-width-medium) solid var(--plume-surface);
   border-radius: var(--plume-radius-full);
-  box-shadow: var(--plume-shadow-sm);
+  box-shadow: var(--plume-shadow-raised);
   box-sizing: border-box;
   cursor: grab;
   inline-size: var(--slider-thumb);

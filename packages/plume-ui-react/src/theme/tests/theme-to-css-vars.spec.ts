@@ -99,6 +99,12 @@ describe('themeToCssVars', () => {
     expect(vars['--plume-text-heading-1-size']).toBe('var(--plume-font-size-4xl)')
   })
 
+  it('keeps the shadows of the slider thumb and of the pickers the same in dark mode', () => {
+    const vars = themeToCssVars(darkTheme)
+    expect(vars['--plume-shadow-raised']).toBe(defaultTheme.shadows.raised)
+    expect(vars['--plume-shadow-panel']).toBe(defaultTheme.shadows.panel)
+  })
+
   it('has its own shadows and backdrop in dark mode', () => {
     const vars = themeToCssVars(darkTheme)
     expect(vars['--plume-shadow-md']).not.toBe(themeToCssVars(defaultTheme)['--plume-shadow-md'])

@@ -170,6 +170,8 @@ const boxShadow = {
   lg: 'var(--plume-shadow-lg)',
   xl: 'var(--plume-shadow-xl)',
   '2xl': 'var(--plume-shadow-2xl)',
+  raised: 'var(--plume-shadow-raised)',
+  panel: 'var(--plume-shadow-panel)',
 }
 
 const zIndex = Object.fromEntries(

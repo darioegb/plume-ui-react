@@ -4,12 +4,12 @@ import type { ReactNode } from 'react'
 import { useId, useMemo, useRef } from 'react'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useMediaQuery } from '../../../overlay/use-media-query'
-import { useOptionalTheme } from '../../../theme/theme-context'
-import { SidebarContext, getSidebarQuery, type SidebarBreakpoint } from './sidebar-context'
+import { SidebarContext, sidebarQueries, type SidebarBreakpoint } from './sidebar-context'
 
 export interface SidebarProviderProps {
   /**
-   * Below this width the sidebar is a panel that opens over the page: `sm` is 640px, `md` 768px and `lg` 1024px. `never` keeps it always docked.
+   * Below this width the sidebar is a panel that opens over the page: `sm` is 640px, `md` 768px and
+   * `lg` 1024px. `never` keeps it always docked.
    *
    * @default 'md'
    */
@@ -64,7 +64,6 @@ export function SidebarProvider({
   onOpenChange,
   open: openProp,
 }: Readonly<SidebarProviderProps>): ReactNode {
-  const theme = useOptionalTheme()
   const generatedId = useId()
   const [open, setOpen] = useControllableState({
     defaultValue: defaultOpen,
@@ -76,21 +75,12 @@ export function SidebarProvider({
     onChange: onCollapsedChange,
     value: collapsedProp,
   })
-  const isMobile = useMediaQuery(getSidebarQuery(breakpoint, theme?.theme.breakpoints))
+  const isMobile = useMediaQuery(sidebarQueries[breakpoint])
   const toggleRef = useRef<HTMLElement | null>(null)
   const panelId = id ?? `${generatedId}-sidebar`
 
   const context = useMemo(
-    () => ({
-      breakpoint,
-      collapsed,
-      isMobile,
-      open,
-      panelId,
-      setCollapsed,
-      setOpen,
-      toggleRef,
-    }),
+    () => ({ breakpoint, collapsed, isMobile, open, panelId, setCollapsed, setOpen, toggleRef }),
     [breakpoint, collapsed, isMobile, open, panelId, setCollapsed, setOpen],
   )
 

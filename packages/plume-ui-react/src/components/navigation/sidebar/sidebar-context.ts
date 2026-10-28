@@ -3,16 +3,19 @@
 import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
 import { defaultTheme } from '../../../theme/config'
-import type { Breakpoints } from '../../../theme/theme.types'
 
 export type SidebarVariant = 'plain' | 'filled' | 'solid' | 'unstyled'
 export type SidebarBreakpoint = 'sm' | 'md' | 'lg' | 'never'
 export type SidebarSide = 'left' | 'right'
 
-export const getSidebarQuery = (
-  breakpoint: SidebarBreakpoint,
-  breakpoints: Breakpoints = defaultTheme.breakpoints,
-): string => (breakpoint === 'never' ? 'not all' : `(width < ${breakpoints[breakpoint]})`)
+const { sm, md, lg } = defaultTheme.breakpoints
+
+export const sidebarQueries: Record<SidebarBreakpoint, string> = {
+  sm: `(width < ${sm})`,
+  md: `(width < ${md})`,
+  lg: `(width < ${lg})`,
+  never: 'not all',
+}
 
 export interface SidebarContextValue {
   breakpoint: SidebarBreakpoint
@@ -31,9 +34,7 @@ export interface SidebarStyleContextValue {
   isStyled: boolean
 }
 
-export const SidebarStyleContext = createContext<SidebarStyleContextValue>({
-  isStyled: true,
-})
+export const SidebarStyleContext = createContext<SidebarStyleContextValue>({ isStyled: true })
 
 export function useSidebarContext(part: string): SidebarContextValue {
   const context = useContext(SidebarContext)

@@ -162,6 +162,8 @@ export interface Shadows {
   lg: string
   xl: string
   '2xl': string
+  raised: string
+  panel: string
 }
 
 export interface Breakpoints {
