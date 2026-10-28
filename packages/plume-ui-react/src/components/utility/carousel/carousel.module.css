@@ -11,6 +11,15 @@
   scrollbar-width: none;
 }
 
+:global(:where([data-plume-carousel-slides][data-orientation='vertical'])) {
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-x: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
+}
+
 :global(:where([data-plume-carousel-slides]::-webkit-scrollbar)) {
   display: none;
 }
@@ -37,6 +46,10 @@
 :global(:where([data-plume-carousel-dots])) {
   display: flex;
   justify-content: center;
+}
+
+:global(:where([data-plume-carousel-dots][data-orientation='vertical'])) {
+  flex-direction: column;
 }
 
 :global(:where([data-plume-carousel-dot])) {
@@ -185,7 +198,168 @@
   inline-size: calc(var(--carousel-dot) * 2.2);
 }
 
+.vertical {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.vertical .slides {
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.vertical .prev,
+.vertical .next {
+  justify-self: center;
+  margin-inline: 0;
+}
+
+.vertical .prev {
+  align-self: start;
+  margin-block-start: var(--plume-space-3);
+}
+
+.vertical .next {
+  align-self: end;
+  margin-block-end: var(--plume-space-3);
+}
+
+.vertical .dots {
+  align-self: center;
+  grid-area: 1 / 2;
+  max-block-size: 100%;
+  overflow-y: auto;
+  padding-block: 0;
+  padding-inline: var(--plume-space-1);
+}
+
+.vertical .dot {
+  block-size: max(1.5rem, var(--carousel-dot));
+  inline-size: 1.5rem;
+}
+
+.vertical .dot[data-active] {
+  block-size: max(1.5rem, calc(var(--carousel-dot) * 2.2));
+  inline-size: 1.5rem;
+}
+
+.vertical .dot[data-active]::before {
+  block-size: calc(var(--carousel-dot) * 2.2);
+  inline-size: var(--carousel-dot);
+}
+
+.inline .prev,
+.inline .next {
+  align-self: auto;
+  grid-area: auto;
+  justify-self: auto;
+  margin: 0;
+}
+
+.bars {
+  gap: var(--plume-space-1);
+}
+
+.bars .dot,
+.bars .dot[data-active] {
+  block-size: 1.5rem;
+  inline-size: 2rem;
+  border-radius: var(--plume-radius-2);
+}
+
+.bars .dot::before,
+.bars .dot[data-active]::before {
+  block-size: 0.25rem;
+  inline-size: 100%;
+}
+
+.vertical .bars .dot,
+.vertical .bars .dot[data-active] {
+  block-size: 2rem;
+  inline-size: 1.5rem;
+}
+
+.vertical .bars .dot::before,
+.vertical .bars .dot[data-active]::before {
+  block-size: 100%;
+  inline-size: 0.25rem;
+}
+
+.numbers {
+  gap: var(--plume-space-1);
+}
+
+.numbers .dot,
+.numbers .dot[data-active],
+.vertical .numbers .dot,
+.vertical .numbers .dot[data-active] {
+  block-size: var(--carousel-control);
+  color: var(--plume-muted);
+  font-size: calc(var(--carousel-control) * 0.4);
+  font-weight: 600;
+  inline-size: var(--carousel-control);
+}
+
+.numbers .dot::before {
+  display: none;
+}
+
+.numbers .dot:hover {
+  background-color: var(--carousel-tint);
+  color: var(--carousel-text);
+}
+
+.numbers .dot[data-active] {
+  background-color: var(--carousel-solid);
+  color: var(--carousel-contrast);
+}
+
+.thumbnails {
+  gap: var(--plume-space-2);
+  padding: var(--plume-space-2);
+}
+
+.thumbnails .dot,
+.thumbnails .dot[data-active],
+.vertical .thumbnails .dot,
+.vertical .thumbnails .dot[data-active] {
+  block-size: 3.5rem;
+  border: 2px solid transparent;
+  border-radius: var(--plume-radius-3);
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  inline-size: 5rem;
+  opacity: 0.6;
+  overflow: hidden;
+}
+
+.thumbnails .dot::before {
+  display: none;
+}
+
+.thumbnails .dot > * {
+  block-size: 100%;
+  display: block;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.thumbnails .dot:hover {
+  opacity: 0.85;
+}
+
+.thumbnails .dot[data-active] {
+  border-color: var(--carousel-solid);
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .thumbnails .dot {
+    transition:
+      border-color 0.2s ease,
+      opacity 0.2s ease;
+  }
+
   .dot::before {
     transition:
       background-color 0.2s ease,
@@ -197,6 +371,12 @@
   .arrow,
   .dot::before {
     border: 1px solid CanvasText;
+  }
+
+  .numbers .dot[data-active],
+  .thumbnails .dot[data-active] {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
   }
 
   .dot[data-active]::before {

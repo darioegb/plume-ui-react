@@ -3,6 +3,7 @@ import { userEvent } from '@testing-library/user-event'
 import { createRef } from 'react'
 import {
   Carousel,
+  CarouselDot,
   CarouselDots,
   CarouselNext,
   CarouselPlayPause,
@@ -554,6 +555,125 @@ describe('Carousel component', () => {
         'play-mine',
       )
       expect(screen.getByRole('tablist')).toHaveAttribute('class', 'dots-mine')
+    })
+  })
+
+  describe('orientation, indicators and controls', () => {
+    afterEach(() => vi.restoreAllMocks())
+
+    const build = (
+      props: Partial<CarouselProps> = {},
+      dots: React.ReactNode = <CarouselDots />,
+    ): React.ReactElement => (
+      <Carousel aria-label="Photos" {...props}>
+        <CarouselSlides>
+          {[1, 2, 3].map((position) => (
+            <CarouselSlide key={position}>Slide {position}</CarouselSlide>
+          ))}
+        </CarouselSlides>
+        <CarouselPrev />
+        <CarouselNext />
+        {dots}
+      </Carousel>
+    )
+
+    it('is horizontal by default', () => {
+      render(build())
+      expect(screen.getByRole('region')).toHaveAttribute('data-orientation', 'horizontal')
+      expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'horizontal')
+      expect(screen.getByRole('region')).not.toHaveClass('vertical')
+    })
+
+    it('marks the parts as vertical', () => {
+      render(build({ orientation: 'vertical' }))
+      expect(screen.getByRole('region')).toHaveClass('vertical')
+      expect(screen.getByRole('region')).toHaveAttribute('data-orientation', 'vertical')
+      expect(scroller()).toHaveAttribute('data-orientation', 'vertical')
+      expect(screen.getByRole('tablist')).toHaveAttribute('aria-orientation', 'vertical')
+      expect(next()).toHaveAttribute('data-orientation', 'vertical')
+    })
+
+    it('moves between the dots with the vertical arrow keys when it is vertical', async () => {
+      render(build({ orientation: 'vertical' }))
+      tabs()[0].focus()
+      await userEvent.keyboard('{ArrowRight}')
+      expect(tabs()[0]).toHaveFocus()
+      await userEvent.keyboard('{ArrowDown}')
+      expect(tabs()[1]).toHaveFocus()
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}')
+      expect(tabs()[2]).toHaveFocus()
+    })
+
+    it('scrolls to the slide along the vertical axis', async () => {
+      render(build({ orientation: 'vertical' }))
+      await userEvent.click(next())
+      expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: expect.any(Number) }))
+      expect(scrollTo).not.toHaveBeenCalledWith(expect.objectContaining({ left: expect.anything() }))
+    })
+
+    it('follows the slide the user scrolls to when it is vertical', async () => {
+      const onIndexChange = vi.fn()
+      render(build({ onIndexChange, orientation: 'vertical' }))
+      vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(function (
+        this: Element,
+      ) {
+        const siblings = Array.from(this.parentElement?.children ?? [])
+        const top = this.hasAttribute('data-plume-carousel-slide')
+          ? (siblings.indexOf(this) - 2) * 200
+          : 0
+        return { top } as DOMRect
+      })
+      fireEvent.scroll(scroller())
+      await vi.waitFor(() => expect(onIndexChange).toHaveBeenCalledWith(2))
+    })
+
+    it('puts the dots in a row and keeps the dots appearance by default', () => {
+      render(build())
+      expect(screen.getByRole('tablist')).toHaveAttribute('data-appearance', 'dots')
+      expect(screen.getByRole('tablist')).toHaveClass('dots')
+      expect(tabs()[0]).toBeEmptyDOMElement()
+    })
+
+    it.each(['bars', 'numbers', 'thumbnails'] as const)('applies the %s appearance', (appearance) => {
+      render(build({}, <CarouselDots appearance={appearance} />))
+      expect(screen.getByRole('tablist')).toHaveAttribute('data-appearance', appearance)
+      expect(screen.getByRole('tablist')).toHaveClass('dots', appearance)
+    })
+
+    it('numbers the dots with the numbers appearance', () => {
+      render(build({}, <CarouselDots appearance="numbers" />))
+      expect(tabs().map((tab) => tab.textContent)).toEqual(['1', '2', '3'])
+    })
+
+    it('fills each dot with what the function returns', () => {
+      render(
+        build(
+          {},
+          <CarouselDots appearance="thumbnails">
+            {(position) => (
+              <CarouselDot>
+                <img alt="" data-testid="thumb" src={`/photo-${position}.jpg`} />
+              </CarouselDot>
+            )}
+          </CarouselDots>,
+        ),
+      )
+      expect(screen.getAllByTestId('thumb')).toHaveLength(3)
+    })
+
+    it('does not style the dots appearance when unstyled', () => {
+      render(build({ variant: 'unstyled' }, <CarouselDots appearance="bars" />))
+      expect(screen.getByRole('tablist')).not.toHaveClass('bars')
+      expect(screen.getByRole('tablist')).toHaveAttribute('data-appearance', 'bars')
+    })
+
+    it('overlays the buttons by default and leaves them in place with inline controls', () => {
+      const { rerender } = render(build())
+      expect(screen.getByRole('region')).toHaveAttribute('data-controls', 'overlay')
+      expect(screen.getByRole('region')).not.toHaveClass('inline')
+      rerender(build({ controls: 'inline' }))
+      expect(screen.getByRole('region')).toHaveAttribute('data-controls', 'inline')
+      expect(screen.getByRole('region')).toHaveClass('inline')
     })
   })
 

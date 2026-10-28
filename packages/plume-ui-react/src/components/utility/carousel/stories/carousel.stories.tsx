@@ -28,8 +28,9 @@ const frame = { maxWidth: '100%', width: '28rem' }
 
 function Panels({
   className,
+  fill = false,
   light = false,
-}: Readonly<{ className?: string; light?: boolean }>): React.ReactNode {
+}: Readonly<{ className?: string; fill?: boolean; light?: boolean }>): React.ReactNode {
   return (
     <CarouselSlides>
       {slides.map(({ background, caption, title }) => (
@@ -42,9 +43,9 @@ function Panels({
               color: light ? 'var(--plume-foreground)' : '#fff',
               display: 'flex',
               flexDirection: 'column',
-              height: '11rem',
+              height: fill ? '100%' : '11rem',
               justifyContent: 'flex-end',
-              padding: '1rem 3.5rem',
+              padding: fill ? '1rem 1rem 3.75rem 1.5rem' : '1rem 3.5rem',
               textShadow: light ? undefined : '0 1px 2px rgb(0 0 0 / 50%)',
             }}
           >
@@ -57,7 +58,7 @@ function Panels({
   )
 }
 
-function Controls(): React.ReactNode {
+function Arrows(): React.ReactNode {
   return (
     <>
       <CarouselPrev />
@@ -143,7 +144,7 @@ export default {
     children: (
       <>
         <Panels />
-        <Controls />
+        <Arrows />
       </>
     ),
     style: frame,
@@ -230,7 +231,7 @@ export const Variants: Story = {
       {(['solid', 'outline', 'ghost', 'overlay'] as const).map((variant) => (
         <Carousel aria-label={variant} key={variant} variant={variant}>
           <Panels light={variant === 'outline' || variant === 'ghost'} />
-          <Controls />
+          <Arrows />
         </Carousel>
       ))}
       <Carousel aria-label="unstyled" variant="unstyled">
@@ -253,6 +254,195 @@ export const Variants: Story = {
           >
             Next
           </CarouselNext>
+        </div>
+      </Carousel>
+    </div>
+  ),
+}
+
+/**
+ * The **appearance** of `CarouselDots` changes the indicator, not only its size: `dots` (the default) are small
+ * circles with the active one stretched, `bars` are thin segments like the progress of a story, and `numbers` are
+ * buttons with the number of the slide, for a long list where a dot says nothing.
+ */
+export const Indicators: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Dots">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots appearance="dots" />
+</Carousel>
+<Carousel aria-label="Bars">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselDots appearance="bars" />
+</Carousel>
+<Carousel aria-label="Numbers">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselDots appearance="numbers" />
+</Carousel>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
+      <Carousel aria-label="Dots">
+        <Panels />
+        <CarouselPrev />
+        <CarouselNext />
+        <CarouselDots appearance="dots" />
+      </Carousel>
+      <Carousel aria-label="Bars">
+        <Panels />
+        <CarouselDots appearance="bars" />
+      </Carousel>
+      <Carousel aria-label="Numbers">
+        <Panels />
+        <CarouselDots appearance="numbers" />
+      </Carousel>
+    </div>
+  ),
+}
+
+/**
+ * With `appearance="thumbnails"` each dot is a box that you fill with a preview of its slide: pass a function as
+ * the `children` of `CarouselDots` that returns a `CarouselDot` with an image (or any element, it fills the box).
+ * The active thumbnail is outlined with the color of the scheme. Together with the arrows it is the gallery with
+ * a strip of previews found in a product page.
+ */
+export const Thumbnails: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Product photos">
+  <CarouselSlides>
+    {photos.map((photo) => (
+      <CarouselSlide key={photo.src}>
+        <img alt={photo.alt} className="h-64 w-full object-cover" src={photo.src} />
+      </CarouselSlide>
+    ))}
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots appearance="thumbnails">
+    {(position) => (
+      <CarouselDot>
+        <img alt="" src={photos[position].thumbnail} />
+      </CarouselDot>
+    )}
+  </CarouselDots>
+</Carousel>`,
+      },
+    },
+  },
+  render: () => (
+    <Carousel aria-label="Featured places" style={frame}>
+      <Panels />
+      <CarouselPrev />
+      <CarouselNext />
+      <CarouselDots appearance="thumbnails" style={{ justifyContent: 'flex-start', overflowX: 'auto' }}>
+        {(position) => (
+          <CarouselDot>
+            <span style={{ background: slides[position]?.background }} />
+          </CarouselDot>
+        )}
+      </CarouselDots>
+    </Carousel>
+  ),
+}
+
+/**
+ * With `orientation="vertical"` the slides stack and move up and down, the buttons go to the top and the bottom and the
+ * dots become a column at the end. Give the Carousel a height, because the slides fill it. The dots are then
+ * moved with <kbd>↑</kbd> and <kbd>↓</kbd>. It works with every appearance, thumbnails included.
+ */
+export const Vertical: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places" orientation="vertical" style={{ height: '16rem' }}>
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+<Carousel aria-label="Thumbnails" orientation="vertical" style={{ height: '16rem' }}>
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselDots appearance="thumbnails">
+    {(position) => (
+      <CarouselDot>
+        <img alt="" src={photos[position].thumbnail} />
+      </CarouselDot>
+    )}
+  </CarouselDots>
+</Carousel>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', maxWidth: '100%' }}>
+      <Carousel aria-label="Vertical" orientation="vertical" style={{ height: '16rem', width: '16rem' }}>
+        <Panels fill />
+        <CarouselPrev />
+        <CarouselNext />
+        <CarouselDots />
+      </Carousel>
+      <Carousel
+        aria-label="Vertical with thumbnails"
+        orientation="vertical"
+        style={{ height: '16rem', width: '22rem' }}
+      >
+        <Panels fill />
+        <CarouselDots appearance="thumbnails">
+          {(position) => (
+            <CarouselDot>
+              <span style={{ background: slides[position]?.background }} />
+            </CarouselDot>
+          )}
+        </CarouselDots>
+      </Carousel>
+    </div>
+  ),
+}
+
+/**
+ * **controls** decides where the buttons sit. `overlay` (the default) puts them over the slides, and `inline` leaves
+ * them where you place them, so you can build a bar under the slides with the arrows on either side of the dots
+ * or a counter, without fighting the positions of the Plume styles.
+ */
+export const Controls: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places" controls="inline" variant="outline">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <div className="mt-3 flex items-center justify-between">
+    <CarouselPrev />
+    <CarouselDots appearance="bars" />
+    <CarouselNext />
+  </div>
+</Carousel>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
+      <Carousel aria-label="Bar with bars" controls="inline" variant="outline">
+        <Panels />
+        <div className="mt-3 flex items-center justify-between">
+          <CarouselPrev />
+          <CarouselDots appearance="bars" />
+          <CarouselNext />
+        </div>
+      </Carousel>
+      <Carousel aria-label="Bar with numbers" colorScheme="secondary" controls="inline" variant="ghost">
+        <Panels />
+        <div className="mt-3 flex items-center justify-center gap-2">
+          <CarouselPrev />
+          <CarouselDots appearance="numbers" />
+          <CarouselNext />
         </div>
       </Carousel>
     </div>
@@ -315,7 +505,7 @@ export const Sizes: Story = {
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <Carousel aria-label={`Size ${size}`} key={size} size={size}>
           <Panels />
-          <Controls />
+          <Arrows />
         </Carousel>
       ))}
     </div>
@@ -383,7 +573,7 @@ export const Colors: Story = {
           size="sm"
         >
           <Panels />
-          <Controls />
+          <Arrows />
         </Carousel>
       ))}
     </div>
@@ -453,7 +643,7 @@ export const Peek: Story = {
           </CarouselSlide>
         ))}
       </CarouselSlides>
-      <Controls />
+      <Arrows />
     </Carousel>
   ),
 }
@@ -486,7 +676,7 @@ function ControlledCarousel(): React.ReactNode {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', ...frame }}>
       <Carousel aria-label="Controlled" index={index} onIndexChange={setIndex}>
         <Panels />
-        <Controls />
+        <Arrows />
       </Carousel>
       <div className="flex flex-wrap items-center gap-2">
         {slides.map(({ title }, position) => (

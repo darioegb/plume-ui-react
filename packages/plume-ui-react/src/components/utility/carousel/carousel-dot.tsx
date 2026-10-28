@@ -12,9 +12,14 @@ type CarouselDotRootAttributes = Pick<
   'aria-label' | 'children' | 'disabled' | 'id' | 'onClick' | 'onKeyDown' | 'title'
 >
 
-const keyTargets = (key: string, current: number, count: number): number | undefined => {
-  if (key === 'ArrowRight') return (current + 1) % count
-  if (key === 'ArrowLeft') return (current - 1 + count) % count
+const keyTargets = (
+  key: string,
+  current: number,
+  count: number,
+  vertical: boolean,
+): number | undefined => {
+  if (key === (vertical ? 'ArrowDown' : 'ArrowRight')) return (current + 1) % count
+  if (key === (vertical ? 'ArrowUp' : 'ArrowLeft')) return (current - 1 + count) % count
   if (key === 'Home') return 0
   return key === 'End' ? count - 1 : undefined
 }
@@ -38,7 +43,8 @@ export const CarouselDot = forwardRef<HTMLButtonElement, CarouselDotProps>(
     }: CarouselDotProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { baseId, count, index, isStyled, labels, setIndex } = useCarouselContext('CarouselDot')
+    const { baseId, count, index, isStyled, labels, orientation, setIndex } =
+      useCarouselContext('CarouselDot')
     const position = useContext(CarouselDotIndexContext)
     if (position === undefined) throw new Error('CarouselDot must be used within a <CarouselDots>')
     const active = position === index
@@ -51,7 +57,12 @@ export const CarouselDot = forwardRef<HTMLButtonElement, CarouselDotProps>(
           .closest('[data-plume-carousel-dots]')
           ?.querySelectorAll<HTMLElement>('[data-plume-carousel-dot]') ?? [],
       )
-      const target = keyTargets(event.key, dots.indexOf(event.currentTarget), dots.length)
+      const target = keyTargets(
+        event.key,
+        dots.indexOf(event.currentTarget),
+        dots.length,
+        orientation === 'vertical',
+      )
       if (target === undefined) return
       event.preventDefault()
       setIndex(target)

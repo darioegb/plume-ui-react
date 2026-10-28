@@ -7,7 +7,13 @@ import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useMediaQuery } from '../../../overlay/use-media-query'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { CarouselContext, type CarouselLabels, type CarouselVariant } from './carousel-context'
+import {
+  CarouselContext,
+  type CarouselControls,
+  type CarouselLabels,
+  type CarouselOrientation,
+  type CarouselVariant,
+} from './carousel-context'
 import styles from './carousel.module.css'
 
 export interface CarouselOwnProps {
@@ -23,6 +29,13 @@ export interface CarouselOwnProps {
    * @default 'primary'
    */
   colorScheme?: ColorScheme
+  /**
+   * Where the buttons sit. `overlay` puts the previous and next buttons over the slides, at their
+   * edges. `inline` takes them out of that layer and leaves them where you place them, for
+   * example in a bar with the dots under the slides.
+   * @default 'overlay'
+   */
+  controls?: CarouselControls,
   /**
    * The slide that is visible first, when it is not controlled.
    * @default 0
@@ -53,6 +66,13 @@ export interface CarouselOwnProps {
    * swipe.
    */
   onIndexChange?: (index: number) => void
+  /**
+   * The direction the slides move in. `vertical` stacks them, puts the buttons at the top and
+   * the bottom and the dots in a column at the end; give the Carousel a height, as the slides
+   * fill it. The dots then use <kbd>↑</kbd> and <kbd>↓</kbd> instead of the horizontal arrows.
+   * @default 'horizontal'
+   */
+  orientation?: CarouselOrientation
   /**
    * Size of the buttons and the dots.
    * @default 'md'
@@ -108,12 +128,14 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
       children,
       className,
       colorScheme = 'primary',
+      controls = 'overlay',
       defaultIndex = 0,
       id,
       index: indexProp,
       labels,
       loop = false,
       onIndexChange,
+      orientation = 'horizontal',
       size = 'md',
       style,
       variant = 'solid',
@@ -164,13 +186,14 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
         labels: resolvedLabels,
         loop,
         next,
+        orientation,
         playing: playingNow,
         prev,
         setCount,
         setIndex: go,
         setPlaying,
       }),
-      [baseId, count, go, index, isStyled, loop, next, playingNow, prev, resolvedLabels],
+      [baseId, count, go, index, isStyled, loop, next, orientation, playingNow, prev, resolvedLabels],
     )
 
     return (
@@ -181,8 +204,12 @@ export const Carousel = forwardRef<HTMLElement, CarouselProps>(
             isStyled && styles.carousel,
             isStyled && styles[variant],
             isStyled && styles[size],
+            isStyled && styles[orientation],
+            isStyled && controls === 'inline' && styles.inline,
             className,
           )}
+          data-controls={controls}
+          data-orientation={orientation}
           data-plume-carousel=""
           id={baseId}
           onBlur={() => setInteracting(false)}

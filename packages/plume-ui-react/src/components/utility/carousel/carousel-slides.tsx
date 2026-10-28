@@ -18,12 +18,13 @@ export type CarouselSlidesProps = Omit<ComponentProps, 'index'> & CarouselSlides
 
 const scrollEndDelay = 700
 
-const closestSlide = (scroller: HTMLElement): number => {
-  const start = scroller.getBoundingClientRect().left
+const closestSlide = (scroller: HTMLElement, vertical: boolean): number => {
+  const edge = vertical ? 'top' : 'left'
+  const start = scroller.getBoundingClientRect()[edge]
   let closest = 0
   let distance = Number.POSITIVE_INFINITY
   Array.from(scroller.children).forEach((slide, position) => {
-    const gap = Math.abs(slide.getBoundingClientRect().left - start)
+    const gap = Math.abs(slide.getBoundingClientRect()[edge] - start)
     if (gap < distance) {
       distance = gap
       closest = position
@@ -38,8 +39,9 @@ export const CarouselSlides = forwardRef<HTMLDivElement, CarouselSlidesProps>(
     { children, className, id, style, ...rest }: CarouselSlidesProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { baseId, index, isStyled, playing, setCount, setIndex } =
+    const { baseId, index, isStyled, orientation, playing, setCount, setIndex } =
       useCarouselContext('CarouselSlides')
+    const vertical = orientation === 'vertical'
     const [scroller, setScroller] = useState<HTMLDivElement | null>(null)
     const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
     const count = Children.toArray(children).length
@@ -62,14 +64,16 @@ export const CarouselSlides = forwardRef<HTMLDivElement, CarouselSlidesProps>(
       timer.current = setTimeout(() => {
         programmatic.current = false
       }, scrollEndDelay)
+      const edge = vertical ? 'top' : 'left'
+      const offset =
+        slide.getBoundingClientRect()[edge] -
+        scroller.getBoundingClientRect()[edge] +
+        (vertical ? scroller.scrollTop : scroller.scrollLeft)
       scroller.scrollTo({
         behavior: first || reducedMotion ? 'auto' : 'smooth',
-        left:
-          slide.getBoundingClientRect().left -
-          scroller.getBoundingClientRect().left +
-          scroller.scrollLeft,
+        [edge]: offset,
       })
-    }, [index, reducedMotion, scroller, count])
+    }, [index, reducedMotion, scroller, count, vertical])
 
     useEffect(
       () => () => {
@@ -83,11 +87,11 @@ export const CarouselSlides = forwardRef<HTMLDivElement, CarouselSlidesProps>(
       if (!scroller || programmatic.current) return
       if (frame.current !== undefined) cancelAnimationFrame(frame.current)
       frame.current = requestAnimationFrame(() => {
-        const position = closestSlide(scroller)
+        const position = closestSlide(scroller, vertical)
         settled.current = position
         setIndex(position)
       })
-    }, [scroller, setIndex])
+    }, [scroller, setIndex, vertical])
 
     useEffect(() => {
       if (!scroller) return undefined
@@ -103,6 +107,7 @@ export const CarouselSlides = forwardRef<HTMLDivElement, CarouselSlidesProps>(
       <div
         aria-live={playing ? 'off' : 'polite'}
         className={joinClasses(isStyled && styles.slides, className)}
+        data-orientation={orientation}
         data-plume-carousel-slides=""
         id={id ?? `${baseId}-slides`}
         onScroll={handleScroll}
