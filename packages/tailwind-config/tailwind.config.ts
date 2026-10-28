@@ -136,15 +136,11 @@ const borderWidth = {
   thick: 'var(--plume-border-width-thick)',
 }
 
-const maxWidth = {
-  'container-sm': 'var(--plume-container-sm)',
-  'container-md': 'var(--plume-container-md)',
-  'container-lg': 'var(--plume-container-lg)',
-  'container-xl': 'var(--plume-container-xl)',
-  'dialog-sm': 'var(--plume-dialog-width-sm)',
-  'dialog-md': 'var(--plume-dialog-width-md)',
-  'dialog-lg': 'var(--plume-dialog-width-lg)',
-}
+const maxWidth = Object.fromEntries(
+  ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'].map(
+    (size) => [`container-${size}`, `var(--plume-container-${size})`],
+  ),
+)
 
 const controlHeight = {
   'control-sm': 'var(--plume-control-height-sm)',

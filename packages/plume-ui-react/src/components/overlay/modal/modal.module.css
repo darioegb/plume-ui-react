@@ -51,15 +51,15 @@
 }
 
 .sm {
-  max-width: var(--plume-dialog-width-sm);
+  max-width: var(--plume-container-sm);
 }
 
 .md {
-  max-width: var(--plume-dialog-width-md);
+  max-width: var(--plume-container-lg);
 }
 
 .lg {
-  max-width: var(--plume-dialog-width-lg);
+  max-width: var(--plume-container-3xl);
 }
 
 .header {

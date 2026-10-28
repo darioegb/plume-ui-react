@@ -3,6 +3,7 @@ const fontLength = String.raw`(?<![\w.-])\d*\.?\d+(rem|px)\b`
 
 export default {
   rules: {
+    'media-feature-name-disallowed-list': [/width/],
     'declaration-property-value-disallowed-list': {
       '/^(padding|margin|gap|row-gap|column-gap|padding-.+|margin-.+)$/': [new RegExp(rem)],
       'font-size': [

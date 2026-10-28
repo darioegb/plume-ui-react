@@ -2,6 +2,7 @@ import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import postcss from 'postcss'
 import postcssModules from 'postcss-modules'
+import { breakpoints } from './postcss-breakpoints'
 
 export interface CssUnit {
   /** The CSS of the module files of the unit, with the class names the components use. */
@@ -49,7 +50,7 @@ function unitOf(file: string): string {
 
 async function compileModule(file: string): Promise<string> {
   const source = await fs.readFile(file, 'utf8')
-  const result = await postcss([postcssModules({ getJSON: () => undefined })]).process(source, {
+  const result = await postcss([breakpoints(), postcssModules({ getJSON: () => undefined })]).process(source, {
     from: file,
   })
   return result.css

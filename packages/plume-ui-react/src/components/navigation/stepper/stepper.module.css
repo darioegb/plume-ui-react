@@ -217,7 +217,7 @@
   padding-block-end: var(--plume-space-1);
 }
 
-@media (width < 40rem) {
+@media (--below-sm) {
   .stepper[data-orientation='horizontal'] .step {
     column-gap: var(--plume-space-2);
     flex: 1 1 auto;

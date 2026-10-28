@@ -513,7 +513,10 @@ The z-index scale has names instead of numbers, and the typo is fixed: `theme.zI
 
 `theme.breakpoints` is for your own code (`useTheme().theme.breakpoints`, a `useMediaQuery`). The `Sidebar` and the
 `Navbar` fold at the `sm`, `md` and `lg` of the default theme, because their CSS uses `@media` queries, which cannot
-read a variable; a test keeps those widths equal to the defaults.
+read a variable. The build writes those queries from `defaultTheme.breakpoints` (`@media (--md)` in the source), so the
+widths of every component come from one place: `sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem and `2xl` 96rem, the
+same as Tailwind v4. The calendars of the `DatePicker` now stack below `md` (48rem, before 45rem) and the `Paginator`
+tightens its spacing below `sm` (40rem, before 30rem).
 
 ## The CSS of Plume is in the layer `plume`
 

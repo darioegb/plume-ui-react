@@ -61,13 +61,13 @@
   display: none;
 }
 
-@media (width >= 40rem) {
+@media (--sm) {
   :global([data-plume-navbar][data-breakpoint='sm'] [data-plume-navbar-toggle]) {
     display: none;
   }
 }
 
-@media (width < 40rem) {
+@media (--below-sm) {
   :global(:where([data-plume-navbar][data-breakpoint='sm'])) {
     justify-content: space-between;
   }
@@ -83,13 +83,13 @@
   }
 }
 
-@media (width >= 48rem) {
+@media (--md) {
   :global([data-plume-navbar][data-breakpoint='md'] [data-plume-navbar-toggle]) {
     display: none;
   }
 }
 
-@media (width < 48rem) {
+@media (--below-md) {
   :global(:where([data-plume-navbar][data-breakpoint='md'])) {
     justify-content: space-between;
   }
@@ -105,13 +105,13 @@
   }
 }
 
-@media (width >= 64rem) {
+@media (--lg) {
   :global([data-plume-navbar][data-breakpoint='lg'] [data-plume-navbar-toggle]) {
     display: none;
   }
 }
 
-@media (width < 64rem) {
+@media (--below-lg) {
   :global(:where([data-plume-navbar][data-breakpoint='lg'])) {
     justify-content: space-between;
   }

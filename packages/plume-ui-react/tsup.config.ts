@@ -5,6 +5,7 @@ import { transform } from 'esbuild'
 import { defineConfig, type Options } from 'tsup'
 import postcss from 'postcss'
 import { buildCssUnits } from './scripts/component-css'
+import { breakpoints } from './scripts/postcss-breakpoints'
 import { buildTokensCss } from './scripts/tokens-css'
 import postcssModules from 'postcss-modules'
 
@@ -28,6 +29,7 @@ function cssModulePlugin({ emitCss }: { emitCss: boolean }): Plugin {
         const source = await fsPromises.readFile(pluginData.pathDir, 'utf8')
         let cssModule = {}
         const result = await postcss([
+          breakpoints(),
           postcssModules({
             getJSON(_, json) {
               cssModule = json

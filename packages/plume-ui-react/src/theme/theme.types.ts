@@ -175,16 +175,19 @@ export interface Breakpoints {
 }
 
 export interface Containers {
+  '3xs': string
+  '2xs': string
+  xs: string
   sm: string
   md: string
   lg: string
   xl: string
-}
-
-export interface DialogWidths {
-  sm: string
-  md: string
-  lg: string
+  '2xl': string
+  '3xl': string
+  '4xl': string
+  '5xl': string
+  '6xl': string
+  '7xl': string
 }
 
 export interface Motion {
@@ -235,8 +238,7 @@ export interface Theme {
   zIndices: ZIndices
   shadows: Shadows
   breakpoints: Breakpoints // Read in JS: a var() does not work inside @media
-  containers: Containers // Max width of the content of a page
-  dialogWidths: DialogWidths // Max width of a Modal
+  containers: Containers // Named widths: max width of a page, a dialog or a panel
   motion: Motion
   focusRing: FocusRing
   borderWidths: BorderWidths

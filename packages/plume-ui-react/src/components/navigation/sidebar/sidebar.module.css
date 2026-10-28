@@ -73,7 +73,7 @@
   justify-content: center;
 }
 
-@media (width >= 40rem) {
+@media (--sm) {
   :global(:where([data-plume-sidebar][data-breakpoint='sm'][data-collapsed])) {
     inline-size: var(--sidebar-collapsed-width, 4rem);
   }
@@ -97,7 +97,7 @@
   }
 }
 
-@media (width < 40rem) {
+@media (--below-sm) {
   :global(:where([data-plume-sidebar][data-breakpoint='sm'])) {
     block-size: 100dvh;
     inline-size: min(var(--sidebar-width, 16rem), 85vw);
@@ -137,7 +137,7 @@
   }
 }
 
-@media (width >= 48rem) {
+@media (--md) {
   :global(:where([data-plume-sidebar][data-breakpoint='md'][data-collapsed])) {
     inline-size: var(--sidebar-collapsed-width, 4rem);
   }
@@ -161,7 +161,7 @@
   }
 }
 
-@media (width < 48rem) {
+@media (--below-md) {
   :global(:where([data-plume-sidebar][data-breakpoint='md'])) {
     block-size: 100dvh;
     inline-size: min(var(--sidebar-width, 16rem), 85vw);
@@ -201,7 +201,7 @@
   }
 }
 
-@media (width >= 64rem) {
+@media (--lg) {
   :global(:where([data-plume-sidebar][data-breakpoint='lg'][data-collapsed])) {
     inline-size: var(--sidebar-collapsed-width, 4rem);
   }
@@ -225,7 +225,7 @@
   }
 }
 
-@media (width < 64rem) {
+@media (--below-lg) {
   :global(:where([data-plume-sidebar][data-breakpoint='lg'])) {
     block-size: 100dvh;
     inline-size: min(var(--sidebar-width, 16rem), 85vw);
@@ -401,19 +401,19 @@
   }
 }
 
-@media (width < 64rem) {
+@media (--below-lg) {
   .sidebar[data-breakpoint='lg'] {
     box-shadow: var(--plume-shadow-xl);
   }
 }
 
-@media (width < 48rem) {
+@media (--below-md) {
   .sidebar[data-breakpoint='md'] {
     box-shadow: var(--plume-shadow-xl);
   }
 }
 
-@media (width < 40rem) {
+@media (--below-sm) {
   .sidebar[data-breakpoint='sm'] {
     box-shadow: var(--plume-shadow-xl);
   }

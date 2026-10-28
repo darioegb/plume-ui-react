@@ -79,7 +79,7 @@
   width: auto;
 }
 
-@media (width < 30rem) {
+@media (--below-sm) {
   .paginator {
     column-gap: var(--plume-space-2);
   }
