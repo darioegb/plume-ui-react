@@ -10,7 +10,7 @@
 }
 
 .status {
-  width: 12rem;
+  width: 18rem; /* the Select is never narrower than this */
 }
 
 .due {
@@ -19,6 +19,26 @@
 
 .create {
   margin-inline-start: auto;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (width < 40rem) {
+  .search,
+  .status,
+  .due,
+  .create {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .create {
+    margin-inline-start: 0;
+  }
 }
 
 .name {
