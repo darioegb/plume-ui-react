@@ -2,8 +2,11 @@ type RadiusValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 'full'
 
 type SpaceValue =
   | 0
+  | 0.5
   | 1
+  | 1.5
   | 2
+  | 2.5
   | 3
   | 4
   | 5
@@ -68,9 +71,11 @@ export interface ColorPalette {
 
 export interface Typography {
   fontFamily: string
+  fontFamilyMono: string
   fontSizes: FontSizes
   fontWeights: FontWeights
   lineHeights: LineHeights
+  letterSpacings: LetterSpacings
 }
 
 export interface FontSizes {
@@ -80,6 +85,9 @@ export interface FontSizes {
   lg: string
   xl: string
   '2xl': string
+  '3xl': string
+  '4xl': string
+  '5xl': string
 }
 
 export interface FontWeights {
@@ -101,6 +109,32 @@ export interface LineHeights {
   normal: number
   relaxed: number
   loose: number
+}
+
+export interface LetterSpacings {
+  tight: string
+  normal: string
+  wide: string
+}
+
+export interface TextStyle {
+  fontSize: string
+  fontWeight: number | string
+  lineHeight: number | string
+  letterSpacing: string
+}
+
+export interface TextStyles {
+  'heading-1': TextStyle
+  'heading-2': TextStyle
+  'heading-3': TextStyle
+  'heading-4': TextStyle
+  'heading-5': TextStyle
+  'heading-6': TextStyle
+  body: TextStyle
+  'body-sm': TextStyle
+  label: TextStyle
+  caption: TextStyle
 }
 
 export type Spaces = {
@@ -138,6 +172,32 @@ export interface Breakpoints {
   '2xl': string
 }
 
+export interface Motion {
+  durations: { fast: string; normal: string; slow: string }
+  easings: { standard: string; out: string; inOut: string }
+}
+
+export interface FocusRing {
+  width: string
+  offset: string
+  color: string
+}
+
+export interface BorderWidths {
+  thin: string
+  thick: string
+}
+
+export interface ControlHeights {
+  sm: string
+  md: string
+  lg: string
+}
+
+export interface Opacities {
+  disabled: number
+}
+
 export interface SemanticColors {
   background: string
   surface: string
@@ -146,17 +206,24 @@ export interface SemanticColors {
   muted: string
   border: string
   borderStrong: string
+  backdrop: string
 }
 
 export interface Theme {
   colors: ColorPalette
   semantic: SemanticColors
   typography: Typography
+  textStyles: TextStyles
   spaces: Spaces // Padding & margin
   radii: Radii
   zIndices: ZIndices
   shadows: Shadows
-  breakpoints: Breakpoints
+  breakpoints: Breakpoints // Read in JS: a var() does not work inside @media
+  motion: Motion
+  focusRing: FocusRing
+  borderWidths: BorderWidths
+  controlHeights: ControlHeights
+  opacities: Opacities
 }
 
 export type DeepPartial<T> = {

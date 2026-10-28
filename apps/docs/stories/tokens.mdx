@@ -13,11 +13,13 @@ dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> pa
 
 ## Spacing
 
-`--plume-space-*` · Tailwind `p-*`, `m-*`, `gap-*`, …
+`--plume-space-*` · Tailwind `p-*`, `m-*`, `gap-*`, … The half steps have a dash instead of the dot in the
+variable: `--plume-space-0-5`, `--plume-space-1-5` and `--plume-space-2-5` (Tailwind `p-0.5`, `p-1.5`, `p-2.5`).
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
   {Object.entries(defaultTheme.spaces)
     .filter(([key]) => Number(key) <= 16)
+    .sort(([a], [b]) => Number(a) - Number(b))
     .map(([key, value]) => (
       <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <code style={{ width: '5rem' }}>space.{key}</code>
@@ -76,7 +78,7 @@ dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> pa
 
 ## Typography
 
-`--plume-font-size-*`, `--plume-font-weight-*` · Tailwind `text-*`, `font-*`
+`--plume-font-size-*`, `--plume-font-weight-*`, `--plume-letter-spacing-*`, `--plume-font-family-mono` · Tailwind `text-*`, `font-*`, `tracking-*`, `font-plume-mono`
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
   {Object.entries(defaultTheme.typography.fontSizes).map(([key, value]) => (
@@ -101,3 +103,56 @@ dedicated <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> pa
     </li>
   ))}
 </ul>
+
+## Text styles
+
+`--plume-text-<name>-size`, `-weight`, `-line-height` and `-letter-spacing` · Tailwind `text-text-<name>`
+
+A text style is a size, a weight, a line height and a letter spacing used together. They are made of the scales above,
+so changing `fontSizes` changes the styles too. The components with a title and a description use them.
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+  {Object.entries(defaultTheme.textStyles).map(([key, style]) => (
+    <div key={key} style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+      <code style={{ width: '8rem', flexShrink: 0 }}>{key}</code>
+      <span
+        style={{
+          fontFamily: defaultTheme.typography.fontFamily,
+          fontSize: style.fontSize.replace(/var\(--plume-font-size-(.+)\)/, (_, name) => defaultTheme.typography.fontSizes[name]),
+          fontWeight: style.fontWeight.replace(/var\(--plume-font-weight-(.+)\)/, (_, name) => defaultTheme.typography.fontWeights[name]),
+        }}
+      >
+        The quick brown fox
+      </span>
+    </div>
+  ))}
+</div>
+
+## Motion
+
+`--plume-duration-*`, `--plume-easing-*` · Tailwind `duration-*`, `ease-*`
+
+<ul>
+  {Object.entries(defaultTheme.motion.durations).map(([key, value]) => (
+    <li key={key}>
+      <code>duration.{key}</code> → {value}
+    </li>
+  ))}
+  {Object.entries(defaultTheme.motion.easings).map(([key, value]) => (
+    <li key={key}>
+      <code>easing.{key}</code> → {value}
+    </li>
+  ))}
+</ul>
+
+## Focus ring, borders, controls and disabled
+
+<ul>
+  <li><code>--plume-focus-ring-width</code>, <code>-offset</code> and <code>-color</code> → {defaultTheme.focusRing.width}, {defaultTheme.focusRing.offset}, {defaultTheme.focusRing.color}</li>
+  <li><code>--plume-border-width-thin</code> and <code>-thick</code> → {defaultTheme.borderWidths.thin}, {defaultTheme.borderWidths.thick} · Tailwind <code>border</code>, <code>border-thick</code></li>
+  <li><code>--plume-control-height-sm</code>, <code>-md</code> and <code>-lg</code> → {defaultTheme.controlHeights.sm}, {defaultTheme.controlHeights.md}, {defaultTheme.controlHeights.lg} · Tailwind <code>h-control-md</code></li>
+  <li><code>--plume-opacity-disabled</code> → {defaultTheme.opacities.disabled} · Tailwind <code>opacity-disabled</code></li>
+  <li><code>--plume-backdrop</code>, the color behind a Modal or a Sidebar panel → {defaultTheme.semantic.backdrop} · Tailwind <code>bg-backdrop</code></li>
+</ul>
+
+The shadows and the backdrop have their own values in dark mode, because a dark shadow needs more opacity to be seen.

@@ -1,5 +1,5 @@
 import { getContrastRatio, getDarkenColor, getLightenColor } from '../utils/colors'
-import type { Theme } from './theme.types'
+import type { TextStyle, Theme } from './theme.types'
 
 const PREFIX = '--plume'
 
@@ -50,6 +50,9 @@ function flatten(prefix: string, record: TokenRecord, target: Record<string, str
 const toKebab = (key: string): string =>
   key.replace(/(?<lower>[a-z0-9])(?<upper>[A-Z])/g, '$<lower>-$<upper>').toLowerCase()
 
+const toKebabKeys = (record: TokenRecord): TokenRecord =>
+  Object.fromEntries(Object.entries(record).map(([key, value]) => [toKebab(key), value]))
+
 /**
  * Flattens a resolved Theme into a map of CSS custom properties
  * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-radius-2`).
@@ -92,13 +95,33 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   }
 
   vars[`${PREFIX}-font-family`] = theme.typography.fontFamily
+  vars[`${PREFIX}-font-family-mono`] = theme.typography.fontFamilyMono
   flatten(`${PREFIX}-font-size`, theme.typography.fontSizes as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-font-weight`, theme.typography.fontWeights as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-line-height`, theme.typography.lineHeights as unknown as TokenRecord, vars)
-  flatten(`${PREFIX}-space`, theme.spaces, vars)
+  flatten(
+    `${PREFIX}-letter-spacing`,
+    theme.typography.letterSpacings as unknown as TokenRecord,
+    vars,
+  )
+  for (const [name, style] of Object.entries(theme.textStyles as unknown as Record<string, TextStyle>)) {
+    vars[`${PREFIX}-text-${name}-size`] = style.fontSize
+    vars[`${PREFIX}-text-${name}-weight`] = String(style.fontWeight)
+    vars[`${PREFIX}-text-${name}-line-height`] = String(style.lineHeight)
+    vars[`${PREFIX}-text-${name}-letter-spacing`] = style.letterSpacing
+  }
+  for (const [key, value] of Object.entries(theme.spaces)) {
+    vars[`${PREFIX}-space-${key.replace('.', '-')}`] = value
+  }
   flatten(`${PREFIX}-radius`, theme.radii, vars)
   flatten(`${PREFIX}-z`, theme.zIndices as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-shadow`, theme.shadows as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-duration`, theme.motion.durations, vars)
+  flatten(`${PREFIX}-easing`, toKebabKeys(theme.motion.easings), vars)
+  flatten(`${PREFIX}-focus-ring`, theme.focusRing as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-border-width`, theme.borderWidths as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-control-height`, theme.controlHeights as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-opacity`, theme.opacities as unknown as TokenRecord, vars)
 
   return vars
 }

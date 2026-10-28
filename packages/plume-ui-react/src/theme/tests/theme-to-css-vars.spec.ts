@@ -59,6 +59,51 @@ describe('themeToCssVars', () => {
     expect(keys).not.toContain('--plume-color-primary-contrast')
   })
 
+  it('emits motion, focus ring, border, control and opacity tokens', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-duration-normal']).toBe(defaultTheme.motion.durations.normal)
+    expect(vars['--plume-easing-in-out']).toBe(defaultTheme.motion.easings.inOut)
+    expect(vars['--plume-focus-ring-width']).toBe(defaultTheme.focusRing.width)
+    expect(vars['--plume-focus-ring-offset']).toBe(defaultTheme.focusRing.offset)
+    expect(vars['--plume-focus-ring-color']).toBe(defaultTheme.focusRing.color)
+    expect(vars['--plume-border-width-thin']).toBe(defaultTheme.borderWidths.thin)
+    expect(vars['--plume-border-width-thick']).toBe(defaultTheme.borderWidths.thick)
+    expect(vars['--plume-control-height-md']).toBe(defaultTheme.controlHeights.md)
+    expect(vars['--plume-opacity-disabled']).toBe('0.5')
+    expect(vars['--plume-backdrop']).toBe(defaultTheme.semantic.backdrop)
+  })
+
+  it('names the half steps of the spacing scale without a dot', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-space-0-5']).toBe('0.125rem')
+    expect(vars['--plume-space-1-5']).toBe('0.375rem')
+    expect(vars['--plume-space-2-5']).toBe('0.625rem')
+    expect(Object.keys(vars).some((key) => key.includes('.'))).toBe(false)
+  })
+
+  it('emits the larger sizes, the letter spacings and the monospace family', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-font-size-5xl']).toBe('3rem')
+    expect(vars['--plume-letter-spacing-tight']).toBe('-0.025em')
+    expect(vars['--plume-font-family-mono']).toBe(defaultTheme.typography.fontFamilyMono)
+  })
+
+  it('emits the four properties of every text style', () => {
+    const vars = themeToCssVars(defaultTheme)
+    for (const name of Object.keys(defaultTheme.textStyles)) {
+      for (const property of ['size', 'weight', 'line-height', 'letter-spacing']) {
+        expect(vars[`--plume-text-${name}-${property}`]).toBeTruthy()
+      }
+    }
+    expect(vars['--plume-text-heading-1-size']).toBe('var(--plume-font-size-4xl)')
+  })
+
+  it('has its own shadows and backdrop in dark mode', () => {
+    const vars = themeToCssVars(darkTheme)
+    expect(vars['--plume-shadow-md']).not.toBe(themeToCssVars(defaultTheme)['--plume-shadow-md'])
+    expect(vars['--plume-backdrop']).not.toBe(defaultTheme.semantic.backdrop)
+  })
+
   it('includes custom color schemes', () => {
     const vars = themeToCssVars(withColors({ salmon: ramp('#fa8072') }))
     expect(vars['--plume-color-salmon-500']).toBe('#fa8072')

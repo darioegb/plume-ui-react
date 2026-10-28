@@ -154,9 +154,11 @@ export const defaultTheme: Theme = {
     muted: '#6e6e77',
     border: '#d4d4d8',
     borderStrong: '#80808a',
+    backdrop: 'rgb(0 0 0 / 50%)',
   },
   typography: {
     fontFamily: "'Inter', sans-serif",
+    fontFamilyMono: "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace",
     fontSizes: {
       xs: '0.75rem',
       sm: '0.875rem',
@@ -164,6 +166,9 @@ export const defaultTheme: Theme = {
       lg: '1.125rem',
       xl: '1.25rem',
       '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem',
+      '5xl': '3rem',
     },
     fontWeights: {
       thin: 100,
@@ -184,11 +189,81 @@ export const defaultTheme: Theme = {
       relaxed: 1.625,
       loose: 2,
     },
+    letterSpacings: {
+      tight: '-0.025em',
+      normal: '0em',
+      wide: '0.025em',
+    },
+  },
+  textStyles: {
+    'heading-1': {
+      fontSize: 'var(--plume-font-size-4xl)',
+      fontWeight: 'var(--plume-font-weight-bold)',
+      lineHeight: 'var(--plume-line-height-tight)',
+      letterSpacing: 'var(--plume-letter-spacing-tight)',
+    },
+    'heading-2': {
+      fontSize: 'var(--plume-font-size-3xl)',
+      fontWeight: 'var(--plume-font-weight-bold)',
+      lineHeight: 'var(--plume-line-height-tight)',
+      letterSpacing: 'var(--plume-letter-spacing-tight)',
+    },
+    'heading-3': {
+      fontSize: 'var(--plume-font-size-2xl)',
+      fontWeight: 'var(--plume-font-weight-semibold)',
+      lineHeight: 'var(--plume-line-height-tight)',
+      letterSpacing: 'var(--plume-letter-spacing-tight)',
+    },
+    'heading-4': {
+      fontSize: 'var(--plume-font-size-xl)',
+      fontWeight: 'var(--plume-font-weight-semibold)',
+      lineHeight: 'var(--plume-line-height-snug)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    'heading-5': {
+      fontSize: 'var(--plume-font-size-lg)',
+      fontWeight: 'var(--plume-font-weight-semibold)',
+      lineHeight: 'var(--plume-line-height-snug)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    'heading-6': {
+      fontSize: 'var(--plume-font-size-base)',
+      fontWeight: 'var(--plume-font-weight-semibold)',
+      lineHeight: 'var(--plume-line-height-snug)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    body: {
+      fontSize: 'var(--plume-font-size-base)',
+      fontWeight: 'var(--plume-font-weight-normal)',
+      lineHeight: 'var(--plume-line-height-normal)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    'body-sm': {
+      fontSize: 'var(--plume-font-size-sm)',
+      fontWeight: 'var(--plume-font-weight-normal)',
+      lineHeight: 'var(--plume-line-height-normal)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    label: {
+      fontSize: 'var(--plume-font-size-sm)',
+      fontWeight: 'var(--plume-font-weight-medium)',
+      lineHeight: 'var(--plume-line-height-normal)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
+    caption: {
+      fontSize: 'var(--plume-font-size-xs)',
+      fontWeight: 'var(--plume-font-weight-normal)',
+      lineHeight: 'var(--plume-line-height-normal)',
+      letterSpacing: 'var(--plume-letter-spacing-normal)',
+    },
   },
   spaces: {
     0: '0rem',
+    0.5: '0.125rem',
     1: '0.25rem',
+    1.5: '0.375rem',
     2: '0.5rem',
+    2.5: '0.625rem',
     3: '0.75rem',
     4: '1rem',
     5: '1.25rem',
@@ -257,6 +332,35 @@ export const defaultTheme: Theme = {
     xl: '80rem',
     '2xl': '96rem',
   },
+  motion: {
+    durations: {
+      fast: '0.12s',
+      normal: '0.2s',
+      slow: '0.3s',
+    },
+    easings: {
+      standard: 'ease',
+      out: 'ease-out',
+      inOut: 'ease-in-out',
+    },
+  },
+  focusRing: {
+    width: '2px',
+    offset: '2px',
+    color: 'var(--plume-color-primary-text)',
+  },
+  borderWidths: {
+    thin: '1px',
+    thick: '3px',
+  },
+  controlHeights: {
+    sm: '2rem',
+    md: '2.5rem',
+    lg: '3rem',
+  },
+  opacities: {
+    disabled: 0.5,
+  },
 }
 
 export const defaultDarkTheme: DeepPartial<Theme> = {
@@ -268,5 +372,13 @@ export const defaultDarkTheme: DeepPartial<Theme> = {
     muted: '#acacb5',
     border: '#3f3f46',
     borderStrong: '#9a9aa3',
+    backdrop: 'rgb(0 0 0 / 65%)',
+  },
+  shadows: {
+    sm: '0 1px 2px rgba(0, 0, 0, 0.4)',
+    md: '0 4px 6px rgba(0, 0, 0, 0.5)',
+    lg: '0 10px 15px rgba(0, 0, 0, 0.55)',
+    xl: '0 20px 25px rgba(0, 0, 0, 0.6)',
+    '2xl': '0 25px 50px rgba(0, 0, 0, 0.7)',
   },
 }
