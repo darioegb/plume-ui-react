@@ -1,4 +1,26 @@
-import type { DeepPartial, Theme } from './theme.types'
+import type {
+  DeepPartial,
+  FontSizes,
+  FontWeights,
+  LetterSpacings,
+  LineHeights,
+  TextStyle,
+  Theme,
+} from './theme.types'
+
+const token = (group: string, key: string): string => `var(--plume-${group}-${key})`
+
+const textStyle = (
+  size: keyof FontSizes,
+  weight: keyof FontWeights,
+  lineHeight: keyof LineHeights,
+  letterSpacing: keyof LetterSpacings,
+): TextStyle => ({
+  fontSize: token('font-size', size),
+  fontWeight: token('font-weight', weight),
+  lineHeight: token('line-height', lineHeight),
+  letterSpacing: token('letter-spacing', letterSpacing),
+})
 
 export const defaultTheme: Theme = {
   colors: {
@@ -196,66 +218,16 @@ export const defaultTheme: Theme = {
     },
   },
   textStyles: {
-    'heading-1': {
-      fontSize: 'var(--plume-font-size-4xl)',
-      fontWeight: 'var(--plume-font-weight-bold)',
-      lineHeight: 'var(--plume-line-height-tight)',
-      letterSpacing: 'var(--plume-letter-spacing-tight)',
-    },
-    'heading-2': {
-      fontSize: 'var(--plume-font-size-3xl)',
-      fontWeight: 'var(--plume-font-weight-bold)',
-      lineHeight: 'var(--plume-line-height-tight)',
-      letterSpacing: 'var(--plume-letter-spacing-tight)',
-    },
-    'heading-3': {
-      fontSize: 'var(--plume-font-size-2xl)',
-      fontWeight: 'var(--plume-font-weight-semibold)',
-      lineHeight: 'var(--plume-line-height-tight)',
-      letterSpacing: 'var(--plume-letter-spacing-tight)',
-    },
-    'heading-4': {
-      fontSize: 'var(--plume-font-size-xl)',
-      fontWeight: 'var(--plume-font-weight-semibold)',
-      lineHeight: 'var(--plume-line-height-snug)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    'heading-5': {
-      fontSize: 'var(--plume-font-size-lg)',
-      fontWeight: 'var(--plume-font-weight-semibold)',
-      lineHeight: 'var(--plume-line-height-snug)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    'heading-6': {
-      fontSize: 'var(--plume-font-size-base)',
-      fontWeight: 'var(--plume-font-weight-semibold)',
-      lineHeight: 'var(--plume-line-height-snug)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    body: {
-      fontSize: 'var(--plume-font-size-base)',
-      fontWeight: 'var(--plume-font-weight-normal)',
-      lineHeight: 'var(--plume-line-height-normal)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    'body-sm': {
-      fontSize: 'var(--plume-font-size-sm)',
-      fontWeight: 'var(--plume-font-weight-normal)',
-      lineHeight: 'var(--plume-line-height-normal)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    label: {
-      fontSize: 'var(--plume-font-size-sm)',
-      fontWeight: 'var(--plume-font-weight-medium)',
-      lineHeight: 'var(--plume-line-height-normal)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
-    caption: {
-      fontSize: 'var(--plume-font-size-xs)',
-      fontWeight: 'var(--plume-font-weight-normal)',
-      lineHeight: 'var(--plume-line-height-normal)',
-      letterSpacing: 'var(--plume-letter-spacing-normal)',
-    },
+    'heading-1': textStyle('4xl', 'bold', 'tight', 'tight'),
+    'heading-2': textStyle('3xl', 'bold', 'tight', 'tight'),
+    'heading-3': textStyle('2xl', 'semibold', 'tight', 'tight'),
+    'heading-4': textStyle('xl', 'semibold', 'snug', 'normal'),
+    'heading-5': textStyle('lg', 'semibold', 'snug', 'normal'),
+    'heading-6': textStyle('base', 'semibold', 'snug', 'normal'),
+    body: textStyle('base', 'normal', 'normal', 'normal'),
+    'body-sm': textStyle('sm', 'normal', 'normal', 'normal'),
+    label: textStyle('sm', 'medium', 'normal', 'normal'),
+    caption: textStyle('xs', 'normal', 'normal', 'normal'),
   },
   spaces: {
     0: '0rem',
