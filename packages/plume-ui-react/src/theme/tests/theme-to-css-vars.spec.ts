@@ -61,6 +61,7 @@ describe('themeToCssVars', () => {
 
   it('emits motion, focus ring, border, control and opacity tokens', () => {
     const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-container-lg']).toBe(defaultTheme.containers.lg)
     expect(vars['--plume-duration-normal']).toBe(defaultTheme.motion.durations.normal)
     expect(vars['--plume-easing-in-out']).toBe(defaultTheme.motion.easings.inOut)
     expect(vars['--plume-focus-ring-width']).toBe(defaultTheme.focusRing.width)

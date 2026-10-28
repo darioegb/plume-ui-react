@@ -94,6 +94,7 @@ import 'plume-ui-react/css/input.css'
 | EmptyState | [EmptyState](https://darioegb.github.io/plume-ui-react/?path=/docs/components-emptystate--docs) |
 | Field | [Field](https://darioegb.github.io/plume-ui-react/?path=/docs/components-field--docs) |
 | FileUpload | [FileUpload](https://darioegb.github.io/plume-ui-react/?path=/docs/components-fileupload--docs) |
+| Heading | [Heading](https://darioegb.github.io/plume-ui-react/?path=/docs/components-heading--docs) |
 | Icon | [Icon](https://darioegb.github.io/plume-ui-react/?path=/docs/components-icon--docs) |
 | Input | [Input](https://darioegb.github.io/plume-ui-react/?path=/docs/components-input--docs) |
 | List | [List](https://darioegb.github.io/plume-ui-react/?path=/docs/components-list--docs) |
@@ -115,6 +116,7 @@ import 'plume-ui-react/css/input.css'
 | Stepper | [Stepper](https://darioegb.github.io/plume-ui-react/?path=/docs/components-stepper--docs) |
 | Table | [Table](https://darioegb.github.io/plume-ui-react/?path=/docs/components-table--docs) |
 | Tabs | [Tabs](https://darioegb.github.io/plume-ui-react/?path=/docs/components-tabs--docs) |
+| Text | [Text](https://darioegb.github.io/plume-ui-react/?path=/docs/components-text--docs) |
 | Textarea | [Textarea](https://darioegb.github.io/plume-ui-react/?path=/docs/components-textarea--docs) |
 | TimePicker | [TimePicker](https://darioegb.github.io/plume-ui-react/?path=/docs/components-timepicker--docs) |
 | Toast | [Toast](https://darioegb.github.io/plume-ui-react/?path=/docs/components-toast--docs) |

@@ -86,7 +86,7 @@ const TEXT_STYLES = [
 
 const textStyles = Object.fromEntries(
   TEXT_STYLES.map((name) => [
-    `text-${name}`,
+    name,
     [
       `var(--plume-text-${name}-size)`,
       {
@@ -134,6 +134,13 @@ const borderWidth = {
   thin: 'var(--plume-border-width-thin)',
   medium: 'var(--plume-border-width-medium)',
   thick: 'var(--plume-border-width-thick)',
+}
+
+const maxWidth = {
+  'container-sm': 'var(--plume-container-sm)',
+  'container-md': 'var(--plume-container-md)',
+  'container-lg': 'var(--plume-container-lg)',
+  'container-xl': 'var(--plume-container-xl)',
 }
 
 const controlHeight = {
@@ -211,6 +218,7 @@ const config: Config = {
       borderWidth,
       height: controlHeight,
       minHeight: controlHeight,
+      maxWidth,
       opacity: { disabled: 'var(--plume-opacity-disabled)' },
       boxShadow,
       zIndex,

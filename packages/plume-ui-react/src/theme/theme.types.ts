@@ -174,6 +174,13 @@ export interface Breakpoints {
   '2xl': string
 }
 
+export interface Containers {
+  sm: string
+  md: string
+  lg: string
+  xl: string
+}
+
 export interface Motion {
   durations: { fast: string; normal: string; slow: string }
   easings: { standard: string; out: string; inOut: string }
@@ -222,6 +229,7 @@ export interface Theme {
   zIndices: ZIndices
   shadows: Shadows
   breakpoints: Breakpoints // Read in JS: a var() does not work inside @media
+  containers: Containers // Max width of the content of a page
   motion: Motion
   focusRing: FocusRing
   borderWidths: BorderWidths

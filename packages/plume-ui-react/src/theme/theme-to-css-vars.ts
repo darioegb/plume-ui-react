@@ -118,6 +118,7 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   flatten(`${PREFIX}-radius`, theme.radii, vars)
   flatten(`${PREFIX}-z`, theme.zIndices as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-shadow`, theme.shadows as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-container`, theme.containers as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-duration`, theme.motion.durations, vars)
   flatten(`${PREFIX}-easing`, toKebabKeys(theme.motion.easings), vars)
   flatten(`${PREFIX}-focus-ring`, theme.focusRing as unknown as TokenRecord, vars)

@@ -334,6 +334,12 @@ export const defaultTheme: Theme = {
     xl: '80rem',
     '2xl': '96rem',
   },
+  containers: {
+    sm: '40rem',
+    md: '48rem',
+    lg: '64rem',
+    xl: '80rem',
+  },
   motion: {
     durations: {
       fast: '0.15s',

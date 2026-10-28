@@ -1,0 +1,42 @@
+.text {
+  font-family: var(--plume-font-family);
+  margin: 0;
+}
+
+.body {
+  font-size: var(--plume-text-body-size);
+  font-weight: var(--plume-text-body-weight);
+  letter-spacing: var(--plume-text-body-letter-spacing);
+  line-height: var(--plume-text-body-line-height);
+}
+
+.bodySm {
+  font-size: var(--plume-text-body-sm-size);
+  font-weight: var(--plume-text-body-sm-weight);
+  letter-spacing: var(--plume-text-body-sm-letter-spacing);
+  line-height: var(--plume-text-body-sm-line-height);
+}
+
+.label {
+  font-size: var(--plume-text-label-size);
+  font-weight: var(--plume-text-label-weight);
+  letter-spacing: var(--plume-text-label-letter-spacing);
+  line-height: var(--plume-text-label-line-height);
+}
+
+.caption {
+  font-size: var(--plume-text-caption-size);
+  font-weight: var(--plume-text-caption-weight);
+  letter-spacing: var(--plume-text-caption-letter-spacing);
+  line-height: var(--plume-text-caption-line-height);
+}
+
+.muted {
+  color: var(--plume-muted);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

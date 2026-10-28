@@ -63,9 +63,10 @@
 }
 
 .header {
-  font-size: var(--plume-font-size-lg);
-  font-weight: var(--plume-font-weight-semibold);
-  line-height: var(--plume-line-height-snug);
+  font-size: var(--plume-text-heading-5-size);
+  font-weight: var(--plume-text-heading-5-weight);
+  letter-spacing: var(--plume-text-heading-5-letter-spacing);
+  line-height: var(--plume-text-heading-5-line-height);
   margin: 0;
   padding: var(--plume-space-5) var(--plume-space-12) var(--plume-space-3) var(--plume-space-6);
 }
