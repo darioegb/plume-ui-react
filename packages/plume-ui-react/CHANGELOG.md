@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.38.0
+
+### Minor Changes
+
+- [#220](https://github.com/darioegb/plume-ui-react/pull/220) [`35c9dd8d38ec46fd07d6a0cea8259210571a3a72`](https://github.com/darioegb/plume-ui-react/commit/35c9dd8d38ec46fd07d6a0cea8259210571a3a72) Thanks [@darioegb](https://github.com/darioegb)! - `Paginator` always stays on one line and decides by itself how many pages to show: the current one, one on each side and the first and the last, and fewer when the row has no room (on a phone, next to the page size, in a narrow container). The summary is cut with an ellipsis before the row breaks. The `siblingCount` and `boundaryCount` props are removed; if you passed them, remove them.
+
 ## 0.37.1
 
 ### Patch Changes
