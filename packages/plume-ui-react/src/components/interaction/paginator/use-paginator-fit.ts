@@ -29,13 +29,12 @@ const gapOf = (element: Element): number =>
  */
 const roomForEntries = (root: HTMLElement): number | undefined => {
   const list = root.querySelector('[data-plume-paginator-list]')
-  const items = Array.from(list?.children ?? []).filter((item) =>
-    item.hasAttribute('data-plume-paginator-item'),
-  )
+  if (!list) return undefined
+  const items = Array.from(list.querySelectorAll(':scope > [data-plume-paginator-item]'))
   const fixed = items.filter(
     (item) => !item.querySelector('[data-plume-paginator-page], [data-plume-paginator-ellipsis]'),
   ).length
-  if (!list || items.length === fixed || root.clientWidth === 0) return undefined
+  if (items.length === fixed || root.clientWidth === 0) return undefined
 
   const listGap = gapOf(list)
   const unit = items.reduce((sum, item) => sum + width(item), 0) / items.length + listGap
