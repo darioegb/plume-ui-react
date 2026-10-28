@@ -76,14 +76,13 @@ function Styled({
  * components, so they share its sizes, shapes and colors.
  *
  * Pass the **total** of items and the **pageSize**; the Paginator works the number of pages out. When there are
- * many pages only some are shown, and the rest are folded behind an ellipsis: the
- * **siblingCount** pages around the current one and the **boundaryCount** pages at each end. The list always has
- * the same number of items, so the buttons don't move while the user pages. It renders nothing without a **total**.
+ * many pages only some are shown, and the rest are folded behind an ellipsis: the current one, one on each side
+ * and the first and the last. The list always has the same number of items, so the buttons don't move while the user
+ * pages. It renders nothing without a **total**.
  *
- * The row always stays on one line: **siblingCount** and **boundaryCount** are the most pages it shows, and when the
- * width left (after the page size or any other part next to the list) is not enough, it shows fewer, down to just
- * the current page, instead of wrapping. It measures the buttons, so it adapts to a narrow phone, a sidebar or a
- * resized window.
+ * The row always stays on one line, and there is nothing to configure: when the width left (after the page size or any
+ * other part next to the list) is not enough for those pages, it shows fewer, down to just the current page, instead of
+ * wrapping. It measures the buttons, so it adapts to a narrow phone, a sidebar or a resized window.
  *
  * It keeps the page itself, or follows **page** when you control it. It doesn't load anything: use
  * **onPageChange** to fetch the page, for example from a `Table`.
@@ -119,8 +118,6 @@ export default {
     page: { control: false },
     defaultPage: { control: 'number' },
     onPageChange: { control: false },
-    siblingCount: { control: 'number' },
-    boundaryCount: { control: 'number' },
     showEdges: { control: 'boolean' },
     disabled: { control: 'boolean' },
     colorScheme: { control: 'select', options: colorSchemes },
@@ -235,21 +232,17 @@ export const Shapes: Story = {
 }
 
 /**
- * With many pages only some are shown: the **siblingCount** pages around the current one and the
- * **boundaryCount** pages at each end, and the rest is folded behind an ellipsis. The number of items doesn't change
- * from page to page, so the buttons stay where they are.
+ * With many pages only some are shown: the current one, one on each side and the first and the last, and the rest is
+ * folded behind an ellipsis. The number of items doesn't change from page to page, so the buttons stay where they are.
+ * In a narrow container it shows fewer, to stay on one line.
  */
 export const ManyPages: Story = {
   render: () => (
     <div style={stack('1.5rem')}>
       <Paginator aria-label="Default" total={500} defaultPage={25} />
-      <Paginator aria-label="Two siblings" total={500} defaultPage={25} siblingCount={2} />
-      <Paginator
-        aria-label="Two siblings and boundaries"
-        boundaryCount={2}
-        total={500}
-        defaultPage={25}
-      />
+      <div style={{ inlineSize: '12rem' }}>
+        <Paginator aria-label="Narrow" total={500} defaultPage={25} />
+      </div>
     </div>
   ),
 }

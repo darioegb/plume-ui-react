@@ -79,21 +79,6 @@ describe('Paginator component', () => {
         .forEach((node) => expect(node).toHaveAttribute('aria-hidden', 'true'))
     })
 
-    it('shows more siblings and boundaries on request', () => {
-      render(<Paginator boundaryCount={2} total={20} pageSize={1} defaultPage={10} siblingCount={2} />)
-      expect(pageButtons().map((button) => button.textContent)).toEqual([
-        '1',
-        '2',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-        '19',
-        '20',
-      ])
-    })
-
     it('adds the first and last buttons with showEdges', () => {
       render(<Paginator total={5} pageSize={1} showEdges />)
       expect(screen.getByRole('button', { name: 'First page' })).toBeInTheDocument()

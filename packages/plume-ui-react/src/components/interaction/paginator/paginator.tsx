@@ -15,13 +15,6 @@ import { usePaginatorFit } from './use-paginator-fit'
 
 export interface PaginatorOwnProps {
   /**
-   * How many pages are always shown at the start and at the end. It is the most it shows: when the
-   * row has no room, the Paginator shows fewer so that it stays on one line.
-   *
-   * @default 1
-   */
-  boundaryCount?: number
-  /**
    * Color scheme from the theme palette, including custom schemes added to it. It colors the
    * current page; the other buttons are neutral.
    *
@@ -85,13 +78,6 @@ export interface PaginatorOwnProps {
    */
   showEdges?: boolean
   /**
-   * How many pages are shown on each side of the current one. It is the most it shows: when the
-   * row has no room, the Paginator shows fewer so that it stays on one line.
-   *
-   * @default 1
-   */
-  siblingCount?: number
-  /**
    * Size of the buttons.
    *
    * @default 'md'
@@ -151,7 +137,6 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     {
       'aria-label': ariaLabel,
       'aria-labelledby': labelledBy,
-      boundaryCount = 1,
       children,
       className,
       colorScheme = 'primary',
@@ -165,7 +150,6 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
       pageSize: pageSizeProp,
       shape = 'rounded',
       showEdges = false,
-      siblingCount = 1,
       size = 'md',
       total,
       variant = 'solid',
@@ -188,13 +172,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     const current = clamp(page, 1, Math.max(pages, 1))
     const text = useLabels('paginator', DEFAULT_LABELS, labels)
     const [root, setRoot] = useState<HTMLElement | null>(null)
-    const fit = useMemo(() => ({ boundaryCount, siblingCount }), [boundaryCount, siblingCount])
-    const shown = usePaginatorFit({
-      ...fit,
-      current,
-      pages: Math.max(pages, 1),
-      root,
-    })
+    const shown = usePaginatorFit({ current, pages: Math.max(pages, 1), root })
     const entries = useMemo(
       () =>
         pages < 1
