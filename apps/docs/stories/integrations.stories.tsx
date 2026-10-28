@@ -11,11 +11,29 @@ import { Button, Input } from 'plume-ui-react'
  * Wrap your app in `<ThemeProvider>` and import the stylesheet once. These examples show where the provider goes in each setup:
  * <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite" target="_blank" rel="noopener noreferrer">Vite</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a>. The <a href="?path=/docs/guides-examples--docs">Examples</a> page has the live demo and the StackBlitz project.
  *
- * ### Tailwind CSS
+ * ### Tailwind CSS v4
  *
  * Components work as-is next to Tailwind, and `variant="unstyled"` lets you style
- * them with utilities. To use Plume tokens as utilities in your own markup, map the
- * CSS variables emitted by `<ThemeProvider>` in your `tailwind.config.ts`:
+ * them with utilities. The theme of Plume for Tailwind v4 is one import, and gives you the
+ * colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`), the text styles (`text-heading-1`,
+ * `text-body`), the radii, shadows, container widths and easings as utilities, plus `z-modal`, `duration-fast`,
+ * `opacity-disabled` and `h-control-md`:
+ *
+ * ```css
+ * @layer theme, base, plume, components, utilities;
+ *
+ * @import 'tailwindcss';
+ * @import 'plume-ui-react/styles.css';
+ * @import 'plume-ui-react/tailwind.css';
+ * ```
+ *
+ * The utilities point to the variables of Plume (`@theme inline`), so they follow the theme and the color mode. The
+ * spacing, the breakpoints (`sm` 40rem … `2xl` 96rem) and the container widths of Tailwind v4 are already the
+ * ones of Plume.
+ *
+ * ### Tailwind CSS v3
+ *
+ * To use Plume tokens as utilities, map the CSS variables of the theme in your `tailwind.config.ts`:
  *
  * ```ts
  * export default {
