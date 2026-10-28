@@ -1,16 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { ThemeProvider, ToastProvider } from 'plume-ui-react'
-import 'plume-ui-react/styles.css'
-import { App } from './App'
-import { theme } from './theme'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router";
+import "plume-ui-react/styles.css";
+import { App } from "./app";
+import { Providers } from "./providers";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultColorMode="light" theme={theme}>
-      <ToastProvider>
+    <Providers>
+      <BrowserRouter>
         <App />
-      </ToastProvider>
-    </ThemeProvider>
+      </BrowserRouter>
+    </Providers>
   </StrictMode>,
-)
+);
