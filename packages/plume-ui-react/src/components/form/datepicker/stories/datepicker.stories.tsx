@@ -1,5 +1,5 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ReactElement } from 'react'
 import { useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import {
@@ -21,11 +21,25 @@ import {
   DatePickerView,
 } from '..'
 import { InputControl, InputElement } from '../../input'
-import type { DateRange } from '../datepicker'
+import type { DatePickerProps, DateRange } from '../datepicker'
 
 const defaultDateRangeValue = { startDate: null, endDate: null }
 const colorSchemes = Object.keys(defaultTheme.colors)
 const toDate = (value?: Date): Date | undefined => (value === undefined ? undefined : new Date(value))
+
+const ControlledDatePicker = (props: Partial<DatePickerProps>): ReactElement => {
+  const [value, setValue] = useState<DateRange>(defaultDateRangeValue)
+  return <DatePicker {...props} onValueChange={setValue} value={value} />
+}
+
+const StatefulDatePicker = ({ maxDate, minDate, ...args }: DatePickerProps): ReactElement => (
+  <ControlledDatePicker
+    aria-label='Date'
+    {...args}
+    maxDate={toDate(maxDate)}
+    minDate={toDate(minDate)}
+  />
+)
 
 /**
  * DatePicker Component allows users to select dates from a calendar interface.
@@ -94,9 +108,7 @@ export default {
     inputRef: { control: false },
     required: { control: 'boolean' },
   },
-  render: ({ minDate, maxDate, ...args }) => (
-    <DatePicker aria-label='Date' {...args} maxDate={toDate(maxDate)} minDate={toDate(minDate)} />
-  ),
+  render: (args) => <StatefulDatePicker {...args} />,
   args: {
     disabled: false,
     range: false,
@@ -111,21 +123,12 @@ type Story = StoryObj<typeof DatePicker>
  * This is the default DatePicker.
  */
 export const Default: Story = {
-  args: {
-    value: defaultDateRangeValue,
-  },
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker
-  aria-label="Date"
-  colorScheme="primary"
-  onValueChange={() => {}}
-  value={{
-    endDate: null,
-    startDate: null
-  }}
-/>`,
+        code: `const [value, setValue] = useState<DateRange>({ startDate: null, endDate: null })
+
+<DatePicker aria-label="Date" onValueChange={setValue} value={value} />`,
       },
     },
   },
@@ -366,7 +369,6 @@ export const Colors: Story = {
  */
 export const RangeSelection: Story = {
   args: {
-    ...Default.args,
     range: true,
   },
 }
@@ -376,7 +378,6 @@ export const RangeSelection: Story = {
  */
 export const WithMinMaxDates: Story = {
   args: {
-    ...Default.args,
     minDate: new Date(),
     maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15),
   },
@@ -387,7 +388,6 @@ export const WithMinMaxDates: Story = {
  */
 export const WithFooterActions: Story = {
   args: {
-    ...Default.args,
     showFooter: true,
   },
   decorators: [(Story) => <div className='pb-[10rem]'>{Story()}</div>],
@@ -400,7 +400,6 @@ export const WithFooterActions: Story = {
  */
 export const CustomConfiguration: Story = {
   args: {
-    ...Default.args,
     showFooter: true,
     locale: 'es',
     labels: {
@@ -449,8 +448,8 @@ export const CustomParts: Story = {
       },
     },
   },
-  render: ({ onValueChange: onChange }) => (
-    <DatePicker locale='en' onValueChange={onChange} showFooter value={defaultDateRangeValue}>
+  render: () => (
+    <ControlledDatePicker locale='en' showFooter>
       <DatePickerInput aria-label='Date' />
       <DatePickerCalendar>
         <DatePickerPages>
@@ -470,7 +469,7 @@ export const CustomParts: Story = {
           <DatePickerCancel>Not now</DatePickerCancel>
         </DatePickerFooter>
       </DatePickerCalendar>
-    </DatePicker>
+    </ControlledDatePicker>
   ),
 }
 
@@ -549,7 +548,6 @@ export const CalendarTheming: Story = {
  */
 export const Disabled: Story = {
   args: {
-    ...Default.args,
     disabled: true,
   },
 }
@@ -560,17 +558,11 @@ export const Disabled: Story = {
  * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
  */
 export const Compound: Story = {
-  render: ({ onValueChange: onChange }) => (
-    <DatePicker
-      locale='en'
-      onValueChange={onChange}
-      size='sm'
-      value={defaultDateRangeValue}
-      variant='filled'
-    >
+  render: () => (
+    <ControlledDatePicker locale='en' size='sm' variant='filled'>
       <DatePickerInput aria-label='Pick a day' placeholder='Pick a day' />
       <DatePickerCalendar />
-    </DatePicker>
+    </ControlledDatePicker>
   ),
 }
 

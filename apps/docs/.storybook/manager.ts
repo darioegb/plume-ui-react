@@ -219,4 +219,6 @@ if (isProd) {
     document.head.appendChild(document.createElement('style')).sheet
   const cssRule = "div[role='main'] div:first-child { box-shadow: none; }"
   styleSheet.insertRule(cssRule, styleSheet.cssRules.length)
+  // Expanding or collapsing the whole tree is only useful to browse stories in the local server.
+  styleSheet.insertRule('.sidebar-subheading-action { display: none !important; }', styleSheet.cssRules.length)
 }

@@ -40,7 +40,7 @@ const meta: Meta<typeof Field> = {
   },
   decorators: [
     (Story, { parameters }) => (
-      <div className={parameters.wide ? 'w-[42rem] max-w-[90vw]' : 'w-72 max-w-full'}>{Story()}</div>
+      <div className={parameters.wide ? 'w-[42rem] max-w-full' : 'w-72 max-w-full'}>{Story()}</div>
     ),
   ],
   argTypes: {

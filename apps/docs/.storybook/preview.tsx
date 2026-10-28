@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../globals.css'
 import DocsTemplate from '../src/docs-template'
 import PageNav from '../src/page-nav'
+import ScrollToTop from '../src/scroll-to-top'
 import { darkTheme, lightTheme } from './theme'
 
 // Mirrors the colorMode toggle onto docs pages.
@@ -32,6 +33,7 @@ const PlumeDocsContainer = ({
     <DocsContainer context={context} theme={colorMode === 'dark' ? darkTheme : lightTheme}>
       {children}
       <PageNav />
+      <ScrollToTop />
     </DocsContainer>
   )
 }
@@ -171,7 +173,7 @@ const preview: Preview = {
           'Theme',
           ['Colors', 'Tokens'],
           'Guides',
-          ['Framework Integration', 'Customizing Styles', 'Forms', 'Internationalization', 'Upgrading to 1.0'],
+          ['Framework Integration', 'Examples', 'Customizing Styles', 'Forms', 'Internationalization', 'Upgrading to 1.0'],
           'Components',
         ],
       },

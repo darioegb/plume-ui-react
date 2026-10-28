@@ -100,6 +100,13 @@ function Shell({
                 : sidebar?.style
             }
           >
+            {compact ? null : (
+              <SidebarToggle
+                className="m-2 ms-auto md:hidden"
+                icon={<Glyph path="M18 6 6 18M6 6l12 12" />}
+                label="Close sidebar"
+              />
+            )}
             {children ?? (
               <SidebarContent aria-label={label}>
                 <Items />

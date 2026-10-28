@@ -62,8 +62,14 @@
     display: none;
   }
 
-  .sidebar-subheading-action {
-    display: none;
+  /* The search box only reacts on focus by default: hint that it is interactive. */
+  #storybook-explorer-searchfield {
+    transition: box-shadow 0.15s ease;
+  }
+
+  #storybook-explorer-searchfield:hover,
+  #storybook-explorer-searchfield:focus {
+    box-shadow: inset 0 0 0 1px #34d399 !important;
   }
 
   #storybook-explorer-menu {

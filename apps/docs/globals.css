@@ -81,6 +81,12 @@ table.docblock-argstable {
   min-width: 9rem;
 }
 
+/* The wrapper scrolls on a phone, so the description keeps a readable width instead of being squeezed. */
+.api-table th:nth-child(4),
+.api-table td:nth-child(4) {
+  min-width: 16rem;
+}
+
 .api-required {
   color: #dc2626;
   margin-inline-start: 0.2em;
@@ -234,4 +240,46 @@ h1.sbdocs-title {
 
 .underline-tabs div[role="tabpanel"] {
   @apply mt-3;
+}
+/* Floating button to go back to the top of a docs page (see src/scroll-to-top.tsx) */
+.plume-scroll-top {
+  align-items: center;
+  animation: plume-scroll-top-in 0.2s ease-out;
+  background: #10b981;
+  border: 0;
+  border-radius: 999px;
+  bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  height: 3rem;
+  inset-inline-end: 1.25rem;
+  justify-content: center;
+  padding: 0;
+  position: fixed;
+  width: 3rem;
+  z-index: 10;
+}
+
+.plume-scroll-top:hover {
+  background: #059669;
+}
+
+.plume-scroll-top:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 3px;
+}
+
+@keyframes plume-scroll-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plume-scroll-top {
+    animation: none;
+  }
 }
