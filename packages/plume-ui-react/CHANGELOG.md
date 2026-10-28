@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.37.0
+
+### Minor Changes
+
+- [#212](https://github.com/darioegb/plume-ui-react/pull/212) [`e601c71ca304e82d81ba3c9bb1bcb98524f7189c`](https://github.com/darioegb/plume-ui-react/commit/e601c71ca304e82d81ba3c9bb1bcb98524f7189c) Thanks [@darioegb](https://github.com/darioegb)! - `FileUpload` shows an upload icon in its default dropzone, and the new `FileUploadIcon` part lets you replace it. `Carousel` gains `orientation="vertical"` and `controls="inline"`, and `CarouselDots` gains `appearance` (`dots`, `bars`, `numbers` and `thumbnails`), so the indicators and the layout can change, not only the buttons.
+
 ## 0.36.0
 
 ### Minor Changes
