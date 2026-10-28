@@ -71,3 +71,24 @@
   min-width: 5rem;
   width: auto;
 }
+
+@media (width < 30rem) {
+  .paginator {
+    column-gap: var(--plume-space-2);
+  }
+
+  .list {
+    gap: 0;
+  }
+
+  .page,
+  .edge,
+  .ellipsis {
+    min-inline-size: calc(var(--paginator-box) * 0.7);
+  }
+
+  .page,
+  .edge {
+    padding-inline: var(--plume-space-1);
+  }
+}

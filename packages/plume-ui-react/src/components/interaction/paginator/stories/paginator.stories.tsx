@@ -270,7 +270,7 @@ function CompactExample(props: Readonly<PaginatorProps>): React.ReactNode {
       >
         <PaginatorPageSize options={[10, 25, 50]} />
         <PaginatorSummary />
-        <PaginatorList>
+        <PaginatorList style={{ marginInlineStart: 'auto' }}>
           <PaginatorItem>
             <PaginatorPrevious />
           </PaginatorItem>
@@ -290,7 +290,7 @@ function CompactExample(props: Readonly<PaginatorProps>): React.ReactNode {
  * `PaginatorList` with only `PaginatorPrevious` and `PaginatorNext` moves between pages. `total` feeds the summary;
  * when the size changes the page changes too, so the first item of the old page stays in view. Their texts are
  * `labels.pageSize` and `labels.summary`. The parts sit in source order, so reorder them or push one aside with a
- * `marginInlineStart: 'auto'` style to lay the toolbar out your way.
+ * `marginInlineStart: 'auto'` style to lay the toolbar out your way, as here with the buttons.
  */
 export const Compact: Story = {
   parameters: {
@@ -308,7 +308,7 @@ export const Compact: Story = {
     >
       <PaginatorPageSize options={[10, 25, 50]} />
       <PaginatorSummary />
-      <PaginatorList>
+      <PaginatorList style={{ marginInlineStart: 'auto' }}>
         <PaginatorItem>
           <PaginatorPrevious />
         </PaginatorItem>
