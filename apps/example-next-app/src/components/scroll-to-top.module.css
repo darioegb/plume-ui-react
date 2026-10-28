@@ -1,0 +1,24 @@
+.button {
+  animation: appear 0.2s ease-out;
+  bottom: 1.25rem;
+  box-shadow: var(--plume-shadow-lg, 0 4px 12px rgb(0 0 0 / 0.25));
+  height: 3rem;
+  inset-inline-end: 1.25rem;
+  padding: 0;
+  position: fixed;
+  width: 3rem;
+  z-index: 10;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    animation: none;
+  }
+}

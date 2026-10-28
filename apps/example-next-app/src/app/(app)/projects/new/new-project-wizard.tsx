@@ -240,7 +240,7 @@ export function NewProjectWizard({
               >
                 Back
               </Button>
-              <Button busy={pending} busyText="Creating…" type="submit">
+              <Button busy={pending} busyText="…" type="submit">
                 {isLast ? 'Create project' : 'Continue'}
               </Button>
             </div>

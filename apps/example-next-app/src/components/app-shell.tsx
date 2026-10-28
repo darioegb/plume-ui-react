@@ -27,6 +27,7 @@ import {
 import { saveColorMode, signOut } from '@/app/actions'
 import { usePreferences } from '@/app/providers'
 import { DashboardIcon, MoonIcon, ProjectsIcon, SettingsIcon, SignOutIcon, SunIcon, TeamIcon } from './icons'
+import { ScrollToTop } from './scroll-to-top'
 import styles from './app-shell.module.css'
 
 const pages = [
@@ -155,6 +156,7 @@ export function AppShell({
           </main>
         </div>
       </div>
+      <ScrollToTop />
     </SidebarProvider>
   )
 }
