@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.40.0
+
+### Minor Changes
+
+- [#225](https://github.com/darioegb/plume-ui-react/pull/225) [`d18a3def7230bd5d95ab997eecfca72f63865239`](https://github.com/darioegb/plume-ui-react/commit/d18a3def7230bd5d95ab997eecfca72f63865239) Thanks [@darioegb](https://github.com/darioegb)! - New `plume-ui-react/tailwind.css`, the theme of Plume for Tailwind CSS v4: `@import 'plume-ui-react/tailwind.css'` gives the colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`), the text styles (`text-heading-1`, `text-body`), the radii, shadows, container widths and easings as utilities, and adds `z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`. They point to the `--plume-*` variables, so they follow the theme and the color mode. With `prefers-reduced-motion: reduce` the duration tokens are 0, so the components and your own `duration-*` utilities stop animating.
+
 ## 0.39.0
 
 ### Minor Changes
