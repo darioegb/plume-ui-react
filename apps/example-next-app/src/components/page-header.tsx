@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Heading, Text } from 'plume-ui-react'
 import styles from './page-header.module.css'
 
 export function PageHeader({
@@ -7,8 +8,10 @@ export function PageHeader({
 }: Readonly<{ description: string; title: string }>): ReactNode {
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>{title}</h1>
-      <p className={styles.description}>{description}</p>
+      <Heading level={1} size={3}>
+        {title}
+      </Heading>
+      <Text muted>{description}</Text>
     </header>
   )
 }

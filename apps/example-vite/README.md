@@ -28,8 +28,9 @@ to serve `index.html` for client-side routes such as `/projects`.
   the demo data. Changes are local to the browser and are not shared with Next.js.
 - A light/dark toggle and brand-color menu. Preferences are stored locally; the
   initial color mode follows the system until explicitly changed.
-- `ThemeProvider`, `ToastProvider`, and the bundled
-  `plume-ui-react/styles.css`. `src/theme.ts` defines the brand palettes and a
+- `ThemeProvider`, `ToastProvider`, and only the CSS of the components it uses, one
+  `plume-ui-react/css/<component>.css` import each in `src/main.tsx` (the Next.js
+  example loads the whole `plume-ui-react/styles.css` instead). `src/theme.ts` defines the brand palettes and a
   custom `salmon` color scheme, and `src/plume-ui.d.ts` extends `ColorPalette`
   (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
