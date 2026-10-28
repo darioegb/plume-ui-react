@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.37.1
+
+### Patch Changes
+
+- [#214](https://github.com/darioegb/plume-ui-react/pull/214) [`990952a6672cfc1cce13b2af48c5717aa929f311`](https://github.com/darioegb/plume-ui-react/commit/990952a6672cfc1cce13b2af48c5717aa929f311) Thanks [@darioegb](https://github.com/darioegb)! - `Paginator` uses tighter buttons and gaps below 30rem, so the numbered pages and the compact toolbar fit on one row on a phone instead of wrapping.
+
 ## 0.37.0
 
 ### Minor Changes
