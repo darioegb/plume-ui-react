@@ -36,6 +36,7 @@ export const SearchIcon = (): ReactNode => <Glyph path="M11 19a8 8 0 1 0 0-16 8 
 export const MoreIcon = (): ReactNode => (
   <Glyph path="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2M19 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2M5 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
 )
+export const ArrowUpIcon = (): ReactNode => <Glyph path="M12 19V5M5 12l7-7 7 7" />
 export const CheckIcon = (): ReactNode => <Glyph path="M20 6 9 17l-5-5" />
 export const TrashIcon = (): ReactNode => <Glyph path="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5" />
 export const EyeIcon = (): ReactNode => <Glyph path="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
