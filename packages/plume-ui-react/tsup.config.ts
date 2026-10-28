@@ -76,7 +76,12 @@ function preserveModulesPlugin(): Plugin {
 const moduleEntries = ['src/**/*.{ts,tsx}', '!src/**/tests/**', '!src/**/stories/**']
 
 async function emitStylesheet(): Promise<void> {
-  await fsPromises.rename('dist/index.css', 'dist/styles.css')
+  const css = await fsPromises.readFile('dist/index.css', 'utf8')
+  await fsPromises.writeFile(
+    'dist/styles.css',
+    `@layer base,plume,components,utilities;@layer plume{${css}}`,
+  )
+  await fsPromises.rm('dist/index.css')
 }
 
 export default defineConfig((options) => {

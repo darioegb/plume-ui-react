@@ -514,3 +514,14 @@ The z-index scale has names instead of numbers, and the typo is fixed: `theme.zI
 The `Sidebar` reads `theme.breakpoints` (`sm`, `md` and `lg`) to know when it becomes a panel. The CSS of the
 `Sidebar` and the `Navbar` use `@media` queries, which cannot read a variable, so they keep the default values: change
 those three breakpoints only if you also override the styles.
+
+## The CSS of Plume is in the layer `plume`
+
+`plume-ui-react/styles.css` now puts all its rules in `@layer plume`, after declaring `@layer base, plume, components,
+utilities;`. A `className` or a rule of yours wins over Plume without `variant='unstyled'` and without raising the
+specificity, and Tailwind v4 utilities such as `px-5` win too.
+
+The other side is that CSS with no layer also beats Plume. If you use Bootstrap, `normalize.css` or the preflight of
+Tailwind v3, import it into a layer that comes before `plume` (`@import '...' layer(reset)`, after
+`@layer reset, base, plume, components, utilities;`), or the reset will remove the padding of the buttons and the
+borders of the inputs. See **Customizing styles**.
