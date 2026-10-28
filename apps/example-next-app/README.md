@@ -12,7 +12,8 @@ Sign in with any email and a password of 6 or more characters. The color mode fo
 ## Structure
 
 - `src/app/layout.tsx` — Server Component. Reads the color mode cookie, imports
-  `plume-ui-react/styles.css` and wraps the app in `<Providers>`.
+  `plume-ui-react/styles.css` (the Vite example loads one stylesheet per component
+  instead) and wraps the app in `<Providers>`.
 - `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>` and
   `<ToastProvider>`.
 - `src/app/login` — the sign in page: `Card`, `Field`, `Input` and `Alert`, with a Server
