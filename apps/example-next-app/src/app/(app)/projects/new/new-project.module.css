@@ -31,3 +31,14 @@
   display: flex;
   justify-content: space-between;
 }
+
+.steps {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.step {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}

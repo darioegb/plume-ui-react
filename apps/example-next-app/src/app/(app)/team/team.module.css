@@ -13,6 +13,24 @@
   margin-inline-start: auto;
 }
 
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (width < 40rem) {
+  .search,
+  .invite {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .invite {
+    margin-inline-start: 0;
+  }
+}
+
 .grid {
   display: grid;
   gap: 1rem;

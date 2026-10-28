@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import { Card, CardBody, CardHeader, Skeleton } from 'plume-ui-react'
+import { SkeletonPage } from '@/components/skeleton-page'
 import styles from './dashboard.module.css'
 
 export default function Loading(): ReactNode {
   return (
-    <div aria-busy="true" aria-label="Loading the dashboard" role="status">
-      <Skeleton height={28} width="18rem" />
-      <Skeleton width="14rem" />
-      <section className={styles.metrics} style={{ marginTop: '1.5rem' }}>
+    <SkeletonPage label="Loading the dashboard">
+      <section className={styles.metrics}>
         {[1, 2, 3, 4].map((item) => (
           <Card key={item} variant="outline">
             <CardBody>
@@ -20,7 +19,7 @@ export default function Loading(): ReactNode {
           </Card>
         ))}
       </section>
-      <Card style={{ marginTop: '1.5rem' }} variant="outline">
+      <Card variant="outline">
         <CardHeader>
           <Skeleton width="9rem" />
         </CardHeader>
@@ -32,6 +31,6 @@ export default function Loading(): ReactNode {
           </div>
         </CardBody>
       </Card>
-    </div>
+    </SkeletonPage>
   )
 }
