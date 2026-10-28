@@ -1,0 +1,46 @@
+{/* examples.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Guides/Examples' />
+
+# Examples
+
+The stories show each component on its own. These two apps show them working together in a real project. Both are
+standalone apps that install the **published `plume-ui-react` package** from npm, not the workspace sources, so what you
+see is what your own app gets. Both use a custom theme: a `primary` override and a new `salmon` color scheme, typed with
+module augmentation.
+
+## Next.js App Router
+
+A small project dashboard ("Plume Projects") with a simulated sign in, a sidebar, a top bar, a table with sorting and
+filters, a detail drawer, a team directory and settings. It shows that `ThemeProvider` is **SSR/RSC-safe**: the theme is
+serialized to CSS variables and rendered on the server from a cookie, so dark mode has no flash.
+
+- [Open the live demo](https://plume-ui-react.vercel.app) (sign in with any email and a password of 6 or more characters)
+- [Read the source](https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app)
+
+## Vite
+
+A Vite and React app to try the components and edit the code. It shows where `ThemeProvider` and `ToastProvider` go in a
+client-side app, how to import the bundled stylesheet and how to pass a custom theme.
+
+- [Open it in StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite), to edit it in the browser with nothing to install
+- [Read the source](https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite)
+
+## Which one to open
+
+<table>
+  <thead>
+    <tr><th>You want to</th><th>Open</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>See the components in a full application, with a server and a session</td><td>Next.js App Router</td></tr>
+    <tr><td>Check there is no theme flash on the server</td><td>Next.js App Router</td></tr>
+    <tr><td>Change the code and see the result right away</td><td>Vite, in StackBlitz</td></tr>
+    <tr><td>Copy the minimal setup of a client-side app</td><td>Vite</td></tr>
+  </tbody>
+</table>
+
+The [Framework Integration](?path=/docs/guides-framework-integration--docs) guide explains the setup of each one, step
+by step.

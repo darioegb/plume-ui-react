@@ -9,7 +9,7 @@ import { Button, Input } from 'plume-ui-react'
  * ### Vite and Next.js
  *
  * Wrap your app in `<ThemeProvider>` and import the stylesheet once. These examples show where the provider goes in each setup:
- * <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite" target="_blank" rel="noopener noreferrer">Vite</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a>.
+ * <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite" target="_blank" rel="noopener noreferrer">Vite</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a>. The <a href="?path=/docs/guides-examples--docs">Examples</a> page has the live demo and the StackBlitz project.
  *
  * ### Tailwind CSS
  *
