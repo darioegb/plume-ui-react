@@ -89,9 +89,17 @@
   border: 2px dashed var(--plume-border-strong);
   border-radius: var(--plume-radius-4);
   color: var(--plume-muted);
+  flex-direction: column;
+  gap: var(--plume-space-2);
   justify-content: center;
   padding: var(--fileupload-padding);
   text-align: center;
+}
+
+.icon {
+  display: inline-flex;
+  font-size: 2em;
+  line-height: 1;
 }
 
 .bordered .dropzone {

@@ -106,6 +106,7 @@ describe('plume-ui-react', () => {
       'FileUploadDropzone',
       'FileUploadError',
       'FileUploadErrors',
+      'FileUploadIcon',
       'FileUploadInput',
       'FileUploadItem',
       'FileUploadList',
