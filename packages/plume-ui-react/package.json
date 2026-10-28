@@ -18,6 +18,7 @@
     },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
+    "./tailwind.css": "./dist/tailwind.css",
     "./css/*.css": "./dist/css/*.css",
     "./package.json": "./package.json"
   },
@@ -33,7 +34,7 @@
     "dev": "tsup --watch",
     "lint": "eslint src/ && stylelint \"src/**/*.module.css\" && node scripts/check-story-snippets.mjs",
     "lint:fix": "eslint src/ --fix",
-    "check:package": "publint && attw --pack . --profile node16 --exclude-entrypoints styles.css tokens.css",
+    "check:package": "publint && attw --pack . --profile node16 --exclude-entrypoints styles.css tokens.css tailwind.css",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

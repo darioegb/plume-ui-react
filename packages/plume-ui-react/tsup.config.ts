@@ -6,6 +6,7 @@ import { defineConfig, type Options } from 'tsup'
 import postcss from 'postcss'
 import { buildCssUnits } from './scripts/component-css'
 import { breakpoints } from './scripts/postcss-breakpoints'
+import { buildTailwindCss } from './scripts/tailwind-css'
 import { buildTokensCss } from './scripts/tokens-css'
 import postcssModules from 'postcss-modules'
 
@@ -83,6 +84,7 @@ const moduleEntries = ['src/**/*.{ts,tsx}', '!src/**/tests/**', '!src/**/stories
 async function emitStylesheet(): Promise<void> {
   const css = await fsPromises.readFile('dist/index.css', 'utf8')
   const tokens = buildTokensCss()
+  await fsPromises.writeFile('dist/tailwind.css', buildTailwindCss())
   await fsPromises.writeFile('dist/tokens.css', `@layer base,plume,components,utilities;@layer plume{${tokens}}`)
   await fsPromises.writeFile(
     'dist/styles.css',
