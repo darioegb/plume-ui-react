@@ -111,7 +111,7 @@
 
 .invalid:not(:checked) {
   outline: var(--plume-focus-ring-width) solid var(--toggle-text);
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .toggle:disabled {

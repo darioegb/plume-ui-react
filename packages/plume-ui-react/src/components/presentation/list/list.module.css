@@ -101,7 +101,7 @@
 
 .list .button:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--list-text);
-  outline-offset: -2px;
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .list .selected {

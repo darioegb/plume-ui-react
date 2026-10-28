@@ -277,7 +277,7 @@
 
 .revealButton:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--input-color);
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .revealButton:disabled {

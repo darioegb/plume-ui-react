@@ -359,7 +359,7 @@
 .item:focus-visible,
 .toggle:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--sidebar-text, currentcolor);
-  outline-offset: -2px;
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .toggle {

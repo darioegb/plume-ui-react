@@ -71,7 +71,7 @@
 
 .remove:focus-visible {
   outline: var(--plume-focus-ring-width) solid currentcolor;
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .remove:disabled {

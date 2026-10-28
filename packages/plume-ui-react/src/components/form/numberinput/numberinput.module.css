@@ -117,7 +117,7 @@
 
 .stepper:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--numberinput-color);
-  outline-offset: -2px;
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .stepper:disabled {

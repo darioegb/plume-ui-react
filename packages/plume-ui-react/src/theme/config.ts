@@ -348,7 +348,7 @@ export const defaultTheme: Theme = {
   },
   focusRing: {
     width: '2px',
-    offset: '2px',
+    offset: '1px',
     color: 'var(--plume-color-primary-text)',
   },
   borderWidths: {

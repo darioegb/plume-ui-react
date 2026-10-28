@@ -109,7 +109,7 @@
 .month:focus-visible,
 .monthYearSelectors button:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--datepicker-scheme);
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .monthYearSelectors {
@@ -260,12 +260,12 @@ button.footerButtonApply {
 
   .rangeItem {
     outline: 1px dashed Highlight;
-    outline-offset: -2px;
+    outline-offset: calc(var(--plume-focus-ring-width) * -1);
   }
 
   .today {
     outline: 1px solid CanvasText;
-    outline-offset: -2px;
+    outline-offset: calc(var(--plume-focus-ring-width) * -1);
   }
 
   .day:focus-visible,

@@ -78,7 +78,7 @@
 
 .body:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
-  outline-offset: -2px;
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .footer {

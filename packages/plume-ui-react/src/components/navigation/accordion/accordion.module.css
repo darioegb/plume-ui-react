@@ -92,7 +92,7 @@
 
 .trigger:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--accordion-text);
-  outline-offset: -2px;
+  outline-offset: calc(var(--plume-focus-ring-width) * -1);
 }
 
 .trigger:disabled {

@@ -197,7 +197,7 @@
 
 .clear:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--select-color);
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .placeholder {
@@ -280,7 +280,7 @@
 
 .searchInput:focus {
   outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
-  outline-offset: 1px;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .list {
@@ -366,7 +366,7 @@
 @media (forced-colors: active) {
   .option[data-active] {
     outline: var(--plume-focus-ring-width) solid Highlight;
-    outline-offset: -2px;
+    outline-offset: calc(var(--plume-focus-ring-width) * -1);
   }
 
   .panel {
