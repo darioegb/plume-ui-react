@@ -141,6 +141,9 @@ const maxWidth = {
   'container-md': 'var(--plume-container-md)',
   'container-lg': 'var(--plume-container-lg)',
   'container-xl': 'var(--plume-container-xl)',
+  'dialog-sm': 'var(--plume-dialog-width-sm)',
+  'dialog-md': 'var(--plume-dialog-width-md)',
+  'dialog-lg': 'var(--plume-dialog-width-lg)',
 }
 
 const controlHeight = {

@@ -143,6 +143,20 @@ The widths a page content stops growing at.
   ))}
 </ul>
 
+## Dialog widths
+
+`--plume-dialog-width-sm`, `-md` and `-lg` · Tailwind `max-w-dialog-*`
+
+The max width of a `Modal` for each `size`. They are not the containers: a dialog is narrower than a page.
+
+<ul>
+  {Object.entries(defaultTheme.dialogWidths).map(([key, value]) => (
+    <li key={key}>
+      <code>dialogWidth.{key}</code> → {value}
+    </li>
+  ))}
+</ul>
+
 ## Motion
 
 `--plume-duration-*`, `--plume-easing-*` · Tailwind `duration-*`, `ease-*`

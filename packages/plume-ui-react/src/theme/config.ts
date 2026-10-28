@@ -340,6 +340,11 @@ export const defaultTheme: Theme = {
     lg: '64rem',
     xl: '80rem',
   },
+  dialogWidths: {
+    sm: '24rem',
+    md: '32rem',
+    lg: '48rem',
+  },
   motion: {
     durations: {
       fast: '0.15s',

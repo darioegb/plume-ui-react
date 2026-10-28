@@ -181,6 +181,12 @@ export interface Containers {
   xl: string
 }
 
+export interface DialogWidths {
+  sm: string
+  md: string
+  lg: string
+}
+
 export interface Motion {
   durations: { fast: string; normal: string; slow: string }
   easings: { standard: string; out: string; inOut: string }
@@ -230,6 +236,7 @@ export interface Theme {
   shadows: Shadows
   breakpoints: Breakpoints // Read in JS: a var() does not work inside @media
   containers: Containers // Max width of the content of a page
+  dialogWidths: DialogWidths // Max width of a Modal
   motion: Motion
   focusRing: FocusRing
   borderWidths: BorderWidths
