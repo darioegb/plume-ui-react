@@ -159,70 +159,59 @@ type Story = StoryObj<typeof Carousel>
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick how the buttons look. `unstyled` drops the Plume styles so you can style them
- * yourself.
+ * Use the **variant** prop to pick how the buttons look: `solid` (the default), `outline`, `ghost` and `overlay`,
+ * which reads over a photo. `unstyled` drops the Plume styles so you can style them yourself.
  */
 export const Variants: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<div className="flex flex-col gap-8">
-  <Carousel aria-label="solid" variant="solid">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="outline" variant="outline">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-surface p-4 text-foreground">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-surface p-4 text-foreground">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="unstyled" variant="unstyled">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <div className="mt-2 flex items-center justify-between">
-      <CarouselPrev
-        className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
-        label="Back"
-      >
-        Back
-      </CarouselPrev>
-      <CarouselDots className="flex gap-2">
-        {() => (
-          <CarouselDot className="size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800" />
-        )}
-      </CarouselDots>
-      <CarouselNext
-        className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
-        label="Next"
-      >
-        Next
-      </CarouselNext>
-    </div>
-  </Carousel>
-</div>`,
+        code: `<Carousel aria-label="Solid" variant="solid">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+<Carousel aria-label="Outline" variant="outline">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+<Carousel aria-label="Ghost" variant="ghost">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+<Carousel aria-label="Overlay" variant="overlay">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>
+<Carousel aria-label="Unstyled" variant="unstyled">
+  <CarouselSlides>{/* slides */}</CarouselSlides>
+  <div className="mt-2 flex items-center justify-between">
+    <CarouselPrev
+      className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+      label="Back"
+    >
+      Back
+    </CarouselPrev>
+    <CarouselDots className="flex gap-2">
+      {() => (
+        <CarouselDot className="size-3 rounded-full bg-gray-300 data-[active]:bg-gray-800" />
+      )}
+    </CarouselDots>
+    <CarouselNext
+      className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+      label="Next"
+    >
+      Next
+    </CarouselNext>
+  </div>
+</Carousel>`,
       },
     },
   },
@@ -793,7 +782,7 @@ export const Translated: Story = {
 /**
  * Every element of the Carousel is a part you can import, and the root holds whatever you put in it. The dots are
  * data-driven, so `CarouselDots` takes a function that gets the position of each dot, or the `CarouselDot` elements
- * themselves. Here the dots show the number of their slide.
+ * themselves. Here the dots use the `numbers` appearance, and each one is named and titled after its slide.
  */
 export const Compound: Story = {
   parameters: {
@@ -810,9 +799,11 @@ export const Compound: Story = {
   </CarouselSlides>
   <CarouselPrev />
   <CarouselNext />
-  <CarouselDots>
+  <CarouselDots appearance="numbers">
     {(position) => (
-      <CarouselDot className="size-6 rounded-full text-xs">{position + 1}</CarouselDot>
+      <CarouselDot aria-label={\`Go to \${titles[position]}\`} title={titles[position]}>
+        {position + 1}
+      </CarouselDot>
     )}
   </CarouselDots>
 </Carousel>`,
@@ -824,19 +815,11 @@ export const Compound: Story = {
       <Panels />
       <CarouselPrev />
       <CarouselNext />
-      <CarouselDots>
+      <CarouselDots appearance="numbers">
         {(position) => (
           <CarouselDot
-            style={{
-              alignItems: 'center',
-              borderRadius: '9999px',
-              color: 'var(--plume-foreground)',
-              display: 'inline-flex',
-              fontSize: '0.75rem',
-              height: '1.5rem',
-              justifyContent: 'center',
-              width: '1.5rem',
-            }}
+            aria-label={`Go to ${slides[position]?.title}`}
+            title={slides[position]?.title}
           >
             {position + 1}
           </CarouselDot>
