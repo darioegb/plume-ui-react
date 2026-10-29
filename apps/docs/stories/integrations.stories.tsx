@@ -25,7 +25,11 @@ import { Button, Input } from 'plume-ui-react'
  * @import 'tailwindcss';
  * @import 'plume-ui-react/styles.css';
  * @import 'plume-ui-react/tailwind.css';
+ *
+ * @custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
  * ```
+ *
+ * The last line makes `dark:` follow the color mode of Plume and not the system preference.
  *
  * The utilities point to the variables of Plume (`@theme inline`), so they follow the theme and the color mode. The
  * spacing, the breakpoints (`sm` 40rem … `2xl` 96rem) and the container widths of Tailwind v4 are already the
@@ -101,8 +105,8 @@ const badges = [
 ]
 
 /**
- * These elements use Tailwind utilities backed by Plume CSS variables, through the
- * preset this Storybook uses internally. They follow the theme and dark mode toggle.
+ * These elements use Tailwind utilities backed by Plume CSS variables, through the Tailwind theme of Plume
+ * (`plume-ui-react/tailwind.css`), the same one this Storybook uses. They follow the theme and dark mode toggle.
  */
 export const TailwindPreset: Story = {
   render: () => (

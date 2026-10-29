@@ -304,7 +304,7 @@ export const Tailwind: Story = {
         code: `<Popover variant="unstyled">
   <PopoverTrigger>
     <Button
-      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
       label="Open popover"
       variant="unstyled"
     />
@@ -326,7 +326,7 @@ export const Tailwind: Story = {
     <Popover variant="unstyled">
       <PopoverTrigger>
         <Button
-          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
           label="Open popover"
           variant="unstyled"
         />

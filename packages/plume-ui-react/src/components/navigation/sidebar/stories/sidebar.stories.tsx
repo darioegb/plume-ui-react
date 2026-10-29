@@ -83,7 +83,7 @@ function Shell({
       <div className="flex flex-col gap-2" style={{ width: '100%' }}>
         {caption ? <p className="text-sm font-semibold">{caption}</p> : null}
         <div
-          className="flex overflow-hidden rounded border border-gray-300"
+          className="flex overflow-hidden rounded-sm border border-gray-300"
           style={{
             height: compact ? undefined : '20rem',
             minHeight: compact ? '13rem' : undefined,
@@ -514,7 +514,7 @@ export const Right: Story = {
   render: () => (
     <SidebarProvider>
       <div
-        className="flex overflow-hidden rounded border border-gray-300"
+        className="flex overflow-hidden rounded-sm border border-gray-300"
         style={{ height: '20rem', width: '100%' }}
       >
         <div className="flex flex-1 flex-col gap-2 p-4" style={{ minWidth: 0 }}>
@@ -652,7 +652,7 @@ export const Compound: Story = {
       source: {
         code: `<SidebarProvider>
   <Sidebar aria-label="Application">
-    <SidebarBackdrop className="backdrop-blur-sm" />
+    <SidebarBackdrop className="backdrop-blur-xs" />
     <SidebarContent aria-label="Pages">
       <SidebarItem active href="/">
         <SidebarItemLabel>Home</SidebarItemLabel>
@@ -671,7 +671,7 @@ export const Compound: Story = {
   },
   render: () => (
     <Shell>
-      <SidebarBackdrop className="backdrop-blur-sm" />
+      <SidebarBackdrop className="backdrop-blur-xs" />
       <SidebarContent aria-label="Pages">
         {pages.slice(0, 3).map(({ href, icon, label }, index) => (
           <SidebarItem active={index === 0} href={href} key={label}>
@@ -723,7 +723,7 @@ export const Tailwind: Story = {
       </SidebarContent>
     </Sidebar>
     <main className="flex-1 p-4">
-      <SidebarToggle className="rounded p-1 hover:bg-surface-muted" variant="unstyled" />
+      <SidebarToggle className="rounded-sm p-1 hover:bg-surface-muted" variant="unstyled" />
       <p>The page. Use the button to open or collapse the sidebar.</p>
     </main>
   </div>

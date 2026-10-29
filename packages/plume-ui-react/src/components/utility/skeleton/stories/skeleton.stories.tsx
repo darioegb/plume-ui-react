@@ -60,7 +60,7 @@ export const Variants: Story = {
     <div className="flex flex-col gap-4" style={{ width: '16rem' }}>
       <Skeleton variant="pulse" />
       <Skeleton variant="wave" />
-      <Skeleton className="rounded bg-gray-300" height={16} variant="unstyled" />
+      <Skeleton className="rounded-sm bg-gray-300" height={16} variant="unstyled" />
     </div>
   ),
 }
@@ -145,11 +145,11 @@ export const Tailwind: Story = {
         code: `<div aria-busy="true" className="flex w-72 gap-3 rounded-lg border border-border bg-surface p-4">
   <Skeleton className="animate-pulse rounded-full bg-surface-muted" height={48} variant="unstyled" width={48} />
   <div className="flex flex-1 flex-col gap-2">
-    <Skeleton className="animate-pulse rounded bg-surface-muted" height={16} variant="unstyled" width="60%" />
+    <Skeleton className="animate-pulse rounded-sm bg-surface-muted" height={16} variant="unstyled" width="60%" />
     <Skeleton className="flex flex-col gap-2" variant="unstyled">
-      <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
-      <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
-      <SkeletonLine className="h-3 w-3/5 animate-pulse rounded bg-surface-muted" />
+      <SkeletonLine className="h-3 animate-pulse rounded-sm bg-surface-muted" />
+      <SkeletonLine className="h-3 animate-pulse rounded-sm bg-surface-muted" />
+      <SkeletonLine className="h-3 w-3/5 animate-pulse rounded-sm bg-surface-muted" />
     </Skeleton>
   </div>
 </div>`,
@@ -169,15 +169,15 @@ export const Tailwind: Story = {
       />
       <div className="flex flex-1 flex-col gap-2">
         <Skeleton
-          className="animate-pulse rounded bg-surface-muted"
+          className="animate-pulse rounded-sm bg-surface-muted"
           height={16}
           variant="unstyled"
           width="60%"
         />
         <Skeleton className="flex flex-col gap-2" variant="unstyled">
-          <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
-          <SkeletonLine className="h-3 animate-pulse rounded bg-surface-muted" />
-          <SkeletonLine className="h-3 w-3/5 animate-pulse rounded bg-surface-muted" />
+          <SkeletonLine className="h-3 animate-pulse rounded-sm bg-surface-muted" />
+          <SkeletonLine className="h-3 animate-pulse rounded-sm bg-surface-muted" />
+          <SkeletonLine className="h-3 w-3/5 animate-pulse rounded-sm bg-surface-muted" />
         </Skeleton>
       </div>
     </div>

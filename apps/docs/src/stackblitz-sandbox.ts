@@ -159,7 +159,10 @@ const stylesheetOf = (code: string, name: string): 'bootstrap' | 'tailwind' | nu
   return tokens.some((token) => TAILWIND_TOKEN.test(token)) ? 'tailwind' : null
 }
 
-const TAILWIND_CDN = 'https://cdn.tailwindcss.com/3.4.17'
+const TAILWIND_CDN = 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.3'
+const LAYERS = '@layer theme, base, plume, components, utilities;'
+const DARK_VARIANT =
+  "@custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));"
 const BOOTSTRAP_CSS = 'https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css'
 
 const mainFor = (colorMode: ColorMode): string => `import { Component, StrictMode } from 'react'
@@ -213,11 +216,13 @@ createRoot(document.getElementById('root')!).render(
 const indexHtml = (stylesheet: 'bootstrap' | 'tailwind' | null, colorMode: ColorMode, styles: string): string => {
   const tailwind =
     stylesheet === 'tailwind'
-      ? `    <script src="${TAILWIND_CDN}"></script>
-    <script>
-      tailwind.config = ${JSON.stringify({ ...sandbox.tailwind, corePlugins: { preflight: false } })}
-    </script>
-${styles ? `    <style type="text/tailwindcss">\n${styles}\n    </style>\n` : ''}`
+      ? `    <style>${LAYERS}</style>
+    <script src="${TAILWIND_CDN}"></script>
+    <style type="text/tailwindcss">
+${DARK_VARIANT}
+
+${sandbox.tailwindTheme}${styles ? `\n${styles}\n` : ''}    </style>
+`
       : ''
   return `<!doctype html>
 <html lang="en"${stylesheet === 'bootstrap' ? ` data-bs-theme="${colorMode}"` : ''}>
@@ -235,8 +240,8 @@ ${tailwind}  </head>
 }
 
 const indexCss = (stylesheet: 'bootstrap' | 'tailwind' | null, styles: string): string =>
-  `@layer reset, base, plume, components, utilities;\n${
-    stylesheet ? "@import './reset.css' layer(reset);\n" : ''
+  `${LAYERS}\n${
+    stylesheet === 'bootstrap' ? "@import './reset.css' layer(base);\n" : ''
   }${stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}');\n` : ''}${styles ? `\n${styles}\n` : ''}`
 
 const themeFile = (): string => `import type { DeepPartial, Theme } from 'plume-ui-react'
@@ -279,7 +284,7 @@ export function buildSandbox(
   const styles = stylesOf(code)
   const tailwindStyles = stylesheet === 'tailwind' ? styles : ''
   return {
-    ...(stylesheet ? { 'src/reset.css': sandbox.reset } : {}),
+    ...(stylesheet === 'bootstrap' ? { 'src/reset.css': sandbox.preflight } : {}),
     '.stackblitzrc': JSON.stringify({ installDependencies: true, startCommand: 'npm run dev' }),
     'index.html': indexHtml(stylesheet, colorMode, tailwindStyles),
     'package.json': JSON.stringify(

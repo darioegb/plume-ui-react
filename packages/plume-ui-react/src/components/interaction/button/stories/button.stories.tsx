@@ -407,22 +407,22 @@ export const Tailwind: Story = {
       source: {
         code: `<Button
     label="Primary Button"
-    className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded text-sm"
+    className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded-sm text-sm"
     variant="unstyled"
   />
 <Button
   label="Soft Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded-sm text-sm"
   variant="unstyled"
 />
 <Button
   label="Outline Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded-sm text-sm"
   variant="unstyled"
 />
 <Button
   label="Ghost Button"
-  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded text-sm"
+  className="py-3 px-4 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded-sm text-sm"
   variant="unstyled"
 />
 <Button
@@ -459,22 +459,22 @@ export const Tailwind: Story = {
   render: () => (
     <div className='flex flex-wrap justify-center items-center gap-4'>
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white border border-transparent font-semibold rounded-sm text-sm'
         label='Primary Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 bg-gray-100 text-gray-700 hover:text-white hover:bg-gray-700 border border-transparent font-semibold rounded-sm text-sm'
         label='Soft Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:text-white hover:bg-blue-700 hover:border-blue-700 text-blue-700 dark:text-blue-400 border border-blue-300 font-semibold rounded-sm text-sm'
         label='Outline Button'
         variant='unstyled'
       />
       <Button
-        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded text-sm'
+        className='py-2 px-3 inline-flex justify-center items-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-950 text-blue-700 dark:text-blue-400 border border-transparent font-semibold rounded-sm text-sm'
         label='Ghost Button'
         variant='unstyled'
       />

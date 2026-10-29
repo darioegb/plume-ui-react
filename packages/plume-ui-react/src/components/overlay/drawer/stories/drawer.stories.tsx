@@ -505,7 +505,7 @@ export const Tailwind: Story = {
         code: `<Drawer side="right" variant="unstyled">
   <DrawerTrigger>
     <Button
-      className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
       label="Open drawer"
       variant="unstyled"
     />
@@ -523,7 +523,7 @@ export const Tailwind: Story = {
       <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
         <DrawerClose>
           <Button
-            className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+            className="rounded-sm bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
             label="Apply"
             variant="unstyled"
           />
@@ -539,7 +539,7 @@ export const Tailwind: Story = {
     <Drawer side="right" variant="unstyled">
       <DrawerTrigger>
         <Button
-          className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
           label="Open drawer"
           variant="unstyled"
         />
@@ -557,7 +557,7 @@ export const Tailwind: Story = {
           <DrawerFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
             <DrawerClose>
               <Button
-                className="rounded bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
+                className="rounded-sm bg-blue-700 px-[1rem] py-[0.5rem] text-sm font-semibold text-white hover:bg-blue-800"
                 label="Apply"
                 variant="unstyled"
               />

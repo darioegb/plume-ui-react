@@ -73,11 +73,11 @@ export const Variants: Story = {
       <ProgressBar aria-label="Striped" value={60} variant="striped" />
       <ProgressBar
         aria-label="Unstyled"
-        className="h-2 rounded bg-gray-200"
+        className="h-2 rounded-sm bg-gray-200"
         value={60}
         variant="unstyled"
       >
-        <ProgressBarIndicator className="rounded bg-black" />
+        <ProgressBarIndicator className="rounded-sm bg-black" />
       </ProgressBar>
     </div>
   ),

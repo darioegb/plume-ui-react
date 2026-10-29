@@ -184,7 +184,7 @@ export const Clickable: Story = {
       variant="outline"
     >
       <CardHeader>
-        <a className="outline-none after:absolute after:inset-0 hover:underline" href="#report">
+        <a className="outline-hidden after:absolute after:inset-0 hover:underline" href="#report">
           Weekly report
         </a>
       </CardHeader>
@@ -252,7 +252,7 @@ export const Tailwind: Story = {
   </CardBody>
   <CardFooter className="flex justify-end gap-2 border-t border-border px-4 py-3">
     <Button
-      className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
       label="Choose"
       variant="unstyled"
     />
@@ -272,7 +272,7 @@ export const Tailwind: Story = {
       </CardBody>
       <CardFooter className="flex justify-end gap-2 border-t border-border px-4 py-3">
         <Button
-          className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
           label="Choose"
           variant="unstyled"
         />

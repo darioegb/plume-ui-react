@@ -634,7 +634,7 @@ export const Tailwind: Story = {
         code: `<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
   <DatePickerInput aria-label="Pick a date" placeholder="Pick a date">
     <InputControl>
-      <DatePickerField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      <DatePickerField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       <InputElement position="after">
         <DatePickerTrigger />
       </InputElement>
@@ -660,7 +660,7 @@ export const Tailwind: Story = {
         <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Pick a date' placeholder='Pick a date'>
             <InputControl>
-              <DatePickerField className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
+              <DatePickerField className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
               <InputElement position='after'>
                 <DatePickerTrigger />
               </InputElement>

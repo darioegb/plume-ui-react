@@ -458,7 +458,7 @@ export const Compound: Story = {
 }
 
 /**
- * Some examples of TimePicker with custom classes from Tailwind.
+ * An example of TimePicker with custom classes from Tailwind.
  * Set **variant="unstyled"** so Plume styles don't override the Tailwind classes.
  * The `className` of the `InputField` restyles the input; the popup keeps its structure and follows `colorScheme`.
  */
@@ -469,7 +469,7 @@ export const Tailwind: Story = {
         code: `<TimePicker variant="unstyled" defaultValue="09:30">
   <TimePickerInput aria-label="Time">
     <InputControl>
-      <InputField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      <InputField className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       <InputElement position="after">
         <TimePickerTrigger />
       </InputElement>
@@ -481,22 +481,17 @@ export const Tailwind: Story = {
     },
   },
   render: () => (
-    <div className="flex flex-col gap-4 w-72 max-w-full">
+    <div className="w-72 max-w-full">
       <StyledTimePicker
         defaultValue="09:30"
-        fieldClassName="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-      />
-      <StyledTimePicker
-        defaultValue="15:30"
-        fieldClassName="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
-        hour12
+        fieldClassName="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
       />
     </div>
   ),
 }
 
 /**
- * Some examples of TimePicker with custom classes from Bootstrap.
+ * An example of TimePicker with custom classes from Bootstrap.
  * Set **variant="unstyled"** so Plume styles don't override the Bootstrap classes.
  */
 export const Bootstrap: Story = {
@@ -518,9 +513,8 @@ export const Bootstrap: Story = {
     },
   },
   render: () => (
-    <div className="d-flex flex-column gap-3" style={{ width: '18rem', maxWidth: '100%' }}>
+    <div style={{ width: '18rem', maxWidth: '100%' }}>
       <StyledTimePicker defaultValue="09:30" fieldClassName="form-control" />
-      <StyledTimePicker defaultValue="09:30" fieldClassName="form-control form-control-lg" />
     </div>
   ),
 }

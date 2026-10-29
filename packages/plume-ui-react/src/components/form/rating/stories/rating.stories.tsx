@@ -278,7 +278,7 @@ function ControlledRating(): React.ReactNode {
       <Rating aria-label="Rate this product" onValueChange={setValue} value={value} />
       <p className="text-sm">Score: {value}</p>
       <button
-        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
         onClick={() => setValue(5)}
         type="button"
       >
@@ -339,7 +339,7 @@ export const InAForm: Story = {
       }}
     >
       <Rating aria-label="Score" name="score" />
-      <button className="rounded border border-gray-400 px-3 py-1 text-sm" type="submit">
+      <button className="rounded-sm border border-gray-400 px-3 py-1 text-sm" type="submit">
         Send
       </button>
     </form>

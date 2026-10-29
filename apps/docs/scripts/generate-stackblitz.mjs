@@ -29,22 +29,21 @@ mkdirSync(path.dirname(output), { recursive: true })
 writeFileSync(output, `${JSON.stringify({ files })}\n`)
 const manifest = JSON.parse(files['package.json'])
 const pick = (source, names) => Object.fromEntries(names.map((name) => [name, source[name]]))
-const tailwindPath = path.resolve(here, '../../../packages/tailwind-config/tailwind.config.ts')
-const tailwindModule = { exports: {} }
-new Function('module', 'exports', ts.transpileModule(readFileSync(tailwindPath, 'utf8'), {
-  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-}).outputText)(tailwindModule, tailwindModule.exports)
-const preset = tailwindModule.exports.default
 const docsRequire = createRequire(path.join(here, '../package.json'))
-const tailwindRequire = createRequire(path.resolve(here, '../../../packages/tailwind-config/package.json'))
-const reset = (
-  await docsRequire('postcss')([
-    tailwindRequire('tailwindcss')({ config: path.resolve(here, '../tailwind.config.ts'), content: [{ raw: '' }] }),
-  ]).process(readFileSync(path.resolve(here, '../reset.css'), 'utf8'), { from: undefined })
-).css
+const packageRequire = createRequire(path.join(packageDir, 'package.json'))
+const themeSource = packageRequire('esbuild').buildSync({
+  bundle: true,
+  entryPoints: [path.join(packageDir, 'scripts/tailwind-css.ts')],
+  format: 'cjs',
+  logLevel: 'silent',
+  platform: 'node',
+  write: false,
+}).outputFiles[0].text
+const themeModule = { exports: {} }
+new Function('module', 'exports', themeSource)(themeModule, themeModule.exports)
 const sandbox = {
-  reset,
-  tailwind: { darkMode: preset.darkMode, theme: preset.theme },
+  preflight: readFileSync(docsRequire.resolve('tailwindcss/preflight.css'), 'utf8'),
+  tailwindTheme: themeModule.exports.buildTailwindCss(),
   dependencies: pick(manifest.dependencies, ['plume-ui-react', 'react', 'react-dom']),
   devDependencies: pick(manifest.devDependencies, ['@vitejs/plugin-react', 'vite']),
 }

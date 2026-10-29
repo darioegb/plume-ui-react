@@ -1253,7 +1253,7 @@ export const Compound: Story = {
     </TableHeader>
     <TableBody>
       <TableEmpty>
-        <TableEmptyCell colSpan={2}>Nobody here yet</TableEmptyCell>
+        <TableEmptyCell className="px-8 pb-6 pt-12 text-center" colSpan={2}>Nobody here yet</TableEmptyCell>
       </TableEmpty>
     </TableBody>
   </TableElement>
@@ -1278,7 +1278,9 @@ export const Compound: Story = {
         </TableHeader>
         <TableBody>
           <TableEmpty>
-            <TableEmptyCell colSpan={2}>Nobody here yet</TableEmptyCell>
+            <TableEmptyCell colSpan={2} style={{ padding: '3rem 2rem 1.5rem', textAlign: 'center' }}>
+              Nobody here yet
+            </TableEmptyCell>
           </TableEmpty>
         </TableBody>
       </TableElement>

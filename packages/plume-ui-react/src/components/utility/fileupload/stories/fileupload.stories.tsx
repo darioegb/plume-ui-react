@@ -361,7 +361,7 @@ function ControlledUpload(): React.ReactNode {
     <div style={stack('0.75rem')}>
       <FileUpload aria-label="Attachments" multiple onValueChange={setFiles} value={files} />
       <button
-        className="self-start rounded border border-gray-400 px-2 py-1 text-sm"
+        className="self-start rounded-sm border border-gray-400 px-2 py-1 text-sm"
         disabled={files.length === 0}
         onClick={() => setFiles([])}
         type="button"
@@ -531,7 +531,7 @@ export const Tailwind: Story = {
   <FileUploadDropzone className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
   <FileUploadList className="mt-2">
     {(file) => (
-      <FileUploadItem className="mt-2 flex flex-wrap items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
+      <FileUploadItem className="mt-2 flex flex-wrap items-center gap-2 rounded-sm bg-surface-muted px-3 py-2" file={file}>
         <FileUploadName className="flex-1" />
         <FileUploadSize />
         <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
@@ -563,7 +563,7 @@ export const Tailwind: Story = {
       <FileUploadList className="mt-2">
         {(file) => (
           <FileUploadItem
-            className="mt-2 flex flex-wrap items-center gap-2 rounded bg-surface-muted px-3 py-2"
+            className="mt-2 flex flex-wrap items-center gap-2 rounded-sm bg-surface-muted px-3 py-2"
             file={file}
           >
             <FileUploadName className="flex-1" />

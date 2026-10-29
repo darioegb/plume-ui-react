@@ -396,7 +396,7 @@ function ControlledNavbar(): React.ReactNode {
         <Parts />
       </Navbar>
       <button
-        className="self-start rounded border border-gray-400 px-3 py-1 text-sm"
+        className="self-start rounded-sm border border-gray-400 px-3 py-1 text-sm"
         onClick={() => setOpen(!open)}
         type="button"
       >
@@ -500,11 +500,11 @@ export const Tailwind: Story = {
   variant="unstyled"
 >
   <NavbarBrand className="font-bold" href="/">Plume</NavbarBrand>
-  <NavbarToggle className="rounded p-1 text-2xl hover:bg-surface-muted" />
+  <NavbarToggle className="rounded-sm p-1 text-2xl hover:bg-surface-muted" />
   <NavbarContent className="gap-1 max-md:pt-2">
-    <NavbarItem active className="rounded px-3 py-2 hover:bg-surface-muted data-[active]:bg-primary-solid data-[active]:text-primary-on-solid" href="/">Home</NavbarItem>
-    <NavbarItem className="rounded px-3 py-2 hover:bg-surface-muted" href="/components">Components</NavbarItem>
-    <NavbarItem className="rounded px-3 py-2 hover:bg-surface-muted" href="/docs">Docs</NavbarItem>
+    <NavbarItem active className="rounded-sm px-3 py-2 hover:bg-surface-muted data-[active]:bg-primary-solid data-[active]:text-primary-on-solid" href="/">Home</NavbarItem>
+    <NavbarItem className="rounded-sm px-3 py-2 hover:bg-surface-muted" href="/components">Components</NavbarItem>
+    <NavbarItem className="rounded-sm px-3 py-2 hover:bg-surface-muted" href="/docs">Docs</NavbarItem>
   </NavbarContent>
 </Navbar>`,
       },
@@ -519,19 +519,19 @@ export const Tailwind: Story = {
       <NavbarBrand className="font-bold" href="#home">
         Plume
       </NavbarBrand>
-      <NavbarToggle className="rounded p-1 text-2xl hover:bg-surface-muted" />
+      <NavbarToggle className="rounded-sm p-1 text-2xl hover:bg-surface-muted" />
       <NavbarContent className="gap-1 max-md:pt-2">
         <NavbarItem
           active
-          className="rounded px-3 py-2 hover:bg-surface-muted data-[active]:bg-primary-solid data-[active]:text-primary-on-solid"
+          className="rounded-sm px-3 py-2 hover:bg-surface-muted data-[active]:bg-primary-solid data-[active]:text-primary-on-solid"
           href="#home"
         >
           Home
         </NavbarItem>
-        <NavbarItem className="rounded px-3 py-2 hover:bg-surface-muted" href="#components">
+        <NavbarItem className="rounded-sm px-3 py-2 hover:bg-surface-muted" href="#components">
           Components
         </NavbarItem>
-        <NavbarItem className="rounded px-3 py-2 hover:bg-surface-muted" href="#docs">
+        <NavbarItem className="rounded-sm px-3 py-2 hover:bg-surface-muted" href="#docs">
           Docs
         </NavbarItem>
       </NavbarContent>

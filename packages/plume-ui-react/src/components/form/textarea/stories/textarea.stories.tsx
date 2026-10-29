@@ -155,7 +155,7 @@ export const Variants: Story = {
       <Textarea aria-label="Underline" placeholder="Underline" variant="underline" />
       <Textarea
         aria-label="Unstyled"
-        className="border border-gray-400 rounded p-2"
+        className="border border-gray-400 rounded-sm p-2"
         placeholder="Unstyled"
         variant="unstyled"
       />
@@ -308,12 +308,12 @@ export const Tailwind: Story = {
       source: {
         code: `<div className="flex w-72 max-w-full flex-col gap-4">
   <Textarea
-    className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+    className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200"
     placeholder="Tell us more"
     variant="unstyled"
   />
   <Textarea
-    className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
+    className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-hidden focus:ring-3 focus:ring-emerald-200"
     placeholder="Rounded and fixed"
     rows={4}
     variant="unstyled"
@@ -321,7 +321,7 @@ export const Tailwind: Story = {
   <Textarea maxLength={80} variant="unstyled">
     <TextareaField
       aria-label="With a count"
-      className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+      className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200"
       placeholder="With a count"
     />
     <TextareaCount className="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600" />
@@ -334,12 +334,12 @@ export const Tailwind: Story = {
   render: () => (
     <div className="flex w-72 max-w-full flex-col gap-4">
       <Textarea
-        className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+        className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200"
         placeholder="Tell us more"
         variant="unstyled"
       />
       <Textarea
-        className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-none focus:ring focus:ring-emerald-200"
+        className="block w-full resize-none rounded-2xl border-2 border-emerald-600 bg-transparent px-4 py-3 text-sm focus:outline-hidden focus:ring-3 focus:ring-emerald-200"
         placeholder="Rounded and fixed"
         rows={4}
         variant="unstyled"
@@ -347,7 +347,7 @@ export const Tailwind: Story = {
       <Textarea maxLength={80} variant="unstyled">
         <TextareaField
           aria-label="With a count"
-          className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
+          className="block w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-sm focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200"
           placeholder="With a count"
         />
         <TextareaCount className="mt-1 block text-right text-xs text-gray-600 dark:text-gray-400 data-[limit]:font-semibold data-[limit]:text-red-600" />

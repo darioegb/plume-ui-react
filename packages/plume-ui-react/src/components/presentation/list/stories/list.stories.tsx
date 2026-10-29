@@ -160,7 +160,7 @@ export const Variants: Story = {
       ))}
       <List
         aria-label="unstyled"
-        className="border border-gray-400 rounded divide-y divide-gray-300"
+        className="border border-gray-400 rounded-sm divide-y divide-gray-300"
         style={{ maxWidth: '100%', width: '14rem' }}
         variant="unstyled"
       >

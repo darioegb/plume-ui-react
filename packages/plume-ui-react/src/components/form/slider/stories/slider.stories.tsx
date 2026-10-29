@@ -282,7 +282,7 @@ function ControlledSlider(): React.ReactNode {
       <div className="flex gap-2">
         {[0, 50, 100].map((preset) => (
           <button
-            className="rounded border border-gray-400 px-2 py-1 text-sm"
+            className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
             key={preset}
             onClick={() => setValue(preset)}
             type="button"
@@ -312,7 +312,7 @@ export const Controlled: Story = {
       <div className="flex gap-2">
         {[0, 50, 100].map((preset) => (
           <button
-            className="rounded border border-gray-400 px-2 py-1 text-sm"
+            className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
             key={preset}
             onClick={() => setValue(preset)}
             type="button"

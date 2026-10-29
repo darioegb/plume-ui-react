@@ -267,7 +267,7 @@ export const Variants: Story = {
   <Select variant="unstyled">
     <SelectTrigger
       aria-label="Unstyled"
-      className="w-full rounded border border-border bg-surface px-3 py-2 text-foreground"
+      className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-foreground"
       placeholder="Unstyled"
     >
       <SelectField>
@@ -275,15 +275,15 @@ export const Variants: Story = {
       </SelectField>
       <SelectChevron className="text-[var(--plume-muted)]" />
     </SelectTrigger>
-    <SelectContent className="rounded border border-border bg-surface p-1 text-foreground shadow">
+    <SelectContent className="rounded-sm border border-border bg-surface p-1 text-foreground shadow-sm">
       <SelectOption
-        className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
+        className="cursor-pointer rounded-sm px-3 py-1 data-[active]:bg-surface-muted"
         value="apple"
       >
         Apple
       </SelectOption>
       <SelectOption
-        className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
+        className="cursor-pointer rounded-sm px-3 py-1 data-[active]:bg-surface-muted"
         value="banana"
       >
         Banana
@@ -302,7 +302,7 @@ export const Variants: Story = {
       <Select variant="unstyled">
         <SelectTrigger
           aria-label="Unstyled"
-          className="w-full rounded border border-border bg-surface px-3 py-2 text-foreground"
+          className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-foreground"
           placeholder="Unstyled"
         >
           <SelectField>
@@ -310,10 +310,10 @@ export const Variants: Story = {
           </SelectField>
           <SelectChevron className="text-[var(--plume-muted)]" />
         </SelectTrigger>
-        <SelectContent className="rounded border border-border bg-surface p-1 text-foreground shadow">
+        <SelectContent className="rounded-sm border border-border bg-surface p-1 text-foreground shadow-sm">
           {fruits.map((fruit) => (
             <SelectOption
-              className="cursor-pointer rounded px-3 py-1 data-[active]:bg-surface-muted"
+              className="cursor-pointer rounded-sm px-3 py-1 data-[active]:bg-surface-muted"
               key={fruit}
               value={fruit.toLowerCase()}
             >
@@ -1026,7 +1026,7 @@ export const Tailwind: Story = {
   <Select variant="unstyled">
     <SelectTrigger
       aria-label="Fruit"
-      className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+      className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring-3 focus-within:ring-blue-200"
       placeholder="Pick a fruit"
     >
       <SelectField>
@@ -1037,7 +1037,7 @@ export const Tailwind: Story = {
     <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
       {fruits.map((fruit) => (
         <SelectOption
-          className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
+          className="cursor-pointer rounded-sm px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
           key={fruit}
           value={fruit.toLowerCase()}
         >
@@ -1059,7 +1059,7 @@ export const Tailwind: Story = {
   >
     <SelectTrigger
       aria-label="Fruits"
-      className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
+      className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring-3 focus-within:ring-emerald-200"
       placeholder="Search fruits"
     >
       <SelectField>
@@ -1075,17 +1075,17 @@ export const Tailwind: Story = {
         </SelectChips>
         <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
       </SelectField>
-      <SelectClear className="mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground" />
+      <SelectClear className="mr-1 rounded-sm p-1 text-[var(--plume-muted)] hover:text-foreground" />
       <SelectChevron className="text-[var(--plume-muted)]" />
     </SelectTrigger>
     <SelectContent className="rounded-lg border border-border bg-surface shadow-lg">
       <SelectSearch className="border-b border-border p-2">
-        <SelectSearchInput className="w-full rounded border border-border bg-transparent px-2 py-1 text-sm" />
+        <SelectSearchInput className="w-full rounded-sm border border-border bg-transparent px-2 py-1 text-sm" />
       </SelectSearch>
       <SelectList className="p-1">
         {fruits.map((fruit) => (
           <SelectOption
-            className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+            className="flex cursor-pointer items-center gap-2 rounded-sm px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
             key={fruit}
             value={fruit.toLowerCase()}
           >
@@ -1108,7 +1108,7 @@ export const Tailwind: Story = {
       <Select variant="unstyled">
         <SelectTrigger
           aria-label="Fruit"
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus-within:border-blue-500 focus-within:ring-3 focus-within:ring-blue-200"
           placeholder="Pick a fruit"
         >
           <SelectField>
@@ -1119,7 +1119,7 @@ export const Tailwind: Story = {
         <SelectContent className="rounded-lg border border-border bg-surface p-1 shadow-lg">
           {fruits.map((fruit) => (
             <SelectOption
-              className="cursor-pointer rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
+              className="cursor-pointer rounded-sm px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted aria-selected:font-semibold"
               key={fruit}
               value={fruit.toLowerCase()}
             >
@@ -1141,7 +1141,7 @@ export const Tailwind: Story = {
       >
         <SelectTrigger
           aria-label="Fruits"
-          className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring focus-within:ring-emerald-200"
+          className="w-full rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-foreground focus-within:border-emerald-500 focus-within:ring-3 focus-within:ring-emerald-200"
           placeholder="Search fruits"
         >
           <SelectField>
@@ -1157,17 +1157,17 @@ export const Tailwind: Story = {
             </SelectChips>
             <SelectCombobox className="px-1 data-[placeholder]:text-[var(--plume-muted)]" />
           </SelectField>
-          <SelectClear className="mr-1 rounded p-1 text-[var(--plume-muted)] hover:text-foreground" />
+          <SelectClear className="mr-1 rounded-sm p-1 text-[var(--plume-muted)] hover:text-foreground" />
           <SelectChevron className="text-[var(--plume-muted)]" />
         </SelectTrigger>
         <SelectContent className="rounded-lg border border-border bg-surface shadow-lg">
           <SelectSearch className="border-b border-border p-2">
-            <SelectSearchInput className="w-full rounded border border-border bg-transparent px-2 py-1 text-sm" />
+            <SelectSearchInput className="w-full rounded-sm border border-border bg-transparent px-2 py-1 text-sm" />
           </SelectSearch>
           <SelectList className="p-1">
             {fruits.map((fruit) => (
               <SelectOption
-                className="flex cursor-pointer items-center gap-2 rounded px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
+                className="flex cursor-pointer items-center gap-2 rounded-sm px-3 py-1.5 text-sm text-foreground data-[active]:bg-surface-muted"
                 key={fruit}
                 value={fruit.toLowerCase()}
               >

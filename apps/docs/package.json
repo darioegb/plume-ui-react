@@ -24,14 +24,14 @@
     "@storybook/addon-links": "^9.1.20",
     "@storybook/addon-themes": "^9.1.20",
     "@storybook/react-vite": "^9.1.20",
-    "autoprefixer": "^10.4.14",
+    "@tailwindcss/postcss": "^4.3.3",
     "bootstrap": "^5.3.1",
     "eslint-config-custom": "workspace:*",
     "prettier-config": "workspace:*",
     "react-docgen": "^7.0.3",
     "serve": "^13.0.4",
     "storybook": "^9.1.20",
-    "tailwind-config": "workspace:*",
+    "tailwindcss": "^4.3.3",
     "tsconfig": "workspace:*",
     "vite": "^7.0.0"
   }

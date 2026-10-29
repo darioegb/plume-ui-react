@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
-import { Title, Description, Source, useOf } from '@storybook/addon-docs/blocks'
+import { Description, Markdown, Source, Title, useOf } from '@storybook/addon-docs/blocks'
 import { Button } from 'plume-ui-react'
+import type { ApiNote } from './api-reference'
 import { ApiReference } from './api-reference'
 import StoryExamples from './story-examples'
 
@@ -53,16 +54,41 @@ function SourceLink({ sourcePath }: Readonly<{ sourcePath: string }>): ReactNode
   )
 }
 
+const SECTION = /^### (.+)$/
+
+// The text before the first `###` is the intro of the page. The sections after it describe the API (a hook, the
+// parts, the keyboard), so they go to the end, inside the API reference, and the page starts with the examples.
+function splitDescription(markdown: string): { intro: string; notes: ApiNote[] } {
+  const intro: string[] = []
+  const notes: ApiNote[] = []
+  let fenced = false
+  for (const line of markdown.split('\n')) {
+    if (line.trimStart().startsWith('```')) fenced = !fenced
+    const heading = fenced ? null : SECTION.exec(line)
+    if (heading) notes.push({ body: '', title: heading[1].trim() })
+    else if (notes.length > 0) notes[notes.length - 1].body += `${line}\n`
+    else intro.push(line)
+  }
+  return {
+    intro: intro.join('\n').trim(),
+    notes: notes.map((note) => ({ ...note, body: note.body.trim() })),
+  }
+}
+
 function DocsTemplate(): ReactNode {
   const { preparedMeta } = useOf('meta', ['meta'])
   const componentName = preparedMeta.title.split('/').pop() ?? preparedMeta.title
   const docsParameters = preparedMeta.parameters.docs as { importNames?: string[] } | undefined
   const importNames = docsParameters?.importNames ?? [componentName]
   const sourcePath = getComponentSourcePath(String(preparedMeta.parameters.fileName))
+  const description = (
+    preparedMeta.parameters.docs as { description?: { component?: string } } | undefined
+  )?.description?.component
+  const { intro, notes } = splitDescription(description ?? '')
   return (
     <div className="container">
       <Title />
-      <Description />
+      {description ? <Markdown>{intro}</Markdown> : <Description />}
       <SourceLink sourcePath={sourcePath} />
       <h2>Import</h2>
       <Source code={`import { ${importNames.join(', ')} } from '${PACKAGE_NAME}'`} dark />
@@ -73,6 +99,7 @@ function DocsTemplate(): ReactNode {
         componentName={componentName}
         folder={sourcePath.slice(sourcePath.lastIndexOf('/') + 1)}
         importNames={docsParameters?.importNames}
+        notes={notes}
       />
     </div>
   )

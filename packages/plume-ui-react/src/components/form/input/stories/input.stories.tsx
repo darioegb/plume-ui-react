@@ -388,12 +388,12 @@ export const Tailwind: Story = {
         code: `<Input
   variant="unstyled"
   placeholder="Default Input"
-  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 />
 <Input
   variant="unstyled"
   placeholder="Pill Input"
-  className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+  className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
 />
 <Input
   variant="unstyled"
@@ -404,15 +404,15 @@ export const Tailwind: Story = {
   variant="unstyled"
   placeholder="Error Input"
   defaultValue="Invalid value"
-  className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
+  className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring-3 focus:ring-red-200 dark:text-red-400"
 />
 <Input variant="unstyled" type="password">
   <InputControl>
     <InputField
       placeholder="Password"
-      className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+      className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
     />
-    <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white" />
+    <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded-sm text-gray-500 hover:text-gray-900 dark:hover:text-white" />
   </InputControl>
 </Input>`,
       },
@@ -421,12 +421,12 @@ export const Tailwind: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-72 max-w-full">
       <Input
-        className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        className="block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         placeholder="Default Input"
         variant="unstyled"
       />
       <Input
-        className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+        className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         placeholder="Pill Input"
         variant="unstyled"
       />
@@ -436,7 +436,7 @@ export const Tailwind: Story = {
         variant="unstyled"
       />
       <Input
-        className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring focus:ring-red-200 dark:text-red-400"
+        className="block w-full rounded-lg border border-red-400 px-4 py-2.5 text-sm text-red-700 focus:border-red-500 focus:ring-3 focus:ring-red-200 dark:text-red-400"
         defaultValue="Invalid value"
         placeholder="Error Input"
         variant="unstyled"
@@ -444,10 +444,10 @@ export const Tailwind: Story = {
       <Input type="password" variant="unstyled">
         <InputControl>
           <InputField
-            className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+            className="block w-full rounded-lg border border-gray-200 py-2.5 pl-4 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:ring-3 focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
             placeholder="Password"
           />
-          <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded text-gray-500 hover:text-gray-900 dark:hover:text-white" />
+          <InputReveal className="-ml-9 flex h-8 w-8 items-center justify-center rounded-sm text-gray-500 hover:text-gray-900 dark:hover:text-white" />
         </InputControl>
       </Input>
     </div>

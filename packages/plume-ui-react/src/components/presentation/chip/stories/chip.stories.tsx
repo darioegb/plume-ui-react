@@ -121,7 +121,7 @@ export const Variants: Story = {
       <Chip variant="subtle">Subtle</Chip>
       <Chip variant="solid">Solid</Chip>
       <Chip variant="outline">Outline</Chip>
-      <Chip className="rounded border border-gray-400 px-2 py-0.5 text-sm" variant="unstyled">
+      <Chip className="rounded-sm border border-gray-400 px-2 py-0.5 text-sm" variant="unstyled">
         Unstyled
       </Chip>
     </div>
@@ -277,7 +277,7 @@ export const Tailwind: Story = {
     variant="unstyled"
   >
     <ChipLabel>Research</ChipLabel>
-    <ChipRemove className="h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950" />
+    <ChipRemove className="h-4 w-4 justify-center rounded-sm hover:bg-emerald-100 dark:hover:bg-emerald-950" />
   </Chip>
   <Chip
     className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-900"
@@ -305,7 +305,7 @@ export const Tailwind: Story = {
         variant="unstyled"
       >
         <ChipLabel>Research</ChipLabel>
-        <ChipRemove className="h-4 w-4 justify-center rounded hover:bg-emerald-100 dark:hover:bg-emerald-950" />
+        <ChipRemove className="h-4 w-4 justify-center rounded-sm hover:bg-emerald-100 dark:hover:bg-emerald-950" />
       </Chip>
       <Chip className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-900" variant="unstyled">
         Read only

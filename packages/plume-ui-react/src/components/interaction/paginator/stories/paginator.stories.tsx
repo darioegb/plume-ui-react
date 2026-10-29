@@ -388,7 +388,7 @@ function ControlledPaginator(): React.ReactNode {
         Showing items {(page - 1) * 10 + 1} to {page * 10}
       </p>
       <button
-        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
         onClick={() => setPage(1)}
         type="button"
       >
@@ -415,7 +415,7 @@ export const Controlled: Story = {
         Showing items {(page - 1) * 10 + 1} to {page * 10}
       </p>
       <button
-        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
         onClick={() => setPage(1)}
         type="button"
       >
