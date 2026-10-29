@@ -16,3 +16,4 @@ apps/docs/src/api.generated.json
 apps/docs/src/stackblitz-example.generated.json
 apps/docs/src/stackblitz-sandbox.generated.json
 apps/docs/src/story-locals.generated.json
+apps/docs/bootstrap-scoped.generated.css

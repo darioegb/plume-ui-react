@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { memo, useContext, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type StackBlitzSdk from '@stackblitz/sdk'
 import {
   Anchor,
@@ -66,6 +66,25 @@ const localsOf = (tools: Tools, fileName: string): Record<string, string> => {
   return start < 0 ? {} : (tools.locals[fileName.slice(start + PACKAGE_DIR.length)] ?? {})
 }
 
+const COPIED_MS = 1500
+
+const COPY_ICON = (
+  <svg aria-hidden="true" fill="none" focusable="false" height="12" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="12">
+    <rect height="13" rx="2" width="13" x="9" y="9" />
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+  </svg>
+)
+
+function CopyLabel({ register }: Readonly<{ register: (show: (copied: boolean) => void) => void }>): ReactNode {
+  const [copied, setCopied] = useState(false)
+  useEffect(() => register(setCopied), [register])
+  return (
+    <>
+      {COPY_ICON} {copied ? 'Copied' : 'Copy code'}
+    </>
+  )
+}
+
 const colorModeOf = (): 'dark' | 'light' =>
   document.documentElement.getAttribute('data-plume-color-mode') === 'dark' ? 'dark' : 'light'
 
@@ -87,15 +106,33 @@ function StoryExample({ story, tools }: Readonly<{ story: DocsStory; tools: Tool
     )
   }
   const latestOpen = useRef(open)
+  const latestCode = useRef(code)
+  const showCopied = useRef<(copied: boolean) => void>(() => undefined)
   useEffect(() => {
     latestOpen.current = open
+    latestCode.current = code
   })
+  const copy = (): void => {
+    navigator.clipboard
+      .writeText(latestCode.current)
+      .then(() => {
+        showCopied.current(true)
+        setTimeout(() => showCopied.current(false), COPIED_MS)
+      })
+      .catch(() => undefined)
+  }
+  const register = useCallback((show: (copied: boolean) => void) => {
+    showCopied.current = show
+  }, [])
   return (
     <Anchor storyId={story.id}>
       <StoryHeading name={story.name} />
       <Description of={story.moduleExport} />
       <Canvas
-        additionalActions={[{ title: <>{STACKBLITZ_LOGO} Open in StackBlitz</>, onClick: () => latestOpen.current() }]}
+        additionalActions={[
+          { title: <CopyLabel register={register} />, onClick: copy },
+          { title: <>{STACKBLITZ_LOGO} Open in StackBlitz</>, onClick: () => latestOpen.current() },
+        ]}
         of={story.moduleExport}
         source={{ __forceInitialArgs: true }}
         story={{ __forceInitialArgs: true }}

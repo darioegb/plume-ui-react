@@ -205,7 +205,7 @@ ${tailwind}  </head>
 
 const indexCss = (stylesheet: 'bootstrap' | 'tailwind' | null): string =>
   `@layer reset, base, plume, components, utilities;\n${
-    stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}') layer(reset);\n` : ''
+    stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}');\n` : ''
   }`
 
 const themeFile = (): string => `import type { DeepPartial, Theme } from 'plume-ui-react'

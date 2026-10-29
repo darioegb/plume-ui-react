@@ -16,7 +16,7 @@ interface IconLinkButtonProps {
 function IconLinkButton({ icon, href, text }: Readonly<IconLinkButtonProps>): ReactNode {
   return (
     <a className="flex" href={href} rel="noopener noreferrer" target="_blank">
-      <Button iconLeft={icon} size="sm" variant="outline">
+      <Button className="gap-2" iconLeft={icon} size="sm" variant="outline">
         <p style={{ color: 'currentColor', margin: 0 }}>{text}</p>
       </Button>
     </a>

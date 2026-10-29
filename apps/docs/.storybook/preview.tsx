@@ -128,9 +128,11 @@ const SyncColorMode = ({ colorMode }: { colorMode: ColorMode }): null => {
 }
 
 const StoryFrame = ({
+  bootstrap,
   children,
   globalMode,
 }: {
+  bootstrap: boolean
   children: React.ReactNode
   globalMode: ColorMode
 }): React.ReactElement => {
@@ -141,9 +143,13 @@ const StoryFrame = ({
     document.documentElement.setAttribute('data-bs-theme', colorMode)
   }, [colorMode])
   return (
-    <ThemeProvider defaultColorMode={colorMode} style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}>
+    <ThemeProvider
+      className={bootstrap ? 'bs-scope' : undefined}
+      defaultColorMode={colorMode}
+      style={{ padding: 'clamp(0.5rem, 4vw, 2rem)' }}
+    >
       <SyncColorMode colorMode={colorMode} />
-      {/* Bootstrap 5.3 only themes itself through data-bs-theme. */}
+      {/* Bootstrap is scoped to `.bs-scope`, on the root that also holds the portals, and only the Bootstrap stories get it, so its reboot never reaches the others. */}
       <div data-bs-theme={colorMode}>{children}</div>
     </ThemeProvider>
   )
@@ -196,7 +202,10 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => (
-      <StoryFrame globalMode={(context.globals.colorMode as ColorMode) ?? 'light'}>
+      <StoryFrame
+        bootstrap={context.name === 'Bootstrap'}
+        globalMode={(context.globals.colorMode as ColorMode) ?? 'light'}
+      >
         <Story />
       </StoryFrame>
     ),

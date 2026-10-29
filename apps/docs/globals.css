@@ -1,4 +1,4 @@
-@import 'bootstrap/dist/css/bootstrap.min.css' layer(reset);
+@import './bootstrap-scoped.generated.css';
 @import './reset.css' layer(reset);
 
 @tailwind base;
