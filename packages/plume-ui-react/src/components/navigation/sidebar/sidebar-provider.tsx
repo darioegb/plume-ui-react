@@ -86,3 +86,5 @@ export function SidebarProvider({
 
   return <SidebarContext.Provider value={context}>{children}</SidebarContext.Provider>
 }
+
+SidebarProvider.displayName = 'SidebarProvider'

@@ -38,7 +38,7 @@ function Fire({
   className?: string
   label: string
   make: (api: ToastApi) => void
-  variant?: 'ghost' | 'outline' | 'solid'
+  variant?: 'ghost' | 'outline' | 'solid' | 'unstyled'
 }>): React.ReactNode {
   const api = useToast()
   return <Button className={className} label={label} onClick={() => make(api)} variant={variant} />
@@ -922,7 +922,8 @@ export const Bootstrap: Story = {
             title: 'Saved',
           })
         }
-        variant="outline"
+        className="btn btn-outline-secondary"
+        variant="unstyled"
       />
     </ToastProvider>
   ),

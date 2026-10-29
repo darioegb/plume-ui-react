@@ -368,6 +368,13 @@ export const Colors: Story = {
  * DatePicker configured for selecting a range of dates.
  */
 export const RangeSelection: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" range />`,
+      },
+    },
+  },
   args: {
     range: true,
   },
@@ -377,6 +384,17 @@ export const RangeSelection: Story = {
  * DatePicker with minimum and maximum selectable dates.
  */
 export const WithMinMaxDates: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  aria-label="Date"
+  maxDate={new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)}
+  minDate={new Date()}
+/>`,
+      },
+    },
+  },
   args: {
     minDate: new Date(),
     maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15),
@@ -387,6 +405,13 @@ export const WithMinMaxDates: Story = {
  * DatePicker with footer actions.
  */
 export const WithFooterActions: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" showFooter />`,
+      },
+    },
+  },
   args: {
     showFooter: true,
   },
@@ -399,6 +424,27 @@ export const WithFooterActions: Story = {
  * and `labels` only needs the texts you want to change.
  */
 export const CustomConfiguration: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  aria-label="Fecha"
+  labels={{
+    apply: 'Aplicar',
+    calendar: 'Calendario',
+    cancel: 'Cancelar',
+    nextMonth: 'Mes siguiente',
+    nextYears: 'Años siguientes',
+    openCalendar: 'Abrir calendario',
+    previousMonth: 'Mes anterior',
+    previousYears: 'Años anteriores',
+  }}
+  locale="es"
+  showFooter
+/>`,
+      },
+    },
+  },
   args: {
     showFooter: true,
     locale: 'es',
@@ -547,6 +593,13 @@ export const CalendarTheming: Story = {
  * The disabled state add **.disabled** class,
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" disabled />`,
+      },
+    },
+  },
   args: {
     disabled: true,
   },

@@ -32,3 +32,5 @@ export function SelectHidden({ form, name }: Readonly<SelectHiddenProps>): React
     />
   )
 }
+
+SelectHidden.displayName = 'SelectHidden'

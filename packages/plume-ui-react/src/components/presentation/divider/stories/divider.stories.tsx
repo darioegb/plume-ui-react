@@ -263,8 +263,10 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<Divider className="border-primary border-1 opacity-100 my-3" variant="unstyled" />
-<Divider className="d-flex align-items-center gap-2 text-body-secondary" variant="unstyled">
-  <DividerLabel className="small text-uppercase">or</DividerLabel>
+<Divider className="position-relative border-top border-primary my-4" variant="unstyled">
+  <DividerLabel className="position-absolute top-0 start-50 translate-middle bg-body px-3 small text-uppercase text-body-secondary">
+    or
+  </DividerLabel>
 </Divider>`,
       },
     },
@@ -272,8 +274,10 @@ export const Bootstrap: Story = {
   render: () => (
     <div style={{ maxWidth: '100%', width: '22rem' }}>
       <Divider className="border-primary border-1 opacity-100 my-3" variant="unstyled" />
-      <Divider className="d-flex align-items-center gap-2 text-body-secondary" variant="unstyled">
-        <DividerLabel className="small text-uppercase">or</DividerLabel>
+      <Divider className="position-relative border-top border-primary my-4" variant="unstyled">
+        <DividerLabel className="position-absolute top-0 start-50 translate-middle bg-body px-3 small text-uppercase text-body-secondary">
+          or
+        </DividerLabel>
       </Divider>
     </div>
   ),

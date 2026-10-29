@@ -209,3 +209,5 @@ export function Tooltip({
     </>
   )
 }
+
+Tooltip.displayName = 'Tooltip'
