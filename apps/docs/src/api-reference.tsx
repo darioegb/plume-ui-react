@@ -100,19 +100,32 @@ function PropsTable({ component }: Readonly<{ component: ApiComponent }>): React
   )
 }
 
+export interface ApiNote {
+  body: string
+  title: string
+}
+
 interface ApiReferenceProps {
   componentName: string
   folder: string
   importNames?: string[]
+  notes?: ApiNote[]
 }
+
+const slug = (title: string): string => title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
 export function ApiReference({
   componentName,
   folder,
   importNames,
+  notes = [],
 }: Readonly<ApiReferenceProps>): ReactNode {
   const components = orderComponents(folders[folder] ?? [], componentName, importNames)
   if (components.length === 0) return null
+  const ownNotes = new Map(
+    notes.filter((note) => components.some((c) => c.name === note.title)).map((n) => [n.title, n]),
+  )
+  const otherNotes = notes.filter((note) => !ownNotes.has(note.title))
   return (
     <>
       <h3 id="api-reference">API reference</h3>
@@ -127,8 +140,15 @@ export function ApiReference({
             <Since version={component.since} />
           </h4>
           {index > 0 && component.description ? <Markdown>{component.description}</Markdown> : null}
+          {ownNotes.has(component.name) ? <Markdown>{ownNotes.get(component.name)?.body ?? ''}</Markdown> : null}
           <PropsTable component={component} />
           <NativeNote component={component} />
+        </section>
+      ))}
+      {otherNotes.map((note) => (
+        <section key={note.title}>
+          <h4 id={`api-${slug(note.title)}`}>{note.title}</h4>
+          <Markdown>{note.body}</Markdown>
         </section>
       ))}
     </>
