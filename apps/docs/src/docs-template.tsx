@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
-import { Title, Description, Source, Stories, useOf } from '@storybook/addon-docs/blocks'
+import { Title, Description, Source, useOf } from '@storybook/addon-docs/blocks'
 import { Button } from 'plume-ui-react'
 import { ApiReference } from './api-reference'
+import StoryExamples from './story-examples'
 
 const GITHUB_URL = 'https://github.com/darioegb/plume-ui-react/tree/main/'
 const PACKAGE_NAME = 'plume-ui-react'
@@ -66,7 +67,7 @@ function DocsTemplate(): ReactNode {
       <h2>Import</h2>
       <Source code={`import { ${importNames.join(', ')} } from '${PACKAGE_NAME}'`} dark />
       <h2>Examples</h2>
-      <Stories includePrimary title="" />
+      <StoryExamples />
       <hr />
       <ApiReference
         componentName={componentName}
