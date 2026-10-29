@@ -172,7 +172,6 @@ const preview: Preview = {
           'Theme',
           ['Colors', 'Tokens'],
           'Guides',
-          ['Framework Integration', 'Examples', 'Customizing Styles', 'Forms', 'Internationalization', 'Public API', 'Upgrading to 1.0'],
           'Components',
         ],
       },
