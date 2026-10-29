@@ -79,10 +79,9 @@ export interface CarouselOwnProps {
    */
   size?: Size
   /**
-   * Visual variant of the buttons. `solid` fills them with the color, `outline` draws a border
-   * on a neutral background, `ghost` has no background until it is hovered, and `overlay` puts a
-   * dark translucent circle behind a white arrow, to read over a photo. `unstyled` drops the
-   * Plume styles so you can bring your own; the scrolling and the snapping keep working.
+   * Visual variant of the buttons. `solid` fills them with the color, and `overlay` puts a dark
+   * translucent circle behind a white arrow, to read over a photo. `unstyled` drops the Plume
+   * styles so you can bring your own; the scrolling and the snapping keep working.
    * @default 'solid'
    */
   variant?: CarouselVariant

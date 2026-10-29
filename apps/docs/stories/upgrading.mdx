@@ -476,6 +476,21 @@ because they are the native controls. The attribute `data-plume-slider-mark` is 
 With these two, no component takes `classNames` and the `<Name>Part` types are gone: the elements you used to reach with
 a key of `classNames` are parts you import.
 
+## `Carousel` has three variants
+
+`variant` takes `solid`, `overlay` or `unstyled`: `outline` and `ghost` are gone, and the buttons of a carousel that
+still asks for them lose their look. Use `variant='unstyled'` and give the buttons your own classes:
+
+```tsx
+// Before
+<Carousel variant='outline'>
+
+// After
+<Carousel variant='unstyled'>
+  <CarouselPrev className='rounded-full border border-gray-300 p-2' />
+</Carousel>
+```
+
 ## `useClickOutside` is removed
 
 The overlays of the library close with their own handling of Escape and of a press outside. If you used the hook for

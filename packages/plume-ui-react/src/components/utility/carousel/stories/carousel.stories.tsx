@@ -131,7 +131,7 @@ export default {
     labels: { control: false },
     colorScheme: { control: 'select', options: colorSchemes },
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
-    variant: { control: 'radio', options: ['solid', 'outline', 'ghost', 'overlay', 'unstyled'] },
+    variant: { control: 'radio', options: ['solid', 'overlay', 'unstyled'] },
     id: { control: false },
     title: { control: 'text' },
     hidden: { control: false },
@@ -158,8 +158,8 @@ type Story = StoryObj<typeof Carousel>
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick how the buttons look: `solid` (the default), `outline`, `ghost` and `overlay`,
- * which reads over a photo. `unstyled` drops the Plume styles so you can style them yourself.
+ * Use the **variant** prop to pick how the buttons look: `solid` (the default) and `overlay`, which reads over a
+ * photo. `unstyled` drops the Plume styles so you can style them yourself.
  */
 export const Variants: Story = {
   parameters: {
@@ -392,7 +392,7 @@ export const Controls: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Carousel aria-label="Featured places" controls="inline" variant="outline">
+        code: `<Carousel aria-label="Featured places" controls="inline">
   <CarouselSlides>{/* slides */}</CarouselSlides>
   <div className="mt-3 flex items-center justify-between">
     <CarouselPrev />
@@ -405,7 +405,7 @@ export const Controls: Story = {
   },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
-      <Carousel aria-label="Bar with bars" controls="inline" variant="outline">
+      <Carousel aria-label="Bar with bars" controls="inline">
         <Panels />
         <div className="mt-3 flex items-center justify-between">
           <CarouselPrev />
@@ -413,7 +413,7 @@ export const Controls: Story = {
           <CarouselNext />
         </div>
       </Carousel>
-      <Carousel aria-label="Bar with numbers" colorScheme="secondary" controls="inline" variant="ghost">
+      <Carousel aria-label="Bar with numbers" colorScheme="secondary" controls="inline">
         <Panels />
         <div className="mt-3 flex items-center justify-center gap-2">
           <CarouselPrev />

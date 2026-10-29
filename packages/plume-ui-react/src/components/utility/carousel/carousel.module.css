@@ -124,25 +124,6 @@
   background-color: var(--carousel-hover);
 }
 
-.outline .arrow {
-  background-color: var(--plume-surface);
-  border: var(--plume-border-width-thin) solid var(--plume-border-strong, var(--plume-border));
-  color: var(--plume-foreground);
-}
-
-.outline .arrow:hover:not(:disabled) {
-  background-color: var(--plume-surface-muted);
-}
-
-.ghost .arrow {
-  background-color: transparent;
-  color: var(--carousel-text);
-}
-
-.ghost .arrow:hover:not(:disabled) {
-  background-color: var(--carousel-tint);
-}
-
 .overlay .arrow {
   background-color: color-mix(in srgb, black 55%, transparent);
   color: white;

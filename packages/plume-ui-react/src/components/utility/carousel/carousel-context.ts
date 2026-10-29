@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react'
 
-export type CarouselVariant = 'ghost' | 'outline' | 'overlay' | 'solid' | 'unstyled'
+export type CarouselVariant = 'overlay' | 'solid' | 'unstyled'
 
 export type CarouselOrientation = 'horizontal' | 'vertical'
 
