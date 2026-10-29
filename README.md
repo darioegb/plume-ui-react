@@ -133,7 +133,7 @@ Standalone apps that consume the **published npm packages** (not the workspace s
 
 - **[Vite](apps/example-vite)**: a client-only SPA with a slice of the same product, to try the components and edit the code.
 
-  [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite)
+  [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-examples--docs)
 
 - **[Next.js App Router](apps/example-next-app)**: a project dashboard with a sign in, a sidebar and dark mode, rendered on the server with no theme flash. [Live demo](https://plume-ui-react.vercel.app), deployed on Vercel.
 

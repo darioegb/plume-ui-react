@@ -322,7 +322,13 @@ export const LinksAndDisabled: Story = {
         >
           Source code
         </DropdownItem>
-        <DropdownItem href="https://darioegb.github.io/plume-ui-react/">Documentation</DropdownItem>
+        <DropdownItem
+          href="https://darioegb.github.io/plume-ui-react/"
+          rel="noreferrer"
+          target="_blank"
+        >
+          Documentation
+        </DropdownItem>
         <DropdownItem disabled>Changelog (soon)</DropdownItem>
       </DropdownMenu>
     </Dropdown>

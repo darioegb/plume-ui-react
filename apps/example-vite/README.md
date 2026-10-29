@@ -5,7 +5,7 @@ package** (`plume-ui-react`), not the workspace sources. It demonstrates a slice
 the same simulated Plume Projects product as the Next.js example, without a server
 or authentication. Storybook is the component gallery.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-examples--docs)
 
 ## Run locally
 

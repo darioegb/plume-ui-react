@@ -308,7 +308,7 @@ const bookingDefaults: BookingValues = {
 }
 
 /**
- * A form with [react-hook-form](https://react-hook-form.com/) that uses every form control of the library.
+ * A form with <a href="https://react-hook-form.com/" target="_blank" rel="noopener noreferrer">react-hook-form</a> that uses every form control of the library.
  * The controls that are a single native element (`Input`, `Textarea`, `Checkbox`, `Toggle`) take `register`
  * as it is. The ones that are not go through `Controller` with `value` and `onValueChange`: `Select` (also with
  * `multiple`), `RadioGroup`, `NumberInput`, `Slider`, `Rating`, `PinInput`, `DatePicker` and `TimePicker`.

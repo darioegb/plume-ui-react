@@ -103,11 +103,22 @@ update(join(root, 'README.md'), (text) => {
   return lines.join('\n')
 })
 
+update(join(packageDir, 'README.md'), (text) => {
+  const item = `- [${name}](https://darioegb.github.io/plume-ui-react/?path=/docs/components-${slug}--docs)`
+  const lines = text.split('\n')
+  const itemPattern = /^- \[([A-Za-z0-9]+)\]\(https:\/\/darioegb\.github\.io\/plume-ui-react\/\?path=\/docs\/components-/
+  const items = lines.map((line, index) => ({ line, index })).filter(({ line }) => itemPattern.test(line))
+  const nameOf = (line) => itemPattern.exec(line)[1]
+  const next = items.find(({ line }) => nameOf(line).localeCompare(name) > 0)
+  const insertAt = next ? next.index : items[items.length - 1].index + 1
+  lines.splice(insertAt, 0, item)
+  return lines.join('\n')
+})
+
 console.log(`Created ${name} (${compound ? 'compound' : 'atomic'}) in packages/plume-ui-react/src/components/${category}/${slug}
 
-Registered it in src/index.ts, src/tests/index.spec.ts and the root README table.
+Registered it in src/index.ts, src/tests/index.spec.ts, the root README table and the component list of the package README.
 
 Still to do by hand (see AUTHORING.md):
-  - add ${name}${compound ? ` and ${name}Content` : ''} to the component list in packages/plume-ui-react/README.md, in alphabetical order
   - replace the placeholder styles, props and stories
   - run the checklist, then add a changeset with \`pnpm changeset\``)
