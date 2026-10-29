@@ -29,7 +29,14 @@ mkdirSync(path.dirname(output), { recursive: true })
 writeFileSync(output, `${JSON.stringify({ files })}\n`)
 const manifest = JSON.parse(files['package.json'])
 const pick = (source, names) => Object.fromEntries(names.map((name) => [name, source[name]]))
+const tailwindPath = path.resolve(here, '../../../packages/tailwind-config/tailwind.config.ts')
+const tailwindModule = { exports: {} }
+new Function('module', 'exports', ts.transpileModule(readFileSync(tailwindPath, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+}).outputText)(tailwindModule, tailwindModule.exports)
+const preset = tailwindModule.exports.default
 const sandbox = {
+  tailwind: { darkMode: preset.darkMode, theme: preset.theme },
   dependencies: pick(manifest.dependencies, ['plume-ui-react', 'react', 'react-dom']),
   devDependencies: pick(manifest.devDependencies, ['@vitejs/plugin-react', 'vite']),
 }

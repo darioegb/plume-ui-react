@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { memo, useContext, useEffect, useRef, useState } from 'react'
 import type StackBlitzSdk from '@stackblitz/sdk'
 import {
   Anchor,
@@ -37,6 +37,10 @@ const STACKBLITZ_LOGO = (
   </svg>
 )
 
+const StoryHeading = memo(function StoryHeading({ name }: Readonly<{ name: string }>): ReactNode {
+  return <Subheading>{name}</Subheading>
+})
+
 function useStackBlitzTools(): Tools | null {
   const [tools, setTools] = useState<Tools | null>(null)
   useEffect(() => {
@@ -62,6 +66,9 @@ const localsOf = (tools: Tools, fileName: string): Record<string, string> => {
   return start < 0 ? {} : (tools.locals[fileName.slice(start + PACKAGE_DIR.length)] ?? {})
 }
 
+const colorModeOf = (): 'dark' | 'light' =>
+  document.documentElement.getAttribute('data-plume-color-mode') === 'dark' ? 'dark' : 'light'
+
 function StoryExample({ story, tools }: Readonly<{ story: DocsStory; tools: Tools | null }>): ReactNode {
   const docsContext = useContext(DocsContext)
   const sourceContext = useContext(SourceContext)
@@ -74,7 +81,7 @@ function StoryExample({ story, tools }: Readonly<{ story: DocsStory; tools: Tool
         title: `${component} - ${story.name}`,
         description: `Plume UI React: ${story.title} - ${story.name}`,
         template: 'node',
-        files: tools.build(code, story.id, localsOf(tools, story.fileName)),
+        files: tools.build(code, story.id, localsOf(tools, story.fileName), colorModeOf()),
       },
       { openFile: 'src/App.tsx', newWindow: true },
     )
@@ -85,7 +92,7 @@ function StoryExample({ story, tools }: Readonly<{ story: DocsStory; tools: Tool
   })
   return (
     <Anchor storyId={story.id}>
-      <Subheading>{story.name}</Subheading>
+      <StoryHeading name={story.name} />
       <Description of={story.moduleExport} />
       <Canvas
         additionalActions={[{ title: <>{STACKBLITZ_LOGO} Open in StackBlitz</>, onClick: () => latestOpen.current() }]}

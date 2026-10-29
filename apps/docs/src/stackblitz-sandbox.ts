@@ -35,6 +35,9 @@ function renderedComponent(code: string): string | null {
 }
 
 function wrap(code: string, name: string): string {
+  if (/^\{/.test(code) && /\brender\s*:/.test(code)) {
+    return `const storyDefinition = ${code}\n\nexport default function ${name}() {\n  return storyDefinition.render(storyDefinition.args ?? {})\n}\n`
+  }
   if (/^return\b/m.test(code)) return `export default function ${name}() {\n${code}\n}\n`
   const statements = /^\s*(function|const|let|class)\b/.test(code)
   if (!statements) return `export default function ${name}() {\n  return (\n<>\n${code}\n</>\n  )\n}\n`
@@ -68,7 +71,17 @@ function collectLocals(code: string, locals: Locals): string[] {
   return included
 }
 
-export function buildApp(code: string, locals: Locals = {}): string {
+const FILE_MARKER = /^\/\/ [\w.-]+\.\w+$/m
+
+function componentFile(code: string): string {
+  if (!FILE_MARKER.test(code.trim().split('\n')[0] ?? '')) return code
+  const files = code.split(/^(?=\/\/ [\w.-]+\.\w+$)/m)
+  const source = files.filter((file) => /^\/\/ [\w.-]+\.(tsx|jsx)\b/.test(file)).pop()
+  return source ? source.replace(/^\/\/ .*\n/, '') : code
+}
+
+export function buildApp(original: string, locals: Locals = {}): string {
+  const code = componentFile(original)
   const extra = collectLocals(code, locals)
   const all = [code, ...extra].join('\n')
   const used = words(all)
@@ -82,8 +95,10 @@ export function buildApp(code: string, locals: Locals = {}): string {
     const stub = STUBS.find(([pattern]) => pattern.test(name))
     return stub ? [stub[1](name)] : []
   })
+  const reactImport = used.includes('React') && !declares(all, 'React') ? 'React' : ''
+  const reactNames = [reactImport, hooks.length ? `{ ${hooks.join(', ')} }` : ''].filter(Boolean)
   const header = [
-    hooks.length ? `import { ${hooks.join(', ')} } from 'react'` : '',
+    reactNames.length ? `import ${reactNames.join(', ')} from 'react'` : '',
     plumeNames.length ? `import { ${plumeNames.join(', ')} } from 'plume-ui-react'` : '',
     form.length ? `import { ${form.join(', ')} } from 'react-hook-form'` : '',
     ...stubs,
@@ -92,12 +107,38 @@ export function buildApp(code: string, locals: Locals = {}): string {
   return `${header.join('\n')}\n\n${wrap(code.trim(), wrapperName)}`
 }
 
-const MAIN = `import { Component, StrictMode } from 'react'
+const CLASS_VALUE = /class(?:Name)?\s*[=:]\s*(?:\{\s*)?(?:"([^"]*)"|'([^']*)'|`([^`]*)`)/g
+
+const BOOTSTRAP_TOKEN =
+  /^(btn(-[\w-]+)?|form-[\w-]+|d-(flex|block|none|inline|grid)[\w-]*|align-items-\w+|justify-content-\w+|(ms|me)-\d|fw-\w+|text-(body|bg)[\w-]*|list-group[\w-]*|card(-\w+)?|badge|bg-\w+-subtle|input-group[\w-]*|nav(bar)?(-[\w-]+)?|dropdown-[\w-]+|modal-[\w-]+|toast(-[\w-]+)?|alert-[\w-]+|progress(-bar)?|table-[\w-]+|container(-fluid)?|row|col(-\w+)*|border-\w+-subtle|rounded-pill|position-(fixed|absolute|relative)|(start|end|top|bottom)-\d+|translate-middle|visually-hidden|flex-grow-1|show)$/
+
+const TAILWIND_TOKEN =
+  /^(?:[a-z-]+:)*-?(flex|grid|block|inline|inline-flex|inline-block|hidden|contents|gap|space-[xy]|items|justify|self|place|p[xytblr]?|m[xytblr]?|w|h|size|min-[wh]|max-[wh]|text|font|leading|tracking|bg|border|rounded|shadow|ring|opacity|transition|duration|overflow|relative|absolute|fixed|sticky|inset|top|left|right|bottom|z|cursor|truncate|sr-only|underline|uppercase|lowercase|capitalize|italic|grow|shrink|basis|col-span|row-span|order|divide|object|aspect|animate|scale|rotate|translate|whitespace|break|list|align)(-[\w./[\]#%]+)*$/
+
+type ColorMode = 'light' | 'dark'
+
+const classTokens = (code: string): string[] =>
+  Array.from(code.matchAll(CLASS_VALUE)).flatMap((match) =>
+    (match[1] ?? match[2] ?? match[3] ?? '').split(/\s+/).filter(Boolean),
+  )
+
+const stylesheetOf = (code: string): 'bootstrap' | 'tailwind' | null => {
+  const tokens = classTokens(code)
+  if (tokens.some((token) => BOOTSTRAP_TOKEN.test(token))) return 'bootstrap'
+  return tokens.some((token) => TAILWIND_TOKEN.test(token)) ? 'tailwind' : null
+}
+
+const TAILWIND_CDN = 'https://cdn.tailwindcss.com/3.4.17'
+const BOOTSTRAP_CSS = 'https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css'
+
+const mainFor = (colorMode: ColorMode): string => `import { Component, StrictMode } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider, ToastProvider } from 'plume-ui-react'
+import './index.css'
 import 'plume-ui-react/styles.css'
 import App from './App'
+import { theme } from './theme'
 
 class Boundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null as Error | null }
@@ -123,7 +164,11 @@ class Boundary extends Component<{ children: ReactNode }, { error: Error | null 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider style={{ minHeight: '100vh', padding: '1.5rem', boxSizing: 'border-box' }}>
+    <ThemeProvider
+      defaultColorMode="${colorMode}"
+      style={{ minHeight: '100vh', padding: '1.5rem', boxSizing: 'border-box' }}
+      theme={theme}
+    >
       <ToastProvider>
         <Boundary>
           <App />
@@ -134,18 +179,42 @@ createRoot(document.getElementById('root')!).render(
 )
 `
 
-const INDEX_HTML = `<!doctype html>
-<html lang="en">
+const indexHtml = (stylesheet: 'bootstrap' | 'tailwind' | null, colorMode: ColorMode): string => {
+  const tailwind =
+    stylesheet === 'tailwind'
+      ? `    <script src="${TAILWIND_CDN}"></script>
+    <script>
+      tailwind.config = ${JSON.stringify({ ...sandbox.tailwind, corePlugins: { preflight: false } })}
+    </script>
+`
+      : ''
+  return `<!doctype html>
+<html lang="en"${stylesheet === 'bootstrap' ? ` data-bs-theme="${colorMode}"` : ''}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Plume UI React</title>
-  </head>
+${tailwind}  </head>
   <body style="margin: 0">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+`
+}
+
+const indexCss = (stylesheet: 'bootstrap' | 'tailwind' | null): string =>
+  `@layer reset, base, plume, components, utilities;\n${
+    stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}') layer(reset);\n` : ''
+  }`
+
+const themeFile = (): string => `import type { DeepPartial, Theme } from 'plume-ui-react'
+
+export const theme: DeepPartial<Theme> = {
+  colors: {
+    primary: ${JSON.stringify(plume.defaultTheme.colors.primary, null, 2).replace(/\n/g, '\n    ')},
+  },
+}
 `
 
 const VITE_CONFIG = `import { defineConfig } from 'vite'
@@ -167,12 +236,18 @@ const TSCONFIG = {
   include: ['src'],
 }
 
-export function buildSandbox(code: string, name: string, locals: Locals = {}): SandboxFiles {
+export function buildSandbox(
+  code: string,
+  name: string,
+  locals: Locals = {},
+  colorMode: ColorMode = 'light',
+): SandboxFiles {
   const app = buildApp(code, locals)
   const form = /from 'react-hook-form'/.test(app)
+  const stylesheet = stylesheetOf(code)
   return {
     '.stackblitzrc': JSON.stringify({ installDependencies: true, startCommand: 'npm run dev' }),
-    'index.html': INDEX_HTML,
+    'index.html': indexHtml(stylesheet, colorMode),
     'package.json': JSON.stringify(
       {
         name: `plume-ui-react-${name}`,
@@ -186,7 +261,9 @@ export function buildSandbox(code: string, name: string, locals: Locals = {}): S
       2,
     ),
     'src/App.tsx': app,
-    'src/main.tsx': MAIN,
+    'src/index.css': indexCss(stylesheet),
+    'src/main.tsx': mainFor(colorMode),
+    'src/theme.ts': themeFile(),
     'tsconfig.json': JSON.stringify(TSCONFIG, null, 2),
     'vite.config.js': VITE_CONFIG,
   }
