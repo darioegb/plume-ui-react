@@ -1,6 +1,6 @@
 :where(.base) {
   background: transparent;
-  border: none;
+  border: 0 solid;
   outline: var(--plume-focus-ring-width) solid transparent;
   outline-offset: 0;
 }

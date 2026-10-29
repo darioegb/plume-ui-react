@@ -37,3 +37,5 @@ export function Drawer({
     </DrawerContext.Provider>
   )
 }
+
+Drawer.displayName = 'Drawer'

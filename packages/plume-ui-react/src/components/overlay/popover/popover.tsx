@@ -89,3 +89,5 @@ export function Popover({
 
   return <PopoverContext.Provider value={context}>{children}</PopoverContext.Provider>
 }
+
+Popover.displayName = 'Popover'

@@ -544,10 +544,9 @@ export const Bootstrap: Story = {
 />
 <Button
   label="With icon right"
-  className="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600"
+  className="btn btn-primary d-inline-flex justify-content-center align-items-center gap-2"
   iconRight={
     <svg
-      className="w-25 h-auto"
       width="17"
       height="16"
       viewBox="0 0 17 16"
@@ -570,7 +569,7 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className='flex flex-wrap justify-center items-center gap-4'>
-      <Button className='btn btn-primary bg-blue-600' label='Primary Button' variant='unstyled' />
+      <Button className='btn btn-primary' label='Primary Button' variant='unstyled' />
       <Button className='btn btn-light' label='Soft Button' variant='unstyled' />
       <Button
         className='btn btn-outline-primary'
@@ -580,15 +579,14 @@ export const Bootstrap: Story = {
       />
       <Button className='btn btn-link' label='Link Button' variant='unstyled' />
       <Button
-        className='btn btn-primary rounded-pill bg-blue-600'
+        className='btn btn-primary rounded-pill'
         label='Pill Button'
         variant='unstyled'
       />
       <Button
-        className='btn btn-primary d-inline-flex justify-content-center align-items-center gap-2 bg-blue-600'
+        className='btn btn-primary d-inline-flex justify-content-center align-items-center gap-2'
         iconRight={
           <svg
-            className='w-3 h-auto'
             fill='none'
             height='16'
             viewBox='0 0 17 16'

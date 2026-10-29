@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useEffect, useState } from 'react'
 import { defaultTheme } from '../../../../theme'
 import { Field } from '../../../form/field'
-import { ProgressBarIndicator } from '../../progressbar'
+import { ProgressBarIndicator, ProgressBarTrack, ProgressBarValue } from '../../progressbar'
 import {
   FileUpload,
   FileUploadDropzone,
@@ -511,8 +511,9 @@ export const Compound: Story = {
 /**
  * Some examples of FileUpload with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
  * structure stays: the input is still reachable, and the dropzone and the list keep working. Give each part its
- * `className`, and use `data-[dragging]:` on the root. The bar of a file is a `ProgressBar`: pass its
- * `ProgressBarIndicator` as the child of the `FileUploadProgress` to give the indicator its own class.
+ * `className`, and use `data-[dragging]:` on the root. The bar of a file is a `ProgressBar`: its `className` goes on
+ * the wrapper of the track and the percentage, so pass a `ProgressBarTrack` with its `ProgressBarIndicator` and a
+ * `ProgressBarValue` as children of the `FileUploadProgress` to give each one its own class.
  */
 export const Tailwind: Story = {
   parameters: {
@@ -521,19 +522,24 @@ export const Tailwind: Story = {
         code: `<FileUpload
   aria-label="Documents"
   className="group text-sm text-foreground"
+  defaultValue={[new File([new Uint8Array(524288)], 'report.pdf')]}
   multiple
-  progress={(file) => progress[file.name]}
+  progress={() => 60}
+  style={{ maxWidth: '100%', width: '26rem' }}
   variant="unstyled"
 >
-  <FileUploadDropzone className="rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
+  <FileUploadDropzone className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
   <FileUploadList className="mt-2">
     {(file) => (
-      <FileUploadItem className="mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
-        <FileUploadName />
+      <FileUploadItem className="mt-2 flex flex-wrap items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
+        <FileUploadName className="flex-1" />
         <FileUploadSize />
         <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
-        <FileUploadProgress className="h-1.5 w-full overflow-hidden rounded-full bg-border">
-          <ProgressBarIndicator className="h-full bg-primary-solid" />
+        <FileUploadProgress className="flex w-full items-center gap-2">
+          <ProgressBarTrack className="h-1.5 flex-1 overflow-hidden rounded-full bg-border">
+            <ProgressBarIndicator className="h-full bg-primary-solid" />
+          </ProgressBarTrack>
+          <ProgressBarValue className="text-xs" />
         </FileUploadProgress>
       </FileUploadItem>
     )}
@@ -553,7 +559,7 @@ export const Tailwind: Story = {
       style={frame}
       variant="unstyled"
     >
-      <FileUploadDropzone className="rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
+      <FileUploadDropzone className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
       <FileUploadList className="mt-2">
         {(file) => (
           <FileUploadItem
@@ -563,8 +569,11 @@ export const Tailwind: Story = {
             <FileUploadName className="flex-1" />
             <FileUploadSize />
             <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
-            <FileUploadProgress className="h-1.5 w-full overflow-hidden rounded-full bg-border">
-              <ProgressBarIndicator className="h-full bg-primary-solid" />
+            <FileUploadProgress className="flex w-full items-center gap-2">
+              <ProgressBarTrack className="h-1.5 flex-1 overflow-hidden rounded-full bg-border">
+                <ProgressBarIndicator className="h-full bg-primary-solid" />
+              </ProgressBarTrack>
+              <ProgressBarValue className="text-xs" />
             </FileUploadProgress>
           </FileUploadItem>
         )}
@@ -584,12 +593,18 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<FileUpload aria-label="Documents" multiple variant="unstyled">
-  <FileUploadDropzone className="border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
+        code: `<FileUpload
+  aria-label="Documents"
+  defaultValue={[new File([new Uint8Array(524288)], 'report.pdf')]}
+  multiple
+  style={{ maxWidth: '100%', width: '26rem' }}
+  variant="unstyled"
+>
+  <FileUploadDropzone className="d-flex align-items-center justify-content-center gap-2 border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
   <FileUploadList className="list-group mt-2">
     {(file) => (
       <FileUploadItem className="list-group-item d-flex flex-wrap align-items-center gap-2" file={file}>
-        <FileUploadName />
+        <FileUploadName className="flex-fill" />
         <FileUploadSize />
         <FileUploadRemove className="btn btn-sm btn-outline-secondary border-0" />
       </FileUploadItem>
@@ -608,7 +623,7 @@ export const Bootstrap: Story = {
       style={frame}
       variant="unstyled"
     >
-      <FileUploadDropzone className="border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
+      <FileUploadDropzone className="d-flex align-items-center justify-content-center gap-2 border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
       <FileUploadList className="list-group mt-2">
         {(file) => (
           <FileUploadItem

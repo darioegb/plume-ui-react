@@ -416,3 +416,5 @@ export function Select({
 
   return <SelectContext.Provider value={context}>{children}</SelectContext.Provider>
 }
+
+Select.displayName = 'Select'

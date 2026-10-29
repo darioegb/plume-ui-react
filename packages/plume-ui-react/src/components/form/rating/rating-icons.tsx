@@ -20,3 +20,5 @@ export function StarIcon({ filled }: Readonly<{ filled: boolean }>): ReactNode {
     </svg>
   )
 }
+
+StarIcon.displayName = 'StarIcon'

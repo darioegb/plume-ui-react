@@ -198,3 +198,5 @@ export function DatePickerInput({
     </DatePickerInputContext.Provider>
   )
 }
+
+DatePickerInput.displayName = 'DatePickerInput'

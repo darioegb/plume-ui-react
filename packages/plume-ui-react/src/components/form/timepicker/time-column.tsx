@@ -107,3 +107,5 @@ export function TimeColumn<T extends number | string>({
     </TimeColumnContext.Provider>
   )
 }
+
+TimeColumn.displayName = 'TimeColumn'

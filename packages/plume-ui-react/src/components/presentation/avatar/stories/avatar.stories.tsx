@@ -381,7 +381,7 @@ export const Bootstrap: Story = {
   variant="unstyled"
 >
   <AvatarFallback className="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold w-100 h-100" />
-  <AvatarStatusDot className="position-absolute bottom-0 end-0 p-2 bg-success border border-light rounded-circle" />
+  <AvatarStatusDot className="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" />
 </Avatar>`,
       },
     },
@@ -396,7 +396,7 @@ export const Bootstrap: Story = {
         variant="unstyled"
       >
         <AvatarFallback className="d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-semibold w-100 h-100" />
-        <AvatarStatusDot className="position-absolute bottom-0 end-0 p-2 bg-success border border-light rounded-circle" />
+        <AvatarStatusDot className="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" />
       </Avatar>
       <Avatar
         className="rounded-circle border border-2 border-primary"

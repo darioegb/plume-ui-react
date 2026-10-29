@@ -31,3 +31,5 @@ export function SelectValue({ children, placeholder }: Readonly<SelectValueProps
   }
   return selectedOptions[0] ? <SelectValueOption option={selectedOptions[0]} /> : null
 }
+
+SelectValue.displayName = 'SelectValue'

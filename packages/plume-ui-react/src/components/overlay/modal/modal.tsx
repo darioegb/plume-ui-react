@@ -88,3 +88,5 @@ export function Modal({
     </ModalContext.Provider>
   )
 }
+
+Modal.displayName = 'Modal'

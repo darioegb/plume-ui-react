@@ -66,6 +66,8 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
   )
 }
 
+TabsProvider.displayName = 'TabsProvider'
+
 export const getTabId = (baseId: string, index: number): string => `${baseId}-tab-${index}`
 export const getPanelId = (baseId: string, index: number): string => `${baseId}-panel-${index}`
 

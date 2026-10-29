@@ -555,7 +555,7 @@ export const Bootstrap: Story = {
     docs: {
       source: {
         code: `<style>{'.bs-pagination [aria-current="page"]{background-color:var(--bs-primary);border-color:var(--bs-primary);color:#fff}.bs-pagination .page-link:disabled{color:var(--bs-secondary-color);pointer-events:none}'}</style>
-<Paginator className="bs-pagination" total={100} variant="unstyled">
+<Paginator className="bs-pagination" style={{ maxWidth: '100%', width: '28rem' }} total={100} variant="unstyled">
   <PaginatorList className="pagination mb-0">
     <PaginatorItem className="page-item">
       <PaginatorPrevious className="page-link" />
@@ -596,6 +596,7 @@ export const Bootstrap: Story = {
           page: 'page-link',
           previous: 'page-link',
         }}
+        style={{ maxWidth: '100%', width: '28rem' }}
         total={100}
         defaultPage={4}
         variant="unstyled"

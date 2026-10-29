@@ -29,8 +29,7 @@ const frame = { maxWidth: '100%', width: '28rem' }
 function Panels({
   className,
   fill = false,
-  light = false,
-}: Readonly<{ className?: string; fill?: boolean; light?: boolean }>): React.ReactNode {
+}: Readonly<{ className?: string; fill?: boolean }>): React.ReactNode {
   return (
     <CarouselSlides>
       {slides.map(({ background, caption, title }) => (
@@ -38,15 +37,15 @@ function Panels({
           <div
             style={{
               alignItems: 'flex-start',
-              background: light ? 'var(--plume-surface-muted)' : background,
+              background,
               boxSizing: 'border-box',
-              color: light ? 'var(--plume-foreground)' : '#fff',
+              color: '#fff',
               display: 'flex',
               flexDirection: 'column',
               height: fill ? '100%' : '11rem',
               justifyContent: 'flex-end',
               padding: fill ? '1rem 1rem 3.75rem 1.5rem' : '1rem 3.5rem',
-              textShadow: light ? undefined : '0 1px 2px rgb(0 0 0 / 50%)',
+              textShadow: '0 1px 2px rgb(0 0 0 / 50%)',
             }}
           >
             <strong style={{ fontSize: '1.25rem' }}>{title}</strong>
@@ -132,7 +131,7 @@ export default {
     labels: { control: false },
     colorScheme: { control: 'select', options: colorSchemes },
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
-    variant: { control: 'radio', options: ['solid', 'outline', 'ghost', 'overlay', 'unstyled'] },
+    variant: { control: 'radio', options: ['solid', 'overlay', 'unstyled'] },
     id: { control: false },
     title: { control: 'text' },
     hidden: { control: false },
@@ -159,26 +158,14 @@ type Story = StoryObj<typeof Carousel>
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick how the buttons look: `solid` (the default), `outline`, `ghost` and `overlay`,
- * which reads over a photo. `unstyled` drops the Plume styles so you can style them yourself.
+ * Use the **variant** prop to pick how the buttons look: `solid` (the default) and `overlay`, which reads over a
+ * photo. `unstyled` drops the Plume styles so you can style them yourself.
  */
 export const Variants: Story = {
   parameters: {
     docs: {
       source: {
         code: `<Carousel aria-label="Solid" variant="solid">
-  <CarouselSlides>{/* slides */}</CarouselSlides>
-  <CarouselPrev />
-  <CarouselNext />
-  <CarouselDots />
-</Carousel>
-<Carousel aria-label="Outline" variant="outline">
-  <CarouselSlides>{/* slides */}</CarouselSlides>
-  <CarouselPrev />
-  <CarouselNext />
-  <CarouselDots />
-</Carousel>
-<Carousel aria-label="Ghost" variant="ghost">
   <CarouselSlides>{/* slides */}</CarouselSlides>
   <CarouselPrev />
   <CarouselNext />
@@ -217,9 +204,9 @@ export const Variants: Story = {
   },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
-      {(['solid', 'outline', 'ghost', 'overlay'] as const).map((variant) => (
+      {(['solid', 'overlay'] as const).map((variant) => (
         <Carousel aria-label={variant} key={variant} variant={variant}>
-          <Panels light={variant === 'outline' || variant === 'ghost'} />
+          <Panels />
           <Arrows />
         </Carousel>
       ))}
@@ -405,7 +392,7 @@ export const Controls: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Carousel aria-label="Featured places" controls="inline" variant="outline">
+        code: `<Carousel aria-label="Featured places" controls="inline">
   <CarouselSlides>{/* slides */}</CarouselSlides>
   <div className="mt-3 flex items-center justify-between">
     <CarouselPrev />
@@ -418,7 +405,7 @@ export const Controls: Story = {
   },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
-      <Carousel aria-label="Bar with bars" controls="inline" variant="outline">
+      <Carousel aria-label="Bar with bars" controls="inline">
         <Panels />
         <div className="mt-3 flex items-center justify-between">
           <CarouselPrev />
@@ -426,7 +413,7 @@ export const Controls: Story = {
           <CarouselNext />
         </div>
       </Carousel>
-      <Carousel aria-label="Bar with numbers" colorScheme="secondary" controls="inline" variant="ghost">
+      <Carousel aria-label="Bar with numbers" colorScheme="secondary" controls="inline">
         <Panels />
         <div className="mt-3 flex items-center justify-center gap-2">
           <CarouselPrev />
@@ -650,8 +637,16 @@ export const Autoplay: Story = {
         <Panels />
         <CarouselPrev />
         <CarouselNext />
-        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
-          <CarouselPlayPause />
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            gap: '0.5rem',
+            justifyContent: 'center',
+            marginTop: '0.5rem',
+          }}
+        >
+          <CarouselPlayPause style={{ margin: 0 }} />
           <CarouselDots />
         </div>
       </>
@@ -840,13 +835,14 @@ export const Tailwind: Story = {
       source: {
         code: `<Carousel aria-label="Featured places" className="relative w-[28rem] max-w-full" variant="unstyled">
   <CarouselSlides className="overflow-x-auto rounded-xl">
-    <CarouselSlide><div className="grid h-40 place-items-center bg-primary-solid text-primary-on-solid">Mountains</div></CarouselSlide>
-    <CarouselSlide><div className="grid h-40 place-items-center bg-success-solid text-success-on-solid">Forest</div></CarouselSlide>
+    <CarouselSlide><div className="grid h-40 place-items-center bg-primary-solid font-semibold text-primary-on-solid">Mountains</div></CarouselSlide>
+    <CarouselSlide><div className="grid h-40 place-items-center bg-secondary-solid font-semibold text-primary-on-solid">Forest</div></CarouselSlide>
+    <CarouselSlide><div className="grid h-40 place-items-center bg-secondary-solid font-semibold text-primary-on-solid">Desert</div></CarouselSlide>
   </CarouselSlides>
   <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
   <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
   <CarouselDots className="mt-3 gap-2">
-    {() => <CarouselDot className="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid" />}
+    {() => <CarouselDot className="size-3 rounded-full bg-border data-[active]:bg-primary-solid" />}
   </CarouselDots>
 </Carousel>`,
       },
@@ -869,7 +865,7 @@ export const Tailwind: Story = {
       <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
       <CarouselDots className="mt-3 gap-2">
         {() => (
-          <CarouselDot className="size-2.5 rounded-full bg-border data-[active]:w-6 data-[active]:bg-primary-solid" />
+          <CarouselDot className="size-3 rounded-full bg-border data-[active]:bg-primary-solid" />
         )}
       </CarouselDots>
     </Carousel>
@@ -889,12 +885,13 @@ export const Bootstrap: Story = {
   <CarouselSlides>
     <CarouselSlide><div className="card text-bg-primary p-5 text-center">Mountains</div></CarouselSlide>
     <CarouselSlide><div className="card text-bg-success p-5 text-center">Forest</div></CarouselSlide>
+    <CarouselSlide><div className="card text-bg-success p-5 text-center">Desert</div></CarouselSlide>
   </CarouselSlides>
-  <style>{'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}</style>
+  <style>{'.bs-carousel [data-plume-carousel-dot]{height:.75rem;width:.75rem}.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)!important;opacity:1!important}'}</style>
   <div className="d-flex align-items-center justify-content-between mt-2">
     <CarouselPrev className="btn btn-outline-secondary btn-sm" />
     <CarouselDots className="d-flex gap-2">
-      {() => <CarouselDot className="rounded-circle bg-secondary-subtle p-1 border-0" />}
+      {() => <CarouselDot className="rounded-circle bg-secondary opacity-50 border-0" />}
     </CarouselDots>
     <CarouselNext className="btn btn-outline-secondary btn-sm" />
   </div>
@@ -916,12 +913,14 @@ export const Bootstrap: Story = {
         ))}
       </CarouselSlides>
       <style>
-        {'.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)}'}
+        {
+          '.bs-carousel [data-plume-carousel-dot]{height:.75rem;width:.75rem}.bs-carousel [data-plume-carousel-dot][data-active]{background-color:var(--bs-primary)!important;opacity:1!important}'
+        }
       </style>
       <div className="d-flex align-items-center justify-content-between mt-2">
         <CarouselPrev className="btn btn-outline-secondary btn-sm" />
         <CarouselDots className="d-flex gap-2">
-          {() => <CarouselDot className="rounded-circle bg-secondary p-1 border-0" />}
+          {() => <CarouselDot className="rounded-circle bg-secondary opacity-50 border-0" />}
         </CarouselDots>
         <CarouselNext className="btn btn-outline-secondary btn-sm" />
       </div>

@@ -28,3 +28,5 @@ export function DatePickerIcon({ name }: Readonly<{ name: DatePickerIconName }>)
     </svg>
   )
 }
+
+DatePickerIcon.displayName = 'DatePickerIcon'

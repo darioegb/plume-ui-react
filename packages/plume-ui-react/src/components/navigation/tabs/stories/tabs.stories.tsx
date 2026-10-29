@@ -660,8 +660,8 @@ export const Tailwind: Story = {
   @apply mt-3;
 }
 // custom-tab.tsx
-<Tabs>
-  <TabList className="underline-tabs">
+<Tabs className="underline-tabs">
+  <TabList>
     <Tab label="One" />
     <Tab label="Two" />
     <Tab label="Three" />

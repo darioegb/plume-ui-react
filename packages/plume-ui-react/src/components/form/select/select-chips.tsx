@@ -44,3 +44,5 @@ export function SelectChips({
     </>
   )
 }
+
+SelectChips.displayName = 'SelectChips'

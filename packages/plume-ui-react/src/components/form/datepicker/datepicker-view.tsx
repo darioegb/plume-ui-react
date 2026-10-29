@@ -27,3 +27,5 @@ export function DatePickerView({ children }: Readonly<DatePickerViewProps>): Rea
     </>
   )
 }
+
+DatePickerView.displayName = 'DatePickerView'

@@ -115,3 +115,5 @@ export function TimePickerInput({
     </>
   )
 }
+
+TimePickerInput.displayName = 'TimePickerInput'

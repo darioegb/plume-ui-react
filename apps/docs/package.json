@@ -3,14 +3,15 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "dev": "node scripts/generate-api.mjs && node scripts/generate-stackblitz.mjs && storybook dev -p 6006",
-    "build": "node scripts/generate-api.mjs && node scripts/generate-stackblitz.mjs && NODE_ENV=prod storybook build --docs",
+    "dev": "node scripts/generate-api.mjs && node scripts/generate-stackblitz.mjs && node scripts/generate-bootstrap-scope.mjs && storybook dev -p 6006",
+    "build": "node scripts/generate-api.mjs && node scripts/generate-stackblitz.mjs && node scripts/generate-bootstrap-scope.mjs && NODE_ENV=prod storybook build --docs",
     "preview-storybook": "serve storybook-static",
     "clean": "rm -rf .turbo && rm -rf node_modules",
     "lint": "node scripts/generate-stackblitz.mjs && eslint src/ && node scripts/generate-api.mjs && node scripts/check-api.mjs",
     "lint:fix": "node scripts/generate-stackblitz.mjs && eslint src/ --fix",
     "generate:api": "node scripts/generate-api.mjs",
     "generate:stackblitz": "node scripts/generate-stackblitz.mjs",
+    "generate:bootstrap": "node scripts/generate-bootstrap-scope.mjs",
     "check:api": "node scripts/generate-api.mjs && node scripts/check-api.mjs"
   },
   "dependencies": {

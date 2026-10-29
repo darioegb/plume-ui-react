@@ -368,6 +368,13 @@ export const Colors: Story = {
  * DatePicker configured for selecting a range of dates.
  */
 export const RangeSelection: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" range />`,
+      },
+    },
+  },
   args: {
     range: true,
   },
@@ -377,6 +384,17 @@ export const RangeSelection: Story = {
  * DatePicker with minimum and maximum selectable dates.
  */
 export const WithMinMaxDates: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  aria-label="Date"
+  maxDate={new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15)}
+  minDate={new Date()}
+/>`,
+      },
+    },
+  },
   args: {
     minDate: new Date(),
     maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 15),
@@ -387,6 +405,13 @@ export const WithMinMaxDates: Story = {
  * DatePicker with footer actions.
  */
 export const WithFooterActions: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" showFooter />`,
+      },
+    },
+  },
   args: {
     showFooter: true,
   },
@@ -399,6 +424,27 @@ export const WithFooterActions: Story = {
  * and `labels` only needs the texts you want to change.
  */
 export const CustomConfiguration: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker
+  aria-label="Fecha"
+  labels={{
+    apply: 'Aplicar',
+    calendar: 'Calendario',
+    cancel: 'Cancelar',
+    nextMonth: 'Mes siguiente',
+    nextYears: 'Años siguientes',
+    openCalendar: 'Abrir calendario',
+    previousMonth: 'Mes anterior',
+    previousYears: 'Años anteriores',
+  }}
+  locale="es"
+  showFooter
+/>`,
+      },
+    },
+  },
   args: {
     showFooter: true,
     locale: 'es',
@@ -547,6 +593,13 @@ export const CalendarTheming: Story = {
  * The disabled state add **.disabled** class,
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker aria-label="Date" disabled />`,
+      },
+    },
+  },
   args: {
     disabled: true,
   },
@@ -567,7 +620,7 @@ export const Compound: Story = {
 }
 
 /**
- * Some examples of DatePicker with custom classes from tailwind.
+ * An example of DatePicker with custom classes from tailwind.
  * Set **variant="unstyled"** so Plume styles don't override your utility classes.
  *
  * Note: the `className` of the `DatePickerField` only restyles the **input**, and with `variant="unstyled"` the
@@ -588,17 +641,6 @@ export const Tailwind: Story = {
     </InputControl>
   </DatePickerInput>
   <DatePickerCalendar />
-</DatePicker>
-<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
-  <DatePickerInput aria-label="Pill date" placeholder="Pill date">
-    <InputControl>
-      <DatePickerField className="block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
-      <InputElement position="after">
-        <DatePickerTrigger />
-      </InputElement>
-    </InputControl>
-  </DatePickerInput>
-  <DatePickerCalendar />
 </DatePicker>`,
       },
     },
@@ -614,22 +656,11 @@ export const Tailwind: Story = {
       setValue(newValue)
     }
     return (
-      <div className='flex flex-col gap-4 w-72 max-w-full'>
+      <div className='w-72 max-w-full'>
         <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Pick a date' placeholder='Pick a date'>
             <InputControl>
               <DatePickerField className='block w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
-              <InputElement position='after'>
-                <DatePickerTrigger />
-              </InputElement>
-            </InputControl>
-          </DatePickerInput>
-          <DatePickerCalendar />
-        </DatePicker>
-        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
-          <DatePickerInput aria-label='Pill date' placeholder='Pill date'>
-            <InputControl>
-              <DatePickerField className='block w-full rounded-full border border-gray-200 px-4 py-2.5 text-sm text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white' />
               <InputElement position='after'>
                 <DatePickerTrigger />
               </InputElement>
@@ -643,7 +674,7 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of DatePicker with custom classes from bootstrap.
+ * An example of DatePicker with custom classes from bootstrap.
  * Set **variant="unstyled"** so Plume styles don't override the bootstrap classes.
  *
  * Note: `variant` and the `className` of the `DatePickerField` only restyle the **input**. The calendar
@@ -664,17 +695,6 @@ export const Bootstrap: Story = {
     </InputControl>
   </DatePickerInput>
   <DatePickerCalendar />
-</DatePicker>
-<DatePicker onValueChange={handleValueChange} value={value} variant="unstyled">
-  <DatePickerInput aria-label="Large date" placeholder="Large date">
-    <InputControl>
-      <DatePickerField className="form-control form-control-lg" />
-      <InputElement position="after">
-        <DatePickerTrigger />
-      </InputElement>
-    </InputControl>
-  </DatePickerInput>
-  <DatePickerCalendar />
 </DatePicker>`,
       },
     },
@@ -690,22 +710,11 @@ export const Bootstrap: Story = {
       setValue(newValue)
     }
     return (
-      <div className='d-flex flex-column gap-3' style={{ width: '18rem', maxWidth: '100%' }}>
+      <div style={{ width: '18rem', maxWidth: '100%' }}>
         <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
           <DatePickerInput aria-label='Default date' placeholder='Default date'>
             <InputControl>
               <DatePickerField className='form-control' />
-              <InputElement position='after'>
-                <DatePickerTrigger />
-              </InputElement>
-            </InputControl>
-          </DatePickerInput>
-          <DatePickerCalendar />
-        </DatePicker>
-        <DatePicker onValueChange={handleValueChange} value={value} variant='unstyled'>
-          <DatePickerInput aria-label='Large date' placeholder='Large date'>
-            <InputControl>
-              <DatePickerField className='form-control form-control-lg' />
               <InputElement position='after'>
                 <DatePickerTrigger />
               </InputElement>

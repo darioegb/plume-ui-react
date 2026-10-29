@@ -36,3 +36,5 @@ export function PaginatorPages({ children }: Readonly<PaginatorPagesProps>): Rea
     </Fragment>
   ))
 }
+
+PaginatorPages.displayName = 'PaginatorPages'

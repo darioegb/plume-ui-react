@@ -129,3 +129,5 @@ export function Dropdown({
 
   return <DropdownContext.Provider value={context}>{children}</DropdownContext.Provider>
 }
+
+Dropdown.displayName = 'Dropdown'
