@@ -63,12 +63,10 @@ export function getDaysOfWeekByLanguage(language?: string): string[] {
 
 export function getMonthsByLanguage(language?: string): string[] {
   const locale = getLocale(language)
-  const formatter = new Intl.DateTimeFormat(locale, { month: 'long' })
-  return Array.from({ length: 12 }, (_, index) => {
-    const date = new Date()
-    date.setMonth(index)
-    return formatter.format(date).replace(/^\w/, (c) => c.toUpperCase())
-  })
+  const formatter = new Intl.DateTimeFormat(locale, { month: 'long', timeZone: 'UTC' })
+  return Array.from({ length: 12 }, (_, index) =>
+    formatter.format(new Date(Date.UTC(2024, index, 1))).replace(/^\w/, (c) => c.toUpperCase()),
+  )
 }
 
 export function getDateStringByLanguage({
