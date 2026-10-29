@@ -9,8 +9,18 @@ const PLUME_NAMES = new Set(Object.keys(plume))
 
 const WRAPPER_NAMES = ['App', 'Example', 'Story', 'Demo']
 
-const STUBS: [RegExp, (name: string) => string][] = [
-  [/^App$/, (name) => `const ${name} = () => <p>Your app goes here.</p>`],
+const TOAST_APP = (name: string): string => `const ${name} = () => {
+  const toast = useToast()
+  return (
+    <Button
+      label="Show toast"
+      onClick={() => toast.success({ title: 'Saved', description: 'Your changes were saved.' })}
+    />
+  )
+}`
+
+const STUBS: [RegExp, (name: string, code: string) => string][] = [
+  [/^App$/, (name, code) => (/\bToastProvider\b/.test(code) ? TOAST_APP(name) : `const ${name} = () => <p>Your app goes here.</p>`)],
   [/^[A-Z]\w*Icon$/, (name) => `const ${name} = () => <span aria-hidden="true">●</span>`],
   [/^[a-z]\w*Icon$/, (name) => `const ${name} = <span aria-hidden="true">●</span>`],
   [/^(handle|on|set)[A-Z]\w*$/, (name) => `const ${name} = (..._args: unknown[]) => undefined`],
@@ -34,13 +44,21 @@ function renderedComponent(code: string): string | null {
   return /^\s*function\s+([A-Z]\w*)/m.exec(code)?.[1] ?? null
 }
 
+const SIBLINGS_ROW = '<div style={{ alignItems: "center", display: "flex", flexWrap: "wrap", gap: "1rem" }}>'
+
+const rootOf = (jsx: string): [string, string] =>
+  (jsx.match(/^<[A-Za-z]/gm) ?? []).length > 1 ? [SIBLINGS_ROW, '</div>'] : ['<>', '</>']
+
 function wrap(code: string, name: string): string {
   if (/^\{/.test(code) && /\brender\s*:/.test(code)) {
     return `const storyDefinition = ${code}\n\nexport default function ${name}() {\n  return storyDefinition.render(storyDefinition.args ?? {})\n}\n`
   }
   if (/^return\b/m.test(code)) return `export default function ${name}() {\n${code}\n}\n`
   const statements = /^\s*(function|const|let|class)\b/.test(code)
-  if (!statements) return `export default function ${name}() {\n  return (\n<>\n${code}\n</>\n  )\n}\n`
+  if (!statements) {
+    const [open, close] = rootOf(code)
+    return `export default function ${name}() {\n  return (\n${open}\n${code}\n${close}\n  )\n}\n`
+  }
   const jsx = code.search(/^<[A-Za-z]/m)
   if (jsx < 0) {
     const component = renderedComponent(code)
@@ -48,7 +66,8 @@ function wrap(code: string, name: string): string {
       ? `${code}\nexport default function ${name}() {\n  return <${component} />\n}\n`
       : `${code}\nexport default function ${name}() {\n  return null\n}\n`
   }
-  return `export default function ${name}() {\n${code.slice(0, jsx)}\n  return (\n<>\n${code.slice(jsx)}\n</>\n  )\n}\n`
+  const [open, close] = rootOf(code.slice(jsx))
+  return `export default function ${name}() {\n${code.slice(0, jsx)}\n  return (\n${open}\n${code.slice(jsx)}\n${close}\n  )\n}\n`
 }
 
 type Locals = Record<string, string>
@@ -73,12 +92,21 @@ function collectLocals(code: string, locals: Locals): string[] {
 
 const FILE_MARKER = /^\/\/ [\w.-]+\.\w+$/m
 
+const snippetFiles = (code: string): string[] =>
+  FILE_MARKER.test(code.trim().split('\n')[0] ?? '') ? code.split(/^(?=\/\/ [\w.-]+\.\w+$)/m) : []
+
 function componentFile(code: string): string {
-  if (!FILE_MARKER.test(code.trim().split('\n')[0] ?? '')) return code
-  const files = code.split(/^(?=\/\/ [\w.-]+\.\w+$)/m)
-  const source = files.filter((file) => /^\/\/ [\w.-]+\.(tsx|jsx)\b/.test(file)).pop()
+  const source = snippetFiles(code)
+    .filter((file) => /^\/\/ [\w.-]+\.(tsx|jsx)\b/.test(file))
+    .pop()
   return source ? source.replace(/^\/\/ .*\n/, '') : code
 }
+
+const stylesOf = (code: string): string =>
+  snippetFiles(code)
+    .filter((file) => /^\/\/ [\w.-]+\.css\b/.test(file))
+    .map((file) => file.replace(/^\/\/ .*\n/, '').trim())
+    .join('\n\n')
 
 export function buildApp(original: string, locals: Locals = {}): string {
   const code = componentFile(original)
@@ -86,15 +114,15 @@ export function buildApp(original: string, locals: Locals = {}): string {
   const all = [code, ...extra].join('\n')
   const used = words(all)
   const wrapperName = WRAPPER_NAMES.find((name) => !used.includes(name)) ?? 'PlumeStoryExample'
-  const plumeNames = used.filter((word) => PLUME_NAMES.has(word) && !declares(all, word))
   const hooks = REACT_HOOKS.filter((hook) => used.includes(hook))
   const form = FORM_LIBRARY.filter((name) => used.includes(name) && !declares(all, name))
   const stubs = used.flatMap((name) => {
     if (declares(all, name) || PLUME_NAMES.has(name)) return []
     if (!/Icon$/.test(name) && !referenced(code, name)) return []
     const stub = STUBS.find(([pattern]) => pattern.test(name))
-    return stub ? [stub[1](name)] : []
+    return stub ? [stub[1](name, code)] : []
   })
+  const plumeNames = words([all, ...stubs].join('\n')).filter((word) => PLUME_NAMES.has(word) && !declares(all, word))
   const reactImport = used.includes('React') && !declares(all, 'React') ? 'React' : ''
   const reactNames = [reactImport, hooks.length ? `{ ${hooks.join(', ')} }` : ''].filter(Boolean)
   const header = [
@@ -122,7 +150,10 @@ const classTokens = (code: string): string[] =>
     (match[1] ?? match[2] ?? match[3] ?? '').split(/\s+/).filter(Boolean),
   )
 
-const stylesheetOf = (code: string): 'bootstrap' | 'tailwind' | null => {
+const stylesheetOf = (code: string, name: string): 'bootstrap' | 'tailwind' | null => {
+  if (/--bootstrap$/.test(name)) return 'bootstrap'
+  if (/--tailwind$/.test(name)) return 'tailwind'
+  if (/@apply\b/.test(stylesOf(code))) return 'tailwind'
   const tokens = classTokens(code)
   if (tokens.some((token) => BOOTSTRAP_TOKEN.test(token))) return 'bootstrap'
   return tokens.some((token) => TAILWIND_TOKEN.test(token)) ? 'tailwind' : null
@@ -179,14 +210,14 @@ createRoot(document.getElementById('root')!).render(
 )
 `
 
-const indexHtml = (stylesheet: 'bootstrap' | 'tailwind' | null, colorMode: ColorMode): string => {
+const indexHtml = (stylesheet: 'bootstrap' | 'tailwind' | null, colorMode: ColorMode, styles: string): string => {
   const tailwind =
     stylesheet === 'tailwind'
       ? `    <script src="${TAILWIND_CDN}"></script>
     <script>
       tailwind.config = ${JSON.stringify({ ...sandbox.tailwind, corePlugins: { preflight: false } })}
     </script>
-`
+${styles ? `    <style type="text/tailwindcss">\n${styles}\n    </style>\n` : ''}`
       : ''
   return `<!doctype html>
 <html lang="en"${stylesheet === 'bootstrap' ? ` data-bs-theme="${colorMode}"` : ''}>
@@ -203,10 +234,10 @@ ${tailwind}  </head>
 `
 }
 
-const indexCss = (stylesheet: 'bootstrap' | 'tailwind' | null): string =>
+const indexCss = (stylesheet: 'bootstrap' | 'tailwind' | null, styles: string): string =>
   `@layer reset, base, plume, components, utilities;\n${
-    stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}');\n` : ''
-  }`
+    stylesheet ? "@import './reset.css' layer(reset);\n" : ''
+  }${stylesheet === 'bootstrap' ? `@import url('${BOOTSTRAP_CSS}');\n` : ''}${styles ? `\n${styles}\n` : ''}`
 
 const themeFile = (): string => `import type { DeepPartial, Theme } from 'plume-ui-react'
 
@@ -244,10 +275,13 @@ export function buildSandbox(
 ): SandboxFiles {
   const app = buildApp(code, locals)
   const form = /from 'react-hook-form'/.test(app)
-  const stylesheet = stylesheetOf(code)
+  const stylesheet = stylesheetOf(code, name)
+  const styles = stylesOf(code)
+  const tailwindStyles = stylesheet === 'tailwind' ? styles : ''
   return {
+    ...(stylesheet ? { 'src/reset.css': sandbox.reset } : {}),
     '.stackblitzrc': JSON.stringify({ installDependencies: true, startCommand: 'npm run dev' }),
-    'index.html': indexHtml(stylesheet, colorMode),
+    'index.html': indexHtml(stylesheet, colorMode, tailwindStyles),
     'package.json': JSON.stringify(
       {
         name: `plume-ui-react-${name}`,
@@ -261,7 +295,7 @@ export function buildSandbox(
       2,
     ),
     'src/App.tsx': app,
-    'src/index.css': indexCss(stylesheet),
+    'src/index.css': indexCss(stylesheet, stylesheet === 'tailwind' ? '' : styles),
     'src/main.tsx': mainFor(colorMode),
     'src/theme.ts': themeFile(),
     'tsconfig.json': JSON.stringify(TSCONFIG, null, 2),

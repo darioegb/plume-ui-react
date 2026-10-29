@@ -35,7 +35,15 @@ new Function('module', 'exports', ts.transpileModule(readFileSync(tailwindPath, 
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 }).outputText)(tailwindModule, tailwindModule.exports)
 const preset = tailwindModule.exports.default
+const docsRequire = createRequire(path.join(here, '../package.json'))
+const tailwindRequire = createRequire(path.resolve(here, '../../../packages/tailwind-config/package.json'))
+const reset = (
+  await docsRequire('postcss')([
+    tailwindRequire('tailwindcss')({ config: path.resolve(here, '../tailwind.config.ts'), content: [{ raw: '' }] }),
+  ]).process(readFileSync(path.resolve(here, '../reset.css'), 'utf8'), { from: undefined })
+).css
 const sandbox = {
+  reset,
   tailwind: { darkMode: preset.darkMode, theme: preset.theme },
   dependencies: pick(manifest.dependencies, ['plume-ui-react', 'react', 'react-dom']),
   devDependencies: pick(manifest.devDependencies, ['@vitejs/plugin-react', 'vite']),
