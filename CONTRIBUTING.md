@@ -4,7 +4,7 @@ Thanks for your interest in improving Plume UI React. Please read the [Code of C
 
 ## Reporting issues
 
-[Open an issue](https://github.com/darioegb/plume-ui-react/issues) for bugs, feature requests or questions. For bugs, include the package and version, what you expected, what happened, and a minimal reproduction (the [Vite playground on StackBlitz](https://stackblitz.com/github/darioegb/plume-ui-react/tree/main/apps/example-vite) is a quick way to share one). For larger changes, open an issue to discuss them before sending a pull request.
+[Open an issue](https://github.com/darioegb/plume-ui-react/issues) for bugs, feature requests or questions. For bugs, include the package and version, what you expected, what happened, and a minimal reproduction (the [Vite playground on StackBlitz](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-examples--docs) is a quick way to share one). For larger changes, open an issue to discuss them before sending a pull request.
 
 ## Setting up
 

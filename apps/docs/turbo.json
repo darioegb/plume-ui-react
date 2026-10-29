@@ -1,0 +1,13 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/apps/example-vite/*.{html,json,md,ts}",
+        "$TURBO_ROOT$/apps/example-vite/{public,src}/**"
+      ]
+    }
+  }
+}
