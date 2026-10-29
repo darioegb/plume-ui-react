@@ -1,5 +1,17 @@
 # plume-ui-react
 
+## 0.41.1
+
+### Patch Changes
+
+- [#234](https://github.com/darioegb/plume-ui-react/pull/234) [`1dbeb12059a41314e907a0a0aa3131a9d769eb94`](https://github.com/darioegb/plume-ui-react/commit/1dbeb12059a41314e907a0a0aa3131a9d769eb94) Thanks [@darioegb](https://github.com/darioegb)! - Fix the month list of the `DatePicker` on the 29th, 30th and 31st of a month: it showed March twice and no February (and repeated the 31st month in the months of 30 days), because the names were built by moving today's date to each month.
+
+## 0.41.0
+
+### Minor Changes
+
+- [#231](https://github.com/darioegb/plume-ui-react/pull/231) [`c3c599d5dea5d837050abe670134d1eec70d35ad`](https://github.com/darioegb/plume-ui-react/commit/c3c599d5dea5d837050abe670134d1eec70d35ad) Thanks [@darioegb](https://github.com/darioegb)! - The stylesheets `plume-ui-react/css/<component>.css` no longer import `tokens.css`. Import `plume-ui-react/tokens.css` once, before them, and then the sheet of each component. A bundler that does not remove the repeated `@import` (Vite 7 and earlier) copied the 21 KB of tokens in every sheet: an app with 25 of them shipped 25 copies, 662 KB of CSS instead of 113 KB.
+
 ## 0.40.0
 
 ### Minor Changes

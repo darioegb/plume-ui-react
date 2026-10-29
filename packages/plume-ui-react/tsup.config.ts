@@ -100,9 +100,7 @@ async function emitComponentStylesheets(): Promise<void> {
   await Promise.all(
     Object.entries(units).map(async ([name, unit]) => {
       const { code } = await transform(unit.css, { loader: 'css', minify: true })
-      const imports = ['../tokens.css', ...unit.imports.map((dep) => `./${dep}.css`)]
-        .map((file) => `@import '${file}';`)
-        .join('')
+      const imports = unit.imports.map((dep) => `@import './${dep}.css';`).join('')
       await fsPromises.writeFile(
         `dist/css/${name}.css`,
         `@layer base,plume,components,utilities;${imports}@layer plume{${code}}`,
