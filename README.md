@@ -107,7 +107,6 @@ import 'plume-ui-react/css/input.css'
 | Popover | [Popover](https://darioegb.github.io/plume-ui-react/?path=/docs/components-popover--docs) |
 | ProgressBar | [ProgressBar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-progressbar--docs) |
 | Radio | [Radio](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radio--docs) |
-| RadioGroup | [RadioGroup](https://darioegb.github.io/plume-ui-react/?path=/docs/components-radiogroup--docs) |
 | Rating | [Rating](https://darioegb.github.io/plume-ui-react/?path=/docs/components-rating--docs) |
 | Select | [Select](https://darioegb.github.io/plume-ui-react/?path=/docs/components-select--docs) |
 | Sidebar | [Sidebar](https://darioegb.github.io/plume-ui-react/?path=/docs/components-sidebar--docs) |
