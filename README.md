@@ -65,9 +65,10 @@ export function App() {
 }
 ```
 
-To load only the CSS of some components, import their stylesheets instead (each one brings the tokens and the CSS of the components it renders):
+To load only the CSS of some components, import `tokens.css` once and then the stylesheet of each component (each one brings the CSS of the components it renders):
 
 ```tsx
+import 'plume-ui-react/tokens.css'
 import 'plume-ui-react/css/button.css'
 import 'plume-ui-react/css/input.css'
 ```
