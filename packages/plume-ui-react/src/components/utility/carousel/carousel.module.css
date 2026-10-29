@@ -145,7 +145,7 @@
 }
 
 .playPause {
-  margin-inline: auto;
+  margin: var(--plume-space-2) auto 0;
 }
 
 .dots {

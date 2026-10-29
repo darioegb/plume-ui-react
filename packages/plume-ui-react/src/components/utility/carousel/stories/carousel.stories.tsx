@@ -637,8 +637,16 @@ export const Autoplay: Story = {
         <Panels />
         <CarouselPrev />
         <CarouselNext />
-        <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
-          <CarouselPlayPause />
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            gap: '0.5rem',
+            justifyContent: 'center',
+            marginTop: '0.5rem',
+          }}
+        >
+          <CarouselPlayPause style={{ margin: 0 }} />
           <CarouselDots />
         </div>
       </>
