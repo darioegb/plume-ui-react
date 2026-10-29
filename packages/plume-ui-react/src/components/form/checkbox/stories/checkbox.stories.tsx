@@ -253,7 +253,7 @@ export const Tailwind: Story = {
       source: {
         code: `<div className="flex flex-col gap-3">
   <Field label="Accept the terms" orientation="inline">
-    <Checkbox className="h-4 w-4 rounded accent-blue-600" variant="unstyled" />
+    <Checkbox className="h-4 w-4 rounded-sm accent-blue-600" variant="unstyled" />
   </Field>
   <Field label="Subscribe to the newsletter" orientation="inline">
     <Checkbox className="h-5 w-5 accent-emerald-600" defaultChecked variant="unstyled" />
@@ -268,7 +268,7 @@ export const Tailwind: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <Field label="Accept the terms" orientation="inline">
-        <Checkbox className="h-4 w-4 rounded accent-blue-600" variant="unstyled" />
+        <Checkbox className="h-4 w-4 rounded-sm accent-blue-600" variant="unstyled" />
       </Field>
       <Field label="Subscribe to the newsletter" orientation="inline">
         <Checkbox className="h-5 w-5 accent-emerald-600" defaultChecked variant="unstyled" />

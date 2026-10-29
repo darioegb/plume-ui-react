@@ -596,14 +596,14 @@ function ControlledTree(): React.ReactNode {
       <p className="text-sm">Open: {expanded.join(', ') || 'nothing'}</p>
       <div className="flex gap-2">
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setExpanded(['src', 'components', 'public'])}
           type="button"
         >
           Open all
         </button>
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setExpanded([])}
           type="button"
         >
@@ -663,14 +663,14 @@ export const Controlled: Story = {
       <p className="text-sm">Open: {expanded.join(', ') || 'nothing'}</p>
       <div className="flex gap-2">
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setExpanded(['src', 'components', 'public'])}
           type="button"
         >
           Open all
         </button>
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setExpanded([])}
           type="button"
         >
@@ -771,7 +771,7 @@ export const Tailwind: Story = {
     docs: {
       source: {
         code: `<Tree aria-label="Project files" className="text-sm text-foreground" defaultExpanded={["src"]} variant="unstyled">
-  <TreeItem className="group outline-none" value="src">
+  <TreeItem className="group outline-hidden" value="src">
     <TreeItemLabel
       className="flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-3 hover:bg-surface-muted group-aria-[selected=true]:bg-primary-solid group-aria-[selected=true]:text-primary-on-solid group-focus-visible:ring-2 group-focus-visible:ring-primary-solid [&_[data-plume-tree-chevron]]:group-aria-[expanded=true]:rotate-90"
       style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}
@@ -779,7 +779,7 @@ export const Tailwind: Story = {
       src
     </TreeItemLabel>
     <TreeItemGroup>
-      <TreeItem className="group outline-none" value="index">
+      <TreeItem className="group outline-hidden" value="index">
         <TreeItemLabel className="..." style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}>index.ts</TreeItemLabel>
       </TreeItem>
     </TreeItemGroup>
@@ -801,24 +801,24 @@ export const Tailwind: Story = {
         style={frame}
         variant="unstyled"
       >
-        <TreeItem className="group outline-none" value="src">
+        <TreeItem className="group outline-hidden" value="src">
           <TreeItemLabel className={row} style={indent}>
             src
           </TreeItemLabel>
           <TreeItemGroup>
-            <TreeItem className="group outline-none" value="index">
+            <TreeItem className="group outline-hidden" value="index">
               <TreeItemLabel className={row} style={indent}>
                 index.ts
               </TreeItemLabel>
             </TreeItem>
-            <TreeItem className="group outline-none" value="tree">
+            <TreeItem className="group outline-hidden" value="tree">
               <TreeItemLabel className={row} style={indent}>
                 tree.tsx
               </TreeItemLabel>
             </TreeItem>
           </TreeItemGroup>
         </TreeItem>
-        <TreeItem className="group outline-none" value="readme">
+        <TreeItem className="group outline-hidden" value="readme">
           <TreeItemLabel className={row} style={indent}>
             README.md
           </TreeItemLabel>

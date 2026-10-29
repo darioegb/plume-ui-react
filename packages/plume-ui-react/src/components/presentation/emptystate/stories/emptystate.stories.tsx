@@ -265,7 +265,7 @@ export const Tailwind: Story = {
   </EmptyStateDescription>
   <EmptyStateAction className="mt-3">
     <Button
-      className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
       label="Create a project"
       variant="unstyled"
     />
@@ -286,7 +286,7 @@ export const Tailwind: Story = {
       </EmptyStateDescription>
       <EmptyStateAction className="mt-3">
         <Button
-          className="rounded bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-800"
           label="Create a project"
           variant="unstyled"
         />

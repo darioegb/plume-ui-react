@@ -97,7 +97,7 @@ export const Variants: Story = {
       <PinInput aria-label="Unstyled" className="flex gap-2" length={4} variant="unstyled">
         {[0, 1, 2, 3].map((index) => (
           <PinInputCell
-            className="h-10 w-10 rounded border border-gray-400 text-center"
+            className="h-10 w-10 rounded-sm border border-gray-400 text-center"
             index={index}
             key={index}
           />
@@ -190,7 +190,7 @@ function OtpExample(): React.ReactNode {
         {done ? `Code entered: ${done}` : `Typed: ${value || 'nothing yet'}`}
       </p>
       <button
-        className="rounded border border-gray-400 px-2 py-1 text-sm"
+        className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
         onClick={() => setValue('')}
         type="button"
       >
@@ -266,7 +266,7 @@ export const InAForm: Story = {
       }}
     >
       <PinInput aria-label="Verification code" length={4} name="code" />
-      <button className="rounded border border-gray-400 px-3 py-1 text-sm" type="submit">
+      <button className="rounded-sm border border-gray-400 px-3 py-1 text-sm" type="submit">
         Verify
       </button>
     </form>
@@ -339,7 +339,7 @@ export const Tailwind: Story = {
         code: `<PinInput aria-label="Verification code" className="flex gap-2" length={6} variant="unstyled">
   {[0, 1, 2, 3, 4, 5].map((index) => (
     <PinInputCell
-      className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+      className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200 data-[filled]:border-blue-500"
       index={index}
       key={index}
     />
@@ -352,7 +352,7 @@ export const Tailwind: Story = {
     <PinInput aria-label="Verification code" className="flex gap-2" length={6} variant="unstyled">
       {[0, 1, 2, 3, 4, 5].map((index) => (
         <PinInputCell
-          className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200 data-[filled]:border-blue-500"
+          className="h-12 w-10 rounded-lg border border-border bg-surface text-center text-lg text-foreground focus:border-blue-500 focus:outline-hidden focus:ring-3 focus:ring-blue-200 data-[filled]:border-blue-500"
           index={index}
           key={index}
         />

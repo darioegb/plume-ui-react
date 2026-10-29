@@ -400,7 +400,7 @@ export const Nested: Story = {
         <div className="flex flex-col gap-2" style={{ maxWidth: '100%', width: '26rem' }}>
           <button
             aria-expanded={outer}
-            className="self-start rounded border border-gray-400 px-3 py-1 text-sm"
+            className="self-start rounded-sm border border-gray-400 px-3 py-1 text-sm"
             onClick={() => setOuter(!outer)}
             type="button"
           >
@@ -411,7 +411,7 @@ export const Nested: Story = {
               <p>{text}</p>
               <button
                 aria-expanded={inner}
-                className="self-start rounded border border-gray-400 px-3 py-1"
+                className="self-start rounded-sm border border-gray-400 px-3 py-1"
                 onClick={() => setInner(!inner)}
                 type="button"
               >
@@ -469,7 +469,7 @@ export const Tailwind: Story = {
       source: {
         code: `const [open, setOpen] = useState(false)
 
-<button aria-controls="more" aria-expanded={open} className="rounded bg-primary-solid px-3 py-1 text-sm text-primary-on-solid" onClick={() => setOpen(!open)} type="button">
+<button aria-controls="more" aria-expanded={open} className="rounded-sm bg-primary-solid px-3 py-1 text-sm text-primary-on-solid" onClick={() => setOpen(!open)} type="button">
   Details
 </button>
 <Collapse id="more" open={open} variant="unstyled">
@@ -488,7 +488,7 @@ export const Tailwind: Story = {
           <button
             aria-controls="tailwind-more"
             aria-expanded={open}
-            className="rounded bg-primary-solid px-3 py-1 text-sm text-primary-on-solid"
+            className="rounded-sm bg-primary-solid px-3 py-1 text-sm text-primary-on-solid"
             onClick={() => setOpen(!open)}
             type="button"
           >

@@ -467,7 +467,7 @@ export const Tailwind: Story = {
         code: `<Modal variant="unstyled">
   <ModalTrigger>
     <Button
-      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
       label="Open modal"
       variant="unstyled"
     />
@@ -485,14 +485,14 @@ export const Tailwind: Story = {
       <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
         <ModalClose>
           <Button
-            className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
+            className="rounded-sm px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
             label="Cancel"
             variant="unstyled"
           />
         </ModalClose>
         <ModalClose>
           <Button
-            className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+            className="rounded-sm bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
             label="Delete"
             variant="unstyled"
           />
@@ -508,7 +508,7 @@ export const Tailwind: Story = {
     <Modal variant="unstyled">
       <ModalTrigger>
         <Button
-          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
           label="Open modal"
           variant="unstyled"
         />
@@ -526,14 +526,14 @@ export const Tailwind: Story = {
           <ModalFooter className="flex justify-end gap-2 border-t border-border px-[1.25rem] py-[0.75rem]">
             <ModalClose>
               <Button
-                className="rounded px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
+                className="rounded-sm px-4 py-2 text-sm font-semibold hover:bg-surface-muted"
                 label="Cancel"
                 variant="unstyled"
               />
             </ModalClose>
             <ModalClose>
               <Button
-                className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
+                className="rounded-sm bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800"
                 label="Delete"
                 variant="unstyled"
               />

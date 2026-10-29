@@ -181,7 +181,7 @@ export const Variants: Story = {
   <CarouselSlides>{/* slides */}</CarouselSlides>
   <div className="mt-2 flex items-center justify-between">
     <CarouselPrev
-      className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+      className="rounded-sm border border-gray-400 px-3 py-1 disabled:opacity-40"
       label="Back"
     >
       Back
@@ -192,7 +192,7 @@ export const Variants: Story = {
       )}
     </CarouselDots>
     <CarouselNext
-      className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+      className="rounded-sm border border-gray-400 px-3 py-1 disabled:opacity-40"
       label="Next"
     >
       Next
@@ -214,7 +214,7 @@ export const Variants: Story = {
         <Panels />
         <div className="mt-2 flex items-center justify-between">
           <CarouselPrev
-            className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+            className="rounded-sm border border-gray-400 px-3 py-1 disabled:opacity-40"
             label="Back"
           >
             Back
@@ -225,7 +225,7 @@ export const Variants: Story = {
             )}
           </CarouselDots>
           <CarouselNext
-            className="rounded border border-gray-400 px-3 py-1 disabled:opacity-40"
+            className="rounded-sm border border-gray-400 px-3 py-1 disabled:opacity-40"
             label="Next"
           >
             Next
@@ -665,7 +665,7 @@ function ControlledCarousel(): React.ReactNode {
       <div className="flex flex-wrap items-center gap-2">
         {slides.map(({ title }, position) => (
           <button
-            className="rounded border border-gray-400 px-2 py-1 text-sm"
+            className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
             key={title}
             onClick={() => setIndex(position)}
             type="button"
@@ -839,8 +839,8 @@ export const Tailwind: Story = {
     <CarouselSlide><div className="grid h-40 place-items-center bg-secondary-solid font-semibold text-primary-on-solid">Forest</div></CarouselSlide>
     <CarouselSlide><div className="grid h-40 place-items-center bg-secondary-solid font-semibold text-primary-on-solid">Desert</div></CarouselSlide>
   </CarouselSlides>
-  <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-  <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
+  <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow-sm disabled:opacity-40" />
+  <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow-sm disabled:opacity-40" />
   <CarouselDots className="mt-3 gap-2">
     {() => <CarouselDot className="size-3 rounded-full bg-border data-[active]:bg-primary-solid" />}
   </CarouselDots>
@@ -861,8 +861,8 @@ export const Tailwind: Story = {
           </CarouselSlide>
         ))}
       </CarouselSlides>
-      <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
-      <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow disabled:opacity-40" />
+      <CarouselPrev className="absolute left-2 top-16 size-9 rounded-full bg-surface text-foreground shadow-sm disabled:opacity-40" />
+      <CarouselNext className="absolute right-2 top-16 size-9 rounded-full bg-surface text-foreground shadow-sm disabled:opacity-40" />
       <CarouselDots className="mt-3 gap-2">
         {() => (
           <CarouselDot className="size-3 rounded-full bg-border data-[active]:bg-primary-solid" />

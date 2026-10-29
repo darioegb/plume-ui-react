@@ -311,7 +311,7 @@ export const Tailwind: Story = {
     <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
     <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
   </AlertContent>
-  <AlertDismiss className="rounded p-1 hover:bg-blue-100" />
+  <AlertDismiss className="rounded-sm p-1 hover:bg-blue-100" />
 </Alert>`,
       },
     },
@@ -328,7 +328,7 @@ export const Tailwind: Story = {
         <AlertTitle className="font-semibold">Your trial ends tomorrow</AlertTitle>
         <AlertDescription>Choose a plan to keep your projects.</AlertDescription>
       </AlertContent>
-      <AlertDismiss className="rounded p-1 hover:bg-blue-100" />
+      <AlertDismiss className="rounded-sm p-1 hover:bg-blue-100" />
     </Alert>
   ),
 }

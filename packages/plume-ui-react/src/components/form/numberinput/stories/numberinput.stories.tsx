@@ -110,7 +110,7 @@ export const Variants: Story = {
       <NumberInput aria-label="Underline" defaultValue={1} variant="underline" />
       <NumberInput
         aria-label="Unstyled"
-        className="rounded border border-gray-400"
+        className="rounded-sm border border-gray-400"
         defaultValue={1}
         variant="unstyled"
       >
@@ -224,14 +224,14 @@ function ControlledNumberInput(): React.ReactNode {
       <p className="text-sm">Value: {value === null ? 'empty' : value}</p>
       <div className="flex gap-2">
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setValue(0)}
           type="button"
         >
           Reset
         </button>
         <button
-          className="rounded border border-gray-400 px-2 py-1 text-sm"
+          className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
           onClick={() => setValue(null)}
           type="button"
         >
@@ -310,7 +310,7 @@ export const InAForm: Story = {
         parse={readEuros}
         style={{ width: '12rem' }}
       />
-      <button className="rounded border border-gray-400 px-3 py-1 text-sm" type="submit">
+      <button className="rounded-sm border border-gray-400 px-3 py-1 text-sm" type="submit">
         Send
       </button>
     </form>
@@ -385,14 +385,14 @@ export const Tailwind: Story = {
       source: {
         code: `<NumberInput
   aria-label="Quantity"
-  className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+  className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring-3 focus-within:ring-blue-200"
   defaultValue={2}
   max={10}
   min={0}
   variant="unstyled"
 >
   <NumberInputDecrement className="w-9 text-muted hover:bg-surface-muted disabled:opacity-40" />
-  <NumberInputField className="w-full bg-transparent py-2 text-center outline-none" />
+  <NumberInputField className="w-full bg-transparent py-2 text-center outline-hidden" />
   <NumberInputIncrement className="w-9 text-muted hover:bg-surface-muted disabled:opacity-40" />
 </NumberInput>`,
       },
@@ -401,14 +401,14 @@ export const Tailwind: Story = {
   render: () => (
     <NumberInput
       aria-label="Quantity"
-      className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring focus-within:ring-blue-200"
+      className="w-40 overflow-hidden rounded-lg border border-border bg-surface text-sm text-foreground focus-within:border-blue-500 focus-within:ring-3 focus-within:ring-blue-200"
       defaultValue={2}
       max={10}
       min={0}
       variant="unstyled"
     >
       <NumberInputDecrement className="w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40" />
-      <NumberInputField className="w-full bg-transparent py-2 text-center outline-none" />
+      <NumberInputField className="w-full bg-transparent py-2 text-center outline-hidden" />
       <NumberInputIncrement className="w-9 text-[var(--plume-muted)] hover:bg-surface-muted disabled:opacity-40" />
     </NumberInput>
   ),

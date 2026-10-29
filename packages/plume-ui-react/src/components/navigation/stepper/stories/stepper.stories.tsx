@@ -246,7 +246,7 @@ function InteractiveStepper(): React.ReactNode {
       </p>
       <div className="flex gap-2">
         <button
-          className="rounded border border-gray-400 px-3 py-1 text-sm disabled:opacity-50"
+          className="rounded-sm border border-gray-400 px-3 py-1 text-sm disabled:opacity-50"
           disabled={active === 0}
           onClick={() => setActive(active - 1)}
           type="button"
@@ -254,7 +254,7 @@ function InteractiveStepper(): React.ReactNode {
           Back
         </button>
         <button
-          className="rounded border border-gray-400 px-3 py-1 text-sm disabled:opacity-50"
+          className="rounded-sm border border-gray-400 px-3 py-1 text-sm disabled:opacity-50"
           disabled={active === steps.length}
           onClick={() => setActive(active + 1)}
           type="button"

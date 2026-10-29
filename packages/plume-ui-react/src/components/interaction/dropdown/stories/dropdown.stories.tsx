@@ -171,11 +171,11 @@ export const Variants: Story = {
     <DropdownTrigger>
       <Button label="Unstyled" variant="outline" />
     </DropdownTrigger>
-    <DropdownMenu className="min-w-40 rounded border border-border bg-surface p-1 text-foreground shadow">
-      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+    <DropdownMenu className="min-w-40 rounded-sm border border-border bg-surface p-1 text-foreground shadow-sm">
+      <DropdownItem className="block w-full rounded-sm px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden">
         Profile
       </DropdownItem>
-      <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+      <DropdownItem className="block w-full rounded-sm px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden">
         Settings
       </DropdownItem>
     </DropdownMenu>
@@ -192,11 +192,11 @@ export const Variants: Story = {
         <DropdownTrigger>
           <Button label="Unstyled" variant="outline" />
         </DropdownTrigger>
-        <DropdownMenu className="min-w-40 rounded border border-border bg-surface p-1 text-foreground shadow">
-          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+        <DropdownMenu className="min-w-40 rounded-sm border border-border bg-surface p-1 text-foreground shadow-sm">
+          <DropdownItem className="block w-full rounded-sm px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden">
             Profile
           </DropdownItem>
-          <DropdownItem className="block w-full rounded px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-none">
+          <DropdownItem className="block w-full rounded-sm px-3 py-1 text-left hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden">
             Settings
           </DropdownItem>
         </DropdownMenu>
@@ -426,7 +426,7 @@ export const Tailwind: Story = {
         code: `<Dropdown variant="unstyled">
   <DropdownTrigger>
     <Button
-      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
       label="Account"
       variant="unstyled"
     />
@@ -436,14 +436,14 @@ export const Tailwind: Story = {
       Signed in as ada
     </DropdownLabel>
     <DropdownItem
-      className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+      className="rounded-sm px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden"
       icon={userIcon}
       shortcut="⌘P"
     >
       Profile
     </DropdownItem>
     <DropdownItem
-      className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+      className="rounded-sm px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden"
       icon={settingsIcon}
       shortcut="⌘,"
     >
@@ -451,7 +451,7 @@ export const Tailwind: Story = {
     </DropdownItem>
     <DropdownSeparator className="my-1 h-px bg-border" />
     <DropdownItem
-      className="rounded px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-none dark:hover:bg-red-950 dark:focus:bg-red-950"
+      className="rounded-sm px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-hidden dark:hover:bg-red-950 dark:focus:bg-red-950"
       icon={logoutIcon}
     >
       Sign out
@@ -465,7 +465,7 @@ export const Tailwind: Story = {
     <Dropdown variant="unstyled">
       <DropdownTrigger>
         <Button
-          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
           label="Account"
           variant="unstyled"
         />
@@ -475,14 +475,14 @@ export const Tailwind: Story = {
           Signed in as ada
         </DropdownLabel>
         <DropdownItem
-          className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+          className="rounded-sm px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden"
           icon={userIcon}
           shortcut="⌘P"
         >
           Profile
         </DropdownItem>
         <DropdownItem
-          className="rounded px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+          className="rounded-sm px-3 py-2 hover:bg-surface-muted focus:bg-surface-muted focus:outline-hidden"
           icon={settingsIcon}
           shortcut="⌘,"
         >
@@ -490,7 +490,7 @@ export const Tailwind: Story = {
         </DropdownItem>
         <DropdownSeparator className="my-1 h-px bg-border" />
         <DropdownItem
-          className="rounded px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-none dark:hover:bg-red-950 dark:focus:bg-red-950"
+          className="rounded-sm px-3 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 focus:bg-red-50 focus:outline-hidden dark:hover:bg-red-950 dark:focus:bg-red-950"
           icon={logoutIcon}
         >
           Sign out

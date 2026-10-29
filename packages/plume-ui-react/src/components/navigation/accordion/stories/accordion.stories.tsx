@@ -271,7 +271,7 @@ function ControlledAccordion(): React.ReactNode {
       <div className="flex flex-wrap gap-2">
         {questions.map(({ title }) => (
           <button
-            className="rounded border border-gray-400 px-2 py-1 text-sm"
+            className="rounded-sm border border-gray-400 px-2 py-1 text-sm"
             key={title}
             onClick={() => setValue(title)}
             type="button"

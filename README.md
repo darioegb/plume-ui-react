@@ -174,7 +174,6 @@ packages/
     src/theme/               ThemeProvider, design tokens and shared types
     src/hooks/               Shared hooks (use-mask, use-debounce)
     src/utils/               Shared utilities (color, date, lazy, merge)
-  tailwind-config/           Tailwind preset that maps the design tokens to utilities
   eslint-config-custom/      Shared ESLint config
   tsconfig/                  Shared TypeScript configs
 ```

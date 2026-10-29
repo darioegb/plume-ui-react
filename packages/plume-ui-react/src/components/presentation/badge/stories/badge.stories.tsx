@@ -90,7 +90,7 @@ export const Variants: Story = {
       <Badge variant="solid">Solid</Badge>
       <Badge variant="subtle">Subtle</Badge>
       <Badge variant="outline">Outline</Badge>
-      <Badge className="px-2 py-1 rounded bg-black text-white" variant="unstyled">
+      <Badge className="px-2 py-1 rounded-sm bg-black text-white" variant="unstyled">
         Unstyled
       </Badge>
     </div>
@@ -186,7 +186,7 @@ export const Tailwind: Story = {
     New
   </Badge>
   <Badge
-    className="inline-flex items-center rounded border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
+    className="inline-flex items-center rounded-sm border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
     variant="unstyled"
   >
     Paid
@@ -210,7 +210,7 @@ export const Tailwind: Story = {
         New
       </Badge>
       <Badge
-        className="inline-flex items-center rounded border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
+        className="inline-flex items-center rounded-sm border border-emerald-600 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400"
         variant="unstyled"
       >
         Paid

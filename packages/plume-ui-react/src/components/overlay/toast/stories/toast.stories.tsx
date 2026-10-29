@@ -184,7 +184,7 @@ function UnstyledExample() {
     labels={{ region: 'unstyled notifications' }}
     render={(toast) => (
       <Toast
-        className="flex items-center gap-3 rounded bg-black px-4 py-2 text-white"
+        className="flex items-center gap-3 rounded-sm bg-black px-4 py-2 text-white"
         toast={toast}
       />
     )}
@@ -223,7 +223,7 @@ function UnstyledExample() {
         labels={{ region: 'unstyled notifications' }}
         render={(toast) => (
           <Toast
-            className="flex items-center gap-3 rounded bg-black px-4 py-2 text-white"
+            className="flex items-center gap-3 rounded-sm bg-black px-4 py-2 text-white"
             toast={toast}
           />
         )}
@@ -818,9 +818,9 @@ export const Tailwind: Story = {
       <ToastBody className="flex-1">
         <ToastTitle className="block font-semibold" />
         <ToastDescription className="block text-[var(--plume-muted)]" />
-        <ToastActionButton className="mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
+        <ToastActionButton className="mt-2 rounded-sm border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
       </ToastBody>
-      <ToastDismiss className="rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
+      <ToastDismiss className="rounded-sm p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
     </Toast>
   )}
 
@@ -843,9 +843,9 @@ export const Tailwind: Story = {
           <ToastBody className="flex-1">
             <ToastTitle className="block font-semibold" />
             <ToastDescription className="block text-[var(--plume-muted)]" />
-            <ToastActionButton className="mt-2 rounded border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
+            <ToastActionButton className="mt-2 rounded-sm border border-border px-2 py-1 text-xs font-semibold hover:bg-surface-muted" />
           </ToastBody>
-          <ToastDismiss className="rounded p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
+          <ToastDismiss className="rounded-sm p-1 text-[var(--plume-muted)] hover:bg-surface-muted" />
         </Toast>
       )}
       labels={{ region: 'Tailwind notifications' }}

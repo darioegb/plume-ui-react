@@ -118,7 +118,7 @@ export const Variants: Story = {
         <Button label="Outline" variant="outline" />
       </Tooltip>
       <Tooltip
-        className="rounded bg-yellow-200 px-2 py-1 text-black"
+        className="rounded-sm bg-yellow-200 px-2 py-1 text-black"
         content="An unstyled tooltip"
         variant="unstyled"
       >
@@ -269,24 +269,24 @@ export const Tailwind: Story = {
       source: {
         code: `<div className="flex flex-wrap justify-center gap-4">
   <Tooltip
-    className="rounded bg-gray-900 px-2 py-1 text-xs text-white shadow"
+    className="rounded-sm bg-gray-900 px-2 py-1 text-xs text-white shadow-sm"
     content="Save the changes"
     variant="unstyled"
   >
     <Button
-      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
       label="Dark tooltip"
       variant="unstyled"
     />
   </Tooltip>
   <Tooltip
-    className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm"
+    className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-xs"
     content="Save the changes"
     placement="bottom"
     variant="unstyled"
   >
     <Button
-      className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+      className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
       label="Pill tooltip"
       variant="unstyled"
     />
@@ -298,24 +298,24 @@ export const Tailwind: Story = {
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       <Tooltip
-        className="rounded bg-gray-900 px-2 py-1 text-xs text-white shadow"
+        className="rounded-sm bg-gray-900 px-2 py-1 text-xs text-white shadow-sm"
         content="Save the changes"
         variant="unstyled"
       >
         <Button
-          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
           label="Dark tooltip"
           variant="unstyled"
         />
       </Tooltip>
       <Tooltip
-        className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm"
+        className="rounded-full border border-blue-600 bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-xs"
         content="Save the changes"
         placement="bottom"
         variant="unstyled"
       >
         <Button
-          className="rounded bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
+          className="rounded-sm bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800"
           label="Pill tooltip"
           variant="unstyled"
         />
