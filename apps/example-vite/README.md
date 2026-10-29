@@ -14,6 +14,8 @@ npm install
 npm run dev
 ```
 
+The example uses Vite 7: the WASM build of Rolldown, which Vite 8 needs, does not load in StackBlitz.
+
 Run `npm run build` to type-check and create the production build, and
 `npm run preview` to serve it locally. When deploying the SPA, configure the host
 to serve `index.html` for client-side routes such as `/projects`.
