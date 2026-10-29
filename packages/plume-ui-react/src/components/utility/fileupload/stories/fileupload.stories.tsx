@@ -521,15 +521,17 @@ export const Tailwind: Story = {
         code: `<FileUpload
   aria-label="Documents"
   className="group text-sm text-foreground"
+  defaultValue={[new File([new Uint8Array(524288)], 'report.pdf')]}
   multiple
-  progress={(file) => progress[file.name]}
+  progress={() => 60}
+  style={{ maxWidth: '100%', width: '26rem' }}
   variant="unstyled"
 >
   <FileUploadDropzone className="rounded-lg border-2 border-dashed border-border p-6 text-center group-data-[dragging]:border-primary-solid" />
   <FileUploadList className="mt-2">
     {(file) => (
-      <FileUploadItem className="mt-2 flex items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
-        <FileUploadName />
+      <FileUploadItem className="mt-2 flex flex-wrap items-center gap-2 rounded bg-surface-muted px-3 py-2" file={file}>
+        <FileUploadName className="flex-1" />
         <FileUploadSize />
         <FileUploadRemove className="rounded-full p-1 hover:bg-border" />
         <FileUploadProgress className="h-1.5 w-full overflow-hidden rounded-full bg-border">
@@ -584,12 +586,18 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<FileUpload aria-label="Documents" multiple variant="unstyled">
+        code: `<FileUpload
+  aria-label="Documents"
+  defaultValue={[new File([new Uint8Array(524288)], 'report.pdf')]}
+  multiple
+  style={{ maxWidth: '100%', width: '26rem' }}
+  variant="unstyled"
+>
   <FileUploadDropzone className="border border-2 border-secondary-subtle rounded p-4 text-center text-body-secondary" />
   <FileUploadList className="list-group mt-2">
     {(file) => (
       <FileUploadItem className="list-group-item d-flex flex-wrap align-items-center gap-2" file={file}>
-        <FileUploadName />
+        <FileUploadName className="flex-fill" />
         <FileUploadSize />
         <FileUploadRemove className="btn btn-sm btn-outline-secondary border-0" />
       </FileUploadItem>

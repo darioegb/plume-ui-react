@@ -717,10 +717,14 @@ export const Tailwind: Story = {
         <SidebarItem className="gap-3 rounded-md px-3 py-2 hover:bg-surface-muted" href="/projects" icon={<FolderIcon />}>
           Projects
         </SidebarItem>
+        <SidebarItem className="gap-3 rounded-md px-3 py-2 hover:bg-surface-muted" href="/team" icon={<UserIcon />}>
+          Team
+        </SidebarItem>
       </SidebarContent>
     </Sidebar>
     <main className="flex-1 p-4">
       <SidebarToggle className="rounded p-1 hover:bg-surface-muted" variant="unstyled" />
+      <p>The page. Use the button to open or collapse the sidebar.</p>
     </main>
   </div>
 </SidebarProvider>`,
@@ -767,10 +771,12 @@ export const Bootstrap: Story = {
       <SidebarContent aria-label="Pages" className="nav nav-pills flex-column">
         <SidebarItem active className="nav-link d-flex align-items-center gap-2 active" href="/" icon={<HomeIcon />}>Home</SidebarItem>
         <SidebarItem className="nav-link d-flex align-items-center gap-2 link-body-emphasis" href="/projects" icon={<FolderIcon />}>Projects</SidebarItem>
+        <SidebarItem className="nav-link d-flex align-items-center gap-2 link-body-emphasis" href="/team" icon={<UserIcon />}>Team</SidebarItem>
       </SidebarContent>
     </Sidebar>
     <main className="flex-fill p-3">
       <SidebarToggle className="btn btn-outline-secondary" variant="unstyled" />
+      <p>The page. Use the button to open or collapse the sidebar.</p>
     </main>
   </div>
 </SidebarProvider>`,
