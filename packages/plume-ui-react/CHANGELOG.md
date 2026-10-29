@@ -1,5 +1,21 @@
 # plume-ui-react
 
+## 0.42.0
+
+### Minor Changes
+
+- [#240](https://github.com/darioegb/plume-ui-react/pull/240) [`adc8dd5d3f8c9a03c10fa681e9f0b5e00378813d`](https://github.com/darioegb/plume-ui-react/commit/adc8dd5d3f8c9a03c10fa681e9f0b5e00378813d) Thanks [@darioegb](https://github.com/darioegb)! - `Carousel` has three variants: `solid`, `overlay` and `unstyled`. The `outline` and `ghost` variants are removed, and a carousel that still asks for them gets buttons with no look of their own. Use `variant="unstyled"` and your own classes for those.
+
+### Patch Changes
+
+- [#240](https://github.com/darioegb/plume-ui-react/pull/240) [`e3a4cbc7ab11e748cd058fa01261af38d6fd4e7c`](https://github.com/darioegb/plume-ui-react/commit/e3a4cbc7ab11e748cd058fa01261af38d6fd4e7c) Thanks [@darioegb](https://github.com/darioegb)! - `CarouselPlayPause` keeps a gap from the slides above it instead of touching them.
+
+- [#240](https://github.com/darioegb/plume-ui-react/pull/240) [`e501c37c85a55cbb3a5adee14a514cf8fe00212e`](https://github.com/darioegb/plume-ui-react/commit/e501c37c85a55cbb3a5adee14a514cf8fe00212e) Thanks [@darioegb](https://github.com/darioegb)! - Set `displayName` on the components that lacked it (`Modal`, `Select`, `Dropdown`, `Drawer`, `Popover`, `Tooltip`, `ToastProvider`, `SidebarProvider`, `TabsProvider`, `PaginatorPages` and some of the parts of the DatePicker, Select, TimePicker and Rating), so React DevTools and the code Storybook generates show their names instead of the minified ones.
+
+- [#240](https://github.com/darioegb/plume-ui-react/pull/240) [`e534688cc4faf202ea0fd416c27bbaf279afa9a2`](https://github.com/darioegb/plume-ui-react/commit/e534688cc4faf202ea0fd416c27bbaf279afa9a2) Thanks [@darioegb](https://github.com/darioegb)! - `FileUploadRemove` no longer has a fixed width, so a text child such as "Discard" fits inside the item instead of overflowing its padding.
+
+- [#240](https://github.com/darioegb/plume-ui-react/pull/240) [`e501c37c85a55cbb3a5adee14a514cf8fe00212e`](https://github.com/darioegb/plume-ui-react/commit/e501c37c85a55cbb3a5adee14a514cf8fe00212e) Thanks [@darioegb](https://github.com/darioegb)! - Keep `border-style: solid` in the base reset of `Input` and `Textarea` (`border: 0 solid` instead of `border: none`), so the `border` utility of Tailwind v3 draws a border on an `unstyled` field even when the preflight sits in a layer before `plume`.
+
 ## 0.41.1
 
 ### Patch Changes
