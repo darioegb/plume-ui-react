@@ -159,7 +159,8 @@
   border-radius: var(--plume-radius-full);
   font-size: 1.1em;
   height: 1.5rem;
-  width: 1.5rem;
+  min-width: 1.5rem;
+  padding-inline: var(--plume-space-1);
 }
 
 .remove:hover {
