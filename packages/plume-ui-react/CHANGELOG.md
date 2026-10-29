@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.41.1
+
+### Patch Changes
+
+- [#234](https://github.com/darioegb/plume-ui-react/pull/234) [`1dbeb12059a41314e907a0a0aa3131a9d769eb94`](https://github.com/darioegb/plume-ui-react/commit/1dbeb12059a41314e907a0a0aa3131a9d769eb94) Thanks [@darioegb](https://github.com/darioegb)! - Fix the month list of the `DatePicker` on the 29th, 30th and 31st of a month: it showed March twice and no February (and repeated the 31st month in the months of 30 days), because the names were built by moving today's date to each month.
+
 ## 0.41.0
 
 ### Minor Changes
