@@ -29,7 +29,7 @@ describe('css of each component', () => {
     )
     expect(units.paginator.imports).toEqual(expect.arrayContaining(['button', 'select', 'chip']))
     expect(units.select.imports).toEqual(expect.arrayContaining(['chip', 'tag']))
-    expect(units.drawer.imports).toEqual(['modal'])
+    expect(units.drawer.imports).toEqual(['heading', 'modal'])
     expect(units.alert.imports).toEqual(['tag'])
     expect(units.table.imports).toEqual(expect.arrayContaining(['emptystate', 'spinner']))
   })
