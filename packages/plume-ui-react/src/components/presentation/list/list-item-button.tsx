@@ -1,6 +1,10 @@
+'use client'
+
 import type { ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
+import { useListContext } from './list-context'
 import styles from './list.module.css'
 
 export interface ListItemButtonOwnProps {
@@ -58,7 +62,7 @@ export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
     {
       'aria-current': ariaCurrent,
       children,
-      className = '',
+      className,
       disabled = false,
       href,
       selected = false,
@@ -67,9 +71,12 @@ export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
     }: ListItemButtonProps,
     ref: ForwardedRef<HTMLElement>,
   ) => {
-    const classes = [styles.button, selected && styles.selected, className]
-      .filter(Boolean)
-      .join(' ')
+    const { isStyled } = useListContext('ListItemButton')
+    const classes = joinClasses(
+      isStyled && styles.button,
+      isStyled && selected && styles.selected,
+      className,
+    )
     const current = ariaCurrent ?? (selected ? 'true' : undefined)
 
     if (href !== undefined) {
@@ -78,6 +85,9 @@ export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
           aria-current={current}
           aria-disabled={disabled || undefined}
           className={classes}
+          data-disabled={disabled ? '' : undefined}
+          data-plume-list-item-button=""
+          data-selected={selected ? '' : undefined}
           href={disabled ? undefined : href}
           ref={ref as ForwardedRef<HTMLAnchorElement>}
           role={disabled ? 'link' : undefined}
@@ -93,6 +103,9 @@ export const ListItemButton = forwardRef<HTMLElement, ListItemButtonProps>(
       <button
         aria-current={current}
         className={classes}
+        data-disabled={disabled ? '' : undefined}
+        data-plume-list-item-button=""
+        data-selected={selected ? '' : undefined}
         disabled={disabled}
         ref={ref as ForwardedRef<HTMLButtonElement>}
         style={style}

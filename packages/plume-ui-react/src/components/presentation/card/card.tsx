@@ -1,6 +1,10 @@
+'use client'
+
 import type { ForwardedRef, HTMLAttributes } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps, Size } from '../../../theme'
+import { CardContext } from './card-context'
 import styles from './card.module.css'
 
 export interface CardOwnProps {
@@ -31,23 +35,24 @@ export type CardProps = Omit<ComponentProps, 'index'> & CardRootAttributes & Car
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
-    { children, className = '', size = 'md', style, variant = 'elevated', ...rest }: CardProps,
+    { children, className, size = 'md', style, variant = 'elevated', ...rest }: CardProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const classes = [
+    const context = useMemo(() => ({ isStyled }), [isStyled])
+    const classes = joinClasses(
       isStyled && styles.card,
       isStyled && styles[size],
       isStyled && styles[variant],
       className,
-    ]
-      .filter(Boolean)
-      .join(' ')
+    )
 
     return (
-      <div className={classes} ref={ref} style={style} {...rest}>
-        {children}
-      </div>
+      <CardContext.Provider value={context}>
+        <div className={classes} data-plume-card="" ref={ref} style={style} {...rest}>
+          {children}
+        </div>
+      </CardContext.Provider>
     )
   },
 )

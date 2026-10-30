@@ -1,28 +1,27 @@
-.icon {
+:global(:where([data-plume-icon])) {
   align-items: center;
-  color: var(--icon-color, currentColor);
+  block-size: var(--icon-size, 1em);
   display: inline-flex;
   flex: none;
-  height: var(--icon-size);
+  inline-size: var(--icon-size, 1em);
   justify-content: center;
   position: relative;
   vertical-align: middle;
-  width: var(--icon-size);
 }
 
-.glyph {
+:global(:where([data-plume-icon-glyph])) {
+  block-size: 100%;
   display: inline-flex;
-  height: 100%;
-  width: 100%;
+  inline-size: 100%;
 }
 
-.glyph > svg {
+:global(:where([data-plume-icon-glyph] > svg)) {
+  block-size: 100%;
   display: block;
-  height: 100%;
-  width: 100%;
+  inline-size: 100%;
 }
 
-.label {
+:global(:where([data-plume-icon-label])) {
   block-size: 1px;
   border: 0;
   clip-path: inset(50%);
@@ -32,6 +31,10 @@
   padding: 0;
   position: absolute;
   white-space: nowrap;
+}
+
+.icon {
+  color: var(--icon-color, currentcolor);
 }
 
 .sm {

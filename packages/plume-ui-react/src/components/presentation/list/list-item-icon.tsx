@@ -1,6 +1,10 @@
+'use client'
+
 import type { ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
+import { useListContext } from './list-context'
 import styles from './list.module.css'
 
 type ListItemIconRootAttributes = Pick<
@@ -13,19 +17,24 @@ export type ListItemIconProps = Omit<ComponentProps, 'index'> & ListItemIconRoot
 /** An icon at the start of the row. It is hidden from screen readers. */
 export const ListItemIcon = forwardRef<HTMLSpanElement, ListItemIconProps>(
   (
-    { children, className = '', style, ...rest }: ListItemIconProps,
+    { children, className, style, ...rest }: ListItemIconProps,
     ref: ForwardedRef<HTMLSpanElement>,
-  ) => (
-    <span
-      aria-hidden="true"
-      className={[styles.icon, className].filter(Boolean).join(' ')}
-      ref={ref}
-      style={style}
-      {...rest}
-    >
-      {children}
-    </span>
-  ),
+  ) => {
+    const { isStyled } = useListContext('ListItemIcon')
+
+    return (
+      <span
+        aria-hidden="true"
+        className={joinClasses(isStyled && styles.icon, className)}
+        data-plume-list-item-icon=""
+        ref={ref}
+        style={style}
+        {...rest}
+      >
+        {children}
+      </span>
+    )
+  },
 )
 
 ListItemIcon.displayName = 'ListItemIcon'

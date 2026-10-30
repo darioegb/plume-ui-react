@@ -1,0 +1,5 @@
+---
+'plume-ui-react': minor
+---
+
+`Badge`, `Icon`, `List` and `Card` follow the parts model. Every element they render carries a `data-plume-*` attribute (`data-plume-badge`, `data-plume-icon`, `data-plume-list-item-button`, `data-plume-card-header`...), and with `variant="unstyled"` the root and every part drop all their Plume classes, keeping the structure through zero-specificity rules. `Icon` has a `variant` (`default` or `unstyled`). `Badge` has a `BadgeDot` part, and `dot` now also renders the dot with `variant="unstyled"` instead of ignoring it. `ListItemText` has `ListItemTextPrimary` and `ListItemTextSecondary` parts, which it renders for `primary` and `secondary` and which you can place yourself as its children. `ListItemButton` exposes `data-selected` and `data-disabled`. The parts of `Badge`, `List` and `Card` throw when rendered outside their root, and these components are now client modules. `ListDivider` with the `unstyled` variant is an empty `<li>` for your own classes. The `Icon` glyph and label wrappers no longer have the `glyph` and `label` classes: target `[data-plume-icon-glyph]` and `[data-plume-icon-label]`.

@@ -23,8 +23,8 @@ const bell = (
  * (from Heroicons, Lucide, Phosphor or your own files) as the child. The SVG fills the Icon, so its `viewBox`
  * is all it needs, and it takes the current text color when it uses `currentColor`.
  *
- * An Icon has no variants: it draws nothing of its own, so there is no look to choose. Use `className` and
- * `style` to change what it does have.
+ * An Icon draws nothing of its own besides its size and color, so it has one look, `default`, and `unstyled`,
+ * which drops the Plume classes: it is then one em wide and tall, and its size and color are up to your classes.
  *
  * An icon next to text is decoration, and the Icon hides it from screen readers. When the icon is the only
  * content, pass a **label**: it is added as text that only screen readers get, and the SVG stays hidden.
@@ -60,6 +60,10 @@ export default {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
+    variant: {
+      control: 'radio',
+      options: ['default', 'unstyled'],
+    },
     label: {
       control: 'text',
     },
@@ -83,6 +87,33 @@ type Story = StoryObj<typeof Icon>
 export const Default: Story = {}
 
 /**
+ * Use the **variant** prop to pick the look: `default` gives the Icon its size and color, and `unstyled` drops the
+ * Plume classes so you can size and color it yourself.
+ */
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Icon variant="default">{bell}</Icon>
+  <Icon className="size-8 text-gray-500" variant="unstyled">
+    {bell}
+  </Icon>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap justify-center items-center gap-4">
+      <Icon variant="default">{bell}</Icon>
+      <Icon className="size-8 text-gray-500" variant="unstyled">
+        {bell}
+      </Icon>
+    </div>
+  ),
+}
+
+/**
  * Use the **size** prop to change the size of the Icon.
  */
 export const Sizes: Story = {
@@ -97,12 +128,22 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to pick a color from the theme. Without it the Icon takes the color of the text
- * around it.
+ * around it, as in the stories below.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Icon colorScheme="primary">{bell}</Icon>
+  <Icon colorScheme="success">{bell}</Icon>
+  <Icon colorScheme="error">{bell}</Icon>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-4">
-      <Icon>{bell}</Icon>
       {colorSchemes.map((scheme) => (
         <Icon colorScheme={scheme as keyof typeof defaultTheme.colors} key={scheme}>
           {bell}
@@ -135,23 +176,23 @@ export const WithText: Story = {
 }
 
 /**
- * Some examples of Icon with Tailwind classes. The Icon takes its color from the text around it, so a text color on a parent colors the icon, and its `className` can add what Plume does not, like an animation.
+ * Some examples of Icon with Tailwind classes. With `variant="unstyled"` the `className` sizes and colors the Icon (`size-6`, `text-*`) and can add what Plume does not, like an animation.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="flex flex-wrap items-center gap-4">
-  <span className="text-emerald-600 dark:text-emerald-400">
-    <Icon size="lg">{bell}</Icon>
-  </span>
-  <span className="text-blue-600 dark:text-blue-400">
-    <Icon className="animate-pulse" size="lg">
+  <Icon className="size-6 text-emerald-600 dark:text-emerald-400" variant="unstyled">
+    {bell}
+  </Icon>
+  <Icon className="size-6 animate-pulse text-blue-600 dark:text-blue-400" variant="unstyled">
+    {bell}
+  </Icon>
+  <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
+    <Icon className="size-4" variant="unstyled">
       {bell}
     </Icon>
-  </span>
-  <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
-    <Icon size="sm">{bell}</Icon>
     Notifications
   </span>
 </div>`,
@@ -160,16 +201,16 @@ export const Tailwind: Story = {
   },
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <span className="text-emerald-600 dark:text-emerald-400">
-        <Icon size="lg">{bell}</Icon>
-      </span>
-      <span className="text-blue-600 dark:text-blue-400">
-        <Icon className="animate-pulse" size="lg">
+      <Icon className="size-6 text-emerald-600 dark:text-emerald-400" variant="unstyled">
+        {bell}
+      </Icon>
+      <Icon className="size-6 animate-pulse text-blue-600 dark:text-blue-400" variant="unstyled">
+        {bell}
+      </Icon>
+      <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
+        <Icon className="size-4" variant="unstyled">
           {bell}
         </Icon>
-      </span>
-      <span className="inline-flex items-center gap-2 rounded-full bg-primary-solid px-3 py-1 text-sm text-primary-on-solid">
-        <Icon size="sm">{bell}</Icon>
         Notifications
       </span>
     </div>
@@ -177,25 +218,25 @@ export const Tailwind: Story = {
 }
 
 /**
- * Some examples of Icon with Bootstrap classes. The Icon takes its color from the text around it, so `text-*` utilities on a parent color it, and it fits inside badges and buttons.
+ * Some examples of Icon with Bootstrap classes. With `variant="unstyled"` the Icon is as big as the text around it, so `fs-*` sizes it, and `text-*` colors it. It fits inside badges and buttons.
  */
 export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
         code: `<div className="d-flex flex-wrap align-items-center gap-3">
-  <span className="text-primary">
-    <Icon size="lg">{bell}</Icon>
-  </span>
-  <span className="text-success">
-    <Icon size="lg">{bell}</Icon>
-  </span>
+  <Icon className="fs-3 text-primary" variant="unstyled">
+    {bell}
+  </Icon>
+  <Icon className="fs-3 text-success" variant="unstyled">
+    {bell}
+  </Icon>
   <span className="badge text-bg-primary d-inline-flex align-items-center gap-1">
-    <Icon size="sm">{bell}</Icon>
+    <Icon variant="unstyled">{bell}</Icon>
     Notifications
   </span>
   <button className="btn btn-primary d-inline-flex align-items-center gap-2" type="button">
-    <Icon size="sm">{bell}</Icon>
+    <Icon variant="unstyled">{bell}</Icon>
     Alerts
   </button>
 </div>`,
@@ -204,21 +245,18 @@ export const Bootstrap: Story = {
   },
   render: () => (
     <div className="d-flex flex-wrap align-items-center gap-3">
-      <span className="text-primary">
-        <Icon size="lg">{bell}</Icon>
-      </span>
-      <span className="text-success">
-        <Icon size="lg">{bell}</Icon>
-      </span>
+      <Icon className="fs-3 text-primary" variant="unstyled">
+        {bell}
+      </Icon>
+      <Icon className="fs-3 text-success" variant="unstyled">
+        {bell}
+      </Icon>
       <span className="badge text-bg-primary d-inline-flex align-items-center gap-1">
-        <Icon size="sm">{bell}</Icon>
+        <Icon variant="unstyled">{bell}</Icon>
         Notifications
       </span>
-      <button
-        className="btn btn-primary d-inline-flex align-items-center gap-2"
-        type="button"
-      >
-        <Icon size="sm">{bell}</Icon>
+      <button className="btn btn-primary d-inline-flex align-items-center gap-2" type="button">
+        <Icon variant="unstyled">{bell}</Icon>
         Alerts
       </button>
     </div>

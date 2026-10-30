@@ -362,6 +362,32 @@ export const Separators: Story = {
  * A long trail wraps onto the next line instead of overflowing, which keeps it usable on a phone.
  */
 export const Long: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Breadcrumb style={{ maxWidth: '20rem' }}>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/home">Home</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/library">Library</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/navigation">Navigation</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/breadcrumb">Breadcrumb</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink current>Examples</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>`,
+      },
+    },
+  },
   render: () => (
     <Breadcrumb style={{ maxWidth: '20rem' }}>
       {['Home', 'Library', 'Components', 'Navigation', 'Breadcrumb', 'Examples'].map(

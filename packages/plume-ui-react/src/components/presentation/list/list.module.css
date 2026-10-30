@@ -1,3 +1,57 @@
+:global(
+  :where(
+    [data-plume-list-item]:has(
+      > [data-plume-list-item-button],
+      > [data-plume-list-item-icon],
+      > [data-plume-list-item-text]
+    )
+  )
+) {
+  align-items: center;
+  display: flex;
+}
+
+:global(:where([data-plume-list-item-button])) {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: 1 1 auto;
+  font: inherit;
+  inline-size: 100%;
+  min-inline-size: 0;
+  text-align: start;
+  text-decoration: none;
+}
+
+:global(:where([data-plume-list-item-button][data-disabled])) {
+  cursor: default;
+  pointer-events: none;
+}
+
+:global(:where([data-plume-list-item-icon])) {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+}
+
+:global(:where([data-plume-list-item-text])) {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+:global(
+  :where(
+    [data-plume-list-item-text-primary],
+    [data-plume-list-item-text-secondary]
+  )
+) {
+  display: block;
+}
+
 .list {
   box-sizing: border-box;
   color: var(--plume-foreground);
@@ -77,26 +131,17 @@
 }
 
 .list .button {
-  align-items: center;
-  background-color: transparent;
-  border: 0;
-  box-sizing: border-box;
-  color: inherit;
-  cursor: pointer;
-  display: flex;
-  flex: 1 1 auto;
-  font: inherit;
   gap: var(--plume-space-3);
-  min-width: 0;
   padding: var(--list-padding-y) var(--list-padding-x);
-  text-align: start;
-  text-decoration: none;
   transition: background-color var(--plume-duration-fast);
-  width: 100%;
 }
 
 .list .button:hover {
-  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
+  background-color: color-mix(
+    in srgb,
+    currentcolor var(--plume-overlay-hover),
+    transparent
+  );
 }
 
 .list .button:focus-visible {
@@ -117,26 +162,8 @@
   background-color: var(--list-tint-strong);
 }
 
-.list .button:is(:disabled, [aria-disabled='true']) {
-  cursor: default;
+.list .button:is(:disabled, [aria-disabled="true"]) {
   opacity: var(--plume-opacity-disabled);
-  pointer-events: none;
-}
-
-.list .icon {
-  align-items: center;
-  display: inline-flex;
-  flex: none;
-}
-
-.list .text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.list .primary,
-.list .secondary {
-  display: block;
 }
 
 .list .secondary {

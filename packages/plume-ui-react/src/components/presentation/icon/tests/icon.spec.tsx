@@ -23,14 +23,16 @@ describe('Icon component', () => {
   it('is hidden from assistive technology without a label', () => {
     const { container } = render(<Icon>{svg}</Icon>)
     expect(container.firstElementChild).toHaveAttribute('aria-hidden', 'true')
-    expect(container.querySelector('.label')).toBeNull()
+    expect(container.querySelector('[data-plume-icon-label]')).toBeNull()
   })
 
   it('reads the label as text, with the svg hidden', () => {
     const { container } = render(<Icon label="Notifications">{svg}</Icon>)
     expect(container.firstElementChild).not.toHaveAttribute('aria-hidden')
-    expect(screen.getByText('Notifications')).toHaveClass('label')
-    expect(screen.getByTestId('svg').closest('[aria-hidden="true"]')).toHaveClass('glyph')
+    expect(screen.getByText('Notifications')).toHaveAttribute('data-plume-icon-label')
+    expect(screen.getByTestId('svg').closest('[aria-hidden="true"]')).toHaveAttribute(
+      'data-plume-icon-glyph',
+    )
     expect(screen.queryByRole('img')).toBeNull()
   })
 
@@ -64,5 +66,28 @@ describe('Icon component', () => {
     const ref = createRef<HTMLSpanElement>()
     const { container } = render(<Icon ref={ref}>{svg}</Icon>)
     expect(ref.current).toBe(container.firstElementChild)
+  })
+
+  it('marks the root with its data attribute', () => {
+    const { container } = render(<Icon>{svg}</Icon>)
+    expect(container.firstElementChild).toHaveAttribute('data-plume-icon')
+  })
+
+  it('drops the Plume classes when unstyled', () => {
+    const { container } = render(
+      <Icon className="custom" size="lg" variant="unstyled">
+        {svg}
+      </Icon>,
+    )
+    expect(container.firstElementChild?.className).toBe('custom')
+  })
+
+  it('keeps the color variable when unstyled', () => {
+    const { container } = render(
+      <Icon colorScheme="success" variant="unstyled">
+        {svg}
+      </Icon>,
+    )
+    expect(container.firstElementChild).toHaveStyle('--icon-color: var(--plume-color-success-text)')
   })
 })
