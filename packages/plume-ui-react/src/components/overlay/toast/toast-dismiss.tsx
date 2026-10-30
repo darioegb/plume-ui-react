@@ -1,40 +1,30 @@
 'use client'
 
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
-import { CloseIcon } from '../../../overlay/icons'
-import type { ComponentProps } from '../../../theme'
+import { OverlayClose, type OverlayCloseProps } from '../../../overlay/overlay-close'
 import { useToastItem } from './toast-item-context'
 import styles from './toast.module.css'
 
-type ToastDismissRootAttributes = Pick<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  'aria-label' | 'children'
->
+export type ToastDismissProps = OverlayCloseProps
 
-export type ToastDismissProps = Omit<ComponentProps, 'index'> & ToastDismissRootAttributes
-
-/** The dismiss button. `children` replaces the cross. */
-export const ToastDismiss = forwardRef<HTMLButtonElement, ToastDismissProps>(
-  (
-    { 'aria-label': ariaLabel, children, className, style }: ToastDismissProps,
-    ref: ForwardedRef<HTMLButtonElement>,
-  ): ReactNode => {
+/**
+ * The dismiss button. Its name is the `dismiss` label of the `ToastProvider` unless you give it a
+ * `label`, and an element given as `children`, such as a `Button`, becomes the button.
+ */
+export const ToastDismiss = forwardRef<HTMLElement, ToastDismissProps>(
+  ({ label, ...props }: ToastDismissProps, ref: ForwardedRef<HTMLElement>): ReactNode => {
     const { dismiss, dismissLabel, isStyled } = useToastItem('ToastDismiss')
 
     return (
-      <button
-        aria-label={ariaLabel ?? dismissLabel}
-        className={joinClasses(isStyled && styles.dismiss, className)}
+      <OverlayClose
+        {...props}
+        closeClassName={isStyled ? styles.dismiss : undefined}
         data-plume-toast-dismiss=""
-        onClick={dismiss}
+        label={label ?? dismissLabel}
+        onClose={dismiss}
         ref={ref}
-        style={style}
-        type="button"
-      >
-        {children ?? <CloseIcon />}
-      </button>
+      />
     )
   },
 )
