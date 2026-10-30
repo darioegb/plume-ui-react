@@ -90,3 +90,41 @@ describe('Card component', () => {
     expect(ref.current).toBe(part)
   })
 })
+
+describe('Card parts model', () => {
+  it('marks the root and every part with its data attribute', () => {
+    const { container } = render(
+      <Card>
+        <CardHeader>Title</CardHeader>
+        <CardBody>Content</CardBody>
+        <CardFooter>Actions</CardFooter>
+      </Card>,
+    )
+    for (const part of ['card', 'card-header', 'card-body', 'card-footer']) {
+      expect(container.querySelector(`[data-plume-${part}]`)).not.toBeNull()
+    }
+  })
+
+  it('drops the Plume classes of every part when unstyled', () => {
+    render(
+      <Card variant="unstyled">
+        <CardHeader className="mine">Title</CardHeader>
+        <CardBody>Content</CardBody>
+        <CardFooter>Actions</CardFooter>
+      </Card>,
+    )
+    expect(screen.getByText('Title').className).toBe('mine')
+    expect(screen.getByText('Content')).not.toHaveAttribute('class')
+    expect(screen.getByText('Actions')).not.toHaveAttribute('class')
+  })
+
+  it.each([
+    ['CardHeader', <CardHeader key="a">Part</CardHeader>],
+    ['CardBody', <CardBody key="a">Part</CardBody>],
+    ['CardFooter', <CardFooter key="a">Part</CardFooter>],
+  ])('%s throws outside a Card', (name, part) => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(part)).toThrow(`${name} must be used within a <Card>`)
+    error.mockRestore()
+  })
+})

@@ -1,6 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { defaultTheme } from '../../../../theme'
-import { Badge } from '..'
+import { Badge, BadgeDot } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
 
@@ -9,6 +9,9 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * inside a heading, a button or a line of text. Its meaning has to be in the text: when a color or a dot is all
  * it shows, give it an `aria-label`. A Badge with an `aria-label` or an `aria-labelledby` is an image for
  * assistive technology, because a plain `<span>` can't take a name, and the label replaces its text.
+ *
+ * The status dot is a part, `BadgeDot`, that carries `data-plume-badge-dot`. With `variant="unstyled"` the Badge
+ * and the dot keep only the classes you give them.
  */
 export default {
   title: 'Components/Badge',
@@ -16,6 +19,7 @@ export default {
   tags: ['autodocs'],
   parameters: {
     docs: {
+      importNames: ['Badge', 'BadgeDot'],
       toc: {
         title: 'On this page',
         disable: false,
@@ -114,6 +118,17 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Badge colorScheme="primary">primary</Badge>
+  <Badge colorScheme="success">success</Badge>
+  <Badge colorScheme="error">error</Badge>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-4">
       {colorSchemes.map((scheme) => (
@@ -167,6 +182,48 @@ export const DotOnly: Story = {
       <Badge aria-label="Away" colorScheme="warning" dot />
       <Badge aria-label="Offline" colorScheme="error" dot />
       <Badge aria-label="Offline" colorScheme="error" dot size="lg" />
+    </div>
+  ),
+}
+
+/**
+ * The status dot is a part: put a `BadgeDot` among the children to place it where you want, after the text or
+ * with a class of your own. With `dot` the Badge renders one before its content, and with only a `BadgeDot` as
+ * child the Badge is just the dot.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Badge colorScheme="success" variant="subtle">
+    Online
+    <BadgeDot />
+  </Badge>
+  <Badge colorScheme="warning" variant="subtle">
+    <BadgeDot className="rounded-none" />
+    Away
+  </Badge>
+  <Badge aria-label="Offline" colorScheme="error">
+    <BadgeDot />
+  </Badge>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Badge colorScheme="success" variant="subtle">
+        Online
+        <BadgeDot />
+      </Badge>
+      <Badge colorScheme="warning" variant="subtle">
+        <BadgeDot className="rounded-none" />
+        Away
+      </Badge>
+      <Badge aria-label="Offline" colorScheme="error">
+        <BadgeDot />
+      </Badge>
     </div>
   ),
 }

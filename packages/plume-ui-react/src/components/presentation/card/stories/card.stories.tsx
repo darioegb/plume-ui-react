@@ -19,6 +19,9 @@ const sample = (
  * combination: all three are optional. A Card is a plain container with no role of its own, so give it a
  * `role` and an `aria-label` only when it is a landmark or a group.
  *
+ * Each part carries a `data-plume-card-*` attribute, and with `variant="unstyled"` the Card and its parts keep
+ * only the classes you give them.
+ *
  * `CardHeader` is a plain `<div>`, not a heading. When the title should show up in the outline of the page, put
  * a heading inside it (`<h3>`, at the level that fits the page).
  *
@@ -91,6 +94,30 @@ export const Default: Story = {}
  * you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-6">
+  <Card variant="elevated">
+    <CardHeader>Elevated</CardHeader>
+    <CardBody>A card with the elevated variant.</CardBody>
+  </Card>
+  <Card variant="outline">
+    <CardHeader>Outline</CardHeader>
+    <CardBody>A card with the outline variant.</CardBody>
+  </Card>
+  <Card variant="filled">
+    <CardHeader>Filled</CardHeader>
+    <CardBody>A card with the filled variant.</CardBody>
+  </Card>
+  <Card className="rounded-lg border border-gray-400" variant="unstyled">
+    <CardHeader className="p-4 font-bold">Unstyled</CardHeader>
+    <CardBody className="p-4 pt-0">A card with the unstyled variant.</CardBody>
+  </Card>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       {(['elevated', 'outline', 'filled'] as const).map((variant) => (
@@ -115,6 +142,26 @@ export const Variants: Story = {
  * Use the **size** prop to change the padding and the text of the Card.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-start justify-center gap-6">
+  <Card size="sm" variant="outline">
+    <CardHeader>Size sm</CardHeader>
+    <CardBody>The padding and the text follow the size.</CardBody>
+  </Card>
+  <Card size="md" variant="outline">
+    <CardHeader>Size md</CardHeader>
+    <CardBody>The padding and the text follow the size.</CardBody>
+  </Card>
+  <Card size="lg" variant="outline">
+    <CardHeader>Size lg</CardHeader>
+    <CardBody>The padding and the text follow the size.</CardBody>
+  </Card>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-start gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
