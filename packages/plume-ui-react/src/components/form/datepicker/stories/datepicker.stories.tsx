@@ -49,12 +49,16 @@ const StatefulDatePicker = ({ maxDate, minDate, ...args }: DatePickerProps): Rea
  * it its parts as children: `DatePickerInput` is the field with the button, and `DatePickerCalendar` the calendar
  * (a popup under the input, or always visible with `panel`). The `DatePicker` keeps the value and the state
  * and shares them with its parts. All the props of the `DatePicker` keep working when it has no children; with
- * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`,
+ * children, the props of the field (`placeholder`, `disabled`, `readOnly`, `onBlur`, `id`, `name`,
  * `required` and `className`) go on the `DatePickerInput`. The look (`variant`, `size` and `shape`) always goes on the
  * `DatePicker`, because it styles the input and the calendar together.
  *
  * Every element is a part with its own `className`, `style` and `ref`, and with `data-plume-datepicker-<part>`
- * attributes (the days also carry `data-selected`, `data-today`, `data-outside` and `data-in-range`). The cells that
+ * attributes (the days also carry `data-selected`, `data-today`, `data-outside`, `data-in-range`, `data-disabled`,
+ * and `data-hovered` and `data-preview` while the pointer or the focus is over the calendar). The `ref` of the
+ * `DatePicker` and of the `DatePickerInput` goes to the native `<input>`, so a form library can focus it.
+ * `DatePickerFormatHint` is the visually hidden text that describes the expected format, and `DatePickerDayNumber`
+ * the number inside a `DatePickerDay`. The cells that
  * repeat (weekdays, days, months and years) take a function as children, like
  * `<DatePickerGrid>{(day) => <DatePickerDay day={day} />}</DatePickerGrid>`, to render each one yourself.
  *
@@ -105,7 +109,6 @@ export default {
     style: { control: false },
     id: { control: false },
     name: { control: false },
-    inputRef: { control: false },
     required: { control: 'boolean' },
   },
   render: (args) => <StatefulDatePicker {...args} />,
@@ -251,56 +254,16 @@ export const Sizes: Story = {
 
 /**
  * This is a list of DatePicker with different colors.
- * Just adding the **colorScheme** prop.
+ * Just adding the **colorScheme** prop. The color marks the selected day, today and the focus; the in-range days and
+ * the hover use its tints.
  */
 export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<DatePicker aria-label="Default DatePicker" placeholder="Default DatePicker" />
-<DatePicker
-  aria-label="Primary DatePicker"
-  colorScheme="primary"
-  placeholder="Primary DatePicker"
-  value={value}
-  onValueChange={handleValueChange} 
-/>
-<DatePicker
-  aria-label="Secondary DatePicker"
-  colorScheme="secondary"
-  placeholder="Secondary DatePicker"
-  value={value}
-  onValueChange={handleValueChange}
-/>
-<DatePicker
-  aria-label="Info DatePicker"
-  colorScheme="info"
-  placeholder="Info DatePicker"
-  value={value}
-  onValueChange={handleValueChange}
-/>
-<DatePicker
-  aria-label="Warning DatePicker"
-  colorScheme="warning"
-  placeholder="Warning DatePicker"
-  value={value}
-  onValueChange={handleValueChange}
-/>
-<DatePicker
-  aria-label="Error DatePicker"
-  colorScheme="error"
-  placeholder="Error DatePicker"
-  value={value}
-  onValueChange={handleValueChange}
-/>
-<DatePicker
-  aria-label="Success DatePicker"
-  colorScheme="success"
-  placeholder="Success DatePicker"
-  value={value}
-  onValueChange={handleValueChange}
-/>
-          `,
+        code: `<DatePicker aria-label="Primary DatePicker" colorScheme="primary" onValueChange={handleValueChange} value={value} />
+<DatePicker aria-label="Success DatePicker" colorScheme="success" onValueChange={handleValueChange} value={value} />
+<DatePicker aria-label="Error DatePicker" colorScheme="error" onValueChange={handleValueChange} value={value} />`,
       },
     },
   },
@@ -316,49 +279,16 @@ export const Colors: Story = {
     }
     return (
       <div className='grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]'>
-        <DatePicker aria-label='Default DatePicker' onValueChange={handleValueChange} placeholder='Default DatePicker' value={value} />
-        <DatePicker
-          aria-label='Primary DatePicker'
-          colorScheme='primary'
-          onValueChange={handleValueChange}
-          placeholder='Primary DatePicker'
-          value={value}
-        />
-        <DatePicker
-          aria-label='Secondary DatePicker'
-          colorScheme='secondary'
-          onValueChange={handleValueChange}
-          placeholder='Secondary DatePicker'
-          value={value}
-        />
-        <DatePicker
-          aria-label='Info DatePicker'
-          colorScheme='info'
-          onValueChange={handleValueChange}
-          placeholder='Info DatePicker'
-          value={value}
-        />
-        <DatePicker
-          aria-label='Warning DatePicker'
-          colorScheme='warning'
-          onValueChange={handleValueChange}
-          placeholder='Warning DatePicker'
-          value={value}
-        />
-        <DatePicker
-          aria-label='Error DatePicker'
-          colorScheme='error'
-          onValueChange={handleValueChange}
-          placeholder='Error DatePicker'
-          value={value}
-        />
-        <DatePicker
-          aria-label='Success DatePicker'
-          colorScheme='success'
-          onValueChange={handleValueChange}
-          placeholder='Success DatePicker'
-          value={value}
-        />
+        {colorSchemes.map((colorScheme) => (
+          <DatePicker
+            aria-label={`${colorScheme} DatePicker`}
+            colorScheme={colorScheme as keyof typeof defaultTheme.colors}
+            key={colorScheme}
+            onValueChange={handleValueChange}
+            placeholder={`${colorScheme} DatePicker`}
+            value={value}
+          />
+        ))}
       </div>
     )
   },

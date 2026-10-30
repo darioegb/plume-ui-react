@@ -85,7 +85,7 @@ Tailwind or Bootstrap. It applies to the root and to all its parts at once:
 
 What `unstyled` keeps is what makes the component work, not how it looks: the flex row that holds a chevron, the layer
 that centers a modal, the reset of a `<button>` or a `<dialog>`. Those rules have zero specificity, so any class of
-yours overrides them. The calendar of the `DatePicker` also keeps its structural classes (the grid of days), and it is
+yours overrides them. The calendar of the `DatePicker` keeps the grid of days and its header row the same way, and it is
 themed with `colorScheme` and the `--datepicker-*` variables.
 
 Every story of Tailwind and Bootstrap in the components shows the component in `unstyled` with those frameworks.
