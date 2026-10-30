@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react'
 import type { TabsState } from './tabs-reducer'
 import { tabsReducer } from './tabs-reducer'
 import styles from './tabs.module.css'
@@ -44,9 +44,15 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
     config.variant,
   ])
 
-  const setActiveTabIndex = (index: number): void => {
+  const onIndexChange = useRef(config.onIndexChange)
+  useEffect(() => {
+    onIndexChange.current = config.onIndexChange
+  })
+
+  const setActiveTabIndex = useCallback((index: number): void => {
+    onIndexChange.current?.(index)
     dispatch({ type: 'SET_ACTIVE_TAB_INDEX', payload: index })
-  }
+  }, [])
 
   return (
     <TabContext.Provider
@@ -58,7 +64,7 @@ export function TabsProvider({ config, children }: Readonly<TabProviderProps>): 
           variantClass,
           setActiveTabIndex,
         }),
-        [alignmentClass, sizeClass, state, variantClass],
+        [alignmentClass, setActiveTabIndex, sizeClass, state, variantClass],
       )}
     >
       {children}
