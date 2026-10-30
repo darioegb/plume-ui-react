@@ -603,7 +603,7 @@ describe('List parts model', () => {
       </List>,
     )
     expect(screen.getByText('Folders').className).toBe('mine')
-    for (const element of container.querySelectorAll('*')) {
+    for (const element of Array.from(container.querySelectorAll('*'))) {
       expect(element.getAttribute('class') ?? '').not.toMatch(
         /\b(list|item|button|icon|text|primary|secondary|divider|subheader|selected)\b/,
       )

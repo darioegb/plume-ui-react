@@ -233,7 +233,11 @@ describe('Tooltip component', () => {
 
     it('forwards the ref to the bubble and takes native attributes', () => {
       const ref = createRef<HTMLDivElement>()
-      render(<Example defaultOpen dir="rtl" id="hint" lang="es" ref={ref} />)
+      render(
+        <Tooltip content="Save the changes" defaultOpen dir="rtl" id="hint" lang="es" ref={ref}>
+          <button>Save</button>
+        </Tooltip>,
+      )
       expect(ref.current).toBe(tooltip())
       expect(tooltip()).toHaveAttribute('id', 'hint')
       expect(tooltip()).toHaveAttribute('dir', 'rtl')
