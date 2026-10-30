@@ -54,12 +54,6 @@
   grid-area: error;
 }
 
-.label {
-  font-size: var(--plume-font-size-sm);
-  font-weight: var(--plume-font-weight-medium);
-  line-height: var(--plume-line-height-snug);
-}
-
 .requiredIndicator {
   color: var(--plume-color-error-text);
   margin-inline-start: var(--plume-space-1);
@@ -71,21 +65,10 @@
   margin-inline-start: var(--plume-space-1);
 }
 
-.helperText,
-.errorText {
-  font-size: var(--plume-font-size-sm);
-  line-height: var(--plume-line-height-snug);
-  margin: 0;
-}
-
-.helperText {
-  color: var(--plume-muted);
-}
-
 .errorText {
   color: var(--plume-color-error-text);
 }
 
-.disabled .label {
+.field[data-disabled] > .label {
   opacity: var(--plume-opacity-disabled);
 }

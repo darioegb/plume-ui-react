@@ -1,9 +1,12 @@
 'use client'
 
-import { Children, cloneElement, forwardRef, useId, useMemo } from 'react'
-import type { ForwardedRef, ReactElement, ReactNode } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement, useId, useMemo } from 'react'
+import type { ForwardedRef, HTMLAttributes, ReactElement, ReactNode } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { FieldContext } from './field-context'
+import { FIELD_PARTS, FieldErrorText, FieldHelperText, FieldLabel, isFieldPart } from './field-parts'
 import styles from './field.module.css'
 
 export interface FieldOwnProps {
@@ -46,6 +49,13 @@ export interface FieldOwnProps {
    * @default false
    */
   required?: boolean
+  /**
+   * `unstyled` drops the Plume styles of the field and of its parts, so you can lay it out yourself. A field has
+   * no other look: its control has the variants.
+   *
+   * @default 'default'
+   */
+  variant?: FieldVariant
 }
 
 export type FieldOrientation = 'vertical' | 'horizontal' | 'inline'
@@ -60,51 +70,23 @@ export interface FieldControlProps {
   required?: boolean
 }
 
-type FieldRootAttributes = {
-  /** The form control: a single element such as `Input` or `DatePicker`. */
-  children: ReactElement<FieldControlProps>
+export type FieldVariant = 'default' | 'unstyled'
+
+type FieldRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'hidden' | 'id' | 'title'> & {
+  /**
+   * The form control, a single element such as `Input` or `DatePicker`. Put `FieldLabel`, `FieldHelperText` and
+   * `FieldErrorText` next to it to compose the field yourself.
+   */
+  children: ReactNode
 }
 
 export type FieldProps = Omit<ComponentProps, 'index'> & FieldRootAttributes & FieldOwnProps
-
-interface FieldLabelProps {
-  children: ReactNode
-  htmlFor: string | undefined
-  id: string | undefined
-  optionalText: ReactNode
-  required: boolean
-}
-
-function FieldLabel({
-  children,
-  htmlFor,
-  id,
-  optionalText,
-  required,
-}: Readonly<FieldLabelProps>): ReactElement {
-  return (
-    <label className={styles.label} htmlFor={htmlFor} id={id}>
-      {children}
-      {required ? (
-        <span aria-hidden="true" className={styles.requiredIndicator}>
-          *
-        </span>
-      ) : null}
-      {!required && optionalText ? (
-        <>
-          {' '}
-          <span className={styles.optionalText}>{optionalText}</span>
-        </>
-      ) : null}
-    </label>
-  )
-}
 
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
     {
       children,
-      className = '',
+      className,
       disabled = false,
       errorText,
       helperText,
@@ -114,61 +96,79 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
       orientation = 'vertical',
       readOnly = false,
       required = false,
-      style,
+      variant = 'default',
+      ...rest
     }: FieldProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const baseId = useId()
-    const control = Children.only(children)
-    const controlProps = control.props
+    const isStyled = variant !== 'unstyled'
+    const composed = hasPart(children, FIELD_PARTS)
+    const items = Children.toArray(children)
+    const control = items.find(
+      (child): child is ReactElement<FieldControlProps> => isValidElement(child) && !isFieldPart(child),
+    )
+    const controlProps = control?.props ?? {}
     const controlId = controlProps.id ?? `${baseId}-control`
-    const labelId = label ? `${baseId}-label` : undefined
+    const hasLabel = composed ? hasPart(children, [FieldLabel]) : Boolean(label)
+    const hasHelper = composed ? hasPart(children, [FieldHelperText]) : Boolean(helperText)
+    const hasError = invalid && (composed ? hasPart(children, [FieldErrorText]) : Boolean(errorText))
+    const labelId = hasLabel ? `${baseId}-label` : undefined
     const helperId = `${baseId}-helper`
     const errorId = `${baseId}-error`
-    const showError = invalid && Boolean(errorText)
 
     const describedBy =
-      [controlProps['aria-describedby'], showError ? errorId : null, helperText ? helperId : null]
+      [controlProps['aria-describedby'], hasError ? errorId : null, hasHelper ? helperId : null]
         .filter(Boolean)
         .join(' ') || undefined
 
-    const context = useMemo(() => ({ controlId, labelId }), [controlId, labelId])
+    const context = useMemo(
+      () => ({
+        controlId,
+        disabled,
+        errorId,
+        helperId,
+        invalid,
+        isStyled,
+        labelId,
+        optionalText,
+        required,
+      }),
+      [controlId, disabled, errorId, helperId, invalid, isStyled, labelId, optionalText, required],
+    )
 
-    const fieldClasses = `${styles.field} ${styles[orientation]} ${
-      disabled ? styles.disabled : ''
-    } ${className}`.trim()
+    const wire = (element: ReactElement<FieldControlProps>): ReactElement =>
+      cloneElement(element, {
+        id: controlId,
+        'aria-describedby': describedBy,
+        'aria-invalid': invalid || element.props['aria-invalid'] || undefined,
+        disabled: disabled || element.props.disabled,
+        readOnly: readOnly || element.props.readOnly,
+        required: required || element.props.required,
+      })
 
     return (
       <FieldContext.Provider value={context}>
-        <div className={fieldClasses} ref={ref} style={style}>
-          {label ? (
-            <FieldLabel
-              htmlFor={controlId}
-              id={labelId}
-              optionalText={optionalText}
-              required={required}
-            >
-              {label}
-            </FieldLabel>
-          ) : null}
-          {cloneElement(control, {
-            id: controlId,
-            'aria-describedby': describedBy,
-            'aria-invalid': invalid || controlProps['aria-invalid'] || undefined,
-            disabled: disabled || controlProps.disabled,
-            readOnly: readOnly || controlProps.readOnly,
-            required: required || controlProps.required,
-          })}
-          {helperText ? (
-            <p className={styles.helperText} id={helperId}>
-              {helperText}
-            </p>
-          ) : null}
-          {showError ? (
-            <p className={styles.errorText} id={errorId} role="alert">
-              {errorText}
-            </p>
-          ) : null}
+        <div
+          className={joinClasses(isStyled && styles.field, isStyled && styles[orientation], className)}
+          data-disabled={disabled ? '' : undefined}
+          data-invalid={invalid ? '' : undefined}
+          data-orientation={orientation}
+          data-plume-field=""
+          data-required={required ? '' : undefined}
+          ref={ref}
+          {...rest}
+        >
+          {composed ? (
+            items.map((child) => (child === control ? wire(control) : child))
+          ) : (
+            <>
+              {label ? <FieldLabel>{label}</FieldLabel> : null}
+              {control ? wire(control) : null}
+              {helperText ? <FieldHelperText>{helperText}</FieldHelperText> : null}
+              {errorText ? <FieldErrorText>{errorText}</FieldErrorText> : null}
+            </>
+          )}
         </div>
       </FieldContext.Provider>
     )
