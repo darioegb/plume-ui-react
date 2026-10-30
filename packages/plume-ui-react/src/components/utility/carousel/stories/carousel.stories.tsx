@@ -260,6 +260,136 @@ export const Variants: Story = {
 }
 
 /**
+ * Use the **size** prop to change the size of the buttons and the dots.
+ */
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Carousel aria-label="Size sm" size="sm">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="Size md" size="md">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="Size lg" size="lg">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Carousel aria-label={`Size ${size}`} key={size} size={size}>
+          <Panels />
+          <Arrows />
+        </Carousel>
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **colorScheme** prop to pick a color from the theme. It colors the buttons and the active dot.
+ */
+export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-6">
+  <Carousel aria-label="primary" colorScheme="primary">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="success" colorScheme="success">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+  <Carousel aria-label="error" colorScheme="error">
+    <CarouselSlides>
+      <CarouselSlide>
+        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
+      </CarouselSlide>
+      <CarouselSlide>
+        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
+      </CarouselSlide>
+    </CarouselSlides>
+    <CarouselPrev />
+    <CarouselNext />
+    <CarouselDots />
+  </Carousel>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', ...frame }}>
+      {colorSchemes.map((scheme) => (
+        <Carousel
+          aria-label={scheme}
+          colorScheme={scheme as keyof typeof defaultTheme.colors}
+          key={scheme}
+        >
+          <Panels />
+          <Arrows />
+        </Carousel>
+      ))}
+    </div>
+  ),
+}
+
+/**
  * The **appearance** of `CarouselDots` changes the indicator, not only its size: `dots` (the default) are small
  * circles with the active one stretched, `bars` are thin segments like the progress of a story, and `numbers` are
  * buttons with the number of the slide, for a long list where a dot says nothing.
@@ -444,137 +574,6 @@ export const Controls: Story = {
           <CarouselNext />
         </div>
       </Carousel>
-    </div>
-  ),
-}
-
-/**
- * Use the **size** prop to change the size of the buttons and the dots.
- */
-export const Sizes: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<div className="flex flex-col gap-8">
-  <Carousel aria-label="Size sm" size="sm">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="Size md" size="md">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="Size lg" size="lg">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-</div>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', ...frame }}>
-      {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Carousel aria-label={`Size ${size}`} key={size} size={size}>
-          <Panels />
-          <Arrows />
-        </Carousel>
-      ))}
-    </div>
-  ),
-}
-
-/**
- * Use the **colorScheme** prop to pick a color from the theme. It colors the buttons and the active dot.
- */
-export const Colors: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<div className="flex flex-col gap-6">
-  <Carousel aria-label="primary" colorScheme="primary" size="sm">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="success" colorScheme="success" size="sm">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-  <Carousel aria-label="error" colorScheme="error" size="sm">
-    <CarouselSlides>
-      <CarouselSlide>
-        <div className="h-44 bg-primary-solid p-4 text-primary-on-solid">Mountains</div>
-      </CarouselSlide>
-      <CarouselSlide>
-        <div className="h-44 bg-success-solid p-4 text-success-on-solid">Forest</div>
-      </CarouselSlide>
-    </CarouselSlides>
-    <CarouselPrev />
-    <CarouselNext />
-    <CarouselDots />
-  </Carousel>
-</div>`,
-      },
-    },
-  },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', ...frame }}>
-      {colorSchemes.map((scheme) => (
-        <Carousel
-          aria-label={scheme}
-          colorScheme={scheme as keyof typeof defaultTheme.colors}
-          key={scheme}
-          size="sm"
-        >
-          <Panels />
-          <Arrows />
-        </Carousel>
-      ))}
     </div>
   ),
 }

@@ -231,6 +231,28 @@ export const Variants: Story = {
       </TableRow>
     </TableBody>
   </Table>
+  <Table aria-label="bordered" variant="bordered">
+    <TableCaption>bordered</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Role</TableHead>
+        <TableHead align="end">Age</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Mathematician</TableCell>
+        <TableCell align="end">36</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Rear admiral</TableCell>
+        <TableCell align="end">45</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
   <Table aria-label="striped" variant="striped">
     <TableCaption>striped</TableCaption>
     <TableHeader>
@@ -1223,6 +1245,35 @@ export const Empty: Story = {
  * the box scrolls, it can be focused to scroll it with the keyboard.
  */
 export const StickyHeader: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Table
+  aria-label="Long list"
+  maxHeight="12rem"
+  stickyHeader
+  style={{ maxWidth: '100%', width: '28rem' }}
+>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Role</TableHead>
+      <TableHead align="end">Age</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {people.map(({ age, name, role }) => (
+      <TableRow key={name}>
+        <TableCell>{name}</TableCell>
+        <TableCell>{role}</TableCell>
+        <TableCell align="end">{age}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>`,
+      },
+    },
+  },
   render: () => (
     <Table aria-label="Long list" maxHeight="12rem" stickyHeader style={{ maxWidth: '100%', width: '28rem' }}>
       <TableHeader>
@@ -1250,6 +1301,36 @@ export const StickyHeader: Story = {
  * focusable region with the name of the table, so a keyboard user can scroll it too.
  */
 export const Overflow: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style={{ maxWidth: '20rem' }}>
+  <Table aria-label="Wide table">
+    <TableElement style={{ minWidth: '40rem' }}>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Country</TableHead>
+          <TableHead align="end">Age</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {people.map(({ age, name, role }) => (
+          <TableRow key={name}>
+            <TableCell>{name}</TableCell>
+            <TableCell>{role}</TableCell>
+            <TableCell>Somewhere</TableCell>
+            <TableCell align="end">{age}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </TableElement>
+  </Table>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={{ maxWidth: '20rem' }}>
       <Table aria-label="Wide table">

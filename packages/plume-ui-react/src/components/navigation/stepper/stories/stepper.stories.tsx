@@ -67,6 +67,8 @@ export default {
         'Stepper',
         'Step',
         'StepIndicator',
+        'StepIndicatorContent',
+        'StepIndicatorLabel',
         'StepTitle',
         'StepDescription',
         'StepSeparator',
@@ -114,6 +116,63 @@ export const Default: Story = {}
  * yourself with the `data-state` of every part.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Stepper activeStep={1} aria-label="Solid" variant="solid">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="Outline" variant="outline">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper
+    activeStep={1}
+    aria-label="Unstyled"
+    className="flex-wrap gap-x-6 gap-y-2"
+    variant="unstyled"
+  >
+    <Step className="flex-none">
+      <StepIndicator className="mr-2 font-bold data-[state=completed]:text-green-600" />
+      <StepTitle className="data-[state=current]:font-bold">Account</StepTitle>
+    </Step>
+    <Step className="flex-none">
+      <StepIndicator className="mr-2 font-bold data-[state=completed]:text-green-600" />
+      <StepTitle className="data-[state=current]:font-bold">Profile</StepTitle>
+    </Step>
+  </Stepper>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('2rem')}>
       <Stepper activeStep={1} aria-label="Solid" variant="solid">
@@ -143,6 +202,65 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Stepper activeStep={1} aria-label="Size sm" size="sm">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="Size md" size="md">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="Size lg" size="lg">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('2rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -158,6 +276,65 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme. It colors the completed and the current steps.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Stepper activeStep={1} aria-label="primary" colorScheme="primary">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="success" colorScheme="success">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="error" colorScheme="error">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {colorSchemes.map((scheme) => (
@@ -189,6 +366,65 @@ export const Vertical: Story = {
  * dimmed. An index past the last step completes all of them.
  */
 export const Progress: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-8">
+  <Stepper activeStep={0} aria-label="Step 0">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={1} aria-label="Step 1">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+  <Stepper activeStep={3} aria-label="Step 3">
+    <Step>
+      <StepIndicator />
+      <StepTitle>Account</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Profile</StepTitle>
+      <StepSeparator />
+    </Step>
+    <Step>
+      <StepIndicator />
+      <StepTitle>Review</StepTitle>
+      <StepSeparator />
+    </Step>
+  </Stepper>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('2rem')}>
       {[0, 1, 2, 3].map((activeStep) => (
@@ -205,6 +441,29 @@ export const Progress: Story = {
  * check unless you give them children too.
  */
 export const CustomIndicator: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
+  <Step>
+    <StepIndicator>🛒</StepIndicator>
+    <StepTitle>Cart</StepTitle>
+    <StepSeparator />
+  </Step>
+  <Step>
+    <StepIndicator>📦</StepIndicator>
+    <StepTitle>Shipping</StepTitle>
+    <StepSeparator />
+  </Step>
+  <Step>
+    <StepIndicator>💳</StepIndicator>
+    <StepTitle>Payment</StepTitle>
+    <StepSeparator />
+  </Step>
+</Stepper>`,
+      },
+    },
+  },
   render: () => (
     <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
       {[
@@ -314,6 +573,41 @@ export const Controlled: Story = {
  * screen reader gets). Compose them to style the content on its own, or to give the label your own text.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
+  <Step>
+    <StepIndicator>
+      <StepIndicatorContent className="font-bold" />
+      <StepIndicatorLabel>Step: Account</StepIndicatorLabel>
+    </StepIndicator>
+    <StepTitle>Account</StepTitle>
+    <StepDescription>Your email and password</StepDescription>
+    <StepSeparator />
+  </Step>
+  <Step>
+    <StepIndicator>
+      <StepIndicatorContent className="font-bold" />
+      <StepIndicatorLabel>Step: Profile</StepIndicatorLabel>
+    </StepIndicator>
+    <StepTitle>Profile</StepTitle>
+    <StepDescription>Tell us about you</StepDescription>
+    <StepSeparator />
+  </Step>
+  <Step>
+    <StepIndicator>
+      <StepIndicatorContent className="font-bold" />
+      <StepIndicatorLabel>Step: Review</StepIndicatorLabel>
+    </StepIndicator>
+    <StepTitle>Review</StepTitle>
+    <StepDescription>Check everything</StepDescription>
+    <StepSeparator />
+  </Step>
+</Stepper>`,
+      },
+    },
+  },
   render: () => (
     <Stepper activeStep={1} aria-label="Order" style={{ width: '36rem', maxWidth: '100%' }}>
       {steps.map(({ description, title }) => (
@@ -343,17 +637,17 @@ export const Tailwind: Story = {
         code: `<Stepper activeStep={1} aria-label="Sign up progress" className="w-[36rem] max-w-full text-sm text-foreground" variant="unstyled">
   <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Account</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-[var(--plume-muted)] sm:block">Account</StepTitle>
     <StepSeparator className="h-0.5 bg-border data-[state=completed]:bg-primary-solid" />
   </Step>
   <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Profile</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-[var(--plume-muted)] sm:block">Profile</StepTitle>
     <StepSeparator className="h-0.5 bg-border data-[state=completed]:bg-primary-solid" />
   </Step>
   <Step className="gap-x-2 sm:gap-x-3">
     <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">Review</StepTitle>
+    <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-[var(--plume-muted)] sm:block">Review</StepTitle>
   </Step>
 </Stepper>`,
       },
@@ -369,7 +663,7 @@ export const Tailwind: Story = {
       {steps.map(({ title }, index) => (
         <Step className="gap-x-2 sm:gap-x-3" key={title}>
           <StepIndicator className="size-8 rounded-full border-2 border-border font-semibold data-[state=completed]:border-primary-solid data-[state=completed]:bg-primary-solid data-[state=completed]:text-primary-on-solid data-[state=current]:border-primary-solid data-[state=current]:text-primary-text" />
-          <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-muted sm:block">
+          <StepTitle className="hidden font-medium data-[state=current]:block data-[state=upcoming]:text-[var(--plume-muted)] sm:block">
             {title}
           </StepTitle>
           {index < steps.length - 1 ? (

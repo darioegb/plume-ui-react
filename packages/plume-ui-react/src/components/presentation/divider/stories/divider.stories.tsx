@@ -104,6 +104,22 @@ export const Default: Story = {}
  * Plume styles so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style={{ maxWidth: '100%', width: '22rem' }}>
+  <Divider spacing="md" variant="solid" />
+  <Divider spacing="md" variant="dashed" />
+  <Divider spacing="md" variant="dotted" />
+  <Divider
+    className="border-0 border-t-4 border-double border-gray-500"
+    spacing="md"
+    variant="unstyled"
+  />
+</div>`,
+      },
+    },
+  },
   render: (args) => (
     <div style={{ maxWidth: '100%', width: '22rem' }}>
       {(['solid', 'dashed', 'dotted'] as const).map((variant) => (
@@ -122,6 +138,17 @@ export const Variants: Story = {
  * Use the **size** prop to change the thickness of the line.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style={{ maxWidth: '100%', width: '22rem' }}>
+  <Divider size="sm" spacing="md" />
+  <Divider size="md" spacing="md" />
+  <Divider size="lg" spacing="md" />
+</div>`,
+      },
+    },
+  },
   render: (args) => (
     <div style={{ maxWidth: '100%', width: '22rem' }}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -170,6 +197,22 @@ export const Vertical: Story = {
  * **spacing** adds space around the line, so you don't need a margin of your own.
  */
 export const Spacing: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div style={{ maxWidth: '100%', width: '22rem' }}>
+  <p className="text-sm">spacing: none</p>
+  <Divider />
+  <p className="text-sm">spacing: sm</p>
+  <Divider spacing="sm" />
+  <p className="text-sm">spacing: md</p>
+  <Divider spacing="md" />
+  <p className="text-sm">spacing: lg</p>
+  <Divider spacing="lg" />
+</div>`,
+      },
+    },
+  },
   render: (args) => (
     <div style={{ maxWidth: '100%', width: '22rem' }}>
       {([undefined, 'sm', 'md', 'lg'] as const).map((spacing) => (
@@ -232,7 +275,7 @@ export const Tailwind: Story = {
   className="flex items-center gap-[0.5rem] before:h-px before:flex-1 before:bg-blue-700 after:h-px after:flex-1 after:bg-blue-700"
   variant="unstyled"
 >
-  <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-muted">or</DividerLabel>
+  <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-[var(--plume-muted)]">or</DividerLabel>
 </Divider>`,
       },
     },
@@ -247,7 +290,7 @@ export const Tailwind: Story = {
         className="flex items-center gap-[0.5rem] before:h-px before:flex-1 before:bg-blue-700 after:h-px after:flex-1 after:bg-blue-700"
         variant="unstyled"
       >
-        <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-muted">
+        <DividerLabel className="px-[0.75rem] text-sm uppercase tracking-wide text-[var(--plume-muted)]">
           or
         </DividerLabel>
       </Divider>
