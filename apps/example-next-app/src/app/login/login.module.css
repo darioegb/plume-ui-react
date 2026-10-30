@@ -4,6 +4,13 @@
   justify-content: center;
   min-height: 100vh;
   padding: 1.5rem;
+  position: relative;
+}
+
+.language {
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  position: absolute;
 }
 
 .card {

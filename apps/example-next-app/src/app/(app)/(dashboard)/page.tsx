@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { getLocale, getTranslations } from 'next-intl/server'
 import {
   Avatar,
   AvatarGroup,
@@ -10,29 +11,35 @@ import {
 } from 'plume-ui-react'
 import { PageHeader } from '@/components/page-header'
 import { getDashboard } from '@/lib/data'
-import { formatDue } from '@/lib/format'
+import { formatDue, formatNumber } from '@/lib/format'
 import { getUser } from '@/lib/session'
 import { statusColor } from '@/lib/status'
 import styles from './dashboard.module.css'
 
 // A Server Component: Card, Badge and ProgressBar render on the server, and only the Avatars hydrate.
 export default async function DashboardPage(): Promise<ReactNode> {
-  const [user, { metrics, projects }] = await Promise.all([getUser(), getDashboard()])
-  const firstName = user?.name.split(' ')[0] ?? 'there'
+  const [user, { metrics, projects }, locale, t, tStatus] = await Promise.all([
+    getUser(),
+    getDashboard(),
+    getLocale(),
+    getTranslations('dashboard'),
+    getTranslations('status'),
+  ])
+  const firstName = user?.name.split(' ')[0] ?? t('guest')
 
   return (
     <>
-      <PageHeader description="Here is where your projects stand today." title={`Welcome back, ${firstName}`} />
+      <PageHeader description={t('description')} title={t('title', { name: firstName })} />
 
-      <section aria-label="Key numbers" className={styles.metrics}>
+      <section aria-label={t('keyNumbers')} className={styles.metrics}>
         {metrics.map((metric) => (
           <Card key={metric.id} variant="outline">
             <CardBody>
               <div className={styles.metric}>
-                <span className={styles.label}>{metric.label}</span>
-                <span className={styles.value}>{metric.value}</span>
+                <span className={styles.label}>{t(`metrics.${metric.id}.label`)}</span>
+                <span className={styles.value}>{formatNumber(metric.value, locale)}</span>
                 <Badge colorScheme={metric.trend === 'up' ? 'success' : 'warning'} size="sm" variant="subtle">
-                  {metric.change}
+                  {t(`metrics.${metric.id}.change`, { change: metric.change })}
                 </Badge>
               </div>
             </CardBody>
@@ -41,20 +48,20 @@ export default async function DashboardPage(): Promise<ReactNode> {
       </section>
 
       <Card variant="outline">
-        <CardHeader>Active projects</CardHeader>
+        <CardHeader>{t('activeProjects')}</CardHeader>
         <CardBody>
           <ul className={styles.projects}>
             {projects.map((project) => (
               <li className={styles.project} key={project.id}>
                 <div className={styles.projectInfo}>
                   <span className={styles.projectName}>{project.name}</span>
-                  <span className={styles.label}>Due {formatDue(project.due)}</span>
+                  <span className={styles.label}>{t('due', { date: formatDue(project.due, locale) })}</span>
                 </div>
                 <Badge className={styles.status} colorScheme={statusColor[project.status]} dot variant="subtle">
-                  {project.status}
+                  {tStatus(project.status)}
                 </Badge>
                 <ProgressBar
-                  aria-label={`${project.name} progress`}
+                  aria-label={t('progress', { name: project.name })}
                   className={styles.progress}
                   colorScheme={statusColor[project.status]}
                   showValue

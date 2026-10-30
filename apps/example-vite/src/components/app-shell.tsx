@@ -1,5 +1,6 @@
 import type { MouseEvent, ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 import {
   Avatar,
@@ -22,6 +23,7 @@ import {
   SidebarToggle,
   useTheme,
 } from "plume-ui-react";
+import { languages, type Language } from "../i18n";
 import { resetData } from "../lib/data";
 import { usePreferences } from "../providers";
 import { brands, type BrandId } from "../theme";
@@ -39,9 +41,9 @@ import styles from "./app-shell.module.css";
 const user = { email: "ana.ruiz@plume.dev", name: "Ana Ruiz" };
 
 const pages = [
-  { href: "/", icon: <DashboardIcon />, label: "Dashboard" },
-  { href: "/projects", icon: <ProjectsIcon />, label: "Projects" },
-];
+  { href: "/", icon: <DashboardIcon />, label: "nav.dashboard" },
+  { href: "/projects", icon: <ProjectsIcon />, label: "nav.projects" },
+] as const;
 
 const isCurrent = (pathname: string, href: string): boolean =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -49,11 +51,13 @@ const isCurrent = (pathname: string, href: string): boolean =>
 export function AppShell({
   children,
 }: Readonly<{ children: ReactNode }>): ReactNode {
+  const { i18n, t } = useTranslation();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { colorMode, setColorMode } = useTheme();
   const { brand, setBrand, setColorModeSetting } = usePreferences();
   const [open, setOpen] = useState(false);
+  const language = i18n.language as Language;
   const current = pages.find((page) => isCurrent(pathname, page.href));
 
   // A new page starts at the top, like a full page load would.
@@ -92,14 +96,14 @@ export function AppShell({
   return (
     <SidebarProvider onOpenChange={setOpen} open={open}>
       <div className={styles.layout}>
-        <Sidebar aria-label="Application">
+        <Sidebar aria-label={t("nav.application")}>
           <div className={styles.brand}>
             <span aria-hidden="true" className={styles.mark}>
               P
             </span>
-            <span className={styles.name}>Plume Projects</span>
+            <span className={styles.name}>{t("app.name")}</span>
           </div>
-          <SidebarContent aria-label="Pages">
+          <SidebarContent aria-label={t("nav.pages")}>
             {pages.map((page) => (
               <SidebarItem
                 active={isCurrent(pathname, page.href)}
@@ -108,14 +112,14 @@ export function AppShell({
                 key={page.href}
                 onClick={go(page.href)}
               >
-                {page.label}
+                {t(page.label)}
               </SidebarItem>
             ))}
           </SidebarContent>
         </Sidebar>
         <div className={styles.column}>
           <Navbar
-            aria-label="Top bar"
+            aria-label={t("nav.topBar")}
             breakpoint="never"
             className={styles.topbar}
             sticky
@@ -129,12 +133,12 @@ export function AppShell({
                     current={pathname === "/"}
                     onClick={go("/")}
                   >
-                    Home
+                    {t("nav.home")}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {current && current.href !== "/" ? (
                   <BreadcrumbItem>
-                    <BreadcrumbLink current>{current.label}</BreadcrumbLink>
+                    <BreadcrumbLink current>{t(current.label)}</BreadcrumbLink>
                   </BreadcrumbItem>
                 ) : null}
               </Breadcrumb>
@@ -143,8 +147,8 @@ export function AppShell({
               <Button
                 aria-label={
                   colorMode === "dark"
-                    ? "Switch to light mode"
-                    : "Switch to dark mode"
+                    ? t("preferences.switchToLight")
+                    : t("preferences.switchToDark")
                 }
                 onClick={toggleColorMode}
                 variant="ghost"
@@ -154,7 +158,31 @@ export function AppShell({
               <Dropdown placement="bottom-end">
                 <DropdownTrigger>
                   <Button
-                    aria-label={`Account menu for ${user.name}`}
+                    aria-label={t("preferences.language")}
+                    variant="ghost"
+                  >
+                    {language.toUpperCase()}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownLabel>{t("preferences.language")}</DropdownLabel>
+                  {languages.map((id) => (
+                    <DropdownItem
+                      icon={id === language ? <CheckIcon /> : undefined}
+                      key={id}
+                      onSelect={() => void i18n.changeLanguage(id)}
+                    >
+                      {t(`languages.${id}`)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+              <Dropdown placement="bottom-end">
+                <DropdownTrigger>
+                  <Button
+                    aria-label={t("preferences.accountMenu", {
+                      name: user.name,
+                    })}
                     variant="ghost"
                   >
                     <Avatar name={user.name} size="sm" />
@@ -163,19 +191,19 @@ export function AppShell({
                 <DropdownMenu>
                   <DropdownLabel>{user.email}</DropdownLabel>
                   <DropdownSeparator />
-                  <DropdownLabel>Brand color</DropdownLabel>
+                  <DropdownLabel>{t("preferences.brandColor")}</DropdownLabel>
                   {(Object.keys(brands) as BrandId[]).map((id) => (
                     <DropdownItem
                       icon={id === brand ? <CheckIcon /> : undefined}
                       key={id}
                       onSelect={() => setBrand(id)}
                     >
-                      {brands[id].label}
+                      {t(`brands.${id}`)}
                     </DropdownItem>
                   ))}
                   <DropdownSeparator />
                   <DropdownItem icon={<RefreshIcon />} onSelect={resetDemo}>
-                    Reset demo data
+                    {t("preferences.resetDemo")}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

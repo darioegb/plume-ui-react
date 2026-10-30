@@ -27,6 +27,7 @@ import "plume-ui-react/css/tabs.css";
 import "plume-ui-react/css/text.css";
 import "plume-ui-react/css/textarea.css";
 import "plume-ui-react/css/toast.css";
+import "./i18n";
 import { App } from "./app";
 import { Providers } from "./providers";
 

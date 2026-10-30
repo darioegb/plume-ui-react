@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, Skeleton } from "plume-ui-react";
 import { PageHeader } from "../components/page-header";
 import { SkeletonPage } from "../components/skeleton-page";
@@ -8,11 +9,12 @@ import { ProjectsBoard } from "./projects-board";
 import styles from "./projects.module.css";
 
 export function ProjectsPage(): ReactNode {
+  const { t } = useTranslation();
   const projects = useResource(getProjects);
 
   if (projects.status === "loading") {
     return (
-      <SkeletonPage label="Loading the projects">
+      <SkeletonPage label={t("projects.loading")}>
         <div className={styles.toolbar}>
           <Skeleton className={styles.search} height={40} shape="rect" />
           <Skeleton className={styles.status} height={40} shape="rect" />
@@ -30,14 +32,14 @@ export function ProjectsPage(): ReactNode {
   }
 
   if (projects.status === "error") {
-    return <Alert status="error">Could not load projects. Reload the page to try again.</Alert>;
+    return <Alert status="error">{t("projects.loadError")}</Alert>;
   }
 
   return (
     <>
       <PageHeader
-        description="Every project of the workspace, with its status and owner."
-        title="Projects"
+        description={t("projects.description")}
+        title={t("projects.title")}
       />
       <ProjectsBoard projects={projects.value} />
     </>

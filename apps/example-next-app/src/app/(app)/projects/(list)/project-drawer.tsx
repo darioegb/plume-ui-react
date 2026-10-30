@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   Avatar,
   AvatarGroup,
@@ -24,12 +25,6 @@ import { formatDue } from '@/lib/format'
 import { statusColor } from '@/lib/status'
 import styles from './projects.module.css'
 
-const activity = (project: Project): { text: string; when: string }[] => [
-  { text: `${project.owner} updated the plan`, when: '2 days ago' },
-  { text: `${project.team[1] ?? project.owner} commented on a task`, when: '4 days ago' },
-  { text: `${project.owner} created the project`, when: '3 weeks ago' },
-]
-
 export function ProjectDrawer({
   onComplete,
   onOpenChange,
@@ -43,6 +38,21 @@ export function ProjectDrawer({
   open: boolean
   project: Project | null
 }>): ReactNode {
+  const t = useTranslations('projects')
+  const tDrawer = useTranslations('projects.drawer')
+  const tStatus = useTranslations('status')
+  const tVisibility = useTranslations('visibility')
+  const locale = useLocale()
+
+  const activity = (current: Project): { text: string; when: string }[] => [
+    { text: tDrawer('updatedPlan', { name: current.owner }), when: tDrawer('daysAgo', { count: 2 }) },
+    {
+      text: tDrawer('commented', { name: current.team[1] ?? current.owner }),
+      when: tDrawer('daysAgo', { count: 4 }),
+    },
+    { text: tDrawer('created', { name: current.owner }), when: tDrawer('weeksAgo', { count: 3 }) },
+  ]
+
   return (
     <Drawer onOpenChange={onOpenChange} open={open && project !== null}>
       <DrawerContent>
@@ -52,28 +62,28 @@ export function ProjectDrawer({
             <DrawerBody>
               <Tabs>
                 <TabList>
-                  <Tab label="Overview" />
-                  <Tab label="Activity" />
+                  <Tab label={tDrawer('overview')} />
+                  <Tab label={tDrawer('activity')} />
                 </TabList>
                 <TabPanels>
                   <TabPanel>
                     <div className={styles.detail}>
-                      <p className={styles.description}>{project.description}</p>
+                      <p className={styles.description}>{project.description || t('noDescription')}</p>
                       <dl className={styles.facts}>
-                        <dt>Status</dt>
+                        <dt>{tDrawer('status')}</dt>
                         <dd>
                           <Badge colorScheme={statusColor[project.status]} dot variant="subtle">
-                            {project.status}
+                            {tStatus(project.status)}
                           </Badge>
                         </dd>
-                        <dt>Due</dt>
-                        <dd>{formatDue(project.due)}</dd>
-                        <dt>Owner</dt>
+                        <dt>{tDrawer('due')}</dt>
+                        <dd>{formatDue(project.due, locale)}</dd>
+                        <dt>{tDrawer('owner')}</dt>
                         <dd className={styles.owner}>
                           <Avatar name={project.owner} size="sm" />
                           {project.owner}
                         </dd>
-                        <dt>Team</dt>
+                        <dt>{tDrawer('team')}</dt>
                         <dd>
                           <AvatarGroup max={5} size="sm">
                             {project.team.map((member) => (
@@ -81,15 +91,15 @@ export function ProjectDrawer({
                             ))}
                           </AvatarGroup>
                         </dd>
-                        <dt>Visibility</dt>
+                        <dt>{tDrawer('visibility')}</dt>
                         <dd>
                           <Badge colorScheme="salmon" variant="subtle">
-                            {project.visibility}
+                            {tVisibility(project.visibility)}
                           </Badge>
                         </dd>
                       </dl>
                       <ProgressBar
-                        aria-label="Progress"
+                        aria-label={tDrawer('progress')}
                         colorScheme={statusColor[project.status]}
                         showValue
                         value={project.progress}
@@ -111,15 +121,15 @@ export function ProjectDrawer({
             </DrawerBody>
             <DrawerFooter>
               <Button colorScheme="error" onClick={() => onRemove(project)} variant="ghost">
-                Delete
+                {t('delete')}
               </Button>
               <DrawerClose>
                 <Button
-                  disabled={project.status === 'Done'}
+                  disabled={project.status === 'done'}
                   onClick={() => onComplete(project)}
                   variant="outline"
                 >
-                  Mark as done
+                  {t('markAsDone')}
                 </Button>
               </DrawerClose>
             </DrawerFooter>

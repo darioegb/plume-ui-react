@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { createContext, useContext, useMemo, useState } from 'react'
 import { ThemeProvider, ToastProvider, type ColorModeSetting } from 'plume-ui-react'
 import { themeFor, type BrandId } from '@/theme'
+import { PlumeLocale } from '@/components/plume-locale'
 
 interface PreferencesContextValue {
   brand: BrandId
@@ -37,7 +38,9 @@ export function Providers({
   return (
     <PreferencesContext.Provider value={value}>
       <ThemeProvider defaultColorMode={colorMode} style={{ minHeight: '100vh' }} theme={theme}>
-        <ToastProvider>{children}</ToastProvider>
+        <PlumeLocale>
+          <ToastProvider>{children}</ToastProvider>
+        </PlumeLocale>
       </ThemeProvider>
     </PreferencesContext.Provider>
   )

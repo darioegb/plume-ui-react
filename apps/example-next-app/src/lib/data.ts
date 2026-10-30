@@ -1,4 +1,4 @@
-export type ProjectStatus = 'On track' | 'At risk' | 'Delayed' | 'Done'
+export type ProjectStatus = 'onTrack' | 'atRisk' | 'delayed' | 'done'
 
 export interface Project {
   description: string
@@ -13,7 +13,7 @@ export interface Project {
   visibility: Visibility
 }
 
-export type Visibility = 'Private' | 'Workspace'
+export type Visibility = 'private' | 'workspace'
 
 export interface NewProjectInput {
   description: string
@@ -26,12 +26,14 @@ export interface NewProjectInput {
   visibility: Visibility
 }
 
+export type MetricId = 'active' | 'completed' | 'overdue' | 'team'
+
 export interface Metric {
-  change: string
-  id: string
-  label: string
+  /** A ratio for `completed` (0.18 is 18 %), a count for the rest. */
+  change: number
+  id: MetricId
   trend: 'up' | 'down'
-  value: string
+  value: number
 }
 
 const seed: Omit<Project, 'visibility'>[] = [
@@ -42,7 +44,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Website redesign',
     owner: 'Ana Ruiz',
     progress: 72,
-    status: 'On track',
+    status: 'onTrack',
     team: ['Ana Ruiz', 'Marco Silva', 'Lena Fischer'],
   },
   {
@@ -52,7 +54,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Mobile app launch',
     owner: 'Marco Silva',
     progress: 45,
-    status: 'At risk',
+    status: 'atRisk',
     team: ['Marco Silva', 'Priya Nair', 'Tom Becker', 'Sara Lind', 'Ken Ito'],
   },
   {
@@ -62,7 +64,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Billing migration',
     owner: 'Priya Nair',
     progress: 28,
-    status: 'Delayed',
+    status: 'delayed',
     team: ['Priya Nair', 'Tom Becker'],
   },
   {
@@ -72,7 +74,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Onboarding emails',
     owner: 'Lena Fischer',
     progress: 100,
-    status: 'Done',
+    status: 'done',
     team: ['Lena Fischer', 'Sara Lind'],
   },
   {
@@ -82,7 +84,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Analytics dashboard',
     owner: 'Tom Becker',
     progress: 61,
-    status: 'On track',
+    status: 'onTrack',
     team: ['Tom Becker', 'Ken Ito', 'Ana Ruiz'],
   },
   {
@@ -92,7 +94,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Help center',
     owner: 'Sara Lind',
     progress: 83,
-    status: 'On track',
+    status: 'onTrack',
     team: ['Sara Lind', 'Lena Fischer'],
   },
   {
@@ -102,7 +104,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Enterprise SSO',
     owner: 'Ken Ito',
     progress: 18,
-    status: 'At risk',
+    status: 'atRisk',
     team: ['Ken Ito', 'Priya Nair', 'Marco Silva'],
   },
   {
@@ -112,7 +114,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Performance audit',
     owner: 'Marco Silva',
     progress: 100,
-    status: 'Done',
+    status: 'done',
     team: ['Marco Silva', 'Tom Becker'],
   },
   {
@@ -122,7 +124,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'API documentation',
     owner: 'Lena Fischer',
     progress: 37,
-    status: 'On track',
+    status: 'onTrack',
     team: ['Lena Fischer', 'Ken Ito'],
   },
   {
@@ -132,7 +134,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Accessibility review',
     owner: 'Ana Ruiz',
     progress: 52,
-    status: 'Delayed',
+    status: 'delayed',
     team: ['Ana Ruiz', 'Sara Lind', 'Tom Becker'],
   },
   {
@@ -142,7 +144,7 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Customer portal',
     owner: 'Priya Nair',
     progress: 9,
-    status: 'On track',
+    status: 'onTrack',
     team: ['Priya Nair', 'Marco Silva', 'Sara Lind', 'Ana Ruiz'],
   },
   {
@@ -152,13 +154,13 @@ const seed: Omit<Project, 'visibility'>[] = [
     name: 'Storage cleanup',
     owner: 'Tom Becker',
     progress: 100,
-    status: 'Done',
+    status: 'done',
     team: ['Tom Becker'],
   },
 ]
 
 // The simulated database: it lives in the server process and is shared by every user.
-const projects: Project[] = seed.map((project) => ({ ...project, visibility: 'Workspace' }))
+const projects: Project[] = seed.map((project) => ({ ...project, visibility: 'workspace' }))
 
 export const members = [
   'Ana Ruiz',
@@ -173,10 +175,10 @@ export const members = [
 ]
 
 const metrics: Metric[] = [
-  { change: '+3 this month', id: 'active', label: 'Active projects', trend: 'up', value: '12' },
-  { change: '+18%', id: 'completed', label: 'Tasks completed', trend: 'up', value: '248' },
-  { change: '-2 since Monday', id: 'overdue', label: 'Overdue tasks', trend: 'down', value: '7' },
-  { change: '+1 this week', id: 'team', label: 'Team members', trend: 'up', value: '9' },
+  { change: 3, id: 'active', trend: 'up', value: 12 },
+  { change: 0.18, id: 'completed', trend: 'up', value: 248 },
+  { change: 2, id: 'overdue', trend: 'down', value: 7 },
+  { change: 1, id: 'team', trend: 'up', value: 9 },
 ]
 
 // Stands in for a database call, so the loading skeleton is visible.
@@ -195,13 +197,13 @@ export async function getProjects(): Promise<Project[]> {
 export async function addProject(input: NewProjectInput): Promise<Project> {
   await latency(500)
   const project: Project = {
-    description: input.description || 'No description yet.',
+    description: input.description,
     due: input.due,
     id: `${input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
     name: input.name,
     owner: input.owner,
     progress: 0,
-    status: 'On track',
+    status: 'onTrack',
     team: input.team,
     visibility: input.visibility,
   }
@@ -209,8 +211,40 @@ export async function addProject(input: NewProjectInput): Promise<Project> {
   return project
 }
 
-export type Department = 'Design' | 'Engineering' | 'Product' | 'Support'
+export type Department = 'design' | 'engineering' | 'product' | 'support'
 export type Presence = 'away' | 'busy' | 'offline' | 'online'
+export type Role =
+  | 'backendEngineer'
+  | 'customerSuccess'
+  | 'dataAnalyst'
+  | 'frontendEngineer'
+  | 'productDesigner'
+  | 'productManager'
+  | 'staffEngineer'
+  | 'supportLead'
+  | 'supportSpecialist'
+  | 'uxResearcher'
+export type Skill =
+  | 'accessibility'
+  | 'accounts'
+  | 'architecture'
+  | 'css'
+  | 'dashboards'
+  | 'designSystems'
+  | 'docs'
+  | 'figma'
+  | 'go'
+  | 'interviews'
+  | 'nodejs'
+  | 'onboarding'
+  | 'postgresql'
+  | 'react'
+  | 'research'
+  | 'roadmaps'
+  | 'security'
+  | 'sql'
+  | 'surveys'
+  | 'training'
 
 export interface TeamMember {
   department: Department
@@ -218,20 +252,20 @@ export interface TeamMember {
   name: string
   pending?: boolean
   presence: Presence
-  role: string
-  skills: string[]
+  role: Role
+  skills: Skill[]
 }
 
 const team: TeamMember[] = [
-  { department: 'Product', email: 'ana.ruiz@plume.dev', name: 'Ana Ruiz', presence: 'online', role: 'Product Manager', skills: ['Roadmaps', 'Research'] },
-  { department: 'Engineering', email: 'marco.silva@plume.dev', name: 'Marco Silva', presence: 'busy', role: 'Frontend Engineer', skills: ['React', 'Accessibility', 'CSS'] },
-  { department: 'Design', email: 'lena.fischer@plume.dev', name: 'Lena Fischer', presence: 'online', role: 'Product Designer', skills: ['Figma', 'Design systems'] },
-  { department: 'Engineering', email: 'priya.nair@plume.dev', name: 'Priya Nair', presence: 'away', role: 'Backend Engineer', skills: ['Node.js', 'PostgreSQL'] },
-  { department: 'Product', email: 'tom.becker@plume.dev', name: 'Tom Becker', presence: 'offline', role: 'Data Analyst', skills: ['SQL', 'Dashboards'] },
-  { department: 'Support', email: 'sara.lind@plume.dev', name: 'Sara Lind', presence: 'online', role: 'Support Lead', skills: ['Onboarding', 'Docs'] },
-  { department: 'Engineering', email: 'ken.ito@plume.dev', name: 'Ken Ito', presence: 'busy', role: 'Staff Engineer', skills: ['Architecture', 'Security', 'Go'] },
-  { department: 'Design', email: 'noor.haddad@plume.dev', name: 'Noor Haddad', presence: 'away', role: 'UX Researcher', skills: ['Interviews', 'Surveys'] },
-  { department: 'Support', email: 'diego.alvarez@plume.dev', name: 'Diego Alvarez', presence: 'offline', role: 'Customer Success', skills: ['Accounts', 'Training'] },
+  { department: 'product', email: 'ana.ruiz@plume.dev', name: 'Ana Ruiz', presence: 'online', role: 'productManager', skills: ['roadmaps', 'research'] },
+  { department: 'engineering', email: 'marco.silva@plume.dev', name: 'Marco Silva', presence: 'busy', role: 'frontendEngineer', skills: ['react', 'accessibility', 'css'] },
+  { department: 'design', email: 'lena.fischer@plume.dev', name: 'Lena Fischer', presence: 'online', role: 'productDesigner', skills: ['figma', 'designSystems'] },
+  { department: 'engineering', email: 'priya.nair@plume.dev', name: 'Priya Nair', presence: 'away', role: 'backendEngineer', skills: ['nodejs', 'postgresql'] },
+  { department: 'product', email: 'tom.becker@plume.dev', name: 'Tom Becker', presence: 'offline', role: 'dataAnalyst', skills: ['sql', 'dashboards'] },
+  { department: 'support', email: 'sara.lind@plume.dev', name: 'Sara Lind', presence: 'online', role: 'supportLead', skills: ['onboarding', 'docs'] },
+  { department: 'engineering', email: 'ken.ito@plume.dev', name: 'Ken Ito', presence: 'busy', role: 'staffEngineer', skills: ['architecture', 'security', 'go'] },
+  { department: 'design', email: 'noor.haddad@plume.dev', name: 'Noor Haddad', presence: 'away', role: 'uxResearcher', skills: ['interviews', 'surveys'] },
+  { department: 'support', email: 'diego.alvarez@plume.dev', name: 'Diego Alvarez', presence: 'offline', role: 'customerSuccess', skills: ['accounts', 'training'] },
 ]
 
 export async function getTeam(): Promise<TeamMember[]> {

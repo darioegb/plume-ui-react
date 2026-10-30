@@ -1,0 +1,343 @@
+{
+  "app": {
+    "name": "Plume Projects",
+    "description": "Un panel de proyectos creado con plume-ui-react en el App Router de Next.js."
+  },
+  "nav": {
+    "application": "Aplicación",
+    "pages": "Páginas",
+    "topBar": "Barra superior",
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "projects": "Proyectos",
+    "team": "Equipo",
+    "settings": "Ajustes",
+    "newProject": "Nuevo proyecto",
+    "signOut": "Cerrar sesión",
+    "accountMenu": "Menú de la cuenta de {name}",
+    "switchToLight": "Cambiar al modo claro",
+    "switchToDark": "Cambiar al modo oscuro",
+    "scrollToTop": "Volver arriba"
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "English",
+    "es": "Español"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "heading": "Inicia sesión en Plume Projects",
+    "hint": "Este inicio de sesión es simulado: sirve cualquier correo y una contraseña de 6 o más caracteres.",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "ana@plume.dev",
+    "password": "Contraseña",
+    "submit": "Iniciar sesión"
+  },
+  "validation": {
+    "emailInvalid": "Introduce un correo electrónico válido.",
+    "passwordShort": "Usa al menos 6 caracteres.",
+    "nameShort": "Usa al menos 3 caracteres.",
+    "nameTaken": "Ya existe un proyecto con este nombre.",
+    "ownerRequired": "Elige a la persona responsable.",
+    "teamRequired": "Añade al menos un miembro.",
+    "dueRequired": "Elige una fecha de entrega.",
+    "duePast": "La fecha de entrega no puede estar en el pasado.",
+    "memberExists": "Esta persona ya está en el equipo."
+  },
+  "status": {
+    "onTrack": "En plazo",
+    "atRisk": "En riesgo",
+    "delayed": "Retrasado",
+    "done": "Terminado"
+  },
+  "visibility": {
+    "private": "Privado",
+    "workspace": "Espacio de trabajo"
+  },
+  "presence": {
+    "away": "Ausente",
+    "busy": "En una reunión",
+    "offline": "Desconectado",
+    "online": "En línea"
+  },
+  "department": {
+    "design": "Diseño",
+    "engineering": "Ingeniería",
+    "product": "Producto",
+    "support": "Soporte"
+  },
+  "role": {
+    "productManager": "Gerente de producto",
+    "frontendEngineer": "Ingeniero frontend",
+    "backendEngineer": "Ingeniero backend",
+    "productDesigner": "Diseñador de producto",
+    "supportSpecialist": "Especialista de soporte",
+    "dataAnalyst": "Analista de datos",
+    "supportLead": "Líder de soporte",
+    "staffEngineer": "Ingeniero staff",
+    "uxResearcher": "Investigador UX",
+    "customerSuccess": "Éxito del cliente"
+  },
+  "skill": {
+    "roadmaps": "Hojas de ruta",
+    "research": "Investigación",
+    "react": "React",
+    "accessibility": "Accesibilidad",
+    "css": "CSS",
+    "figma": "Figma",
+    "designSystems": "Sistemas de diseño",
+    "nodejs": "Node.js",
+    "postgresql": "PostgreSQL",
+    "sql": "SQL",
+    "dashboards": "Paneles",
+    "onboarding": "Incorporación",
+    "docs": "Documentación",
+    "architecture": "Arquitectura",
+    "security": "Seguridad",
+    "go": "Go",
+    "interviews": "Entrevistas",
+    "surveys": "Encuestas",
+    "accounts": "Cuentas",
+    "training": "Formación"
+  },
+  "dashboard": {
+    "title": "Te damos la bienvenida, {name}",
+    "guest": "invitado",
+    "description": "Así van hoy tus proyectos.",
+    "keyNumbers": "Cifras clave",
+    "activeProjects": "Proyectos activos",
+    "due": "Entrega el {date}",
+    "progress": "Progreso de {name}",
+    "loading": "Cargando el panel",
+    "metrics": {
+      "active": { "label": "Proyectos activos", "change": "+{change} este mes" },
+      "completed": { "label": "Tareas completadas", "change": "+{change, number, percent}" },
+      "overdue": { "label": "Tareas vencidas", "change": "-{change} desde el lunes" },
+      "team": { "label": "Miembros del equipo", "change": "+{change} esta semana" }
+    }
+  },
+  "projects": {
+    "title": "Proyectos",
+    "description": "Todos los proyectos del espacio de trabajo, con su estado y responsable.",
+    "loading": "Cargando los proyectos",
+    "noDescription": "Aún no hay descripción.",
+    "search": "Buscar proyectos",
+    "status": "Estado",
+    "allStatuses": "Todos los estados",
+    "dueDate": "Fecha de entrega",
+    "dueBetween": "Entrega entre",
+    "clearFilters": "Quitar filtros",
+    "newProject": "Nuevo proyecto",
+    "count": "{count, plural, one {# proyecto} other {# proyectos}}",
+    "columns": {
+      "project": "Proyecto",
+      "status": "Estado",
+      "progress": "Progreso",
+      "due": "Entrega",
+      "team": "Equipo",
+      "actions": "Acciones"
+    },
+    "empty": {
+      "title": "No se encontraron proyectos",
+      "description": "Ningún proyecto coincide con la búsqueda y los filtros."
+    },
+    "actionsFor": "Acciones de {name}",
+    "progressOf": "Progreso de {name}",
+    "openDetails": "Abrir detalles",
+    "markAsDone": "Marcar como terminado",
+    "delete": "Eliminar",
+    "pages": "Páginas de proyectos",
+    "completed": "Proyecto completado",
+    "undo": "Deshacer",
+    "deleted": "Proyecto eliminado",
+    "deleteModal": {
+      "title": "Eliminar proyecto",
+      "body": "\"{name}\" y su historial se eliminarán. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    },
+    "drawer": {
+      "overview": "Resumen",
+      "activity": "Actividad",
+      "status": "Estado",
+      "due": "Entrega",
+      "owner": "Responsable",
+      "team": "Equipo",
+      "visibility": "Visibilidad",
+      "progress": "Progreso",
+      "updatedPlan": "{name} actualizó el plan",
+      "commented": "{name} comentó en una tarea",
+      "created": "{name} creó el proyecto",
+      "daysAgo": "{count, plural, one {hace # día} other {hace # días}}",
+      "weeksAgo": "{count, plural, one {hace # semana} other {hace # semanas}}"
+    }
+  },
+  "newProject": {
+    "title": "Nuevo proyecto",
+    "description": "Tres pasos breves para configurar un proyecto.",
+    "loading": "Cargando el formulario",
+    "progress": "Progreso del nuevo proyecto",
+    "steps": {
+      "details": { "title": "Detalles", "description": "Nombre y responsable" },
+      "plan": { "title": "Plan", "description": "Equipo y fecha" },
+      "review": { "title": "Revisión", "description": "Comprobar y crear" }
+    },
+    "name": "Nombre",
+    "namePlaceholder": "Rediseño del sitio web",
+    "projectDescription": "Descripción",
+    "projectDescriptionHelper": "Una o dos líneas para el equipo.",
+    "optional": "opcional",
+    "owner": "Responsable",
+    "ownerPlaceholder": "Elige a la persona responsable",
+    "team": "Equipo",
+    "teamPlaceholder": "Añadir miembros",
+    "due": "Fecha de entrega",
+    "duePlaceholder": "Elige una fecha",
+    "visibility": "Quién puede verlo",
+    "notify": "Avisar al equipo por correo",
+    "noDescription": "Sin descripción",
+    "startsOnTrack": "El proyecto empieza en plazo y sin progreso. Puedes cambiarlo desde la lista.",
+    "back": "Atrás",
+    "continue": "Continuar",
+    "create": "Crear proyecto",
+    "created": "{name} se ha creado",
+    "notified": "{count, plural, one {Se avisó a # miembro} other {Se avisó a # miembros}} por correo."
+  },
+  "team": {
+    "title": "Equipo",
+    "description": "Las personas que trabajan en tus proyectos.",
+    "loading": "Cargando el equipo",
+    "search": "Buscar en el equipo",
+    "searchPlaceholder": "Nombre, puesto o habilidad",
+    "invite": "Invitar miembro",
+    "directory": "Directorio",
+    "byDepartment": "Por departamento",
+    "departments": "Departamentos",
+    "empty": {
+      "title": "No se encontraron personas",
+      "description": "Nadie coincide con la búsqueda."
+    },
+    "invited": "Invitado",
+    "contact": "Contactar",
+    "contactPerson": "Contactar a {name}",
+    "done": "Listo",
+    "inviteModal": {
+      "title": "Invitar a un miembro",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "nombre@empresa.com",
+      "role": "Puesto",
+      "rolePlaceholder": "Elige un puesto",
+      "cancel": "Cancelar",
+      "send": "Enviar invitación"
+    },
+    "invitationSent": "Invitación enviada"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "description": "Apariencia, notificaciones y el espacio de trabajo.",
+    "sections": {
+      "appearance": "Apariencia",
+      "notifications": "Notificaciones",
+      "workspace": "Espacio de trabajo"
+    },
+    "appearance": {
+      "colorMode": "Modo de color",
+      "colorModeHelper": "Sistema sigue el esquema de color de tu navegador o dispositivo.",
+      "system": "Sistema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "brand": "Color de marca",
+      "brandHelper": "Colorea toda la aplicación. Tu elección se recuerda.",
+      "brands": {
+        "blue": "Azul",
+        "emerald": "Esmeralda",
+        "violet": "Violeta",
+        "rose": "Rosa",
+        "amber": "Ámbar"
+      },
+      "preview": "Vista previa",
+      "primaryAction": "Acción principal",
+      "outline": "Contorno",
+      "badge": "Nuevo",
+      "previewProgress": "Progreso de la vista previa"
+    },
+    "notifications": {
+      "pause": "Pausar todas las notificaciones",
+      "pauseHelper": "Silencia todos los canales hasta que lo vuelvas a activar.",
+      "channels": "Canales",
+      "email": "Envíame un correo sobre la actividad de mis proyectos",
+      "push": "Enviar notificaciones push",
+      "digest": "Envíame un resumen semanal",
+      "save": "Guardar preferencias",
+      "saved": "Preferencias guardadas"
+    },
+    "workspace": {
+      "name": "Nombre del espacio de trabajo",
+      "region": "Región de los datos",
+      "regionHelper": "Dónde se almacenan los datos del espacio de trabajo.",
+      "regionPlaceholder": "Elige una región",
+      "regions": {
+        "europe": "Europa",
+        "northAmerica": "Norteamérica",
+        "asiaPacific": "Asia-Pacífico"
+      },
+      "save": "Guardar espacio de trabajo",
+      "updated": "Espacio de trabajo actualizado",
+      "dangerTitle": "Zona de peligro",
+      "dangerBody": "Eliminar el espacio de trabajo borra sus proyectos para todos.",
+      "delete": "Eliminar espacio de trabajo",
+      "deleteTitle": "Eliminar {name}",
+      "theWorkspace": "el espacio de trabajo",
+      "confirmHelper": "Escribe \"{name}\" para confirmar.",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar",
+      "kept": "Espacio de trabajo conservado",
+      "keptBody": "Esto es una demostración: no se eliminó nada."
+    }
+  },
+  "plume": {
+    "alert": { "dismiss": "Cerrar aviso" },
+    "avatar": { "away": "Ausente", "busy": "Ocupado", "offline": "Desconectado", "online": "En línea" },
+    "avatarGroup": { "overflow": "{hidden} más" },
+    "breadcrumb": { "breadcrumb": "Ruta de navegación" },
+    "button": { "busy": "Cargando" },
+    "chip": { "remove": "Quitar" },
+    "datePicker": {
+      "apply": "Aplicar",
+      "calendar": "Calendario",
+      "cancel": "Cancelar",
+      "format": "Formato: {format}",
+      "nextMonth": "Mes siguiente",
+      "nextYears": "Años siguientes",
+      "openCalendar": "Abrir calendario",
+      "previousMonth": "Mes anterior",
+      "previousYears": "Años anteriores"
+    },
+    "input": { "reveal": "Mostrar contraseña" },
+    "navbarToggle": { "label": "Mostrar u ocultar la navegación" },
+    "overlayClose": { "label": "Cerrar" },
+    "paginator": {
+      "first": "Primera página",
+      "last": "Última página",
+      "next": "Página siguiente",
+      "page": "Página {page}",
+      "pageCurrent": "Página {page}, página actual",
+      "pageSize": "Elementos por página",
+      "pagination": "Paginación",
+      "previous": "Página anterior",
+      "summary": "{from}–{to} de {total}"
+    },
+    "select": {
+      "clear": "Borrar",
+      "empty": "Sin resultados",
+      "overflow": "+{hidden}",
+      "remove": "Quitar {label}",
+      "search": "Buscar"
+    },
+    "sidebarToggle": { "label": "Mostrar u ocultar la barra lateral" },
+    "spinner": { "label": "Cargando" },
+    "stepper": { "completed": "Completado", "upcoming": "Sin empezar" },
+    "table": { "loading": "Cargando" },
+    "toast": { "dismiss": "Descartar notificación", "region": "Notificaciones" }
+  }
+}

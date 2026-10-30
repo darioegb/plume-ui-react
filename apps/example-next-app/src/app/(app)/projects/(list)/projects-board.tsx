@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useLocale, useTranslations } from 'next-intl'
 import {
   Avatar,
   AvatarGroup,
@@ -52,7 +53,7 @@ import { statusColor } from '@/lib/status'
 import { ProjectDrawer } from './project-drawer'
 import styles from './projects.module.css'
 
-const statuses: ProjectStatus[] = ['On track', 'At risk', 'Delayed', 'Done']
+const statuses: ProjectStatus[] = ['onTrack', 'atRisk', 'delayed', 'done']
 
 // Defined outside the component: the hook needs stable functions.
 const filterFns = {
@@ -70,6 +71,9 @@ const sortFns = {
 }
 
 export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Project[] }>): ReactNode {
+  const t = useTranslations('projects')
+  const tStatus = useTranslations('status')
+  const locale = useLocale()
   const toast = useToast()
   const router = useRouter()
   const [projects, setProjects] = useState(initial)
@@ -95,33 +99,33 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
 
   const complete = (project: Project): void => {
     setProjects((current) =>
-      current.map((item) => (item.id === project.id ? { ...item, progress: 100, status: 'Done' } : item)),
+      current.map((item) => (item.id === project.id ? { ...item, progress: 100, status: 'done' } : item)),
     )
     toast.success({
       action: {
-        label: 'Undo',
+        label: t('undo'),
         onClick: () => setProjects((current) => current.map((item) => (item.id === project.id ? project : item))),
       },
       description: project.name,
-      title: 'Project completed',
+      title: t('completed'),
     })
   }
 
   const remove = (project: Project): void => {
     setProjects((current) => current.filter((item) => item.id !== project.id))
     setDetailOpen(false)
-    toast.info({ description: project.name, title: 'Project deleted' })
+    toast.info({ description: project.name, title: t('deleted') })
   }
 
   return (
     <>
       <div className={styles.toolbar}>
         <Input
-          aria-label="Search projects"
+          aria-label={t('search')}
           className={styles.search}
           elementBefore={<SearchIcon />}
           onChange={(event) => state.setFilter('name', event.target.value)}
-          placeholder="Search projects"
+          placeholder={t('search')}
           value={String(state.filters.name ?? '')}
         />
         <div className={styles.status}>
@@ -129,11 +133,11 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             onValueChange={(value) => state.setFilter('status', value)}
             value={String(state.filters.status ?? '')}
           >
-            <SelectTrigger aria-label="Status" placeholder="All statuses" />
+            <SelectTrigger aria-label={t('status')} placeholder={t('allStatuses')} />
             <SelectContent>
               {statuses.map((status) => (
                 <SelectOption key={status} value={status}>
-                  {status}
+                  {tStatus(status)}
                 </SelectOption>
               ))}
             </SelectContent>
@@ -141,36 +145,36 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
         </div>
         <div className={styles.due}>
           <DatePicker
-            aria-label="Due date"
+            aria-label={t('dueDate')}
             onValueChange={(range) =>
               state.setFilter('due', range.startDate || range.endDate ? range : null)
             }
-            placeholder="Due between"
+            placeholder={t('dueBetween')}
             range
             value={dueRange}
           />
         </div>
         {state.hasFilters ? (
           <Button onClick={state.resetFilters} variant="ghost">
-            Clear filters
+            {t('clearFilters')}
           </Button>
         ) : null}
         <Button className={styles.create} onClick={() => router.push('/projects/new')}>
-          New project
+          {t('newProject')}
         </Button>
       </div>
 
-      <Table aria-label="Projects" hoverable>
-        <TableCaption>{`${state.total} ${state.total === 1 ? 'project' : 'projects'}`}</TableCaption>
+      <Table aria-label={t('title')} hoverable>
+        <TableCaption>{t('count', { count: state.total })}</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead {...state.getSortProps('name')}>Project</TableHead>
-            <TableHead {...state.getSortProps('status')}>Status</TableHead>
-            <TableHead {...state.getSortProps('progress')}>Progress</TableHead>
-            <TableHead {...state.getSortProps('due')}>Due</TableHead>
-            <TableHead>Team</TableHead>
+            <TableHead {...state.getSortProps('name')}>{t('columns.project')}</TableHead>
+            <TableHead {...state.getSortProps('status')}>{t('columns.status')}</TableHead>
+            <TableHead {...state.getSortProps('progress')}>{t('columns.progress')}</TableHead>
+            <TableHead {...state.getSortProps('due')}>{t('columns.due')}</TableHead>
+            <TableHead>{t('columns.team')}</TableHead>
             <TableHead align="end">
-              <span className={styles.visuallyHidden}>Actions</span>
+              <span className={styles.visuallyHidden}>{t('columns.actions')}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -179,12 +183,12 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             <TableEmpty
               action={
                 <Button onClick={state.resetFilters} size="sm" variant="outline">
-                  Clear filters
+                  {t('clearFilters')}
                 </Button>
               }
               colSpan={6}
-              description="No project matches the search and the filters."
-              title="No projects found"
+              description={t('empty.description')}
+              title={t('empty.title')}
             />
           ) : (
             state.rows.map((project) => (
@@ -200,18 +204,18 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
                 </TableCell>
                 <TableCell>
                   <Badge colorScheme={statusColor[project.status]} dot variant="subtle">
-                    {project.status}
+                    {tStatus(project.status)}
                   </Badge>
                 </TableCell>
                 <TableCell>
                   <ProgressBar
-                    aria-label={`${project.name} progress`}
+                    aria-label={t('progressOf', { name: project.name })}
                     colorScheme={statusColor[project.status]}
                     showValue
                     value={project.progress}
                   />
                 </TableCell>
-                <TableCell>{formatDue(project.due)}</TableCell>
+                <TableCell>{formatDue(project.due, locale)}</TableCell>
                 <TableCell>
                   <AvatarGroup max={3} size="sm">
                     {project.team.map((member) => (
@@ -222,24 +226,24 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
                 <TableCell align="end">
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
-                      <Button aria-label={`Actions for ${project.name}`} size="sm" variant="ghost">
+                      <Button aria-label={t('actionsFor', { name: project.name })} size="sm" variant="ghost">
                         <MoreIcon />
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownItem icon={<EyeIcon />} onSelect={() => open(project)}>
-                        Open details
+                        {t('openDetails')}
                       </DropdownItem>
                       <DropdownItem
-                        disabled={project.status === 'Done'}
+                        disabled={project.status === 'done'}
                         icon={<CheckIcon />}
                         onSelect={() => complete(project)}
                       >
-                        Mark as done
+                        {t('markAsDone')}
                       </DropdownItem>
                       <DropdownSeparator />
                       <DropdownItem icon={<TrashIcon />} onSelect={() => setRemoving(project)}>
-                        Delete
+                        {t('delete')}
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -251,7 +255,7 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
       </Table>
 
       <Paginator
-        aria-label="Projects pages"
+        aria-label={t('pages')}
         onPageChange={state.setPage}
         onPageSizeChange={state.setPageSize}
         page={state.page}
@@ -280,17 +284,15 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
 
       <Modal onOpenChange={(next) => !next && setRemoving(null)} open={removing !== null}>
         <ModalContent>
-          <ModalHeader>Delete project</ModalHeader>
-          <ModalBody>
-            {removing ? `"${removing.name}" and its history will be removed. This cannot be undone.` : null}
-          </ModalBody>
+          <ModalHeader>{t('deleteModal.title')}</ModalHeader>
+          <ModalBody>{removing ? t('deleteModal.body', { name: removing.name }) : null}</ModalBody>
           <ModalFooter>
             <ModalClose>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{t('deleteModal.cancel')}</Button>
             </ModalClose>
             <ModalClose>
               <Button colorScheme="error" onClick={() => removing && remove(removing)}>
-                Delete
+                {t('deleteModal.confirm')}
               </Button>
             </ModalClose>
           </ModalFooter>
