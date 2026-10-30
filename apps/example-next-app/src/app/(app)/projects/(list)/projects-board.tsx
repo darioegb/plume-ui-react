@@ -51,7 +51,6 @@ import type { Project, ProjectStatus } from '@/lib/data'
 import { formatDue, toIsoDate } from '@/lib/format'
 import { statusColor } from '@/lib/status'
 import { ProjectDrawer } from './project-drawer'
-import styles from './projects.module.css'
 
 const statuses: ProjectStatus[] = ['onTrack', 'atRisk', 'delayed', 'done']
 
@@ -119,16 +118,16 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
 
   return (
     <>
-      <div className={styles.toolbar}>
+      <div className="flex flex-wrap items-center gap-3">
         <Input
           aria-label={t('search')}
-          className={styles.search}
+          className="min-w-56 max-sm:w-full max-sm:min-w-0"
           elementBefore={<SearchIcon />}
           onChange={(event) => state.setFilter('name', event.target.value)}
           placeholder={t('search')}
           value={String(state.filters.name ?? '')}
         />
-        <div className={styles.status}>
+        <div className="w-72 max-sm:w-full max-sm:min-w-0">
           <Select
             onValueChange={(value) => state.setFilter('status', value)}
             value={String(state.filters.status ?? '')}
@@ -143,7 +142,7 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             </SelectContent>
           </Select>
         </div>
-        <div className={styles.due}>
+        <div className="w-60 max-sm:w-full max-sm:min-w-0">
           <DatePicker
             aria-label={t('dueDate')}
             onValueChange={(range) =>
@@ -159,7 +158,7 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             {t('clearFilters')}
           </Button>
         ) : null}
-        <Button className={styles.create} onClick={() => router.push('/projects/new')}>
+        <Button className="ms-auto max-sm:ms-0 max-sm:w-full max-sm:min-w-0" onClick={() => router.push('/projects/new')}>
           {t('newProject')}
         </Button>
       </div>
@@ -174,7 +173,7 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             <TableHead {...state.getSortProps('due')}>{t('columns.due')}</TableHead>
             <TableHead>{t('columns.team')}</TableHead>
             <TableHead align="end">
-              <span className={styles.visuallyHidden}>{t('columns.actions')}</span>
+              <span className="sr-only">{t('columns.actions')}</span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -194,10 +193,14 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
             state.rows.map((project) => (
               <TableRow key={project.id}>
                 <TableCell>
-                  <button className={styles.name} onClick={() => open(project)} type="button">
+                  <button
+                    className="cursor-pointer text-start font-semibold text-foreground hover:underline"
+                    onClick={() => open(project)}
+                    type="button"
+                  >
                     {project.name}
                   </button>
-                  <div className={styles.owner}>
+                  <div className="mt-1 flex items-center gap-2 text-body-sm text-muted">
                     <Avatar name={project.owner} size="sm" />
                     {project.owner}
                   </div>

@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   useToast,
 } from 'plume-ui-react'
-import styles from './settings.module.css'
 
 const regions = ['europe', 'northAmerica', 'asiaPacific'] as const
 
@@ -33,7 +32,7 @@ export function WorkspaceSettings(): ReactNode {
   const [deleting, setDeleting] = useState(false)
 
   return (
-    <div className={styles.section}>
+    <div className="flex max-w-xl flex-col gap-5 py-2">
       <Field label={t('name')} required>
         <Input onChange={(event) => setName(event.target.value)} value={name} />
       </Field>
