@@ -4,6 +4,7 @@ import type { ForwardedRef, ReactElement, ReactNode } from 'react'
 import { forwardRef, isValidElement } from 'react'
 import { useLabels } from '../locale/locale-provider'
 import type { ComponentProps } from '../theme'
+import { joinClasses } from './class-names'
 import { CloseIcon } from './icons'
 import { cloneWithProps } from './trigger'
 
@@ -23,6 +24,7 @@ export interface OverlayCloseOwnProps {
 export type OverlayCloseProps = Omit<ComponentProps, 'index'> & OverlayCloseOwnProps
 
 interface OverlayCloseInternalProps extends OverlayCloseProps {
+  [attribute: `data-${string}`]: string | undefined
   closeClassName?: string
   onClose: () => void
 }
@@ -31,18 +33,26 @@ const DEFAULT_LABELS = { label: 'Close' }
 
 export const OverlayClose = forwardRef<HTMLElement, OverlayCloseInternalProps>(
   (
-    { children, className = '', closeClassName, label, onClose, style }: OverlayCloseInternalProps,
+    {
+      children,
+      className,
+      closeClassName,
+      label,
+      onClose,
+      style,
+      ...data
+    }: OverlayCloseInternalProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactElement => {
     const text = useLabels('overlayClose', DEFAULT_LABELS, { label })
-    if (isValidElement(children)) return cloneWithProps(children, { onClick: onClose }, ref)
-
-    const classes = [closeClassName, className].filter(Boolean).join(' ')
+    if (isValidElement(children))
+      return cloneWithProps(children, { ...data, onClick: onClose }, ref)
 
     return (
       <button
+        {...data}
         aria-label={label ?? (children ? undefined : text.label)}
-        className={classes}
+        className={joinClasses(closeClassName, className)}
         onClick={onClose}
         ref={ref as ForwardedRef<HTMLButtonElement>}
         style={style}

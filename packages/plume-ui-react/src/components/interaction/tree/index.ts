@@ -15,3 +15,4 @@ export {
   type TreeItemLabelOwnProps,
   type TreeItemLabelProps,
 } from './tree-item-label'
+export { TreeItemRow, type TreeItemRowProps } from './tree-item-row'

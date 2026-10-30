@@ -8,6 +8,7 @@ import {
   SelectChevron,
   SelectChip,
   SelectChips,
+  SelectChipsSummary,
   SelectClear,
   SelectCombobox,
   SelectContent,
@@ -62,7 +63,7 @@ function Example({
 
 const trigger = (): HTMLElement => screen.getByRole('combobox', { name: 'Fruit' })
 const control = (): HTMLElement =>
-  trigger().closest<HTMLElement>('[data-plume-select-control]') as HTMLElement
+  trigger().closest<HTMLElement>('[data-plume-select-trigger]') as HTMLElement
 const chips = (): string[] =>
   screen
     .queryAllByRole('button', { name: /^Remove / })
@@ -497,6 +498,78 @@ describe('Select component', () => {
       expect(screen.getByRole('button', { name: 'Quitar A' })).toBeInTheDocument()
     })
 
+    it('names the chip that counts the hidden ones with labels.overflow', () => {
+      render(
+        <Select
+          defaultValue={['a', 'b', 'c']}
+          labels={{ overflow: (hidden) => `${hidden} more` }}
+          multiple
+        >
+          <SelectTrigger aria-label="Letters" maxDisplay={1} />
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+            <SelectOption value="b">B</SelectOption>
+            <SelectOption value="c">C</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(screen.getByText('2 more').closest('[data-plume-select-chip]')).not.toBeNull()
+    })
+
+    it('announces the chosen options through the summary part of the combobox', () => {
+      render(
+        <Select defaultValue={['a', 'b']} multiple>
+          <SelectTrigger aria-label="Letters">
+            <SelectField>
+              <SelectChips />
+              <SelectCombobox />
+            </SelectField>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+            <SelectOption value="b">B</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const summary = screen
+        .getByRole('combobox', { name: 'Letters' })
+        .querySelector('[data-plume-select-chips-summary]')
+      expect(summary).toHaveTextContent('A, B')
+    })
+
+    it('renders SelectChipsSummary with its own class, style, ref and children', () => {
+      const ref = createRef<HTMLSpanElement>()
+      render(
+        <Select defaultValue={['a']} multiple>
+          <SelectTrigger aria-label="Letters">
+            <SelectCombobox>
+              <SelectChipsSummary className="sum" ref={ref} style={{ margin: 2 }}>
+                One chosen
+              </SelectChipsSummary>
+            </SelectCombobox>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(ref.current).toHaveTextContent('One chosen')
+      expect(ref.current).toHaveClass('sum')
+      expect(ref.current).toHaveStyle({ margin: '2px' })
+    })
+
+    it('renders no summary when nothing is chosen', () => {
+      render(
+        <Select multiple>
+          <SelectTrigger aria-label="Letters" />
+          <SelectContent>
+            <SelectOption value="a">A</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(document.querySelector('[data-plume-select-chips-summary]')).toBeNull()
+    })
+
     it('removes the last option with Backspace and Delete', async () => {
       const onValueChange = vi.fn()
       render(<Example defaultValue={['apple', 'banana']} multiple onValueChange={onValueChange} />)
@@ -590,6 +663,49 @@ describe('Select component', () => {
         </Select>,
       )
       expect(screen.getByRole('button', { name: 'Remove the fruit' })).toBeInTheDocument()
+    })
+
+    it('lets SelectClear take its own label and data attribute', () => {
+      const ref = createRef<HTMLElement>()
+      render(
+        <Select clearable defaultValue="apple">
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox />
+            </SelectField>
+            <SelectClear label="Reset" ref={ref} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const button = screen.getByRole('button', { name: 'Reset' })
+      expect(button).toHaveAttribute('data-plume-select-clear', '')
+      expect(button).toHaveAttribute('type', 'button')
+      expect(ref.current).toBe(button)
+    })
+
+    it('turns an element given to SelectClear into the clear button', async () => {
+      render(
+        <Select clearable defaultValue="apple">
+          <SelectTrigger aria-label="Fruit">
+            <SelectField>
+              <SelectCombobox />
+            </SelectField>
+            <SelectClear>
+              <button>Reset</button>
+            </SelectClear>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      const button = screen.getByRole('button', { name: 'Reset' })
+      expect(button).toHaveAttribute('data-plume-select-clear', '')
+      await userEvent.click(button)
+      expect(screen.queryByRole('button', { name: 'Reset' })).toBeNull()
     })
   })
 
@@ -988,7 +1104,7 @@ describe('Select component', () => {
     })
 
     it('forwards the refs of the trigger, the content, the option and the group', () => {
-      const triggerRef = createRef<HTMLButtonElement>()
+      const triggerRef = createRef<HTMLDivElement>()
       const contentRef = createRef<HTMLDivElement>()
       const optionRef = createRef<HTMLDivElement>()
       const groupRef = createRef<HTMLDivElement>()
@@ -1004,7 +1120,7 @@ describe('Select component', () => {
           </SelectContent>
         </Select>,
       )
-      expect(triggerRef.current).toBe(trigger())
+      expect(triggerRef.current).toBe(control())
       expect(contentRef.current).toBe(screen.getByRole('listbox', { hidden: true }).parentElement)
       expect(optionRef.current).toBe(screen.getByRole('option', { hidden: true }))
       expect(groupRef.current).toBe(screen.getByRole('group', { hidden: true }))
@@ -1103,7 +1219,7 @@ describe('Select component', () => {
       expect(search.parentElement).toHaveClass('search', 'my-search')
       expect(screen.getByText('No results')).toHaveClass('empty', 'my-empty')
       expect(screen.getByText('Fruits')).toHaveClass('groupLabel', 'my-group-label')
-      expect(document.querySelector('[data-plume-select-panel]')).toHaveClass('panel', 'my-panel')
+      expect(document.querySelector('[data-plume-select-content]')).toHaveClass('panel', 'my-panel')
     })
 
     it('adds a class to the parts of an option', async () => {
@@ -1142,14 +1258,14 @@ describe('Select component', () => {
       render(<Composed />)
       await userEvent.click(trigger())
       for (const part of [
-        'control',
+        'trigger',
         'field',
         'combobox',
         'chip',
         'clear',
         'chevron',
         'hidden',
-        'panel',
+        'content',
         'search',
         'search-input',
         'list',
@@ -1164,6 +1280,31 @@ describe('Select component', () => {
       ]) {
         expect(document.querySelector(`[data-plume-select-${part}]`), part).not.toBeNull()
       }
+    })
+
+    it('sends the ref, the className and the style of the trigger to the same element', async () => {
+      const ref = createRef<HTMLDivElement>()
+      render(
+        <Select>
+          <SelectTrigger
+            aria-label="Fruit"
+            className="mine"
+            ref={ref}
+            style={{ margin: '5px' }}
+            title="Fruit"
+          />
+          <SelectContent>
+            <SelectOption value="apple">Apple</SelectOption>
+          </SelectContent>
+        </Select>,
+      )
+      expect(ref.current).toBe(control())
+      expect(ref.current).toHaveClass('control', 'mine')
+      expect(ref.current).toHaveStyle({ margin: '5px' })
+      expect(ref.current).toHaveAttribute('title', 'Fruit')
+      expect(trigger()).not.toHaveClass('mine')
+      await userEvent.click(trigger())
+      expect(screen.getByRole('listbox')).toBeInTheDocument()
     })
 
     it('puts the parts in the order they are written and omits the ones left out', () => {
@@ -1377,7 +1518,7 @@ describe('Select component', () => {
       const chevron = createRef<HTMLButtonElement>()
       const list = createRef<HTMLDivElement>()
       const text = createRef<HTMLSpanElement>()
-      const triggerRef = createRef<HTMLButtonElement>()
+      const triggerRef = createRef<HTMLDivElement>()
       render(
         <Select defaultValue="apple">
           <SelectTrigger aria-label="Fruit" ref={triggerRef}>
@@ -1398,7 +1539,7 @@ describe('Select component', () => {
       expect(field.current).toBe(trigger().parentElement)
       expect(field.current).toHaveStyle({ gap: '3px' })
       expect(combobox.current).toBe(trigger())
-      expect(triggerRef.current).toBe(trigger())
+      expect(triggerRef.current).toBe(control())
       expect(chevron.current).toBe(control().querySelector('[data-plume-select-chevron]'))
       expect(list.current).toBe(screen.getByRole('listbox', { hidden: true }))
       expect(list.current).toHaveStyle({ margin: '1px' })

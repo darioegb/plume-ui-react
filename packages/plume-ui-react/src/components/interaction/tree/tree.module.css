@@ -1,17 +1,17 @@
-:global(:where([data-plume-tree-label])) {
+:global(:where([data-plume-tree-item-label])) {
   align-items: center;
   box-sizing: border-box;
   display: flex;
 }
 
-:global(:where([data-plume-tree-chevron])) {
+:global(:where([data-plume-tree-item-chevron])) {
   block-size: 1em;
   display: inline-flex;
   flex: none;
   inline-size: 1em;
 }
 
-:global(:where([data-plume-tree-checkbox])) {
+:global(:where([data-plume-tree-item-checkbox])) {
   align-items: center;
   box-sizing: border-box;
   display: inline-flex;
@@ -41,7 +41,7 @@
   --tree-row: var(--plume-space-3);
 }
 
-.item {
+.row {
   outline: none;
 }
 
@@ -86,43 +86,48 @@
   flex: none;
 }
 
-.item[aria-expanded='true'] > .label .chevron {
+.row[aria-expanded='true'] > .label .chevron {
   transform: rotate(90deg);
 }
 
-.item:focus-visible > .label {
+.row:focus-visible > .label {
   outline: var(--plume-focus-ring-width) solid var(--tree-text);
   outline-offset: var(--plume-focus-ring-inset);
 }
 
-.item[aria-disabled='true'] > .label {
+.row[aria-disabled='true'] > .label {
   cursor: not-allowed;
   opacity: var(--plume-opacity-disabled);
 }
 
-.item[aria-disabled='true'] > .label:hover {
+.row[aria-disabled='true'] > .label:hover {
   background-color: transparent;
 }
 
-.solid .item[aria-selected='true'] > .label {
+.solid .row[aria-selected='true'] > .label {
   background-color: var(--tree-solid);
   color: var(--tree-contrast);
 }
 
-.solid .item[aria-selected='true'] > .label:hover {
+.solid .row[aria-selected='true'] > .label:hover {
   background-color: var(--tree-hover);
 }
 
-.solid .item[aria-selected='true']:focus-visible > .label {
+.solid .row[aria-selected='true']:focus-visible > .label {
   outline-color: var(--tree-contrast);
 }
 
-.ghost .item[aria-selected='true'] > .label {
+.outline .row[aria-selected='true'] > .label {
+  box-shadow: inset 0 0 0 var(--plume-border-width-medium) var(--tree-solid);
+  color: var(--tree-text);
+}
+
+.ghost .row[aria-selected='true'] > .label {
   background-color: var(--tree-tint);
   color: var(--tree-tint-text);
 }
 
-.accent .item[aria-selected='true'] > .label {
+.accent .row[aria-selected='true'] > .label {
   border-inline-start-color: var(--tree-solid);
   border-start-start-radius: 0;
   border-end-start-radius: 0;
@@ -141,7 +146,7 @@
     border-inline-start-color: Canvas;
   }
 
-  .item[aria-selected='true'] > .label {
+  .row[aria-selected='true'] > .label {
     background-color: Highlight;
     color: HighlightText;
     forced-color-adjust: none;

@@ -1,6 +1,6 @@
 import type { StoryObj, Meta } from '@storybook/react-vite'
 import { useState } from 'react'
-import { defaultTheme } from '../../../../theme'
+import { defaultTheme, type ColorScheme } from '../../../../theme'
 import { Button } from '../../../interaction/button'
 import { ChipLabel, ChipRemove } from '../../../presentation/chip'
 import { Field } from '../../field'
@@ -388,7 +388,7 @@ export const Sizes: Story = {
 
 /**
  * Use the **colorScheme** prop to change the color of the focus ring. It takes any color of the theme, including
- * the ones you add. Tab to a field to see it.
+ * the ones you add. Tab to a field to see it. Here every color of the theme in the default `outline` variant.
  */
 export const Colors: Story = {
   parameters: {
@@ -425,9 +425,9 @@ export const Colors: Story = {
   },
   render: () => (
     <div className="flex flex-col gap-4">
-      {(['primary', 'success', 'error'] as const).map((colorScheme) => (
+      {colorSchemes.map((colorScheme) => (
         <Example
-          colorScheme={colorScheme}
+          colorScheme={colorScheme as ColorScheme}
           key={colorScheme}
           label={colorScheme}
           placeholder={colorScheme}
@@ -441,7 +441,8 @@ export const Colors: Story = {
  * With **multiple** the user can choose several options. The list stays open, each option has a check box and the
  * trigger shows the chosen options as chips, each with a button to remove just that one. <kbd>Backspace</kbd>
  * removes the last one. **onValueChange** receives an array. On the trigger, **maxDisplay** shows at most that many
- * chips with a `+N` for the rest, and `display="text"` shows the labels as text instead of chips.
+ * chips with a `+N` for the rest (its text is the `overflow` label of `labels`), and `display="text"` shows the labels as
+ * text instead of chips. The combobox announces the chosen options through a visually hidden `SelectChipsSummary`.
  */
 export const Multiple: Story = {
   parameters: {

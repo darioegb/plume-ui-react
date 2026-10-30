@@ -28,7 +28,7 @@ export const TreeItemChevron = forwardRef<HTMLSpanElement, TreeItemChevronProps>
       <span
         aria-hidden="true"
         className={joinClasses(isStyled && styles.chevron, className)}
-        data-plume-tree-chevron=""
+        data-plume-tree-item-chevron=""
         data-visible={hasChildren ? '' : undefined}
         ref={ref}
         style={style}

@@ -65,7 +65,13 @@ const { control, handleSubmit } = useForm<Values>({ defaultValues: { room: '', v
   render={({ field, fieldState }) => (
     <Field errorText={fieldState.error?.message} label='Room' required>
       <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-        <SelectTrigger placeholder='Pick a room' ref={field.ref} />
+        <SelectTrigger>
+          <SelectField>
+            <SelectCombobox placeholder='Pick a room' ref={field.ref} />
+          </SelectField>
+          <SelectChevron />
+          <SelectHidden />
+        </SelectTrigger>
         <SelectContent>
           <SelectOption value='single'>Single</SelectOption>
           <SelectOption value='double'>Double</SelectOption>
@@ -89,7 +95,7 @@ const { control, handleSubmit } = useForm<Values>({ defaultValues: { room: '', v
 
 Where the `ref` goes, so the form can focus the control when a rule fails:
 
-- `Select`: `ref` on its `SelectTrigger`.
+- `Select`: `ref` on its `SelectCombobox`, the button that takes the focus (the `ref` of `SelectTrigger` is its outer element).
 - `NumberInput`: `ref` on the root, which is the native input.
 - `DatePicker` and `TimePicker`: `inputRef`.
 
