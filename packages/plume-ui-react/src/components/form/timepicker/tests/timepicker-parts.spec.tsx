@@ -237,7 +237,7 @@ describe('TimePicker parts', () => {
       const inputRef = vi.fn()
       render(
         <TimePicker>
-          <TimePickerInput inputRef={inputRef}>
+          <TimePickerInput ref={inputRef}>
             <InputControl>
               <InputField />
             </InputControl>

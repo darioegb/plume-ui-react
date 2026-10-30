@@ -10,7 +10,7 @@ import { pickerPanelClasses } from '../shared/picker-panel'
 import { TimePickerHours } from './timepicker-hours'
 import { TimePickerMinutes } from './timepicker-minutes'
 import { TimePickerPeriod } from './timepicker-period'
-import { useTimePicker } from './use-timepicker'
+import { useTimePickerContext } from './timepicker-context'
 import styles from './timepicker.module.css'
 
 export interface TimePickerPanelOwnProps {
@@ -40,7 +40,7 @@ export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const { isPanel, labels, open, panelId, panelStyle, setPanel, shape, size, variant } =
-      useTimePicker('TimePickerPanel')
+      useTimePickerContext('TimePickerPanel')
 
     if (!isPanel && !open) return null
 
@@ -49,12 +49,13 @@ export const TimePickerPanel = forwardRef<HTMLDivElement, TimePickerPanelProps>(
         aria-label={ariaLabel ?? labels.timePicker}
         aria-modal={isPanel ? undefined : true}
         className={joinClasses(
-          styles.panel,
+          variant !== 'unstyled' && styles.panel,
           pickerPanelClasses(variant, size, shape),
           variant !== 'unstyled' && styles[VARIANT_CLASS[variant]],
-          isPanel && styles.inline,
+          variant !== 'unstyled' && isPanel && styles.inline,
           className,
         )}
+        data-inline={isPanel ? '' : undefined}
         data-open={open ? '' : undefined}
         data-plume-timepicker-panel=""
         id={isPanel ? undefined : panelId}

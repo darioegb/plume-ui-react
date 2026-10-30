@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import { Button } from '../../interaction/button'
-import { useDatePicker } from './use-datepicker'
+import { useDatePickerContext } from './datepicker-context'
 import styles from './datepicker.module.css'
 
 type PartProps = Omit<ComponentProps, 'index'>
@@ -22,19 +22,20 @@ export const DatePickerCancel = forwardRef<HTMLButtonElement, DatePickerCancelPr
     { children, className, style }: DatePickerCancelProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { closeAndRestoreFocus, labels } = useDatePicker('DatePickerCancel')
+    const { closeAndRestoreFocus, labels, variant } = useDatePickerContext('DatePickerCancel')
+    const isStyled = variant !== 'unstyled'
 
     return (
       <Button
-        className={joinClasses(styles.footerButton, className)}
+        className={joinClasses(isStyled && styles.footerButton, className)}
         data-plume-datepicker-cancel=""
-        label={children ? undefined : labels.cancel}
+        label={children || !isStyled ? undefined : labels.cancel}
         onClick={closeAndRestoreFocus}
         ref={ref}
         style={style}
-        variant="ghost"
+        variant={isStyled ? 'ghost' : 'unstyled'}
       >
-        {children}
+        {children ?? (isStyled ? null : labels.cancel)}
       </Button>
     )
   },
@@ -48,19 +49,21 @@ export const DatePickerApply = forwardRef<HTMLButtonElement, DatePickerApplyProp
     { children, className, style }: DatePickerApplyProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { colorScheme, labels, onApply } = useDatePicker('DatePickerApply')
+    const { colorScheme, labels, onApply, variant } = useDatePickerContext('DatePickerApply')
+    const isStyled = variant !== 'unstyled'
 
     return (
       <Button
-        className={joinClasses(styles.footerButtonApply, className)}
+        className={joinClasses(isStyled && styles.footerButtonApply, className)}
         colorScheme={colorScheme}
         data-plume-datepicker-apply=""
-        label={children ? undefined : labels.apply}
+        label={children || !isStyled ? undefined : labels.apply}
         onClick={onApply}
         ref={ref}
         style={style}
+        variant={isStyled ? 'solid' : 'unstyled'}
       >
-        {children}
+        {children ?? (isStyled ? null : labels.apply)}
       </Button>
     )
   },
@@ -74,11 +77,11 @@ export const DatePickerFooter = forwardRef<HTMLDivElement, DatePickerFooterProps
     { children, className, style }: DatePickerFooterProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    useDatePicker('DatePickerFooter')
+    const { variant } = useDatePickerContext('DatePickerFooter')
 
     return (
       <div
-        className={joinClasses(styles.footerActions, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.footerActions, className)}
         data-plume-datepicker-footer=""
         ref={ref}
         style={style}

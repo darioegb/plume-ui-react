@@ -6,7 +6,7 @@ import { ClockIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { InputContext } from '../input/input-context'
 import { PickerTrigger } from '../shared/picker-trigger'
-import { useTimePicker } from './use-timepicker'
+import { useTimePickerContext } from './timepicker-context'
 
 export interface TimePickerTriggerOwnProps {
   /** Another icon for the button. */
@@ -39,7 +39,7 @@ export const TimePickerTrigger = forwardRef<HTMLButtonElement, TimePickerTrigger
     }: TimePickerTriggerProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { labels, open, panelId, toggle, variant } = useTimePicker('TimePickerTrigger')
+    const { labels, open, panelId, toggle, variant } = useTimePickerContext('TimePickerTrigger')
     const input = useContext(InputContext)
     const blocked = Boolean(disabled ?? (input?.disabled || input?.readOnly))
 

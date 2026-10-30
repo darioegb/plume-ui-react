@@ -4,9 +4,9 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { Button } from '../../interaction/button'
 import { renderItems, type DatePickerDayData } from './calendar-utils'
-import { useDatePickerPage } from './datepicker-page-context'
+import { useDatePickerContext } from './datepicker-context'
+import { useDatePickerPageContext } from './datepicker-page-context'
 import styles from './datepicker.module.css'
 
 type PartProps = Omit<ComponentProps, 'index'>
@@ -24,6 +24,7 @@ export type DatePickerGridProps = PartProps & {
    */
   children?: ((day: DatePickerDayData) => ReactNode) | ReactNode
 }
+export type DatePickerDayNumberProps = PartProps & Pick<HTMLAttributes<HTMLSpanElement>, 'children'>
 export type DatePickerDayProps = PartProps &
   Pick<HTMLAttributes<HTMLButtonElement>, 'children'> & {
     /** The day this button stands for, as the `DatePickerGrid` gives it to its function. */
@@ -36,11 +37,12 @@ export const DatePickerWeekday = forwardRef<HTMLSpanElement, DatePickerWeekdayPr
     { children, className, style }: DatePickerWeekdayProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    useDatePickerPage('DatePickerWeekday')
+    const { variant } = useDatePickerContext('DatePickerWeekday')
+    useDatePickerPageContext('DatePickerWeekday')
 
     return (
       <span
-        className={joinClasses(styles.dayOfWeek, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.dayOfWeek, className)}
         data-plume-datepicker-weekday=""
         ref={ref}
         style={style}
@@ -59,10 +61,11 @@ export const DatePickerWeekdays = forwardRef<HTMLDivElement, DatePickerWeekdaysP
     { children, className, style }: DatePickerWeekdaysProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { weekdays } = useDatePickerPage('DatePickerWeekdays')
+    const { variant } = useDatePickerContext('DatePickerWeekdays')
+    const { weekdays } = useDatePickerPageContext('DatePickerWeekdays')
     return (
       <div
-        className={joinClasses(styles.daysOfWeek, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.daysOfWeek, className)}
         data-plume-datepicker-weekdays=""
         ref={ref}
         style={style}
@@ -77,31 +80,52 @@ export const DatePickerWeekdays = forwardRef<HTMLDivElement, DatePickerWeekdaysP
 
 DatePickerWeekdays.displayName = 'DatePickerWeekdays'
 
-/** One day of the grid. `children` replace the number. */
+/** The number of a day, inside its `DatePickerDay`. */
+export const DatePickerDayNumber = forwardRef<HTMLSpanElement, DatePickerDayNumberProps>(
+  (
+    { children, className, style }: DatePickerDayNumberProps,
+    ref: ForwardedRef<HTMLSpanElement>,
+  ): ReactNode => {
+    useDatePickerPageContext('DatePickerDayNumber')
+
+    return (
+      <span className={className} data-plume-datepicker-day-number="" ref={ref} style={style}>
+        {children}
+      </span>
+    )
+  },
+)
+
+DatePickerDayNumber.displayName = 'DatePickerDayNumber'
+
+/** One day of the grid. `children` replace its `DatePickerDayNumber`. */
 export const DatePickerDay = forwardRef<HTMLButtonElement, DatePickerDayProps>(
   (
     { children, className, day, style }: DatePickerDayProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { hover, onDayKeyDown, selectDay } = useDatePickerPage('DatePickerDay')
+    const { variant } = useDatePickerContext('DatePickerDay')
+    const { hover, onDayKeyDown, selectDay } = useDatePickerPageContext('DatePickerDay')
     const { isCurrentMonth, isDisabled, isInRange, isSelected, isToday } = day
+    const isStyled = variant !== 'unstyled'
 
     return (
-      <Button
+      <button
         aria-current={isToday ? 'date' : undefined}
         aria-hidden={isCurrentMonth ? undefined : true}
         aria-label={day.label}
         aria-pressed={isCurrentMonth ? isSelected : undefined}
         className={joinClasses(
-          styles.day,
-          !isCurrentMonth && styles.disabledDay,
-          isSelected && styles.selected,
-          isInRange && !isSelected && isCurrentMonth && styles.rangeItem,
-          isCurrentMonth && isDisabled && styles.outOfRangeDay,
-          isToday && styles.today,
+          isStyled && styles.day,
+          isStyled && !isCurrentMonth && styles.disabledDay,
+          isStyled && isSelected && styles.selected,
+          isStyled && isInRange && !isSelected && isCurrentMonth && styles.rangeItem,
+          isStyled && isCurrentMonth && isDisabled && styles.outOfRangeDay,
+          isStyled && isToday && styles.today,
           className,
         )}
         data-date={day.dataDate}
+        data-disabled={isDisabled ? '' : undefined}
         data-in-range={isInRange && isCurrentMonth ? '' : undefined}
         data-outside={isCurrentMonth ? undefined : ''}
         data-plume-datepicker-day=""
@@ -121,10 +145,10 @@ export const DatePickerDay = forwardRef<HTMLButtonElement, DatePickerDayProps>(
         ref={ref}
         style={style}
         tabIndex={day.tabIndex}
-        variant="unstyled"
+        type="button"
       >
-        {children ?? <span className={styles.dayText}>{day.date.getDate()}</span>}
-      </Button>
+        {children ?? <DatePickerDayNumber>{day.date.getDate()}</DatePickerDayNumber>}
+      </button>
     )
   },
 )
@@ -137,10 +161,11 @@ export const DatePickerGrid = forwardRef<HTMLDivElement, DatePickerGridProps>(
     { children, className, style }: DatePickerGridProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { days } = useDatePickerPage('DatePickerGrid')
+    const { variant } = useDatePickerContext('DatePickerGrid')
+    const { days } = useDatePickerPageContext('DatePickerGrid')
     return (
       <div
-        className={joinClasses(styles.calendarGrid, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.calendarGrid, className)}
         data-plume-datepicker-grid=""
         ref={ref}
         style={style}

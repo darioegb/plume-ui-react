@@ -34,7 +34,7 @@ function BookingForm({
             <DatePicker
               aria-describedby="date-error"
               aria-invalid={fieldState.invalid}
-              inputRef={field.ref}
+              ref={field.ref}
               range={isRange}
               name={field.name}
               onBlur={field.onBlur}

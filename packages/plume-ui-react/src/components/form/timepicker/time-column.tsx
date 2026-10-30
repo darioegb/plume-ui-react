@@ -6,7 +6,7 @@ import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { TimeColumnContext, type TimeColumnContextValue } from './time-column-context'
 import { TimePickerOption, type TimePickerOptionData } from './timepicker-option'
-import { useTimePicker } from './use-timepicker'
+import { useTimePickerContext } from './timepicker-context'
 import styles from './timepicker.module.css'
 
 export type TimeColumnKind = 'hours' | 'minutes' | 'period'
@@ -50,7 +50,7 @@ export function TimeColumn<T extends number | string>({
   selected,
   style,
 }: Readonly<TimeColumnProps<T>>): ReactNode {
-  const { variant } = useTimePicker('TimePickerColumn')
+  const { variant } = useTimePickerContext('TimePickerColumn')
   const list = useRef<HTMLDivElement>(null)
   const [focused, setFocused] = useState<T | undefined>(undefined)
   const defaultStop = options.some((option) => option.value === selected)

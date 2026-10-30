@@ -1,15 +1,11 @@
 /* datepicker.module.css */
 
-.datePicker {
+:global(:where([data-plume-datepicker])) {
   max-width: 100%;
   position: relative;
 }
 
-.datePickerModal {
-  --datepicker-day: var(--plume-space-10);
-  --datepicker-calendar-width: calc(var(--datepicker-day) * 7 + 3.5rem);
-  --datepicker-fill: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), transparent);
-  margin-top: var(--plume-space-2);
+:global(:where([data-plume-datepicker-calendar])) {
   display: flex;
   flex-direction: column;
   max-height: var(--plume-available-height, none);
@@ -17,8 +13,84 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  position: absolute;
   z-index: var(--plume-z-dropdown);
+}
+
+:global(:where([data-plume-datepicker-calendar][data-inline])) {
+  max-width: 100%;
+  position: relative;
+}
+
+:global(:where([data-plume-datepicker-pages])) {
+  display: flex;
+  max-width: 100%;
+}
+
+@media (--below-md) {
+  :global(:where([data-plume-datepicker-pages][data-range])) {
+    flex-direction: column;
+  }
+}
+
+:global(:where([data-plume-datepicker-header], [data-plume-datepicker-nav])) {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+:global(:where([data-plume-datepicker-weekdays], [data-plume-datepicker-grid])) {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+:global(:where([data-plume-datepicker-weekday])) {
+  text-align: center;
+}
+
+:global(:where([data-plume-datepicker-months])) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:global(:where([data-plume-datepicker-years])) {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+:global(
+    :where(
+        [data-plume-datepicker-day],
+        [data-plume-datepicker-month-option],
+        [data-plume-datepicker-year-option],
+        [data-plume-datepicker-month-button],
+        [data-plume-datepicker-year-button],
+        [data-plume-datepicker-previous],
+        [data-plume-datepicker-next]
+      )
+  ) {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+:global(:where([data-plume-datepicker-day])) {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+:global(:where([data-plume-datepicker-day]:disabled)) {
+  cursor: not-allowed;
+}
+
+.datePickerModal {
+  --datepicker-day: var(--plume-space-10);
+  --datepicker-calendar-width: calc(var(--datepicker-day) * 7 + 3.5rem);
+  --datepicker-fill: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), transparent);
+  margin-top: var(--plume-space-2);
+  position: absolute;
 }
 
 .variantOutline :is(.month, .year),
@@ -62,20 +134,15 @@
 }
 
 .calendarContainer {
-  display: flex;
-  max-width: 100%;
   width: var(--datepicker-calendar-width);
 }
 
 .calendarContainerDouble {
-  display: flex;
-  max-width: 100%;
   width: calc(var(--datepicker-calendar-width) * 2);
 }
 
 @media (--below-md) {
   .calendarContainerDouble {
-    flex-direction: column;
     width: var(--datepicker-calendar-width);
   }
 }
@@ -216,18 +283,28 @@
   color: var(--datepicker-contrast);
 }
 
-.selectedHover {
-  background-color: var(--datepicker-selected-hover-color);
-  color: var(--datepicker-contrast);
+.day[data-hovered] {
+  background-color: var(--datepicker-hover-color);
 }
 
-.hovered {
-  background-color: var(--datepicker-hover-color);
+.day[data-preview]:not(.selected) {
+  background-color: var(--datepicker-range-item-color);
+  color: var(--datepicker-range-item-text);
+}
+
+.day[data-hovered]:is(.selected, [data-preview]) {
+  background-color: var(--datepicker-selected-hover-color);
+  color: var(--datepicker-contrast);
 }
 
 .disabledDay {
   color: var(--plume-muted);
   cursor: not-allowed;
+}
+
+.day:disabled {
+  cursor: not-allowed;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .outOfRangeDay {
@@ -252,13 +329,14 @@ button.footerButtonApply {
 
 @media (forced-colors: active) {
   .selected,
-  .selectedHover {
+  .day[data-hovered]:is(.selected, [data-preview]) {
     background-color: Highlight;
     color: HighlightText;
     forced-color-adjust: none;
   }
 
-  .rangeItem {
+  .rangeItem,
+  .day[data-preview]:not(.selected) {
     outline: 1px dashed Highlight;
     outline-offset: var(--plume-focus-ring-inset);
   }

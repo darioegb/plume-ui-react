@@ -5,8 +5,8 @@ import { forwardRef } from 'react'
 import { CalendarIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
 import { PickerTrigger } from '../shared/picker-trigger'
-import { useDatePickerInput } from './datepicker-input-context'
-import { useDatePicker } from './use-datepicker'
+import { useDatePickerInputContext } from './datepicker-input-context'
+import { useDatePickerContext } from './datepicker-context'
 
 export type DatePickerTriggerProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLButtonElement>, 'children'>
@@ -22,8 +22,8 @@ export const DatePickerTrigger = forwardRef<HTMLButtonElement, DatePickerTrigger
       labels,
       state: { modalOpen },
       variant,
-    } = useDatePicker('DatePickerTrigger')
-    const { disabled, onTriggerClick } = useDatePickerInput('DatePickerTrigger')
+    } = useDatePickerContext('DatePickerTrigger')
+    const { disabled, onTriggerClick } = useDatePickerInputContext('DatePickerTrigger')
 
     return (
       <PickerTrigger

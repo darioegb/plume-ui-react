@@ -4,8 +4,8 @@ import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { useTimeColumn } from './time-column-context'
-import { useTimePicker } from './use-timepicker'
+import { useTimeColumnContext } from './time-column-context'
+import { useTimePickerContext } from './timepicker-context'
 import styles from './timepicker.module.css'
 
 export interface TimePickerOptionData<T extends number | string = number | string> {
@@ -28,8 +28,8 @@ export const TimePickerOption = forwardRef<HTMLButtonElement, TimePickerOptionPr
     { children, className, option, style }: TimePickerOptionProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { variant } = useTimePicker('TimePickerOption')
-    const column = useTimeColumn('TimePickerOption')
+    const { variant } = useTimePickerContext('TimePickerOption')
+    const column = useTimeColumnContext('TimePickerOption')
     const selected = column.isSelected(option.value)
 
     return (
