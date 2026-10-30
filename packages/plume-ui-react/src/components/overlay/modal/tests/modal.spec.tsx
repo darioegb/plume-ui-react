@@ -615,4 +615,31 @@ describe('Modal component', () => {
       expect(screen.getByRole('dialog').parentElement).not.toHaveAttribute('class')
     })
   })
+  describe('ModalHeader', () => {
+    it('is a Heading with the look of heading-5 and the level of `as`', () => {
+      render(
+        <Modal defaultOpen>
+          <ModalContent>
+            <ModalHeader as="h3">Title</ModalHeader>
+          </ModalContent>
+        </Modal>,
+      )
+      const header = screen.getByRole('heading', { level: 3, name: 'Title' })
+      expect(header).toHaveAttribute('data-plume-heading', '')
+      expect(header).toHaveAttribute('data-plume-modal-header', '')
+      expect(header).toHaveAttribute('data-size', '5')
+      expect(screen.getByRole('dialog')).toHaveAttribute('aria-labelledby', header.id)
+    })
+
+    it('keeps only the class of the user when the modal is unstyled', () => {
+      render(
+        <Modal defaultOpen variant="unstyled">
+          <ModalContent>
+            <ModalHeader className="text-lg">Title</ModalHeader>
+          </ModalContent>
+        </Modal>,
+      )
+      expect(screen.getByRole('heading')).toHaveAttribute('class', 'text-lg')
+    })
+  })
 })

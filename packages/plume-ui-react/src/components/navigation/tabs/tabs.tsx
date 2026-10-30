@@ -1,8 +1,15 @@
-import { forwardRef, useId } from 'react'
-import type { HTMLAttributes, ForwardedRef, CSSProperties } from 'react'
+'use client'
+
+import { forwardRef, useId, useMemo } from 'react'
+import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
+import { useControllableState } from '../../../overlay/use-controllable-state'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
-import { TabsProvider } from './use-tabs'
-import styles from './tabs.module.css'
+import {
+  TabsContext,
+  type TabsAlignment,
+  type TabsOrientation,
+  type TabsVariant,
+} from './tabs-context'
 
 export interface TabsOwnProps {
   /**
@@ -17,6 +24,16 @@ export interface TabsOwnProps {
    * @default 'secondary'
    */
   colorScheme?: ColorScheme
+  /**
+   * The index of the tab that is selected at first, when the Tabs keep their own state.
+   *
+   * @default 0
+   */
+  defaultIndex?: number
+  /**
+   * The index of the selected tab, to control the Tabs. Pair it with `onIndexChange`.
+   */
+  index?: number
   /**
    * Renders the selected panel inside `Suspense`, with a Spinner as fallback. Only the selected
    * panel is mounted either way.
@@ -46,15 +63,12 @@ export interface TabsOwnProps {
   variant?: TabsVariant
 }
 
-export type TabsVariant = 'underline' | 'rounded' | 'enclosed' | 'segment' | 'unstyled'
-export type TabsOrientation = 'horizontal' | 'vertical'
-export type TabsAlignment = 'left' | 'center' | 'right'
 type TabsRootAttributes = Pick<
   HTMLAttributes<HTMLDivElement>,
   'hidden' | 'id' | 'tabIndex' | 'children'
 >
 
-export type TabsProps = ComponentProps & TabsRootAttributes & TabsOwnProps
+export type TabsProps = Omit<ComponentProps, 'index'> & TabsRootAttributes & TabsOwnProps
 
 const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProperties =>
   ({
@@ -68,17 +82,18 @@ const tabsColorVars = (colorScheme: ColorScheme, style?: CSSProperties): CSSProp
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
-      children,
-      style,
-      onIndexChange: onChange,
-      index = 0,
       alignment = 'left',
-      className = '',
+      children,
+      className,
       colorScheme = 'secondary',
+      defaultIndex = 0,
+      index: indexProp,
+      lazy = false,
+      onIndexChange,
       orientation = 'horizontal',
       size = 'md',
+      style,
       variant = 'underline',
-      lazy: isLazy = false,
       ...rest
     }: TabsProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -86,27 +101,32 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     const generatedId = useId()
     const baseId = rest.id ?? generatedId
     const isStyled = variant !== 'unstyled'
-    const tabsClassNames = `${
-      orientation !== 'horizontal' || isStyled ? styles[orientation] : ''
-    } ${isStyled ? styles.tabs : ''} ${className}`.trim()
+    const [index, select] = useControllableState({
+      defaultValue: defaultIndex,
+      onChange: onIndexChange,
+      value: indexProp,
+    })
+
+    const context = useMemo(
+      () => ({
+        alignment,
+        baseId,
+        colorScheme,
+        index,
+        isStyled,
+        lazy,
+        orientation,
+        select,
+        size,
+        variant,
+      }),
+      [alignment, baseId, colorScheme, index, isStyled, lazy, orientation, select, size, variant],
+    )
 
     return (
-      <TabsProvider
-        config={{
-          index,
-          alignment,
-          baseId,
-          colorScheme,
-          lazy: isLazy,
-          isStyled,
-          orientation,
-          size,
-          variant,
-          onIndexChange: onChange,
-        }}
-      >
+      <TabsContext.Provider value={context}>
         <div
-          className={tabsClassNames}
+          className={className}
           data-orientation={orientation}
           data-plume-tabs=""
           ref={ref}
@@ -115,7 +135,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         >
           {children}
         </div>
-      </TabsProvider>
+      </TabsContext.Provider>
     )
   },
 )
