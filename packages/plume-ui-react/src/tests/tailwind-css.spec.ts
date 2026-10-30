@@ -1,7 +1,7 @@
 import { buildTailwindCss } from '../../scripts/tailwind-css'
 import { defaultTheme } from '../theme/config'
 
-describe('tailwind.css', () => {
+describe('buildTailwindCss', () => {
   const css = buildTailwindCss()
 
   it('points the utilities to the variables of Plume with an inline theme', () => {

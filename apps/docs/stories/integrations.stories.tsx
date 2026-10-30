@@ -25,8 +25,8 @@ const badges = [
 ]
 
 /**
- * Tailwind utilities backed by the variables of Plume, through `plume-ui-react/tailwind.css`, the same file this
- * Storybook uses. They follow the theme and the color mode.
+ * Tailwind utilities backed by the variables of Plume, through the theme of the Framework integration guide, the same
+ * one this Storybook uses. They follow the theme and the color mode.
  */
 export const Tailwind: Story = {
   render: () => (

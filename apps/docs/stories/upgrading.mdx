@@ -562,3 +562,16 @@ much smaller (a default theme emits about 40 variables instead of more than 300)
 Because the default values no longer come from the provider, a variable that is not in your theme is not on the
 element: read it with `getComputedStyle` instead of `element.style`. `plume-ui-react/tokens.css` has only the tokens,
 for an app that builds its own components over them.
+
+## `plume-ui-react/tailwind.css` is removed
+
+The package no longer ships a theme for Tailwind, so it stays independent of any CSS framework. The same theme is in
+**Framework integration**: copy it into a file of your app and import that file instead.
+
+```css
+/* Before */
+@import 'plume-ui-react/tailwind.css';
+
+/* After */
+@import './plume-theme.css';
+```

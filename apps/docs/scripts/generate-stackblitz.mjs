@@ -41,9 +41,11 @@ const themeSource = packageRequire('esbuild').buildSync({
 }).outputFiles[0].text
 const themeModule = { exports: {} }
 new Function('module', 'exports', themeSource)(themeModule, themeModule.exports)
+const tailwindTheme = themeModule.exports.buildTailwindCss()
+writeFileSync(path.resolve(here, '../tailwind-theme.generated.css'), tailwindTheme)
 const sandbox = {
   preflight: readFileSync(docsRequire.resolve('tailwindcss/preflight.css'), 'utf8'),
-  tailwindTheme: themeModule.exports.buildTailwindCss(),
+  tailwindTheme,
   dependencies: pick(manifest.dependencies, ['plume-ui-react', 'react', 'react-dom']),
   devDependencies: pick(manifest.devDependencies, ['@vitejs/plugin-react', 'vite']),
 }

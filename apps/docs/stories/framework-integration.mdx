@@ -1,7 +1,8 @@
 {/* framework-integration.mdx */}
 
-import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+import { Canvas, Meta, Source } from '@storybook/addon-docs/blocks'
 import * as IntegrationStories from './integrations.stories'
+import sandbox from '../src/stackblitz-sandbox.generated.json'
 
 <Meta name='Docs' of={IntegrationStories} />
 
@@ -92,18 +93,20 @@ single file with none.
 
 ## Tailwind CSS v4
 
-The components work as they are next to Tailwind, and with `variant='unstyled'` you style them with utilities.
-`plume-ui-react/tailwind.css` turns the tokens of Plume into utilities: the colors (`bg-primary-solid`,
-`text-primary-on-solid`, `bg-surface`, `border-border`), the text styles (`text-heading-1`, `text-body`), the font
-families (`font-plume`), sizes, weights, line heights and letter spacings, the radii, the shadows, the container widths
-(`max-w-md`) and the easings, plus `z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`.
+The components work as they are next to Tailwind, and with `variant='unstyled'` you style them with utilities. Plume
+doesn't ship a file for Tailwind: copy the theme below into a file of your app, `plume-theme.css`, and it turns the
+tokens of Plume into utilities: the colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`,
+`border-border`), the text styles (`text-heading-1`, `text-body`), the font families (`font-plume`), sizes, weights,
+line heights and letter spacings, the radii, the shadows, the container widths (`max-w-md`) and the easings, plus
+`z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`. Keep only the ones you use, or rename them: the
+theme is yours.
 
 ```css
 @layer theme, base, plume, components, utilities;
 
 @import 'tailwindcss';
 @import 'plume-ui-react/styles.css';
-@import 'plume-ui-react/tailwind.css';
+@import './plume-theme.css';
 
 @custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
 ```
@@ -113,7 +116,15 @@ last one makes `dark:` follow the color mode of Plume instead of the system pref
 
 The utilities point to the variables of Plume (`@theme inline`), so they follow the theme, a nested provider and the
 color mode. The spacing and the breakpoints are the ones of Tailwind, which are also the default ones of Plume: a
-theme that changes `spaces` or `breakpoints` doesn't change `p-4` or `md:`.
+theme that changes `spaces` or `breakpoints` doesn't change `p-4` or `md:`. The **Tailwind** example of every
+component uses this theme.
+
+<details>
+  <summary><code>plume-theme.css</code></summary>
+
+<Source code={sandbox.tailwindTheme} language='css' dark />
+
+</details>
 
 <Canvas of={IntegrationStories.Tailwind} />
 
