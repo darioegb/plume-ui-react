@@ -20,7 +20,7 @@ export const RatingEmpty = forwardRef<HTMLSpanElement, RatingEmptyProps>(
     { children, className, style }: RatingEmptyProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled, outlineIcon } = useRatingContext('RatingEmpty')
+    const { isStyled, emptyIcon } = useRatingContext('RatingEmpty')
 
     return (
       <span
@@ -30,7 +30,7 @@ export const RatingEmpty = forwardRef<HTMLSpanElement, RatingEmptyProps>(
         ref={ref}
         style={style}
       >
-        {children ?? outlineIcon}
+        {children ?? emptyIcon}
       </span>
     )
   },
