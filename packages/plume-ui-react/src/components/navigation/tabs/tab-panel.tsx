@@ -1,40 +1,54 @@
 'use client'
 
-import type { HTMLAttributes, LazyExoticComponent, ReactNode } from 'react'
+import type { ForwardedRef, HTMLAttributes, LazyExoticComponent, ReactNode } from 'react'
 import { Suspense, createElement, forwardRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import { Spinner } from '../../presentation/spinner'
 import { lazyLoadContent } from '../../../utils/lazy'
 import type { ComponentProps } from '../../../theme'
 import styles from './tabs.module.css'
-import { useTabIndex } from './tab-index-context'
-import { getPanelId, getTabId, useTabs } from './use-tabs'
+import { getPanelId, getTabId, useTabIndex, useTabsContext } from './tabs-context'
 
-export type TabPanelProps = Pick<
+export interface TabPanelOwnProps {
+  /**
+   * The position of the panel, for a panel that is not a direct child of `TabPanels` (a wrapped one)
+   * and so can't be counted. Without it the panels take their order.
+   */
+  index?: number
+}
+
+type TabPanelRootAttributes = Pick<
   HTMLAttributes<HTMLDivElement>,
-  'className' | 'children' | 'style'
-> &
-  Pick<ComponentProps, 'index'>
+  'children' | 'hidden' | 'title'
+>
+
+export type TabPanelProps = Omit<ComponentProps, 'index'> &
+  TabPanelRootAttributes &
+  TabPanelOwnProps
 
 /** The content of a tab, shown while its `Tab` is selected. */
 export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
-  ({ children, className = '', index: indexProp, style }, ref) => {
-    const { baseId, colorScheme, lazy: isLazy, isStyled } = useTabs()
-    const index = useTabIndex(indexProp)
+  (
+    { children, className, index: indexProp, ...rest }: TabPanelProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
+    const { baseId, colorScheme, isStyled, lazy } = useTabsContext('TabPanel')
+    const index = useTabIndex('TabPanel', indexProp)
 
-    const tabContent = isLazy ? lazyLoadContent(children) : children
+    const tabContent = lazy ? lazyLoadContent(children) : children
 
     return (
       <div
         aria-labelledby={getTabId(baseId, index)}
-        className={`${isStyled ? styles.panel : ''} ${className}`.trim()}
+        className={joinClasses(isStyled && styles.panel, className)}
         data-plume-tabs-panel=""
         id={getPanelId(baseId, index)}
         ref={ref}
         role="tabpanel"
-        style={style}
         tabIndex={0}
+        {...rest}
       >
-        {isLazy ? (
+        {lazy ? (
           <Suspense fallback={<Spinner colorScheme={colorScheme} />}>
             {createElement(tabContent as LazyExoticComponent<() => ReactNode>)}
           </Suspense>

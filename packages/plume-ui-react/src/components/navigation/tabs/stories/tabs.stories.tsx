@@ -35,6 +35,8 @@ const commonTabs = (
  * Tabs split related content into panels and show one at a time.
  * Compose them with `TabList`, `Tab`, `TabPanels` and `TabPanel`; tabs and panels are linked by position, and a `Tab` or a `TabPanel` can be wrapped by another component (a tooltip, for example) and keep its position. If a wrapper holds more than one `Tab`, give each one its `index`.
  *
+ * The Tabs keep their own state, starting on **defaultIndex**, or you control them with **index** and **onIndexChange**: with `index` set, a click only asks for the change.
+ *
  * ### Keyboard
  *
  * Only the selected tab is in the tab order, so <kbd>Tab</kbd> moves from it to its panel.
@@ -59,6 +61,7 @@ export default {
     children: { control: false },
     className: { control: 'text' },
     index: { control: 'number' },
+    defaultIndex: { control: 'number' },
     alignment: { control: 'radio', options: ['left', 'center', 'right'] },
     colorScheme: { control: 'select', options: colorSchemes },
     lazy: { control: 'boolean' },
@@ -110,152 +113,198 @@ export const Default: Story = {
 }
 
 /**
- * This is a list o Tabs with different variants.
- * Just adding the **variant** prop in one of these values **underline**, **rounded**, **enclosed**, **segment** and **unstyled**.
+ * Use the **variant** prop to pick how the Tabs look: **underline**, **rounded**, **enclosed**, **segment** or
+ * **unstyled**, which drops the Plume styles so you can style the parts yourself.
  */
 export const Variants: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs
-  colorScheme="primary"
-  variant="underline"
->
-  {commonTabs}
+        code: `<Tabs variant="underline">
+  <TabList aria-label="Underline">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="rounded"
->
-  {commonTabs}
+<Tabs variant="rounded">
+  <TabList aria-label="Rounded">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="enclosed"
->
-  {commonTabs}
+<Tabs variant="enclosed">
+  <TabList aria-label="Enclosed">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  colorScheme="primary"
-  variant="segment"
->
-  {commonTabs}
+<Tabs variant="segment">
+  <TabList aria-label="Segment">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  variant="unstyled"
->
-  {commonTabs}
-</Tabs>
-          `,
+<Tabs variant="unstyled">
+  <TabList aria-label="Unstyled">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
+</Tabs>`,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-      <Tabs colorScheme="primary" variant="underline">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="rounded">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="enclosed">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" variant="segment">
-        {commonTabs}
-      </Tabs>
-      <Tabs variant="unstyled">{commonTabs}</Tabs>
+      {(['underline', 'rounded', 'enclosed', 'segment', 'unstyled'] as const).map((variant) => (
+        <Tabs key={variant} variant={variant}>
+          {commonTabs}
+        </Tabs>
+      ))}
     </div>
   ),
 }
 
 /**
- * This is a list o Tabs with different sizes.
- * Just adding the **size** prop. We support 3 sizes **sm**, **md**, **lg**.
+ * Use the **size** prop to change the size: **sm**, **md** or **lg**.
  */
 export const Sizes: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs
-  colorScheme="primary"
-  size="sm"
->
-  {commonTabs}
+        code: `<Tabs size="sm">
+  <TabList aria-label="Small">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  colorScheme="primary"
-  size="md"
->
-  {commonTabs}
+<Tabs size="md">
+  <TabList aria-label="Medium">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-<Tabs
-  colorScheme="primary"
-  size="lg"
->
-  {commonTabs}
-</Tabs>
-          `,
+<Tabs size="lg">
+  <TabList aria-label="Large">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
+</Tabs>`,
       },
     },
   },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-4">
-      <Tabs colorScheme="primary" size="sm">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" size="md">
-        {commonTabs}
-      </Tabs>
-      <Tabs colorScheme="primary" size="lg">
-        {commonTabs}
-      </Tabs>
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Tabs key={size} size={size}>
+          {commonTabs}
+        </Tabs>
+      ))}
     </div>
   ),
 }
 
 /**
- * This is a list o Tabs with different colors.
- * Just adding the **colorScheme** prop.
+ * Use the **colorScheme** prop to pick a color from the theme. The color goes to the selected tab, the focus ring and
+ * the border of the `underline` variant, which is the default one.
  */
 export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Tabs>
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="primary">
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="secondary">
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="info">
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="warning">
-  {commonTabs}
-</Tabs>
-<Tabs colorScheme="error">
-  {commonTabs}
+        code: `<Tabs colorScheme="primary">
+  <TabList aria-label="Primary">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
 <Tabs colorScheme="success">
-  {commonTabs}
+  <TabList aria-label="Success">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
 </Tabs>
-  `,
+<Tabs colorScheme="error">
+  <TabList aria-label="Error">
+    <Tab>One</Tab>
+    <Tab>Two</Tab>
+    <Tab>Three</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>one!</TabPanel>
+    <TabPanel>two!</TabPanel>
+    <TabPanel>three!</TabPanel>
+  </TabPanels>
+</Tabs>`,
       },
     },
   },
   render: () => (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-      <Tabs>{commonTabs}</Tabs>
-      <Tabs colorScheme="primary">{commonTabs}</Tabs>
-      <Tabs colorScheme="secondary">{commonTabs}</Tabs>
-      <Tabs colorScheme="info">{commonTabs}</Tabs>
-      <Tabs colorScheme="warning">{commonTabs}</Tabs>
-      <Tabs colorScheme="error">{commonTabs}</Tabs>
-      <Tabs colorScheme="success">{commonTabs}</Tabs>
+      {colorSchemes.map((scheme) => (
+        <Tabs colorScheme={scheme as keyof typeof defaultTheme.colors} key={scheme}>
+          {commonTabs}
+        </Tabs>
+      ))}
     </div>
   ),
 }

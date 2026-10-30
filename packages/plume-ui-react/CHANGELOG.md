@@ -1,5 +1,17 @@
 # plume-ui-react
 
+## 0.46.0
+
+### Minor Changes
+
+- [#252](https://github.com/darioegb/plume-ui-react/pull/252) [`ba56af3c81a5d2a625439919b0d4013a2dfd1f20`](https://github.com/darioegb/plume-ui-react/commit/ba56af3c81a5d2a625439919b0d4013a2dfd1f20) Thanks [@darioegb](https://github.com/darioegb)! - `Tabs` follows the parts contract. It keeps its state like the other components: `defaultIndex` sets the tab it starts on, and `index` with `onIndexChange` controls it (with `index` set, a click only asks for the change; before, the Tabs also moved by themselves). `Tab`, `TabList`, `TabPanels` and `TabPanel` accept the native attributes they whitelist and `variant="unstyled"` leaves only your classes on all of them: the layout it needs (the row of the tabs, the vertical orientation, the alignment) is kept through zero-specificity rules on `data-plume-tabs-*`, `data-orientation` and `data-alignment`. A selected tab is styled through `data-active` (the `active` class is gone). `TabsVariant`, `TabsOrientation`, `TabsAlignment`, `TabsOwnProps`, `TabOwnProps` and `TabPanelOwnProps` are exported. A `Tab` or a `TabPanel` outside its list throws, instead of taking position 0.
+
+### Patch Changes
+
+- [#252](https://github.com/darioegb/plume-ui-react/pull/252) [`ebc58e1d08a6d74f4621109629cd201887abd12b`](https://github.com/darioegb/plume-ui-react/commit/ebc58e1d08a6d74f4621109629cd201887abd12b) Thanks [@darioegb](https://github.com/darioegb)! - `ModalHeader` (and `DrawerHeader`) renders a `Heading` with the look of `heading-5`, keeps the `as` prop for the level and carries `data-plume-modal-header`. It accepts `lang` and `title`.
+
+- [#252](https://github.com/darioegb/plume-ui-react/pull/252) [`f0f92ac5a86cca22b928b893163545a89fbb0eb1`](https://github.com/darioegb/plume-ui-react/commit/f0f92ac5a86cca22b928b893163545a89fbb0eb1) Thanks [@darioegb](https://github.com/darioegb)! - The open menu of the `Navbar` joins the stack of layers, so <kbd>Esc</kbd> and a press outside close only the overlay that is on top: a `Modal` opened over the menu closes first and the menu stays.
+
 ## 0.45.0
 
 ### Minor Changes

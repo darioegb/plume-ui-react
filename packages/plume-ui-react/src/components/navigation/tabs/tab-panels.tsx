@@ -1,19 +1,17 @@
 'use client'
 
 import { Children, forwardRef } from 'react'
-import type { HTMLAttributes, Ref } from 'react'
-import { TabIndexContext } from './tab-index-context'
-import { useTabs } from './use-tabs'
+import type { ForwardedRef, HTMLAttributes } from 'react'
+import type { ComponentProps } from '../../../theme'
+import { TabIndexContext, useTabsContext } from './tabs-context'
 
-export type TabPanelsProps = Pick<
-  HTMLAttributes<HTMLDivElement>,
-  'className' | 'id' | 'children' | 'style'
->
+export type TabPanelsProps = Omit<ComponentProps, 'index'> &
+  Pick<HTMLAttributes<HTMLDivElement>, 'children' | 'hidden' | 'id' | 'title'>
 
 /** The box that holds the `TabPanel` items, one per `Tab` and in the same order. */
-export const TabPanels = forwardRef(
-  ({ children, ...rest }: TabPanelsProps, ref: Ref<HTMLDivElement>) => {
-    const { index } = useTabs()
+export const TabPanels = forwardRef<HTMLDivElement, TabPanelsProps>(
+  ({ children, ...rest }: TabPanelsProps, ref: ForwardedRef<HTMLDivElement>) => {
+    const { index } = useTabsContext('TabPanels')
 
     return (
       <div data-plume-tabs-panels="" ref={ref} {...rest}>
