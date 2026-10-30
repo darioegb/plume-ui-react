@@ -188,4 +188,19 @@ describe('Checkbox component', () => {
       expect(screen.getByRole('checkbox', { name: /Terms/ })).toBeDisabled()
     })
   })
+
+  it('carries data-plume-checkbox and its state', () => {
+    const { rerender } = render(<Checkbox aria-label="Terms" />)
+    const input = screen.getByRole('checkbox')
+    expect(input).toHaveAttribute('data-plume-checkbox')
+    expect(input).not.toHaveAttribute('data-disabled')
+    expect(input).not.toHaveAttribute('data-invalid')
+    expect(input).not.toHaveAttribute('data-readonly')
+
+    rerender(<Checkbox aria-invalid aria-label="Terms" disabled indeterminate readOnly />)
+    expect(input).toHaveAttribute('data-disabled')
+    expect(input).toHaveAttribute('data-invalid')
+    expect(input).toHaveAttribute('data-readonly')
+    expect(input).toHaveAttribute('data-indeterminate')
+  })
 })

@@ -145,31 +145,28 @@ export const Sizes: Story = {
 }
 
 /**
- * This is a list o button with different colors.
- * Just adding the **colorScheme** prop.
+ * Every color of the theme in the default `outline` variant. The color tints the focus border and
+ * ring, in every variant.
  */
 export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: ` <Input colorScheme="primary" placeholder="Primary Input" />
-<Input colorScheme="secondary" placeholder="Secondary Input" />
-<Input colorScheme="info" placeholder="Info Input" />
-<Input colorScheme="warning" placeholder="Warning Input" />
-<Input colorScheme="error" placeholder="Error Input" />
-<Input colorScheme="success" placeholder="Success Input" />
-          `,
+        code: `<Input colorScheme="primary" placeholder="primary" />
+<Input colorScheme="success" placeholder="success" />
+<Input colorScheme="purple" placeholder="purple" />`,
       },
     },
   },
   render: () => (
     <div className="grid w-full gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
-      <Input colorScheme="primary" placeholder="Primary Input" />
-      <Input colorScheme="secondary" placeholder="Secondary Input" />
-      <Input colorScheme="info" placeholder="Info Input" />
-      <Input colorScheme="warning" placeholder="Warning Input" />
-      <Input colorScheme="error" placeholder="Error Input" />
-      <Input colorScheme="success" placeholder="Success Input" />
+      {colorSchemes.map((colorScheme) => (
+        <Input
+          colorScheme={colorScheme as keyof typeof defaultTheme.colors}
+          key={colorScheme}
+          placeholder={colorScheme}
+        />
+      ))}
     </div>
   ),
 }

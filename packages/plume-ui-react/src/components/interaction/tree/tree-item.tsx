@@ -2,11 +2,11 @@
 
 import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { Children, forwardRef, isValidElement, useContext, useId, useMemo } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { TreeItemContext, TreeLevelContext, useTreeContext } from './tree-context'
 import { TreeItemGroup } from './tree-item-group'
-import styles from './tree.module.css'
+import { TreeItemRow } from './tree-item-row'
 
 export interface TreeItemOwnProps {
   /**
@@ -30,14 +30,13 @@ export type TreeItemProps = Omit<ComponentProps, 'index'> &
   TreeItemRootAttributes &
   TreeItemOwnProps
 
-const hasSelectedState = (selection: string): boolean =>
-  selection === 'single' || selection === 'multiple'
-
 const isGroup = (child: ReactNode): boolean => isValidElement(child) && child.type === TreeItemGroup
 
 /**
- * One node. Put a `TreeItemLabel` and, for a branch, a `TreeItemGroup` as its direct children. It
- * has `data-selected` and `data-expanded`.
+ * One node: a `TreeItemRow` (the `treeitem`, which it renders around its other children) and, for
+ * a branch, a `TreeItemGroup`. Put a `TreeItemLabel` and the group as its direct children, or a
+ * `TreeItemRow` with the label inside and the group after it. `aria-label` names the row. It has
+ * `data-selected`, `data-expanded`, `data-disabled` and `data-checked`, and sets `--tree-level`.
  */
 export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
@@ -64,50 +63,42 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
     const checked = tree.checkState(value)
 
     const context = useMemo(
-      () => ({ checked, disabled, expanded, groupId, hasChildren, labelId, level }),
-      [checked, disabled, expanded, groupId, hasChildren, labelId, level],
+      () => ({
+        ariaLabel,
+        checked,
+        disabled,
+        expanded,
+        groupId,
+        hasChildren,
+        labelId,
+        level,
+        selected,
+        value,
+      }),
+      [ariaLabel, checked, disabled, expanded, groupId, hasChildren, labelId, level, selected, value],
     )
 
     return (
       <TreeItemContext.Provider value={context}>
-        <div data-plume-tree-node="">
-          <div
-            {...rest}
-            aria-checked={checked}
-            aria-disabled={disabled || undefined}
-            aria-expanded={hasChildren ? expanded : undefined}
-            aria-label={ariaLabel}
-            aria-labelledby={ariaLabel ? undefined : labelId}
-            aria-level={level}
-            aria-owns={hasChildren ? groupId : undefined}
-            aria-selected={hasSelectedState(tree.selection) ? selected : undefined}
-            className={joinClasses(tree.isStyled && styles.item, className)}
-            data-checked={checked === undefined ? undefined : String(checked)}
-            data-expanded={expanded ? '' : undefined}
-            data-plume-tree-item=""
-            data-plume-tree-value={value}
-            data-selected={selected ? '' : undefined}
-            onClick={(event) => {
-              if (disabled) return
-              const onChevron = (event.target as HTMLElement).closest('[data-plume-tree-chevron]')
-              if (onChevron && hasChildren && tree.selection === 'checkbox')
-                tree.toggleExpanded(value)
-              else tree.activate(value, hasChildren)
-            }}
-            onFocus={(event) => {
-              if (event.target === event.currentTarget) tree.setActive(value)
-            }}
-            onKeyDown={(event) => {
-              if (!disabled) tree.onItemKeyDown(event, value, hasChildren)
-            }}
-            ref={ref}
-            role="treeitem"
-            style={{ '--tree-level': level, ...style } as CSSProperties}
-            tabIndex={!disabled && tree.activeValue === value ? 0 : -1}
-          >
-            {nodes.filter((node) => node !== group)}
-          </div>
-          {group}
+        <div
+          {...rest}
+          className={className}
+          data-checked={checked === undefined ? undefined : String(checked)}
+          data-disabled={disabled ? '' : undefined}
+          data-expanded={expanded ? '' : undefined}
+          data-plume-tree-item=""
+          data-selected={selected ? '' : undefined}
+          ref={ref}
+          style={{ '--tree-level': level, ...style } as CSSProperties}
+        >
+          {hasPart(children, [TreeItemRow]) ? (
+            children
+          ) : (
+            <>
+              <TreeItemRow>{nodes.filter((node) => node !== group)}</TreeItemRow>
+              {group}
+            </>
+          )}
         </div>
       </TreeItemContext.Provider>
     )

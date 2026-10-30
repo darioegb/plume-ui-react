@@ -1,15 +1,15 @@
 'use client'
 
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ForwardedRef } from 'react'
 import { createContext, useContext } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
-import type { PickerVariant } from '../shared/picker-panel'
 import type { Period } from './time-utils'
-import type { TimePickerLabels } from './timepicker-types'
+import type { TimePickerLabels, TimePickerVariant } from './timepicker-types'
 
 export interface TimePickerContextProps {
   colorScheme: ColorScheme
   hour12: boolean
+  inputRef: ForwardedRef<HTMLInputElement>
   isPanel: boolean
   labels: TimePickerLabels
   minuteStep: number
@@ -26,12 +26,12 @@ export interface TimePickerContextProps {
   size?: Size
   toggle: () => void
   value: string
-  variant: PickerVariant
+  variant: TimePickerVariant
 }
 
 export const TimePickerContext = createContext<TimePickerContextProps | undefined>(undefined)
 
-export const useTimePicker = (part = 'useTimePicker'): TimePickerContextProps => {
+export const useTimePickerContext = (part = 'useTimePickerContext'): TimePickerContextProps => {
   const context = useContext(TimePickerContext)
   if (!context) {
     throw new Error(`${part} must be used within a <TimePicker>`)

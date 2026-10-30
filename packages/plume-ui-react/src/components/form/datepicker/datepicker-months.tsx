@@ -4,9 +4,9 @@ import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { Button } from '../../interaction/button'
 import { renderItems, type DatePickerMonthData, type DatePickerYearData } from './calendar-utils'
-import { useDatePickerPage } from './datepicker-page-context'
+import { useDatePickerContext } from './datepicker-context'
+import { useDatePickerPageContext } from './datepicker-page-context'
 import styles from './datepicker.module.css'
 
 type PartProps = Omit<ComponentProps, 'index'>
@@ -40,24 +40,29 @@ export const DatePickerMonthOption = forwardRef<HTMLButtonElement, DatePickerMon
     { children, className, month, style }: DatePickerMonthOptionProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { selectMonth } = useDatePickerPage('DatePickerMonthOption')
+    const { variant } = useDatePickerContext('DatePickerMonthOption')
+    const { selectMonth } = useDatePickerPageContext('DatePickerMonthOption')
+    const isStyled = variant !== 'unstyled'
 
     return (
-      <Button
+      <button
         aria-pressed={month.selected}
-        className={joinClasses(month.selected && styles.selected, styles.month, className)}
+        className={joinClasses(
+          isStyled && month.selected && styles.selected,
+          isStyled && styles.month,
+          className,
+        )}
         data-plume-datepicker-month-option=""
         data-selected={month.selected ? '' : undefined}
-        label={children ? undefined : month.label}
         onClick={() => {
           selectMonth(month.index)
         }}
         ref={ref}
         style={style}
-        variant="unstyled"
+        type="button"
       >
-        {children}
-      </Button>
+        {children ?? month.label}
+      </button>
     )
   },
 )
@@ -70,10 +75,11 @@ export const DatePickerMonths = forwardRef<HTMLDivElement, DatePickerMonthsProps
     { children, className, style }: DatePickerMonthsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { monthOptions } = useDatePickerPage('DatePickerMonths')
+    const { variant } = useDatePickerContext('DatePickerMonths')
+    const { monthOptions } = useDatePickerPageContext('DatePickerMonths')
     return (
       <div
-        className={joinClasses(styles.monthSelectorGrid, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.monthSelectorGrid, className)}
         data-plume-datepicker-months=""
         ref={ref}
         style={style}
@@ -94,12 +100,18 @@ export const DatePickerYearOption = forwardRef<HTMLButtonElement, DatePickerYear
     { children, className, style, year }: DatePickerYearOptionProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { selectYear } = useDatePickerPage('DatePickerYearOption')
+    const { variant } = useDatePickerContext('DatePickerYearOption')
+    const { selectYear } = useDatePickerPageContext('DatePickerYearOption')
+    const isStyled = variant !== 'unstyled'
 
     return (
-      <Button
+      <button
         aria-pressed={year.selected}
-        className={joinClasses(year.selected && styles.selected, styles.year, className)}
+        className={joinClasses(
+          isStyled && year.selected && styles.selected,
+          isStyled && styles.year,
+          className,
+        )}
         data-plume-datepicker-year-option=""
         data-selected={year.selected ? '' : undefined}
         onClick={() => {
@@ -107,10 +119,10 @@ export const DatePickerYearOption = forwardRef<HTMLButtonElement, DatePickerYear
         }}
         ref={ref}
         style={style}
-        variant="unstyled"
+        type="button"
       >
         {children ?? year.value}
-      </Button>
+      </button>
     )
   },
 )
@@ -123,10 +135,11 @@ export const DatePickerYears = forwardRef<HTMLDivElement, DatePickerYearsProps>(
     { children, className, style }: DatePickerYearsProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { yearOptions } = useDatePickerPage('DatePickerYears')
+    const { variant } = useDatePickerContext('DatePickerYears')
+    const { yearOptions } = useDatePickerPageContext('DatePickerYears')
     return (
       <div
-        className={joinClasses(styles.yearSelectorGrid, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.yearSelectorGrid, className)}
         data-plume-datepicker-years=""
         ref={ref}
         style={style}

@@ -1,9 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createRef } from 'react'
+import type { ReactElement } from 'react'
+import { createRef, memo } from 'react'
 import { useForm } from 'react-hook-form'
 import { Field } from '../../field'
 import { Textarea, TextareaCount, TextareaField, TextareaStatus } from '..'
+import { useTextarea } from '../textarea-context'
 
 const count = (): HTMLElement =>
   document.querySelector('[data-plume-textarea-count]') as HTMLElement
@@ -353,5 +355,25 @@ describe('Textarea parts', () => {
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({ bio: 'typed' }, expect.anything())
     })
+  })
+
+  it('keeps the context value while the props do not change', () => {
+    const renders = vi.fn()
+    const Probe = memo(function Probe() {
+      useTextarea('Probe')
+      renders()
+      return null
+    })
+    const ui = (name: string): ReactElement => (
+      <Textarea aria-label="Bio" name={name}>
+        <TextareaField />
+        <Probe />
+      </Textarea>
+    )
+    const { rerender } = render(ui('bio'))
+    rerender(ui('bio'))
+    expect(renders).toHaveBeenCalledTimes(1)
+    rerender(ui('other'))
+    expect(renders).toHaveBeenCalledTimes(2)
   })
 })

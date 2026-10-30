@@ -82,6 +82,10 @@
   flex: none;
 }
 
+.outline .filled {
+  color: var(--rating-edge);
+}
+
 .interactive {
   cursor: pointer;
 }
@@ -108,7 +112,8 @@
 }
 
 @media (forced-colors: active) {
-  .filled {
+  .filled,
+  .outline .filled {
     --rating-edge: CanvasText;
     color: Highlight;
     forced-color-adjust: none;

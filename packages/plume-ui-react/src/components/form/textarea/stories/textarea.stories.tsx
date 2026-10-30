@@ -177,9 +177,19 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to change the color of the focus ring.
+ * Every color of the theme in the default `outline` variant. The **colorScheme** sets the color of
+ * the focus border and ring, in every variant.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Textarea aria-label="primary" colorScheme="primary" placeholder="Focus me: primary" rows={1} />
+<Textarea aria-label="success" colorScheme="success" placeholder="Focus me: success" rows={1} />
+<Textarea aria-label="purple" colorScheme="purple" placeholder="Focus me: purple" rows={1} />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {colorSchemes.map((scheme) => (

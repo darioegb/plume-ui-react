@@ -237,13 +237,13 @@ describe('Input component', () => {
       const control = screen.getByPlaceholderText('Secret').parentElement as HTMLElement
       const children = Array.from(control.children)
       expect(children.indexOf(screen.getByText('after').parentElement as Element)).toBeLessThan(
-        children.indexOf(toggle().parentElement as Element),
+        children.indexOf(toggle()),
       )
     })
 
     it('keeps the classes of the button in every variant', () => {
       render(<Input placeholder="Secret" revealable type="password" />)
-      expect(toggle()).toHaveClass('revealButton')
+      expect(toggle()).toHaveClass('reveal')
     })
 
     it('drops the Plume classes of the button when it is unstyled', () => {

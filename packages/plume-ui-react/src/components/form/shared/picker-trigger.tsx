@@ -42,14 +42,14 @@ export const PickerTrigger = forwardRef<HTMLButtonElement, PickerTriggerProps>(
       aria-expanded={open}
       aria-haspopup="dialog"
       aria-label={label}
-      className={joinClasses(styles.trigger, unstyled && styles.floating, className)}
+      className={joinClasses(!unstyled && styles.trigger, className)}
       data-open={open ? '' : undefined}
       disabled={disabled}
       onClick={onClick}
       ref={ref}
       shape="pill"
       style={style}
-      variant="icon"
+      variant={unstyled ? 'unstyled' : 'icon'}
       {...rest}
     >
       {icon}

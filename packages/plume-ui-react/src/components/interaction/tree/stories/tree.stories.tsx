@@ -9,6 +9,7 @@ import {
   TreeItemGroup,
   TreeItemIcon,
   TreeItemLabel,
+  TreeItemRow,
 } from '..'
 
 const colorSchemes = Object.keys(defaultTheme.colors)
@@ -93,8 +94,8 @@ function Files(
  * for nested data that the user browses and picks from.
  *
  * It follows the WAI-ARIA tree view pattern. The root has `role="tree"` (give it an `aria-label`), every
- * `TreeItem` is a `treeitem` with its `aria-level`, `aria-selected` and, when it has children, `aria-expanded`,
- * and the children sit in a `group` inside it. An item is named by its `TreeItemLabel`, not by the text of its
+ * `TreeItem` renders a `treeitem` row with its `aria-level`, `aria-selected` and, when it has children,
+ * `aria-expanded`, and the children sit in a `group` after it. An item is named by its `TreeItemLabel`, not by the text of its
  * children. Only one item is reachable with <kbd>Tab</kbd> (the selected one, or the first), and the arrows move
  * inside the tree:
  *
@@ -134,6 +135,7 @@ export default {
       importNames: [
         'Tree',
         'TreeItem',
+        'TreeItemRow',
         'TreeItemLabel',
         'TreeItemGroup',
         'TreeItemChevron',
@@ -161,7 +163,7 @@ export default {
     onExpandedChange: { control: false },
     colorScheme: { control: 'select', options: colorSchemes },
     size: { control: 'radio', options: ['sm', 'md', 'lg'] },
-    variant: { control: 'radio', options: ['solid', 'ghost', 'accent', 'unstyled'] },
+    variant: { control: 'radio', options: ['solid', 'outline', 'ghost', 'accent', 'unstyled'] },
     id: { control: false },
     title: { control: 'text' },
     hidden: { control: false },
@@ -227,8 +229,9 @@ export const Default: Story = {
 }
 
 /**
- * Use the **variant** prop to pick how the selected item looks. `unstyled` drops the Plume styles so you can style
- * it yourself.
+ * Use the **variant** prop to pick how the selected item looks: `solid` fills its row, `outline` draws a border
+ * around it, `ghost` tints it and `accent` draws a bar at its start. `unstyled` drops the Plume styles so you can
+ * style it yourself; the structure and the keyboard keep working.
  */
 export const Variants: Story = {
   parameters: {
@@ -236,6 +239,19 @@ export const Variants: Story = {
       source: {
         code: `<div className="flex flex-col gap-6">
   <Tree aria-label="solid" defaultExpanded={['src']} defaultValue="index" variant="solid">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="outline" defaultExpanded={['src']} defaultValue="index" variant="outline">
     <TreeItem value="src">
       <TreeItemLabel>src</TreeItemLabel>
       <TreeItemGroup>
@@ -274,13 +290,26 @@ export const Variants: Story = {
       <TreeItemLabel>README.md</TreeItemLabel>
     </TreeItem>
   </Tree>
+  <Tree aria-label="unstyled" defaultExpanded={['src']} defaultValue="index" variant="unstyled">
+    <TreeItem value="src">
+      <TreeItemLabel>src</TreeItemLabel>
+      <TreeItemGroup>
+        <TreeItem value="index">
+          <TreeItemLabel>index.ts</TreeItemLabel>
+        </TreeItem>
+      </TreeItemGroup>
+    </TreeItem>
+    <TreeItem value="readme">
+      <TreeItemLabel>README.md</TreeItemLabel>
+    </TreeItem>
+  </Tree>
 </div>`,
       },
     },
   },
   render: () => (
     <div style={stack('1.5rem')}>
-      {(['solid', 'ghost', 'accent'] as const).map((variant) => (
+      {(['solid', 'outline', 'ghost', 'accent', 'unstyled'] as const).map((variant) => (
         <Files
           aria-label={variant}
           defaultExpanded={['src']}
@@ -360,9 +389,34 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick a color from the theme. It colors the selected item.
+ * Use the **colorScheme** prop to pick a color from the theme. Here every color in the `solid` variant, which fills
+ * the selected row with it; `outline` draws the border of the selected row with it, `ghost` tints it and `accent`
+ * colors the bar and the text.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-4">
+  <Tree aria-label="primary" colorScheme="primary" defaultValue="selected">
+    <TreeItem value="selected">
+      <TreeItemLabel>primary</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="success" colorScheme="success" defaultValue="selected">
+    <TreeItem value="selected">
+      <TreeItemLabel>success</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+  <Tree aria-label="error" colorScheme="error" defaultValue="selected">
+    <TreeItem value="selected">
+      <TreeItemLabel>error</TreeItemLabel>
+    </TreeItem>
+  </Tree>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1rem')}>
       {colorSchemes.map((scheme) => (
@@ -371,7 +425,6 @@ export const Colors: Story = {
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           defaultValue="selected"
           key={scheme}
-          size="sm"
         >
           <TreeItem value="selected">
             <TreeItemLabel>{scheme}</TreeItemLabel>
@@ -865,8 +918,9 @@ export const Disabled: Story = {
 }
 
 /**
- * A label is made of **TreeItemChevron**, **TreeItemCheckbox** and **TreeItemIcon**. Write them as its children to
- * reorder them or give each its own class: here the icon comes first and the chevron last.
+ * An item is a **TreeItemRow** (the `treeitem`, which the item renders for you) with its **TreeItemLabel**, and a
+ * **TreeItemGroup** for a branch. A label is made of **TreeItemChevron**, **TreeItemCheckbox** and **TreeItemIcon**.
+ * Write them as children to reorder them or give each its own class: here the icon comes first and the chevron last.
  */
 export const Compound: Story = {
   parameters: {
@@ -874,26 +928,28 @@ export const Compound: Story = {
       source: {
         code: `<Tree aria-label="Files" selection="checkbox">
   <TreeItem value="docs">
-    <TreeItemLabel>
-      <TreeItemCheckbox />
-      <TreeItemIcon>
-        <svg
-          aria-hidden="true"
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="1em"
-        >
-          <path d="M3 7h6l2 2h10v10H3z" />
-        </svg>
-      </TreeItemIcon>
-      Documents
-      <TreeItemChevron />
-    </TreeItemLabel>
+    <TreeItemRow>
+      <TreeItemLabel>
+        <TreeItemCheckbox />
+        <TreeItemIcon>
+          <svg
+            aria-hidden="true"
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            width="1em"
+          >
+            <path d="M3 7h6l2 2h10v10H3z" />
+          </svg>
+        </TreeItemIcon>
+        Documents
+        <TreeItemChevron />
+      </TreeItemLabel>
+    </TreeItemRow>
     <TreeItemGroup>
       <TreeItem value="alpha">
         <TreeItemLabel>
@@ -910,14 +966,16 @@ export const Compound: Story = {
   render: () => (
     <Tree aria-label="Files" selection="checkbox" style={frame}>
       <TreeItem value="docs">
-        <TreeItemLabel>
-          <TreeItemCheckbox />
-          <TreeItemIcon>
-            <Glyph path="M3 7h6l2 2h10v10H3z" />
-          </TreeItemIcon>
-          Documents
-          <TreeItemChevron />
-        </TreeItemLabel>
+        <TreeItemRow>
+          <TreeItemLabel>
+            <TreeItemCheckbox />
+            <TreeItemIcon>
+              <Glyph path="M3 7h6l2 2h10v10H3z" />
+            </TreeItemIcon>
+            Documents
+            <TreeItemChevron />
+          </TreeItemLabel>
+        </TreeItemRow>
         <TreeItemGroup>
           <TreeItem value="alpha">
             <TreeItemLabel>
@@ -933,24 +991,32 @@ export const Compound: Story = {
 
 /**
  * Some examples of Tree with Tailwind classes. With `variant="unstyled"` the Plume classes are gone and the
- * structure and the keyboard stay. Style the parts from their own classes: give the `TreeItem` the `group` class and use
- * `group-aria-[selected=true]:` on its `TreeItemLabel`, and `--tree-level` (set on every item) to indent.
+ * structure and the keyboard stay. Style the parts from their own classes: write the `TreeItemRow` (the `treeitem`)
+ * with the `group` class and use `group-aria-[selected=true]:` on its `TreeItemLabel`, and `--tree-level` (set on
+ * every item) to indent. The `TreeItem` wraps the row and its group, so a `group` class on it would also reach the
+ * children. Every part carries a `data-plume-tree-item-*` attribute (`-row`, `-label`, `-chevron`, `-checkbox`,
+ * `-icon`, `-group`), and the item and its row have `data-selected`, `data-expanded`, `data-disabled` and
+ * `data-checked`.
  */
 export const Tailwind: Story = {
   parameters: {
     docs: {
       source: {
         code: `<Tree aria-label="Project files" className="text-sm text-foreground" defaultExpanded={["src"]} variant="unstyled">
-  <TreeItem className="group outline-hidden" value="src">
-    <TreeItemLabel
-      className="flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-3 hover:bg-surface-muted group-aria-[selected=true]:bg-primary-solid group-aria-[selected=true]:text-primary-on-solid group-focus-visible:ring-2 group-focus-visible:ring-primary-solid [&_[data-plume-tree-chevron]]:group-aria-[expanded=true]:rotate-90"
-      style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}
-    >
-      src
-    </TreeItemLabel>
+  <TreeItem value="src">
+    <TreeItemRow className="group outline-hidden">
+      <TreeItemLabel
+        className="flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-3 hover:bg-surface-muted group-aria-[selected=true]:bg-primary-solid group-aria-[selected=true]:text-primary-on-solid group-focus-visible:ring-2 group-focus-visible:ring-primary-solid [&_[data-plume-tree-item-chevron]]:group-aria-[expanded=true]:rotate-90"
+        style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}
+      >
+        src
+      </TreeItemLabel>
+    </TreeItemRow>
     <TreeItemGroup>
-      <TreeItem className="group outline-hidden" value="index">
-        <TreeItemLabel className="..." style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}>index.ts</TreeItemLabel>
+      <TreeItem value="index">
+        <TreeItemRow className="group outline-hidden">
+          <TreeItemLabel className="..." style={{ paddingInlineStart: "calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)" }}>index.ts</TreeItemLabel>
+        </TreeItemRow>
       </TreeItem>
     </TreeItemGroup>
   </TreeItem>
@@ -960,7 +1026,7 @@ export const Tailwind: Story = {
   },
   render: () => {
     const row =
-      'flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-3 hover:bg-surface-muted group-aria-[selected=true]:bg-primary-solid group-aria-[selected=true]:text-primary-on-solid group-focus-visible:ring-2 group-focus-visible:ring-primary-solid [&_[data-plume-tree-chevron]]:group-aria-[expanded=true]:rotate-90'
+      'flex cursor-pointer items-center gap-2 rounded-md py-1.5 pr-3 hover:bg-surface-muted group-aria-[selected=true]:bg-primary-solid group-aria-[selected=true]:text-primary-on-solid group-focus-visible:ring-2 group-focus-visible:ring-primary-solid [&_[data-plume-tree-item-chevron]]:group-aria-[expanded=true]:rotate-90'
     const indent = { paddingInlineStart: 'calc(0.75rem + (var(--tree-level) - 1) * 1.25rem)' }
     return (
       <Tree
@@ -971,27 +1037,35 @@ export const Tailwind: Story = {
         style={frame}
         variant="unstyled"
       >
-        <TreeItem className="group outline-hidden" value="src">
-          <TreeItemLabel className={row} style={indent}>
-            src
-          </TreeItemLabel>
+        <TreeItem value="src">
+          <TreeItemRow className="group outline-hidden">
+            <TreeItemLabel className={row} style={indent}>
+              src
+            </TreeItemLabel>
+          </TreeItemRow>
           <TreeItemGroup>
-            <TreeItem className="group outline-hidden" value="index">
-              <TreeItemLabel className={row} style={indent}>
-                index.ts
-              </TreeItemLabel>
+            <TreeItem value="index">
+              <TreeItemRow className="group outline-hidden">
+                <TreeItemLabel className={row} style={indent}>
+                  index.ts
+                </TreeItemLabel>
+              </TreeItemRow>
             </TreeItem>
-            <TreeItem className="group outline-hidden" value="tree">
-              <TreeItemLabel className={row} style={indent}>
-                tree.tsx
-              </TreeItemLabel>
+            <TreeItem value="tree">
+              <TreeItemRow className="group outline-hidden">
+                <TreeItemLabel className={row} style={indent}>
+                  tree.tsx
+                </TreeItemLabel>
+              </TreeItemRow>
             </TreeItem>
           </TreeItemGroup>
         </TreeItem>
-        <TreeItem className="group outline-hidden" value="readme">
-          <TreeItemLabel className={row} style={indent}>
-            README.md
-          </TreeItemLabel>
+        <TreeItem value="readme">
+          <TreeItemRow className="group outline-hidden">
+            <TreeItemLabel className={row} style={indent}>
+              README.md
+            </TreeItemLabel>
+          </TreeItemRow>
         </TreeItem>
       </Tree>
     )
@@ -1007,7 +1081,7 @@ export const Bootstrap: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<style>{'.bs-tree [role="treeitem"]{outline:0}.bs-tree [aria-selected="true"]>span{background-color:var(--bs-primary);color:#fff}.bs-tree [aria-expanded="true"]>span [data-plume-tree-chevron]{transform:rotate(90deg)}.bs-tree [role="treeitem"]:focus-visible>span{outline:2px solid var(--bs-primary);outline-offset:-2px}'}</style>
+        code: `<style>{'.bs-tree [role="treeitem"]{outline:0}.bs-tree [aria-selected="true"]>span{background-color:var(--bs-primary);color:#fff}.bs-tree [aria-expanded="true"]>span [data-plume-tree-item-chevron]{transform:rotate(90deg)}.bs-tree [role="treeitem"]:focus-visible>span{outline:2px solid var(--bs-primary);outline-offset:-2px}'}</style>
 <Tree aria-label="Project files" className="bs-tree" defaultExpanded={["src"]} variant="unstyled">
   <TreeItem value="src">
     <TreeItemLabel className="d-flex align-items-center gap-2 rounded pe-3 py-2">src</TreeItemLabel>
@@ -1028,7 +1102,7 @@ export const Bootstrap: Story = {
       <>
         <style>
           {
-            '.bs-tree [role="treeitem"]{outline:0}.bs-tree [aria-selected="true"]>span{background-color:var(--bs-primary);color:#fff}.bs-tree [aria-expanded="true"]>span [data-plume-tree-chevron]{transform:rotate(90deg)}.bs-tree [role="treeitem"]:focus-visible>span{outline:2px solid var(--bs-primary);outline-offset:-2px}'
+            '.bs-tree [role="treeitem"]{outline:0}.bs-tree [aria-selected="true"]>span{background-color:var(--bs-primary);color:#fff}.bs-tree [aria-expanded="true"]>span [data-plume-tree-item-chevron]{transform:rotate(90deg)}.bs-tree [role="treeitem"]:focus-visible>span{outline:2px solid var(--bs-primary);outline-offset:-2px}'
           }
         </style>
         <Tree

@@ -29,7 +29,6 @@ export const PinInputCell = forwardRef<HTMLInputElement, PinInputCellProps>(
       'aria-label': ariaLabel,
       autoComplete,
       className,
-      id,
       index,
       inputMode,
       placeholder,
@@ -54,7 +53,6 @@ export const PinInputCell = forwardRef<HTMLInputElement, PinInputCellProps>(
         data-invalid={context.invalid ? '' : undefined}
         data-plume-pininput-cell=""
         disabled={context.disabled}
-        id={id ?? (index === 0 ? context.id : undefined)}
         inputMode={inputMode ?? (context.type === 'numeric' ? 'numeric' : 'text')}
         onChange={(event) => pin.onChange(index, event.target.value)}
         onFocus={(event) => event.target.select()}

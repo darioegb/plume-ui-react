@@ -125,6 +125,10 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
           isStyled && isInvalid && styles.invalid,
           className,
         )}
+        data-disabled={isDisabled ? '' : undefined}
+        data-invalid={isInvalid ? '' : undefined}
+        data-plume-radio=""
+        data-readonly={isReadOnly ? '' : undefined}
         disabled={isDisabled}
         onChange={onChange || group ? handleChange : undefined}
         onClick={preventWhenReadOnly}

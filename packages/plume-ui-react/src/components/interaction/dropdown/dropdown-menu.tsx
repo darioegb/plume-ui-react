@@ -3,6 +3,7 @@
 import type { ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
 import { forwardRef, useEffect } from 'react'
 import { Portal, useFocusTrap } from '../../../overlay'
+import { joinClasses } from '../../../overlay/class-names'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { mergeRefs } from '../../../overlay/trigger'
 import { isTypeaheadKey, matchTypeahead, useTypeahead } from '../../../overlay/use-typeahead'
@@ -28,7 +29,7 @@ const focusItem = (item: HTMLElement | undefined): void => item?.focus({ prevent
 /** The menu. It is named after the trigger unless you give it a name. */
 export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
   (
-    { children, className = '', style, ...rest }: DropdownMenuProps,
+    { children, className, style, ...rest }: DropdownMenuProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const context = useDropdownContext('DropdownMenu')
@@ -89,14 +90,12 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       focusItem(items[next])
     }
 
-    const classes = [
+    const classes = joinClasses(
       isStyled && styles.menu,
       isStyled && styles[context.size],
       isStyled && styles[context.variant],
       className,
-    ]
-      .filter(Boolean)
-      .join(' ')
+    )
 
     return (
       <Portal>
@@ -106,8 +105,9 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
           }
           {...rest}
           className={classes}
+          data-open=""
           data-placement={position.placement}
-          data-plume-menu=""
+          data-plume-dropdown-menu=""
           id={menuId}
           onKeyDown={handleKeyDown}
           ref={mergeRefs<HTMLDivElement>(setPanel, ref)}

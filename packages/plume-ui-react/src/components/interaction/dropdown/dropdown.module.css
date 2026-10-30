@@ -1,15 +1,15 @@
-:global(:where([data-plume-menu])) {
+:global(:where([data-plume-dropdown-menu])) {
   max-height: var(--plume-available-height, none);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
-:global(:where([data-plume-menu-item-label])) {
+:global(:where([data-plume-dropdown-item-label])) {
   flex: 1 1 auto;
   min-width: 0;
 }
 
-:global(:where([data-plume-menu-item])) {
+:global(:where([data-plume-dropdown-item])) {
   align-items: center;
   background: transparent;
   border: 0;

@@ -41,11 +41,11 @@ describe('DropdownItem parts', () => {
     )
     await open()
     const item = screen.getByRole('menuitem')
-    expect(item.querySelector('[data-plume-menu-item-icon]')).toContainElement(
+    expect(item.querySelector('[data-plume-dropdown-item-icon]')).toContainElement(
       screen.getByTestId('icon'),
     )
-    expect(item.querySelector('[data-plume-menu-item-label]')).toHaveTextContent('Profile')
-    expect(item.querySelector('[data-plume-menu-item-shortcut]')).toHaveTextContent('⌘P')
+    expect(item.querySelector('[data-plume-dropdown-item-label]')).toHaveTextContent('Profile')
+    expect(item.querySelector('[data-plume-dropdown-item-shortcut]')).toHaveTextContent('⌘P')
   })
 
   it('renders the parts the way they are written', async () => {
@@ -82,8 +82,8 @@ describe('DropdownItem parts', () => {
     )
     await open()
     const item = screen.getByRole('menuitem')
-    expect(item.querySelector('[data-plume-menu-item-icon]')).toBeNull()
-    expect(item.querySelector('[data-plume-menu-item-shortcut]')).toBeNull()
+    expect(item.querySelector('[data-plume-dropdown-item-icon]')).toBeNull()
+    expect(item.querySelector('[data-plume-dropdown-item-shortcut]')).toBeNull()
   })
 
   it('renders nothing for an icon or a shortcut without children', async () => {
@@ -98,8 +98,8 @@ describe('DropdownItem parts', () => {
     )
     await open()
     const item = screen.getByRole('menuitem')
-    expect(item.querySelector('[data-plume-menu-item-icon]')).toBeNull()
-    expect(item.querySelector('[data-plume-menu-item-shortcut]')).toBeNull()
+    expect(item.querySelector('[data-plume-dropdown-item-icon]')).toBeNull()
+    expect(item.querySelector('[data-plume-dropdown-item-shortcut]')).toBeNull()
   })
 
   it('forwards the ref and the style of every part', async () => {

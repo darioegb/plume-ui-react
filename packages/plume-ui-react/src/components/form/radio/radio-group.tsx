@@ -2,6 +2,7 @@
 
 import type { ChangeEvent, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useId, useMemo, useState } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
 import { useFieldContext } from '../field/field-context'
 import type { RadioVariant } from './radio'
@@ -45,7 +46,7 @@ export interface RadioGroupOwnProps {
   /** Value of the selected radio, for a controlled group. Pair it with `onValueChange`. */
   value?: string
   /**
-   * Visual variant of the radios of the group.
+   * Visual variant of the radios of the group. `unstyled` also drops the layout of the group.
    * @default 'solid'
    */
   variant?: RadioVariant
@@ -70,7 +71,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   (
     {
       children,
-      className = '',
+      className,
       colorScheme,
       defaultValue,
       disabled = false,
@@ -139,7 +140,16 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           aria-labelledby={labelledBy}
           aria-readonly={readOnly || undefined}
           aria-required={required || undefined}
-          className={`${styles.group} ${styles[orientation]} ${className}`.trim()}
+          className={joinClasses(
+            variant !== 'unstyled' && styles.group,
+            variant !== 'unstyled' && styles[orientation],
+            className,
+          )}
+          data-disabled={disabled ? '' : undefined}
+          data-invalid={isInvalid ? '' : undefined}
+          data-orientation={orientation}
+          data-plume-radiogroup=""
+          data-readonly={readOnly ? '' : undefined}
           ref={ref}
           role="radiogroup"
           style={style}

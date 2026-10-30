@@ -10,6 +10,7 @@ export type SelectVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 export interface SelectLabels {
   clear: string
   empty: ReactNode
+  overflow: (hidden: number) => string
   remove: (label: string) => string
   search: string
 }

@@ -1,4 +1,5 @@
 export { TimePicker, type TimePickerOwnProps, type TimePickerProps } from './timepicker'
+export { TimePickerFormatHint, type TimePickerFormatHintProps } from './timepicker-format-hint'
 export { TimePickerHours, type TimePickerHoursProps } from './timepicker-hours'
 export {
   TimePickerInput,
@@ -24,4 +25,4 @@ export {
   type TimePickerTriggerOwnProps,
   type TimePickerTriggerProps,
 } from './timepicker-trigger'
-export type { TimePickerLabels } from './timepicker-types'
+export type { TimePickerLabels, TimePickerVariant } from './timepicker-types'

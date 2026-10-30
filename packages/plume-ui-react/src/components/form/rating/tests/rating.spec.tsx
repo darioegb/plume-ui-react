@@ -78,6 +78,30 @@ describe('Rating component', () => {
       expect(screen.getByRole('radiogroup')).toHaveClass('rating', 'md', 'interactive')
     })
 
+    it('draws the chosen stars as an outline with the outline variant', () => {
+      render(<Rating aria-label="Rating" defaultValue={1} max={2} variant="outline" />)
+      expect(screen.getByRole('radiogroup')).toHaveClass('rating', 'outline')
+      const filled = document.querySelector('[data-plume-rating-filled] svg')
+      const empty = document.querySelector('[data-plume-rating-empty] svg')
+      expect(filled).toHaveAttribute('fill', 'none')
+      expect(filled).toHaveAttribute('stroke-width', '2')
+      expect(empty).toHaveAttribute('stroke-width', '1.5')
+    })
+
+    it('keeps a custom icon with the outline variant', () => {
+      render(<Rating aria-label="Rating" icon={<b>♥</b>} max={1} variant="outline" />)
+      expect(screen.getAllByText('♥')).toHaveLength(2)
+    })
+
+    it('fills the chosen stars with the solid variant', () => {
+      render(<Rating aria-label="Rating" defaultValue={1} max={1} />)
+      expect(screen.getByRole('radiogroup')).not.toHaveClass('outline')
+      expect(document.querySelector('[data-plume-rating-filled] svg')).toHaveAttribute(
+        'fill',
+        'currentColor',
+      )
+    })
+
     it.each(['sm', 'md', 'lg'] as const)('supports the %s size', (size) => {
       render(<Rating aria-label="Rating" size={size} />)
       expect(screen.getByRole('radiogroup')).toHaveClass(size)
@@ -97,7 +121,7 @@ describe('Rating component', () => {
     })
 
     it('forwards the ref and the attributes', () => {
-      const ref = createRef<HTMLElement>()
+      const ref = createRef<HTMLFieldSetElement>()
       render(
         <Rating aria-describedby="hint" aria-label="Rating" id="stars" ref={ref} title="Stars" />,
       )
@@ -335,10 +359,51 @@ describe('Rating component', () => {
     })
 
     it('keeps the className, the ref and the id', () => {
-      const ref = createRef<HTMLElement>()
+      const ref = createRef<HTMLFieldSetElement>()
       render(<Rating className="mine" id="stars" readOnly ref={ref} value={2} />)
       expect(ref.current).toHaveClass('rating', 'mine')
       expect(ref.current).toHaveAttribute('id', 'stars')
+    })
+
+    it('is the same fieldset as the interactive one, as a named group', () => {
+      const ref = createRef<HTMLFieldSetElement>()
+      render(
+        <Rating
+          aria-describedby="hint"
+          aria-invalid
+          aria-label="Average"
+          readOnly
+          ref={ref}
+          required
+          value={2}
+        />,
+      )
+      const group = screen.getByRole('group', { name: 'Average' })
+      expect(ref.current).toBe(group)
+      expect(group.tagName).toBe('FIELDSET')
+      expect(group).toHaveAttribute('aria-describedby', 'hint')
+      expect(group).toHaveAttribute('aria-invalid', 'true')
+      expect(group).toHaveAttribute('data-readonly')
+      expect(group).toHaveAttribute('data-invalid')
+      expect(group).not.toHaveAttribute('aria-required')
+      expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()
+    })
+
+    it('is named by a Field', () => {
+      render(
+        <Field helperText="From 128 reviews" label="Average rating" readOnly>
+          <Rating value={4} />
+        </Field>,
+      )
+      const group = screen.getByRole('group', { name: 'Average rating' })
+      expect(group).toHaveAccessibleDescription('From 128 reviews')
+      expect(group).toHaveTextContent('4 out of 5')
+    })
+
+    it('does not clear the hover when the pointer leaves', () => {
+      render(<Rating aria-label="Rating" readOnly value={2} />)
+      fireEvent.pointerLeave(screen.getByRole('group'))
+      expect(states()).toEqual(['full', 'full', 'empty', 'empty', 'empty'])
     })
   })
 
@@ -346,6 +411,7 @@ describe('Rating component', () => {
     it('disables the group and the radios', () => {
       render(<Rating aria-label="Rating" disabled />)
       expect(screen.getByRole('radiogroup')).toBeDisabled()
+      expect(screen.getByRole('radiogroup')).toHaveAttribute('data-disabled')
       radios().forEach((radio) => expect(radio).toBeDisabled())
       expect(screen.getByRole('radiogroup')).toHaveClass('disabled')
       expect(screen.getByRole('radiogroup')).not.toHaveClass('interactive')

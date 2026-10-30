@@ -113,7 +113,7 @@ describe('Button component', () => {
     const { getByText } = render(<Button colorScheme="primary" busy label="Busy Button" />)
     const buttonElement = getByText('Busy Button')
     expect(buttonElement).toBeInTheDocument()
-    expect(buttonElement).toHaveClass('hidden')
+    expect(buttonElement).toHaveAttribute('data-hidden')
   })
 
   it('passes the contrast color to the busy spinner', () => {
@@ -185,13 +185,9 @@ describe('Button component', () => {
   })
 
   it('renders unstyled button', () => {
-    const { getByText } = render(<Button label="Click me" variant="unstyled" />)
-    const button = getByText('Click me')
+    const { getByRole } = render(<Button disabled label="Click me" variant="unstyled" />)
 
-    expect(button).toBeInTheDocument()
-    expect(button).not.toHaveClass('rounded')
-    expect(button).not.toHaveClass('solid')
-    expect(button).not.toHaveClass('disabled')
+    expect(getByRole('button')).not.toHaveAttribute('class')
   })
 
   it('renders link button', () => {

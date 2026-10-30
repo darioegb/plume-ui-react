@@ -11,14 +11,17 @@ export {
 export { DatePickerField, type DatePickerFieldProps } from './datepicker-field'
 export {
   DatePickerDay,
+  DatePickerDayNumber,
   DatePickerGrid,
   DatePickerWeekday,
   DatePickerWeekdays,
+  type DatePickerDayNumberProps,
   type DatePickerDayProps,
   type DatePickerGridProps,
   type DatePickerWeekdayProps,
   type DatePickerWeekdaysProps,
 } from './datepicker-days'
+export { DatePickerFormatHint, type DatePickerFormatHintProps } from './datepicker-format-hint'
 export {
   DatePickerHeader,
   DatePickerMonthButton,
@@ -50,7 +53,11 @@ export {
   type DatePickerYearOptionProps,
   type DatePickerYearsProps,
 } from './datepicker-months'
-export { DatePickerPage, type DatePickerPageProps } from './datepicker-page'
+export {
+  DatePickerPage,
+  type DatePickerPageOwnProps,
+  type DatePickerPageProps,
+} from './datepicker-page'
 export { DatePickerPages, type DatePickerPagesProps } from './datepicker-pages'
 export { DatePickerTrigger, type DatePickerTriggerProps } from './datepicker-trigger'
 export { DatePickerView, type DatePickerViewProps } from './datepicker-view'

@@ -74,7 +74,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
           <div
             className={joinClasses(isStyled && styles.panel, className)}
             data-placement={position.placement}
-            data-plume-select-panel=""
+            data-plume-select-content=""
             hidden={!open}
             ref={mergeRefs<HTMLDivElement>(setPanel, ref)}
             style={{

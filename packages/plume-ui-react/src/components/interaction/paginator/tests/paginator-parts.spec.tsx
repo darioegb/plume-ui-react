@@ -97,6 +97,7 @@ describe('Paginator parts', () => {
     )
     expect(attr('page')[0]).toHaveTextContent('#1')
     expect(attr('ellipsis')[0]).toHaveTextContent('~')
+    expect(attr('ellipsis')[0]).toHaveAttribute('aria-hidden', 'true')
     expect(attr('item')[0]).toHaveClass('entry-0')
   })
 

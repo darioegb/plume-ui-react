@@ -29,6 +29,7 @@ export interface NumberInputContextProps {
   labels: NumberInputLabels
   max: number | undefined
   min: number | undefined
+  name: string | undefined
   number: NumberInputState
   precision: number | undefined
   readOnly: boolean

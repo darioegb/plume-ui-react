@@ -1,0 +1,5 @@
+---
+'plume-ui-react': minor
+---
+
+Tree follows the parts contract. **Breaking:** `TreeItem` sends its `className`, `style`, `ref`, `id`, `title` and `hidden` to its outermost element (`data-plume-tree-item`, which wraps the row and its group) instead of the `role="treeitem"` element. The `treeitem` is a new part, `TreeItemRow` (`data-plume-tree-item-row`), which the item renders around its other children; write it yourself to give the `treeitem` a class or a ref (`aria-label` of the `TreeItem` still names it). Its Plume class is now `row` instead of `item`. **Breaking for CSS that targets the parts:** `data-plume-tree-label`, `-chevron`, `-checkbox` and `-icon` are renamed to `data-plume-tree-item-label`, `-chevron`, `-checkbox` and `-icon`, `data-plume-tree-node` is gone (the outer element now has `data-plume-tree-item`, which was on the `treeitem`), and `TreeItemGroup` gets `data-plume-tree-item-group`. The item and its row have `data-disabled` next to `data-selected`, `data-expanded` and `data-checked`. A new `outline` variant draws a border around the selected row.

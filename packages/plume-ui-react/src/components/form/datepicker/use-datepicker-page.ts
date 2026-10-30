@@ -17,8 +17,7 @@ import {
   type DatePickerDayData,
 } from './calendar-utils'
 import type { DatePickerPageContextProps, DatePickerViewName } from './datepicker-page-context'
-import { useDatePicker } from './use-datepicker'
-import styles from './datepicker.module.css'
+import { useDatePickerContext } from './datepicker-context'
 
 const formatKey = (date: Date): string => formatDate(date, DATA_DATE_FORMAT)
 
@@ -37,7 +36,7 @@ export function useDatePickerPage(
     onSecondYearChange,
     onSelectDate,
     state,
-  } = useDatePicker('DatePickerPage')
+  } = useDatePickerContext('DatePickerPage')
   const year = second ? state.secondYear : state.year
   const month = second ? state.secondMonth : state.month
   const onMonthChange = second ? onSecondMonthChange : onFirstMonthChange
@@ -100,31 +99,26 @@ export function useDatePickerPage(
   const hover = useCallback(
     (dataDate: string): void => {
       const scope = calendarRef.current?.closest('[role="dialog"]') ?? document
-      const buttons = scope.querySelectorAll<HTMLButtonElement>(`.${styles.day}:enabled`)
+      const buttons = scope.querySelectorAll<HTMLButtonElement>(
+        '[data-plume-datepicker-day]:enabled',
+      )
       const hoveredIndex = Array.from(buttons).findIndex(
         (button) => button.dataset.date === dataDate,
       )
       const selectedButton = scope.querySelector<HTMLButtonElement>(
-        `.${styles.day}.${styles.selected}`,
+        '[data-plume-datepicker-day][data-selected]',
       )
       const isRangeAndStartSelected = isRange && startDate && !endDate && selectedButton
+      const selectedIndex = selectedButton ? Array.from(buttons).indexOf(selectedButton) : -1
+      const [first, last] = [
+        Math.min(selectedIndex, hoveredIndex),
+        Math.max(selectedIndex, hoveredIndex),
+      ]
 
       buttons.forEach((button, index) => {
-        const isSelected = button.classList.contains(styles.selected)
-        const isHovered = index === hoveredIndex
-
+        button.toggleAttribute('data-hovered', index === hoveredIndex)
         if (isRangeAndStartSelected) {
-          const selectedIndex = Array.from(buttons).indexOf(selectedButton)
-          const [first, last] = [
-            Math.min(selectedIndex, hoveredIndex),
-            Math.max(selectedIndex, hoveredIndex),
-          ]
-
-          button.classList.toggle(styles.rangeItem, index >= first && index <= last)
-          button.classList.toggle(styles.selectedHover, isHovered)
-        } else {
-          button.classList.toggle(styles.selectedHover, isSelected && isHovered)
-          button.classList.toggle(styles.hovered, !isSelected && isHovered)
+          button.toggleAttribute('data-preview', index >= first && index <= last)
         }
       })
     },

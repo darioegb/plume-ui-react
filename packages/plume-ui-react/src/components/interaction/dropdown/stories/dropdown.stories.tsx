@@ -226,6 +226,41 @@ export const Variants: Story = {
  * Use the **size** prop to change the text and the padding of the items.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <Dropdown size="sm">
+    <DropdownTrigger>
+      <Button label="Size sm" size="sm" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown size="md">
+    <DropdownTrigger>
+      <Button label="Size md" size="md" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown size="lg">
+    <DropdownTrigger>
+      <Button label="Size lg" size="lg" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu>
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -248,7 +283,42 @@ export const Sizes: Story = {
  * the end of the trigger). When there is no room, it flips to the opposite side.
  */
 export const Placements: Story = {
-  parameters: { docs: { story: { inline: false, iframeHeight: 460 } } },
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 sm:gap-4 sm:p-12">
+  <Dropdown placement="top-start">
+    <DropdownTrigger>
+      <Button label="top-start" size="sm" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu aria-label="top-start">
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown placement="right">
+    <DropdownTrigger>
+      <Button label="right" size="sm" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu aria-label="right">
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+  <Dropdown placement="bottom-end">
+    <DropdownTrigger>
+      <Button label="bottom-end" size="sm" variant="outline" />
+    </DropdownTrigger>
+    <DropdownMenu aria-label="bottom-end">
+      <DropdownItem>Profile</DropdownItem>
+      <DropdownItem>Settings</DropdownItem>
+    </DropdownMenu>
+  </Dropdown>
+</div>`,
+      },
+      story: { inline: false, iframeHeight: 460 },
+    },
+  },
   render: () => (
     <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 sm:gap-4 sm:p-12">
       {placements.map((placement) => (
@@ -434,7 +504,7 @@ export const Compound: Story = {
 }
 
 /**
- * Some examples of Dropdown with Tailwind classes. With `variant="unstyled"` the menu, its items, separators and labels have only the classes you give them. An item is a `button` (or an `a` with `href`), and the one the arrows reach has the focus, so `focus:` styles it.
+ * Some examples of Dropdown with Tailwind classes. With `variant="unstyled"` the menu, its items, separators and labels have only the classes you give them. An item is a `button` (or an `a` with `href`), and the one the arrows reach has the focus, so `focus:` styles it. Every part carries a `data-plume-dropdown-*` attribute (`data-plume-dropdown-trigger`, `-menu`, `-item`, `-item-icon`, `-item-label`, `-item-shortcut`, `-label` and `-separator`), the trigger and the menu have `data-open` while the menu is open and a disabled item has `data-disabled`.
  */
 export const Tailwind: Story = {
   parameters: {

@@ -4,8 +4,8 @@ import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
-import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ComponentProps } from '../../../theme'
+import { SelectChipsSummary } from './select-chips-summary'
 import { useSelectContext } from './select-context'
 import { SelectPlaceholder } from './select-placeholder'
 import { useSelectTriggerContext } from './select-trigger-context'
@@ -35,7 +35,6 @@ export const SelectCombobox = forwardRef<HTMLButtonElement, SelectComboboxProps>
     const hasValue = context.selected.length > 0
     const resolvedPlaceholder = placeholder ?? trigger.placeholder
     const showChips = context.multiple && trigger.display === 'chips' && children === undefined
-    const chipLabels = context.selectedOptions.map((option) => option.label).join(', ')
     const mergedRef = useMemo(
       () => mergeRefs<HTMLButtonElement>(trigger.buttonRef, ref),
       [trigger.buttonRef, ref],
@@ -68,7 +67,7 @@ export const SelectCombobox = forwardRef<HTMLButtonElement, SelectComboboxProps>
         {showChips ? (
           <>
             {hasValue ? null : <SelectPlaceholder>{resolvedPlaceholder}</SelectPlaceholder>}
-            {hasValue ? <span style={visuallyHidden}>{chipLabels}</span> : null}
+            <SelectChipsSummary />
           </>
         ) : (
           (children ?? <SelectValue placeholder={resolvedPlaceholder} />)

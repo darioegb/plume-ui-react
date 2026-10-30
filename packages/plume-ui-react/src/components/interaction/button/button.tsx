@@ -3,19 +3,23 @@
 import type {
   ButtonHTMLAttributes,
   CSSProperties,
+  ElementType,
   ForwardedRef,
   MouseEvent,
   ReactNode,
 } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { useLabels } from '../../../locale/locale-provider'
+import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { Spinner } from '../../presentation/spinner'
+import { ButtonContext, type ButtonLabels } from './button-context'
+import { ButtonIcon } from './button-icon'
+import { ButtonLabel } from './button-label'
+import { ButtonSpinner } from './button-spinner'
 import styles from './button.module.css'
 
-export interface ButtonLabels {
-  busy: string
-}
+export type { ButtonLabels } from './button-context'
 
 export interface ButtonOwnProps {
   /**
@@ -42,7 +46,11 @@ export interface ButtonOwnProps {
    * @default false
    */
   busy?: boolean
-  /** Text of the Button. When `children` are also set, they render after the label. */
+  /**
+   * Text of the Button. When `children` are also set, they render after the label, unless they
+   * hold Button parts (`ButtonIcon`, `ButtonLabel`, `ButtonSpinner`): then they replace the default
+   * composition.
+   */
   label?: string
   /**
    * The texts the Button adds, to translate them: `busy` is the accessible name of the spinner
@@ -69,7 +77,7 @@ export interface ButtonOwnProps {
   variant?: ButtonVariant
 }
 
-type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'ghost' | 'unstyled'
+export type ButtonVariant = 'solid' | 'outline' | 'link' | 'icon' | 'ghost' | 'unstyled'
 type ButtonRootAttributes = Pick<
   ButtonHTMLAttributes<HTMLButtonElement>,
   | 'aria-current'
@@ -92,7 +100,7 @@ type ButtonRootAttributes = Pick<
   | 'type'
 >
 
-export type ButtonProps = ComponentProps & ButtonRootAttributes & ButtonOwnProps
+export type ButtonProps = Omit<ComponentProps, 'index'> & ButtonRootAttributes & ButtonOwnProps
 
 const DEFAULT_LABELS: ButtonLabels = { busy: 'Loading' }
 
@@ -103,42 +111,7 @@ const ignoreClick = (event: MouseEvent<HTMLButtonElement>): void => {
   event.nativeEvent.stopImmediatePropagation()
 }
 
-const renderContent = (
-  busyText: string,
-  isBusy: boolean,
-  iconLeft?: ReactNode,
-  iconRight?: ReactNode,
-  isUnstyled?: boolean,
-  label?: string,
-): ReactNode => {
-  const iconMarginClass = isUnstyled ? styles.iconMarginNone : styles.iconMargin
-  const contentClass = isBusy && !busyText ? styles.hidden : iconMarginClass
-  const text = isBusy && busyText ? busyText : label
-
-  return (
-    <>
-      {iconLeft ? <span className={iconMarginClass}>{iconLeft}</span> : null}
-      {text ? <span className={contentClass}>{text}</span> : null}
-      {iconRight ? <span className={iconMarginClass}>{iconRight}</span> : null}
-    </>
-  )
-}
-
-const generateButtonClasses = (
-  variant: string,
-  className: string,
-  disabled: boolean,
-  isBusy: boolean,
-  size: Size,
-  shape: Shape,
-): string => {
-  const disabledClass = disabled || isBusy ? styles.disabled : ''
-  const shapeClass = variant !== 'unstyled' ? styles[shape] : ''
-  const sizeClass = variant !== 'unstyled' ? styles[size] : ''
-  const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-  return `${sizeClass} ${shapeClass} ${variantClass} 
-    ${disabledClass} ${className}`.trim()
-}
+const BUTTON_PARTS: readonly ElementType[] = [ButtonIcon, ButtonLabel, ButtonSpinner]
 
 const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
   ({
@@ -154,6 +127,22 @@ const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
     '--button-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
   }) as CSSProperties
 
+function buttonContent(
+  children: ReactNode,
+  { iconLeft, iconRight, label }: Pick<ButtonOwnProps, 'iconLeft' | 'iconRight' | 'label'>,
+): ReactNode {
+  if (hasPart(children, BUTTON_PARTS)) return children
+  return (
+    <>
+      {iconLeft ? <ButtonIcon>{iconLeft}</ButtonIcon> : null}
+      {label ? <ButtonLabel>{label}</ButtonLabel> : null}
+      {iconRight ? <ButtonIcon>{iconRight}</ButtonIcon> : null}
+      {children}
+      <ButtonSpinner />
+    </>
+  )
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -165,7 +154,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       style,
       busyText = '',
       className = '',
-      colorScheme ='secondary',
+      colorScheme = 'secondary',
       disabled = false,
       busy: isBusy = false,
       shape = 'rounded',
@@ -177,31 +166,38 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref: ForwardedRef<HTMLButtonElement>,
   ) => {
     const text = useLabels('button', DEFAULT_LABELS, labels)
-    const buttonClasses = generateButtonClasses(variant, className, disabled, isBusy, size, shape)
+    const isStyled = variant !== 'unstyled'
+    const context = useMemo(
+      () => ({ busy: isBusy, busyText, isStyled, labels: text }),
+      [busyText, isBusy, isStyled, text],
+    )
+    const classes = joinClasses(
+      isStyled && styles[size],
+      isStyled && styles[shape],
+      isStyled && styles[variant],
+      isStyled && (disabled || isBusy) && styles.disabled,
+      className,
+    )
 
     return (
-      <button
-        aria-busy={isBusy || undefined}
-        aria-disabled={isBusy && !disabled ? true : undefined}
-        className={buttonClasses}
-        disabled={disabled}
-        ref={ref}
-        style={{ ...buttonColorVars(colorScheme), ...style }}
-        type={type}
-        {...rest}
-        onClick={isBusy ? ignoreClick : rest.onClick}
-      >
-        {renderContent(busyText, isBusy, iconLeft, iconRight, variant === 'unstyled', label)}
-        {children}
-        {isBusy ? (
-          <Spinner
-            aria-label={text.busy}
-            style={{ '--spinner-scheme': 'var(--button-contrast-color)' } as CSSProperties}
-            {...(busyText && { className: styles.spinnerMargin })}
-            size='sm'
-          />
-        ) : null}
-      </button>
+      <ButtonContext.Provider value={context}>
+        <button
+          aria-busy={isBusy || undefined}
+          aria-disabled={isBusy && !disabled ? true : undefined}
+          className={classes}
+          data-busy={isBusy ? '' : undefined}
+          data-disabled={disabled || isBusy ? '' : undefined}
+          data-plume-button=""
+          disabled={disabled}
+          ref={ref}
+          style={{ ...buttonColorVars(colorScheme), ...style }}
+          type={type}
+          {...rest}
+          onClick={isBusy ? ignoreClick : rest.onClick}
+        >
+          {buttonContent(children, { iconLeft, iconRight, label })}
+        </button>
+      </ButtonContext.Provider>
     )
   },
 )

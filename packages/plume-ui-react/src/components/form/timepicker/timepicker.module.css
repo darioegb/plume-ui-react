@@ -1,23 +1,30 @@
-.timePicker {
+:global(:where([data-plume-timepicker])) {
   position: relative;
+}
+
+:global(:where([data-plume-timepicker-panel])) {
+  display: flex;
+  max-width: calc(100vw - var(--plume-space-4));
+  z-index: var(--plume-z-dropdown);
+}
+
+:global(:where([data-plume-timepicker-panel][data-inline])) {
+  max-width: 100%;
+  position: relative;
+  width: fit-content;
 }
 
 .panel {
   --timepicker-fill: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), transparent);
-  display: flex;
   gap: var(--plume-space-1);
   margin: 0;
-  max-width: calc(100vw - var(--plume-space-4));
   padding: var(--plume-space-2);
   position: absolute;
-  z-index: var(--plume-z-dropdown);
 }
 
 .inline {
   margin-top: 0;
-  max-width: 100%;
   position: relative;
-  width: fit-content;
 }
 
 .column {

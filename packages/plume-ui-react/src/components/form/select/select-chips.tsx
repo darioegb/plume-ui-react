@@ -13,11 +13,14 @@ export interface SelectChipsProps {
    */
   children?: (option: SelectedOption) => ReactNode
   /**
-   * How many chips to show before the `+N` one. It defaults to the `maxDisplay` of the
-   * `SelectTrigger`.
+   * How many chips to show before the one that counts the rest (`+N`). It defaults to the
+   * `maxDisplay` of the `SelectTrigger`.
    */
   maxDisplay?: number
-  /** A function of the number of hidden chips that returns the `+N` chip. */
+  /**
+   * A function of the number of hidden chips that returns the chip that counts them. By default it
+   * is a `SelectChip` with the `overflow` label.
+   */
   overflow?: (hidden: number) => ReactNode
 }
 
@@ -40,7 +43,9 @@ export function SelectChips({
           {children ? children(option) : <SelectChip option={option} />}
         </Fragment>
       ))}
-      {hidden > 0 ? (overflow?.(hidden) ?? <SelectChip>+{hidden}</SelectChip>) : null}
+      {hidden > 0
+        ? (overflow?.(hidden) ?? <SelectChip>{context.labels.overflow(hidden)}</SelectChip>)
+        : null}
     </>
   )
 }

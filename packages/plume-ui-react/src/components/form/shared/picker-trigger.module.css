@@ -9,11 +9,14 @@ button.trigger {
   width: auto;
 }
 
-button.floating {
-  height: 2rem;
-  inset-block-start: 50%;
-  inset-inline-end: var(--plume-space-2);
-  margin: 0;
-  position: absolute;
-  transform: translateY(-50%);
+:global(:where([data-plume-datepicker-trigger], [data-plume-timepicker-trigger])) {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+  padding: 0;
 }

@@ -63,8 +63,9 @@ interface SelectBaseProps {
   /**
    * The texts of the select, for other languages: `clear` is the accessible name of the clear
    * button (`Clear`), `remove(label)` the name of the button that removes a chip (`Remove Apple`),
-   * `search` the name of the search box (`Search`) and `empty` what shows when the search finds
-   * nothing (`No results`).
+   * `overflow(hidden)` the text of the chip that counts the hidden ones (`+2`), `search` the name
+   * of the search box (`Search`) and `empty` what shows when the search finds nothing
+   * (`No results`).
    */
   labels?: Partial<SelectLabels>
   /**
@@ -175,6 +176,7 @@ interface SelectMultipleProps {
 const DEFAULT_LABELS: SelectLabels = {
   clear: 'Clear',
   empty: 'No results',
+  overflow: (hidden) => `+${hidden}`,
   remove: (label) => `Remove ${label}`,
   search: 'Search',
 }
@@ -246,10 +248,11 @@ export function Select({
     () => ({
       clear: merged.clear,
       empty: merged.empty,
+      overflow: merged.overflow,
       remove: merged.remove,
       search: merged.search,
     }),
-    [merged.clear, merged.empty, merged.remove, merged.search],
+    [merged.clear, merged.empty, merged.overflow, merged.remove, merged.search],
   )
   const canEdit = !disabled && !readOnly
   const shouldClose = closeOnSelect ?? !multiple

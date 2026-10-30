@@ -12,7 +12,7 @@ afterEach(() => {
 })
 
 const item = (value: string, label: string, extra = '', group = ''): string =>
-  `<div><div role="treeitem" data-plume-tree-value="${value}" ${extra}><span data-plume-tree-label>${label}</span></div>${group}</div>`
+  `<div><div role="treeitem" data-plume-tree-value="${value}" ${extra}><span data-plume-tree-item-label>${label}</span></div>${group}</div>`
 
 describe('tree navigation', () => {
   it('lists the items in document order', () => {

@@ -37,7 +37,12 @@ const heartOutline = (
  * removes the score.
  *
  * A **read only** rating is not a group of disabled radios, which a screen reader announces as something that
- * cannot be used: it is text (`3 out of 5`) with the icons hidden from assistive technology.
+ * cannot be used: it is a group with the score as text (`3 out of 5`) and the icons hidden from assistive
+ * technology.
+ *
+ * The root is always a `<fieldset>`: a `role="radiogroup"` while it is interactive, a plain group when it is read
+ * only. Its `ref`, `id`, `aria-describedby`, `aria-invalid`, `disabled` and `required` go to that fieldset, which
+ * is what a `Field` names, and it has `data-disabled`, `data-invalid` and `data-readonly` to style.
  *
  * Every element of a star is a part you can import and style or move. Without children the Rating renders one
  * `RatingItem` for each star, with its `RatingEmpty`, `RatingFilled` and `RatingRadio`. When a direct child is a
@@ -108,7 +113,7 @@ export default {
     },
     variant: {
       control: 'radio',
-      options: ['solid', 'unstyled'],
+      options: ['solid', 'outline', 'unstyled'],
     },
     name: {
       control: 'text',
@@ -152,13 +157,33 @@ type Story = StoryObj<typeof Rating>
 export const Default: Story = {}
 
 /**
- * Use the **variant** prop to pick how the Rating looks. `unstyled` drops the Plume styles so you can style the
- * stars yourself.
+ * Use the **variant** prop to pick how the Rating looks. `solid` fills the chosen stars with the color of the
+ * Rating, and `outline` draws them as a thicker outline in that color, next to the grey outline of the empty ones.
+ * A custom `icon` keeps its shape in both and takes the color. `unstyled` drops the Plume styles so you can style
+ * the stars yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Rating aria-label="Solid" defaultValue={3} variant="solid" />
+<Rating aria-label="Outline" defaultValue={3} variant="outline" />
+<Rating aria-label="Unstyled" className="gap-1 text-3xl" defaultValue={3} variant="unstyled">
+  {(position) => (
+    <RatingItem position={position}>
+      <RatingEmpty className="text-gray-300" />
+      <RatingFilled className="text-black" />
+      <RatingRadio />
+    </RatingItem>
+  )}
+</Rating>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-3">
       <Rating aria-label="Solid" defaultValue={3} variant="solid" />
+      <Rating aria-label="Outline" defaultValue={3} variant="outline" />
       <Rating aria-label="Unstyled" className="gap-1 text-3xl" defaultValue={3} variant="unstyled">
         {(position) => (
           <RatingItem position={position}>
@@ -176,6 +201,15 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the stars.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Rating aria-label="sm" defaultValue={3} size="sm" />
+<Rating aria-label="md" defaultValue={3} size="md" />
+<Rating aria-label="lg" defaultValue={3} size="lg" />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -186,12 +220,22 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick a color from the theme.
+ * Use the **colorScheme** prop to pick a color from the theme. It fills the chosen stars in `solid`, and colors
+ * their outline in `outline`.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Rating aria-label="primary" colorScheme="primary" defaultValue={3} />
+<Rating aria-label="success" colorScheme="success" defaultValue={3} />
+<Rating aria-label="error" colorScheme="error" defaultValue={3} />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-3">
-      {colorSchemes.slice(0, 6).map((scheme) => (
+      {colorSchemes.map((scheme) => (
         <Rating
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
@@ -257,8 +301,9 @@ export const CustomLabels: Story = {
 }
 
 /**
- * A **read only** Rating shows a score. It is text (`3.5 out of 5`) with the stars hidden from assistive
- * technology, so it is not a control that can't be used. Use **labels.readOnly** to say it another way.
+ * A **read only** Rating shows a score. It is a group named by its `aria-label` (or its `Field`) with the score as
+ * text (`3.5 out of 5`) and the stars hidden from assistive technology, so it is not a control that can't be used.
+ * Use **labels.readOnly** to say it another way.
  */
 export const ReadOnly: Story = {
   render: () => (
@@ -348,7 +393,9 @@ export const InAForm: Story = {
 
 /**
  * Wrap the Rating in a `Field` to give it a label, a helper text and an error message. The Field names the group,
- * links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`.
+ * links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`, all on the `<fieldset>` that is
+ * also the `ref` of the Rating, read only or not. With react-hook-form, render it in a `Controller` and pass
+ * `field.value`, `field.onChange` and `field.ref`.
  */
 export const WithField: Story = {
   render: () => (
@@ -358,6 +405,9 @@ export const WithField: Story = {
       </Field>
       <Field errorText="Please rate it." invalid label="Your rating" required>
         <Rating />
+      </Field>
+      <Field helperText="From 128 reviews." label="Average rating" readOnly>
+        <Rating allowHalf defaultValue={4.5} />
       </Field>
     </div>
   ),

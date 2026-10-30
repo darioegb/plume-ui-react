@@ -50,7 +50,7 @@ function StyledTimePicker({
  * import, with its own `className`, `style` and `ref`, so you can reorder, omit or replace it: `TimePickerInput` is
  * the field with the button, and `TimePickerPanel` the lists of hours and minutes (a popup under the input, or
  * always visible with `panel`). The `TimePicker` keeps the value and shares it with its parts. With children,
- * the props of the field (`placeholder`, `disabled`, `readOnly`, `inputRef`, `onBlur`, `id`, `name`, `required`
+ * the props of the field (`placeholder`, `disabled`, `readOnly`, `onBlur`, `id`, `name`, `required`
  * and `className`) go on the `TimePickerInput`, and the look (`variant`, `size` and `shape`) always on the
  * `TimePicker`.
  *
@@ -58,6 +58,10 @@ function StyledTimePicker({
  * `<TimePickerHours>{(option) => <TimePickerOption key={option.value} option={option} />}</TimePickerHours>`. The
  * function can render something else than a `TimePickerOption`, but then that element has no selection or keyboard
  * of its own.
+ *
+ * The `ref` of the `TimePicker` and of the `TimePickerInput` goes to the native `<input>`, so a form library can focus it.
+ * `TimePickerFormatHint` is the visually hidden text that describes the expected format; give your own as a child of
+ * the `TimePickerInput` to replace it.
  *
  * The parts expose their state as `data-*` attributes (`data-open` in the root, the trigger and the popup,
  * `data-selected` in the options) and carry `data-plume-timepicker-<part>`, so they can be targeted from CSS.
@@ -152,9 +156,6 @@ export default {
     required: {
       control: 'boolean',
     },
-    inputRef: {
-      control: false,
-    },
   },
   args: {
     'aria-label': 'Time',
@@ -171,21 +172,6 @@ type Story = StoryObj<typeof TimePicker>
  */
 export const Default: Story = {
   args: { defaultValue: '09:30' },
-}
-
-/**
- * With **hour12** the field shows the time as `hh:mm AM/PM` and the popup adds a list for the period.
- * The value is still in 24 hours.
- */
-export const Hour12: Story = {
-  args: { defaultValue: '15:30', hour12: true },
-}
-
-/**
- * The **minuteStep** prop sets the distance between the minutes of the list, here every 15 minutes.
- */
-export const MinuteStep: Story = {
-  args: { defaultValue: '08:15', minuteStep: 15 },
 }
 
 /**
@@ -263,6 +249,21 @@ export const Colors: Story = {
       ))}
     </div>
   ),
+}
+
+/**
+ * With **hour12** the field shows the time as `hh:mm AM/PM` and the popup adds a list for the period.
+ * The value is still in 24 hours.
+ */
+export const Hour12: Story = {
+  args: { defaultValue: '15:30', hour12: true },
+}
+
+/**
+ * The **minuteStep** prop sets the distance between the minutes of the list, here every 15 minutes.
+ */
+export const MinuteStep: Story = {
+  args: { defaultValue: '08:15', minuteStep: 15 },
 }
 
 /**

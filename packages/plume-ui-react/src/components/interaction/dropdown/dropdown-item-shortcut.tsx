@@ -24,7 +24,7 @@ export const DropdownItemShortcut = forwardRef<HTMLSpanElement, DropdownItemShor
     return (
       <span
         className={joinClasses(isStyled && styles.shortcut, className)}
-        data-plume-menu-item-shortcut=""
+        data-plume-dropdown-item-shortcut=""
         ref={ref}
         style={style}
       >

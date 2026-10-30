@@ -40,7 +40,7 @@ export const TreeItemLabel = forwardRef<HTMLSpanElement, TreeItemLabelProps>(
     return (
       <span
         className={joinClasses(isStyled && styles.label, className)}
-        data-plume-tree-label=""
+        data-plume-tree-item-label=""
         id={item.labelId}
         ref={ref}
         style={style}

@@ -24,7 +24,7 @@ export const DropdownItemIcon = forwardRef<HTMLSpanElement, DropdownItemIconProp
       <span
         aria-hidden="true"
         className={joinClasses(isStyled && styles.icon, className)}
-        data-plume-menu-item-icon=""
+        data-plume-dropdown-item-icon=""
         ref={ref}
         style={style}
       >

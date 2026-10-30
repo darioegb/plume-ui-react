@@ -73,7 +73,7 @@ function SettingsForm({
         render={({ field }) => (
           <TimePicker
             aria-label="Time"
-            inputRef={field.ref}
+            ref={field.ref}
             onValueChange={field.onChange}
             value={field.value}
           />

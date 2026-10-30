@@ -165,14 +165,26 @@ describe('DatePicker parts', () => {
       expect(trigger).toHaveAttribute('data-open')
     })
 
-    it('keeps the inputRef of the DatePickerInput on the field', () => {
-      const inputRef = createRef<HTMLInputElement>()
+    it('gives the ref of the DatePickerInput to the field', () => {
+      const ref = createRef<HTMLInputElement>()
       render(
         <DatePicker onValueChange={vi.fn()}>
-          <DatePickerInput inputRef={inputRef} />
+          <DatePickerInput ref={ref} />
         </DatePicker>,
       )
-      expect(inputRef.current).toBe(screen.getByRole('textbox'))
+      expect(ref.current).toBe(screen.getByRole('textbox'))
+    })
+
+    it('gives the ref of the DatePicker to the field of a composed input', () => {
+      const rootRef = createRef<HTMLInputElement>()
+      const ref = createRef<HTMLInputElement>()
+      render(
+        <DatePicker onValueChange={vi.fn()} ref={rootRef}>
+          <DatePickerInput ref={ref} />
+        </DatePicker>,
+      )
+      expect(rootRef.current).toBe(screen.getByRole('textbox'))
+      expect(ref.current).toBe(screen.getByRole('textbox'))
     })
   })
 

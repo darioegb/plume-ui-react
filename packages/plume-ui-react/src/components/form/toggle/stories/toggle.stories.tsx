@@ -148,6 +148,21 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field label="primary" orientation="inline">
+  <Toggle colorScheme="primary" defaultChecked />
+</Field>
+<Field label="success" orientation="inline">
+  <Toggle colorScheme="success" defaultChecked />
+</Field>
+<Field label="purple" orientation="inline">
+  <Toggle colorScheme="purple" defaultChecked />
+</Field>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
@@ -156,6 +171,18 @@ export const Colors: Story = {
         </Field>
       ))}
     </div>
+  ),
+}
+
+/**
+ * Wrap it in a **Field** with `orientation="inline"` to show its label after the switch. Clicking the label
+ * switches the Toggle, and the Field wires the accessibility attributes.
+ */
+export const WithLabel: Story = {
+  render: () => (
+    <Field label="Email notifications" orientation="inline">
+      <Toggle />
+    </Field>
   ),
 }
 
@@ -185,18 +212,6 @@ export const Invalid: Story = {
   args: {
     'aria-invalid': true,
   },
-}
-
-/**
- * Wrap it in a **Field** with `orientation="inline"` to show its label after the switch. Clicking the label
- * switches the Toggle, and the Field wires the accessibility attributes.
- */
-export const WithLabel: Story = {
-  render: () => (
-    <Field label="Email notifications" orientation="inline">
-      <Toggle />
-    </Field>
-  ),
 }
 
 /**

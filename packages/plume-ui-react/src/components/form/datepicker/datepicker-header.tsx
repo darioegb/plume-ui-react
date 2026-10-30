@@ -6,8 +6,8 @@ import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import { Button } from '../../interaction/button'
 import { DatePickerIcon } from './datepicker-icons'
-import { useDatePickerPage } from './datepicker-page-context'
-import { useDatePicker } from './use-datepicker'
+import { useDatePickerPageContext } from './datepicker-page-context'
+import { useDatePickerContext } from './datepicker-context'
 import styles from './datepicker.module.css'
 
 type PartProps = Omit<ComponentProps, 'index'>
@@ -31,11 +31,12 @@ export const DatePickerHeader = forwardRef<HTMLDivElement, DatePickerHeaderProps
     { children, className, style }: DatePickerHeaderProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    useDatePickerPage('DatePickerHeader')
+    const { variant } = useDatePickerContext('DatePickerHeader')
+    useDatePickerPageContext('DatePickerHeader')
 
     return (
       <div
-        className={joinClasses(styles.calendarHeader, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.calendarHeader, className)}
         data-plume-datepicker-header=""
         ref={ref}
         style={style}
@@ -54,11 +55,12 @@ export const DatePickerNav = forwardRef<HTMLDivElement, DatePickerNavProps>(
     { children, className, style }: DatePickerNavProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    useDatePickerPage('DatePickerNav')
+    const { variant } = useDatePickerContext('DatePickerNav')
+    useDatePickerPageContext('DatePickerNav')
 
     return (
       <div
-        className={joinClasses(styles.monthYearSelectors, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.monthYearSelectors, className)}
         data-plume-datepicker-nav=""
         ref={ref}
         style={style}
@@ -85,7 +87,7 @@ export const DatePickerSeparator = forwardRef<HTMLElement, DatePickerSeparatorPr
     { children, className, style }: DatePickerSeparatorProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
-    useDatePickerPage('DatePickerSeparator')
+    useDatePickerPageContext('DatePickerSeparator')
 
     return (
       <strong className={className} data-plume-datepicker-separator="" ref={ref} style={style}>
@@ -106,8 +108,8 @@ export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPrevio
     { 'aria-label': ariaLabel, children, className, style }: DatePickerPreviousProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { labels } = useDatePicker('DatePickerPrevious')
-    const { previous, view } = useDatePickerPage('DatePickerPrevious')
+    const { labels, variant } = useDatePickerContext('DatePickerPrevious')
+    const { previous, view } = useDatePickerPageContext('DatePickerPrevious')
     const years = view === 'year'
     const fallback = years ? labels.previousYears : labels.previousMonth
 
@@ -119,7 +121,7 @@ export const DatePickerPrevious = forwardRef<HTMLButtonElement, DatePickerPrevio
         onClick={previous}
         ref={ref}
         style={style}
-        variant="icon"
+        variant={variant === 'unstyled' ? 'unstyled' : 'icon'}
       >
         {children ?? <DatePickerIcon name={years ? 'previousYears' : 'previous'} />}
       </Button>
@@ -138,8 +140,8 @@ export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>
     { 'aria-label': ariaLabel, children, className, style }: DatePickerNextProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { labels } = useDatePicker('DatePickerNext')
-    const { next, view } = useDatePickerPage('DatePickerNext')
+    const { labels, variant } = useDatePickerContext('DatePickerNext')
+    const { next, view } = useDatePickerPageContext('DatePickerNext')
     const years = view === 'year'
     const fallback = years ? labels.nextYears : labels.nextMonth
 
@@ -151,7 +153,7 @@ export const DatePickerNext = forwardRef<HTMLButtonElement, DatePickerNextProps>
         onClick={next}
         ref={ref}
         style={style}
-        variant="icon"
+        variant={variant === 'unstyled' ? 'unstyled' : 'icon'}
       >
         {children ?? <DatePickerIcon name={years ? 'nextYears' : 'next'} />}
       </Button>
@@ -167,25 +169,25 @@ export const DatePickerMonthButton = forwardRef<HTMLButtonElement, DatePickerMon
     { 'aria-label': ariaLabel, children, className, style }: DatePickerMonthButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { monthLabel, toggleView, view } = useDatePickerPage('DatePickerMonthButton')
+    const { variant } = useDatePickerContext('DatePickerMonthButton')
+    const { monthLabel, toggleView, view } = useDatePickerPageContext('DatePickerMonthButton')
 
     return (
-      <Button
+      <button
         aria-expanded={view === 'month'}
         aria-label={ariaLabel}
-        className={joinClasses(styles.monthSelector, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.monthSelector, className)}
         data-active={view === 'month' ? '' : undefined}
         data-plume-datepicker-month-button=""
-        label={children ? undefined : monthLabel}
         onClick={() => {
           toggleView('month')
         }}
         ref={ref}
         style={style}
-        variant="unstyled"
+        type="button"
       >
-        {children}
-      </Button>
+        {children ?? monthLabel}
+      </button>
     )
   },
 )
@@ -198,25 +200,25 @@ export const DatePickerYearButton = forwardRef<HTMLButtonElement, DatePickerYear
     { 'aria-label': ariaLabel, children, className, style }: DatePickerYearButtonProps,
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
-    const { toggleView, view, year } = useDatePickerPage('DatePickerYearButton')
+    const { variant } = useDatePickerContext('DatePickerYearButton')
+    const { toggleView, view, year } = useDatePickerPageContext('DatePickerYearButton')
 
     return (
-      <Button
+      <button
         aria-expanded={view === 'year'}
         aria-label={ariaLabel}
-        className={joinClasses(styles.yearSelector, className)}
+        className={joinClasses(variant !== 'unstyled' && styles.yearSelector, className)}
         data-active={view === 'year' ? '' : undefined}
         data-plume-datepicker-year-button=""
-        label={children ? undefined : String(year)}
         onClick={() => {
           toggleView('year')
         }}
         ref={ref}
         style={style}
-        variant="unstyled"
+        type="button"
       >
-        {children}
-      </Button>
+        {children ?? year}
+      </button>
     )
   },
 )

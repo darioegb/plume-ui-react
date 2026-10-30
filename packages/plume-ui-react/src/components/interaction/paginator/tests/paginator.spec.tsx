@@ -79,6 +79,14 @@ describe('Paginator component', () => {
         .forEach((node) => expect(node).toHaveAttribute('aria-hidden', 'true'))
     })
 
+    it('shows … in the ellipses, as content hidden from assistive technology', () => {
+      render(<Paginator total={20} pageSize={1} defaultPage={10} />)
+      document
+        .querySelectorAll('[data-plume-paginator-ellipsis]')
+        .forEach((node) => expect(node).toHaveTextContent('…'))
+      expect(screen.queryByText('…', { ignore: '[aria-hidden="true"]' })).not.toBeInTheDocument()
+    })
+
     it('adds the first and last buttons with showEdges', () => {
       render(<Paginator total={5} pageSize={1} showEdges />)
       expect(screen.getByRole('button', { name: 'First page' })).toBeInTheDocument()

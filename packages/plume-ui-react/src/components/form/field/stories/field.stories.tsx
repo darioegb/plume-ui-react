@@ -9,12 +9,28 @@ import { NumberInput } from '../../numberinput'
 import { PinInput } from '../../pininput'
 import { Radio, RadioGroup } from '../../radio'
 import { Rating } from '../../rating'
-import { Select, SelectContent, SelectOption, SelectTrigger } from '../../select'
+import {
+  Select,
+  SelectChevron,
+  SelectCombobox,
+  SelectContent,
+  SelectField,
+  SelectHidden,
+  SelectOption,
+  SelectTrigger,
+} from '../../select'
 import { Slider } from '../../slider'
 import { Textarea } from '../../textarea'
 import { TimePicker } from '../../timepicker'
 import { Toggle } from '../../toggle'
-import { Field } from '..'
+import {
+  Field,
+  FieldErrorText,
+  FieldHelperText,
+  FieldLabel,
+  FieldOptionalText,
+  FieldRequiredIndicator,
+} from '..'
 
 /**
  * Field wraps a form control with a label, a required or optional mark, helper text and an error message,
@@ -24,6 +40,10 @@ import { Field } from '..'
  * It works with `Input`, `DatePicker`, `Checkbox`, `Radio`, `Toggle` and any control that accepts `id`, `aria-describedby` and `aria-invalid`.
  * `Checkbox`, `Radio` and `Toggle` have no text of their own: their label always comes from a `Field`, with `orientation="inline"`.
  * When the control already has an `id`, Field keeps it; otherwise it generates one.
+ *
+ * Every text is a part you can import: **FieldLabel** (with **FieldRequiredIndicator** and **FieldOptionalText**),
+ * **FieldHelperText** and **FieldErrorText**. A field has no look of its own besides the layout and the text styles,
+ * so its only `variant` besides the default one is `unstyled`: the variants belong to the control.
  */
 const meta: Meta<typeof Field> = {
   title: 'Components/Field',
@@ -54,6 +74,7 @@ const meta: Meta<typeof Field> = {
     disabled: { control: 'boolean' },
     readOnly: { control: 'boolean' },
     orientation: { control: 'inline-radio', options: ['vertical', 'horizontal', 'inline'] },
+    variant: { control: 'inline-radio', options: ['default', 'unstyled'] },
     className: { control: 'text' },
     style: { control: false },
   },
@@ -212,34 +233,6 @@ export const Inline: Story = {
 }
 
 /**
- * **disabled** and **readOnly** are passed to the control.
- */
-export const DisabledAndReadOnly: Story = {
-  parameters: {
-    docs: {
-      source: {
-        code: `<Field disabled label="Disabled">
-  <Input defaultValue="Can't edit or focus" />
-</Field>
-<Field label="Read-only" readOnly>
-  <Input defaultValue="Can't edit, can focus" />
-</Field>`,
-      },
-    },
-  },
-  render: () => (
-    <div className='flex flex-col gap-4'>
-      <Field disabled label='Disabled'>
-        <Input defaultValue="Can't edit or focus" />
-      </Field>
-      <Field label='Read-only' readOnly>
-        <Input defaultValue="Can't edit, can focus" />
-      </Field>
-    </div>
-  ),
-}
-
-/**
  * Field wires a **DatePicker** the same way: the label, texts and states reach its input.
  */
 export const WithDatePicker: Story = {
@@ -312,8 +305,8 @@ const bookingDefaults: BookingValues = {
  * The controls that are a single native element (`Input`, `Textarea`, `Checkbox`, `Toggle`) take `register`
  * as it is. The ones that are not go through `Controller` with `value` and `onValueChange`: `Select` (also with
  * `multiple`), `RadioGroup`, `NumberInput`, `Slider`, `Rating`, `PinInput`, `DatePicker` and `TimePicker`.
- * Where the control has an input to focus, give it the `ref`: on the `SelectTrigger`, on `NumberInput`, or as
- * `inputRef` on the pickers, so the form can focus the first invalid field.
+ * Where the control has an input to focus, give it the `ref`: on the `SelectTrigger`, on `NumberInput` or on
+ * the pickers, so the form can focus the first invalid field.
  * Pass each error message to **errorText** and Field marks the control and links the message.
  * Submit the empty form to see the errors.
  */
@@ -373,7 +366,13 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Room" required>
         <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger placeholder="Pick a room" ref={field.ref} />
+          <SelectTrigger>
+            <SelectField>
+              <SelectCombobox placeholder="Pick a room" ref={field.ref} />
+            </SelectField>
+            <SelectChevron />
+            <SelectHidden />
+          </SelectTrigger>
           <SelectContent>
             <SelectOption value="single">Single</SelectOption>
             <SelectOption value="double">Double</SelectOption>
@@ -422,7 +421,7 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Stay" required>
         <DatePicker
-          inputRef={field.ref}
+          ref={field.ref}
           range
           name={field.name}
           onBlur={field.onBlur}
@@ -442,7 +441,7 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Arrival time" required>
         <TimePicker
-          inputRef={field.ref}
+          ref={field.ref}
           minuteStep={15}
           onValueChange={field.onChange}
           value={field.value}
@@ -567,7 +566,13 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Room' required>
               <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger placeholder='Pick a room' ref={field.ref} />
+                <SelectTrigger>
+                  <SelectField>
+                    <SelectCombobox placeholder='Pick a room' ref={field.ref} />
+                  </SelectField>
+                  <SelectChevron />
+                  <SelectHidden />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectOption value='single'>Single</SelectOption>
                   <SelectOption value='double'>Double</SelectOption>
@@ -616,7 +621,7 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Stay' required>
               <DatePicker
-                inputRef={field.ref}
+                ref={field.ref}
                 range
                 name={field.name}
                 onBlur={field.onBlur}
@@ -636,7 +641,7 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Arrival time' required>
               <TimePicker
-                inputRef={field.ref}
+                ref={field.ref}
                 minuteStep={15}
                 onValueChange={field.onChange}
                 value={field.value}
@@ -710,4 +715,149 @@ export const ReactHookForm: Story = {
       </form>
     )
   },
+}
+
+/**
+ * **disabled** and **readOnly** are passed to the control.
+ */
+export const DisabledAndReadOnly: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field disabled label="Disabled">
+  <Input defaultValue="Can't edit or focus" />
+</Field>
+<Field label="Read-only" readOnly>
+  <Input defaultValue="Can't edit, can focus" />
+</Field>`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4'>
+      <Field disabled label='Disabled'>
+        <Input defaultValue="Can't edit or focus" />
+      </Field>
+      <Field label='Read-only' readOnly>
+        <Input defaultValue="Can't edit, can focus" />
+      </Field>
+    </div>
+  ),
+}
+
+/**
+ * Write the parts yourself to reorder them, give one its own class or replace the marks of the label. Field still
+ * finds the control among them and wires the label, the texts and the states to it. `FieldErrorText` renders only
+ * while the field is `invalid`.
+ */
+export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field invalid required>
+  <FieldLabel>
+    Email <FieldRequiredIndicator>(required)</FieldRequiredIndicator>
+  </FieldLabel>
+  <FieldHelperText>Use the address of your work.</FieldHelperText>
+  <Input type="email" />
+  <FieldErrorText className="font-semibold">Enter a valid email address.</FieldErrorText>
+</Field>
+<Field>
+  <FieldLabel>
+    Nickname <FieldOptionalText className="italic">(if you want one)</FieldOptionalText>
+  </FieldLabel>
+  <Input />
+</Field>`,
+      },
+    },
+  },
+  render: () => (
+    <div className='flex flex-col gap-4'>
+      <Field invalid required>
+        <FieldLabel>
+          Email <FieldRequiredIndicator>(required)</FieldRequiredIndicator>
+        </FieldLabel>
+        <FieldHelperText>Use the address of your work.</FieldHelperText>
+        <Input type='email' />
+        <FieldErrorText className='font-semibold'>Enter a valid email address.</FieldErrorText>
+      </Field>
+      <Field>
+        <FieldLabel>
+          Nickname <FieldOptionalText className='italic'>(if you want one)</FieldOptionalText>
+        </FieldLabel>
+        <Input />
+      </Field>
+    </div>
+  ),
+}
+
+/**
+ * A Field with Tailwind classes. With `variant="unstyled"` the field and its parts keep only your classes, and the
+ * wiring stays: the label points to the control and the texts describe it. Give each part its classes, and use the
+ * attributes of the root (`data-[invalid]`, `data-[disabled]`, `data-[required]`) for the states.
+ */
+export const Tailwind: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field className="group flex flex-col gap-1.5 text-foreground" invalid required variant="unstyled">
+  <FieldLabel className="text-sm font-medium">
+    Email <FieldRequiredIndicator className="text-error-text" />
+  </FieldLabel>
+  <Input
+    className="rounded-md border border-border bg-surface px-3 py-2 text-sm group-data-[invalid]:border-error-text"
+    type="email"
+    variant="unstyled"
+  />
+  <FieldHelperText className="text-xs text-foreground/70">We'll never share your email.</FieldHelperText>
+  <FieldErrorText className="text-xs font-medium text-error-text">Enter a valid email address.</FieldErrorText>
+</Field>`,
+      },
+    },
+  },
+  render: () => (
+    <Field className='group flex flex-col gap-1.5 text-foreground' invalid required variant='unstyled'>
+      <FieldLabel className='text-sm font-medium'>
+        Email <FieldRequiredIndicator className='text-error-text' />
+      </FieldLabel>
+      <Input
+        className='rounded-md border border-border bg-surface px-3 py-2 text-sm group-data-[invalid]:border-error-text'
+        type='email'
+        variant='unstyled'
+      />
+      <FieldHelperText className='text-xs text-foreground/70'>
+        We&apos;ll never share your email.
+      </FieldHelperText>
+      <FieldErrorText className='text-xs font-medium text-error-text'>
+        Enter a valid email address.
+      </FieldErrorText>
+    </Field>
+  ),
+}
+
+/**
+ * A Field with Bootstrap classes: `form-label`, `form-text` and `invalid-feedback` on the parts, and `form-control`
+ * with `is-invalid` on the control.
+ */
+export const Bootstrap: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field invalid variant="unstyled">
+  <FieldLabel className="form-label">Email</FieldLabel>
+  <Input className="form-control is-invalid" type="email" variant="unstyled" />
+  <FieldHelperText className="form-text">We'll never share your email.</FieldHelperText>
+  <FieldErrorText className="invalid-feedback d-block">Enter a valid email address.</FieldErrorText>
+</Field>`,
+      },
+    },
+  },
+  render: () => (
+    <Field invalid variant='unstyled'>
+      <FieldLabel className='form-label'>Email</FieldLabel>
+      <Input className='form-control is-invalid' type='email' variant='unstyled' />
+      <FieldHelperText className='form-text'>We&apos;ll never share your email.</FieldHelperText>
+      <FieldErrorText className='invalid-feedback d-block'>Enter a valid email address.</FieldErrorText>
+    </Field>
+  ),
 }

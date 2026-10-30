@@ -6,6 +6,7 @@ import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
 import { visuallyHidden } from '../../../overlay/visually-hidden'
 import type { ComponentProps } from '../../../theme'
+import { useDatePickerContext } from './datepicker-context'
 import { DatePickerHeader } from './datepicker-header'
 import { DatePickerPageContext } from './datepicker-page-context'
 import { DatePickerView } from './datepicker-view'
@@ -33,13 +34,15 @@ export const DatePickerPage = forwardRef<HTMLDivElement, DatePickerPageProps>(
   ): ReactNode => {
     const calendarRef = useRef<HTMLDivElement>(null)
     const setRef = useMemo(() => mergeRefs(calendarRef, ref), [ref])
+    const { variant } = useDatePickerContext('DatePickerPage')
     const page = useDatePickerPage(second, calendarRef)
 
     return (
       <DatePickerPageContext.Provider value={page}>
         <div
-          className={joinClasses(styles.calendar, className)}
+          className={joinClasses(variant !== 'unstyled' && styles.calendar, className)}
           data-plume-datepicker-page=""
+          data-second={second ? '' : undefined}
           ref={setRef}
           style={style}
         >
@@ -50,7 +53,7 @@ export const DatePickerPage = forwardRef<HTMLDivElement, DatePickerPageProps>(
             </>
           )}
           {second ? null : (
-            <output style={visuallyHidden}>
+            <output data-plume-datepicker-status="" style={visuallyHidden}>
               {page.monthLabel} {page.year}
             </output>
           )}

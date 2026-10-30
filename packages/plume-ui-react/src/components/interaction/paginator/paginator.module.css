@@ -74,7 +74,7 @@
   flex-shrink: 0;
 }
 
-.pageSize [data-plume-select-control] {
+.pageSize [data-plume-select-trigger] {
   min-width: 5rem;
   width: auto;
 }
@@ -99,7 +99,7 @@
     padding-inline: var(--plume-space-1);
   }
 
-  .pageSize [data-plume-select-control] {
+  .pageSize [data-plume-select-trigger] {
     min-width: 3.5rem;
   }
 }

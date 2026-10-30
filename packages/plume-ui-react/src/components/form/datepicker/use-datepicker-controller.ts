@@ -1,12 +1,12 @@
 'use client'
 
-import type { CSSProperties, FocusEvent } from 'react'
+import type { CSSProperties, FocusEvent, ForwardedRef } from 'react'
 import { useCallback, useEffect, useId, useMemo, useReducer, useRef } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useLabels, useLocale } from '../../../locale/locale-provider'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { useFocusTrap } from '../../../overlay/use-focus-trap'
-import type { DatePickerContextProps } from './use-datepicker'
+import type { DatePickerContextProps } from './datepicker-context'
 import {
   DATE_PICKER_INITIAL_STATE,
   DEFAULT_DATE_PICKER_VALUE,
@@ -35,6 +35,7 @@ interface DatePickerControllerOptions {
   colorScheme: ColorScheme
   locale?: string
   displayFormat?: string
+  inputRef: ForwardedRef<HTMLInputElement>
   isPanel: boolean
   isRange: boolean
   labels?: Partial<DatePickerLabels>
@@ -71,6 +72,7 @@ export function useDatePickerController({
   colorScheme,
   locale: localeProp,
   displayFormat,
+  inputRef,
   isPanel,
   isRange,
   labels,
@@ -265,6 +267,7 @@ export function useDatePickerController({
       colorScheme,
       dispatch,
       displayFormat,
+      inputRef,
       isPanel,
       isRange,
       labels: mergedLabels,
@@ -293,6 +296,7 @@ export function useDatePickerController({
       commitTypedValue,
       colorScheme,
       displayFormat,
+      inputRef,
       isPanel,
       isRange,
       mergedLabels,

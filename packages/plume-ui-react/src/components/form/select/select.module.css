@@ -1,6 +1,18 @@
-:global(:where([data-plume-select-control])) {
+:global(:where([data-plume-select-trigger])) {
   align-items: center;
   display: flex;
+}
+
+:global(:where([data-plume-select-chips-summary])) {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 :global(:where([data-plume-select-field])) {
@@ -41,7 +53,7 @@
   padding: 0;
 }
 
-:global(:where([data-plume-select-panel]:not([hidden]))) {
+:global(:where([data-plume-select-content]:not([hidden]))) {
   display: flex;
   flex-direction: column;
   max-height: min(22rem, var(--plume-available-height, calc(100vh - 1rem)));

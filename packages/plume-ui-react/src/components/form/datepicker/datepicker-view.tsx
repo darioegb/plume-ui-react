@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 import { DatePickerGrid, DatePickerWeekdays } from './datepicker-days'
 import { DatePickerMonths, DatePickerYears } from './datepicker-months'
-import { useDatePickerPage, type DatePickerViewName } from './datepicker-page-context'
+import { useDatePickerPageContext, type DatePickerViewName } from './datepicker-page-context'
 
 export interface DatePickerViewProps {
   /**
@@ -14,7 +14,7 @@ export interface DatePickerViewProps {
 
 /** Renders the current view of the page: days, months or years. */
 export function DatePickerView({ children }: Readonly<DatePickerViewProps>): ReactNode {
-  const { view } = useDatePickerPage('DatePickerView')
+  const { view } = useDatePickerPageContext('DatePickerView')
 
   if (typeof children === 'function') return children(view)
   if (children !== undefined) return children

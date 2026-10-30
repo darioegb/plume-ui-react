@@ -67,11 +67,10 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         {...own}
         aria-invalid={ariaInvalid}
         className={joinClasses(
-          styles.base,
           isStyled && styles[size],
           isStyled && styles[shape],
           isStyled && styles[variant],
-          isDisabled && styles.disabled,
+          isStyled && isDisabled && styles.disabled,
           isStyled && invalid && styles.invalid,
           className,
         )}
