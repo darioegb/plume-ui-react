@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, type Ref, useState } from 'react'
+import { Modal, ModalContent, ModalHeader } from '../../../overlay/modal'
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarToggle } from '..'
 import type { NavbarProps } from '..'
 
@@ -320,6 +321,35 @@ describe('Navbar component', () => {
       expect(toggle()).toHaveAttribute('class', 'toggle')
       expect(content()).toHaveAttribute('class', 'content')
       expect(screen.getByRole('link')).toHaveAttribute('class', 'item')
+    })
+  })
+
+  describe('with an overlay on top', () => {
+    it('lets Escape close only the overlay that is on top', async () => {
+      const user = userEvent.setup()
+      render(
+        <>
+          <Navbar aria-label="Main" defaultOpen>
+            <NavbarToggle />
+            <NavbarContent>
+              <NavbarItem href="/">Home</NavbarItem>
+            </NavbarContent>
+          </Navbar>
+          <Modal defaultOpen>
+            <ModalContent>
+              <ModalHeader>Title</ModalHeader>
+            </ModalContent>
+          </Modal>
+        </>,
+      )
+      expect(screen.getByRole('button', { hidden: true, name: 'Toggle navigation' })).toHaveAttribute('aria-expanded', 'true')
+
+      await user.keyboard('{Escape}')
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByRole('button', { hidden: true, name: 'Toggle navigation' })).toHaveAttribute('aria-expanded', 'true')
+
+      await user.keyboard('{Escape}')
+      expect(screen.getByRole('button', { hidden: true, name: 'Toggle navigation' })).toHaveAttribute('aria-expanded', 'false')
     })
   })
 

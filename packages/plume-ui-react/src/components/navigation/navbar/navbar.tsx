@@ -4,6 +4,7 @@ import type { CSSProperties, ForwardedRef, HTMLAttributes } from 'react'
 import { forwardRef, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useControllableState } from '../../../overlay/use-controllable-state'
+import { useLayer } from '../../../overlay/layer'
 import { useDismiss, type DismissReason } from '../../../overlay/use-dismiss'
 import { mergeRefs } from '../../../overlay/trigger'
 import type { ColorScheme, ComponentProps, Size } from '../../../theme'
@@ -116,7 +117,8 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       },
       [setOpen],
     )
-    useDismiss({ elements: [root], enabled: open, onDismiss: dismiss })
+    const isTopmost = useLayer(open, false)
+    useDismiss({ elements: [root], enabled: open, isTopmost, onDismiss: dismiss })
 
     const context = useMemo(
       () => ({
