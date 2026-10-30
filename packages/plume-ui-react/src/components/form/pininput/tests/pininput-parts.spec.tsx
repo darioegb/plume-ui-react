@@ -63,15 +63,16 @@ describe('PinInput parts', () => {
       expect(screen.getByTestId('wrap')).toContainElement(cells()[0])
     })
 
-    it('gives the id to the first cell and lets a cell take its own', () => {
+    it('gives the id to the fieldset and lets a cell take its own', () => {
       render(
         <PinInput aria-label="Code" id="pin" length={2}>
           <PinInputCell id="own" index={1} />
           <PinInputCell index={0} />
         </PinInput>,
       )
+      expect(screen.getByRole('group')).toHaveAttribute('id', 'pin')
       expect(cells()[0]).toHaveAttribute('id', 'own')
-      expect(cells()[1]).toHaveAttribute('id', 'pin')
+      expect(cells()[1]).not.toHaveAttribute('id')
     })
 
     it('throws when a part is outside a PinInput', () => {
@@ -284,7 +285,7 @@ describe('PinInput parts', () => {
   })
 
   describe('with a Field', () => {
-    it('is named by the label and takes the id in the first cell', () => {
+    it('is named by the label and takes its id on the fieldset', () => {
       render(
         <Field label="Code" helperText="Six digits">
           <PinInput length={2}>
@@ -295,7 +296,22 @@ describe('PinInput parts', () => {
       )
       const group = screen.getByRole('group', { name: 'Code' })
       expect(group).toHaveAccessibleDescription('Six digits')
-      expect(document.querySelector('label')?.getAttribute('for')).toBe(cells()[0].id)
+      expect(document.querySelector('label')?.getAttribute('for')).toBe(group.id)
+    })
+
+    it('focuses the box to fill when the label is clicked', async () => {
+      render(
+        <Field label="Code">
+          <PinInput defaultValue="12" length={4}>
+            <PinInputCell index={0} />
+            <PinInputCell index={1} />
+            <PinInputCell index={2} />
+            <PinInputCell index={3} />
+          </PinInput>
+        </Field>,
+      )
+      await userEvent.click(screen.getByText('Code'))
+      expect(cells()[2]).toHaveFocus()
     })
 
     it('shows the error state of the Field in its cells', () => {

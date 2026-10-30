@@ -20,7 +20,7 @@ const colorSchemes = Object.keys(defaultTheme.colors)
  * takes the name you give it, and there is a single tab stop, on the next box to fill, so a screen reader or a
  * keyboard user does not walk through six empty boxes. `onComplete` runs when the last box is filled. With a
  * `name` the code is submitted in a hidden input. It composes with `Field`, which names the group and gives the
- * focus to the first box when its label is clicked.
+ * focus to the next box to fill when its label is clicked.
  *
  * On its own it renders the boxes for you. To change what it shows (a separator in the middle of the code, a
  * different class on each box) give it its parts as children: `PinInputCell` is one box and `PinInputHidden` the
@@ -89,6 +89,21 @@ export const Default: Story = {}
  * styles so you can style them yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<PinInput aria-label="Outline" length={4} variant="outline" />
+<PinInput aria-label="Filled" length={4} variant="filled" />
+<PinInput aria-label="Underline" length={4} variant="underline" />
+<PinInput aria-label="Unstyled" className="flex gap-2" length={4} variant="unstyled">
+  <PinInputCell className="h-10 w-10 rounded-sm border border-gray-400 text-center" index={0} />
+  <PinInputCell className="h-10 w-10 rounded-sm border border-gray-400 text-center" index={1} />
+  <PinInputCell className="h-10 w-10 rounded-sm border border-gray-400 text-center" index={2} />
+  <PinInputCell className="h-10 w-10 rounded-sm border border-gray-400 text-center" index={3} />
+</PinInput>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       <PinInput aria-label="Outline" length={4} variant="outline" />
@@ -111,6 +126,15 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the boxes.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<PinInput aria-label="sm" length={4} size="sm" />
+<PinInput aria-label="md" length={4} size="md" />
+<PinInput aria-label="lg" length={4} size="lg" />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -121,12 +145,23 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick the color of the focus ring from the theme.
+ * Use the **colorScheme** prop to pick the color of the focus ring from the theme. It is the color of the focused
+ * box in every variant: its border and ring in `outline`, its bottom border in `filled` and `underline`. An
+ * invalid PinInput uses the error color instead.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<PinInput aria-label="primary" colorScheme="primary" length={4} />
+<PinInput aria-label="success" colorScheme="success" length={4} />
+<PinInput aria-label="error" colorScheme="error" length={4} />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4">
-      {colorSchemes.slice(0, 5).map((scheme) => (
+      {colorSchemes.map((scheme) => (
         <PinInput
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
@@ -275,8 +310,10 @@ export const InAForm: Story = {
 
 /**
  * Wrap the PinInput in a `Field` to give it a label, a helper text and an error message. The Field names the
- * group, links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`; clicking the label gives
- * the focus to the first box.
+ * group, links its texts and sets `disabled`, `readOnly`, `required` and `aria-invalid`. Its `id`, its texts and
+ * the `ref` of the PinInput go to the `<fieldset>`, which also takes `aria-invalid`; every box repeats the
+ * invalid and required state, since a group can't announce them. Clicking the label gives the focus to the next
+ * box to fill.
  */
 export const WithField: Story = {
   render: () => (
@@ -330,7 +367,8 @@ export const Compound: Story = {
 /**
  * Some examples of PinInput with Tailwind classes. With `variant="unstyled"` the boxes have none of the Plume
  * classes: `className` styles the group, the `className` of each `PinInputCell` its box, and a filled one has
- * `data-filled`, so `data-[filled]:` styles it.
+ * `data-filled`, so `data-[filled]:` styles it. The boxes also have `data-disabled` and `data-invalid`, and the
+ * group `data-disabled`, `data-invalid` and `data-readonly`.
  */
 export const Tailwind: Story = {
   parameters: {

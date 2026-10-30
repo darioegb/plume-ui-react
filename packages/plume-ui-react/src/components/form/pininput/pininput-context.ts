@@ -8,7 +8,6 @@ import type { PinInputState } from './use-pin-input'
 export interface PinInputContextValue {
   autoComplete: string
   disabled: boolean
-  id: string | undefined
   invalid: boolean
   isStyled: boolean
   labels: PinInputLabels
