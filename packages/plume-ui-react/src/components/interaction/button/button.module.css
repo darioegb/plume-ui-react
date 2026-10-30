@@ -95,7 +95,7 @@
 
 .button:enabled:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--button-color);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 :is(.outline, .ghost):enabled:not([aria-busy]):active {

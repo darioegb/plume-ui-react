@@ -63,7 +63,7 @@
 
 .radio:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--radio-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .invalid:not(:checked) {

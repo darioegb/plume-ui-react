@@ -118,7 +118,7 @@
 
 .table [data-plume-table-sort]:focus-visible {
   outline: var(--plume-focus-ring-width) solid currentcolor;
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .table [data-plume-table-sort-icon] {
@@ -181,7 +181,7 @@
 }
 
 .table[data-hoverable] tbody tr:hover {
-  background-color: color-mix(in srgb, currentcolor 7%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 .loading {
@@ -193,12 +193,12 @@
 }
 
 .table tr[data-selected] {
-  background-color: color-mix(in srgb, var(--plume-color-primary-solid) 14%, transparent);
+  background-color: color-mix(in srgb, var(--plume-color-primary-solid) var(--plume-overlay-active), transparent);
 }
 
 :global(:where([data-plume-table]:focus-visible)) {
   outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 @media (forced-colors: active) {

@@ -77,7 +77,7 @@
   font-family: var(--plume-font-family);
   font-size: var(--plume-font-size-base);
   min-height: var(--plume-control-height-md);
-  min-width: min(18rem, calc(100vw - var(--plume-space-8)));
+  min-width: min(var(--plume-container-2xs), calc(100vw - var(--plume-space-8)));
   position: relative;
   width: 100%;
 }
@@ -113,13 +113,13 @@
 }
 
 :is(.outline, .filled, .underline):hover:not(.disabled) {
-  border-color: color-mix(in hsl, var(--plume-border-strong), black 10%);
+  border-color: var(--plume-border-hover);
 }
 
 .outline:focus-within {
   border-color: var(--select-color);
   outline: var(--plume-focus-ring-width) solid var(--select-color);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 :is(.filled, .underline):focus-within {
@@ -153,7 +153,7 @@
 
 .trigger {
   border-radius: inherit;
-  min-height: 1.5rem;
+  min-height: var(--plume-target-min);
   outline: none;
 }
 
@@ -366,7 +366,7 @@
 @media (forced-colors: active) {
   .option[data-active] {
     outline: var(--plume-focus-ring-width) solid Highlight;
-    outline-offset: calc(var(--plume-focus-ring-width) * -1);
+    outline-offset: var(--plume-focus-ring-inset);
   }
 
   .panel {

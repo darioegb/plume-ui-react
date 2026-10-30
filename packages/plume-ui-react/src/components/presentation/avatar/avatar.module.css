@@ -30,7 +30,7 @@
   font-size: calc(var(--avatar-size) * 0.36);
   font-weight: var(--plume-font-weight-semibold);
   inline-size: var(--avatar-size);
-  line-height: 1;
+  line-height: var(--plume-line-height-none);
   user-select: none;
 }
 
@@ -61,7 +61,7 @@
   border-radius: var(--plume-radius-full);
   box-shadow:
     0 0 0 2px var(--plume-surface),
-    inset 0 0 0 1px color-mix(in srgb, var(--avatar-status-color) 55%, var(--plume-foreground));
+    inset 0 0 0 var(--plume-border-width-thin) color-mix(in srgb, var(--avatar-status-color) 55%, var(--plume-foreground));
   inline-size: 28%;
   inset-block-end: 0;
   inset-inline-end: 0;

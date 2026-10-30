@@ -15,6 +15,9 @@ function colors(): string[] {
       line(`color-${scheme}-solid`, plume(`color-${scheme}-solid`)),
       line(`color-${scheme}-on-solid`, plume(`color-${scheme}-solid-contrast`)),
       line(`color-${scheme}-text`, plume(`color-${scheme}-text`)),
+      line(`color-${scheme}-tint`, plume(`color-${scheme}-tint`)),
+      line(`color-${scheme}-tint-strong`, plume(`color-${scheme}-tint-strong`)),
+      line(`color-${scheme}-tint-text`, plume(`color-${scheme}-tint-text`)),
     ]
   })
   const semantic = keys(defaultTheme.semantic).map((key) =>

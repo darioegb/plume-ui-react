@@ -1,7 +1,7 @@
 {/* Colors.mdx */}
 
 import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks'
-import { defaultTheme } from 'plume-ui-react'
+import { defaultDarkTheme, defaultTheme } from 'plume-ui-react'
 
 <Meta title='Theme/Colors' />
 
@@ -31,5 +31,57 @@ Each shade is the variable `--plume-color-<color>-<shade>`.
     <ColorItem colors={shades} key={color} subtitle={names[color]} title={`colors.${color}`} />
   ))}
 </ColorPalette>
+
+## Surfaces and text
+
+`--plume-<name>` · Tailwind `bg-<name>`, `text-<name>`, `border-<name>`
+
+The colors of the page itself, which change with the color mode. Use them in your own CSS so it follows the theme.
+
+export const roles = {
+  background: 'The page, behind everything.',
+  surface: 'A card, a panel, a field, a popup.',
+  surfaceMuted: 'A quieter surface: a filled field, a header, a code block.',
+  foreground: 'The text and the icons.',
+  muted: 'Secondary text: a description, a placeholder, a caption.',
+  border: 'The border of a surface or a divider.',
+  borderStrong: 'The border of a field, which has to be seen to be found.',
+  borderHover: 'The border of a field under the pointer.',
+  backdrop: 'The layer behind a Modal, a Drawer or the panel of a Sidebar.',
+}
+
+export const kebab = (name) => name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+
+<ColorPalette>
+  {Object.keys(roles).map((name) => (
+    <ColorItem
+      colors={{ light: defaultTheme.semantic[name], dark: defaultDarkTheme.semantic[name] }}
+      key={name}
+      subtitle={roles[name]}
+      title={`--plume-${kebab(name)}`}
+    />
+  ))}
+</ColorPalette>
+
+## The colors of a scheme
+
+Every color of the palette also gets these variables, worked out from its shades when the theme is built. They are
+what the components use, and what to use in your own CSS: they are adjusted to keep their contrast in light and dark
+mode, which a raw shade does not.
+
+<table>
+  <thead>
+    <tr><th>Variable</th><th>Use it for</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>--plume-color-&lt;color&gt;-solid</code></td><td>A filled background, like a solid button (Tailwind <code>bg-&lt;color&gt;-solid</code>). The first of the <code>500</code>, <code>600</code> and <code>700</code> shades that reads well under white text.</td></tr>
+    <tr><td><code>-solid-contrast</code></td><td>The text and the icons on <code>solid</code> (Tailwind <code>text-&lt;color&gt;-on-solid</code>).</td></tr>
+    <tr><td><code>-solid-hover</code>, <code>-solid-active</code></td><td><code>solid</code> under the pointer and pressed.</td></tr>
+    <tr><td><code>-text</code></td><td>Colored text, an outline or an icon on the page surfaces, at 4.5:1 at least (Tailwind <code>text-&lt;color&gt;-text</code>).</td></tr>
+    <tr><td><code>-text-hover</code>, <code>-text-active</code></td><td><code>text</code> under the pointer and pressed.</td></tr>
+    <tr><td><code>-tint</code>, <code>-tint-strong</code></td><td>A light background of the color, like a subtle badge or a selected row (Tailwind <code>bg-&lt;color&gt;-tint</code>).</td></tr>
+    <tr><td><code>-tint-text</code></td><td>The text on <code>tint</code> and <code>tint-strong</code>: the plain <code>text</code> can fall short on them (Tailwind <code>text-&lt;color&gt;-tint-text</code>).</td></tr>
+  </tbody>
+</table>
 
 To change a color or add one of your own, see <a href='./?path=/docs/theme-theming--docs' target='_top'>Theming</a>.

@@ -77,7 +77,7 @@
 
 .close:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--plume-focus-ring-color);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 @media (prefers-reduced-motion: no-preference) {

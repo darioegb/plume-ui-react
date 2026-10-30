@@ -1,3 +1,4 @@
+import { getContrastRatio } from '../../utils/colors'
 import { deepMerge } from '../../utils/merge'
 import { defaultDarkTheme, defaultTheme } from '../config'
 import { themeToCssVars } from '../theme-to-css-vars'
@@ -101,10 +102,20 @@ describe('themeToCssVars', () => {
     expect(vars['--plume-text-heading-1-size']).toBe('var(--plume-font-size-4xl)')
   })
 
-  it('keeps the shadows of the slider thumb and of the pickers the same in dark mode', () => {
+  it('emits the focus ring inset, the overlays and the target size', () => {
+    const vars = themeToCssVars(defaultTheme)
+    expect(vars['--plume-focus-ring-inset']).toBe('calc(var(--plume-focus-ring-width) * -1)')
+    expect(vars['--plume-overlay-hover']).toBe('8%')
+    expect(vars['--plume-overlay-active']).toBe('14%')
+    expect(vars['--plume-target-min']).toBe('1.5rem')
+  })
+
+  it('makes the border lighter on hover in dark mode, not darker', () => {
     const vars = themeToCssVars(darkTheme)
-    expect(vars['--plume-shadow-raised']).toBe(defaultTheme.shadows.raised)
-    expect(vars['--plume-shadow-panel']).toBe(defaultTheme.shadows.panel)
+    expect(vars['--plume-border-hover']).not.toBe(defaultTheme.semantic.borderHover)
+    expect(getContrastRatio(vars['--plume-border-hover'], vars['--plume-background'])).toBeGreaterThan(
+      getContrastRatio(vars['--plume-border-strong'], vars['--plume-background']),
+    )
   })
 
   it('has its own shadows and backdrop in dark mode', () => {

@@ -125,7 +125,7 @@
 
 .action:hover,
 .dismiss:hover {
-  background-color: color-mix(in srgb, currentcolor 12%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 .dismiss {
@@ -148,7 +148,7 @@
 .action:focus-visible,
 .dismiss:focus-visible {
   outline: var(--plume-focus-ring-width) solid currentcolor;
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 @media (prefers-reduced-motion: no-preference) {

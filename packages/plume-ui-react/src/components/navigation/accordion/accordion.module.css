@@ -87,12 +87,12 @@
 }
 
 .trigger:hover:enabled {
-  background-color: color-mix(in srgb, currentcolor 6%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 .trigger:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--accordion-text);
-  outline-offset: calc(var(--plume-focus-ring-width) * -1);
+  outline-offset: var(--plume-focus-ring-inset);
 }
 
 .trigger:disabled {

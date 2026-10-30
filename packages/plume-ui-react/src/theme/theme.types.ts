@@ -162,8 +162,6 @@ export interface Shadows {
   lg: string
   xl: string
   '2xl': string
-  raised: string
-  panel: string
 }
 
 export interface Breakpoints {
@@ -198,6 +196,7 @@ export interface Motion {
 export interface FocusRing {
   width: string
   offset: string
+  inset: string
   color: string
 }
 
@@ -217,6 +216,15 @@ export interface Opacities {
   disabled: number
 }
 
+export interface Overlays {
+  hover: string
+  active: string
+}
+
+export interface Targets {
+  min: string
+}
+
 export interface SemanticColors {
   background: string
   surface: string
@@ -225,6 +233,7 @@ export interface SemanticColors {
   muted: string
   border: string
   borderStrong: string
+  borderHover: string
   backdrop: string
 }
 
@@ -244,6 +253,8 @@ export interface Theme {
   borderWidths: BorderWidths
   controlHeights: ControlHeights
   opacities: Opacities
+  overlays: Overlays // Alphas of currentcolor for the hover and the press of an item
+  targets: Targets // The smallest box a pointer has to hit
 }
 
 export type DeepPartial<T> = {

@@ -184,7 +184,7 @@
 }
 
 .item:hover:not(:disabled, [aria-disabled='true']) {
-  background-color: color-mix(in srgb, currentcolor 10%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 .item[data-active] {
@@ -196,7 +196,7 @@
 .plain .item[data-active] {
   background-color: transparent;
   border-radius: 0;
-  box-shadow: inset 0 -2px 0 var(--navbar-text);
+  box-shadow: inset 0 calc(var(--plume-border-width-medium) * -1) 0 var(--navbar-text);
   color: var(--navbar-text);
 }
 
@@ -219,7 +219,7 @@
 .brand:focus-visible,
 .toggle:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--navbar-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .solid .item:focus-visible,
@@ -235,7 +235,7 @@
 }
 
 .toggle:hover {
-  background-color: color-mix(in srgb, currentcolor 10%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 @media (forced-colors: active) {

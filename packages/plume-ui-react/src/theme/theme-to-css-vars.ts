@@ -125,6 +125,8 @@ export function themeToCssVars(theme: Theme): Record<string, string> {
   flatten(`${PREFIX}-border-width`, theme.borderWidths as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-control-height`, theme.controlHeights as unknown as TokenRecord, vars)
   flatten(`${PREFIX}-opacity`, theme.opacities as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-overlay`, theme.overlays as unknown as TokenRecord, vars)
+  flatten(`${PREFIX}-target`, theme.targets as unknown as TokenRecord, vars)
 
   return vars
 }

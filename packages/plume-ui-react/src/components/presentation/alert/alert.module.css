@@ -77,13 +77,13 @@
 }
 
 .dismiss:hover {
-  background-color: color-mix(in srgb, currentcolor 14%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-active), transparent);
   opacity: 1;
 }
 
 .dismiss:focus-visible {
   outline: var(--plume-focus-ring-width) solid currentcolor;
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 @media (forced-colors: active) {

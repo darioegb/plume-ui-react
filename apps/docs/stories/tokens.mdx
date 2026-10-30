@@ -21,7 +21,6 @@ values as the default one of Plume but doesn't follow a theme that changes `spac
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
   {Object.entries(defaultTheme.spaces)
-    .filter(([key]) => Number(key) <= 16)
     .sort(([a], [b]) => Number(a) - Number(b))
     .map(([key, value]) => (
       <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -146,6 +145,21 @@ a dialog or a panel. The `Modal` uses `sm`, `lg` and `3xl` for its sizes `sm`, `
   ))}
 </ul>
 
+## Breakpoints
+
+`@media (--<name>)` and `@media (--below-<name>)` in the CSS of the components · Tailwind `sm:`, `md:`…
+
+A `var()` doesn't work inside `@media`, so the breakpoints are not CSS variables: the build writes them into the media
+queries of the components, and `theme.breakpoints` is for your own code. They are the ones of Tailwind v4.
+
+<ul>
+  {Object.entries(defaultTheme.breakpoints).map(([key, value]) => (
+    <li key={key}>
+      <code>breakpoints.{key}</code> → {value}
+    </li>
+  ))}
+</ul>
+
 ## Motion
 
 `--plume-duration-*`, `--plume-easing-*` · Tailwind `duration-*`, `ease-*`
@@ -163,13 +177,16 @@ a dialog or a panel. The `Modal` uses `sm`, `lg` and `3xl` for its sizes `sm`, `
   ))}
 </ul>
 
-## Focus ring, borders, controls and disabled
+## Focus ring, borders, controls and states
 
 <ul>
-  <li><code>--plume-focus-ring-width</code>, <code>-offset</code> and <code>-color</code> → {defaultTheme.focusRing.width}, {defaultTheme.focusRing.offset}, {defaultTheme.focusRing.color}</li>
+  <li><code>--plume-focus-ring-width</code>, <code>-offset</code>, <code>-inset</code> and <code>-color</code> → {defaultTheme.focusRing.width}, {defaultTheme.focusRing.offset}, <code>{defaultTheme.focusRing.inset}</code>, <code>{defaultTheme.focusRing.color}</code>. Every ring around a control uses the offset, and the rings drawn inside an item (a row of a list or a menu, a day of the calendar) use the inset, so changing them in the theme moves all of them. The color is the fallback of the rings that have no <code>colorScheme</code>: the others take the <code>text</code> color of their scheme.</li>
   <li><code>--plume-border-width-thin</code>, <code>-medium</code> and <code>-thick</code> → {defaultTheme.borderWidths.thin}, {defaultTheme.borderWidths.medium}, {defaultTheme.borderWidths.thick}</li>
   <li><code>--plume-control-height-sm</code>, <code>-md</code> and <code>-lg</code> → {defaultTheme.controlHeights.sm}, {defaultTheme.controlHeights.md}, {defaultTheme.controlHeights.lg} · Tailwind <code>h-control-md</code></li>
   <li><code>--plume-opacity-disabled</code> → {defaultTheme.opacities.disabled} · Tailwind <code>opacity-disabled</code></li>
+  <li><code>--plume-overlay-hover</code> and <code>-active</code> → {defaultTheme.overlays.hover}, {defaultTheme.overlays.active}: how much of the text color covers an item under the pointer or pressed, as in <code>color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent)</code>. Being a part of the text color, they work on any surface and in both modes.</li>
+  <li><code>--plume-target-min</code> → {defaultTheme.targets.min}: the smallest box a pointer has to hit (WCAG 2.5.8), for the small buttons and the dots.</li>
+  <li><code>--plume-border-hover</code> → {defaultTheme.semantic.borderHover}: the border of a field under the pointer, lighter than <code>--plume-border-strong</code> in dark mode.</li>
   <li><code>--plume-backdrop</code>, the color behind a Modal or a Sidebar panel → {defaultTheme.semantic.backdrop} · Tailwind <code>bg-backdrop</code></li>
 </ul>
 
