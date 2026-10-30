@@ -189,6 +189,15 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the buttons.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Paginator aria-label="Size sm" defaultPage={4} size="sm" total={100} />
+<Paginator aria-label="Size md" defaultPage={4} size="md" total={100} />
+<Paginator aria-label="Size lg" defaultPage={4} size="lg" total={100} />`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -199,9 +208,19 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick a color from the theme. It colors the current page.
+ * Use the **colorScheme** prop to pick a color from the theme. It colors the current page, a button of the variant
+ * (`solid`, `outline` or `ghost`) in that color; the other pages stay neutral.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Paginator aria-label="primary" colorScheme="primary" defaultPage={2} total={50} />
+<Paginator aria-label="success" colorScheme="success" defaultPage={2} total={50} />
+<Paginator aria-label="error" colorScheme="error" defaultPage={2} total={50} />`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1rem')}>
       {colorSchemes.map((scheme) => (
@@ -211,7 +230,6 @@ export const Colors: Story = {
           total={50}
           defaultPage={2}
           key={scheme}
-          size="sm"
         />
       ))}
     </div>
@@ -222,6 +240,14 @@ export const Colors: Story = {
  * Use the **shape** prop to round the corners of the buttons all the way.
  */
 export const Shapes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Paginator aria-label="rounded" defaultPage={3} shape="rounded" total={60} />
+<Paginator aria-label="pill" defaultPage={3} shape="pill" total={60} />`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['rounded', 'pill'] as const).map((shape) => (

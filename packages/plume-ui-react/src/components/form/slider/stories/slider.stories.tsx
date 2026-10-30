@@ -171,6 +171,17 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="solid" defaultValue={40} variant="solid" />
+<Slider aria-label="outline" defaultValue={40} variant="outline" />
+<Slider aria-label="unstyled" defaultValue={40} variant="unstyled">
+  <SliderThumb className="w-full accent-purple-600" />
+</Slider>`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['solid', 'outline'] as const).map((variant) => (
@@ -187,6 +198,15 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the thumb and the track.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="Size sm" defaultValue={40} size="sm" />
+<Slider aria-label="Size md" defaultValue={40} size="md" />
+<Slider aria-label="Size lg" defaultValue={40} size="lg" />`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1.5rem')}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -197,9 +217,19 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick a color from the theme. It colors the filled part and the thumb.
+ * Use the **colorScheme** prop to pick a color from the theme. It colors the filled part and the thumb in `solid`,
+ * and the filled part and the border of the hollow thumb in `outline`.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Slider aria-label="primary" colorScheme="primary" defaultValue={60} />
+<Slider aria-label="success" colorScheme="success" defaultValue={60} />
+<Slider aria-label="error" colorScheme="error" defaultValue={60} />`,
+      },
+    },
+  },
   render: () => (
     <div style={stack('1rem')}>
       {colorSchemes.map((scheme) => (
@@ -208,7 +238,6 @@ export const Colors: Story = {
           colorScheme={scheme as keyof typeof defaultTheme.colors}
           defaultValue={60}
           key={scheme}
-          size="sm"
         />
       ))}
     </div>

@@ -11,7 +11,10 @@ type PaginatorEllipsisRootAttributes = Pick<HTMLAttributes<HTMLSpanElement>, 'ch
 
 export type PaginatorEllipsisProps = Omit<ComponentProps, 'index'> & PaginatorEllipsisRootAttributes
 
-/** The `…` that stands for the folded pages, `aria-hidden`. */
+/**
+ * The mark that stands for the folded pages. It is `aria-hidden`, so it is never announced, and it
+ * shows `…` unless you give it `children`.
+ */
 export const PaginatorEllipsis = forwardRef<HTMLSpanElement, PaginatorEllipsisProps>(
   (
     { children, className, style, ...rest }: PaginatorEllipsisProps,
