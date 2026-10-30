@@ -1,5 +1,17 @@
 /* button.module.css */
 
+:global(:where([data-plume-button-label][data-hidden])) {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .button {
   align-items: center;
   background-color: transparent;
@@ -123,18 +135,6 @@ button.disabled {
 
 .iconMargin {
   margin: 0 var(--plume-space-1);
-}
-
-.hidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
 }
 
 .spinnerMargin {
