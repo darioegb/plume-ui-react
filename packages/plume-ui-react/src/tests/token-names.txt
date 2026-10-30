@@ -1,6 +1,7 @@
 --plume-backdrop
 --plume-background
 --plume-border
+--plume-border-hover
 --plume-border-strong
 --plume-border-width-medium
 --plume-border-width-thick
@@ -259,6 +260,7 @@
 --plume-easing-out
 --plume-easing-standard
 --plume-focus-ring-color
+--plume-focus-ring-inset
 --plume-focus-ring-offset
 --plume-focus-ring-width
 --plume-font-family
@@ -293,6 +295,8 @@
 --plume-line-height-tight
 --plume-muted
 --plume-opacity-disabled
+--plume-overlay-active
+--plume-overlay-hover
 --plume-radius-0
 --plume-radius-1
 --plume-radius-2
@@ -305,8 +309,6 @@
 --plume-shadow-lg
 --plume-shadow-md
 --plume-shadow-none
---plume-shadow-panel
---plume-shadow-raised
 --plume-shadow-sm
 --plume-shadow-xl
 --plume-space-0
@@ -350,6 +352,7 @@
 --plume-space-96
 --plume-surface
 --plume-surface-muted
+--plume-target-min
 --plume-text-body-letter-spacing
 --plume-text-body-line-height
 --plume-text-body-size

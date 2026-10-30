@@ -106,7 +106,7 @@
 
 .toggle:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--toggle-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .invalid:not(:checked) {

@@ -92,7 +92,7 @@
 
 .item:focus-visible > .label {
   outline: var(--plume-focus-ring-width) solid var(--tree-text);
-  outline-offset: calc(var(--plume-focus-ring-width) * -1);
+  outline-offset: var(--plume-focus-ring-inset);
 }
 
 .item[aria-disabled='true'] > .label {

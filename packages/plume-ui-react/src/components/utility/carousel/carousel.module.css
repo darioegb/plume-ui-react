@@ -88,7 +88,7 @@
 
 .slides:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--carousel-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .arrow {
@@ -135,13 +135,13 @@
 
 .arrow:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: var(--plume-opacity-disabled);
 }
 
 .arrow:focus-visible,
 .dot:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--carousel-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .playPause {
@@ -154,10 +154,10 @@
 
 .dot {
   align-items: center;
-  block-size: 1.5rem;
+  block-size: var(--plume-target-min);
   border-radius: var(--plume-radius-full);
   display: inline-flex;
-  inline-size: max(1.5rem, var(--carousel-dot));
+  inline-size: max(var(--plume-target-min), var(--carousel-dot));
   justify-content: center;
   position: relative;
 }
@@ -171,7 +171,7 @@
 }
 
 .dot[data-active] {
-  inline-size: max(1.5rem, calc(var(--carousel-dot) * 2.2));
+  inline-size: max(var(--plume-target-min), calc(var(--carousel-dot) * 2.2));
 }
 
 .dot[data-active]::before {
@@ -215,13 +215,13 @@
 }
 
 .vertical .dot {
-  block-size: max(1.5rem, var(--carousel-dot));
-  inline-size: 1.5rem;
+  block-size: max(var(--plume-target-min), var(--carousel-dot));
+  inline-size: var(--plume-target-min);
 }
 
 .vertical .dot[data-active] {
-  block-size: max(1.5rem, calc(var(--carousel-dot) * 2.2));
-  inline-size: 1.5rem;
+  block-size: max(var(--plume-target-min), calc(var(--carousel-dot) * 2.2));
+  inline-size: var(--plume-target-min);
 }
 
 .vertical .dot[data-active]::before {
@@ -243,7 +243,7 @@
 
 .bars .dot,
 .bars .dot[data-active] {
-  block-size: 1.5rem;
+  block-size: var(--plume-target-min);
   inline-size: 2rem;
   border-radius: var(--plume-radius-2);
 }
@@ -257,7 +257,7 @@
 .vertical .bars .dot,
 .vertical .bars .dot[data-active] {
   block-size: 2rem;
-  inline-size: 1.5rem;
+  inline-size: var(--plume-target-min);
 }
 
 .vertical .bars .dot::before,

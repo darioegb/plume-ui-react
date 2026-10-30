@@ -14,7 +14,7 @@
 
 .slider {
   --slider-mark-size: 0.25rem;
-  --slider-hit: max(var(--slider-thumb), 1.5rem);
+  --slider-hit: max(var(--slider-thumb), var(--plume-target-min));
   color: var(--plume-foreground);
   font-family: var(--plume-font-family);
   font-size: var(--plume-font-size-xs);
@@ -197,7 +197,7 @@
   block-size: var(--slider-thumb);
   border: var(--plume-border-width-medium) solid var(--plume-surface);
   border-radius: var(--plume-radius-full);
-  box-shadow: var(--plume-shadow-raised);
+  box-shadow: var(--plume-shadow-md);
   box-sizing: border-box;
   cursor: grab;
   inline-size: var(--slider-thumb);
@@ -209,7 +209,7 @@
   block-size: var(--slider-thumb);
   border: var(--plume-border-width-medium) solid var(--plume-surface);
   border-radius: var(--plume-radius-full);
-  box-shadow: var(--plume-shadow-raised);
+  box-shadow: var(--plume-shadow-md);
   box-sizing: border-box;
   cursor: grab;
   inline-size: var(--slider-thumb);

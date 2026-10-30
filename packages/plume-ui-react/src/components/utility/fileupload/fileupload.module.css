@@ -99,7 +99,7 @@
 .icon {
   display: inline-flex;
   font-size: 2em;
-  line-height: 1;
+  line-height: var(--plume-line-height-none);
 }
 
 .bordered .dropzone {
@@ -120,7 +120,7 @@
 
 .dropzone:has(input:focus-visible) {
   outline: var(--plume-focus-ring-width) solid var(--fileupload-text);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .fileupload[data-dragging] .dropzone {
@@ -158,13 +158,13 @@
 .remove {
   border-radius: var(--plume-radius-full);
   font-size: 1.1em;
-  height: 1.5rem;
-  min-width: 1.5rem;
+  height: var(--plume-target-min);
+  min-width: var(--plume-target-min);
   padding-inline: var(--plume-space-1);
 }
 
 .remove:hover {
-  background-color: color-mix(in srgb, currentcolor 12%, transparent);
+  background-color: color-mix(in srgb, currentcolor var(--plume-overlay-hover), transparent);
 }
 
 .remove:focus-visible {

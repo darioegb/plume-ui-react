@@ -176,6 +176,7 @@ export const defaultTheme: Theme = {
     muted: '#6e6e77',
     border: '#d4d4d8',
     borderStrong: '#80808a',
+    borderHover: '#73737c',
     backdrop: 'rgb(0 0 0 / 50%)',
   },
   typography: {
@@ -296,8 +297,6 @@ export const defaultTheme: Theme = {
     lg: '0 10px 15px rgba(0, 0, 0, 0.15)',
     xl: '0 20px 25px rgba(0, 0, 0, 0.2)',
     '2xl': '0 25px 50px rgba(0, 0, 0, 0.25)',
-    raised: '0 1px 3px rgb(0 0 0 / 30%)',
-    panel: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
   },
   breakpoints: {
     sm: '40rem',
@@ -335,7 +334,8 @@ export const defaultTheme: Theme = {
   },
   focusRing: {
     width: '2px',
-    offset: '1px',
+    offset: '0',
+    inset: 'calc(var(--plume-focus-ring-width) * -1)',
     color: 'var(--plume-color-primary-text)',
   },
   borderWidths: {
@@ -351,6 +351,13 @@ export const defaultTheme: Theme = {
   opacities: {
     disabled: 0.5,
   },
+  overlays: {
+    hover: '8%',
+    active: '14%',
+  },
+  targets: {
+    min: '1.5rem',
+  },
 }
 
 export const defaultDarkTheme: DeepPartial<Theme> = {
@@ -362,6 +369,7 @@ export const defaultDarkTheme: DeepPartial<Theme> = {
     muted: '#acacb5',
     border: '#3f3f46',
     borderStrong: '#9a9aa3',
+    borderHover: '#a9a9b1',
     backdrop: 'rgb(0 0 0 / 65%)',
   },
   shadows: {

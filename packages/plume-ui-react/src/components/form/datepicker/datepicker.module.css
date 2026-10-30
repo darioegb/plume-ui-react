@@ -8,7 +8,7 @@
 .datePickerModal {
   --datepicker-day: var(--plume-space-10);
   --datepicker-calendar-width: calc(var(--datepicker-day) * 7 + 3.5rem);
-  --datepicker-fill: color-mix(in srgb, var(--plume-foreground) 8%, transparent);
+  --datepicker-fill: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), transparent);
   margin-top: var(--plume-space-2);
   display: flex;
   flex-direction: column;
@@ -202,7 +202,7 @@
 }
 
 .today {
-  box-shadow: inset 0 0 0 1px currentColor;
+  box-shadow: inset 0 0 0 var(--plume-border-width-thin) currentColor;
   color: var(--datepicker-scheme);
 }
 
@@ -260,12 +260,12 @@ button.footerButtonApply {
 
   .rangeItem {
     outline: 1px dashed Highlight;
-    outline-offset: calc(var(--plume-focus-ring-width) * -1);
+    outline-offset: var(--plume-focus-ring-inset);
   }
 
   .today {
     outline: 1px solid CanvasText;
-    outline-offset: calc(var(--plume-focus-ring-width) * -1);
+    outline-offset: var(--plume-focus-ring-inset);
   }
 
   .day:focus-visible,

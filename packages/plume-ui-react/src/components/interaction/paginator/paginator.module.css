@@ -13,15 +13,15 @@
 }
 
 .sm {
-  --paginator-box: var(--plume-space-8);
+  --paginator-box: var(--plume-control-height-sm);
 }
 
 .md {
-  --paginator-box: var(--plume-space-10);
+  --paginator-box: var(--plume-control-height-md);
 }
 
 .lg {
-  --paginator-box: var(--plume-space-12);
+  --paginator-box: var(--plume-control-height-lg);
 }
 
 .list {

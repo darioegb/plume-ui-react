@@ -3,7 +3,7 @@
 }
 
 .panel {
-  --timepicker-fill: color-mix(in srgb, var(--plume-foreground) 8%, transparent);
+  --timepicker-fill: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), transparent);
   display: flex;
   gap: var(--plume-space-1);
   margin: 0;

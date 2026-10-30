@@ -53,7 +53,7 @@
 .rating {
   font-family: var(--plume-font-family);
   gap: var(--plume-space-1);
-  line-height: 1;
+  line-height: var(--plume-line-height-none);
 }
 
 .sm {
@@ -89,7 +89,7 @@
 .item:has(:focus-visible) {
   border-radius: var(--plume-radius-3);
   outline: var(--plume-focus-ring-width) solid var(--rating-edge, currentColor);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .disabled {

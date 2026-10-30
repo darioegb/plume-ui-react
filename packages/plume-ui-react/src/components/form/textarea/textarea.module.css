@@ -2,7 +2,7 @@
   background: transparent;
   border: 0 solid;
   outline: var(--plume-focus-ring-width) solid transparent;
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 .textarea {
@@ -11,7 +11,7 @@
   color: var(--plume-foreground);
   display: block;
   font-family: var(--plume-font-family);
-  min-width: min(18rem, 100%);
+  min-width: min(var(--plume-container-2xs), 100%);
   padding: var(--plume-space-2) var(--plume-space-4);
   width: 100%;
 }
@@ -78,7 +78,7 @@
 }
 
 :is(.outline, .filled, .underline):enabled:hover {
-  border-color: color-mix(in hsl, var(--plume-border-strong), black 10%);
+  border-color: var(--plume-border-hover);
 }
 
 :is(.outline, .filled, .underline).invalid,
@@ -93,7 +93,7 @@
 .outline:enabled:focus {
   border-color: var(--textarea-color);
   outline: var(--plume-focus-ring-width) solid var(--textarea-color);
-  outline-offset: 0;
+  outline-offset: var(--plume-focus-ring-offset);
 }
 
 :is(.filled, .underline):enabled:focus {

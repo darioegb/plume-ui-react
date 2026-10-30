@@ -524,8 +524,14 @@ The z-index scale has names instead of numbers, and the typo is fixed: `theme.zI
     <tr><td><code>--plume-breakpoint-&#42;</code></td><td>not emitted: a <code>var()</code> does not work inside <code>@media</code>; read <code>useTheme().theme.breakpoints</code></td></tr>
     <tr><td><code>theme.sizes</code>, <code>--plume-size-&#42;</code></td><td>removed, nothing used them</td></tr>
     <tr><td><code>--plume-color-&lt;scheme&gt;-contrast</code></td><td>removed: use <code>--plume-color-&lt;scheme&gt;-solid-contrast</code></td></tr>
+    <tr><td><code>theme.shadows.raised</code>, <code>theme.shadows.panel</code></td><td>removed, they belonged to one component each: the thumb of the <code>Slider</code> uses <code>md</code>, like the one of the <code>Toggle</code>, and the panel of the pickers <code>lg</code>, like the other popups</td></tr>
+    <tr><td><code>--plume-focus-ring-offset</code> is <code>1px</code>, and most rings write <code>0</code></td><td>it is <code>0</code>, and every ring around a control uses it; the rings inside an item use the new <code>--plume-focus-ring-inset</code></td></tr>
   </tbody>
 </table>
+
+New in the theme: `semantic.borderHover` (`--plume-border-hover`), `overlays.hover` and `overlays.active`
+(`--plume-overlay-*`, the share of the text color that covers an item under the pointer or pressed) and `targets.min`
+(`--plume-target-min`, 24px). The hover of the rows, the items and the small buttons is now the same in every component.
 
 `theme.breakpoints` is for your own code (`useTheme().theme.breakpoints`, a `useMediaQuery`). The `Sidebar` and the
 `Navbar` fold at the `sm`, `md` and `lg` of the default theme, because their CSS uses `@media` queries, which cannot
