@@ -92,26 +92,34 @@ const clamp = (value: number, max: number): number => Math.min(Math.max(value, 0
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     {
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
       animated = false,
       children,
       className,
       colorScheme = 'primary',
       formatValue = defaultFormatValue,
+      hidden,
+      id,
       indeterminate = false,
       max = 100,
       shape = 'pill',
       showValue = false,
       size = 'md',
       style,
+      title,
       value = 0,
       valueText,
       variant = 'solid',
-      ...rest
     }: ProgressBarProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const total = max > 0 ? max : 100
     const current = clamp(value, total)
+    const trackProps = useMemo(
+      () => ({ 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy, hidden, id, title }),
+      [ariaLabel, ariaLabelledBy, hidden, id, title],
+    )
     const context: ProgressBarContextValue = useMemo(
       () => ({
         animated,
@@ -123,7 +131,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
         shape,
         size,
         total,
-        trackProps: rest,
+        trackProps,
         trackRef: ref,
         valueText,
         variant,
@@ -134,10 +142,10 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
         formatValue,
         indeterminate,
         ref,
-        rest,
         shape,
         size,
         total,
+        trackProps,
         valueText,
         variant,
       ],
