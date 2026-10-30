@@ -176,7 +176,7 @@ const preview: Preview = {
         order: [
           'Introduction',
           'Theme',
-          ['Colors', 'Tokens'],
+          ['Theming', 'Colors', 'Tokens'],
           'Guides',
           'Components',
         ],

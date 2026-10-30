@@ -1,0 +1,169 @@
+{/* framework-integration.mdx */}
+
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
+import * as IntegrationStories from './integrations.stories'
+
+<Meta name='Docs' of={IntegrationStories} />
+
+# Framework integration
+
+Plume ships its own CSS and needs no build plugin, so the setup is the same in every React app: import the stylesheet
+once and wrap the app in `<ThemeProvider>`. This page shows where they go in Vite and Next.js, and how to use Plume next
+to Tailwind CSS or Bootstrap. The [Examples](?path=/docs/guides-examples--docs) page has a complete app of each kind.
+
+## Vite (or any client-side app)
+
+```tsx
+// src/main.tsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { ThemeProvider, ToastProvider } from 'plume-ui-react'
+import 'plume-ui-react/styles.css'
+import { App } from './app'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <ThemeProvider defaultColorMode='system'>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </ThemeProvider>
+  </StrictMode>,
+)
+```
+
+`LocaleProvider` goes in the same place when the app is not in English (see
+[Internationalization](?path=/docs/guides-internationalization--docs)). In a client-only app the saved color mode can be
+read before the first render, from `localStorage`, so `'system'` is the only case that changes after the page loads.
+
+## Next.js App Router
+
+Every component can be rendered from a Server Component. The package keeps `'use client'` on each module that needs it,
+so a Server Component imports from `plume-ui-react` directly. The presentational ones (`Card`, `List`, `Badge`,
+`Divider`, `Heading`, `Text`, `Skeleton`, the parts of `Table`...) don't need it and render on the server with no
+JavaScript in the browser.
+
+What a Server Component can't do is pass a function: `onValueChange`, `onClick` or a render prop go in a component of
+yours that starts with `'use client'`. Put the providers in one of them too, when they need state:
+
+```tsx
+// app/providers.tsx
+'use client'
+
+import type { ReactNode } from 'react'
+import { ThemeProvider, ToastProvider, type ColorModeSetting } from 'plume-ui-react'
+
+export function Providers({ children, colorMode }: { children: ReactNode; colorMode: ColorModeSetting }) {
+  return (
+    <ThemeProvider defaultColorMode={colorMode}>
+      <ToastProvider>{children}</ToastProvider>
+    </ThemeProvider>
+  )
+}
+```
+
+```tsx
+// app/layout.tsx
+import { cookies } from 'next/headers'
+import 'plume-ui-react/styles.css'
+import { Providers } from './providers'
+
+export default async function RootLayout({ children }) {
+  const saved = (await cookies()).get('color-mode')?.value
+  const colorMode = saved === 'dark' ? 'dark' : 'light'
+
+  return (
+    <html lang='en'>
+      <body>
+        <Providers colorMode={colorMode}>{children}</Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+**No theme flash.** The server renders the mode it is given, so read the one the user picked from a cookie, as above,
+and save it there when it changes (a Server Action that sets the cookie, next to `setColorMode` of `useTheme()`).
+`'system'` can't be known on the server: it renders light and switches to dark after the page hydrates, so it only has
+no flash for the users whose system is light.
+
+The directives live in the ESM build, which is what Next.js and the other bundlers resolve. The CommonJS build is a
+single file with none.
+
+## Tailwind CSS v4
+
+The components work as they are next to Tailwind, and with `variant='unstyled'` you style them with utilities.
+`plume-ui-react/tailwind.css` turns the tokens of Plume into utilities: the colors (`bg-primary-solid`,
+`text-primary-on-solid`, `bg-surface`, `border-border`), the text styles (`text-heading-1`, `text-body`), the font
+families (`font-plume`), sizes, weights, line heights and letter spacings, the radii, the shadows, the container widths
+(`max-w-md`) and the easings, plus `z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`.
+
+```css
+@layer theme, base, plume, components, utilities;
+
+@import 'tailwindcss';
+@import 'plume-ui-react/styles.css';
+@import 'plume-ui-react/tailwind.css';
+
+@custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
+```
+
+The first line puts the layers in order (see [Customizing styles](?path=/docs/guides-customizing-styles--docs)), and the
+last one makes `dark:` follow the color mode of Plume instead of the system preference.
+
+The utilities point to the variables of Plume (`@theme inline`), so they follow the theme, a nested provider and the
+color mode. The spacing and the breakpoints are the ones of Tailwind, which are also the default ones of Plume: a
+theme that changes `spaces` or `breakpoints` doesn't change `p-4` or `md:`.
+
+<Canvas of={IntegrationStories.Tailwind} />
+
+## Tailwind CSS v3
+
+There is no theme file for Tailwind v3: map the variables you need in `tailwind.config.ts`. Turn the preflight off,
+because a reset with no layer beats the CSS of Plume, and import a reset of your own into a layer before `plume`
+([Customizing styles](?path=/docs/guides-customizing-styles--docs) explains why):
+
+```ts
+// tailwind.config.ts
+export default {
+  content: ['./src/**/*.{ts,tsx}'],
+  corePlugins: { preflight: false },
+  darkMode: ['class', '[data-plume-color-mode="dark"]'],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: 'var(--plume-color-primary-500)',
+          solid: 'var(--plume-color-primary-solid)',
+          'on-solid': 'var(--plume-color-primary-solid-contrast)',
+          text: 'var(--plume-color-primary-text)',
+        },
+        surface: 'var(--plume-surface)',
+        foreground: 'var(--plume-foreground)',
+        border: 'var(--plume-border)',
+      },
+      borderRadius: { 4: 'var(--plume-radius-4)' },
+    },
+  },
+}
+```
+
+Every token is a variable named `--plume-<group>-<name>` (`--plume-color-primary-500`, `--plume-space-4`,
+`--plume-shadow-md`), listed in [Tokens](?path=/docs/theme-tokens--docs). For a filled surface use `solid` with
+`solid-contrast`, and for colored text `text`: unlike the raw `500` shade, they keep a contrast of 4.5:1 in light and
+dark.
+
+## Bootstrap, or any other framework
+
+Give the component `variant='unstyled'` and the classes of the framework:
+
+```tsx
+<Button className='btn btn-primary' variant='unstyled'>Save</Button>
+<Input className='form-control' variant='unstyled' />
+```
+
+Bootstrap's reboot has no layer and beats Plume, so import it after the CSS of Plume when the page styles the
+components with Bootstrap, or into a layer before `plume` when it doesn't. Every component page has a **Bootstrap**
+example, and [Customizing styles](?path=/docs/guides-customizing-styles--docs) has both setups.
+
+<Canvas of={IntegrationStories.Bootstrap} />

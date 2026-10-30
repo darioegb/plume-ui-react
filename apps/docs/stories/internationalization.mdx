@@ -38,14 +38,14 @@ const es: PlumeMessages = {
 Each value is the same `Partial<<Name>Labels>` the component takes in its `labels` prop, so you only write what you
 change. `PlumeMessages` types all of it.
 
-`locale` is a BCP 47 tag (`es`, `es-AR`, `en-US`). The components that format dates, like the `DatePicker`, use it
-for the names of the days and months and for the format of the date. The `locale` prop of the `DatePicker` still
-wins when you set it.
+`locale` is a BCP 47 tag (`es`, `es-AR`, `en-US`). The `DatePicker` uses it for the names of the days and months
+and for the format of the date, and its own `locale` prop still wins when you set it. Read it in your own components
+with `useLocale()`, which returns the `locale` of the closest provider (or `undefined`).
 
 ## For one component: the `labels` prop
 
 ```tsx
-<Paginator count={10} labels={{ next: 'Siguiente', page: (page) => `Página ${page}` }} />
+<Paginator labels={{ next: 'Siguiente', page: (page) => `Página ${page}` }} pageSize={10} total={200} />
 ```
 
 A single text on a small part, such as the close button of a `Modal` or the `Spinner`, is a `label` prop.
@@ -119,13 +119,17 @@ function PlumeLocale({ children }) {
 }
 ```
 
+Plume also exports a `useLocale`, so import the one of next-intl with another name:
+
 ```tsx
 // next-intl
 'use client'
 
+import { useLocale as useIntlLocale, useTranslations } from 'next-intl'
+
 function PlumeLocale({ children }) {
   const t = useTranslations('plume')
-  const locale = useLocale()
+  const locale = useIntlLocale()
   const messages = useMemo<PlumeMessages>(
     () => ({
       alert: { dismiss: t('alert.dismiss') },

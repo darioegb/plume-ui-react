@@ -1,0 +1,159 @@
+{/* theming.mdx */}
+
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Theme/Theming' />
+
+# Theming
+
+The look of every component comes from CSS variables named `--plume-*`. `plume-ui-react/styles.css` (or `tokens.css`)
+declares the default theme, light and dark, so the components work as soon as the stylesheet is loaded.
+`<ThemeProvider>` changes those variables for the part of the page it wraps, and keeps the color mode.
+
+## `ThemeProvider`
+
+```tsx
+import { ThemeProvider } from 'plume-ui-react'
+import 'plume-ui-react/styles.css'
+
+export function App() {
+  return (
+    <ThemeProvider defaultColorMode='system' theme={{ colors: { primary: { 500: '#5263ff' } } }}>
+      <Routes />
+    </ThemeProvider>
+  )
+}
+```
+
+<table>
+  <thead>
+    <tr><th>Prop</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>theme</code></td><td>A deep partial of the default theme: write only what you change. It applies to both modes.</td></tr>
+    <tr><td><code>darkTheme</code></td><td>What changes in dark mode only, merged over <code>theme</code> and the default dark values.</td></tr>
+    <tr><td><code>defaultColorMode</code></td><td><code>'light'</code> (the default), <code>'dark'</code> or <code>'system'</code>. It is the initial value: change the mode later with <code>setColorMode</code>.</td></tr>
+    <tr><td><code>applyToBody</code></td><td>Sets <code>data-plume-color-mode</code> and <code>color-scheme</code> on <code>&lt;html&gt;</code> and the background and text color on <code>&lt;body&gt;</code>. <code>true</code> by default; set it to <code>false</code> on a nested provider.</td></tr>
+    <tr><td><code>className</code>, <code>style</code></td><td>Go to the <code>div</code> the provider renders around its children. A CSS variable in <code>style</code> wins over the theme.</td></tr>
+  </tbody>
+</table>
+
+The provider writes on its `div` only the variables that differ from the default theme, so an app with the default
+theme adds almost nothing to the HTML.
+
+## Color mode
+
+`useTheme()` returns the active `theme`, the resolved `colorMode` (`'light'` or `'dark'`, never `'system'`) and
+`setColorMode`, which takes `'light'`, `'dark'` or `'system'`:
+
+```tsx
+'use client'
+
+import { Button, useTheme } from 'plume-ui-react'
+
+export function ColorModeToggle() {
+  const { colorMode, setColorMode } = useTheme()
+  const next = colorMode === 'dark' ? 'light' : 'dark'
+
+  return <Button label={`Switch to ${next} mode`} onClick={() => setColorMode(next)} variant='outline' />
+}
+```
+
+`useTheme` throws outside a `ThemeProvider`. The provider does not save the choice: keep it where your app keeps its
+preferences (a cookie, `localStorage`, the user's profile) and pass it back as `defaultColorMode`.
+
+`'system'` follows `prefers-color-scheme` and changes with it. The browser is the only one that knows it, so the server
+renders `'system'` as light and the page switches to dark after it hydrates. To render the right mode on the server,
+save the mode the user picked in a cookie and read it there, as the Next.js example does (see
+[Framework Integration](?path=/docs/guides-framework-integration--docs)).
+
+## Nested providers
+
+A provider inside another one themes only its children, for a section with another brand or a panel that is always
+dark. Give it `applyToBody={false}`, so it doesn't change the page:
+
+```tsx
+<ThemeProvider>
+  <App />
+  <ThemeProvider applyToBody={false} defaultColorMode='dark' theme={{ colors: { primary: { 500: '#14b8a6' } } }}>
+    <PromoBanner />
+  </ThemeProvider>
+</ThemeProvider>
+```
+
+Popups (`Modal`, `Popover`, `Select`, `Toast`...) render in a portal inside the closest provider, so they take its
+theme and its mode.
+
+## Without a provider
+
+The components only need the variables, so you can skip the provider: load `styles.css` (or `tokens.css` and the CSS of
+each component) and set the mode with the attribute, on `<html>` or on any element:
+
+```html
+<html data-plume-color-mode="dark">
+```
+
+To change a token, redefine its variable in your own CSS. A rule with no cascade layer wins over the one of Plume:
+
+```css
+:root {
+  --plume-radius-3: 0.25rem;
+}
+```
+
+The derived colors (`--plume-color-primary-solid`, `-text`, `-tint`...) are worked out from the shades when the theme
+is built, so changing `--plume-color-primary-500` in CSS doesn't change them: change colors with a provider, or redefine
+the derived variables too. Without a provider there is no `useTheme`, and the `colorScheme` of a component can only be
+one of the default theme.
+
+## New colors
+
+A key you add to `colors` is a new color scheme, which every component takes in `colorScheme`. Give it the eleven
+shades, from `50` to `950`, and the theme derives the rest (`solid`, `text`, `tint`...) with the contrast checked in
+both modes:
+
+```tsx
+import type { DeepPartial, Theme } from 'plume-ui-react'
+
+export const theme: DeepPartial<Theme> = {
+  colors: {
+    salmon: {
+      50: '#fef3f1',
+      100: '#fee6e2',
+      200: '#fdd0c9',
+      300: '#fcb0a5',
+      400: '#fb9588',
+      500: '#fa8072',
+      600: '#f06a5a',
+      700: '#e25a49',
+      800: '#bf4333',
+      900: '#8f3329',
+      950: '#4d1712',
+    },
+  },
+}
+```
+
+A filled background (a `solid` button) uses the first of the `500`, `600` and `700` shades that reads well under white
+text, and keeps `500` with dark text when none does. That is why `salmon` keeps its light `500` as the color of a
+button, while a darker ramp would give a darker button.
+
+With TypeScript, add the color to the palette with module augmentation, so `colorScheme='salmon'` type-checks. Put it in
+a declaration file of your project:
+
+```ts
+// plume-ui.d.ts
+import type { ShadeLevel } from 'plume-ui-react'
+
+declare module 'plume-ui-react' {
+  interface ColorPalette {
+    salmon: ShadeLevel
+  }
+}
+```
+
+## On the server
+
+`defaultTheme`, `themeToCssVars` and the other helpers have no `'use client'`, so a Server Component can call them, for
+example to build the theme from the settings of a tenant. `ThemeProvider` is a client component that a Server Component
+can render, like the root layout of Next.js. Its props have to be serializable, which a theme object is.
