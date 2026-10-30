@@ -1,0 +1,343 @@
+{
+  "app": {
+    "name": "Plume Projects",
+    "description": "A project dashboard built with plume-ui-react on the Next.js App Router."
+  },
+  "nav": {
+    "application": "Application",
+    "pages": "Pages",
+    "topBar": "Top bar",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "team": "Team",
+    "settings": "Settings",
+    "newProject": "New project",
+    "signOut": "Sign out",
+    "accountMenu": "Account menu for {name}",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "scrollToTop": "Scroll to the top"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "es": "Español"
+  },
+  "login": {
+    "title": "Sign in",
+    "heading": "Sign in to Plume Projects",
+    "hint": "This is a simulated sign in: any email and a password of 6 or more characters work.",
+    "email": "Email",
+    "emailPlaceholder": "ana@plume.dev",
+    "password": "Password",
+    "submit": "Sign in"
+  },
+  "validation": {
+    "emailInvalid": "Enter a valid email address.",
+    "passwordShort": "Use at least 6 characters.",
+    "nameShort": "Use at least 3 characters.",
+    "nameTaken": "A project with this name already exists.",
+    "ownerRequired": "Pick the person in charge.",
+    "teamRequired": "Add at least one member.",
+    "dueRequired": "Pick a due date.",
+    "duePast": "The due date cannot be in the past.",
+    "memberExists": "This person is already on the team."
+  },
+  "status": {
+    "onTrack": "On track",
+    "atRisk": "At risk",
+    "delayed": "Delayed",
+    "done": "Done"
+  },
+  "visibility": {
+    "private": "Private",
+    "workspace": "Workspace"
+  },
+  "presence": {
+    "away": "Away",
+    "busy": "In a meeting",
+    "offline": "Offline",
+    "online": "Online"
+  },
+  "department": {
+    "design": "Design",
+    "engineering": "Engineering",
+    "product": "Product",
+    "support": "Support"
+  },
+  "role": {
+    "productManager": "Product Manager",
+    "frontendEngineer": "Frontend Engineer",
+    "backendEngineer": "Backend Engineer",
+    "productDesigner": "Product Designer",
+    "supportSpecialist": "Support Specialist",
+    "dataAnalyst": "Data Analyst",
+    "supportLead": "Support Lead",
+    "staffEngineer": "Staff Engineer",
+    "uxResearcher": "UX Researcher",
+    "customerSuccess": "Customer Success"
+  },
+  "skill": {
+    "roadmaps": "Roadmaps",
+    "research": "Research",
+    "react": "React",
+    "accessibility": "Accessibility",
+    "css": "CSS",
+    "figma": "Figma",
+    "designSystems": "Design systems",
+    "nodejs": "Node.js",
+    "postgresql": "PostgreSQL",
+    "sql": "SQL",
+    "dashboards": "Dashboards",
+    "onboarding": "Onboarding",
+    "docs": "Docs",
+    "architecture": "Architecture",
+    "security": "Security",
+    "go": "Go",
+    "interviews": "Interviews",
+    "surveys": "Surveys",
+    "accounts": "Accounts",
+    "training": "Training"
+  },
+  "dashboard": {
+    "title": "Welcome back, {name}",
+    "guest": "there",
+    "description": "Here is where your projects stand today.",
+    "keyNumbers": "Key numbers",
+    "activeProjects": "Active projects",
+    "due": "Due {date}",
+    "progress": "{name} progress",
+    "loading": "Loading the dashboard",
+    "metrics": {
+      "active": { "label": "Active projects", "change": "+{change} this month" },
+      "completed": { "label": "Tasks completed", "change": "+{change, number, percent}" },
+      "overdue": { "label": "Overdue tasks", "change": "-{change} since Monday" },
+      "team": { "label": "Team members", "change": "+{change} this week" }
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Every project of the workspace, with its status and owner.",
+    "loading": "Loading the projects",
+    "noDescription": "No description yet.",
+    "search": "Search projects",
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "dueDate": "Due date",
+    "dueBetween": "Due between",
+    "clearFilters": "Clear filters",
+    "newProject": "New project",
+    "count": "{count, plural, one {# project} other {# projects}}",
+    "columns": {
+      "project": "Project",
+      "status": "Status",
+      "progress": "Progress",
+      "due": "Due",
+      "team": "Team",
+      "actions": "Actions"
+    },
+    "empty": {
+      "title": "No projects found",
+      "description": "No project matches the search and the filters."
+    },
+    "actionsFor": "Actions for {name}",
+    "progressOf": "{name} progress",
+    "openDetails": "Open details",
+    "markAsDone": "Mark as done",
+    "delete": "Delete",
+    "pages": "Projects pages",
+    "completed": "Project completed",
+    "undo": "Undo",
+    "deleted": "Project deleted",
+    "deleteModal": {
+      "title": "Delete project",
+      "body": "\"{name}\" and its history will be removed. This cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "drawer": {
+      "overview": "Overview",
+      "activity": "Activity",
+      "status": "Status",
+      "due": "Due",
+      "owner": "Owner",
+      "team": "Team",
+      "visibility": "Visibility",
+      "progress": "Progress",
+      "updatedPlan": "{name} updated the plan",
+      "commented": "{name} commented on a task",
+      "created": "{name} created the project",
+      "daysAgo": "{count, plural, one {# day ago} other {# days ago}}",
+      "weeksAgo": "{count, plural, one {# week ago} other {# weeks ago}}"
+    }
+  },
+  "newProject": {
+    "title": "New project",
+    "description": "Three short steps to set up a project.",
+    "loading": "Loading the form",
+    "progress": "New project progress",
+    "steps": {
+      "details": { "title": "Details", "description": "Name and owner" },
+      "plan": { "title": "Plan", "description": "Team and date" },
+      "review": { "title": "Review", "description": "Check and create" }
+    },
+    "name": "Name",
+    "namePlaceholder": "Website redesign",
+    "projectDescription": "Description",
+    "projectDescriptionHelper": "A line or two for the team.",
+    "optional": "optional",
+    "owner": "Owner",
+    "ownerPlaceholder": "Pick the person in charge",
+    "team": "Team",
+    "teamPlaceholder": "Add members",
+    "due": "Due date",
+    "duePlaceholder": "Pick a date",
+    "visibility": "Who can see it",
+    "notify": "Notify the team by email",
+    "noDescription": "No description",
+    "startsOnTrack": "The project starts on track with no progress. You can change that from the list.",
+    "back": "Back",
+    "continue": "Continue",
+    "create": "Create project",
+    "created": "{name} was created",
+    "notified": "{count, plural, one {# member was} other {# members were}} notified by email."
+  },
+  "team": {
+    "title": "Team",
+    "description": "The people working on your projects.",
+    "loading": "Loading the team",
+    "search": "Search the team",
+    "searchPlaceholder": "Search by name, role or skill",
+    "invite": "Invite member",
+    "directory": "Directory",
+    "byDepartment": "By department",
+    "departments": "Departments",
+    "empty": {
+      "title": "No people found",
+      "description": "No one matches the search."
+    },
+    "invited": "Invited",
+    "contact": "Contact",
+    "contactPerson": "Contact {name}",
+    "done": "Done",
+    "inviteModal": {
+      "title": "Invite a member",
+      "email": "Email",
+      "emailPlaceholder": "name@company.com",
+      "role": "Role",
+      "rolePlaceholder": "Pick a role",
+      "cancel": "Cancel",
+      "send": "Send invitation"
+    },
+    "invitationSent": "Invitation sent"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Appearance, notifications and the workspace.",
+    "sections": {
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "workspace": "Workspace"
+    },
+    "appearance": {
+      "colorMode": "Color mode",
+      "colorModeHelper": "System follows the color scheme of your browser or device.",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark",
+      "brand": "Brand color",
+      "brandHelper": "It colors the whole app. Your choice is remembered.",
+      "brands": {
+        "blue": "Blue",
+        "emerald": "Emerald",
+        "violet": "Violet",
+        "rose": "Rose",
+        "amber": "Amber"
+      },
+      "preview": "Preview",
+      "primaryAction": "Primary action",
+      "outline": "Outline",
+      "badge": "New",
+      "previewProgress": "Preview progress"
+    },
+    "notifications": {
+      "pause": "Pause all notifications",
+      "pauseHelper": "Mutes every channel until you turn it back on.",
+      "channels": "Channels",
+      "email": "Email me about activity on my projects",
+      "push": "Send push notifications",
+      "digest": "Send me a weekly digest",
+      "save": "Save preferences",
+      "saved": "Preferences saved"
+    },
+    "workspace": {
+      "name": "Workspace name",
+      "region": "Data region",
+      "regionHelper": "Where the data of the workspace is stored.",
+      "regionPlaceholder": "Pick a region",
+      "regions": {
+        "europe": "Europe",
+        "northAmerica": "North America",
+        "asiaPacific": "Asia Pacific"
+      },
+      "save": "Save workspace",
+      "updated": "Workspace updated",
+      "dangerTitle": "Danger zone",
+      "dangerBody": "Deleting the workspace removes its projects for everyone.",
+      "delete": "Delete workspace",
+      "deleteTitle": "Delete {name}",
+      "theWorkspace": "the workspace",
+      "confirmHelper": "Type \"{name}\" to confirm.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "kept": "Workspace kept",
+      "keptBody": "This is a demo: nothing was deleted."
+    }
+  },
+  "plume": {
+    "alert": { "dismiss": "Dismiss" },
+    "avatar": { "away": "Away", "busy": "Busy", "offline": "Offline", "online": "Online" },
+    "avatarGroup": { "overflow": "{hidden} more" },
+    "breadcrumb": { "breadcrumb": "Breadcrumb" },
+    "button": { "busy": "Loading" },
+    "chip": { "remove": "Remove" },
+    "datePicker": {
+      "apply": "Apply",
+      "calendar": "Calendar",
+      "cancel": "Cancel",
+      "format": "Format: {format}",
+      "nextMonth": "Next month",
+      "nextYears": "Next years",
+      "openCalendar": "Open calendar",
+      "previousMonth": "Previous month",
+      "previousYears": "Previous years"
+    },
+    "input": { "reveal": "Show password" },
+    "navbarToggle": { "label": "Toggle navigation" },
+    "overlayClose": { "label": "Close" },
+    "paginator": {
+      "first": "First page",
+      "last": "Last page",
+      "next": "Next page",
+      "page": "Page {page}",
+      "pageCurrent": "Page {page}, current page",
+      "pageSize": "Items per page",
+      "pagination": "Pagination",
+      "previous": "Previous page",
+      "summary": "{from}–{to} of {total}"
+    },
+    "select": {
+      "clear": "Clear",
+      "empty": "No results",
+      "overflow": "+{hidden}",
+      "remove": "Remove {label}",
+      "search": "Search"
+    },
+    "sidebarToggle": { "label": "Toggle sidebar" },
+    "spinner": { "label": "Loading" },
+    "stepper": { "completed": "Completed", "upcoming": "Not started" },
+    "table": { "loading": "Loading" },
+    "toast": { "dismiss": "Dismiss notification", "region": "Notifications" }
+  }
+}

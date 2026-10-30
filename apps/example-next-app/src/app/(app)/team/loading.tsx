@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
+import { getTranslations } from 'next-intl/server'
 import { Card, CardBody, Skeleton } from 'plume-ui-react'
 import { SkeletonPage } from '@/components/skeleton-page'
 import styles from './team.module.css'
 
-export default function Loading(): ReactNode {
+export default async function Loading(): Promise<ReactNode> {
+  const t = await getTranslations('team')
   return (
-    <SkeletonPage label="Loading the team">
+    <SkeletonPage label={t('loading')}>
       <div className={styles.toolbar}>
         <Skeleton className={styles.search} height={40} shape="rect" />
       </div>

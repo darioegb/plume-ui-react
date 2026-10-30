@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Avatar,
   Badge,
@@ -40,51 +41,57 @@ import {
   useToast,
 } from 'plume-ui-react'
 import { SearchIcon, TeamIcon } from '@/components/icons'
-import type { Department, Presence, TeamMember } from '@/lib/data'
+import type { Department, Role, TeamMember } from '@/lib/data'
 import { userFromEmail } from '@/lib/user'
+import type { ValidationKey } from '@/lib/validation'
 import styles from './team.module.css'
 
-const departments: Department[] = ['Product', 'Engineering', 'Design', 'Support']
+const departments: Department[] = ['product', 'engineering', 'design', 'support']
 
-const presenceLabel: Record<Presence, string> = {
-  away: 'Away',
-  busy: 'In a meeting',
-  offline: 'Offline',
-  online: 'Online',
-}
-
-const roles = ['Product Manager', 'Frontend Engineer', 'Backend Engineer', 'Product Designer', 'Support Specialist']
+const inviteRoles: Role[] = [
+  'productManager',
+  'frontendEngineer',
+  'backendEngineer',
+  'productDesigner',
+  'supportSpecialist',
+]
 
 export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }>): ReactNode {
+  const t = useTranslations('team')
+  const tDepartment = useTranslations('department')
+  const tPresence = useTranslations('presence')
+  const tRole = useTranslations('role')
+  const tSkill = useTranslations('skill')
+  const tValidation = useTranslations('validation')
   const toast = useToast()
   const [team, setTeam] = useState(initial)
   const [query, setQuery] = useState('')
   const [inviting, setInviting] = useState(false)
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState(roles[0])
-  const [emailError, setEmailError] = useState<string>()
+  const [role, setRole] = useState<Role>(inviteRoles[0])
+  const [emailError, setEmailError] = useState<ValidationKey>()
 
   const normalized = query.trim().toLowerCase()
   const visible = team.filter((member) =>
-    [member.name, member.role, member.department, ...member.skills].some((text) =>
-      text.toLowerCase().includes(normalized),
+    [member.name, tRole(member.role), tDepartment(member.department), ...member.skills.map((skill) => tSkill(skill))].some(
+      (text) => text.toLowerCase().includes(normalized),
     ),
   )
 
   const invite = (): boolean => {
     const address = email.trim()
     if (!/^\S+@\S+\.\S+$/.test(address)) {
-      setEmailError('Enter a valid email address.')
+      setEmailError('emailInvalid')
       return false
     }
     if (team.some((member) => member.email === address)) {
-      setEmailError('This person is already on the team.')
+      setEmailError('memberExists')
       return false
     }
     setTeam((current) => [
       ...current,
       {
-        department: 'Product',
+        department: 'product',
         email: address,
         name: userFromEmail(address).name,
         pending: true,
@@ -93,7 +100,7 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
         skills: [],
       },
     ])
-    toast.success({ description: address, title: 'Invitation sent' })
+    toast.success({ description: address, title: t('invitationSent') })
     return true
   }
 
@@ -101,11 +108,11 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
     <>
       <div className={styles.toolbar}>
         <Input
-          aria-label="Search the team"
+          aria-label={t('search')}
           className={styles.search}
           elementBefore={<SearchIcon />}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search by name, role or skill"
+          placeholder={t('searchPlaceholder')}
           value={query}
         />
         <Button
@@ -116,26 +123,26 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
             setInviting(true)
           }}
         >
-          Invite member
+          {t('invite')}
         </Button>
       </div>
 
       <Tabs>
         <TabList>
-          <Tab extraContentRight={<Badge size="sm">{visible.length}</Badge>} label="Directory" />
-          <Tab label="By department" />
+          <Tab extraContentRight={<Badge size="sm">{visible.length}</Badge>} label={t('directory')} />
+          <Tab label={t('byDepartment')} />
         </TabList>
         <TabPanels>
           <TabPanel>
             {visible.length === 0 ? (
               <EmptyState
-                description="No one matches the search."
+                description={t('empty.description')}
                 icon={
                   <Icon>
                     <TeamIcon />
                   </Icon>
                 }
-                title="No people found"
+                title={t('empty.title')}
                 variant="outline"
               />
             ) : (
@@ -145,40 +152,40 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
                     <Card className={styles.card} variant="outline">
                       <CardBody>
                         <div className={styles.header}>
-                          <Tooltip content={presenceLabel[member.presence]}>
+                          <Tooltip content={tPresence(member.presence)}>
                             <span>
                               <Avatar name={member.name} size="lg" status={member.presence} />
                             </span>
                           </Tooltip>
                           <div>
                             <div className={styles.name}>{member.name}</div>
-                            <div className={styles.role}>{member.role}</div>
+                            <div className={styles.role}>{tRole(member.role)}</div>
                           </div>
                           {member.pending ? (
                             <Badge colorScheme="warning" size="sm" variant="subtle">
-                              Invited
+                              {t('invited')}
                             </Badge>
                           ) : null}
                         </div>
                         <div className={styles.skills}>
                           {member.skills.map((skill) => (
                             <Chip key={skill} size="sm">
-                              {skill}
+                              {tSkill(skill)}
                             </Chip>
                           ))}
                         </div>
                         <Popover>
                           <PopoverTrigger>
                             <Button size="sm" variant="outline">
-                              Contact
+                              {t('contact')}
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent aria-label={`Contact ${member.name}`}>
+                          <PopoverContent aria-label={t('contactPerson', { name: member.name })}>
                             <p className={styles.contact}>
                               <a href={`mailto:${member.email}`}>{member.email}</a>
                             </p>
                             <PopoverClose>
-                              <Button size="sm">Done</Button>
+                              <Button size="sm">{t('done')}</Button>
                             </PopoverClose>
                           </PopoverContent>
                         </Popover>
@@ -190,11 +197,11 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
             )}
           </TabPanel>
           <TabPanel>
-            <Tree aria-label="Departments" defaultExpanded={departments}>
+            <Tree aria-label={t('departments')} defaultExpanded={departments}>
               {departments.map((department) => (
                 <TreeItem key={department} value={department}>
                   <TreeItemLabel>
-                    {department} ({team.filter((member) => member.department === department).length})
+                    {tDepartment(department)} ({team.filter((member) => member.department === department).length})
                   </TreeItemLabel>
                   <TreeItemGroup>
                     {team
@@ -202,7 +209,7 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
                       .map((member) => (
                         <TreeItem key={member.email} value={member.email}>
                           <TreeItemLabel>
-                            {member.name} · {member.role}
+                            {member.name} · {tRole(member.role)}
                           </TreeItemLabel>
                         </TreeItem>
                       ))}
@@ -216,27 +223,31 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
 
       <Modal onOpenChange={setInviting} open={inviting}>
         <ModalContent>
-          <ModalHeader>Invite a member</ModalHeader>
+          <ModalHeader>{t('inviteModal.title')}</ModalHeader>
           <ModalBody>
             <div className={styles.form}>
-              <Field errorText={emailError} label="Email" required>
+              <Field
+                errorText={emailError && tValidation(emailError)}
+                label={t('inviteModal.email')}
+                required
+              >
                 <Input
                   onChange={(event) => {
                     setEmail(event.target.value)
                     setEmailError(undefined)
                   }}
-                  placeholder="name@company.com"
+                  placeholder={t('inviteModal.emailPlaceholder')}
                   type="email"
                   value={email}
                 />
               </Field>
-              <Field label="Role">
-                <Select onValueChange={(value) => setRole(String(value))} value={role}>
-                  <SelectTrigger placeholder="Pick a role" />
+              <Field label={t('inviteModal.role')}>
+                <Select onValueChange={(value) => setRole(String(value) as Role)} value={role}>
+                  <SelectTrigger placeholder={t('inviteModal.rolePlaceholder')} />
                   <SelectContent>
-                    {roles.map((item) => (
+                    {inviteRoles.map((item) => (
                       <SelectOption key={item} value={item}>
-                        {item}
+                        {tRole(item)}
                       </SelectOption>
                     ))}
                   </SelectContent>
@@ -246,9 +257,9 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
           </ModalBody>
           <ModalFooter>
             <ModalClose>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{t('inviteModal.cancel')}</Button>
             </ModalClose>
-            <Button onClick={() => invite() && setInviting(false)}>Send invitation</Button>
+            <Button onClick={() => invite() && setInviting(false)}>{t('inviteModal.send')}</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

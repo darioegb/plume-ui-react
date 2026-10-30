@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Badge,
   Button,
@@ -20,13 +21,14 @@ import styles from './settings.module.css'
 const brandIds = Object.keys(brands) as BrandId[]
 
 export function AppearanceSettings(): ReactNode {
+  const t = useTranslations('settings.appearance')
   const { setColorMode } = useTheme()
   const { brand, colorModeSetting, setBrand, setColorModeSetting } = usePreferences()
   const [, startTransition] = useTransition()
 
   return (
     <div className={styles.section}>
-      <Field helperText="System follows the color scheme of your browser or device." label="Color mode">
+      <Field helperText={t('colorModeHelper')} label={t('colorMode')}>
         <RadioGroup
           onValueChange={(value) => {
             setColorMode(value as ColorModeSetting)
@@ -36,19 +38,19 @@ export function AppearanceSettings(): ReactNode {
           orientation="horizontal"
           value={colorModeSetting}
         >
-          <Field label="System" orientation="inline">
+          <Field label={t('system')} orientation="inline">
             <Radio value="system" />
           </Field>
-          <Field label="Light" orientation="inline">
+          <Field label={t('light')} orientation="inline">
             <Radio value="light" />
           </Field>
-          <Field label="Dark" orientation="inline">
+          <Field label={t('dark')} orientation="inline">
             <Radio value="dark" />
           </Field>
         </RadioGroup>
       </Field>
 
-      <Field helperText="It colors the whole app. Your choice is remembered." label="Brand color">
+      <Field helperText={t('brandHelper')} label={t('brand')}>
         <RadioGroup
           onValueChange={(value) => {
             setBrand(value as BrandId)
@@ -67,7 +69,7 @@ export function AppearanceSettings(): ReactNode {
                     className={styles.swatch}
                     style={{ background: brands[id].palette['500'] }}
                   />
-                  {brands[id].label}
+                  {t(`brands.${id}`)}
                 </span>
               }
               orientation="inline"
@@ -78,13 +80,13 @@ export function AppearanceSettings(): ReactNode {
         </RadioGroup>
       </Field>
 
-      <div aria-label="Preview" className={styles.preview} role="group">
-        <Button colorScheme="primary">Primary action</Button>
+      <div aria-label={t('preview')} className={styles.preview} role="group">
+        <Button colorScheme="primary">{t('primaryAction')}</Button>
         <Button colorScheme="primary" variant="outline">
-          Outline
+          {t('outline')}
         </Button>
-        <Badge colorScheme="primary">New</Badge>
-        <ProgressBar aria-label="Preview progress" colorScheme="primary" value={64} />
+        <Badge colorScheme="primary">{t('badge')}</Badge>
+        <ProgressBar aria-label={t('previewProgress')} colorScheme="primary" value={64} />
       </div>
     </div>
   )

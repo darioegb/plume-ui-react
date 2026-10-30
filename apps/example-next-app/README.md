@@ -1,32 +1,48 @@
 # Plume UI React — Next.js App Router example
 
 A [Next.js](https://nextjs.org) **App Router** app that consumes the **published npm
-package** (`plume-ui-react`). It is a small project dashboard ("Plume Projects") with a
+package** (`plume-ui-react` `^0.47.0`, the 1.0 contract: parts, `unstyled`, `@layer plume`,
+`labels` and `LocaleProvider`). It is a small project dashboard ("Plume Projects") with a
 simulated sign in, a sidebar, a top bar and a dashboard, and it shows that
 `<ThemeProvider>` is **SSR/RSC-safe**: the theme is serialized to CSS variables and
 server-rendered from a cookie, so dark mode has no flash and no per-request global state
-leaks between users. It grows with each step of the 1.0 plan.
+leaks between users. It is also translated to **English and Spanish** with
+[next-intl](https://next-intl.dev), without locale-prefixed routes, and Plume's own texts
+(paginator, date picker, toasts...) follow the language through `<LocaleProvider>`. It grows
+with each step of the 1.0 plan.
 
-Sign in with any email and a password of 6 or more characters. The color mode follows the browser's color scheme until you pick light or dark (top bar or Settings); with `system` the server renders light and the client switches on hydration, so a dark browser can flash on the very first visit.
+Sign in with any email and a password of 6 or more characters. The color mode follows the browser's color scheme until you pick light or dark (top bar or Settings); with `system` the server renders light and the client switches on hydration, so a dark browser can flash on the very first visit. The language follows the `Accept-Language` header of the browser until you pick one with the `EN`/`ES` switcher of the top bar (or of the sign in page), which saves it in a cookie.
 
 ## Structure
 
-- `src/app/layout.tsx` — Server Component. Reads the color mode cookie, imports
+- `src/app/layout.tsx` — Server Component. Reads the color mode cookie and the locale, sets `<html lang>`, imports
   `plume-ui-react/styles.css` (the Vite example loads one stylesheet per component
-  instead) and wraps the app in `<Providers>`.
-- `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>` and
+  instead) and wraps the app in `<NextIntlClientProvider>` and `<Providers>`. With `@layer plume`
+  the `.module.css` of the app win over Plume without any specificity tricks.
+- `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>`, `<PlumeLocale>` and
   `<ToastProvider>`.
+- `src/i18n` — `config.ts` has the locales, the cookie name and the `Accept-Language` negotiation, and
+  `request.ts` is the next-intl request config: cookie, then `Accept-Language`, then English. There is no
+  `[locale]` segment and no middleware, so the URLs do not change. `messages/en.json` and `messages/es.json` have
+  the same keys (typed through `src/global.d.ts`), with a `plume` namespace for the texts of the library.
+- `src/components/plume-locale.tsx` — `'use client'` bridge: maps the `plume` messages to the `PlumeMessages` of
+  `<LocaleProvider>`, memoized, and passes the locale of next-intl (imported as `useIntlLocale`, because Plume
+  exports its own `useLocale`).
+- `src/components/language-switcher.tsx` — a `Dropdown` that calls the `saveLocale` Server Action; the cookie change
+  makes Next render the page again in the new language.
 - `src/app/login` — the sign in page: `Card`, `Field`, `Input` and `Alert`, with a Server
-  Action that validates the form.
+  Action that validates the form. The Server Actions return the keys of the `validation` messages and the
+  client translates them, so the server code has no language.
 - `src/app/(app)` — the pages behind the session: the layout redirects to `/login`, and
-  the dashboard is a Server Component made of `Card`, `Badge` and `ProgressBar`, with a
-  `Skeleton` while its data loads.
+  the dashboard is a Server Component made of `Card`, `Badge` and `ProgressBar` (translated with `getTranslations`),
+  with a `Skeleton` while its data loads.
 - `src/components/app-shell.tsx` — `'use client'` shell: `Sidebar`, `Navbar`, `Breadcrumb`,
-  a `Dropdown` account menu and the light/dark switch.
+  a `Dropdown` account menu, the language switcher and the light/dark switch.
 - `src/app/(app)/projects` — a `Table` with sorting, filters and paging, a detail `Drawer`, and a `Stepper` form to create a project (validated in the browser and again in a Server Action).
 - `src/app/(app)/team` — a directory of `Card`s with `Avatar` presence, `Chip` skills, a `Popover` to contact and a `Tooltip`, a `Tree` by department, and an invite `Modal`.
 - `src/app/(app)/settings` — an `Accordion` with the appearance (light/dark and a **brand color** that recolors the whole app, saved in a cookie and server-rendered), notifications and the workspace.
-- `src/lib` — the simulated session and data.
+- `src/lib` — the simulated session and data (statuses, roles and skills are ids that the UI translates; project
+  names and descriptions are content and stay as they are) and the date and number formatting with the current locale.
 - `src/theme.ts` — the brand palettes for `primary` (the one in Settings) and a custom `salmon` color scheme, passed to `<ThemeProvider theme={...}>`.
 - `src/plume-ui.d.ts` extends `ColorPalette` so TypeScript accepts `colorScheme="salmon"`,
   which the visibility badge of the project detail uses

@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
+import { getTranslations } from 'next-intl/server'
 import { Card, CardBody, CardHeader, Skeleton } from 'plume-ui-react'
 import { SkeletonPage } from '@/components/skeleton-page'
 import styles from './dashboard.module.css'
 
-export default function Loading(): ReactNode {
+export default async function Loading(): Promise<ReactNode> {
+  const t = await getTranslations('dashboard')
   return (
-    <SkeletonPage label="Loading the dashboard">
+    <SkeletonPage label={t('loading')}>
       <section className={styles.metrics}>
         {[1, 2, 3, 4].map((item) => (
           <Card key={item} variant="outline">

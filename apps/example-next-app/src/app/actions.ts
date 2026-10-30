@@ -3,22 +3,23 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { LOCALE_COOKIE, isLocale } from '@/i18n/config'
 import { addProject, getProjects, type NewProjectInput } from '@/lib/data'
 import { BRAND_COOKIE, COLOR_MODE_COOKIE, SESSION_COOKIE, getUser } from '@/lib/session'
 import { isBrand } from '@/theme'
-import { validateNewProject, type NewProjectErrors } from '@/lib/validation'
+import { validateNewProject, type NewProjectErrors, type ValidationKey } from '@/lib/validation'
 
 export interface SignInState {
   email?: string
-  errors?: { email?: string; password?: string }
+  errors?: { email?: ValidationKey; password?: ValidationKey }
 }
 
 export async function signIn(_previous: SignInState, formData: FormData): Promise<SignInState> {
   const email = String(formData.get('email') ?? '').trim()
   const password = String(formData.get('password') ?? '')
   const errors: SignInState['errors'] = {}
-  if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = 'Enter a valid email address.'
-  if (password.length < 6) errors.password = 'Use at least 6 characters.'
+  if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = 'emailInvalid'
+  if (password.length < 6) errors.password = 'passwordShort'
   if (errors.email || errors.password) return { email, errors }
 
   ;(await cookies()).set(SESSION_COOKIE, email, { httpOnly: true, path: '/', sameSite: 'lax' })
@@ -59,6 +60,15 @@ export async function createProject(
 export async function saveBrand(brand: string): Promise<void> {
   if (!isBrand(brand)) return
   ;(await cookies()).set(BRAND_COOKIE, brand, {
+    maxAge: 60 * 60 * 24 * 365,
+    path: '/',
+    sameSite: 'lax',
+  })
+}
+
+export async function saveLocale(locale: string): Promise<void> {
+  if (!isLocale(locale)) return
+  ;(await cookies()).set(LOCALE_COOKIE, locale, {
     maxAge: 60 * 60 * 24 * 365,
     path: '/',
     sameSite: 'lax',

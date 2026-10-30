@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Alert,
   Button,
@@ -21,44 +22,45 @@ import {
 } from 'plume-ui-react'
 import styles from './settings.module.css'
 
-const regions = ['Europe', 'North America', 'Asia Pacific']
+const regions = ['europe', 'northAmerica', 'asiaPacific'] as const
 
 export function WorkspaceSettings(): ReactNode {
+  const t = useTranslations('settings.workspace')
   const toast = useToast()
   const [name, setName] = useState('Acme Studio')
-  const [region, setRegion] = useState('Europe')
+  const [region, setRegion] = useState<string>('europe')
   const [confirm, setConfirm] = useState('')
   const [deleting, setDeleting] = useState(false)
 
   return (
     <div className={styles.section}>
-      <Field label="Workspace name" required>
+      <Field label={t('name')} required>
         <Input onChange={(event) => setName(event.target.value)} value={name} />
       </Field>
-      <Field helperText="Where the data of the workspace is stored." label="Data region">
+      <Field helperText={t('regionHelper')} label={t('region')}>
         <Select onValueChange={(value) => setRegion(String(value))} value={region}>
-          <SelectTrigger placeholder="Pick a region" />
+          <SelectTrigger placeholder={t('regionPlaceholder')} />
           <SelectContent>
             {regions.map((item) => (
               <SelectOption key={item} value={item}>
-                {item}
+                {t(`regions.${item}`)}
               </SelectOption>
             ))}
           </SelectContent>
         </Select>
       </Field>
       <div>
-        <Button disabled={name.trim() === ''} onClick={() => toast.success({ title: 'Workspace updated' })}>
-          Save workspace
+        <Button disabled={name.trim() === ''} onClick={() => toast.success({ title: t('updated') })}>
+          {t('save')}
         </Button>
       </div>
 
-      <Alert status="error" title="Danger zone">
-        Deleting the workspace removes its projects for everyone.
+      <Alert status="error" title={t('dangerTitle')}>
+        {t('dangerBody')}
       </Alert>
       <div>
         <Button colorScheme="error" onClick={() => setDeleting(true)} variant="outline">
-          Delete workspace
+          {t('delete')}
         </Button>
       </div>
 
@@ -70,25 +72,23 @@ export function WorkspaceSettings(): ReactNode {
         open={deleting}
       >
         <ModalContent>
-          <ModalHeader>Delete {name || 'the workspace'}</ModalHeader>
+          <ModalHeader>{t('deleteTitle', { name: name || t('theWorkspace') })}</ModalHeader>
           <ModalBody>
-            <Field helperText={`Type "${name}" to confirm.`} label="Workspace name">
+            <Field helperText={t('confirmHelper', { name })} label={t('name')}>
               <Input onChange={(event) => setConfirm(event.target.value)} value={confirm} />
             </Field>
           </ModalBody>
           <ModalFooter>
             <ModalClose>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{t('cancel')}</Button>
             </ModalClose>
             <ModalClose>
               <Button
                 colorScheme="error"
                 disabled={confirm !== name}
-                onClick={() =>
-                  toast.warning({ description: 'This is a demo: nothing was deleted.', title: 'Workspace kept' })
-                }
+                onClick={() => toast.warning({ description: t('keptBody'), title: t('kept') })}
               >
-                Delete
+                {t('confirm')}
               </Button>
             </ModalClose>
           </ModalFooter>

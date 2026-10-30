@@ -17,7 +17,6 @@ const salmon = {
 // Each brand is a palette for `primary`, so the whole app changes color with it.
 export const brands = {
   blue: {
-    label: 'Blue',
     palette: {
       '50': '#e8f1ff',
       '100': '#d5e4ff',
@@ -33,7 +32,6 @@ export const brands = {
     },
   },
   emerald: {
-    label: 'Emerald',
     palette: {
       '50': '#ecfdf5',
       '100': '#d1fae5',
@@ -49,7 +47,6 @@ export const brands = {
     },
   },
   violet: {
-    label: 'Violet',
     palette: {
       '50': '#f5f3ff',
       '100': '#ede9fe',
@@ -65,7 +62,6 @@ export const brands = {
     },
   },
   rose: {
-    label: 'Rose',
     palette: {
       '50': '#fff1f2',
       '100': '#ffe4e6',
@@ -81,7 +77,6 @@ export const brands = {
     },
   },
   amber: {
-    label: 'Amber',
     palette: {
       '50': '#fffbeb',
       '100': '#fef3c7',

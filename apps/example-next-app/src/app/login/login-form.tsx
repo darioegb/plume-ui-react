@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useActionState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Alert, Button, Card, CardBody, CardFooter, CardHeader, Field, Input } from 'plume-ui-react'
 import { signIn, type SignInState } from '@/app/actions'
 import styles from './login.module.css'
@@ -9,33 +10,34 @@ import styles from './login.module.css'
 const initialState: SignInState = {}
 
 export function LoginForm(): ReactNode {
+  const t = useTranslations('login')
+  const tValidation = useTranslations('validation')
   const [state, action, pending] = useActionState(signIn, initialState)
+  const { email, password } = state.errors ?? {}
   return (
     <Card className={styles.card} variant="outline">
       <form action={action} noValidate>
-        <CardHeader>Sign in to Plume Projects</CardHeader>
+        <CardHeader>{t('heading')}</CardHeader>
         <CardBody>
           <div className={styles.fields}>
-            <Alert status="info">
-              This is a simulated sign in: any email and a password of 6 or more characters work.
-            </Alert>
-            <Field errorText={state.errors?.email} label="Email" required>
+            <Alert status="info">{t('hint')}</Alert>
+            <Field errorText={email && tValidation(email)} label={t('email')} required>
               <Input
                 autoComplete="email"
                 defaultValue={state.email}
                 name="email"
-                placeholder="ana@plume.dev"
+                placeholder={t('emailPlaceholder')}
                 type="email"
               />
             </Field>
-            <Field errorText={state.errors?.password} label="Password" required>
+            <Field errorText={password && tValidation(password)} label={t('password')} required>
               <Input autoComplete="current-password" name="password" revealable type="password" />
             </Field>
           </div>
         </CardBody>
         <CardFooter>
           <Button busy={pending} busyText="…" type="submit">
-            Sign in
+            {t('submit')}
           </Button>
         </CardFooter>
       </form>

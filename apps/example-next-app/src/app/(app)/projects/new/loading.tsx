@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
+import { getTranslations } from 'next-intl/server'
 import { Card, CardBody, Skeleton } from 'plume-ui-react'
 import { SkeletonPage } from '@/components/skeleton-page'
 import styles from './new-project.module.css'
 
-export default function Loading(): ReactNode {
+export default async function Loading(): Promise<ReactNode> {
+  const t = await getTranslations('newProject')
   return (
-    <SkeletonPage label="Loading the form">
+    <SkeletonPage label={t('loading')}>
       <div className={styles.wizard}>
         <div className={styles.steps}>
           {[1, 2, 3].map((item) => (

@@ -2,16 +2,14 @@
 
 import type { ReactNode } from 'react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button, Checkbox, Field, Toggle, useToast } from 'plume-ui-react'
 import styles from './settings.module.css'
 
-const channels = [
-  { id: 'email', label: 'Email me about activity on my projects' },
-  { id: 'push', label: 'Send push notifications' },
-  { id: 'digest', label: 'Send me a weekly digest' },
-]
+const channels = ['email', 'push', 'digest'] as const
 
 export function NotificationSettings(): ReactNode {
+  const t = useTranslations('settings.notifications')
   const toast = useToast()
   const [paused, setPaused] = useState(false)
   const [enabled, setEnabled] = useState<string[]>(['email', 'digest'])
@@ -21,22 +19,22 @@ export function NotificationSettings(): ReactNode {
 
   return (
     <div className={styles.section}>
-      <Field helperText="Mutes every channel until you turn it back on." label="Pause all notifications" orientation="inline">
+      <Field helperText={t('pauseHelper')} label={t('pause')} orientation="inline">
         <Toggle checked={paused} onChange={(event) => setPaused(event.target.checked)} />
       </Field>
-      <div className={styles.group} role="group" aria-label="Channels">
+      <div className={styles.group} role="group" aria-label={t('channels')}>
         {channels.map((channel) => (
-          <Field key={channel.id} label={channel.label} orientation="inline">
+          <Field key={channel} label={t(channel)} orientation="inline">
             <Checkbox
-              checked={enabled.includes(channel.id)}
+              checked={enabled.includes(channel)}
               disabled={paused}
-              onChange={() => toggle(channel.id)}
+              onChange={() => toggle(channel)}
             />
           </Field>
         ))}
       </div>
       <div>
-        <Button onClick={() => toast.success({ title: 'Preferences saved' })}>Save preferences</Button>
+        <Button onClick={() => toast.success({ title: t('saved') })}>{t('save')}</Button>
       </div>
     </div>
   )
