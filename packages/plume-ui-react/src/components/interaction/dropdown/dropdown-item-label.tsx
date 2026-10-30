@@ -22,7 +22,7 @@ export const DropdownItemLabel = forwardRef<HTMLSpanElement, DropdownItemLabelPr
     return (
       <span
         className={joinClasses(isStyled && styles.label, className)}
-        data-plume-menu-item-label=""
+        data-plume-dropdown-item-label=""
         ref={ref}
         style={style}
       >

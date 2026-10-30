@@ -7,7 +7,9 @@ import { useOpenState } from '../../../overlay/use-open-state'
 import type { Size } from '../../../theme'
 import { DropdownContext, type DropdownInitialItem, type DropdownVariant } from './dropdown-context'
 
-export interface DropdownProps {
+export type { DropdownVariant } from './dropdown-context'
+
+export interface DropdownOwnProps {
   /** The `DropdownTrigger` and the `DropdownMenu`. */
   children: ReactNode
   /**
@@ -65,6 +67,8 @@ export interface DropdownProps {
    */
   variant?: DropdownVariant
 }
+
+export type DropdownProps = DropdownOwnProps
 
 export function Dropdown({
   children,

@@ -9,6 +9,7 @@ import type {
   ReactNode,
 } from 'react'
 import { forwardRef } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { useDropdownContext } from './dropdown-context'
@@ -67,7 +68,7 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
   (
     {
       children,
-      className = '',
+      className,
       closeOnSelect,
       disabled = false,
       href,
@@ -82,7 +83,7 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
     const context = useDropdownContext('DropdownItem')
-    const classes = [context.isStyled && styles.item, className].filter(Boolean).join(' ')
+    const classes = joinClasses(context.isStyled && styles.item, className)
 
     const handleClick = (event: MouseEvent<HTMLElement>): void => {
       if (disabled) {
@@ -122,7 +123,8 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
           {...rest}
           aria-disabled={disabled || undefined}
           className={classes}
-          data-plume-menu-item=""
+          data-disabled={disabled ? '' : undefined}
+          data-plume-dropdown-item=""
           href={disabled ? undefined : href}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
@@ -143,7 +145,8 @@ export const DropdownItem = forwardRef<HTMLElement, DropdownItemProps>(
       <button
         {...rest}
         className={classes}
-        data-plume-menu-item=""
+        data-disabled={disabled ? '' : undefined}
+        data-plume-dropdown-item=""
         disabled={disabled}
         onClick={handleClick}
         onPointerMove={handlePointerMove}

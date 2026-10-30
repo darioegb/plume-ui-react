@@ -524,6 +524,79 @@ describe('Dropdown component', () => {
       expect(screen.getByText('Label')).not.toHaveAttribute('class')
       expect(screen.getByRole('separator')).not.toHaveAttribute('class')
     })
+
+    it('marks every part and its state with data attributes', async () => {
+      render(<Example />)
+      expect(trigger()).toHaveAttribute('data-plume-dropdown-trigger', '')
+      expect(trigger()).not.toHaveAttribute('data-open')
+      await userEvent.click(trigger())
+      expect(trigger()).toHaveAttribute('data-open', '')
+      expect(menu()).toHaveAttribute('data-plume-dropdown-menu', '')
+      expect(menu()).toHaveAttribute('data-open', '')
+      expect(item('Profile')).toHaveAttribute('data-plume-dropdown-item', '')
+      expect(item('Profile')).not.toHaveAttribute('data-disabled')
+      expect(item('Billing')).toHaveAttribute('data-disabled', '')
+      expect(screen.getByText('Account')).toHaveAttribute('data-plume-dropdown-label', '')
+      expect(screen.getByRole('separator')).toHaveAttribute('data-plume-dropdown-separator', '')
+    })
+
+    it('marks a disabled link item', async () => {
+      render(
+        <Dropdown>
+          <DropdownTrigger>Open</DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem disabled href="/docs">
+              Docs
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>,
+      )
+      await userEvent.click(screen.getByRole('button', { name: 'Open' }))
+      expect(item('Docs')).toHaveAttribute('data-disabled', '')
+    })
+
+    it('adds the className and style of the trigger to its element', () => {
+      render(
+        <Dropdown>
+          <DropdownTrigger className="extra" style={{ margin: '3px' }}>
+            <button className="own" style={{ padding: '2px' }}>
+              Actions
+            </button>
+          </DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem>One</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>,
+      )
+      expect(trigger()).toHaveClass('own', 'extra')
+      expect(trigger()).toHaveStyle({ margin: '3px', padding: '2px' })
+    })
+
+    it('keeps the className of the trigger element when it has none of its own', () => {
+      render(
+        <Dropdown>
+          <DropdownTrigger>
+            <button className="own">Actions</button>
+          </DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem>One</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>,
+      )
+      expect(trigger()).toHaveAttribute('class', 'own')
+    })
+
+    it('styles the plain trigger button', () => {
+      render(
+        <Dropdown>
+          <DropdownTrigger style={{ margin: '3px' }}>Open</DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem>One</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>,
+      )
+      expect(screen.getByRole('button', { name: 'Open' })).toHaveStyle({ margin: '3px' })
+    })
   })
 
   describe('usage', () => {
