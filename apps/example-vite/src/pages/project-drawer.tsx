@@ -74,8 +74,8 @@ export function ProjectDrawer({
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <div className={styles.detail}>
-                      <p className={styles.description}>
+                    <div className="d-flex flex-column gap-3 py-3">
+                      <p className="mb-0">
                         {project.description || t("projectDrawer.noDescription")}
                       </p>
                       <dl className={styles.facts}>
@@ -92,7 +92,7 @@ export function ProjectDrawer({
                         <dt>{t("projectDrawer.due")}</dt>
                         <dd>{formatDue(project.due, i18n.language)}</dd>
                         <dt>{t("projectDrawer.owner")}</dt>
-                        <dd className={styles.owner}>
+                        <dd className="d-flex align-items-center gap-2 small text-body-secondary">
                           <Avatar name={project.owner} size="sm" />
                           {project.owner}
                         </dd>
@@ -120,11 +120,16 @@ export function ProjectDrawer({
                     </div>
                   </TabPanel>
                   <TabPanel>
-                    <ul className={styles.activity}>
+                    <ul className="list-group list-group-flush py-3">
                       {activity(project, t, i18n.language).map((event) => (
-                        <li key={event.text}>
+                        <li
+                          className="list-group-item bg-transparent px-0"
+                          key={event.text}
+                        >
                           {event.text}
-                          <span className={styles.when}>{event.when}</span>
+                          <span className="d-block small text-body-secondary">
+                            {event.when}
+                          </span>
                         </li>
                       ))}
                     </ul>

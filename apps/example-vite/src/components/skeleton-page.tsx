@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { Skeleton } from "plume-ui-react";
-import styles from "./skeleton-page.module.css";
 
 // The shared shape of every loading state: the title and the description, then the content of the page.
 export function SkeletonPage({
@@ -11,10 +10,10 @@ export function SkeletonPage({
     <div
       aria-busy="true"
       aria-label={label}
-      className={styles.page}
+      className="d-flex flex-column gap-4"
       role="status"
     >
-      <div className={styles.header}>
+      <div className="d-flex flex-column gap-2">
         <Skeleton height={28} width="min(12rem, 60%)" />
         <Skeleton width="min(22rem, 90%)" />
       </div>

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bootstrap": "^5.3.8",
     "i18next": "^26.5.12",
     "plume-ui-react": "^0.47.0",
     "react": "^19.2.0",
