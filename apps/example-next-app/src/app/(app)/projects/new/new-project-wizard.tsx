@@ -35,7 +35,6 @@ import { createProject } from '@/app/actions'
 import type { NewProjectInput, Visibility } from '@/lib/data'
 import { formatDue, toIsoDate } from '@/lib/format'
 import { validateNewProject, type NewProjectErrors } from '@/lib/validation'
-import styles from './new-project.module.css'
 
 const steps = [
   { fields: ['name', 'owner'], id: 'details' },
@@ -108,7 +107,7 @@ export function NewProjectWizard({
   }
 
   return (
-    <div className={styles.wizard}>
+    <div className="flex max-w-[40rem] flex-col gap-6">
       <Stepper activeStep={step} aria-label={t('progress')}>
         {steps.map(({ id }) => (
           <Step key={id}>
@@ -123,7 +122,7 @@ export function NewProjectWizard({
       <Card variant="outline">
         <CardBody>
           <form
-            className={styles.form}
+            className="flex flex-col gap-5"
             noValidate
             onSubmit={(event) => {
               event.preventDefault()
@@ -214,7 +213,7 @@ export function NewProjectWizard({
 
             {step === 2 ? (
               <>
-                <dl className={styles.summary}>
+                <dl className="grid grid-cols-[max-content_1fr] items-start gap-x-4 gap-y-3 [&_dt]:text-muted">
                   <dt>{t('name')}</dt>
                   <dd>{values.name.trim()}</dd>
                   <dt>{t('projectDescription')}</dt>
@@ -238,7 +237,7 @@ export function NewProjectWizard({
               </>
             ) : null}
 
-            <div className={styles.actions}>
+            <div className="flex justify-between">
               <Button
                 disabled={step === 0 || pending}
                 onClick={() => setStep(step - 1)}

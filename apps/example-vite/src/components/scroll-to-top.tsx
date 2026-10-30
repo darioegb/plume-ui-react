@@ -30,7 +30,7 @@ export function ScrollToTop(): ReactNode {
   return (
     <Button
       aria-label={t("preferences.scrollToTop")}
-      className={styles.button}
+      className={`position-fixed bottom-0 end-0 m-3 p-0 ${styles.button}`}
       colorScheme="primary"
       onClick={scrollToTop}
       shape="pill"

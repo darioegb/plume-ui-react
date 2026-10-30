@@ -44,7 +44,6 @@ import { SearchIcon, TeamIcon } from '@/components/icons'
 import type { Department, Role, TeamMember } from '@/lib/data'
 import { userFromEmail } from '@/lib/user'
 import type { ValidationKey } from '@/lib/validation'
-import styles from './team.module.css'
 
 const departments: Department[] = ['product', 'engineering', 'design', 'support']
 
@@ -106,17 +105,17 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
 
   return (
     <>
-      <div className={styles.toolbar}>
+      <div className="flex flex-wrap items-center gap-3">
         <Input
           aria-label={t('search')}
-          className={styles.search}
+          className="min-w-72 max-sm:w-full max-sm:min-w-0"
           elementBefore={<SearchIcon />}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={t('searchPlaceholder')}
           value={query}
         />
         <Button
-          className={styles.invite}
+          className="ms-auto max-sm:ms-0 max-sm:w-full max-sm:min-w-0"
           onClick={() => {
             setEmail('')
             setEmailError(undefined)
@@ -146,20 +145,20 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
                 variant="outline"
               />
             ) : (
-              <ul className={styles.grid}>
+              <ul className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-4 pt-4">
                 {visible.map((member) => (
                   <li key={member.email}>
-                    <Card className={styles.card} variant="outline">
+                    <Card className="h-full" variant="outline">
                       <CardBody>
-                        <div className={styles.header}>
+                        <div className="flex items-center gap-3">
                           <Tooltip content={tPresence(member.presence)}>
                             <span>
                               <Avatar name={member.name} size="lg" status={member.presence} />
                             </span>
                           </Tooltip>
                           <div>
-                            <div className={styles.name}>{member.name}</div>
-                            <div className={styles.role}>{tRole(member.role)}</div>
+                            <div className="font-semibold">{member.name}</div>
+                            <div className="text-body-sm text-muted">{tRole(member.role)}</div>
                           </div>
                           {member.pending ? (
                             <Badge colorScheme="warning" size="sm" variant="subtle">
@@ -167,7 +166,7 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
                             </Badge>
                           ) : null}
                         </div>
-                        <div className={styles.skills}>
+                        <div className="my-3 flex min-h-6 flex-wrap gap-1.5">
                           {member.skills.map((skill) => (
                             <Chip key={skill} size="sm">
                               {tSkill(skill)}
@@ -181,8 +180,8 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent aria-label={t('contactPerson', { name: member.name })}>
-                            <p className={styles.contact}>
-                              <a href={`mailto:${member.email}`}>{member.email}</a>
+                            <p className="mb-3">
+                              <a className="text-primary-text underline" href={`mailto:${member.email}`}>{member.email}</a>
                             </p>
                             <PopoverClose>
                               <Button size="sm">{t('done')}</Button>
@@ -225,7 +224,7 @@ export function TeamDirectory({ team: initial }: Readonly<{ team: TeamMember[] }
         <ModalContent>
           <ModalHeader>{t('inviteModal.title')}</ModalHeader>
           <ModalBody>
-            <div className={styles.form}>
+            <div className="flex flex-col gap-4">
               <Field
                 errorText={emailError && tValidation(emailError)}
                 label={t('inviteModal.email')}

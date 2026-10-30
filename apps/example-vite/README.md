@@ -42,13 +42,43 @@ to serve `index.html` for client-side routes such as `/projects`.
   language switcher is in the top bar; the choice is stored locally, and the first visit follows the browser. Dates and
   numbers use `Intl` with the current language. The names and descriptions of the projects are data, not interface, so
   they are not translated.
-- `ThemeProvider`, `ToastProvider`, `LocaleProvider`, and only the CSS of the components it uses, one
-  `plume-ui-react/css/<component>.css` import each in `src/main.tsx` (the Next.js
-  example loads the whole `plume-ui-react/styles.css` instead). `src/theme.ts` defines the brand palettes and a
+- `ThemeProvider`, `ToastProvider`, `LocaleProvider`, and only the CSS of the components it uses (see
+  [Plume with Bootstrap 5](#plume-with-bootstrap-5)); the Next.js
+  example loads the whole `plume-ui-react/styles.css` instead. `src/theme.ts` defines the brand palettes and a
   custom `salmon` color scheme (the visibility badge of the project detail uses it), and `src/plume-ui.d.ts` extends `ColorPalette`
   (see [Colors › Customization](https://darioegb.github.io/plume-ui-react/?path=/docs/theme-colors--docs)).
 
 It installs `plume-ui-react` `^0.47.0` from npm.
+
+## Plume with Bootstrap 5
+
+The layout of the app and its own surfaces use [Bootstrap 5](https://getbootstrap.com) (CSS only: no JavaScript, no
+React-Bootstrap, no Sass), while every Plume component keeps its own look: none uses `variant='unstyled'`.
+The [Next.js example](../example-next-app) uses Tailwind CSS 4 instead.
+
+- **Bootstrap for the page, Plume for the components.** The shell, the page headers, the dashboard grid (`row`,
+  `row-cols-*`, `col`), the rows of the active projects, the toolbar and the activity list (`list-group`) are Bootstrap
+  classes (`d-flex`, `gap-*`, `p-*`, `fw-*`, `text-body-secondary`, `container-fluid`, `visually-hidden`...). Only what
+  Bootstrap can't express stays in a CSS module: the sidebar-aware brand, the sticky top bar, the widths of the
+  filters, the definition grid of the detail drawer.
+- **Cascade layers.** `src/styles.css` is imported first from `src/main.tsx`. It declares
+  `@layer reset, base, plume, components, utilities;` and imports `bootstrap/dist/css/bootstrap.min.css` with
+  `layer(reset)`, so the order is Bootstrap, then Plume, then the CSS of the app (no layer), which wins over both.
+  Bootstrap's reboot is a reset, and a reset with no layer would beat Plume (`button { padding: 0 }` would strip the
+  buttons); in `reset` it sits below it and the Plume components keep their styles. The per-component files of Plume
+  repeat the declaration of the layers, which does not change the order the first one set.
+- **Utilities win.** Bootstrap's utilities are `!important`, and for `!important` the order of the layers is reversed:
+  a utility in `reset` beats the styles of Plume and the unlayered CSS of the app. Put utilities on the elements of the
+  app (wrappers, `div`s) and use them on a Plume component (`p-0`, `ms-sm-auto`) only for what you do want to
+  override. Bootstrap's component classes (`row`, `col`, `list-group`, `container-fluid`) are not `!important` and
+  lose to the CSS of the app, as expected.
+- **Dark mode.** Bootstrap 5.3 reads `data-bs-theme`; Plume reads `data-plume-color-mode`. `BootstrapColorMode`
+  (`src/components/bootstrap-color-mode.tsx`), inside `ThemeProvider` in `src/providers.tsx`, copies the resolved
+  color mode of `useTheme()` to `data-bs-theme` on `<html>`. The resolved mode is never `system`: Plume resolves it
+  with `prefers-color-scheme` and follows its changes, so the Bootstrap surfaces do too. The CSS of the app uses the
+  `--plume-*` tokens; the `--bs-*` variables are only reached through Bootstrap classes.
+- **Per-component CSS.** `src/main.tsx` imports `plume-ui-react/tokens.css` and one `plume-ui-react/css/<component>.css`
+  per component the app uses, so the bundle carries only those. Each of those files is inside `@layer plume`.
 
 This is a demo, not a production backend: validation and persistence run in the
 browser. If browser storage is unavailable, changes last only for the current

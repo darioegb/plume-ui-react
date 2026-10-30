@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
-import 'plume-ui-react/styles.css'
 import { getBrand, getColorMode } from '@/lib/session'
 import { Providers } from './providers'
+import './globals.css'
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('app')
@@ -21,7 +21,7 @@ export default async function RootLayout({
   const [colorMode, brand, locale] = await Promise.all([getColorMode(), getBrand(), getLocale()])
   return (
     <html lang={locale}>
-      <body style={{ margin: 0, fontFamily: 'system-ui, sans-serif' }}>
+      <body>
         <NextIntlClientProvider>
           <Providers brand={brand} colorMode={colorMode}>{children}</Providers>
         </NextIntlClientProvider>

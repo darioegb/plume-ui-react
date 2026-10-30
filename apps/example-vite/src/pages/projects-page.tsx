@@ -15,13 +15,13 @@ export function ProjectsPage(): ReactNode {
   if (projects.status === "loading") {
     return (
       <SkeletonPage label={t("projects.loading")}>
-        <div className={styles.toolbar}>
+        <div className="d-flex flex-wrap align-items-center gap-2">
           <Skeleton className={styles.search} height={40} shape="rect" />
           <Skeleton className={styles.status} height={40} shape="rect" />
           <Skeleton className={styles.due} height={40} shape="rect" />
         </div>
         <Skeleton width="6rem" />
-        <div className={styles.rows}>
+        <div className="d-flex flex-column gap-2">
           <Skeleton height={32} shape="rect" />
           {[1, 2, 3, 4, 5].map((item) => (
             <Skeleton height={56} key={item} shape="rect" />

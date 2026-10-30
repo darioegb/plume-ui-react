@@ -136,7 +136,7 @@ export function ProjectsBoard({
 
   return (
     <>
-      <div className={styles.toolbar}>
+      <div className="d-flex flex-wrap align-items-center gap-2">
         <Input
           aria-label={t("projects.search")}
           className={styles.search}
@@ -182,7 +182,10 @@ export function ProjectsBoard({
             {t("projects.clearFilters")}
           </Button>
         ) : null}
-        <Button className={styles.create} onClick={() => setCreating(true)}>
+        <Button
+          className={`ms-sm-auto ${styles.create}`}
+          onClick={() => setCreating(true)}
+        >
           {t("projects.newProject")}
         </Button>
       </div>
@@ -205,7 +208,7 @@ export function ProjectsBoard({
             </TableHead>
             <TableHead>{t("projects.team")}</TableHead>
             <TableHead align="end">
-              <span className={styles.visuallyHidden}>
+              <span className="visually-hidden">
                 {t("projects.actions")}
               </span>
             </TableHead>
@@ -232,13 +235,13 @@ export function ProjectsBoard({
               <TableRow key={project.id}>
                 <TableCell>
                   <button
-                    className={styles.name}
+                    className={`p-0 fw-semibold text-start ${styles.name}`}
                     onClick={() => open(project)}
                     type="button"
                   >
                     {project.name}
                   </button>
-                  <div className={styles.owner}>
+                  <div className="d-flex align-items-center gap-2 mt-1 small text-body-secondary">
                     <Avatar name={project.owner} size="sm" />
                     {project.owner}
                   </div>
