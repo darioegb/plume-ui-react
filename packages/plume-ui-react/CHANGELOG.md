@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.45.0
+
+### Minor Changes
+
+- [#254](https://github.com/darioegb/plume-ui-react/pull/254) [`09c72dafb4fe27ef53d69830ed29a75bfdfb90b3`](https://github.com/darioegb/plume-ui-react/commit/09c72dafb4fe27ef53d69830ed29a75bfdfb90b3) Thanks [@darioegb](https://github.com/darioegb)! - `plume-ui-react/tailwind.css` is removed, so the package stays independent of any CSS framework. The same theme for Tailwind CSS v4 is in the Framework integration guide: copy it into a file of your app and import that file instead.
+
 ## 0.44.0
 
 ### Minor Changes
