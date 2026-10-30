@@ -121,6 +121,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           isStyled && isInvalid && styles.invalid,
           className,
         )}
+        data-disabled={disabled ? '' : undefined}
+        data-indeterminate={indeterminate ? '' : undefined}
+        data-invalid={isInvalid ? '' : undefined}
+        data-plume-checkbox=""
+        data-readonly={readOnly ? '' : undefined}
         disabled={disabled}
         onChange={onChange ? ignoreWhenReadOnly : undefined}
         onClick={preventWhenReadOnly}

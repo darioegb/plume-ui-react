@@ -3,11 +3,14 @@
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode, RefObject } from 'react'
 import { forwardRef, useRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
+import { useShallowStable } from '../shared/use-shallow-stable'
 import { NumberInputContext } from './numberinput-context'
 import { NumberInputDecrement } from './numberinput-decrement'
 import { NumberInputField } from './numberinput-field'
+import { NumberInputHidden } from './numberinput-hidden'
 import { NumberInputIncrement } from './numberinput-increment'
 import { DEFAULT_LABELS } from './numberinput-labels'
 import type { NumberInputLabels } from './numberinput-labels'
@@ -20,7 +23,7 @@ export type NumberInputVariant = 'outline' | 'filled' | 'underline' | 'unstyled'
 
 export interface NumberInputOwnProps {
   /**
-   * The parts of the field, to change what it shows or their order. Without them it renders the field between the two steppers.
+   * The parts of the field, to change what it shows or their order. Without them it renders the field between the two steppers. With a `name` the `NumberInputHidden` is added unless the parts already have one.
    */
   children?: ReactNode
   /**
@@ -184,8 +187,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       step,
       value,
     })
+    const fieldProps = useShallowStable(rest)
     const isStyled = variant !== 'unstyled'
-    const invalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
+    const invalid = fieldProps['aria-invalid'] === true || fieldProps['aria-invalid'] === 'true'
     const text = useLabels('numberInput', DEFAULT_LABELS, labels)
     const colorVars = {
       '--numberinput-color': `var(--plume-color-${colorScheme}-text)`,
@@ -194,7 +198,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const context = useMemo(
       () => ({
         disabled,
-        fieldProps: rest,
+        fieldProps,
         forwardedRef: ref,
         inputRef,
         invalid,
@@ -202,11 +206,12 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         labels: text,
         max,
         min,
+        name,
         number,
         precision,
         readOnly,
       }),
-      [disabled, invalid, isStyled, max, min, number, precision, readOnly, ref, rest, text],
+      [disabled, fieldProps, invalid, isStyled, max, min, name, number, precision, readOnly, ref, text],
     )
 
     return (
@@ -225,7 +230,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
               {steppers ? <NumberInputIncrement /> : null}
             </>
           )}
-          {name ? <input name={name} type="hidden" value={number.value ?? ''} /> : null}
+          {name && !hasPart(children, [NumberInputHidden]) ? <NumberInputHidden /> : null}
         </div>
       </NumberInputContext.Provider>
     )

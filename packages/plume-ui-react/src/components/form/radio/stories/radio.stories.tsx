@@ -220,63 +220,6 @@ export const Colors: Story = {
 }
 
 /**
- * A **disabled** Radio can't be changed or focused. A **readOnly** one can be focused but not changed.
- */
-export const DisabledAndReadOnly: Story = {
-  render: () => (
-    <div className="flex flex-col gap-2">
-      <Option disabled label="Disabled" name="disabled-demo" />
-      <Option defaultChecked disabled label="Disabled and selected" name="disabled-demo" />
-      <Option defaultChecked label="Read only and selected" name="readonly-demo" readOnly />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      source: {
-        code: `<div className="flex flex-col gap-2">
-  <Field label="Disabled" orientation="inline">
-    <Radio disabled name="disabled-demo" />
-  </Field>
-  <Field label="Disabled and selected" orientation="inline">
-    <Radio defaultChecked disabled name="disabled-demo" />
-  </Field>
-  <Field label="Read only and selected" orientation="inline">
-    <Radio defaultChecked name="readonly-demo" readOnly />
-  </Field>
-</div>`,
-      },
-    },
-  },
-}
-
-/**
- * **aria-invalid** switches the Radio to the error color scheme.
- */
-export const Invalid: Story = {
-  args: {
-    'aria-invalid': true,
-  },
-}
-
-/**
- * The **Field** adds the label, a helper and an error text, and wires the accessibility attributes. With
- * `orientation="inline"` the label sits beside the Radio and the texts go under it.
- */
-export const WithField: Story = {
-  render: () => (
-    <Field
-      errorText="Pick a plan to continue"
-      helperText="You can change it later"
-      label="Free plan"
-      orientation="inline"
-      required
-    >
-      <Radio name="plan-field" value="free" />
-    </Field>
-  ),
-}
-
-/**
  * This is the default RadioGroup. Use **defaultValue** to select a radio at first and **orientation** to lay the
  * radios out in a row.
  */
@@ -435,6 +378,63 @@ export const GroupSizesAndColors: Story = {
       },
     },
   },
+}
+
+/**
+ * A **disabled** Radio can't be changed or focused. A **readOnly** one can be focused but not changed.
+ */
+export const DisabledAndReadOnly: Story = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Option disabled label="Disabled" name="disabled-demo" />
+      <Option defaultChecked disabled label="Disabled and selected" name="disabled-demo" />
+      <Option defaultChecked label="Read only and selected" name="readonly-demo" readOnly />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-2">
+  <Field label="Disabled" orientation="inline">
+    <Radio disabled name="disabled-demo" />
+  </Field>
+  <Field label="Disabled and selected" orientation="inline">
+    <Radio defaultChecked disabled name="disabled-demo" />
+  </Field>
+  <Field label="Read only and selected" orientation="inline">
+    <Radio defaultChecked name="readonly-demo" readOnly />
+  </Field>
+</div>`,
+      },
+    },
+  },
+}
+
+/**
+ * **aria-invalid** switches the Radio to the error color scheme.
+ */
+export const Invalid: Story = {
+  args: {
+    'aria-invalid': true,
+  },
+}
+
+/**
+ * The **Field** adds the label, a helper and an error text, and wires the accessibility attributes. With
+ * `orientation="inline"` the label sits beside the Radio and the texts go under it.
+ */
+export const WithField: Story = {
+  render: () => (
+    <Field
+      errorText="Pick a plan to continue"
+      helperText="You can change it later"
+      label="Free plan"
+      orientation="inline"
+      required
+    >
+      <Radio name="plan-field" value="free" />
+    </Field>
+  ),
 }
 
 /**

@@ -126,6 +126,15 @@ export const Variants: Story = {
  * Use the **size** prop to change the size.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<NumberInput aria-label="sm" defaultValue={1} size="sm" />
+<NumberInput aria-label="md" defaultValue={1} size="md" />
+<NumberInput aria-label="lg" defaultValue={1} size="lg" />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4" style={{ width: '12rem' }}>
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -136,12 +145,22 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to pick the color of the focus ring from the theme.
+ * Every color of the theme in the default `outline` variant. The **colorScheme** sets the color of
+ * the focus ring, in every variant.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<NumberInput aria-label="primary" colorScheme="primary" defaultValue={1} />
+<NumberInput aria-label="success" colorScheme="success" defaultValue={1} />
+<NumberInput aria-label="purple" colorScheme="purple" defaultValue={1} />`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col gap-4" style={{ width: '12rem' }}>
-      {colorSchemes.slice(0, 5).map((scheme) => (
+      {colorSchemes.map((scheme) => (
         <NumberInput
           aria-label={scheme}
           colorScheme={scheme as keyof typeof defaultTheme.colors}
@@ -289,7 +308,8 @@ export const States: Story = {
 
 /**
  * With a **name** the NumberInput takes part in a form: the plain number is submitted in a hidden input, not the
- * formatted text, and an empty field submits an empty string.
+ * formatted text, and an empty field submits an empty string. That input is the `NumberInputHidden` part: put one
+ * in a composition to give it its own `name` or a `form`.
  */
 export const InAForm: Story = {
   render: () => (

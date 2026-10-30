@@ -87,7 +87,7 @@
 }
 
 .filled:enabled:hover {
-  background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
+  background-color: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), var(--plume-surface-muted));
 }
 
 .outline:enabled:focus {

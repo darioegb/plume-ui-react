@@ -217,4 +217,16 @@ describe('Radio component', () => {
       expect(screen.getByRole('radio', { name: 'Free' })).not.toBeChecked()
     })
   })
+
+  it('carries data-plume-radio and its state', () => {
+    const { rerender } = render(<Radio aria-label="Free" value="free" />)
+    const input = screen.getByRole('radio')
+    expect(input).toHaveAttribute('data-plume-radio')
+    expect(input).not.toHaveAttribute('data-disabled')
+
+    rerender(<Radio aria-invalid aria-label="Free" disabled readOnly value="free" />)
+    expect(input).toHaveAttribute('data-disabled')
+    expect(input).toHaveAttribute('data-invalid')
+    expect(input).toHaveAttribute('data-readonly')
+  })
 })

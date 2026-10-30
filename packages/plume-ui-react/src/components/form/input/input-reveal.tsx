@@ -1,7 +1,7 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ForwardedRef, HTMLInputTypeAttribute, ReactNode } from 'react'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useCallback, useState } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { EyeIcon, EyeOffIcon } from '../../../overlay/icons'
 import type { ComponentProps } from '../../../theme'
@@ -22,31 +22,24 @@ export const InputReveal = forwardRef<HTMLButtonElement, InputRevealProps>(
     const isDisabled = disabled ?? context.disabled
 
     return (
-      <span
-        className={joinClasses(
-          isStyled && styles.element,
-          isStyled && styles.elementAfter,
-          isStyled && styles.revealSlot,
-        )}
+      <button
+        aria-label={ariaLabel ?? labels.reveal}
+        aria-pressed={revealed}
+        className={joinClasses(isStyled && styles.reveal, className)}
+        data-disabled={isDisabled ? '' : undefined}
+        data-plume-input-reveal=""
+        data-revealed={revealed ? '' : undefined}
+        disabled={isDisabled}
+        onClick={(event) => {
+          onClick?.(event)
+          toggleReveal()
+        }}
+        ref={ref}
+        style={style}
+        type="button"
       >
-        <button
-          aria-label={ariaLabel ?? labels.reveal}
-          aria-pressed={revealed}
-          className={joinClasses(isStyled && styles.revealButton, className)}
-          data-disabled={isDisabled ? '' : undefined}
-          data-plume-input-reveal=""
-          disabled={isDisabled}
-          onClick={(event) => {
-            onClick?.(event)
-            toggleReveal()
-          }}
-          ref={ref}
-          style={style}
-          type="button"
-        >
-          {children ?? (revealed ? <EyeOffIcon /> : <EyeIcon />)}
-        </button>
-      </span>
+        {children ?? (revealed ? <EyeOffIcon /> : <EyeIcon />)}
+      </button>
     )
   },
 )
@@ -67,6 +60,6 @@ export function usePasswordReveal(
   return {
     canReveal: revealable && type === 'password',
     revealed,
-    toggle: () => setRevealed((current) => !current),
+    toggle: useCallback(() => setRevealed((current) => !current), []),
   }
 }

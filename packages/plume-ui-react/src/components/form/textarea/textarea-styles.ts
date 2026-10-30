@@ -25,10 +25,13 @@ export const textareaFieldClasses = ({
 }: TextareaFieldClassesOptions): string | undefined => {
   const isStyled = variant !== 'unstyled'
   return joinClasses(
-    isStyled &&
-      `${styles.base} ${styles[variant]} ${styles[size]} ${styles[shape]} ${styles[resize]}`,
-    invalid && isStyled && styles.invalid,
-    disabled && styles.disabled,
+    isStyled && styles.base,
+    isStyled && styles[variant],
+    isStyled && styles[size],
+    isStyled && styles[shape],
+    isStyled && styles[resize],
+    isStyled && invalid && styles.invalid,
+    isStyled && disabled && styles.disabled,
     className,
   )
 }

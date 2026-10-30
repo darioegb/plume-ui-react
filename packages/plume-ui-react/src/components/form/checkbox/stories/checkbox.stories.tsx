@@ -62,22 +62,25 @@ type Story = StoryObj<typeof Checkbox>
 export const Default: Story = {}
 
 /**
- * Wrap the Checkbox in a **Field** with `orientation="inline"` to show a label after the box. Clicking the label
- * toggles the Checkbox, and the Field wires `id`, `aria-describedby`, `aria-invalid` and `required`.
- */
-export const WithLabel: Story = {
-  render: () => (
-    <Field label="Accept the terms" orientation="inline">
-      <Checkbox />
-    </Field>
-  ),
-}
-
-/**
  * Use the **variant** prop to pick how a checked box looks: `solid` fills it with the color, `outline` only
  * colors the border and the mark, and `unstyled` leaves the native checkbox so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field label="solid" orientation="inline">
+  <Checkbox defaultChecked variant="solid" />
+</Field>
+<Field label="outline" orientation="inline">
+  <Checkbox defaultChecked variant="outline" />
+</Field>
+<Field label="unstyled" orientation="inline">
+  <Checkbox defaultChecked variant="unstyled" />
+</Field>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {(['solid', 'outline', 'unstyled'] as const).map((variant) => (
@@ -93,6 +96,21 @@ export const Variants: Story = {
  * Use the **size** prop to change the size of the box.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field label="sm" orientation="inline">
+  <Checkbox defaultChecked size="sm" />
+</Field>
+<Field label="md" orientation="inline">
+  <Checkbox defaultChecked size="md" />
+</Field>
+<Field label="lg" orientation="inline">
+  <Checkbox defaultChecked size="lg" />
+</Field>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -108,6 +126,21 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick a color from the theme.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Field label="primary" orientation="inline">
+  <Checkbox colorScheme="primary" defaultChecked />
+</Field>
+<Field label="success" orientation="inline">
+  <Checkbox colorScheme="success" defaultChecked />
+</Field>
+<Field label="purple" orientation="inline">
+  <Checkbox colorScheme="purple" defaultChecked />
+</Field>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center items-center gap-6">
       {colorSchemes.map((scheme) => (
@@ -116,6 +149,18 @@ export const Colors: Story = {
         </Field>
       ))}
     </div>
+  ),
+}
+
+/**
+ * Wrap the Checkbox in a **Field** with `orientation="inline"` to show a label after the box. Clicking the label
+ * toggles the Checkbox, and the Field wires `id`, `aria-describedby`, `aria-invalid` and `required`.
+ */
+export const WithLabel: Story = {
+  render: () => (
+    <Field label="Accept the terms" orientation="inline">
+      <Checkbox />
+    </Field>
   ),
 }
 

@@ -1,8 +1,16 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createRef, useState } from 'react'
+import type { ReactElement } from 'react'
+import { createRef, memo, useState } from 'react'
 import { Field } from '../../field'
-import { NumberInput, NumberInputDecrement, NumberInputField, NumberInputIncrement } from '..'
+import {
+  NumberInput,
+  NumberInputDecrement,
+  NumberInputField,
+  NumberInputHidden,
+  NumberInputIncrement,
+} from '..'
+import { useNumberInputContext } from '../numberinput-context'
 import type { NumberInputProps } from '..'
 
 const spin = (): HTMLInputElement => screen.getByRole('spinbutton')
@@ -550,6 +558,65 @@ describe('NumberInput component', () => {
     it('submits an empty value when it is empty', () => {
       const { container } = render(<NumberInput aria-label="Price" name="price" />)
       expect(container.querySelector('input[type="hidden"]')).toHaveValue('')
+    })
+
+    it('renders the hidden input from a part, once', () => {
+      const ref = createRef<HTMLInputElement>()
+      const { container } = render(
+        <form id="order">
+          <NumberInput aria-label="Price" defaultValue={2} name="price">
+            <NumberInputField />
+            <NumberInputHidden form="order" name="amount" ref={ref} />
+          </NumberInput>
+        </form>,
+      )
+      const hidden = container.querySelectorAll('input[type="hidden"]')
+      expect(hidden).toHaveLength(1)
+      expect(ref.current).toBe(hidden[0])
+      expect(ref.current).toHaveAttribute('data-plume-numberinput-hidden')
+      expect(ref.current).toHaveAttribute('name', 'amount')
+      expect(ref.current).toHaveAttribute('form', 'order')
+      expect(ref.current).toHaveValue('2')
+    })
+
+    it('adds the hidden input to a composition with a name', () => {
+      const { container } = render(
+        <NumberInput aria-label="Price" defaultValue={3} name="price">
+          <NumberInputField />
+        </NumberInput>,
+      )
+      expect(container.querySelector('[data-plume-numberinput-hidden]')).toHaveAttribute(
+        'name',
+        'price',
+      )
+    })
+
+    it('throws when the hidden input is outside a NumberInput', () => {
+      const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+      expect(() => render(<NumberInputHidden />)).toThrow(
+        'NumberInputHidden must be used within a <NumberInput>',
+      )
+      spy.mockRestore()
+    })
+
+    it('keeps the context value while the props do not change', () => {
+      const renders = vi.fn()
+      const Probe = memo(function Probe() {
+        useNumberInputContext('Probe')
+        renders()
+        return null
+      })
+      const ui = (label: string): ReactElement => (
+        <NumberInput aria-label={label} defaultValue={1}>
+          <NumberInputField />
+          <Probe />
+        </NumberInput>
+      )
+      const { rerender } = render(ui('Price'))
+      rerender(ui('Price'))
+      expect(renders).toHaveBeenCalledTimes(1)
+      rerender(ui('Cost'))
+      expect(renders).toHaveBeenCalledTimes(2)
     })
 
     it('has no hidden input without a name', () => {

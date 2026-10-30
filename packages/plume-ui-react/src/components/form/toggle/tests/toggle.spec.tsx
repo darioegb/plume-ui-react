@@ -197,4 +197,18 @@ describe('Toggle component', () => {
       expect(screen.getByRole('switch')).not.toBeChecked()
     })
   })
+
+  it('carries data-plume-toggle and its state', () => {
+    const { rerender } = render(<Toggle aria-label="Terms" />)
+    const input = screen.getByRole('switch')
+    expect(input).toHaveAttribute('data-plume-toggle')
+    expect(input).not.toHaveAttribute('data-disabled')
+    expect(input).not.toHaveAttribute('data-invalid')
+    expect(input).not.toHaveAttribute('data-readonly')
+
+    rerender(<Toggle aria-invalid aria-label="Terms" disabled readOnly />)
+    expect(input).toHaveAttribute('data-disabled')
+    expect(input).toHaveAttribute('data-invalid')
+    expect(input).toHaveAttribute('data-readonly')
+  })
 })

@@ -5,6 +5,7 @@ import { forwardRef, useMemo } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { useMask } from '../../../hooks/use-mask'
 import { useLabels } from '../../../locale/locale-provider'
+import { useShallowStable } from '../shared/use-shallow-stable'
 import { InputAddon } from './input-addon'
 import { InputContext, inputColorVars } from './input-context'
 import type { InputContextValue, InputLabels, InputVariant } from './input-context'
@@ -72,7 +73,7 @@ export interface InputOwnProps {
   variant?: InputVariant
 }
 
-export type InputProps = ComponentProps & InputFieldAttributes & InputOwnProps
+export type InputProps = Omit<ComponentProps, 'index'> & InputFieldAttributes & InputOwnProps
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
@@ -103,7 +104,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const text = useLabels('input', DEFAULT_LABELS, labels)
     const { canReveal, revealed, toggle } = usePasswordReveal(type, revealable)
-    const isInvalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
+    const fieldAttributes = useShallowStable(rest)
+    const isInvalid =
+      fieldAttributes['aria-invalid'] === true || fieldAttributes['aria-invalid'] === 'true'
     const { value: maskedValue, onChange: maskedOnChange } = useMask({
       mask,
       value: typeof value === 'string' ? value : undefined,
@@ -115,7 +118,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         colorScheme,
         disabled,
         fieldProps: {
-          ...rest,
+          ...fieldAttributes,
           defaultValue: mask ? undefined : defaultValue,
           onChange: maskedOnChange,
           type,
@@ -136,13 +139,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         colorScheme,
         defaultValue,
         disabled,
+        fieldAttributes,
         isInvalid,
         mask,
         maskedOnChange,
         maskedValue,
         readOnly,
         ref,
-        rest,
         revealed,
         shape,
         size,

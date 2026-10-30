@@ -1,7 +1,7 @@
 'use client'
 
 import type { ChangeEvent } from 'react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export type MaskChangeHandler = (event: ChangeEvent<HTMLInputElement>) => void
 
@@ -92,15 +92,18 @@ export function useMask({
     applyMask(defaultValue, mask ?? ''),
   )
 
-  const handleChange: MaskChangeHandler = (event) => {
-    if (mask) {
-      const maskedValue = applyMask(event.target.value, mask)
-      // Mutate the event so consumers reading event.target.value get the masked value.
-      event.target.value = maskedValue
-      if (!isControlled) setInternalValue(maskedValue)
-    }
-    onChange?.(event)
-  }
+  const handleChange: MaskChangeHandler = useCallback(
+    (event) => {
+      if (mask) {
+        const maskedValue = applyMask(event.target.value, mask)
+        // Mutate the event so consumers reading event.target.value get the masked value.
+        event.target.value = maskedValue
+        if (!isControlled) setInternalValue(maskedValue)
+      }
+      onChange?.(event)
+    },
+    [isControlled, mask, onChange],
+  )
 
   if (!mask) {
     return { value, onChange: handleChange }

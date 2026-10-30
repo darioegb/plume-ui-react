@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { createRef } from 'react'
+import type { ReactElement } from 'react'
+import { createRef, memo } from 'react'
 import { Field } from '../../field'
 import {
   Input,
@@ -11,6 +12,7 @@ import {
   InputGroup,
   InputReveal,
 } from '..'
+import { useInputContext } from '../input-context'
 
 describe('Input parts', () => {
   describe('default composition', () => {
@@ -140,7 +142,7 @@ describe('Input parts', () => {
       )
       const input = screen.getByPlaceholderText('x')
       expect(ref.current).toBe(input)
-      expect(input).toHaveClass('base', 'lg', 'pill', 'filled', 'own')
+      expect(input).toHaveClass('lg', 'pill', 'filled', 'own')
       expect(input).toHaveAttribute('maxlength', '5')
       expect(input.style.color).toBe('red')
       expect(input).toHaveAttribute('data-plume-input-field')
@@ -257,7 +259,7 @@ describe('Input parts', () => {
         </Input>,
       )
       const toggle = screen.getByRole('button', { name: 'Mostrar' })
-      expect(toggle).toHaveClass('revealButton', 'eye')
+      expect(toggle).toHaveClass('reveal', 'eye')
       expect(screen.getByPlaceholderText('Secret')).toHaveAttribute('type', 'password')
       await userEvent.click(toggle)
       expect(screen.getByPlaceholderText('Secret')).toHaveAttribute('type', 'text')
@@ -325,7 +327,7 @@ describe('Input parts', () => {
       expect(refs.control.current?.style.color).toBe('blue')
       expect(refs.element.current).toHaveClass('e', 'element', 'elementAfter')
       expect(refs.element.current?.style.color).toBe('green')
-      expect(refs.reveal.current).toHaveClass('r', 'revealButton')
+      expect(refs.reveal.current).toHaveClass('r', 'reveal')
       expect(refs.reveal.current?.style.color).toBe('pink')
     })
 
@@ -343,9 +345,7 @@ describe('Input parts', () => {
       expect(container.firstElementChild).not.toHaveAttribute('class')
       expect(screen.getByText('addon')).toHaveAttribute('class', 'a')
       expect(screen.getByText('element')).toHaveAttribute('class', 'e')
-      expect(screen.getByPlaceholderText('x').className.split(' ')).toEqual(
-        expect.arrayContaining(['f', 'base']),
-      )
+      expect(screen.getByPlaceholderText('x')).toHaveAttribute('class', 'f')
       expect(screen.getByPlaceholderText('x')).not.toHaveClass('outline')
       expect(screen.getByRole('button')).toHaveAttribute('class', 'r')
       expect(screen.getByPlaceholderText('x').parentElement).toHaveAttribute('class', 'c')
@@ -378,6 +378,57 @@ describe('Input parts', () => {
       const input = screen.getByLabelText(/Mail/)
       expect(input).toBeDisabled()
       expect(input).toBeRequired()
+    })
+  })
+
+  describe('unstyled and context', () => {
+    it('drops the disabled class of the field when it is unstyled', () => {
+      render(<Input disabled placeholder="x" variant="unstyled" />)
+      const input = screen.getByPlaceholderText('x')
+      expect(input).not.toHaveAttribute('class')
+      expect(input).toHaveAttribute('data-disabled')
+    })
+
+    it('renders the reveal as a single button that takes className and style', () => {
+      render(
+        <Input type="password">
+          <InputControl>
+            <InputField placeholder="x" />
+            <InputReveal className="r" style={{ color: 'red' }} />
+          </InputControl>
+        </Input>,
+      )
+      const button = screen.getByRole('button')
+      expect(button.parentElement).toHaveAttribute('data-plume-input-control')
+      expect(button).toHaveClass('reveal', 'r')
+      expect(button.style.color).toBe('red')
+      fireEvent.click(button)
+      expect(button).toHaveAttribute('data-revealed')
+    })
+
+    it('keeps the context value while the props do not change', () => {
+      const renders = vi.fn()
+      const Probe = memo(function Probe() {
+        useInputContext('Probe')
+        renders()
+        return null
+      })
+      const ui = (): ReactElement => (
+        <Input name="mail" placeholder="x">
+          <InputField />
+          <Probe />
+        </Input>
+      )
+      const { rerender } = render(ui())
+      rerender(ui())
+      expect(renders).toHaveBeenCalledTimes(1)
+      rerender(
+        <Input name="other" placeholder="x">
+          <InputField />
+          <Probe />
+        </Input>,
+      )
+      expect(renders).toHaveBeenCalledTimes(2)
     })
   })
 

@@ -3,6 +3,7 @@
 import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef, useCallback, useId, useRef, useState, useMemo } from 'react'
 import { useLabels } from '../../../locale/locale-provider'
+import { useShallowStable } from '../shared/use-shallow-stable'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { TextareaContext } from './textarea-context'
 import type { TextareaContextValue, TextareaFieldMeta } from './textarea-context'
@@ -49,10 +50,11 @@ export const TextareaRoot = forwardRef<HTMLTextAreaElement, TextareaRootProps>(
       size,
       style,
       variant,
-      ...fieldProps
+      ...rest
     }: TextareaRootProps,
     ref: ForwardedRef<HTMLTextAreaElement>,
   ): ReactNode => {
+    const fieldProps = useShallowStable(rest)
     const isDefault = children === undefined
     const text = useLabels('textarea', DEFAULT_LABELS, labels)
     const countId = useId()

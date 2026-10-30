@@ -142,6 +142,26 @@ describe('RadioGroup component', () => {
     it('can be horizontal', () => {
       render(<Plans orientation="horizontal" />)
       expect(screen.getByRole('radiogroup')).toHaveClass('group', 'horizontal')
+      expect(screen.getByRole('radiogroup')).toHaveAttribute('data-orientation', 'horizontal')
+    })
+
+    it('drops the Plume classes when unstyled and keeps the user class', () => {
+      render(<Plans className="mine" orientation="horizontal" variant="unstyled" />)
+      expect(screen.getByRole('radiogroup')).toHaveAttribute('class', 'mine')
+    })
+
+    it('exposes its state as data attributes', () => {
+      const { rerender } = render(<Plans />)
+      const group = screen.getByRole('radiogroup')
+      expect(group).toHaveAttribute('data-plume-radiogroup')
+      expect(group).not.toHaveAttribute('data-disabled')
+      expect(group).not.toHaveAttribute('data-invalid')
+      expect(group).not.toHaveAttribute('data-readonly')
+
+      rerender(<Plans aria-invalid disabled readOnly />)
+      expect(group).toHaveAttribute('data-disabled')
+      expect(group).toHaveAttribute('data-invalid')
+      expect(group).toHaveAttribute('data-readonly')
     })
   })
 
