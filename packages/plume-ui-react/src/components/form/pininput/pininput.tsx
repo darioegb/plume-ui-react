@@ -1,7 +1,7 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, InputHTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useEffect, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
@@ -169,6 +169,7 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
     const invalid = ariaInvalid === true || ariaInvalid === 'true'
     const fieldLabel = field?.controlId === id ? field?.labelId : undefined
     const labelledBy = ariaLabelledby ?? (ariaLabel ? undefined : fieldLabel)
+    const { cells, tabbable } = pin
     const defaults = useMemo(() => defaultLabels(type), [type])
     const text = useLabels('pinInput', defaults, labels)
     const colorVars = {
@@ -183,11 +184,17 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       isStyled && invalid && styles.invalid,
       className,
     )
+    useEffect(() => {
+      const label = fieldLabel ? document.getElementById(fieldLabel) : null
+      if (!label) return undefined
+      const focus = (): void => cells.current[tabbable]?.focus()
+      label.addEventListener('click', focus)
+      return () => label.removeEventListener('click', focus)
+    }, [cells, fieldLabel, tabbable])
     const context = useMemo(
       () => ({
         autoComplete,
         disabled,
-        id,
         invalid,
         isStyled,
         labels: text,
@@ -203,7 +210,6 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       [
         autoComplete,
         disabled,
-        id,
         invalid,
         isStyled,
         length,
@@ -222,13 +228,16 @@ export const PinInput = forwardRef<HTMLFieldSetElement, PinInputProps>(
       <PinInputContext.Provider value={context}>
         <fieldset
           aria-describedby={describedBy}
+          aria-invalid={invalid || undefined}
           aria-label={ariaLabel}
           aria-labelledby={labelledBy}
           className={classes}
           data-disabled={disabled ? '' : undefined}
           data-invalid={invalid ? '' : undefined}
           data-plume-pininput=""
+          data-readonly={readOnly ? '' : undefined}
           disabled={disabled}
+          id={id}
           ref={ref}
           style={colorVars}
           {...rest}

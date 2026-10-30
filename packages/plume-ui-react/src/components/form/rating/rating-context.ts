@@ -13,12 +13,12 @@ export interface RatingLabels {
 export interface RatingContextValue {
   allowHalf: boolean
   clearable: boolean
+  emptyIcon: ReactNode
   filledIcon: ReactNode
   isStyled: boolean
   labels: RatingLabels
   max: number
   name: string
-  outlineIcon: ReactNode
   preview: number
   readOnly: boolean
   setHover: (value: number | undefined) => void

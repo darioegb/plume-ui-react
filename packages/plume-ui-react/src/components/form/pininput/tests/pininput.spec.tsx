@@ -113,10 +113,10 @@ describe('PinInput component', () => {
       expect(ref.current).toHaveAttribute('title', 'Code')
     })
 
-    it('puts the id on the first cell', () => {
+    it('puts the id on the fieldset', () => {
       render(<PinInput aria-label="Code" id="otp" />)
-      expect(cells()[0]).toHaveAttribute('id', 'otp')
-      expect(cells()[1]).not.toHaveAttribute('id')
+      expect(screen.getByRole('group')).toHaveAttribute('id', 'otp')
+      cells().forEach((cell) => expect(cell).not.toHaveAttribute('id'))
     })
 
     it('asks for the numeric keyboard and the one time code', () => {
@@ -256,6 +256,7 @@ describe('PinInput component', () => {
       paste(cells()[0], '9999')
       expect(text()).toBe('12')
       expect(onValueChange).not.toHaveBeenCalled()
+      expect(screen.getByRole('group')).toHaveAttribute('data-readonly')
     })
 
     it('cannot be typed into when it is disabled', () => {
@@ -429,6 +430,8 @@ describe('PinInput component', () => {
       )
       const group = screen.getByRole('group', { name: /Code/ })
       expect(group.getAttribute('aria-describedby')).toContain('error')
+      expect(group).toHaveAttribute('aria-invalid', 'true')
+      expect(group).toHaveAttribute('id', document.querySelector('label')?.htmlFor)
       expect(cells()[0]).toHaveAttribute('aria-invalid', 'true')
       expect(cells()[0]).toHaveAttribute('aria-required', 'true')
       await userEvent.click(screen.getByText('Code'))
