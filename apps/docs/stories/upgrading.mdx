@@ -9,6 +9,20 @@ import { Meta } from '@storybook/addon-docs/blocks'
 This page lists what changed for someone who comes from the 0.x versions of `plume-ui-react`. From 1.0 on, the
 public API follows semver: a breaking change only arrives in a major version, and this page will list it.
 
+## Checklist
+
+Search your code for these, one by one. The rest of the page explains each change.
+
+- `classNames`, `inputClassName` and the other loose class props: [every element is a part](#every-element-is-a-part).
+- `aria-label` on `AlertDismiss`, `ChipRemove`, `ToastDismiss`, `FileUploadRemove` and `SelectClear`: it is [`label`](#close-and-remove-buttons-take-label).
+- `inputRef` on a `DatePicker` or a `TimePicker`, and a `ref` on a `SelectTrigger`, a `Rating` or a `PinInput`: [the ref](#the-ref-goes-to-the-element-the-field-talks-to).
+- `data-plume-menu*`, `data-plume-select-control`, `data-plume-tree-*` and other [renamed CSS hooks](#renamed-css-hooks) in your stylesheets.
+- `<Spinner color>`: it is `colorScheme`.
+- `Tabs` with an `index` that you never update, and the `active` class of a tab: [Tabs](#tabs-are-controlled-with-the-same-props-as-the-rest).
+- `variant='unstyled'` anywhere: it now drops [every Plume class](#unstyled-drops-every-plume-class).
+- A `Badge`, an `Icon`, a `List` or a `Card` that you style: [presentation components](#badge-icon-list-and-card-are-made-of-parts).
+- Parts used outside their component: [they throw](#parts-outside-their-component-throw).
+
 ## `Checkbox`, `Radio` and `Toggle` are bare controls
 
 They render a single `<input>` and no longer take text as `children`, so there is one `<label>` per control. The
@@ -476,6 +490,151 @@ because they are the native controls. The attribute `data-plume-slider-mark` is 
 
 With these two, no component takes `classNames` and the `<Name>Part` types are gone: the elements you used to reach with
 a key of `classNames` are parts you import.
+
+## Close and remove buttons take `label`
+
+`AlertDismiss`, `ChipRemove`, `ToastDismiss`, `FileUploadRemove` and `SelectClear` are built on the same close button as
+the modals, so they take `label` (the accessible name) instead of `aria-label`. An element you pass as `children`
+becomes the button, instead of going inside one, and the `ref` is an `HTMLElement`. The default texts still come from
+`labels`.
+
+```tsx
+// Before
+<AlertDismiss aria-label='Close the alert' />
+
+// After
+<AlertDismiss label='Close the alert' />
+```
+
+## The ref goes to the element the field talks to
+
+A `ref` lands on the element a form library or a `<label>` needs, so `register` and `field.ref` focus the right thing.
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>DatePicker</code>, <code>TimePicker</code></td><td><code>ref</code> on the root <code>&lt;div&gt;</code>, <code>inputRef</code> on the input</td><td><code>ref</code> on the native <code>&lt;input&gt;</code>; <code>inputRef</code> is removed</td></tr>
+    <tr><td><code>SelectTrigger</code></td><td><code>ref</code> on the combobox button</td><td><code>ref</code> on the outer <code>&lt;div&gt;</code>; put the ref on <code>SelectCombobox</code> to focus the control</td></tr>
+    <tr><td><code>Rating</code></td><td><code>ref</code> on a <code>HTMLElement</code>; read only was a <code>&lt;span&gt;</code></td><td><code>ref</code> on a <code>&lt;fieldset&gt;</code>, also in read only mode</td></tr>
+    <tr><td><code>PinInput</code></td><td><code>id</code> on the first cell</td><td><code>id</code> on the <code>&lt;fieldset&gt;</code>, which is what a <code>Field</code> labels</td></tr>
+    <tr><td><code>TreeItem</code></td><td><code>className</code>, <code>style</code> and <code>ref</code> on the <code>treeitem</code></td><td>on the outer wrapper; write <code>TreeItemRow</code> to reach the <code>treeitem</code></td></tr>
+    <tr><td><code>DropdownTrigger</code></td><td><code>className</code> only reached a plain button</td><td><code>className</code> and <code>style</code> are merged into the element it wraps</td></tr>
+  </tbody>
+</table>
+
+```tsx
+// Before
+<DatePicker inputRef={field.ref} />
+
+// After
+<DatePicker ref={field.ref} />
+```
+
+## Renamed CSS hooks
+
+The attributes are named after the part they are on. Update the selectors of your stylesheets and your tests:
+
+<table>
+  <thead>
+    <tr><th>Before</th><th>After</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>data-plume-menu*</code></td><td><code>data-plume-dropdown-*</code></td></tr>
+    <tr><td><code>data-plume-select-control</code>, <code>-panel</code></td><td><code>data-plume-select-trigger</code>, <code>-content</code></td></tr>
+    <tr><td><code>data-plume-tree-label</code>, <code>-chevron</code>, <code>-checkbox</code>, <code>-icon</code></td><td><code>data-plume-tree-item-label</code>, <code>-chevron</code>, <code>-checkbox</code>, <code>-icon</code></td></tr>
+    <tr><td><code>data-plume-tree-node</code></td><td>removed</td></tr>
+    <tr><td><code>InputReveal</code> as <code>span &gt; button</code></td><td><code>[data-plume-input-reveal]</code>, a single button</td></tr>
+    <tr><td>the <code>active</code> class of a <code>Tab</code></td><td><code>[data-active]</code></td></tr>
+  </tbody>
+</table>
+
+## `unstyled` drops every Plume class
+
+With `variant='unstyled'`, a component and all its parts keep only the classes you give them. Before, a few parts kept
+a class of Plume (the vertical and alignment classes of `Tabs`, the disabled class of a `Button`, parts of the calendar
+of the `DatePicker`...). What the component needs to work (a flex row, the reset of a `<button>`, the layer that centers
+a modal) stays through rules with zero specificity on the `data-plume-*` attributes, so any class of yours wins over
+them. It applies to `Alert`, `Badge`, `Button`, `Card`, `DatePicker`, `Icon`, `Input`, `List`, `RadioGroup`, `Spinner`,
+`Tabs`, `Textarea`, `TimePicker` and `Tree`, among others. If you restyled an unstyled component by overriding a Plume
+class, write your own classes on its parts.
+
+## Parts outside their component throw
+
+A part that needs its component to work reads its context, and now throws when it is used outside it, with the name of
+the component it expects: `Tab` and `TabPanel` (they took position 0), `SidebarBackdrop`, `SidebarContent`,
+`SidebarItem`, `SidebarItemIcon` and `SidebarItemLabel` (they worked with default styles), `ListItem*`, `ListSubheader`,
+`ListDivider`, `CardHeader`, `CardBody`, `CardFooter` and `BadgeDot`. Put them inside their `Tabs`, `Sidebar`, `List`,
+`Card` or `Badge`.
+
+## `Tabs` are controlled with the same props as the rest
+
+`index` is a controlled value, as in the other components. Before, the Tabs copied it into their own state and also
+moved by themselves, so a value you never updated seemed to work. Use `defaultIndex` for the starting tab, or give
+`index` and `onIndexChange` and update it.
+
+```tsx
+// Before
+<Tabs index={0}>…</Tabs>
+
+// After
+<Tabs defaultIndex={0}>
+  <TabList>
+    <Tab>Account</Tab>
+    <Tab>Billing</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>Account settings</TabPanel>
+    <TabPanel>Billing settings</TabPanel>
+  </TabPanels>
+</Tabs>
+```
+
+A selected `Tab` is styled with `[data-active]`, and the `active` class is gone.
+
+## `Badge`, `Icon`, `List` and `Card` are made of parts
+
+They follow the same model as the other families: every element is a part with its own `className`, `style`, `ref`
+and `data-plume-*` attribute.
+
+<table>
+  <thead>
+    <tr><th>Component</th><th>Parts</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>Badge</code></td><td><code>BadgeDot</code>: <code>dot</code> renders it unless you write one among the children, and a <code>Badge</code> with only a <code>BadgeDot</code> is a dot</td></tr>
+    <tr><td><code>Icon</code></td><td>has a <code>variant</code> (<code>default</code> or <code>unstyled</code>); its glyph and label are <code>data-plume-icon-glyph</code> and <code>data-plume-icon-label</code>, without classes, so a selector on the hashed <code>glyph</code> or <code>label</code> class no longer matches</td></tr>
+    <tr><td><code>List</code></td><td><code>ListItemTextPrimary</code> and <code>ListItemTextSecondary</code> are what <code>ListItemText</code> renders for <code>primary</code> and <code>secondary</code>; <code>ListItemButton</code> has <code>data-selected</code> and <code>data-disabled</code>; <code>ListDivider</code> in an unstyled list is an empty <code>&lt;li&gt;</code> for your classes</td></tr>
+    <tr><td><code>Card</code></td><td><code>CardHeader</code>, <code>CardBody</code> and <code>CardFooter</code> with <code>data-plume-card-*</code></td></tr>
+  </tbody>
+</table>
+
+```tsx
+<Badge dot variant='unstyled'>
+  <BadgeDot className='size-2 rounded-full bg-emerald-500' />
+  Online
+</Badge>
+```
+
+The modules of `Badge`, `Card` and `List` are client modules now (they share `isStyled` with their parts through a
+context), and a Server Component can still render them.
+
+## Other changes that don't throw
+
+- `Field` is made of parts: `FieldLabel` (with `FieldRequiredIndicator` and `FieldOptionalText`), `FieldHelperText`
+  and `FieldErrorText`, which compose `Text`. Their line height is `normal` instead of `snug`, about 2px taller.
+- `Button` with `ButtonIcon`, `ButtonLabel` or `ButtonSpinner` among its children renders only those, where it used to
+  render them after the default content. `ButtonProps` and `InputProps` no longer accept `index`.
+- `Spinner` takes `colorScheme` instead of `color`, and still accepts a shade such as `primary.700`.
+- `Toast` with `children` renders them as you write them, where it dropped the ones that were not parts.
+- `ModalHeader`, and `DrawerHeader` with it, render a `Heading` with the `heading-5` look and keep `as` for the level.
+- The menu of the `Navbar` is in the stack of layers: <kbd>Esc</kbd> closes only the overlay on top, so a `Modal` over
+  the open menu no longer closes it too.
+- `PaginatorPageSize` takes the parts of the `Select` (`SelectTrigger`, `SelectContent`, `SelectOption`) as children.
+- `Rating` and `Tree` have an `outline` variant, and the days in range of the `DatePicker` use `tint-strong`,
+  `tint-text` and `tint`, so dark mode changes slightly. The hover of a `filled` field is the overlay token over
+  `surface-muted`.
 
 ## `Carousel` has three variants
 
