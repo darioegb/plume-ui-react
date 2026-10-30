@@ -24,6 +24,7 @@ export const TreeItemGroup = forwardRef<HTMLElement, TreeItemGroupProps>(
     return (
       <Collapse
         className={className}
+        data-plume-tree-item-group=""
         id={item.groupId}
         open={item.expanded}
         ref={ref}

@@ -43,8 +43,8 @@ interface TreeBaseProps {
    */
   size?: Size
   /**
-   * How the selected item looks. `solid` fills its row with the color, `ghost` tints it and
-   * `accent` draws a bar at its start. `unstyled` drops the Plume styles so you can bring your own;
+   * How the selected item looks. `solid` fills its row with the color, `outline` draws a border
+   * around it, `ghost` tints it and `accent` draws a bar at its start. `unstyled` drops the Plume styles so you can bring your own;
    * the structure and the keyboard keep working.
    *
    * @default 'solid'

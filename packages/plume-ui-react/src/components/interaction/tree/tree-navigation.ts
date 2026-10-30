@@ -15,7 +15,7 @@ export const parentItem = (item: HTMLElement): HTMLElement | null => {
 }
 
 export const labelOf = (item: HTMLElement): string =>
-  item.querySelector('[data-plume-tree-label]')?.textContent?.trim().toLowerCase() ?? ''
+  item.querySelector('[data-plume-tree-item-label]')?.textContent?.trim().toLowerCase() ?? ''
 
 export const findTypeaheadMatch = (
   items: HTMLElement[],

@@ -9,6 +9,7 @@ import {
   TreeItemGroup,
   TreeItemIcon,
   TreeItemLabel,
+  TreeItemRow,
 } from '..'
 import type { TreeProps } from '..'
 
@@ -47,8 +48,10 @@ function Files(props: Readonly<Partial<TreeProps>>) {
 const item = (value: string): HTMLElement =>
   document.querySelector(`[data-plume-tree-value="${value}"]`) as HTMLElement
 
+const node = (value: string): HTMLElement => item(value).parentElement as HTMLElement
+
 const label = (value: string): HTMLElement =>
-  item(value).querySelector('[data-plume-tree-label]') as HTMLElement
+  item(value).querySelector('[data-plume-tree-item-label]') as HTMLElement
 
 const group = (value: string): HTMLElement | null => {
   const next = item(value).nextElementSibling
@@ -168,10 +171,54 @@ describe('Tree component', () => {
           </TreeItem>
         </Tree>,
       )
-      expect(ref.current).toBe(item('a'))
-      expect(item('a')).toHaveAttribute('id', 'item')
+      expect(ref.current).toBe(node('a'))
+      expect(node('a')).toHaveAttribute('data-plume-tree-item', '')
+      expect(node('a')).toHaveAttribute('id', 'item')
+      expect(node('a')).toHaveAttribute('title', 'Item')
+      expect(node('a')).toContainElement(group('a'))
       expect(label('a')).toHaveAttribute('title', 'Label')
       expect(group('a')).toHaveAttribute('title', 'Children')
+      expect(group('a')).toHaveAttribute('data-plume-tree-item-group', '')
+    })
+
+    it('sends the className and the style of an item to its outermost element', () => {
+      render(
+        <Tree aria-label="Files">
+          <TreeItem className="node" style={{ margin: '4px' }} value="a">
+            <TreeItemLabel>Alpha</TreeItemLabel>
+          </TreeItem>
+        </Tree>,
+      )
+      expect(node('a')).toHaveAttribute('class', 'node')
+      expect(node('a')).toHaveStyle({ margin: '4px' })
+      expect(item('a')).not.toHaveClass('node')
+    })
+
+    it('renders the row of an item as written', () => {
+      const ref = createRef<HTMLDivElement>()
+      render(
+        <Tree aria-label="Files" defaultExpanded={['a']}>
+          <TreeItem aria-label="First" value="a">
+            <TreeItemRow className="mine" ref={ref} style={{ margin: '2px' }} title="Row">
+              <TreeItemLabel>Alpha</TreeItemLabel>
+            </TreeItemRow>
+            <TreeItemGroup>
+              <TreeItem value="b">
+                <TreeItemLabel>Beta</TreeItemLabel>
+              </TreeItem>
+            </TreeItemGroup>
+          </TreeItem>
+        </Tree>,
+      )
+      expect(ref.current).toBe(item('a'))
+      expect(item('a')).toHaveAttribute('role', 'treeitem')
+      expect(item('a')).toHaveAttribute('data-plume-tree-item-row', '')
+      expect(item('a')).toHaveClass('row', 'mine')
+      expect(item('a')).toHaveStyle({ margin: '2px' })
+      expect(item('a')).toHaveAttribute('title', 'Row')
+      expect(item('a')).toHaveAccessibleName('First')
+      expect(item('a')).toHaveAttribute('aria-expanded', 'true')
+      expect(group('a')).toBeInTheDocument()
     })
 
     it('throws when a part is used outside its parent', () => {
@@ -188,6 +235,9 @@ describe('Tree component', () => {
       )
       expect(() => render(<TreeItemGroup>x</TreeItemGroup>)).toThrow(
         'TreeItemGroup must be used within a <TreeItem>',
+      )
+      expect(() => render(<TreeItemRow>x</TreeItemRow>)).toThrow(
+        'TreeItemRow must be used within a <Tree>',
       )
       spy.mockRestore()
     })
@@ -535,11 +585,12 @@ describe('Tree component', () => {
     it('is solid and medium by default', () => {
       render(<Files />)
       expect(screen.getByRole('tree')).toHaveClass('tree', 'solid', 'md')
-      expect(item('docs')).toHaveClass('item')
+      expect(item('docs')).toHaveClass('row')
+      expect(node('docs')).not.toHaveAttribute('class')
       expect(label('docs')).toHaveClass('label')
     })
 
-    it.each(['accent', 'ghost', 'solid'] as const)('applies the %s variant', (variant) => {
+    it.each(['accent', 'ghost', 'outline', 'solid'] as const)('applies the %s variant', (variant) => {
       render(<Files variant={variant} />)
       expect(screen.getByRole('tree')).toHaveClass(variant)
     })
@@ -560,15 +611,15 @@ describe('Tree component', () => {
 
     it('gives every item its level as a CSS variable', () => {
       render(<Files />)
-      expect(item('docs').style.getPropertyValue('--tree-level')).toBe('1')
-      expect(item('bravo').style.getPropertyValue('--tree-level')).toBe('3')
+      expect(node('docs').style.getPropertyValue('--tree-level')).toBe('1')
+      expect(node('bravo').style.getPropertyValue('--tree-level')).toBe('3')
     })
 
     it('shows the chevron only on the items with children', () => {
       render(<Files />)
-      expect(item('docs').querySelector('[data-plume-tree-chevron] svg')).toBeInTheDocument()
-      expect(item('pictures').querySelector('[data-plume-tree-chevron] svg')).toBeNull()
-      expect(item('pictures').querySelector('[data-plume-tree-chevron]')).toHaveAttribute(
+      expect(item('docs').querySelector('[data-plume-tree-item-chevron] svg')).toBeInTheDocument()
+      expect(item('pictures').querySelector('[data-plume-tree-item-chevron] svg')).toBeNull()
+      expect(item('pictures').querySelector('[data-plume-tree-item-chevron]')).toHaveAttribute(
         'aria-hidden',
         'true',
       )
@@ -599,7 +650,8 @@ describe('Tree component', () => {
         </Tree>,
       )
       expect(screen.getByRole('tree')).toHaveClass('tree', 'root')
-      expect(item('a')).toHaveClass('item', 'row')
+      expect(node('a')).toHaveAttribute('class', 'row')
+      expect(item('a')).toHaveAttribute('class', 'row')
       expect(label('a')).toHaveClass('label', 'text')
       expect(group('a')).toHaveClass('children')
     })
@@ -620,10 +672,11 @@ describe('Tree component', () => {
         </Tree>,
       )
       expect(screen.getByRole('tree')).toHaveAttribute('class', 'root')
-      expect(item('a')).toHaveAttribute('class', 'row')
+      expect(node('a')).toHaveAttribute('class', 'row')
+      expect(item('a')).not.toHaveAttribute('class')
       expect(label('a')).toHaveAttribute('class', 'text')
       expect(item('b')).not.toHaveAttribute('class')
-      expect(item('a').querySelector('[data-plume-tree-chevron]')).not.toHaveAttribute('class')
+      expect(item('a').querySelector('[data-plume-tree-item-chevron]')).not.toHaveAttribute('class')
     })
 
     it('exposes the state of an item for styling', async () => {
@@ -631,7 +684,11 @@ describe('Tree component', () => {
       await userEvent.click(label('docs'))
       expect(item('docs')).toHaveAttribute('data-expanded')
       expect(item('docs')).toHaveAttribute('data-selected')
+      expect(node('docs')).toHaveAttribute('data-expanded')
+      expect(node('docs')).toHaveAttribute('data-selected')
       expect(item('pictures')).not.toHaveAttribute('data-selected')
+      expect(item('music')).toHaveAttribute('data-disabled', '')
+      expect(node('music')).toHaveAttribute('data-disabled', '')
     })
   })
 
@@ -681,10 +738,10 @@ describe('Tree component', () => {
 
     it('shows a checkbox that is hidden from assistive technology', () => {
       render(<CheckboxTree defaultValue={['read']} />)
-      const box = item('read').querySelector('[data-plume-tree-checkbox]')
+      const box = item('read').querySelector('[data-plume-tree-item-checkbox]')
       expect(box).toHaveAttribute('aria-hidden', 'true')
       expect(box).toHaveAttribute('data-state', 'checked')
-      expect(item('write').querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
+      expect(item('write').querySelector('[data-plume-tree-item-checkbox]')).toHaveAttribute(
         'data-state',
         'unchecked',
       )
@@ -718,7 +775,7 @@ describe('Tree component', () => {
       expect(checked('users')).toBe('mixed')
       await userEvent.click(label('write'))
       expect(checked('users')).toBe('true')
-      expect(item('users').querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
+      expect(item('users').querySelector('[data-plume-tree-item-checkbox]')).toHaveAttribute(
         'data-state',
         'checked',
       )
@@ -727,11 +784,11 @@ describe('Tree component', () => {
     it('shows the mixed state with its own icon', async () => {
       render(<CheckboxTree />)
       await userEvent.click(label('read'))
-      expect(item('users').querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
+      expect(item('users').querySelector('[data-plume-tree-item-checkbox]')).toHaveAttribute(
         'data-state',
         'mixed',
       )
-      expect(item('users').querySelector('[data-plume-tree-checkbox] svg')).toBeInTheDocument()
+      expect(item('users').querySelector('[data-plume-tree-item-checkbox] svg')).toBeInTheDocument()
     })
 
     it('puts a branch in the list only when everything under it is checked', async () => {
@@ -815,7 +872,7 @@ describe('Tree component', () => {
 
     it('opens and closes a branch from its chevron without checking it', async () => {
       render(<CheckboxTree defaultExpanded={[]} />)
-      const chevron = item('users').querySelector('[data-plume-tree-chevron]') as HTMLElement
+      const chevron = item('users').querySelector('[data-plume-tree-item-chevron]') as HTMLElement
       await userEvent.click(chevron)
       expect(isOpen('users')).toBe(true)
       expect(checked('users')).toBe('false')
@@ -888,12 +945,12 @@ describe('Tree component', () => {
 
     it('drops the Plume class of the checkbox when it is unstyled', () => {
       render(<CheckboxTree variant="unstyled" />)
-      expect(item('read').querySelector('[data-plume-tree-checkbox]')).not.toHaveAttribute('class')
+      expect(item('read').querySelector('[data-plume-tree-item-checkbox]')).not.toHaveAttribute('class')
     })
 
     it('shows no checkbox in the other modes', () => {
       render(<Files />)
-      expect(document.querySelector('[data-plume-tree-checkbox]')).toBeNull()
+      expect(document.querySelector('[data-plume-tree-item-checkbox]')).toBeNull()
       expect(item('docs')).not.toHaveAttribute('aria-checked')
     })
   })
@@ -924,12 +981,12 @@ describe('TreeItemLabel parts', () => {
   it('builds the default label from the parts', () => {
     render(<Files selection="checkbox" />)
     const docs = label('docs')
-    expect(docs.querySelector('[data-plume-tree-chevron]')).toHaveAttribute('data-visible', '')
-    expect(docs.querySelector('[data-plume-tree-checkbox]')).toHaveAttribute(
+    expect(docs.querySelector('[data-plume-tree-item-chevron]')).toHaveAttribute('data-visible', '')
+    expect(docs.querySelector('[data-plume-tree-item-checkbox]')).toHaveAttribute(
       'data-state',
       'unchecked',
     )
-    expect(label('pictures').querySelector('[data-plume-tree-chevron]')).not.toHaveAttribute(
+    expect(label('pictures').querySelector('[data-plume-tree-item-chevron]')).not.toHaveAttribute(
       'data-visible',
     )
   })
@@ -947,13 +1004,13 @@ describe('TreeItemLabel parts', () => {
 
   it('shows the checkbox only in a checkbox tree', () => {
     render(<Parts />)
-    expect(label('docs').querySelector('[data-plume-tree-checkbox]')).toBeNull()
+    expect(label('docs').querySelector('[data-plume-tree-item-checkbox]')).toBeNull()
   })
 
   it('keeps toggling a branch from a chevron it was given', async () => {
     render(<Parts selection="checkbox" />)
     expect(isOpen('docs')).toBe(false)
-    await userEvent.click(label('docs').querySelector('[data-plume-tree-chevron]') as HTMLElement)
+    await userEvent.click(label('docs').querySelector('[data-plume-tree-item-chevron]') as HTMLElement)
     expect(isOpen('docs')).toBe(true)
   })
 
@@ -981,10 +1038,10 @@ describe('TreeItemLabel parts', () => {
         </TreeItem>
       </Tree>,
     )
-    expect(label('leaf').querySelector('[data-plume-tree-chevron]')).toBeEmptyDOMElement()
-    expect(label('leaf').querySelector('[data-plume-tree-icon]')).toBeNull()
-    expect(label('leaf').querySelector('[data-plume-tree-checkbox]')).toHaveTextContent('✔')
-    expect(label('branch').querySelector('[data-plume-tree-chevron]')).toHaveTextContent('›')
+    expect(label('leaf').querySelector('[data-plume-tree-item-chevron]')).toBeEmptyDOMElement()
+    expect(label('leaf').querySelector('[data-plume-tree-item-icon]')).toBeNull()
+    expect(label('leaf').querySelector('[data-plume-tree-item-checkbox]')).toHaveTextContent('✔')
+    expect(label('branch').querySelector('[data-plume-tree-item-chevron]')).toHaveTextContent('›')
   })
 
   it('forwards the ref and the style of every part', () => {
@@ -1009,9 +1066,9 @@ describe('TreeItemLabel parts', () => {
         </TreeItem>
       </Tree>,
     )
-    expect(icon.current).toBe(label('docs').querySelector('[data-plume-tree-icon]'))
-    expect(checkbox.current).toBe(label('docs').querySelector('[data-plume-tree-checkbox]'))
-    expect(chevron.current).toBe(label('docs').querySelector('[data-plume-tree-chevron]'))
+    expect(icon.current).toBe(label('docs').querySelector('[data-plume-tree-item-icon]'))
+    expect(checkbox.current).toBe(label('docs').querySelector('[data-plume-tree-item-checkbox]'))
+    expect(chevron.current).toBe(label('docs').querySelector('[data-plume-tree-item-chevron]'))
     expect(icon.current).toHaveStyle({ margin: '1px' })
   })
 

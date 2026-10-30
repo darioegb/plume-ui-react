@@ -24,7 +24,7 @@ export const TreeItemIcon = forwardRef<HTMLSpanElement, TreeItemIconProps>(
       <span
         aria-hidden="true"
         className={joinClasses(isStyled && styles.icon, className)}
-        data-plume-tree-icon=""
+        data-plume-tree-item-icon=""
         ref={ref}
         style={style}
       >

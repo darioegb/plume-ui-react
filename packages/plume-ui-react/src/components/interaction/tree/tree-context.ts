@@ -7,7 +7,7 @@ import type { TreeCheckState } from './tree-checks'
 
 export type TreeSelection = 'checkbox' | 'multiple' | 'none' | 'single'
 
-export type TreeVariant = 'accent' | 'ghost' | 'solid' | 'unstyled'
+export type TreeVariant = 'accent' | 'ghost' | 'outline' | 'solid' | 'unstyled'
 
 export interface TreeContextValue {
   activate: (value: string, hasChildren: boolean) => void
@@ -33,6 +33,7 @@ export function useTreeContext(part: string): TreeContextValue {
 }
 
 export interface TreeItemContextValue {
+  ariaLabel: string | undefined
   checked: TreeCheckState | undefined
   disabled: boolean
   expanded: boolean
@@ -40,6 +41,8 @@ export interface TreeItemContextValue {
   hasChildren: boolean
   labelId: string
   level: number
+  selected: boolean
+  value: string
 }
 
 export const TreeItemContext = createContext<TreeItemContextValue | undefined>(undefined)

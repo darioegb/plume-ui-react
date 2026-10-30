@@ -284,6 +284,7 @@ describe('plume-ui-react', () => {
       'TreeItemGroup',
       'TreeItemIcon',
       'TreeItemLabel',
+      'TreeItemRow',
       'applyMask',
       'colorVar',
       'deepMerge',

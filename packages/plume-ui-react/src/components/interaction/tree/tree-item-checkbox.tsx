@@ -40,7 +40,7 @@ export const TreeItemCheckbox = forwardRef<HTMLSpanElement, TreeItemCheckboxProp
       <span
         aria-hidden="true"
         className={joinClasses(isStyled && styles.checkbox, className)}
-        data-plume-tree-checkbox=""
+        data-plume-tree-item-checkbox=""
         data-state={checkboxState(checked)}
         ref={ref}
         style={style}
