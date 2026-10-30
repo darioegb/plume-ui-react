@@ -10,7 +10,7 @@ import styles from './paginator.module.css'
 
 type PaginatorPageSizeRootAttributes = Pick<
   HTMLAttributes<HTMLSpanElement>,
-  'aria-label' | 'id'
+  'aria-label' | 'children' | 'id'
 >
 
 export interface PaginatorPageSizeOwnProps {
@@ -31,12 +31,14 @@ const DEFAULT_OPTIONS = [10, 20, 50]
 /**
  * A `Select` to choose how many items a page has. Its accessible name is `labels.pageSize`. Pair
  * it with `onPageSizeChange` in the `Paginator`; the page changes with it, to keep the first item
- * in view.
+ * in view. Given `children`, the parts of the `Select` (`SelectTrigger`, `SelectContent` and
+ * `SelectOption`, whose value is the page size as a string), they replace the default ones.
  */
 export const PaginatorPageSize = forwardRef<HTMLSpanElement, PaginatorPageSizeProps>(
   (
     {
       'aria-label': ariaLabel,
+      children,
       className,
       options = DEFAULT_OPTIONS,
       style,
@@ -54,6 +56,7 @@ export const PaginatorPageSize = forwardRef<HTMLSpanElement, PaginatorPageSizePr
     return (
       <span
         className={joinClasses(isStyled && styles.pageSize, className)}
+        data-disabled={disabled ? '' : undefined}
         data-plume-paginator-page-size=""
         ref={ref}
         style={style}
@@ -68,14 +71,18 @@ export const PaginatorPageSize = forwardRef<HTMLSpanElement, PaginatorPageSizePr
           value={String(pageSize)}
           variant={isStyled ? 'outline' : 'unstyled'}
         >
-          <SelectTrigger aria-label={ariaLabel ?? labels.pageSize} />
-          <SelectContent>
-            {sizes.map((option) => (
-              <SelectOption key={option} value={String(option)}>
-                {option}
-              </SelectOption>
-            ))}
-          </SelectContent>
+          {children ?? (
+            <>
+              <SelectTrigger aria-label={ariaLabel ?? labels.pageSize} />
+              <SelectContent>
+                {sizes.map((option) => (
+                  <SelectOption key={option} value={String(option)}>
+                    {option}
+                  </SelectOption>
+                ))}
+              </SelectContent>
+            </>
+          )}
         </Select>
       </span>
     )

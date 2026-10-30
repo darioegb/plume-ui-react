@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createRef, useState } from 'react'
 import { Paginator, PaginatorList, PaginatorPageSize, PaginatorSummary } from '..'
+import { SelectContent, SelectOption, SelectTrigger } from '../../../form/select'
 import { LocaleProvider } from '../../../../locale/locale-provider'
 
 const attr = (name: string): HTMLElement | null =>
@@ -219,6 +220,44 @@ describe('PaginatorPageSize', () => {
     expect(attr('page-size')).toHaveClass('mine')
     expect(attr('page-size')).toHaveStyle({ opacity: '0.5' })
     expect(ref.current).toBe(attr('page-size'))
+  })
+
+  it('renders the parts of the Select it is given instead of the default ones', async () => {
+    const onPageSizeChange = vi.fn()
+    render(
+      <Paginator onPageSizeChange={onPageSizeChange} total={100}>
+        <PaginatorPageSize>
+          <SelectTrigger aria-label="Rows" className="my-trigger" />
+          <SelectContent>
+            <SelectOption value="5">5 rows</SelectOption>
+            <SelectOption value="10">10 rows</SelectOption>
+          </SelectContent>
+        </PaginatorPageSize>
+      </Paginator>,
+    )
+    expect(screen.queryByRole('combobox', { name: 'Items per page' })).toBeNull()
+    await userEvent.click(screen.getByRole('combobox', { name: 'Rows' }))
+    await userEvent.click(screen.getByRole('option', { name: '5 rows' }))
+    expect(onPageSizeChange).toHaveBeenCalledWith(5)
+    expect(document.querySelector('.my-trigger')).not.toBeNull()
+  })
+
+  it('drops its Plume class when the Paginator is unstyled', () => {
+    render(
+      <Paginator total={100} variant="unstyled">
+        <PaginatorPageSize className="mine" />
+      </Paginator>,
+    )
+    expect(attr('page-size')).toHaveAttribute('class', 'mine')
+  })
+
+  it('exposes the disabled state', () => {
+    render(
+      <Paginator disabled total={100}>
+        <PaginatorPageSize />
+      </Paginator>,
+    )
+    expect(attr('page-size')).toHaveAttribute('data-disabled', '')
   })
 
   it('throws outside the Paginator', () => {
