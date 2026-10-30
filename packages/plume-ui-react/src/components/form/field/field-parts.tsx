@@ -9,13 +9,8 @@ import { Text } from '../../presentation/text'
 import { useFieldPartContext } from './field-context'
 import styles from './field.module.css'
 
-type SpanPartProps = Omit<ComponentProps, 'index'> &
+export type FieldRequiredIndicatorProps = Omit<ComponentProps, 'index'> &
   Pick<HTMLAttributes<HTMLSpanElement>, 'children' | 'id' | 'title'>
-
-type TextPartProps = Omit<ComponentProps, 'index'> &
-  Pick<HTMLAttributes<HTMLParagraphElement>, 'children' | 'title'>
-
-export type FieldRequiredIndicatorProps = SpanPartProps
 
 /** The mark after the label of a required field, hidden from screen readers: `required` is on the control. */
 export const FieldRequiredIndicator = forwardRef<HTMLSpanElement, FieldRequiredIndicatorProps>(
@@ -37,7 +32,8 @@ export const FieldRequiredIndicator = forwardRef<HTMLSpanElement, FieldRequiredI
 
 FieldRequiredIndicator.displayName = 'FieldRequiredIndicator'
 
-export type FieldOptionalTextProps = SpanPartProps
+export type FieldOptionalTextProps = Omit<ComponentProps, 'index'> &
+  Pick<HTMLAttributes<HTMLSpanElement>, 'children' | 'id' | 'title'>
 
 /** The text after the label of a field that is not required, like `(optional)`. */
 export const FieldOptionalText = forwardRef<HTMLSpanElement, FieldOptionalTextProps>(
@@ -97,7 +93,8 @@ export const FieldLabel = forwardRef<HTMLLabelElement, FieldLabelProps>(
 
 FieldLabel.displayName = 'FieldLabel'
 
-export type FieldHelperTextProps = TextPartProps
+export type FieldHelperTextProps = Omit<ComponentProps, 'index'> &
+  Pick<HTMLAttributes<HTMLParagraphElement>, 'children' | 'title'>
 
 /** A hint under the control, read as part of its description. */
 export const FieldHelperText = forwardRef<HTMLParagraphElement, FieldHelperTextProps>(
@@ -119,7 +116,8 @@ export const FieldHelperText = forwardRef<HTMLParagraphElement, FieldHelperTextP
 
 FieldHelperText.displayName = 'FieldHelperText'
 
-export type FieldErrorTextProps = TextPartProps
+export type FieldErrorTextProps = Omit<ComponentProps, 'index'> &
+  Pick<HTMLAttributes<HTMLParagraphElement>, 'children' | 'title'>
 
 /** The error message under the control. It renders only while the field is invalid, and is announced. */
 export const FieldErrorText = forwardRef<HTMLParagraphElement, FieldErrorTextProps>(

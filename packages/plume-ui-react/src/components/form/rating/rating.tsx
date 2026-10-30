@@ -120,6 +120,47 @@ const SOLID_ICON = <StarIcon appearance="solid" />
 const OUTLINE_ICON = <StarIcon appearance="outline" />
 const EMPTY_ICON = <StarIcon appearance="empty" />
 
+function ratingClasses({
+  className,
+  disabled,
+  isStyled,
+  readOnly,
+  size,
+  variant,
+}: {
+  className: string | undefined
+  disabled: boolean
+  isStyled: boolean
+  readOnly: boolean
+  size: Size
+  variant: RatingVariant
+}): string | undefined {
+  return joinClasses(
+    isStyled && styles.rating,
+    variant === 'outline' && styles.outline,
+    isStyled && styles[size],
+    isStyled && !readOnly && !disabled && styles.interactive,
+    isStyled && disabled && styles.disabled,
+    className,
+  )
+}
+
+function ratingContent(children: RatingOwnProps['children'], positions: number[]): ReactNode {
+  if (typeof children !== 'function' && hasPart(children, [RatingItem, RatingValueText])) {
+    return children
+  }
+  return (
+    <>
+      <RatingValueText />
+      {positions.map((position) => (
+        <Fragment key={position}>
+          {typeof children === 'function' ? children(position) : <RatingItem position={position} />}
+        </Fragment>
+      ))}
+    </>
+  )
+}
+
 export const Rating = forwardRef<HTMLFieldSetElement, RatingProps>(
   (
     {
@@ -148,7 +189,13 @@ export const Rating = forwardRef<HTMLFieldSetElement, RatingProps>(
   ): ReactNode => {
     const field = useFieldContext()
     const generatedName = useId()
-    const rating = useRating({ allowHalf, defaultValue, max, onValueChange, value: valueProp })
+    const rating = useRating({
+      allowHalf,
+      defaultValue,
+      max,
+      onValueChange,
+      value: valueProp,
+    })
     const isStyled = variant !== 'unstyled'
     const text = useLabels('rating', DEFAULT_LABELS, labels)
     const fieldLabel = field?.controlId === rest.id ? field?.labelId : undefined
@@ -158,14 +205,7 @@ export const Rating = forwardRef<HTMLFieldSetElement, RatingProps>(
     const positions = [...new Array(max).keys()].map((index) => index + 1)
     const { preview, setHover, setValue, value } = rating
     const resolvedName = name ?? generatedName
-    const classes = joinClasses(
-      isStyled && styles.rating,
-      variant === 'outline' && styles.outline,
-      isStyled && styles[size],
-      isStyled && !readOnly && !disabled && styles.interactive,
-      isStyled && disabled && styles.disabled,
-      className,
-    )
+    const classes = ratingClasses({ className, disabled, isStyled, readOnly, size, variant })
     const colorVars = {
       '--rating-edge': `var(--plume-color-${colorScheme}-text)`,
       '--rating-solid': `var(--plume-color-${colorScheme}-solid)`,
@@ -205,28 +245,7 @@ export const Rating = forwardRef<HTMLFieldSetElement, RatingProps>(
       ],
     )
 
-    let content: ReactNode
-    if (typeof children === 'function') {
-      content = (
-        <>
-          <RatingValueText />
-          {positions.map((position) => (
-            <Fragment key={position}>{children(position)}</Fragment>
-          ))}
-        </>
-      )
-    } else if (hasPart(children, [RatingItem, RatingValueText])) {
-      content = children
-    } else {
-      content = (
-        <>
-          <RatingValueText />
-          {positions.map((position) => (
-            <RatingItem key={position} position={position} />
-          ))}
-        </>
-      )
-    }
+    const content = ratingContent(children, positions)
 
     const invalid = rest['aria-invalid'] === true || rest['aria-invalid'] === 'true'
 

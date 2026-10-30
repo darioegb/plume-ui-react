@@ -1,4 +1,4 @@
-export { Select, type SelectOwnProps, type SelectProps } from './select'
+export { Select, type SelectProps } from './select'
 export { SelectChevron, type SelectChevronProps } from './select-chevron'
 export { SelectChip, type SelectChipProps } from './select-chip'
 export { SelectChips, type SelectChipsProps } from './select-chips'

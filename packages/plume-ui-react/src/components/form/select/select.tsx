@@ -181,9 +181,7 @@ const DEFAULT_LABELS: SelectLabels = {
   search: 'Search',
 }
 
-export type SelectOwnProps = SelectBaseProps & (SelectMultipleProps | SelectSingleProps)
-
-export type SelectProps = SelectOwnProps
+export type SelectProps = SelectBaseProps & (SelectMultipleProps | SelectSingleProps)
 
 function nextSelection(
   selected: readonly string[],

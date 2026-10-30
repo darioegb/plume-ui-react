@@ -127,6 +127,22 @@ const buttonColorVars = (colorScheme: ColorScheme): CSSProperties =>
     '--button-tint-text': `var(--plume-color-${colorScheme}-tint-text)`,
   }) as CSSProperties
 
+function buttonContent(
+  children: ReactNode,
+  { iconLeft, iconRight, label }: Pick<ButtonOwnProps, 'iconLeft' | 'iconRight' | 'label'>,
+): ReactNode {
+  if (hasPart(children, BUTTON_PARTS)) return children
+  return (
+    <>
+      {iconLeft ? <ButtonIcon>{iconLeft}</ButtonIcon> : null}
+      {label ? <ButtonLabel>{label}</ButtonLabel> : null}
+      {iconRight ? <ButtonIcon>{iconRight}</ButtonIcon> : null}
+      {children}
+      <ButtonSpinner />
+    </>
+  )
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -179,17 +195,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {...rest}
           onClick={isBusy ? ignoreClick : rest.onClick}
         >
-          {hasPart(children, BUTTON_PARTS) ? (
-            children
-          ) : (
-            <>
-              {iconLeft ? <ButtonIcon>{iconLeft}</ButtonIcon> : null}
-              {label ? <ButtonLabel>{label}</ButtonLabel> : null}
-              {iconRight ? <ButtonIcon>{iconRight}</ButtonIcon> : null}
-              {children}
-              <ButtonSpinner />
-            </>
-          )}
+          {buttonContent(children, { iconLeft, iconRight, label })}
         </button>
       </ButtonContext.Provider>
     )

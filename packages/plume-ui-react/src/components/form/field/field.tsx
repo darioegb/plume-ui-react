@@ -6,7 +6,13 @@ import { joinClasses } from '../../../overlay/class-names'
 import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { FieldContext } from './field-context'
-import { FIELD_PARTS, FieldErrorText, FieldHelperText, FieldLabel, isFieldPart } from './field-parts'
+import {
+  FIELD_PARTS,
+  FieldErrorText,
+  FieldHelperText,
+  FieldLabel,
+  isFieldPart,
+} from './field-parts'
 import styles from './field.module.css'
 
 export interface FieldOwnProps {
@@ -82,6 +88,47 @@ type FieldRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'hidden' | 'id' 
 
 export type FieldProps = Omit<ComponentProps, 'index'> & FieldRootAttributes & FieldOwnProps
 
+interface WireState {
+  controlId: string
+  describedBy: string | undefined
+  disabled: boolean
+  invalid: boolean
+  readOnly: boolean
+  required: boolean
+}
+
+function wireControl(
+  element: ReactElement<FieldControlProps>,
+  { controlId, describedBy, disabled, invalid, readOnly, required }: WireState,
+): ReactElement {
+  return cloneElement(element, {
+    id: controlId,
+    'aria-describedby': describedBy,
+    'aria-invalid': invalid || element.props['aria-invalid'] || undefined,
+    disabled: disabled || element.props.disabled,
+    readOnly: readOnly || element.props.readOnly,
+    required: required || element.props.required,
+  })
+}
+
+function presentParts(
+  children: ReactNode,
+  { errorText, helperText, label }: Pick<FieldOwnProps, 'errorText' | 'helperText' | 'label'>,
+): { hasError: boolean; hasHelper: boolean; hasLabel: boolean } {
+  if (!hasPart(children, FIELD_PARTS)) {
+    return {
+      hasError: Boolean(errorText),
+      hasHelper: Boolean(helperText),
+      hasLabel: Boolean(label),
+    }
+  }
+  return {
+    hasError: hasPart(children, [FieldErrorText]),
+    hasHelper: hasPart(children, [FieldHelperText]),
+    hasLabel: hasPart(children, [FieldLabel]),
+  }
+}
+
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
     {
@@ -106,13 +153,14 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
     const composed = hasPart(children, FIELD_PARTS)
     const items = Children.toArray(children)
     const control = items.find(
-      (child): child is ReactElement<FieldControlProps> => isValidElement(child) && !isFieldPart(child),
+      (child): child is ReactElement<FieldControlProps> =>
+        isValidElement(child) && !isFieldPart(child),
     )
     const controlProps = control?.props ?? {}
     const controlId = controlProps.id ?? `${baseId}-control`
-    const hasLabel = composed ? hasPart(children, [FieldLabel]) : Boolean(label)
-    const hasHelper = composed ? hasPart(children, [FieldHelperText]) : Boolean(helperText)
-    const hasError = invalid && (composed ? hasPart(children, [FieldErrorText]) : Boolean(errorText))
+    const present = presentParts(children, { errorText, helperText, label })
+    const { hasHelper, hasLabel } = present
+    const hasError = invalid && present.hasError
     const labelId = hasLabel ? `${baseId}-label` : undefined
     const helperId = `${baseId}-helper`
     const errorId = `${baseId}-error`
@@ -138,19 +186,23 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
     )
 
     const wire = (element: ReactElement<FieldControlProps>): ReactElement =>
-      cloneElement(element, {
-        id: controlId,
-        'aria-describedby': describedBy,
-        'aria-invalid': invalid || element.props['aria-invalid'] || undefined,
-        disabled: disabled || element.props.disabled,
-        readOnly: readOnly || element.props.readOnly,
-        required: required || element.props.required,
+      wireControl(element, {
+        controlId,
+        describedBy,
+        disabled,
+        invalid,
+        readOnly,
+        required,
       })
 
     return (
       <FieldContext.Provider value={context}>
         <div
-          className={joinClasses(isStyled && styles.field, isStyled && styles[orientation], className)}
+          className={joinClasses(
+            isStyled && styles.field,
+            isStyled && styles[orientation],
+            className,
+          )}
           data-disabled={disabled ? '' : undefined}
           data-invalid={invalid ? '' : undefined}
           data-orientation={orientation}
