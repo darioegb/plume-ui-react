@@ -45,7 +45,7 @@ export const TableLoading = forwardRef<HTMLDivElement, TableLoadingProps>(
       >
         {children ?? (
           <Spinner
-            color="primary"
+            colorScheme="primary"
             label={label ?? labels.loading}
             variant={isStyled ? 'solid' : 'unstyled'}
           />

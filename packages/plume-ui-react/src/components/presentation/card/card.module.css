@@ -1,9 +1,21 @@
+:global(:where([data-plume-card])) {
+  display: flex;
+  flex-direction: column;
+}
+
+:global(:where([data-plume-card-body])) {
+  flex: 1 1 auto;
+}
+
+:global(:where([data-plume-card-footer])) {
+  align-items: center;
+  display: flex;
+}
+
 .card {
   border-radius: var(--plume-radius-4);
   box-sizing: border-box;
   color: var(--plume-foreground);
-  display: flex;
-  flex-direction: column;
   font-family: var(--plume-font-family);
   overflow: hidden;
 }
@@ -49,13 +61,10 @@
 }
 
 .card .body {
-  flex: 1 1 auto;
   line-height: var(--plume-line-height-normal);
 }
 
 .card .footer {
-  align-items: center;
-  display: flex;
   gap: var(--plume-space-2);
 }
 

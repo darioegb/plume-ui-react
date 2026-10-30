@@ -49,7 +49,7 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(
         {...rest}
       >
         {lazy ? (
-          <Suspense fallback={<Spinner color={colorScheme} />}>
+          <Suspense fallback={<Spinner colorScheme={colorScheme} />}>
             {createElement(tabContent as LazyExoticComponent<() => ReactNode>)}
           </Suspense>
         ) : (

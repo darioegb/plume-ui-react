@@ -10,6 +10,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListItemTextPrimary,
+  ListItemTextSecondary,
   ListSubheader,
 } from '..'
 
@@ -41,8 +43,8 @@ const files = ['Annual report.pdf', 'Budget.xlsx', 'Meeting notes.md']
 /**
  * A list of items, for plain content, menus, settings and navigation. Compose it with the parts you need:
  * `ListItem` is a row, `ListItemButton` makes the row a button or a link, `ListItemIcon` and `ListItemText`
- * (with a `primary` and a `secondary` line) fill it, `ListSubheader` titles a section and `ListDivider`
- * separates two.
+ * (with a `primary` and a `secondary` line, which are the `ListItemTextPrimary` and `ListItemTextSecondary`
+ * parts) fill it, `ListSubheader` titles a section and `ListDivider` separates two.
  *
  * The `variant` picks the container: `plain` has none, `bordered` is a bordered box with dividers, like a list
  * group, and `filled` has a muted background. `marker` adds bullets or numbers to a list of plain text items.
@@ -59,6 +61,8 @@ export default {
         'ListItemButton',
         'ListItemIcon',
         'ListItemText',
+        'ListItemTextPrimary',
+        'ListItemTextSecondary',
         'ListSubheader',
         'ListDivider',
       ],
@@ -144,6 +148,34 @@ export const Default: Story = {}
  * yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-6">
+  <List aria-label="plain" variant="plain">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+  <List aria-label="bordered" variant="bordered">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+  <List aria-label="filled" variant="filled">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+  <List
+    aria-label="unstyled"
+    className="divide-y divide-gray-300 rounded-sm border border-gray-400"
+    variant="unstyled"
+  >
+    <ListItem className="p-2">Annual report.pdf</ListItem>
+    <ListItem className="p-2">Budget.xlsx</ListItem>
+  </List>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       {(['plain', 'bordered', 'filled'] as const).map((variant) => (
@@ -178,6 +210,26 @@ export const Variants: Story = {
  * Use the **size** prop to change the text and the padding of the items.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-6">
+  <List aria-label="sm" size="sm" variant="bordered">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+  <List aria-label="md" size="md" variant="bordered">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+  <List aria-label="lg" size="lg" variant="bordered">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+  </List>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -201,6 +253,29 @@ export const Sizes: Story = {
  * Use the **colorScheme** prop to pick the color of the selected item and of the focus ring.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-4">
+  <List aria-label="primary" colorScheme="primary">
+    <ListItem>
+      <ListItemButton selected>primary</ListItemButton>
+    </ListItem>
+  </List>
+  <List aria-label="success" colorScheme="success">
+    <ListItem>
+      <ListItemButton selected>success</ListItemButton>
+    </ListItem>
+  </List>
+  <List aria-label="error" colorScheme="error">
+    <ListItem>
+      <ListItemButton selected>error</ListItemButton>
+    </ListItem>
+  </List>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-4">
       {colorSchemes.map((scheme) => (
@@ -245,6 +320,24 @@ export const Markers: Story = {
  * them already, and turning it off with `divided={false}` leaves the box alone.
  */
 export const Dividers: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap justify-center gap-6">
+  <List aria-label="Divided" divided>
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+    <ListItem>Meeting notes.md</ListItem>
+  </List>
+  <List aria-label="Bordered without dividers" divided={false} variant="bordered">
+    <ListItem>Annual report.pdf</ListItem>
+    <ListItem>Budget.xlsx</ListItem>
+    <ListItem>Meeting notes.md</ListItem>
+  </List>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap justify-center gap-6">
       <List aria-label="Divided" divided style={{ maxWidth: '100%', width: '14rem' }}>
@@ -268,7 +361,8 @@ export const Dividers: Story = {
 
 /**
  * **ListItemIcon** puts an icon at the start of the row, and **ListItemText** takes the text, with a
- * **secondary** line under the **primary** one.
+ * **secondary** line under the **primary** one. They render a `ListItemTextPrimary` and a
+ * `ListItemTextSecondary`, which you can place yourself as the children of the `ListItemText`.
  */
 export const IconsAndText: Story = {
   render: () => (
@@ -434,7 +528,8 @@ export const Sections: Story = {
 /**
  * The List is its parts: a `ListSubheader` titles a section, a `ListItem` is a row that can hold a `ListItemButton`
  * (or only text), and inside a row go a `ListItemIcon`, a `ListItemText` and anything else, such as a `Badge` at the
- * end. Every part takes `className`, `style` and `ref`.
+ * end. A `ListItemText` made of a `ListItemTextPrimary` and a `ListItemTextSecondary` lets you style each line.
+ * Every part takes `className`, `style` and `ref`, and carries a `data-plume-list-*` attribute.
  */
 export const Compound: Story = {
   parameters: {
@@ -453,7 +548,10 @@ export const Compound: Story = {
   </ListItem>
   <ListDivider />
   <ListItem>
-    <ListItemText className="font-semibold" primary="Trash" />
+    <ListItemText>
+      <ListItemTextPrimary className="font-semibold">Trash</ListItemTextPrimary>
+      <ListItemTextSecondary className="italic">Emptied every 30 days</ListItemTextSecondary>
+    </ListItemText>
   </ListItem>
 </List>`,
       },
@@ -473,7 +571,10 @@ export const Compound: Story = {
       </ListItem>
       <ListDivider />
       <ListItem>
-        <ListItemText className="font-semibold" primary="Trash" />
+        <ListItemText>
+          <ListItemTextPrimary className="font-semibold">Trash</ListItemTextPrimary>
+          <ListItemTextSecondary className="italic">Emptied every 30 days</ListItemTextSecondary>
+        </ListItemText>
       </ListItem>
     </List>
   ),

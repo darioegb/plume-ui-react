@@ -87,12 +87,13 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
     }: SidebarProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const { breakpoint, collapsed, isMobile, open, panelId, setOpen, toggleRef } =
+    const { breakpoint, collapsed, isMobile, open, panelId, setOpen, toggle } =
       useSidebarContext('Sidebar')
     const isStyled = variant !== 'unstyled'
     const modal = isMobile && open
     const [panel, setPanel] = useState<HTMLDivElement | null>(null)
     const isTopmost = useLayer(modal)
+    const panelRef = useMemo(() => mergeRefs(ref, setPanel), [ref])
 
     useDismiss({
       enabled: modal,
@@ -101,7 +102,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
       outsidePress: false,
       elements: [panel],
     })
-    useFocusTrap(panel, { active: modal, isTopmost, returnFocus: toggleRef.current })
+    useFocusTrap(panel, { active: modal, isTopmost, returnFocus: toggle })
     useScrollLock(modal)
 
     const styleContext = useMemo(() => ({ isStyled }), [isStyled])
@@ -133,7 +134,7 @@ export const Sidebar = forwardRef<HTMLDivElement, SidebarProps>(
           data-plume-sidebar=""
           data-side={side}
           id={panelId}
-          ref={mergeRefs(ref, setPanel)}
+          ref={panelRef}
           style={sidebarColorVars(colorScheme, style)}
           {...modalProps}
           {...rest}

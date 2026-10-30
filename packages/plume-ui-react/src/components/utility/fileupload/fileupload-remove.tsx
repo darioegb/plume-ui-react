@@ -1,45 +1,33 @@
 'use client'
 
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
-import { CloseIcon } from '../../../overlay/icons'
-import type { ComponentProps } from '../../../theme'
+import { OverlayClose, type OverlayCloseProps } from '../../../overlay/overlay-close'
 import { useFileUploadContext, useFileUploadItemContext } from './fileupload-context'
 import styles from './fileupload.module.css'
 
-type FileUploadRemoveRootAttributes = Pick<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  'aria-label' | 'children'
->
-
-export type FileUploadRemoveProps = Omit<ComponentProps, 'index'> & FileUploadRemoveRootAttributes
+export type FileUploadRemoveProps = OverlayCloseProps
 
 /**
- * The button that removes the file. It takes its name from `labels.remove`, children replace the
- * icon, and it is not there when the FileUpload is disabled or read only.
+ * The button that removes the file. Its name is `labels.remove` of the FileUpload unless you give
+ * it a `label`, an element given as `children`, such as a `Button`, becomes the button, and it is
+ * not there when the FileUpload is disabled or read only.
  */
-export const FileUploadRemove = forwardRef<HTMLButtonElement, FileUploadRemoveProps>(
-  (
-    { 'aria-label': ariaLabel, children, className, style }: FileUploadRemoveProps,
-    ref: ForwardedRef<HTMLButtonElement>,
-  ): ReactNode => {
+export const FileUploadRemove = forwardRef<HTMLElement, FileUploadRemoveProps>(
+  ({ label, ...props }: FileUploadRemoveProps, ref: ForwardedRef<HTMLElement>): ReactNode => {
     const { inactive, isStyled, labels, remove } = useFileUploadContext('FileUploadRemove')
     const { file } = useFileUploadItemContext('FileUploadRemove')
     if (inactive) return null
 
     return (
-      <button
-        aria-label={ariaLabel ?? labels.remove(file)}
-        className={joinClasses(isStyled && styles.remove, className)}
+      <OverlayClose
+        {...props}
+        closeClassName={isStyled ? styles.remove : undefined}
         data-plume-fileupload-remove=""
-        onClick={() => remove(file)}
+        label={label ?? labels.remove(file)}
+        onClose={() => remove(file)}
         ref={ref}
-        style={style}
-        type="button"
-      >
-        {children ?? <CloseIcon />}
-      </button>
+      />
     )
   },
 )

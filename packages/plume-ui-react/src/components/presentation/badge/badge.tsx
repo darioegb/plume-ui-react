@@ -1,8 +1,14 @@
-import type { ForwardedRef, HTMLAttributes } from 'react'
-import { forwardRef } from 'react'
+'use client'
+
+import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
+import { Children, forwardRef, isValidElement, useMemo } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
+import { hasPart } from '../../../overlay/has-part'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
 import { tagColorVars } from '../shared/tag-vars'
 import tag from '../shared/tag.module.css'
+import { BadgeContext } from './badge-context'
+import { BadgeDot } from './badge-dot'
 import styles from './badge.module.css'
 
 export interface BadgeOwnProps {
@@ -13,8 +19,8 @@ export interface BadgeOwnProps {
    */
   colorScheme?: ColorScheme
   /**
-   * Shows a status dot before the content, in the color of the text. With no children it is a dot
-   * on its own. The `unstyled` variant ignores it.
+   * Shows a `BadgeDot` before the content, in the color of the text. With no children it is a dot
+   * on its own.
    *
    * @default false
    */
@@ -49,6 +55,8 @@ type BadgeRootAttributes = Pick<
 
 export type BadgeProps = Omit<ComponentProps, 'index'> & BadgeRootAttributes & BadgeOwnProps
 
+const isDot = (child: ReactNode): boolean => isValidElement(child) && child.type === BadgeDot
+
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
@@ -66,31 +74,34 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     ref: ForwardedRef<HTMLSpanElement>,
   ) => {
     const isStyled = variant !== 'unstyled'
-    const isDotOnly = dot && !children
+    const context = useMemo(() => ({ isStyled }), [isStyled])
+    const parts = Children.toArray(children)
+    const isDotOnly = parts.length === 0 ? dot : parts.every(isDot)
     const isNamed = Boolean(rest['aria-label'] ?? rest['aria-labelledby'])
     const resolvedRole = role ?? (isNamed ? 'img' : undefined)
-    const classes = [
+    const classes = joinClasses(
       isStyled && styles.badge,
       isStyled && tag[size],
       isStyled && tag[shape],
       isStyled && tag[variant],
       isStyled && isDotOnly && styles.dotOnly,
       className,
-    ]
-      .filter(Boolean)
-      .join(' ')
+    )
 
     return (
-      <span
-        className={classes}
-        ref={ref}
-        role={resolvedRole}
-        style={tagColorVars('badge', colorScheme, style)}
-        {...rest}
-      >
-        {dot && isStyled ? <span aria-hidden="true" className={styles.dot} /> : null}
-        {children}
-      </span>
+      <BadgeContext.Provider value={context}>
+        <span
+          className={classes}
+          data-plume-badge=""
+          ref={ref}
+          role={resolvedRole}
+          style={tagColorVars('badge', colorScheme, style)}
+          {...rest}
+        >
+          {dot && !hasPart(children, [BadgeDot]) ? <BadgeDot /> : null}
+          {children}
+        </span>
+      </BadgeContext.Provider>
     )
   },
 )

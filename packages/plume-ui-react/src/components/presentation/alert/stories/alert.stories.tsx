@@ -132,6 +132,30 @@ export const Default: Story = {}
  * `outline` draws its border, and `unstyled` drops the Plume styles so you can style it yourself.
  */
 export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-3">
+  <Alert variant="subtle">
+    <AlertTitle>Subtle</AlertTitle>
+    <AlertDescription>An alert with the subtle variant.</AlertDescription>
+  </Alert>
+  <Alert variant="solid">
+    <AlertTitle>Solid</AlertTitle>
+    <AlertDescription>An alert with the solid variant.</AlertDescription>
+  </Alert>
+  <Alert variant="outline">
+    <AlertTitle>Outline</AlertTitle>
+    <AlertDescription>An alert with the outline variant.</AlertDescription>
+  </Alert>
+  <Alert className="flex gap-2 rounded-md border border-gray-400 p-3" variant="unstyled">
+    <AlertTitle>Unstyled</AlertTitle>
+    <AlertDescription>An alert with the unstyled variant.</AlertDescription>
+  </Alert>
+</div>`,
+      },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-3">
       {(['subtle', 'solid', 'outline'] as const).map((variant) => (
@@ -140,22 +164,14 @@ export const Variants: Story = {
           <AlertDescription>An alert with the {variant} variant.</AlertDescription>
         </Alert>
       ))}
-    </div>
-  ),
-}
-
-/**
- * Use the **status** prop to say what kind of message it is: `info`, `success`, `warning` or `error`.
- */
-export const Statuses: Story = {
-  render: (args) => (
-    <div className="flex flex-col gap-3">
-      {statuses.map((status) => (
-        <Alert {...args} key={status} status={status}>
-          <AlertTitle>{status[0].toUpperCase() + status.slice(1)}</AlertTitle>
-          <AlertDescription>An alert with the {status} status.</AlertDescription>
-        </Alert>
-      ))}
+      <Alert
+        {...args}
+        className="flex gap-2 rounded-md border border-gray-400 p-3"
+        variant="unstyled"
+      >
+        <AlertTitle>Unstyled</AlertTitle>
+        <AlertDescription>An alert with the unstyled variant.</AlertDescription>
+      </Alert>
     </div>
   ),
 }
@@ -164,12 +180,73 @@ export const Statuses: Story = {
  * Use the **size** prop to change the padding and the text of the Alert.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-3">
+  <Alert size="sm">
+    <AlertTitle>Size sm</AlertTitle>
+    <AlertDescription>The padding and the text follow the size.</AlertDescription>
+  </Alert>
+  <Alert size="md">
+    <AlertTitle>Size md</AlertTitle>
+    <AlertDescription>The padding and the text follow the size.</AlertDescription>
+  </Alert>
+  <Alert size="lg">
+    <AlertTitle>Size lg</AlertTitle>
+    <AlertDescription>The padding and the text follow the size.</AlertDescription>
+  </Alert>
+</div>`,
+      },
+    },
+  },
   render: (args) => (
     <div className="flex flex-col gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <Alert {...args} key={size} size={size}>
           <AlertTitle>Size {size}</AlertTitle>
           <AlertDescription>The padding and the text follow the size.</AlertDescription>
+        </Alert>
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * The color of an Alert is its **status**: `info`, `success`, `warning` or `error`. It also sets the icon and the
+ * role. The other variants use the same colors: `solid` fills the Alert with it and `outline` draws its border.
+ */
+export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col gap-3">
+  <Alert status="info">
+    <AlertTitle>Info</AlertTitle>
+    <AlertDescription>An alert with the info status.</AlertDescription>
+  </Alert>
+  <Alert status="success">
+    <AlertTitle>Success</AlertTitle>
+    <AlertDescription>An alert with the success status.</AlertDescription>
+  </Alert>
+  <Alert status="warning">
+    <AlertTitle>Warning</AlertTitle>
+    <AlertDescription>An alert with the warning status.</AlertDescription>
+  </Alert>
+  <Alert status="error">
+    <AlertTitle>Error</AlertTitle>
+    <AlertDescription>An alert with the error status.</AlertDescription>
+  </Alert>
+</div>`,
+      },
+    },
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-3">
+      {statuses.map((status) => (
+        <Alert {...args} key={status} status={status} variant="subtle">
+          <AlertTitle>{status[0].toUpperCase() + status.slice(1)}</AlertTitle>
+          <AlertDescription>An alert with the {status} status.</AlertDescription>
         </Alert>
       ))}
     </div>

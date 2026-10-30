@@ -197,3 +197,19 @@ describe('SidebarItem parts', () => {
     expect(document.querySelector('[data-plume-sidebar-item-label]')).toHaveAttribute('class', 'b')
   })
 })
+
+describe('parts outside the Sidebar', () => {
+  it.each([
+    ['SidebarBackdrop', <SidebarBackdrop key="backdrop" />],
+    ['SidebarContent', <SidebarContent key="content" />],
+    ['SidebarItem', <SidebarItem key="item">Home</SidebarItem>],
+    ['SidebarItemIcon', <SidebarItemIcon key="icon" />],
+    ['SidebarItemLabel', <SidebarItemLabel key="label" />],
+  ])('throws when %s is inside a SidebarProvider but not in a Sidebar', (name, element) => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(<SidebarProvider>{element}</SidebarProvider>)).toThrow(
+      `${name} must be used within a <Sidebar>`,
+    )
+    error.mockRestore()
+  })
+})

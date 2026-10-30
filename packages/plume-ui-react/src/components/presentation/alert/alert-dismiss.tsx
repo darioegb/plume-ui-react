@@ -1,43 +1,31 @@
 'use client'
 
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
-import { CloseIcon } from '../../../overlay/icons'
-import type { ComponentProps } from '../../../theme'
+import { OverlayClose, type OverlayCloseProps } from '../../../overlay/overlay-close'
 import { useAlertContext } from './alert-context'
 import styles from './alert.module.css'
 
-type AlertDismissRootAttributes = Pick<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  'aria-label' | 'children'
->
-
-export type AlertDismissProps = Omit<ComponentProps, 'index'> & AlertDismissRootAttributes
+export type AlertDismissProps = OverlayCloseProps
 
 /**
  * The close button. It dismisses the `Alert`, calls `onDismiss` and takes its name from
- * `labels.dismiss`. Children replace the icon.
+ * `labels.dismiss` unless you give it a `label`. An element given as `children`, such as a
+ * `Button`, becomes the button.
  */
-export const AlertDismiss = forwardRef<HTMLButtonElement, AlertDismissProps>(
-  (
-    { 'aria-label': ariaLabel, children, className, style }: AlertDismissProps,
-    ref: ForwardedRef<HTMLButtonElement>,
-  ): ReactNode => {
+export const AlertDismiss = forwardRef<HTMLElement, AlertDismissProps>(
+  ({ label, ...props }: AlertDismissProps, ref: ForwardedRef<HTMLElement>): ReactNode => {
     const { dismiss, isStyled, labels } = useAlertContext('AlertDismiss')
 
     return (
-      <button
-        aria-label={ariaLabel ?? labels.dismiss}
-        className={joinClasses(isStyled && styles.dismiss, className)}
+      <OverlayClose
+        {...props}
+        closeClassName={isStyled ? styles.dismiss : undefined}
         data-plume-alert-dismiss=""
-        onClick={dismiss}
+        label={label ?? labels.dismiss}
+        onClose={dismiss}
         ref={ref}
-        style={style}
-        type="button"
-      >
-        {children ?? <CloseIcon />}
-      </button>
+      />
     )
   },
 )

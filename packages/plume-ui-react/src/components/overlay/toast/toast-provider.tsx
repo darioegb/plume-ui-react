@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { Fragment, isValidElement, useCallback, useId, useMemo, useRef, useState } from 'react'
 import { Portal } from '../../../overlay'
+import { joinClasses } from '../../../overlay/class-names'
 import { useLabels } from '../../../locale/locale-provider'
 import {
   ToastContext,
@@ -38,7 +39,10 @@ export interface ToastLabels {
 export interface ToastProviderProps {
   /** The app. Any component below the provider can call `useToast()`. */
   children: ReactNode
-  /** Class of the region that holds the toasts. */
+  /**
+   * Class of the region that holds the toasts. The region takes no `style`: `position` places it,
+   * and with `variant="unstyled"` this class does.
+   */
   className?: string
   /**
    * Milliseconds before a toast goes away, unless it sets its own. `0` keeps them until
@@ -185,14 +189,12 @@ export function ToastProvider({
     [remove, text.dismiss, icons, isStyled],
   )
 
-  const regionClasses = [
+  const regionClasses = joinClasses(
     isStyled && styles.region,
     isStyled && styles[position],
     isStyled && styles[variant],
     className,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  )
 
   return (
     <ToastContext.Provider value={api}>
@@ -202,7 +204,7 @@ export function ToastProvider({
           <section
             aria-label={text.region}
             aria-live="polite"
-            className={regionClasses || undefined}
+            className={regionClasses}
             data-plume-toast-region=""
           >
             {toasts.map((toast) => (

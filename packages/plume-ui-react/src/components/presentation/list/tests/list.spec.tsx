@@ -8,6 +8,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListItemTextPrimary,
+  ListItemTextSecondary,
   ListSubheader,
 } from '..'
 
@@ -488,5 +490,147 @@ describe('ListDivider', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
     expect(divider).toHaveClass('divider', 'custom')
     expect(divider).toHaveStyle({ width: '80px' })
+  })
+})
+
+describe('ListItemText parts', () => {
+  it('renders the parts it is given instead of the default composition', () => {
+    render(
+      <List>
+        <ListItem>
+          <ListItemText primary="ignored">
+            <ListItemTextSecondary>Second</ListItemTextSecondary>
+            <ListItemTextPrimary>First</ListItemTextPrimary>
+          </ListItemText>
+        </ListItem>
+      </List>,
+    )
+    expect(screen.queryByText('ignored')).toBeNull()
+    expect(screen.getByText('First')).toHaveAttribute('data-plume-list-item-text-primary')
+    expect(screen.getByText('Second')).toHaveAttribute('data-plume-list-item-text-secondary')
+  })
+
+  it.each([
+    ['ListItemTextPrimary', ListItemTextPrimary, 'primary'],
+    ['ListItemTextSecondary', ListItemTextSecondary, 'secondary'],
+  ] as const)('%s takes className, style and a ref', (_name, Part, className) => {
+    const ref = createRef<HTMLSpanElement>()
+    render(
+      <List>
+        <ListItem>
+          <ListItemText>
+            <Part className="custom" ref={ref} style={{ width: '80px' }}>
+              Part
+            </Part>
+          </ListItemText>
+        </ListItem>
+      </List>,
+    )
+    const part = screen.getByText('Part')
+    expect(part).toHaveClass(className, 'custom')
+    expect(part).toHaveStyle({ width: '80px' })
+    expect(ref.current).toBe(part)
+  })
+})
+
+describe('List parts model', () => {
+  it('marks every part with its data attribute', () => {
+    const { container } = render(
+      <List>
+        <ListSubheader>Folders</ListSubheader>
+        <ListItem>
+          <ListItemIcon>
+            <svg />
+          </ListItemIcon>
+          <ListItemText primary="Inbox" secondary="12 unread" />
+        </ListItem>
+        <ListDivider />
+        <ListItem>
+          <ListItemButton>Sent</ListItemButton>
+        </ListItem>
+      </List>,
+    )
+    for (const part of [
+      'list',
+      'list-subheader',
+      'list-item',
+      'list-item-icon',
+      'list-item-text',
+      'list-item-text-primary',
+      'list-item-text-secondary',
+      'list-divider',
+      'list-item-button',
+    ]) {
+      expect(container.querySelector(`[data-plume-${part}]`)).not.toBeNull()
+    }
+  })
+
+  it('exposes the selected and disabled state of a button', () => {
+    render(
+      <List>
+        <ListItem>
+          <ListItemButton disabled selected>
+            Inbox
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton disabled href="/sent">
+            Sent
+          </ListItemButton>
+        </ListItem>
+      </List>,
+    )
+    expect(screen.getByRole('button')).toHaveAttribute('data-selected')
+    expect(screen.getByRole('button')).toHaveAttribute('data-disabled')
+    expect(screen.getByText('Sent')).toHaveAttribute('data-disabled')
+    expect(screen.getByText('Sent')).not.toHaveAttribute('data-selected')
+  })
+
+  it('drops the Plume classes of every part when unstyled', () => {
+    const { container } = render(
+      <List variant="unstyled">
+        <ListSubheader className="mine">Folders</ListSubheader>
+        <ListItem>
+          <ListItemIcon>
+            <svg />
+          </ListItemIcon>
+          <ListItemText primary="Inbox" secondary="12 unread" />
+        </ListItem>
+        <ListDivider />
+        <ListItem>
+          <ListItemButton selected>Sent</ListItemButton>
+        </ListItem>
+      </List>,
+    )
+    expect(screen.getByText('Folders').className).toBe('mine')
+    for (const element of Array.from(container.querySelectorAll('*'))) {
+      expect(element.getAttribute('class') ?? '').not.toMatch(
+        /\b(list|item|button|icon|text|primary|secondary|divider|subheader|selected)\b/,
+      )
+    }
+  })
+
+  it('leaves the divider empty when unstyled', () => {
+    const { container } = render(
+      <List variant="unstyled">
+        <ListDivider />
+      </List>,
+    )
+    expect(container.querySelector('[data-plume-list-divider]')?.childElementCount).toBe(0)
+  })
+
+  it.each([
+    ['ListItem', <ListItem key="a">One</ListItem>],
+    ['ListItemButton', <ListItemButton key="a">One</ListItemButton>],
+    ['ListItemIcon', <ListItemIcon key="a">One</ListItemIcon>],
+    ['ListItemText', <ListItemText key="a">One</ListItemText>],
+    ['ListItemTextPrimary', <ListItemTextPrimary key="a">One</ListItemTextPrimary>],
+    ['ListItemTextSecondary', <ListItemTextSecondary key="a">One</ListItemTextSecondary>],
+    ['ListSubheader', <ListSubheader key="a">One</ListSubheader>],
+    ['ListDivider', <ListDivider key="a" />],
+  ])('%s throws outside a List', (name, part) => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(part)).toThrow(`${name} must be used within a <List>`)
+    error.mockRestore()
   })
 })

@@ -1,10 +1,10 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useContext } from 'react'
+import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { SidebarStyleContext } from './sidebar-context'
+import { useSidebarStyle } from './sidebar-context'
 import styles from './sidebar.module.css'
 
 type SidebarContentRootAttributes = Pick<
@@ -20,7 +20,7 @@ export const SidebarContent = forwardRef<HTMLElement, SidebarContentProps>(
     { children, className, style, ...rest }: SidebarContentProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
-    const { isStyled } = useContext(SidebarStyleContext)
+    const { isStyled } = useSidebarStyle('SidebarContent')
 
     return (
       <nav

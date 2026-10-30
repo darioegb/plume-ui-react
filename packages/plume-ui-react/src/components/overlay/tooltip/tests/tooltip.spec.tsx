@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { createRef } from 'react'
 import { Tooltip, type TooltipProps } from '..'
 
 function Example(props: Readonly<Partial<TooltipProps>>): React.ReactNode {
@@ -228,6 +229,31 @@ describe('Tooltip component', () => {
       render(<Example className="mine" defaultOpen variant="unstyled" />)
       expect(tooltip()).toHaveClass('mine')
       expect(tooltip()).not.toHaveClass('tooltip')
+    })
+
+    it('forwards the ref to the bubble and takes native attributes', () => {
+      const ref = createRef<HTMLDivElement>()
+      render(
+        <Tooltip content="Save the changes" defaultOpen dir="rtl" id="hint" lang="es" ref={ref}>
+          <button>Save</button>
+        </Tooltip>,
+      )
+      expect(ref.current).toBe(tooltip())
+      expect(tooltip()).toHaveAttribute('id', 'hint')
+      expect(tooltip()).toHaveAttribute('dir', 'rtl')
+      expect(tooltip()).toHaveAttribute('lang', 'es')
+      expect(screen.getByText('Save')).toHaveAttribute('aria-describedby', 'hint')
+    })
+
+    it('marks the bubble and the trigger, and exposes the open state', async () => {
+      render(<Example />)
+      const button = screen.getByText('Save')
+      expect(button).toHaveAttribute('data-plume-tooltip-trigger', '')
+      expect(button).not.toHaveAttribute('data-open')
+      await userEvent.tab()
+      expect(button).toHaveAttribute('data-open', '')
+      expect(tooltip()).toHaveAttribute('data-plume-tooltip', '')
+      expect(tooltip()).toHaveAttribute('data-open', '')
     })
   })
 })

@@ -1,22 +1,28 @@
 'use client'
 
-import type { CSSProperties, FocusEvent, PointerEvent, ReactElement, ReactNode } from 'react'
-import { useCallback, useEffect, useId, useRef, useState } from 'react'
+import type {
+  ForwardedRef,
+  FocusEvent,
+  HTMLAttributes,
+  PointerEvent,
+  ReactElement,
+  ReactNode,
+} from 'react'
+import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { Placement } from '../../../overlay'
 import { Portal, useDismiss, useLayer, usePosition } from '../../../overlay'
-import { cloneWithProps } from '../../../overlay/trigger'
-import type { Size } from '../../../theme'
+import { joinClasses } from '../../../overlay/class-names'
+import { cloneWithProps, mergeRefs } from '../../../overlay/trigger'
+import type { ComponentProps, Size } from '../../../theme'
 import styles from './tooltip.module.css'
 
-export interface TooltipProps {
+export interface TooltipOwnProps {
   /**
    * The element that opens the tooltip, such as a `Button`. It gets the handlers and
    * `aria-describedby`, and it has to be able to take the focus, so keyboard users reach the
    * tooltip too. A plain element needs a `tabIndex`.
    */
   children: ReactElement
-  /** Class of the bubble. */
-  className?: string
   /**
    * Milliseconds before the tooltip closes when the pointer leaves, which lets it reach the
    * tooltip.
@@ -60,8 +66,6 @@ export interface TooltipProps {
    * @default 'md'
    */
   size?: Size
-  /** Inline style of the bubble. */
-  style?: CSSProperties
   /**
    * Visual variant. `solid` is a dark tooltip on a light page and a light one on a dark page,
    * and `outline` is a bordered surface. `unstyled` drops the Plume styles so you can bring your
@@ -73,6 +77,14 @@ export interface TooltipProps {
 
 export type TooltipVariant = 'solid' | 'outline' | 'unstyled'
 
+type TooltipRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'dir' | 'id' | 'lang'>
+
+/**
+ * `className`, `style`, `ref` and the native attributes go to the bubble, which only exists while
+ * the tooltip is open.
+ */
+export type TooltipProps = Omit<ComponentProps, 'index'> & TooltipRootAttributes & TooltipOwnProps
+
 const isFocusVisible = (element: HTMLElement): boolean => {
   try {
     return element.matches(':focus-visible')
@@ -81,133 +93,151 @@ const isFocusVisible = (element: HTMLElement): boolean => {
   }
 }
 
-export function Tooltip({
-  children,
-  className = '',
-  closeDelay = 100,
-  content,
-  defaultOpen = false,
-  disabled = false,
-  offset = 6,
-  onOpenChange,
-  open: openProp,
-  openDelay = 300,
-  placement = 'top',
-  size = 'md',
-  style,
-  variant = 'solid',
-}: Readonly<TooltipProps>): ReactNode {
-  const tooltipId = useId()
-  const [internalOpen, setInternalOpen] = useState(defaultOpen)
-  const [trigger, setTrigger] = useState<HTMLElement | null>(null)
-  const [panel, setPanel] = useState<HTMLDivElement | null>(null)
-  const timer = useRef<number | undefined>(undefined)
-  const isControlled = openProp !== undefined
-  const open = !disabled && (isControlled ? openProp : internalOpen)
-  const isStyled = variant !== 'unstyled'
-
-  const setOpen = useCallback(
-    (next: boolean): void => {
-      if (!isControlled) setInternalOpen(next)
-      if (next !== open) onOpenChange?.(next)
-    },
-    [isControlled, onOpenChange, open],
-  )
-
-  const clearTimer = useCallback((): void => {
-    window.clearTimeout(timer.current)
-    timer.current = undefined
-  }, [])
-
-  const schedule = useCallback(
-    (next: boolean, delay: number): void => {
-      clearTimer()
-      if (delay <= 0) setOpen(next)
-      else timer.current = window.setTimeout(() => setOpen(next), delay)
-    },
-    [clearTimer, setOpen],
-  )
-
-  useEffect(() => clearTimer, [clearTimer])
-
-  const isTopmost = useLayer(open, false)
-  const position = usePosition({
-    anchor: trigger,
-    floating: panel,
-    enabled: open,
-    placement,
-    offset,
-  })
-
-  useDismiss({
-    enabled: open,
-    onDismiss: () => {
-      clearTimer()
-      setOpen(false)
-    },
-    elements: [trigger, panel],
-    isTopmost,
-  })
-
-  const describedBy = (existing?: string): string | undefined =>
-    [existing, open ? tooltipId : undefined].filter(Boolean).join(' ') || undefined
-
-  const handlers = {
-    onBlur: () => {
-      clearTimer()
-      setOpen(false)
-    },
-    onFocus: (event: FocusEvent<HTMLElement>) => {
-      clearTimer()
-      if (isFocusVisible(event.currentTarget)) setOpen(true)
-    },
-    onPointerEnter: (event: PointerEvent<HTMLElement>) => {
-      if (event.pointerType !== 'touch') schedule(true, openDelay)
-    },
-    onPointerLeave: () => schedule(false, closeDelay),
-  }
-
-  const anchorElement = cloneWithProps(
-    children,
+export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
+  (
     {
-      ...handlers,
-      'aria-describedby': describedBy(
-        (children.props as { 'aria-describedby'?: string })['aria-describedby'],
-      ),
-    },
-    setTrigger,
-  )
+      children,
+      className,
+      closeDelay = 100,
+      content,
+      defaultOpen = false,
+      dir,
+      disabled = false,
+      id,
+      lang,
+      offset = 6,
+      onOpenChange,
+      open: openProp,
+      openDelay = 300,
+      placement = 'top',
+      size = 'md',
+      style,
+      variant = 'solid',
+    }: TooltipProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ): ReactNode => {
+    const generatedId = useId()
+    const tooltipId = id ?? generatedId
+    const [internalOpen, setInternalOpen] = useState(defaultOpen)
+    const [trigger, setTrigger] = useState<HTMLElement | null>(null)
+    const [panel, setPanel] = useState<HTMLDivElement | null>(null)
+    const timer = useRef<number | undefined>(undefined)
+    const isControlled = openProp !== undefined
+    const open = !disabled && (isControlled ? openProp : internalOpen)
+    const isStyled = variant !== 'unstyled'
 
-  const classes = [
-    isStyled && styles.tooltip,
-    isStyled && styles[size],
-    isStyled && styles[variant],
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
+    const setOpen = useCallback(
+      (next: boolean): void => {
+        if (!isControlled) setInternalOpen(next)
+        if (next !== open) onOpenChange?.(next)
+      },
+      [isControlled, onOpenChange, open],
+    )
 
-  return (
-    <>
-      {anchorElement}
-      {open ? (
-        <Portal>
-          <div
-            className={classes}
-            data-placement={position.placement}
-            id={tooltipId}
-            onPointerEnter={clearTimer}
-            onPointerLeave={() => schedule(false, closeDelay)}
-            ref={setPanel}
-            role="tooltip"
-            style={{ ...position.style, opacity: position.isPositioned ? undefined : 0, ...style }}
-          >
-            {content}
-          </div>
-        </Portal>
-      ) : null}
-    </>
-  )
-}
+    const clearTimer = useCallback((): void => {
+      window.clearTimeout(timer.current)
+      timer.current = undefined
+    }, [])
+
+    const schedule = useCallback(
+      (next: boolean, delay: number): void => {
+        clearTimer()
+        if (delay <= 0) setOpen(next)
+        else timer.current = window.setTimeout(() => setOpen(next), delay)
+      },
+      [clearTimer, setOpen],
+    )
+
+    useEffect(() => clearTimer, [clearTimer])
+
+    const isTopmost = useLayer(open, false)
+    const position = usePosition({
+      anchor: trigger,
+      floating: panel,
+      enabled: open,
+      placement,
+      offset,
+    })
+
+    useDismiss({
+      enabled: open,
+      onDismiss: () => {
+        clearTimer()
+        setOpen(false)
+      },
+      elements: [trigger, panel],
+      isTopmost,
+    })
+
+    const describedBy = (existing?: string): string | undefined =>
+      [existing, open ? tooltipId : undefined].filter(Boolean).join(' ') || undefined
+
+    const handlers = {
+      onBlur: () => {
+        clearTimer()
+        setOpen(false)
+      },
+      onFocus: (event: FocusEvent<HTMLElement>) => {
+        clearTimer()
+        if (isFocusVisible(event.currentTarget)) setOpen(true)
+      },
+      onPointerEnter: (event: PointerEvent<HTMLElement>) => {
+        if (event.pointerType !== 'touch') schedule(true, openDelay)
+      },
+      onPointerLeave: () => schedule(false, closeDelay),
+    }
+
+    const anchorElement = cloneWithProps(
+      children,
+      {
+        ...handlers,
+        'data-open': open ? '' : undefined,
+        'data-plume-tooltip-trigger': '',
+        'aria-describedby': describedBy(
+          (children.props as { 'aria-describedby'?: string })['aria-describedby'],
+        ),
+      },
+      setTrigger,
+    )
+
+    const panelRef = useMemo(() => mergeRefs(ref, setPanel), [ref])
+    const classes = joinClasses(
+      isStyled && styles.tooltip,
+      isStyled && styles[size],
+      isStyled && styles[variant],
+      className,
+    )
+
+    return (
+      <>
+        {anchorElement}
+        {open ? (
+          <Portal>
+            <div
+              className={classes}
+              data-open=""
+              data-placement={position.placement}
+              data-plume-tooltip=""
+              dir={dir}
+              id={tooltipId}
+              lang={lang}
+              onPointerEnter={clearTimer}
+              onPointerLeave={() => schedule(false, closeDelay)}
+              ref={panelRef}
+              role="tooltip"
+              style={{
+                ...position.style,
+                opacity: position.isPositioned ? undefined : 0,
+                ...style,
+              }}
+            >
+              {content}
+            </div>
+          </Portal>
+        ) : null}
+      </>
+    )
+  },
+)
 
 Tooltip.displayName = 'Tooltip'

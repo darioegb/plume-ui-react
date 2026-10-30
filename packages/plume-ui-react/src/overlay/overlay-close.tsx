@@ -1,6 +1,12 @@
 'use client'
 
-import type { ForwardedRef, ReactElement, ReactNode } from 'react'
+import type {
+  ButtonHTMLAttributes,
+  ForwardedRef,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
+} from 'react'
 import { forwardRef, isValidElement } from 'react'
 import { useLabels } from '../locale/locale-provider'
 import type { ComponentProps } from '../theme'
@@ -23,10 +29,12 @@ export interface OverlayCloseOwnProps {
 
 export type OverlayCloseProps = Omit<ComponentProps, 'index'> & OverlayCloseOwnProps
 
-interface OverlayCloseInternalProps extends OverlayCloseProps {
+interface OverlayCloseInternalProps
+  extends OverlayCloseProps,
+    Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-labelledby' | 'disabled' | 'id'> {
   [attribute: `data-${string}`]: string | undefined
   closeClassName?: string
-  onClose: () => void
+  onClose: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
 const DEFAULT_LABELS = { label: 'Close' }

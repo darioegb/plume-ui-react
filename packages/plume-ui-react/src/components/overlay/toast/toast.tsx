@@ -1,8 +1,7 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
-import { forwardRef, useCallback, useMemo } from 'react'
-import { hasPart } from '../../../overlay/has-part'
+import { Children, forwardRef, useCallback, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { StatusIcon } from '../../../overlay/status-icon'
 import type { ComponentProps } from '../../../theme'
@@ -26,15 +25,6 @@ export interface ToastOwnProps {
 type ToastRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'children'>
 
 export type ToastProps = Omit<ComponentProps, 'index'> & ToastRootAttributes & ToastOwnProps
-
-const TOAST_PARTS = [
-  ToastIcon,
-  ToastBody,
-  ToastTitle,
-  ToastDescription,
-  ToastActionButton,
-  ToastDismiss,
-]
 
 const colors: Record<ToastStatus, string> = {
   error: 'error',
@@ -63,7 +53,11 @@ export function toastColorVars(status: ToastStatus, style?: CSSProperties): CSSP
   } as CSSProperties
 }
 
-/** One toast: the element that holds its parts and shows its status. */
+/**
+ * One toast: the element that holds its parts and shows its status. Without `children` it renders
+ * the default composition; with `children` it renders them as written, whether they are parts or
+ * not.
+ */
 export const Toast = forwardRef<HTMLDivElement, ToastProps>(
   (
     { children, className, style, toast }: ToastProps,
@@ -103,7 +97,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>(
           role={toast.status === 'error' ? 'alert' : 'status'}
           style={toastColorVars(toast.status, style)}
         >
-          {hasPart(children, TOAST_PARTS) ? (
+          {Children.count(children) > 0 ? (
             children
           ) : (
             <>

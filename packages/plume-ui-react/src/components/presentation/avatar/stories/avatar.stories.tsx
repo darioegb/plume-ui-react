@@ -137,6 +137,96 @@ type Story = StoryObj<typeof Avatar>
 export const Default: Story = {}
 
 /**
+ * Use the **variant** prop to pick how the fallback looks: `subtle` tints it, `solid` fills it, `outline` draws
+ * its border, and `unstyled` drops the Plume styles so you can style it yourself.
+ */
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Avatar colorScheme="primary" name="Ada Lovelace" variant="subtle" />
+  <Avatar colorScheme="primary" name="Ada Lovelace" variant="solid" />
+  <Avatar colorScheme="primary" name="Ada Lovelace" variant="outline" />
+  <Avatar className="size-10 rounded-full" name="Ada Lovelace" variant="unstyled">
+    <AvatarFallback className="bg-gray-900 text-white" />
+  </Avatar>
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {(['subtle', 'solid', 'outline'] as const).map((variant) => (
+        <Avatar colorScheme="primary" key={variant} name="Ada Lovelace" variant={variant} />
+      ))}
+      <Avatar className="size-10 rounded-full" name="Ada Lovelace" variant="unstyled">
+        <AvatarFallback className="bg-gray-900 text-white" />
+      </Avatar>
+    </div>
+  ),
+}
+
+/**
+ * Use the **size** prop to change the size of the Avatar and its text.
+ */
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Avatar name="Ada Lovelace" size="sm" />
+  <Avatar name="Ada Lovelace" size="md" />
+  <Avatar name="Ada Lovelace" size="lg" />
+  <Avatar name="Ada Lovelace" size="sm" src={portrait} />
+  <Avatar name="Ada Lovelace" size="md" src={portrait} />
+  <Avatar name="Ada Lovelace" size="lg" src={portrait} />
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Avatar key={size} name="Ada Lovelace" size={size} />
+      ))}
+      {(['sm', 'md', 'lg'] as const).map((size) => (
+        <Avatar key={`image-${size}`} name="Ada Lovelace" size={size} src={portrait} />
+      ))}
+    </div>
+  ),
+}
+
+/**
+ * Use the **colorScheme** prop to color the fallback. It takes the colors of the theme, including the ones you
+ * add to it.
+ */
+export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Avatar colorScheme="primary" name="primary" />
+  <Avatar colorScheme="success" name="success" />
+  <Avatar colorScheme="error" name="error" />
+</div>`,
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {colorSchemes.map((colorScheme) => (
+        <Avatar
+          colorScheme={colorScheme as keyof typeof defaultTheme.colors}
+          key={colorScheme}
+          name={colorScheme}
+        />
+      ))}
+    </div>
+  ),
+}
+
+/**
  * With **src** it shows the image. If the image can't be loaded, it goes back to the initials.
  */
 export const WithImage: Story = {
@@ -159,42 +249,21 @@ export const Fallbacks: Story = {
 }
 
 /**
- * Use the **variant** prop to pick how the fallback looks: `subtle` tints it, `solid` fills it, `outline` draws
- * its border, and `unstyled` drops the Plume styles so you can style it yourself.
- */
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center justify-center gap-4">
-      {(['subtle', 'solid', 'outline'] as const).map((variant) => (
-        <Avatar colorScheme="primary" key={variant} name="Ada Lovelace" variant={variant} />
-      ))}
-      <Avatar className="size-10 rounded-full" name="Ada Lovelace" variant="unstyled">
-        <AvatarFallback className="bg-gray-900 text-white" />
-      </Avatar>
-    </div>
-  ),
-}
-
-/**
- * Use the **size** prop to change the size of the Avatar and its text.
- */
-export const Sizes: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center justify-center gap-4">
-      {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Avatar key={size} name="Ada Lovelace" size={size} />
-      ))}
-      {(['sm', 'md', 'lg'] as const).map((size) => (
-        <Avatar key={`image-${size}`} name="Ada Lovelace" size={size} src={portrait} />
-      ))}
-    </div>
-  ),
-}
-
-/**
  * Use the **shape** prop to choose between a circle (`pill`) and a rounded square (`rounded`).
  */
 export const Shapes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Avatar name="Ada Lovelace" shape="pill" />
+  <Avatar name="Ada Lovelace" shape="rounded" />
+  <Avatar name="Ada Lovelace" shape="pill" src={portrait} />
+  <Avatar name="Ada Lovelace" shape="rounded" src={portrait} />
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap items-center justify-center gap-4">
       {(['pill', 'rounded'] as const).map((shape) => (
@@ -208,28 +277,24 @@ export const Shapes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to color the fallback. It takes the colors of the theme, including the ones you
- * add to it.
- */
-export const Colors: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center justify-center gap-4">
-      {colorSchemes.map((colorScheme) => (
-        <Avatar
-          colorScheme={colorScheme as keyof typeof defaultTheme.colors}
-          key={colorScheme}
-          name={colorScheme}
-        />
-      ))}
-    </div>
-  ),
-}
-
-/**
  * **status** adds a dot with the presence of the person. It is also read by assistive technology after the name,
  * so the color is not the only way to tell it. Change the text with **labels**.
  */
 export const Status: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center justify-center gap-4">
+  <Avatar name="Ada Lovelace" status="online" />
+  <Avatar name="Ada Lovelace" status="busy" />
+  <Avatar name="Ada Lovelace" status="away" />
+  <Avatar name="Ada Lovelace" status="offline" />
+  <Avatar name="Ada Lovelace" size="lg" src={portrait} status="online" />
+  <Avatar labels={{ online: 'En línea' }} name="Ada Lovelace" status="online" />
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap items-center justify-center gap-4">
       {(['online', 'busy', 'away', 'offline'] as const).map((status) => (
@@ -254,6 +319,36 @@ export const Status: Story = {
  * **max** it shows that many and a counter with the rest.
  */
 export const Group: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-col items-center gap-6">
+  <AvatarGroup aria-label="Team members">
+    <Avatar name="Ada Lovelace" />
+    <Avatar name="Grace Hopper" />
+    <Avatar name="Margaret Hamilton" />
+  </AvatarGroup>
+  <AvatarGroup aria-label="Team members, first two" max={2} size="lg">
+    <Avatar name="Ada Lovelace" />
+    <Avatar name="Grace Hopper" />
+    <Avatar name="Margaret Hamilton" />
+    <Avatar name="Katherine Johnson" />
+  </AvatarGroup>
+  <AvatarGroup
+    aria-label="Reviewers"
+    colorScheme="primary"
+    max={2}
+    shape="rounded"
+    variant="solid"
+  >
+    <Avatar name="Ada Lovelace" />
+    <Avatar name="Grace Hopper" />
+    <Avatar name="Margaret Hamilton" />
+  </AvatarGroup>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-col items-center gap-6">
       <AvatarGroup aria-label="Team members">

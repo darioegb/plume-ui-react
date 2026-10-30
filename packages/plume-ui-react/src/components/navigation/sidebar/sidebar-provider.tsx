@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { useId, useMemo, useRef } from 'react'
+import { useId, useMemo, useState } from 'react'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useMediaQuery } from '../../../overlay/use-media-query'
 import { SidebarContext, sidebarQueries, type SidebarBreakpoint } from './sidebar-context'
@@ -76,12 +76,22 @@ export function SidebarProvider({
     value: collapsedProp,
   })
   const isMobile = useMediaQuery(sidebarQueries[breakpoint])
-  const toggleRef = useRef<HTMLElement | null>(null)
+  const [toggle, setToggle] = useState<HTMLElement | null>(null)
   const panelId = id ?? `${generatedId}-sidebar`
 
   const context = useMemo(
-    () => ({ breakpoint, collapsed, isMobile, open, panelId, setCollapsed, setOpen, toggleRef }),
-    [breakpoint, collapsed, isMobile, open, panelId, setCollapsed, setOpen],
+    () => ({
+      breakpoint,
+      collapsed,
+      isMobile,
+      open,
+      panelId,
+      setCollapsed,
+      setOpen,
+      setToggle,
+      toggle,
+    }),
+    [breakpoint, collapsed, isMobile, open, panelId, setCollapsed, setOpen, toggle],
   )
 
   return <SidebarContext.Provider value={context}>{children}</SidebarContext.Provider>
