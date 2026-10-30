@@ -7,12 +7,12 @@ import type {
   MouseEventHandler,
   ReactNode,
 } from 'react'
-import { forwardRef, useContext } from 'react'
+import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { hasPart } from '../../../overlay/has-part'
 import type { ComponentProps } from '../../../theme'
 import { NavLink } from '../shared/nav-link'
-import { SidebarStyleContext } from './sidebar-context'
+import { useSidebarStyle } from './sidebar-context'
 import { SidebarItemIcon } from './sidebar-item-icon'
 import { SidebarItemLabel } from './sidebar-item-label'
 import styles from './sidebar.module.css'
@@ -57,7 +57,7 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
     { active = false, children, className, disabled = false, icon, ...rest }: SidebarItemProps,
     ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
-    const { isStyled } = useContext(SidebarStyleContext)
+    const { isStyled } = useSidebarStyle('SidebarItem')
 
     return (
       <NavLink

@@ -1,6 +1,5 @@
 'use client'
 
-import type { RefObject } from 'react'
 import { createContext, useContext } from 'react'
 import { defaultTheme } from '../../../theme/config'
 
@@ -25,7 +24,8 @@ export interface SidebarContextValue {
   panelId: string
   setCollapsed: (collapsed: boolean) => void
   setOpen: (open: boolean) => void
-  toggleRef: RefObject<HTMLElement | null>
+  setToggle: (toggle: HTMLElement | null) => void
+  toggle: HTMLElement | null
 }
 
 export const SidebarContext = createContext<SidebarContextValue | undefined>(undefined)
@@ -34,10 +34,16 @@ export interface SidebarStyleContextValue {
   isStyled: boolean
 }
 
-export const SidebarStyleContext = createContext<SidebarStyleContextValue>({ isStyled: true })
+export const SidebarStyleContext = createContext<SidebarStyleContextValue | undefined>(undefined)
 
 export function useSidebarContext(part: string): SidebarContextValue {
   const context = useContext(SidebarContext)
   if (!context) throw new Error(`${part} must be used within a <SidebarProvider>`)
+  return context
+}
+
+export function useSidebarStyle(part: string): SidebarStyleContextValue {
+  const context = useContext(SidebarStyleContext)
+  if (!context) throw new Error(`${part} must be used within a <Sidebar>`)
   return context
 }
