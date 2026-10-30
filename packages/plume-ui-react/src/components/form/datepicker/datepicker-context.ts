@@ -1,6 +1,6 @@
 'use client'
 
-import type { CSSProperties, Dispatch } from 'react'
+import type { CSSProperties, Dispatch, ForwardedRef } from 'react'
 import { createContext, useContext } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import type { UsePositionResult } from '../../../overlay/use-position'
@@ -14,6 +14,7 @@ export interface DatePickerContextProps {
   colorScheme: ColorScheme
   dispatch: Dispatch<DatePickerAction>
   displayFormat?: string
+  inputRef: ForwardedRef<HTMLInputElement>
   isPanel: boolean
   isRange: boolean
   labels: DatePickerLabels
@@ -39,7 +40,7 @@ export interface DatePickerContextProps {
 
 export const DatePickerContext = createContext<DatePickerContextProps | undefined>(undefined)
 
-export const useDatePicker = (part = 'useDatePicker'): DatePickerContextProps => {
+export const useDatePickerContext = (part = 'useDatePickerContext'): DatePickerContextProps => {
   const context = useContext(DatePickerContext)
   if (!context) {
     throw new Error(`${part} must be used within a <DatePicker>`)

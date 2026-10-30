@@ -30,7 +30,7 @@ export const DatePickerPageContext = createContext<DatePickerPageContextProps | 
   undefined,
 )
 
-export const useDatePickerPage = (part: string): DatePickerPageContextProps => {
+export const useDatePickerPageContext = (part: string): DatePickerPageContextProps => {
   const context = useContext(DatePickerPageContext)
   if (!context) {
     throw new Error(`${part} must be used within a <DatePickerPage>`)

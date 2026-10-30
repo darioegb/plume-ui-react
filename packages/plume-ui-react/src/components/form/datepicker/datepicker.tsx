@@ -1,10 +1,8 @@
 'use client'
 
 import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
-import { forwardRef, useCallback, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { joinClasses } from '../../../overlay/class-names'
-import { mergeRefs } from '../../../overlay/trigger'
 import { customProperties } from '../shared/picker-panel'
 import { DatePickerCalendar } from './datepicker-calendar'
 import { DatePickerInput, type DatePickerInputProps } from './datepicker-input'
@@ -13,9 +11,8 @@ import type {
   DatePickerVariant,
   DateRange,
 } from './datepicker-types'
-import { DatePickerContext } from './use-datepicker'
+import { DatePickerContext } from './datepicker-context'
 import { useDatePickerController } from './use-datepicker-controller'
-import styles from './datepicker.module.css'
 
 export type {
   DatePickerLabels,
@@ -99,14 +96,14 @@ const datePickerColorVars = (colorScheme: ColorScheme, style?: CSSProperties): C
     '--picker-scheme': 'var(--datepicker-scheme)',
     '--datepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--datepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-200)`,
-    '--datepicker-range-item-text': `var(--plume-color-${colorScheme}-900)`,
-    '--datepicker-hover-color': `color-mix(in srgb, var(--plume-color-${colorScheme}-solid) 18%, transparent)`,
+    '--datepicker-range-item-color': `var(--plume-color-${colorScheme}-tint-strong)`,
+    '--datepicker-range-item-text': `var(--plume-color-${colorScheme}-tint-text)`,
+    '--datepicker-hover-color': `var(--plume-color-${colorScheme}-tint)`,
     '--datepicker-selected-hover-color': `var(--plume-color-${colorScheme}-solid-hover)`,
     ...style,
   }) as CSSProperties
 
-export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
   (
     {
       children,
@@ -128,18 +125,18 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       variant = 'outline',
       ...inputProps
     }: DatePickerProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const [root, setRoot] = useState<HTMLDivElement | null>(null)
-    const setRootRef = useCallback(
-      (node: HTMLDivElement | null): void => mergeRefs<HTMLDivElement>(setRoot, ref)(node),
-      [ref],
+    const colorVars = useMemo(
+      () => datePickerColorVars(colorScheme, customProperties(style)),
+      [colorScheme, style],
     )
-    const colorVars = datePickerColorVars(colorScheme, customProperties(style))
     const { context, handleBlur } = useDatePickerController({
       colorScheme,
       locale,
       displayFormat,
+      inputRef: ref,
       isPanel,
       isRange,
       labels,
@@ -158,9 +155,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     return (
       <DatePickerContext.Provider value={context}>
         <div
-          className={joinClasses(styles.datePicker, className)}
+          className={className}
+          data-open={context.state.modalOpen ? '' : undefined}
+          data-plume-datepicker=""
           onBlur={handleBlur}
-          ref={setRootRef}
+          ref={setRoot}
           style={{ ...colorVars, ...style }}
         >
           {children ?? (

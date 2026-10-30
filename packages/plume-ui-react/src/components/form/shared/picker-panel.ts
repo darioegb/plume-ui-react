@@ -16,13 +16,15 @@ export const pickerPanelClasses = (
   size?: Size,
   shape?: Shape,
 ): string | undefined =>
-  joinClasses(
-    styles.panel,
-    variant !== 'unstyled' && VARIANT_CLASS[variant],
-    size === 'sm' && styles.panelSm,
-    size === 'lg' && styles.panelLg,
-    shape === 'pill' && styles.panelPill,
-  )
+  variant === 'unstyled'
+    ? undefined
+    : joinClasses(
+        styles.panel,
+        VARIANT_CLASS[variant],
+        size === 'sm' && styles.panelSm,
+        size === 'lg' && styles.panelLg,
+        shape === 'pill' && styles.panelPill,
+      )
 
 export const customProperties = (style?: CSSProperties): CSSProperties =>
   Object.fromEntries(Object.entries(style ?? {}).filter(([name]) => name.startsWith('--')))

@@ -16,6 +16,8 @@ export function DatePickerIcon({ name }: Readonly<{ name: DatePickerIconName }>)
   return (
     <svg
       aria-hidden="true"
+      data-icon={name}
+      data-plume-datepicker-icon=""
       fill="currentColor"
       height="16"
       stroke="currentColor"

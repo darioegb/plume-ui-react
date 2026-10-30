@@ -254,7 +254,7 @@ describe('DatePicker component', () => {
 
     fireEvent.mouseEnter(dayButton(12))
 
-    expect(dayButton(12)).toHaveClass('hovered')
+    expect(dayButton(12)).toHaveAttribute('data-hovered')
   })
 
   it('previews the range between the first click and the hovered day', () => {
@@ -264,10 +264,10 @@ describe('DatePicker component', () => {
     fireEvent.click(dayButton(10))
     fireEvent.mouseEnter(dayButton(13))
 
-    expect(dayButton(11)).toHaveClass('rangeItem')
-    expect(dayButton(12)).toHaveClass('rangeItem')
-    expect(dayButton(13)).toHaveClass('rangeItem')
-    expect(dayButton(20)).not.toHaveClass('rangeItem')
+    expect(dayButton(11)).toHaveAttribute('data-preview')
+    expect(dayButton(12)).toHaveAttribute('data-preview')
+    expect(dayButton(13)).toHaveAttribute('data-preview')
+    expect(dayButton(20)).not.toHaveAttribute('data-preview')
   })
 
   it('disables days outside of the min/max range', () => {
@@ -715,7 +715,7 @@ describe('DatePicker component', () => {
       fireEvent.click(dayButton(10))
       fireEvent.focus(dayButton(12))
 
-      expect(dayButton(11)).toHaveClass('rangeItem')
+      expect(dayButton(11)).toHaveAttribute('data-preview')
     })
   })
 

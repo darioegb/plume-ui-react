@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import { TimeColumn } from './time-column'
 import { parseTime, toTwelveHour, type Period } from './time-utils'
 import type { TimePickerColumnProps } from './timepicker-options'
-import { useTimePicker } from './use-timepicker'
+import { useTimePickerContext } from './timepicker-context'
 
 export type TimePickerPeriodProps = TimePickerColumnProps<Period>
 
@@ -15,7 +15,7 @@ export const TimePickerPeriod = forwardRef<HTMLDivElement, TimePickerPeriodProps
     { 'aria-label': ariaLabel, children, className, style }: TimePickerPeriodProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { hour12, labels, pickPeriod, value } = useTimePicker('TimePickerPeriod')
+    const { hour12, labels, pickPeriod, value } = useTimePickerContext('TimePickerPeriod')
     const parts = parseTime(value)
 
     if (!hour12) return null

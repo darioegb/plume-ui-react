@@ -234,12 +234,10 @@ describe('TimePicker', () => {
     expect(container.firstChild).toHaveClass('mine')
   })
 
-  it('gives the input ref and the root ref', () => {
-    const inputRef = vi.fn()
+  it('gives its ref to the input', () => {
     const ref = vi.fn()
-    render(<TimePicker inputRef={inputRef} ref={ref} />)
-    expect(inputRef).toHaveBeenCalledWith(screen.getByRole('textbox'))
-    expect(ref).toHaveBeenCalled()
+    render(<TimePicker ref={ref} />)
+    expect(ref).toHaveBeenCalledWith(screen.getByRole('textbox'))
   })
 
   it('gives the panel the look of the variant, size and shape', () => {
@@ -391,7 +389,7 @@ describe('TimePicker', () => {
               name="start"
               render={({ field }) => (
                 <TimePicker
-                  inputRef={field.ref}
+                  ref={field.ref}
                   name={field.name}
                   onBlur={field.onBlur}
                   onValueChange={field.onChange}

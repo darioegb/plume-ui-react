@@ -13,7 +13,7 @@ export interface TimeColumnContextValue {
 
 export const TimeColumnContext = createContext<TimeColumnContextValue | undefined>(undefined)
 
-export const useTimeColumn = (part: string): TimeColumnContextValue => {
+export const useTimeColumnContext = (part: string): TimeColumnContextValue => {
   const context = useContext(TimeColumnContext)
   if (!context) {
     throw new Error(

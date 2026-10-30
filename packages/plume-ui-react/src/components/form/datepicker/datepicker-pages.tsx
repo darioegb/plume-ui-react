@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
 import { DatePickerPage } from './datepicker-page'
-import { useDatePicker } from './use-datepicker'
+import { useDatePickerContext } from './datepicker-context'
 import styles from './datepicker.module.css'
 
 export type DatePickerPagesProps = Omit<ComponentProps, 'index'> &
@@ -17,14 +17,16 @@ export const DatePickerPages = forwardRef<HTMLDivElement, DatePickerPagesProps>(
     { children, className, style }: DatePickerPagesProps,
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
-    const { isRange } = useDatePicker('DatePickerPages')
+    const { isRange, variant } = useDatePickerContext('DatePickerPages')
 
     return (
       <div
         className={joinClasses(
-          isRange ? styles.calendarContainerDouble : styles.calendarContainer,
+          variant !== 'unstyled' &&
+            (isRange ? styles.calendarContainerDouble : styles.calendarContainer),
           className,
         )}
+        data-range={isRange ? '' : undefined}
         data-plume-datepicker-pages=""
         ref={ref}
         style={style}

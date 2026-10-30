@@ -1,16 +1,16 @@
 'use client'
 
-import type { CSSProperties, FocusEvent } from 'react'
+import type { CSSProperties, FocusEvent, ForwardedRef } from 'react'
 import { useCallback, useId, useMemo, useState } from 'react'
 import type { ColorScheme, Shape, Size } from '../../../theme'
 import { useLabels } from '../../../locale/locale-provider'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import { useFloatingPanel } from '../../../overlay/use-floating-panel'
 import { useFocusTrap } from '../../../overlay/use-focus-trap'
-import { customProperties, type PickerVariant } from '../shared/picker-panel'
-import type { TimePickerContextProps } from './use-timepicker'
+import { customProperties } from '../shared/picker-panel'
+import type { TimePickerContextProps } from './timepicker-context'
 import { useTimePicks } from './use-time-picks'
-import type { TimePickerLabels } from './timepicker-types'
+import type { TimePickerLabels, TimePickerVariant } from './timepicker-types'
 
 const DEFAULT_LABELS: TimePickerLabels = {
   am: 'AM',
@@ -19,6 +19,7 @@ const DEFAULT_LABELS: TimePickerLabels = {
   minutes: 'Minutes',
   openTimePicker: 'Open time picker',
   period: 'Period',
+  placeholder: (period) => (period ? `hh:mm ${period}` : 'hh:mm'),
   pm: 'PM',
   timePicker: 'Time picker',
 }
@@ -27,6 +28,7 @@ interface TimePickerControllerOptions {
   colorScheme: ColorScheme
   defaultValue: string
   hour12: boolean
+  inputRef: ForwardedRef<HTMLInputElement>
   isPanel: boolean
   labels?: Partial<TimePickerLabels>
   minuteStep: number
@@ -36,7 +38,7 @@ interface TimePickerControllerOptions {
   size?: Size
   style?: CSSProperties
   value?: string
-  variant: PickerVariant
+  variant: TimePickerVariant
 }
 
 interface TimePickerController {
@@ -49,7 +51,7 @@ export const timePickerColorVars = (colorScheme: ColorScheme): CSSProperties =>
     '--picker-scheme': `var(--plume-color-${colorScheme}-text)`,
     '--timepicker-solid': `var(--plume-color-${colorScheme}-solid)`,
     '--timepicker-contrast': `var(--plume-color-${colorScheme}-solid-contrast)`,
-    '--timepicker-hover': `color-mix(in srgb, var(--plume-color-${colorScheme}-solid) 18%, transparent)`,
+    '--timepicker-hover': `var(--plume-color-${colorScheme}-tint)`,
     '--timepicker-selected-hover': `var(--plume-color-${colorScheme}-solid-hover)`,
   }) as CSSProperties
 
@@ -57,6 +59,7 @@ export function useTimePickerController({
   colorScheme,
   defaultValue,
   hour12,
+  inputRef,
   isPanel,
   labels: labelsProp,
   minuteStep,
@@ -133,6 +136,7 @@ export function useTimePickerController({
     () => ({
       colorScheme,
       hour12,
+      inputRef,
       isPanel,
       labels,
       minuteStep,
@@ -154,6 +158,7 @@ export function useTimePickerController({
     [
       colorScheme,
       hour12,
+      inputRef,
       isPanel,
       labels,
       minuteStep,

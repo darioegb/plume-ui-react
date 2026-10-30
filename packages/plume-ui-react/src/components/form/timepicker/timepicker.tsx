@@ -1,19 +1,15 @@
 'use client'
 
 import type { ForwardedRef, ReactNode } from 'react'
-import { forwardRef, useCallback, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import type { ColorScheme, ComponentProps, Shape, Size } from '../../../theme'
-import { joinClasses } from '../../../overlay/class-names'
-import { mergeRefs } from '../../../overlay/trigger'
-import type { PickerVariant } from '../shared/picker-panel'
 import { TimePickerInput, type TimePickerInputProps } from './timepicker-input'
 import { TimePickerPanel } from './timepicker-panel'
-import { TimePickerContext } from './use-timepicker'
+import { TimePickerContext } from './timepicker-context'
 import { timePickerColorVars, useTimePickerController } from './use-timepicker-controller'
-import type { TimePickerLabels } from './timepicker-types'
-import styles from './timepicker.module.css'
+import type { TimePickerLabels, TimePickerVariant } from './timepicker-types'
 
-export type { TimePickerLabels } from './timepicker-types'
+export type { TimePickerLabels, TimePickerVariant } from './timepicker-types'
 
 export interface TimePickerOwnProps {
   /**
@@ -79,14 +75,14 @@ export interface TimePickerOwnProps {
    * them.
    * @default 'outline'
    */
-  variant?: PickerVariant
+  variant?: TimePickerVariant
 }
 
 export type TimePickerProps = Omit<ComponentProps, 'index'> &
   Omit<TimePickerInputProps, 'children' | 'style'> &
   TimePickerOwnProps
 
-export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
+export const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(
   (
     {
       children,
@@ -105,17 +101,14 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
       variant = 'outline',
       ...inputProps
     }: TimePickerProps,
-    ref: ForwardedRef<HTMLDivElement>,
+    ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const [root, setRoot] = useState<HTMLDivElement | null>(null)
-    const setRootRef = useCallback(
-      (node: HTMLDivElement | null): void => mergeRefs<HTMLDivElement>(setRoot, ref)(node),
-      [ref],
-    )
     const { context, handleBlur } = useTimePickerController({
       colorScheme,
       defaultValue,
       hour12,
+      inputRef: ref,
       isPanel,
       labels,
       minuteStep,
@@ -131,11 +124,11 @@ export const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(
     return (
       <TimePickerContext.Provider value={context}>
         <div
-          className={joinClasses(styles.timePicker, className)}
+          className={className}
           data-open={context.open ? '' : undefined}
           data-plume-timepicker=""
           onBlur={handleBlur}
-          ref={setRootRef}
+          ref={setRoot}
           style={{ ...timePickerColorVars(colorScheme), ...style }}
         >
           {children ?? (

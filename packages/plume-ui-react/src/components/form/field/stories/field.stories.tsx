@@ -305,8 +305,8 @@ const bookingDefaults: BookingValues = {
  * The controls that are a single native element (`Input`, `Textarea`, `Checkbox`, `Toggle`) take `register`
  * as it is. The ones that are not go through `Controller` with `value` and `onValueChange`: `Select` (also with
  * `multiple`), `RadioGroup`, `NumberInput`, `Slider`, `Rating`, `PinInput`, `DatePicker` and `TimePicker`.
- * Where the control has an input to focus, give it the `ref`: on the `SelectTrigger`, on `NumberInput`, or as
- * `inputRef` on the pickers, so the form can focus the first invalid field.
+ * Where the control has an input to focus, give it the `ref`: on the `SelectTrigger`, on `NumberInput` or on
+ * the pickers, so the form can focus the first invalid field.
  * Pass each error message to **errorText** and Field marks the control and links the message.
  * Submit the empty form to see the errors.
  */
@@ -421,7 +421,7 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Stay" required>
         <DatePicker
-          inputRef={field.ref}
+          ref={field.ref}
           range
           name={field.name}
           onBlur={field.onBlur}
@@ -441,7 +441,7 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Arrival time" required>
         <TimePicker
-          inputRef={field.ref}
+          ref={field.ref}
           minuteStep={15}
           onValueChange={field.onChange}
           value={field.value}
@@ -621,7 +621,7 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Stay' required>
               <DatePicker
-                inputRef={field.ref}
+                ref={field.ref}
                 range
                 name={field.name}
                 onBlur={field.onBlur}
@@ -641,7 +641,7 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Arrival time' required>
               <TimePicker
-                inputRef={field.ref}
+                ref={field.ref}
                 minuteStep={15}
                 onValueChange={field.onChange}
                 value={field.value}
