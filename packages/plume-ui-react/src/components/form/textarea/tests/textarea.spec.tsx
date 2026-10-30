@@ -113,6 +113,15 @@ describe('Textarea component', () => {
       const textarea = screen.getByRole('textbox')
       expect(textarea.className).toBe('custom')
     })
+
+    it('drops the disabled class when unstyled', () => {
+      const { rerender } = render(<Textarea aria-label="Bio" disabled variant="unstyled" />)
+      expect(screen.getByRole('textbox')).not.toHaveAttribute('class')
+      expect(screen.getByRole('textbox')).toHaveAttribute('data-disabled')
+
+      rerender(<Textarea aria-label="Bio" disabled showCount variant="unstyled" />)
+      expect(screen.getByRole('textbox')).not.toHaveAttribute('class')
+    })
   })
 
   it('forwards the ref to the textarea', () => {
