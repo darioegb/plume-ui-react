@@ -1,6 +1,6 @@
 /* input.module.css */
 
-:where(.base) {
+:global(:where([data-plume-input-field])) {
   background: transparent;
   border: 0 solid;
   outline: var(--plume-focus-ring-width) solid transparent;
@@ -77,7 +77,7 @@
 }
 
 .filled:enabled:hover {
-  background-color: color-mix(in hsl, var(--plume-surface-muted), black 2%);
+  background-color: color-mix(in srgb, var(--plume-foreground) var(--plume-overlay-hover), var(--plume-surface-muted));
 }
 
 :not(.control) > .outline:enabled:focus,
@@ -264,30 +264,39 @@
   padding: 0;
 }
 
-.revealButton {
+.reveal {
   border-radius: var(--plume-radius-3);
   color: var(--plume-muted);
   height: var(--plume-space-8);
+  inset-block: 0;
+  inset-inline-end: calc((var(--plume-space-10) - var(--plume-space-8)) / 2);
+  margin-block: auto;
+  position: absolute;
   width: var(--plume-space-8);
+  z-index: 2;
 }
 
-.revealButton:hover:enabled {
+.reveal:hover:enabled {
   color: var(--plume-foreground);
 }
 
-.revealButton:focus-visible {
+.reveal:focus-visible {
   outline: var(--plume-focus-ring-width) solid var(--input-color);
   outline-offset: var(--plume-focus-ring-offset);
 }
 
-.revealButton:disabled {
+.reveal:disabled {
   cursor: not-allowed;
 }
 
-.control:has(> .revealSlot) > .elementAfter:not(.revealSlot) {
+.control:has(> .reveal) > .input {
+  padding-inline-end: var(--plume-space-10);
+}
+
+.control:has(> .reveal) > .elementAfter {
   inset-inline-end: var(--plume-space-10);
 }
 
-.control:has(> .revealSlot):has(> .elementAfter:not(.revealSlot)) > .input {
+.control:has(> .reveal):has(> .elementAfter) > .input {
   padding-inline-end: var(--plume-space-20);
 }

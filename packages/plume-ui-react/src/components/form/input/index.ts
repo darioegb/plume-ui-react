@@ -1,4 +1,10 @@
-export { Input, type InputLabels, type InputProps, type InputVariant } from './input'
+export {
+  Input,
+  type InputLabels,
+  type InputOwnProps,
+  type InputProps,
+  type InputVariant,
+} from './input'
 export { InputAddon, type InputAddonProps, type InputSide } from './input-addon'
 export { InputControl, type InputControlProps } from './input-control'
 export { InputElement, type InputElementProps } from './input-element'
