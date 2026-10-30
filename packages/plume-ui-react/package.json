@@ -1,6 +1,6 @@
 {
   "name": "plume-ui-react",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "description": "A lightweight TypeScript React UI component library, themed with CSS variables.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
