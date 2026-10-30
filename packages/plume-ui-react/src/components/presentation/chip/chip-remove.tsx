@@ -1,48 +1,50 @@
 'use client'
 
-import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, MouseEvent, ReactNode } from 'react'
 import { forwardRef } from 'react'
-import { joinClasses } from '../../../overlay/class-names'
-import { CloseIcon } from '../../../overlay/icons'
-import type { ComponentProps } from '../../../theme'
+import { OverlayClose, type OverlayCloseProps } from '../../../overlay/overlay-close'
 import { useChipContext } from './chip-context'
 import styles from './chip.module.css'
 
-export type ChipRemoveProps = Omit<ComponentProps, 'index'> &
-  Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'disabled' | 'onClick'>
+export interface ChipRemoveOwnProps {
+  /** Disables the button. By default it follows the `disabled` of the Chip. */
+  disabled?: boolean
+  /** Called when the button is clicked, before the `onRemove` of the Chip. */
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
+}
+
+export type ChipRemoveProps = OverlayCloseProps & ChipRemoveOwnProps
 
 /**
- * The button that removes the Chip. It calls the `onRemove` of the Chip, and `children` replace the
- * cross.
+ * The button that removes the Chip. It calls the `onRemove` of the Chip. Its name is `Remove`
+ * followed by the text of the Chip unless you give it a `label` or the Chip has `labels.remove`.
+ * An element given as `children`, such as a `Button`, becomes the button.
  */
-export const ChipRemove = forwardRef<HTMLButtonElement, ChipRemoveProps>(
+export const ChipRemove = forwardRef<HTMLElement, ChipRemoveProps>(
   (
-    { 'aria-label': ariaLabel, children, className, disabled, onClick, style }: ChipRemoveProps,
-    ref: ForwardedRef<HTMLButtonElement>,
+    { disabled, label, onClick, ...props }: ChipRemoveProps,
+    ref: ForwardedRef<HTMLElement>,
   ): ReactNode => {
     const context = useChipContext('ChipRemove')
     const isDisabled = disabled ?? context.disabled
-    const hasOwnName = Boolean(ariaLabel) || context.customRemoveLabel
+    const hasOwnName = Boolean(label) || context.customRemoveLabel
 
     return (
-      <button
-        aria-label={ariaLabel ?? context.labels.remove}
+      <OverlayClose
+        {...props}
         aria-labelledby={hasOwnName ? undefined : `${context.removeId} ${context.labelId}`}
-        className={joinClasses(context.isStyled && styles.remove, className)}
+        closeClassName={context.isStyled ? styles.remove : undefined}
         data-disabled={isDisabled ? '' : undefined}
         data-plume-chip-remove=""
         disabled={isDisabled}
         id={context.removeId}
-        onClick={(event) => {
+        label={label ?? context.labels.remove}
+        onClose={(event) => {
           onClick?.(event)
           context.onRemove?.(event)
         }}
         ref={ref}
-        style={style}
-        type="button"
-      >
-        {children ?? <CloseIcon />}
-      </button>
+      />
     )
   },
 )

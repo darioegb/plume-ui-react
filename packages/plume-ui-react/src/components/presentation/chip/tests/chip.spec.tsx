@@ -229,7 +229,7 @@ describe('Chip component', () => {
       expect(screen.getByRole('button', { name: 'Remove Design' })).toBeInTheDocument()
     })
 
-    it('names a composed remove button with labels.remove or its own aria-label', () => {
+    it('names a composed remove button with labels.remove or its own label', () => {
       const { rerender } = render(
         <Chip labels={{ remove: 'Quitar' }} onRemove={() => undefined}>
           <ChipLabel>Diseño</ChipLabel>
@@ -240,7 +240,7 @@ describe('Chip component', () => {
       rerender(
         <Chip onRemove={() => undefined}>
           <ChipLabel>Design</ChipLabel>
-          <ChipRemove aria-label="Drop it" />
+          <ChipRemove label="Drop it" />
         </Chip>,
       )
       expect(screen.getByRole('button', { name: 'Drop it' })).toBeInTheDocument()
@@ -268,6 +268,20 @@ describe('Chip component', () => {
         </Chip>,
       )
       expect(screen.getByRole('button')).toHaveTextContent('x')
+    })
+
+    it('turns an element given to the remove part into the button', async () => {
+      const onRemove = vi.fn()
+      render(
+        <Chip onRemove={onRemove}>
+          <ChipLabel>Design</ChipLabel>
+          <ChipRemove>
+            <button type="button">Drop</button>
+          </ChipRemove>
+        </Chip>,
+      )
+      await userEvent.click(screen.getByRole('button', { name: 'Drop Design' }))
+      expect(onRemove).toHaveBeenCalledTimes(1)
     })
 
     it('disables the remove part with the chip, or on its own', () => {
