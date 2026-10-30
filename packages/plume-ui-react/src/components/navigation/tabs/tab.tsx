@@ -46,7 +46,6 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
       orientation,
       sizeClass,
       setActiveTabIndex,
-      onIndexChange: onChange,
     } = useTabs()
     const index = useTabIndex(indexProp)
     const isActive = index === activeIndex
@@ -54,9 +53,6 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(
       orientation === 'vertical' ? ['ArrowUp', 'ArrowDown'] : ['ArrowLeft', 'ArrowRight']
 
     const handleClick = (): void => {
-      if (onChange) {
-        onChange(index)
-      }
       setActiveTabIndex(index)
     }
 

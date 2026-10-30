@@ -136,7 +136,24 @@ type Story = StoryObj<typeof Dropdown>
 /**
  * This is the default Dropdown. Open it with the mouse or with <kbd>Enter</kbd>, <kbd>Space</kbd> and the arrows.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Dropdown>
+  <DropdownTrigger>
+    <Button label="Actions" variant="outline" />
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem>Profile</DropdownItem>
+    <DropdownItem>Settings</DropdownItem>
+    <DropdownItem>Sign out</DropdownItem>
+  </DropdownMenu>
+</Dropdown>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the menu looks: `elevated` floats it with a shadow, `outline` draws its

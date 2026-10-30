@@ -10,8 +10,9 @@ A lightweight, framework‑agnostic design system for React. Components ship the
 own scoped styles and are themed entirely through CSS variables, so they adapt to
 your brand and flip between light and dark without any runtime color math.
 
-- **Themeable** — every design token is a CSS variable emitted by `<ThemeProvider>`.
-- **Light & dark** — built in, driven by a single `colorMode`.
+- **Themeable** — every design token is a CSS variable: the stylesheet declares the defaults and `<ThemeProvider>`
+  changes the ones your theme overrides.
+- **Light & dark** — built in, set with `defaultColorMode` and switched with `setColorMode`.
 - **Framework‑agnostic** — use the components as they are, or set `variant="unstyled"`
   and bring your own Tailwind / Bootstrap classes.
 - **Typed** — written in TypeScript, with React 18 and 19 support.
@@ -50,7 +51,7 @@ export function App() {
 
 ### Only the CSS you use
 
-`plume-ui-react/styles.css` has the CSS of every component (about 20 KB gzipped). To load only some of them, import
+`plume-ui-react/styles.css` has the CSS of every component (about 25 KB gzipped). To load only some of them, import
 `plume-ui-react/tokens.css` once, with the default theme, and then the stylesheet of each component instead of
 `styles.css`. Each one brings the CSS of the components it renders, so `css/button.css` also carries the `Spinner`, and
 `css/paginator.css` the `Button`, the `Select` and the `Chip`:
@@ -66,40 +67,33 @@ imports between the sheets are plain CSS `@import`. `tokens.css` is not one of t
 remove the repeated imports does not copy the tokens in every sheet. Do not mix them with `styles.css`: it already has
 everything.
 
-### Theming
+### Theme and dark mode
 
-`theme` is a deep‑partial of the default theme, so you override only what you need:
+`theme` is a deep‑partial of the default theme, so you override only what you need, and `defaultColorMode` picks
+`'light'`, `'dark'` or `'system'`:
 
 ```tsx
-<ThemeProvider theme={{ colors: { primary: { 500: '#5263ff' } } }}>
+<ThemeProvider defaultColorMode='system' theme={{ colors: { primary: { 500: '#5263ff' } } }}>
   <App />
 </ThemeProvider>
 ```
 
-### Dark mode
-
-Pass `colorMode`, or let it follow the operating system with `"system"`:
-
-```tsx
-<ThemeProvider defaultColorMode='system'>
-  <App />
-</ThemeProvider>
-```
+<a href='./?path=/docs/theme-theming--docs' target='_top'>Theming</a> covers the rest: a dark theme of your own, a
+toggle, nested providers, new colors and using the tokens without a provider.
 
 ## Examples
 
-Complete apps you can open and run. They install the published package and use a custom theme: a `primary` override plus a new `salmon` color scheme.
-
-- <a href='?path=/docs/guides-examples--docs' target='_top'>Vite playground</a> — edit the code live in StackBlitz (<a href='https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite' target='_blank' rel='noopener noreferrer'>source</a>).
-- <a href='https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app' target='_blank' rel='noopener noreferrer'>Next.js App Router</a> — a project dashboard with a sign in, a sidebar and dark mode, server-rendered with no theme flash (<a href='https://plume-ui-react.vercel.app' target='_blank' rel='noopener noreferrer'>live demo</a>).
-
-Every example on a component page also has an **Open in StackBlitz** button in its toolbar, which opens that snippet as a small Vite project.
+<a href='?path=/docs/guides-examples--docs' target='_top'>Two complete apps</a>, in Vite and in the Next.js App Router,
+that install the published package. Every example on a component page also has an **Open in StackBlitz** button in its
+toolbar, which opens that snippet as a small Vite project.
 
 ## Explore
 
-- Theme — <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> and <a href='./?path=/docs/theme-tokens--docs' target='_top'>Tokens</a>, the palette and design tokens.
+- Theme — <a href='./?path=/docs/theme-theming--docs' target='_top'>Theming</a>, <a href='./?path=/docs/theme-colors--docs' target='_top'>Colors</a> and <a href='./?path=/docs/theme-tokens--docs' target='_top'>Tokens</a>: the provider, the palette and the design tokens.
 - <a href='./?path=/docs/guides-framework-integration--docs' target='_top'>Framework Integration</a> — Vite, Next.js, Tailwind and Bootstrap.
+- <a href='./?path=/docs/guides-customizing-styles--docs' target='_top'>Customizing styles</a> — `className`, CSS variables, cascade layers and `unstyled`.
 - <a href='./?path=/docs/guides-forms--docs' target='_top'>Forms</a> — react-hook-form and any other form library.
+- <a href='./?path=/docs/guides-internationalization--docs' target='_top'>Internationalization</a> — translate every text of the components.
 - <a href='./?path=/docs/guides-upgrading-to-1-0--docs' target='_top'>Upgrading to 1.0</a> — what changed since the 0.x versions.
 - <a href='./?path=/docs/components-button--docs' target='_top'>Components</a> — props and live examples for each one, in the sidebar.
-- <a href='https://github.com/darioegb/plume-ui-react/blob/main/CHANGELOG.md' target='_blank' rel='noopener noreferrer'>Changelog</a> and <a href='https://github.com/darioegb/plume-ui-react/issues/new' target='_blank' rel='noopener noreferrer'>report an issue</a>.
+- <a href='https://github.com/darioegb/plume-ui-react/blob/main/packages/plume-ui-react/CHANGELOG.md' target='_blank' rel='noopener noreferrer'>Changelog</a> and <a href='https://github.com/darioegb/plume-ui-react/issues/new' target='_blank' rel='noopener noreferrer'>report an issue</a>.

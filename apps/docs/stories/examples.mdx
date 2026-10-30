@@ -15,8 +15,8 @@ module augmentation.
 ## Next.js App Router
 
 The Plume Projects dashboard with a simulated sign in, a sidebar, a top bar, a table with sorting and
-filters, a detail drawer, a team directory and settings. It shows that `ThemeProvider` is **SSR/RSC-safe**: the theme is
-serialized to CSS variables and rendered on the server from a cookie, so dark mode has no flash.
+filters, a detail drawer, a team directory and settings. It shows that `ThemeProvider` can be rendered from the root
+layout, a Server Component: the color mode comes from a cookie and the server renders it, so dark mode has no flash.
 
 - <a href='https://plume-ui-react.vercel.app' target='_blank' rel='noopener noreferrer'>Open the live demo</a> (sign in with any email and a password of 6 or more characters)
 - <a href='https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app' target='_blank' rel='noopener noreferrer'>Read the source</a>

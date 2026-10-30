@@ -18,8 +18,8 @@
 
 Components ship their own scoped styles and are themed entirely through CSS variables, so they adapt to your brand and switch between light and dark without runtime color math.
 
-- **Themeable**: every design token is a CSS variable emitted by `<ThemeProvider>`.
-- **Light & dark**: built in, driven by a single `colorMode`.
+- **Themeable**: every design token is a CSS variable. The stylesheet declares the defaults and `<ThemeProvider>` changes the ones your theme overrides.
+- **Light & dark**: built in, set with `defaultColorMode` and switched with `setColorMode`.
 - **Framework-agnostic**: use the components as they are, or set `variant="unstyled"` and style them with Tailwind or Bootstrap.
 - **Typed**: written in TypeScript, with React 18 and 19 support.
 
@@ -128,7 +128,7 @@ Coming from a 0.x version? See the [upgrading guide](https://darioegb.github.io/
 
 ## Examples
 
-Standalone apps that consume the **published npm packages** (not the workspace sources). Both use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
+Standalone apps that consume the **published npm package** (not the workspace sources). Both use a custom theme: a `primary` override plus a new `salmon` color scheme, typed with module augmentation.
 
 - **[Vite](apps/example-vite)**: a client-only SPA with a slice of the same product, to try the components and edit the code.
 

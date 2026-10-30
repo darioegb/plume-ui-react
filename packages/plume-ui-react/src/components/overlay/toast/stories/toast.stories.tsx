@@ -128,7 +128,28 @@ type Story = StoryObj<typeof ToastProvider>
 /**
  * This is the default ToastProvider. The button calls `toast()` with a title and a description.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `function Example() {
+  const toast = useToast()
+
+  return (
+    <Button
+      label="Show a toast"
+      onClick={() => toast.toast({ description: 'Your changes were saved.', title: 'Saved' })}
+    />
+  )
+}
+
+<ToastProvider>
+  <Example />
+</ToastProvider>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop of the provider to pick how the toasts look: `solid` fills them with the color of

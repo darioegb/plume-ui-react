@@ -96,7 +96,34 @@ type Story = StoryObj<typeof Modal>
  * This is the default Modal. The trigger opens it, and the X, a button of the footer, <kbd>Esc</kbd> or a click
  * on the backdrop close it.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Modal>
+  <ModalTrigger>
+    <Button label="Open modal" />
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader>Delete project</ModalHeader>
+    <ModalBody>
+      Deleting a project removes its files, its history and its members. This cannot be undone.
+    </ModalBody>
+    <ModalFooter>
+      <ModalClose>
+        <Button label="Cancel" variant="ghost" />
+      </ModalClose>
+      <ModalClose>
+        <Button colorScheme="error" label="Delete" />
+      </ModalClose>
+    </ModalFooter>
+    <ModalClose />
+  </ModalContent>
+</Modal>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the Modal looks. `unstyled` drops the Plume styles, so the backdrop, the

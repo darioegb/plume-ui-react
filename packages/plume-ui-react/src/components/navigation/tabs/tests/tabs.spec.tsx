@@ -23,6 +23,34 @@ describe('Tabs Component', () => {
     expect(onChangeMock).toHaveBeenCalledWith(1)
   })
 
+  it('calls the latest onIndexChange and keeps the selected tab when it changes', () => {
+    const first = vi.fn()
+    const latest = vi.fn()
+    const tabs = (onIndexChange: (index: number) => void): React.ReactElement => (
+      <Tabs onIndexChange={onIndexChange}>
+        <TabList>
+          <Tab>Tab 1</Tab>
+          <Tab>Tab 2</Tab>
+          <Tab>Tab 3</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>Panel 1 Content</TabPanel>
+          <TabPanel>Panel 2 Content</TabPanel>
+          <TabPanel>Panel 3 Content</TabPanel>
+        </TabPanels>
+      </Tabs>
+    )
+    const { rerender } = render(tabs(first))
+
+    fireEvent.click(screen.getByText('Tab 2'))
+    rerender(tabs(latest))
+
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Panel 2 Content')
+    fireEvent.click(screen.getByText('Tab 3'))
+    expect(first).toHaveBeenCalledTimes(1)
+    expect(latest).toHaveBeenCalledWith(2)
+  })
+
   it('should handle disabled tabs correctly', () => {
     const onChangeMock = vi.fn()
     const { getByText } = render(

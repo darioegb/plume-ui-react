@@ -2,92 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { CSSProperties } from 'react'
 import { Button, Input } from 'plume-ui-react'
 
-/**
- * Plume is **CSS-framework agnostic**. Components ship their own scoped styles,
- * but they are designed to drop into any stack:
- *
- * ### Vite and Next.js
- *
- * Wrap your app in `<ThemeProvider>` and import the stylesheet once. These examples show where the provider goes in each setup:
- * <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-vite" target="_blank" rel="noopener noreferrer">Vite</a> and <a href="https://github.com/darioegb/plume-ui-react/tree/main/apps/example-next-app" target="_blank" rel="noopener noreferrer">Next.js App Router</a>. The <a href="?path=/docs/guides-examples--docs">Examples</a> page has the live demo and the StackBlitz project.
- *
- * ### Tailwind CSS v4
- *
- * Components work as-is next to Tailwind, and `variant="unstyled"` lets you style
- * them with utilities. The theme of Plume for Tailwind v4 is one import, and gives you the
- * colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`), the text styles (`text-heading-1`,
- * `text-body`), the radii, shadows, container widths and easings as utilities, plus `z-modal`, `duration-fast`,
- * `opacity-disabled` and `h-control-md`:
- *
- * ```css
- * @layer theme, base, plume, components, utilities;
- *
- * @import 'tailwindcss';
- * @import 'plume-ui-react/styles.css';
- * @import 'plume-ui-react/tailwind.css';
- *
- * @custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
- * ```
- *
- * The last line makes `dark:` follow the color mode of Plume and not the system preference.
- *
- * The utilities point to the variables of Plume (`@theme inline`), so they follow the theme and the color mode. The
- * spacing, the breakpoints (`sm` 40rem … `2xl` 96rem) and the container widths of Tailwind v4 are already the
- * ones of Plume.
- *
- * ### Tailwind CSS v3
- *
- * To use Plume tokens as utilities, map the CSS variables of the theme in your `tailwind.config.ts`:
- *
- * ```ts
- * export default {
- *   darkMode: ['class', '[data-plume-color-mode="dark"]'],
- *   content: ['./src/**\/*.{ts,tsx}'],
- *   theme: {
- *     extend: {
- *       colors: {
- *         primary: {
- *           DEFAULT: 'var(--plume-color-primary-500)',
- *           solid: 'var(--plume-color-primary-solid)',
- *           'on-solid': 'var(--plume-color-primary-solid-contrast)',
- *           text: 'var(--plume-color-primary-text)',
- *         },
- *         surface: 'var(--plume-surface)',
- *         foreground: 'var(--plume-foreground)',
- *         border: 'var(--plume-border)',
- *       },
- *       borderRadius: { 4: 'var(--plume-radius-4)' },
- *     },
- *   },
- * }
- * ```
- *
- * Because the utilities resolve to the live CSS variables, they re-theme
- * automatically and flip in dark mode. The stylesheet declares the default values, and
- * `<ThemeProvider>` the ones your theme changes. Every token is available as `--plume-<group>-<name>`
- * (e.g. `--plume-color-primary-500`, `--plume-space-4`, `--plume-shadow-md`).
- *
- * For filled surfaces use `solid` with `on-solid`, and for colored text use `text`:
- * unlike the raw `500` shade, they are derived to meet WCAG AA (4.5:1) in light and
- * dark.
- *
- * ### Bootstrap / any other framework (bring your own className)
- *
- * Use `variant="unstyled"` on any component to strip Plume styling and pass the
- * framework's own classes:
- *
- * ```tsx
- * <Button variant="unstyled" className="btn btn-primary">Save</Button>
- * <Input variant="unstyled" className="form-control" />
- * ```
- */
 const meta: Meta = {
   title: 'Guides/Framework Integration',
   parameters: {
     layout: 'fullscreen',
     options: { showPanel: false },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
@@ -105,10 +25,10 @@ const badges = [
 ]
 
 /**
- * These elements use Tailwind utilities backed by Plume CSS variables, through the Tailwind theme of Plume
- * (`plume-ui-react/tailwind.css`), the same one this Storybook uses. They follow the theme and dark mode toggle.
+ * Tailwind utilities backed by the variables of Plume, through `plume-ui-react/tailwind.css`, the same file this
+ * Storybook uses. They follow the theme and the color mode.
  */
-export const TailwindPreset: Story = {
+export const Tailwind: Story = {
   render: () => (
     <div className='flex flex-col gap-4 p-4'>
       <div className='bg-surface text-foreground border border-border rounded-4 p-4 shadow-md'>
@@ -129,8 +49,7 @@ export const TailwindPreset: Story = {
 }
 
 /**
- * Plume components with `variant="unstyled"` styled entirely by Bootstrap
- * classes (Bootstrap CSS is loaded globally in this Storybook).
+ * Plume components with `variant="unstyled"`, styled only by the classes of Bootstrap.
  */
 export const Bootstrap: Story = {
   render: () => (

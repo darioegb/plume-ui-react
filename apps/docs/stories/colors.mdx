@@ -1,6 +1,7 @@
 {/* Colors.mdx */}
 
-import { Meta, ColorPalette, ColorItem, Source } from '@storybook/addon-docs/blocks'
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks'
+import { defaultTheme } from 'plume-ui-react'
 
 <Meta title='Theme/Colors' />
 
@@ -8,254 +9,27 @@ import { Meta, ColorPalette, ColorItem, Source } from '@storybook/addon-docs/blo
 
 ## Color palette
 
+export const names = {
+  primary: 'Blue',
+  secondary: 'Grey',
+  info: 'Blue',
+  warning: 'Amber',
+  error: 'Red',
+  success: 'Green',
+  brown: 'Leather',
+  pink: 'Radical Red',
+  purple: 'Magenta / Fuchsia',
+  teal: 'Turquoise',
+  yellow: 'Yellow',
+}
+
+Every color of the theme is a scale of eleven shades, from `50` to `950`, and a `colorScheme` that every component takes.
+Each shade is the variable `--plume-color-<color>-<shade>`.
+
 <ColorPalette>
-  <ColorItem
-    title='colors.primary'
-    subtitle='Blue'
-    colors={{
-      50: '#ecf2ff',
-      100: '#dce8ff',
-      200: '#c1d2ff',
-      300: '#9bb4ff',
-      400: '#738bff',
-      500: '#5263ff',
-      600: '#3a3df8',
-      700: '#2727db',
-      800: '#2223b1',
-      900: '#24278b',
-      950: '#151551',
-    }}
-  />
-  <ColorItem
-    title='colors.secondary'
-    subtitle='Grey'
-    colors={{
-      50: '#f5f6f6',
-      100: '#e5e7e8',
-      200: '#cdd1d4',
-      300: '#aab0b6',
-      400: '#808990',
-      500: '#6c757d',
-      600: '#565c64',
-      700: '#4a4f54',
-      800: '#414449',
-      900: '#3a3c3f',
-      950: '#242628',
-    }}
-  />
-  <ColorItem
-    title='colors.info'
-    subtitle='Sky'
-    colors={{
-      50: '#eff6ff',
-      100: '#dbeafe',
-      200: '#bfdbfe',
-      300: '#93c6fd',
-      400: '#60a6fa',
-      500: '#3b83f6',
-      600: '#2564eb',
-      700: '#1d4fd8',
-      800: '#1e41af',
-      900: '#1e3b8a',
-      950: '#172554',
-    }}
-  />
-  <ColorItem
-    title='colors.warning'
-    subtitle='Orange'
-    colors={{
-      50: '#fef9e8',
-      100: '#fef0c3',
-      200: '#fee28a',
-      300: '#fdd147',
-      400: '#fac215',
-      500: '#eab308',
-      600: '#ca9a04',
-      700: '#a17c07',
-      800: '#85680e',
-      900: '#715a12',
-      950: '#423306',
-    }}
-  />
-  <ColorItem
-    title='colors.error'
-    subtitle='Red'
-    colors={{
-      50: '#fef2f2',
-      100: '#fee2e2',
-      200: '#fecaca',
-      300: '#fca5a5',
-      400: '#f87171',
-      500: '#ef4444',
-      600: '#dc2626',
-      700: '#b91c1c',
-      800: '#991b1b',
-      900: '#7f1d1d',
-      950: '#450a0a',
-    }}
-  />
-  <ColorItem
-    title='colors.success'
-    subtitle='Green'
-    colors={{
-      50: '#f0fdf5',
-      100: '#dcfce8',
-      200: '#bbf7d1',
-      300: '#86efad',
-      400: '#4ade80',
-      500: '#22c55e',
-      600: '#16a34a',
-      700: '#15803c',
-      800: '#166533',
-      900: '#14532b',
-      950: '#052e14',
-    }}
-  />
-  <ColorItem
-    title='colors.brown'
-    subtitle='Leather'
-    colors={{
-      50: '#f6f3f0',
-      100: '#e9e1d8',
-      200: '#d4c5b4',
-      300: '#bba289',
-      400: '#a78568',
-      500: '#98745a',
-      600: '#825f4c',
-      700: '#6d4c41',
-      800: '#5a3f39',
-      900: '#4f3834',
-      950: '#2c1e1c',
-    }}
-  />
-  <ColorItem
-    title='colors.pink'
-    subtitle='Radical Red'
-    colors={{
-      50: '#fff1f3',
-      100: '#ffe3e7',
-      200: '#ffc0cb',
-      300: '#ffa2b3',
-      400: '#fe6e8b',
-      500: '#f83b66',
-      600: '#e51951',
-      700: '#c20e43',
-      800: '#a20f40',
-      900: '#8a113c',
-      950: '#4d041c',
-    }}
-  />
-  <ColorItem
-    title='colors.purple'
-    subtitle='Magenta / Fuchsia'
-    colors={{
-      50: '#fcf4ff',
-      100: '#f9e6ff',
-      200: '#f3d2ff',
-      300: '#eaaeff',
-      400: '#dd7bff',
-      500: '#d149ff',
-      600: '#c325f8',
-      700: '#ab15db',
-      800: '#8f17b2',
-      900: '#74148f',
-      950: '#680085',
-    }}
-  />
-  <ColorItem
-    title='colors.teal'
-    subtitle='Turquoise'
-    colors={{
-      50: '#eefffc',
-      100: '#c5fffa',
-      200: '#8bfff5',
-      300: '#4afef0',
-      400: '#15ece2',
-      500: '#00d0c9',
-      600: '#00a8a5',
-      700: '#008080',
-      800: '#066769',
-      900: '#0a5757',
-      950: '#003235',
-    }}
-  />
-  <ColorItem
-    title='colors.yellow'
-    subtitle='Yellow'
-    colors={{
-      50: '#fcffe7',
-      100: '#f5ffc1',
-      200: '#f0ff86',
-      300: '#efff41',
-      400: '#f6ff0d',
-      500: '#f0ec00',
-      600: '#d1bb00',
-      700: '#a68802',
-      800: '#896a0a',
-      900: '#74560f',
-      950: '#442f04',
-    }}
-  />
+  {Object.entries(defaultTheme.colors).map(([color, shades]) => (
+    <ColorItem colors={shades} key={color} subtitle={names[color]} title={`colors.${color}`} />
+  ))}
 </ColorPalette>
 
-## Customization
-
-> To customize the color palette, either modify the base colors or create new colors, we do the following:
-
-1 - Wrap your app in `<ThemeProvider>` and pass your theme overrides:
-
-<Source code={`import { ThemeProvider, type DeepPartial, type Theme } from 'plume-ui-react'
-
-const userTheme: DeepPartial<Theme> = {
-  colors: {
-    primary: {
-      '50': '#e8f1ff',
-      '100': '#d5e4ff',
-      '200': '#b3ccff',
-      '300': '#85a8ff',
-      '400': '#5676ff',
-      '500': '#2f45ff',
-      '600': '#0c0eff',
-      '700': '#0000ff',
-      '800': '#0609cd',
-      '900': '#10169f',
-      '950': '#0a0b5c',
-    }, // overwrite primaryColor
-    salmon: {
-      '50': '#fef3f1',
-      '100': '#fee6e2',
-      '200': '#fdd0c9',
-      '300': '#fcb0a5',
-      '400': '#fb9588',
-      '500': '#fa8072',
-      '600': '#f06a5a',
-      '700': '#e25a49',
-      '800': '#bf4333',
-      '900': '#8f3329',
-      '950': '#4d1712',
-    },
-  },
-}
-
-export function App({ children }) {
-  return <ThemeProvider theme={userTheme}>{children}</ThemeProvider>
-}`} dark />
-In this example we are modifying the primary color and creating new color.
-
-Solid backgrounds (such as filled buttons) use the first of the `500`, `600` and `700` shades that reads well under white text, and keep `500` with dark text when none does. That is why `salmon` keeps its light `500` as the button color, while a darker ramp would give a darker button.
-
-2 - If you use typescript and have created new colors,
-you should also do the next step so that those colors are inferred.
-In the example we are using typescript's <strong>Module Augmentation</strong> to make this possible.
-This code can be placed in a new definition file or if you already have a global definition file add the code there.
-The augmentation targets `plume-ui-react`, the same package you import the components from.
-
-<Source code={`// typings.d.ts  
-import { ColorPalette, ShadeLevel } from 'plume-ui-react'
-
-declare module 'plume-ui-react' {
-  interface ColorPalette {
-    salmon: ShadeLevel
-  }
-}
-`} dark />
+To change a color or add one of your own, see <a href='./?path=/docs/theme-theming--docs' target='_top'>Theming</a>.

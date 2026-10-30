@@ -432,10 +432,11 @@ it works the pages out (`total / pageSize`). If you only have the number of page
 The `total` also feeds the new `PaginatorSummary`, and a `Paginator` with no `total` renders nothing.
 
 ```tsx
-// before
+// Before
 <Paginator count={10} />
-// after
-<Paginator total={100} pageSize={10} />
+
+// After
+<Paginator pageSize={10} total={100} />
 ```
 
 ## `Slider` and `Rating` are made of parts

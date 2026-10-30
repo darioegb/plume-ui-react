@@ -237,7 +237,22 @@ type Story = StoryObj<typeof Select>
 /**
  * This is the default Select. Open it with the mouse, <kbd>Enter</kbd>, <kbd>Space</kbd> or the arrows.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Select>
+  <SelectTrigger aria-label="Fruit" placeholder="Pick a fruit" />
+  <SelectContent>
+    <SelectOption value="apple">Apple</SelectOption>
+    <SelectOption value="banana">Banana</SelectOption>
+    <SelectOption value="cherry">Cherry</SelectOption>
+  </SelectContent>
+</Select>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the field looks: `outline`, `filled` or `underline`, as in the `Input`.
