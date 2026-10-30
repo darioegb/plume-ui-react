@@ -1,5 +1,11 @@
 # plume-ui-react
 
+## 0.42.1
+
+### Patch Changes
+
+- [#246](https://github.com/darioegb/plume-ui-react/pull/246) [`8aa59ef29ea2a4bba7694a9295b7897b9e65e14d`](https://github.com/darioegb/plume-ui-react/commit/8aa59ef29ea2a4bba7694a9295b7897b9e65e14d) Thanks [@darioegb](https://github.com/darioegb)! - `Tabs` calls the latest `onIndexChange` it was given, instead of the first one, when its other props stay the same.
+
 ## 0.42.0
 
 ### Minor Changes
