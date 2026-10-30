@@ -72,7 +72,25 @@ type Story = StoryObj<typeof Breadcrumb>
 /**
  * This is the default Breadcrumb: underlined links with a slash between them, and the current page in bold.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Breadcrumb>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink current>Breadcrumb</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the Breadcrumb looks. `unstyled` drops the Plume styles so you can style it

@@ -90,7 +90,23 @@ type Story = StoryObj<typeof Popover>
 /**
  * This is the default Popover. The trigger toggles it, and <kbd>Esc</kbd> or a click outside close it.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Popover>
+  <PopoverTrigger>
+    <Button label="Open popover" />
+  </PopoverTrigger>
+  <PopoverContent aria-label="Details">
+    <strong>Team members</strong>
+    <p className="mt-2">Anyone in the team can see this project and comment on it.</p>
+  </PopoverContent>
+</Popover>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the panel looks: `elevated` floats it with a shadow, `outline` draws its

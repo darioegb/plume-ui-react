@@ -611,6 +611,16 @@ export const Disabled: Story = {
  * `DatePickerCalendar` opens under it. The state is shared, so picking a day in the calendar updates the field.
  */
 export const Compound: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<DatePicker locale="en" onValueChange={handleValueChange} size="sm" value={value} variant="filled">
+  <DatePickerInput aria-label="Pick a day" placeholder="Pick a day" />
+  <DatePickerCalendar />
+</DatePicker>`,
+      },
+    },
+  },
   render: () => (
     <ControlledDatePicker locale='en' size='sm' variant='filled'>
       <DatePickerInput aria-label='Pick a day' placeholder='Pick a day' />

@@ -101,7 +101,28 @@ type Story = StoryObj<typeof Accordion>
 /**
  * This is the default Accordion: one item open at a time, and the open one can be closed.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Accordion>
+  <AccordionItem value="How do I install it?">
+    <AccordionTrigger>How do I install it?</AccordionTrigger>
+    <AccordionContent>Install the package and wrap your app in the ThemeProvider.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Can I use Tailwind?">
+    <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+    <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Is it accessible?">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>It follows the WAI-ARIA accordion pattern.</AccordionContent>
+  </AccordionItem>
+</Accordion>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the Accordion looks. `unstyled` drops the Plume styles so you can style it
@@ -248,6 +269,26 @@ export const Colors: Story = {
  * With `type="multiple"` any number of items can be open at once. `defaultValue` is then a list.
  */
 export const Multiple: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Accordion defaultValue={['How do I install it?', 'Is it accessible?']} type="multiple">
+  <AccordionItem value="How do I install it?">
+    <AccordionTrigger>How do I install it?</AccordionTrigger>
+    <AccordionContent>Install the package and wrap your app in the ThemeProvider.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Can I use Tailwind?">
+    <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+    <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Is it accessible?">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>It follows the WAI-ARIA accordion pattern.</AccordionContent>
+  </AccordionItem>
+</Accordion>`,
+      },
+    },
+  },
   args: {
     defaultValue: [questions[0].title, questions[2].title],
     type: 'multiple',
@@ -258,6 +299,26 @@ export const Multiple: Story = {
  * Without **collapsible**, one item always stays open: clicking the open item does nothing.
  */
 export const NotCollapsible: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Accordion collapsible={false} defaultValue="How do I install it?">
+  <AccordionItem value="How do I install it?">
+    <AccordionTrigger>How do I install it?</AccordionTrigger>
+    <AccordionContent>Install the package and wrap your app in the ThemeProvider.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Can I use Tailwind?">
+    <AccordionTrigger>Can I use Tailwind?</AccordionTrigger>
+    <AccordionContent>Yes, with the unstyled variant.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="Is it accessible?">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>It follows the WAI-ARIA accordion pattern.</AccordionContent>
+  </AccordionItem>
+</Accordion>`,
+      },
+    },
+  },
   args: {
     collapsible: false,
     defaultValue: questions[0].title,

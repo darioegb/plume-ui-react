@@ -155,7 +155,30 @@ type Story = StoryObj<typeof Carousel>
 /**
  * This is the default Carousel: it stops at the first and the last slide, and it only moves when the user asks.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places">
+  <CarouselSlides>
+    <CarouselSlide>
+      <img alt="Mountains above the clouds" src="/mountains.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="A walk under the trees" src="/forest.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="Sand, heat and wind" src="/desert.jpg" />
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the buttons look: `solid` (the default) and `overlay`, which reads over a
@@ -561,6 +584,28 @@ export const Colors: Story = {
  * disabled.
  */
 export const Loop: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places" loop>
+  <CarouselSlides>
+    <CarouselSlide>
+      <img alt="Mountains above the clouds" src="/mountains.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="A walk under the trees" src="/forest.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="Sand, heat and wind" src="/desert.jpg" />
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <CarouselDots />
+</Carousel>`,
+      },
+    },
+  },
   args: { loop: true },
 }
 
@@ -630,6 +675,31 @@ export const Peek: Story = {
  * `CarouselPlayPause` so the user can stop it.
  */
 export const Autoplay: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Carousel aria-label="Featured places" autoplay={3500}>
+  <CarouselSlides>
+    <CarouselSlide>
+      <img alt="Mountains above the clouds" src="/mountains.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="A walk under the trees" src="/forest.jpg" />
+    </CarouselSlide>
+    <CarouselSlide>
+      <img alt="Sand, heat and wind" src="/desert.jpg" />
+    </CarouselSlide>
+  </CarouselSlides>
+  <CarouselPrev />
+  <CarouselNext />
+  <div className="mt-2 flex items-center justify-center gap-2">
+    <CarouselPlayPause />
+    <CarouselDots />
+  </div>
+</Carousel>`,
+      },
+    },
+  },
   args: {
     autoplay: 3500,
     children: (

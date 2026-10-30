@@ -182,7 +182,49 @@ type Story = StoryObj<typeof Tree>
 /**
  * This is the default Tree: one item can be selected, and a branch opens when it is pressed.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tree aria-label="Project files" defaultExpanded={['src']} defaultValue="index">
+  <TreeItem value="src">
+    <TreeItemLabel icon={<FolderIcon />}>src</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="components">
+        <TreeItemLabel icon={<FolderIcon />}>components</TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="button">
+            <TreeItemLabel icon={<FileIcon />}>button.tsx</TreeItemLabel>
+          </TreeItem>
+          <TreeItem value="tree">
+            <TreeItemLabel icon={<FileIcon />}>tree.tsx</TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+      <TreeItem value="index">
+        <TreeItemLabel icon={<FileIcon />}>index.ts</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="public">
+    <TreeItemLabel icon={<FolderIcon />}>public</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="logo">
+        <TreeItemLabel icon={<FileIcon />}>logo.svg</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="readme">
+    <TreeItemLabel icon={<FileIcon />}>README.md</TreeItemLabel>
+  </TreeItem>
+  <TreeItem disabled value="secret">
+    <TreeItemLabel icon={<FileIcon />}>.env</TreeItemLabel>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the selected item looks. `unstyled` drops the Plume styles so you can style
@@ -407,6 +449,52 @@ const file = 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h
  * `aria-multiselectable`.
  */
 export const MultipleSelection: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tree
+  aria-label="Project files"
+  defaultExpanded={['src', 'components']}
+  defaultValue={['button', 'readme']}
+  selection="multiple"
+>
+  <TreeItem value="src">
+    <TreeItemLabel icon={<FolderIcon />}>src</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="components">
+        <TreeItemLabel icon={<FolderIcon />}>components</TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="button">
+            <TreeItemLabel icon={<FileIcon />}>button.tsx</TreeItemLabel>
+          </TreeItem>
+          <TreeItem value="tree">
+            <TreeItemLabel icon={<FileIcon />}>tree.tsx</TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+      <TreeItem value="index">
+        <TreeItemLabel icon={<FileIcon />}>index.ts</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="public">
+    <TreeItemLabel icon={<FolderIcon />}>public</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="logo">
+        <TreeItemLabel icon={<FileIcon />}>logo.svg</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="readme">
+    <TreeItemLabel icon={<FileIcon />}>README.md</TreeItemLabel>
+  </TreeItem>
+  <TreeItem disabled value="secret">
+    <TreeItemLabel icon={<FileIcon />}>.env</TreeItemLabel>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
   args: {
     defaultExpanded: ['src', 'components'],
     defaultValue: ['button', 'readme'],
@@ -419,6 +507,47 @@ export const MultipleSelection: Story = {
  * suits a navigation or an outline.
  */
 export const NoSelection: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tree aria-label="Project files" defaultExpanded={['src']} selection="none">
+  <TreeItem value="src">
+    <TreeItemLabel icon={<FolderIcon />}>src</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="components">
+        <TreeItemLabel icon={<FolderIcon />}>components</TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="button">
+            <TreeItemLabel icon={<FileIcon />}>button.tsx</TreeItemLabel>
+          </TreeItem>
+          <TreeItem value="tree">
+            <TreeItemLabel icon={<FileIcon />}>tree.tsx</TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+      <TreeItem value="index">
+        <TreeItemLabel icon={<FileIcon />}>index.ts</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="public">
+    <TreeItemLabel icon={<FolderIcon />}>public</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="logo">
+        <TreeItemLabel icon={<FileIcon />}>logo.svg</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="readme">
+    <TreeItemLabel icon={<FileIcon />}>README.md</TreeItemLabel>
+  </TreeItem>
+  <TreeItem disabled value="secret">
+    <TreeItemLabel icon={<FileIcon />}>.env</TreeItemLabel>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
   args: { defaultValue: undefined, selection: 'none' },
 }
 
@@ -691,6 +820,47 @@ export const Controlled: Story = {
  * `aria-disabled`.
  */
 export const Disabled: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Tree aria-label="Project files">
+  <TreeItem value="src">
+    <TreeItemLabel icon={<FolderIcon />}>src</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="components">
+        <TreeItemLabel icon={<FolderIcon />}>components</TreeItemLabel>
+        <TreeItemGroup>
+          <TreeItem value="button">
+            <TreeItemLabel icon={<FileIcon />}>button.tsx</TreeItemLabel>
+          </TreeItem>
+          <TreeItem value="tree">
+            <TreeItemLabel icon={<FileIcon />}>tree.tsx</TreeItemLabel>
+          </TreeItem>
+        </TreeItemGroup>
+      </TreeItem>
+      <TreeItem value="index">
+        <TreeItemLabel icon={<FileIcon />}>index.ts</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="public">
+    <TreeItemLabel icon={<FolderIcon />}>public</TreeItemLabel>
+    <TreeItemGroup>
+      <TreeItem value="logo">
+        <TreeItemLabel icon={<FileIcon />}>logo.svg</TreeItemLabel>
+      </TreeItem>
+    </TreeItemGroup>
+  </TreeItem>
+  <TreeItem value="readme">
+    <TreeItemLabel icon={<FileIcon />}>README.md</TreeItemLabel>
+  </TreeItem>
+  <TreeItem disabled value="secret">
+    <TreeItemLabel icon={<FileIcon />}>.env</TreeItemLabel>
+  </TreeItem>
+</Tree>`,
+      },
+    },
+  },
   args: { defaultExpanded: [], defaultValue: undefined },
 }
 

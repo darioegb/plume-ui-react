@@ -172,7 +172,33 @@ type Story = StoryObj<typeof Table>
 /**
  * This is the default Table: a line under every row and a thicker one under the header.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Table>
+  <TableCaption>People of the team</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Role</TableHead>
+      <TableHead align="end">Age</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {people.map(({ age, name, role }) => (
+      <TableRow key={name}>
+        <TableCell>{name}</TableCell>
+        <TableCell>{role}</TableCell>
+        <TableCell align="end">{age}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the Table looks. `unstyled` drops the Plume styles so you can style it
@@ -427,6 +453,31 @@ export const Sizes: Story = {
  * sets `aria-selected` and `data-selected`.
  */
 export const Hoverable: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Table hoverable>
+  <TableCaption>People of the team</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Role</TableHead>
+      <TableHead align="end">Age</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {people.map(({ age, name, role }) => (
+      <TableRow key={name} selected={name === 'Grace Hopper'}>
+        <TableCell>{name}</TableCell>
+        <TableCell>{role}</TableCell>
+        <TableCell align="end">{age}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>`,
+      },
+    },
+  },
   args: {
     hoverable: true,
     children: <Content selected="Grace Hopper" />,

@@ -97,7 +97,26 @@ type Story = StoryObj<typeof Navbar>
 /**
  * This is the default Navbar. Make the window narrower than 768px to see the links fold behind the toggle.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Navbar aria-label="Main">
+  <NavbarBrand href="/">Plume</NavbarBrand>
+  <NavbarToggle />
+  <NavbarContent>
+    <NavbarItem active href="/">
+      Home
+    </NavbarItem>
+    <NavbarItem href="/components">Components</NavbarItem>
+    <NavbarItem href="/docs">Docs</NavbarItem>
+    <NavbarItem href="/pricing">Pricing</NavbarItem>
+  </NavbarContent>
+</Navbar>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **variant** prop to pick how the Navbar looks. `unstyled` drops the Plume styles so you can style it

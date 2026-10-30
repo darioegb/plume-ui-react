@@ -109,7 +109,41 @@ type Story = StoryObj<typeof Drawer>
  * This is the default Drawer, which comes from the right. The trigger opens it, and the X, a button of the
  * footer, <kbd>Esc</kbd> or a click on the backdrop close it.
  */
-export const Default: Story = {}
+export const Default: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<Drawer>
+  <DrawerTrigger>
+    <Button label="Open drawer" />
+  </DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader>Filters</DrawerHeader>
+    <DrawerBody>
+      <div className="flex flex-col gap-4">
+        <Field label="Name">
+          <Input />
+        </Field>
+        <Field label="Email">
+          <Input type="email" />
+        </Field>
+      </div>
+    </DrawerBody>
+    <DrawerFooter>
+      <DrawerClose>
+        <Button label="Cancel" variant="ghost" />
+      </DrawerClose>
+      <DrawerClose>
+        <Button label="Apply" />
+      </DrawerClose>
+    </DrawerFooter>
+    <DrawerClose />
+  </DrawerContent>
+</Drawer>`,
+      },
+    },
+  },
+}
 
 /**
  * Use the **side** prop to choose the edge it comes from: `left`, `right`, `top` or `bottom`.
