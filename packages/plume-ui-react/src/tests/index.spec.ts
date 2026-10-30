@@ -184,6 +184,7 @@ describe('plume-ui-react', () => {
       'SelectChevron',
       'SelectChip',
       'SelectChips',
+      'SelectChipsSummary',
       'SelectClear',
       'SelectCombobox',
       'SelectContent',

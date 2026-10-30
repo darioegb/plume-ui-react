@@ -1,6 +1,6 @@
 'use client'
 
-import type { CSSProperties, ForwardedRef, ReactNode } from 'react'
+import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from 'react'
 import { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { mergeRefs } from '../../../overlay/trigger'
@@ -47,7 +47,11 @@ export interface SelectTriggerOwnProps {
   placeholder?: ReactNode
 }
 
-export type SelectTriggerProps = Omit<ComponentProps, 'index'> & SelectTriggerOwnProps
+type SelectTriggerRootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'title'>
+
+export type SelectTriggerProps = Omit<ComponentProps, 'index'> &
+  SelectTriggerRootAttributes &
+  SelectTriggerOwnProps
 
 function controlClasses(
   context: SelectContextValue,
@@ -89,7 +93,7 @@ function useLabelledBy(
  * renders them in the order you write them, and any other `children` (a `SelectValue`) are the
  * content of the `SelectCombobox`.
  */
-export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
+export const SelectTrigger = forwardRef<HTMLDivElement, SelectTriggerProps>(
   (
     {
       'aria-label': ariaLabel,
@@ -100,8 +104,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       maxDisplay = Number.POSITIVE_INFINITY,
       placeholder,
       style,
+      ...rest
     }: SelectTriggerProps,
-    ref: ForwardedRef<HTMLButtonElement>,
+    ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const context = useSelectContext('SelectTrigger')
     const button = useRef<HTMLButtonElement>(null)
@@ -113,7 +118,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       '--select-color': `var(--plume-color-${context.colorScheme}-text)`,
       ...style,
     } as CSSProperties
-    const buttonRef = useMemo(() => mergeRefs<HTMLButtonElement>(button, ref), [ref])
+    const rootRef = useMemo(
+      () => mergeRefs<HTMLDivElement>(context.setTrigger, ref),
+      [context.setTrigger, ref],
+    )
 
     const triggerContext = useMemo(() => {
       const toggle = (): void => {
@@ -121,18 +129,19 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         if (open) close(false)
         else setOpen(true)
       }
-      return { ariaLabel, buttonRef, display, labelledBy, maxDisplay, placeholder, toggle }
-    }, [ariaLabel, buttonRef, close, display, labelledBy, maxDisplay, open, placeholder, setOpen])
+      return { ariaLabel, buttonRef: button, display, labelledBy, maxDisplay, placeholder, toggle }
+    }, [ariaLabel, close, display, labelledBy, maxDisplay, open, placeholder, setOpen])
 
     return (
       <SelectTriggerContext.Provider value={triggerContext}>
         <div
+          {...rest}
           className={controlClasses(context, className)}
           data-disabled={context.disabled ? '' : undefined}
           data-invalid={context.invalid ? '' : undefined}
           data-open={open ? '' : undefined}
-          data-plume-select-control=""
-          ref={context.setTrigger}
+          data-plume-select-trigger=""
+          ref={rootRef}
           style={colorVars}
         >
           {composed ? (

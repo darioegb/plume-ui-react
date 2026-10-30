@@ -9,7 +9,16 @@ import { NumberInput } from '../../numberinput'
 import { PinInput } from '../../pininput'
 import { Radio, RadioGroup } from '../../radio'
 import { Rating } from '../../rating'
-import { Select, SelectContent, SelectOption, SelectTrigger } from '../../select'
+import {
+  Select,
+  SelectChevron,
+  SelectCombobox,
+  SelectContent,
+  SelectField,
+  SelectHidden,
+  SelectOption,
+  SelectTrigger,
+} from '../../select'
 import { Slider } from '../../slider'
 import { Textarea } from '../../textarea'
 import { TimePicker } from '../../timepicker'
@@ -373,7 +382,13 @@ export const ReactHookForm: Story = {
     render={({ field, fieldState }) => (
       <Field errorText={fieldState.error?.message} label="Room" required>
         <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger placeholder="Pick a room" ref={field.ref} />
+          <SelectTrigger>
+            <SelectField>
+              <SelectCombobox placeholder="Pick a room" ref={field.ref} />
+            </SelectField>
+            <SelectChevron />
+            <SelectHidden />
+          </SelectTrigger>
           <SelectContent>
             <SelectOption value="single">Single</SelectOption>
             <SelectOption value="double">Double</SelectOption>
@@ -567,7 +582,13 @@ export const ReactHookForm: Story = {
           render={({ field, fieldState }) => (
             <Field errorText={fieldState.error?.message} label='Room' required>
               <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger placeholder='Pick a room' ref={field.ref} />
+                <SelectTrigger>
+                  <SelectField>
+                    <SelectCombobox placeholder='Pick a room' ref={field.ref} />
+                  </SelectField>
+                  <SelectChevron />
+                  <SelectHidden />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectOption value='single'>Single</SelectOption>
                   <SelectOption value='double'>Double</SelectOption>

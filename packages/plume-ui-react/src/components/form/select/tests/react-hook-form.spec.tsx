@@ -2,7 +2,16 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Controller, useForm } from 'react-hook-form'
 import { Field } from '../../field'
-import { Select, SelectContent, SelectOption, SelectTrigger } from '..'
+import {
+  Select,
+  SelectChevron,
+  SelectCombobox,
+  SelectContent,
+  SelectField,
+  SelectHidden,
+  SelectOption,
+  SelectTrigger,
+} from '..'
 
 interface Values {
   room: string
@@ -38,7 +47,13 @@ function BookingForm({
         render={({ field }) => (
           <Field errorText={errors.room?.message} label="Room" required>
             <Select name={field.name} onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger placeholder="Pick a room" ref={field.ref} />
+              <SelectTrigger>
+                <SelectField>
+                  <SelectCombobox placeholder="Pick a room" ref={field.ref} />
+                </SelectField>
+                <SelectChevron />
+                <SelectHidden />
+              </SelectTrigger>
               <SelectContent>
                 <SelectOption value="single">Single</SelectOption>
                 <SelectOption value="double">Double</SelectOption>
