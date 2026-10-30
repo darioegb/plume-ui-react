@@ -1,6 +1,5 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Tab, TabList, TabPanel, TabPanels, Tabs, type TabsProps } from '..'
-import { tabsReducer } from '../tabs-reducer'
 
 describe('Tabs Component', () => {
   it('should call onChange with the correct index when a tab is clicked', () => {
@@ -341,20 +340,6 @@ describe('Tabs Component', () => {
       expect(screen.getByRole('tabpanel')).toHaveTextContent('Second')
     })
   })
-
-  it('Unknown action does not modify state', () => {
-    const initialState = {
-      index: 0,
-      alignment: 'left',
-      isLazy: false,
-      isStyled: true,
-      size: 'md',
-      variant: 'underline',
-    } as never
-    const action = { type: 'UNKNOWN_ACTION', payload: {} } as never
-    const newState = tabsReducer(initialState, action)
-    expect(newState).toEqual(initialState)
-  })
 })
 
 describe('Tabs parts', () => {
@@ -402,5 +387,92 @@ describe('Tabs parts', () => {
       'data-orientation',
       'vertical',
     )
+  })
+})
+
+describe('Tabs state and unstyled', () => {
+  const tabs = (props: TabsProps = {}): React.ReactElement => (
+    <Tabs {...props}>
+      <TabList aria-label="Sections">
+        <Tab>One</Tab>
+        <Tab>Two</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>First</TabPanel>
+        <TabPanel>Second</TabPanel>
+      </TabPanels>
+    </Tabs>
+  )
+
+  it('starts on defaultIndex and moves by itself', () => {
+    render(tabs({ defaultIndex: 1 }))
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Second')
+    fireEvent.click(screen.getByRole('tab', { name: 'One' }))
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('First')
+  })
+
+  it('stays where `index` puts it, and asks for the change through onIndexChange', () => {
+    const onIndexChange = vi.fn()
+    const { rerender } = render(tabs({ index: 0, onIndexChange }))
+    fireEvent.click(screen.getByRole('tab', { name: 'Two' }))
+    expect(onIndexChange).toHaveBeenCalledWith(1)
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('First')
+
+    rerender(tabs({ index: 1, onIndexChange }))
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Second')
+  })
+
+  it('exposes the orientation and the alignment', () => {
+    render(tabs({ alignment: 'center', orientation: 'vertical' }))
+    expect(screen.getByRole('tablist')).toHaveAttribute('data-alignment', 'center')
+    expect(screen.getByRole('tablist')).toHaveAttribute('data-orientation', 'vertical')
+  })
+
+  it('leaves only the classes of the user on every part when unstyled', () => {
+    render(
+      <Tabs alignment="right" className="root" orientation="vertical" variant="unstyled">
+        <TabList aria-label="Sections" className="list">
+          <Tab className="tab">One</Tab>
+          <Tab>Two</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel className="panel">First</TabPanel>
+          <TabPanel>Second</TabPanel>
+        </TabPanels>
+      </Tabs>,
+    )
+    expect(document.querySelector('[data-plume-tabs]')).toHaveAttribute('class', 'root')
+    expect(screen.getByRole('tablist')).toHaveAttribute('class', 'list')
+    expect(screen.getByRole('tab', { name: 'One' })).toHaveAttribute('class', 'tab')
+    expect(screen.getByRole('tab', { name: 'Two' }).getAttribute('class') ?? '').toBe('')
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('class', 'panel')
+  })
+
+  it('forwards the native attributes of a tab and of a panel', () => {
+    render(
+      <Tabs>
+        <TabList aria-label="Sections">
+          <Tab title="First tab">One</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel title="First panel">First</TabPanel>
+        </TabPanels>
+      </Tabs>,
+    )
+    expect(screen.getByRole('tab')).toHaveAttribute('title', 'First tab')
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('title', 'First panel')
+  })
+
+  it('throws when a part is outside the Tabs or outside the list', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    expect(() => render(<TabList aria-label="x" />)).toThrow('TabList must be used within a <Tabs>')
+    expect(() =>
+      render(
+        <Tabs>
+          <Tab>Lost</Tab>
+        </Tabs>,
+      ),
+    ).toThrow('Tab must be used within a <TabList> or <TabPanels>')
+    error.mockRestore()
   })
 })

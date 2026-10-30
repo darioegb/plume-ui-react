@@ -1,27 +1,39 @@
 /* tabs.module.css */
-.tabs {
+:global(:where([data-plume-tabs])) {
   display: flex;
   flex-direction: column;
 }
 
-.horizontal {
-  flex-direction: column;
-}
-
-.vertical {
+:global(:where([data-plume-tabs][data-orientation='vertical'])) {
   flex-direction: row;
 }
 
-.left {
-  justify-content: flex-start;
+:global(:where([data-plume-tabs-list])) {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  width: inherit;
 }
 
-.center {
+:global(:where([data-plume-tabs-list][data-orientation='vertical'])) {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+:global(:where([data-plume-tabs-list][data-alignment='center'])) {
   justify-content: center;
 }
 
-.right {
+:global(:where([data-plume-tabs-list][data-alignment='right'])) {
   justify-content: flex-end;
+}
+
+:global(:where([data-plume-tabs-tab])) {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
 }
 
 .sm {
@@ -38,7 +50,7 @@
   font-size: var(--plume-font-size-lg);
 }
 
-.vertical .underline {
+[data-orientation='vertical'] .underline {
   border-inline-end: solid var(--plume-border-width-thin) var(--plume-border);
   border-block-end: none;
 }
@@ -48,25 +60,7 @@
   border-block-end: solid var(--plume-border-width-thin) var(--plume-border);
 }
 
-.vertical .tablist {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.tablist {
-  width: inherit;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .tab {
-  /* reset <button> defaults so the tab doesn't depend on a global reset */
-  background: transparent;
-  border: 0;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -79,7 +73,7 @@
   border-radius: var(--plume-radius-4);
 }
 
-.vertical .underline .tab {
+[data-orientation='vertical'] .underline .tab {
   border-inline-end: var(--plume-border-width-medium) solid transparent;
   border-block-end: none;
   transition: border-inline-end var(--plume-duration-normal);
@@ -90,25 +84,25 @@
   transition: border-block-end var(--plume-duration-normal);
 }
 
-.vertical .underline .tab.active {
+[data-orientation='vertical'] .underline .tab[data-active] {
   border-inline-end: var(--plume-border-width-medium) solid var(--tabs-scheme);
   border-block-end: none;
 }
 
-.underline .tab.active {
+.underline .tab[data-active] {
   border-block-end: var(--plume-border-width-medium) solid var(--tabs-scheme);
   color: var(--tabs-scheme);
   transition: color var(--plume-duration-normal);
 }
 
-.rounded .tab.active {
+.rounded .tab[data-active] {
   background-color: var(--tabs-solid);
   color: var(--tabs-text-color);
   border-radius: var(--plume-radius-4);
   transition: color var(--plume-duration-normal);
 }
 
-.vertical .enclosed {
+[data-orientation='vertical'] .enclosed {
   border-inline-end: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-block-end: none;
 }
@@ -117,7 +111,7 @@
   border-block-end: var(--plume-border-width-thin) solid var(--tabs-scheme);
 }
 
-.vertical .enclosed .tab.active {
+[data-orientation='vertical'] .enclosed .tab[data-active] {
   border: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-radius: var(--plume-radius-4);
   border-inline-end: none;
@@ -127,7 +121,7 @@
   transition: color var(--plume-duration-normal);
 }
 
-.enclosed .tab.active {
+.enclosed .tab[data-active] {
   border: var(--plume-border-width-thin) solid var(--tabs-scheme);
   border-radius: var(--plume-radius-4);
   background: var(--plume-surface);
@@ -148,14 +142,14 @@
   border-radius: var(--plume-radius-4);
 }
 
-.segment .tab.active {
+.segment .tab[data-active] {
   background-color: var(--tabs-solid-active);
   color: var(--tabs-text-color);
   border-radius: var(--plume-radius-4);
   transition: color var(--plume-duration-normal);
 }
 
-.tab:not(.active, :disabled):hover {
+.tab:not([data-active], :disabled):hover {
   color: color-mix(in hsl, var(--tabs-scheme), black 10%);
 }
 
@@ -172,7 +166,7 @@
   outline-offset: var(--plume-focus-ring-offset);
 }
 
-.vertical .panel {
+[data-orientation='vertical'] .panel {
   padding: var(--plume-space-2) var(--plume-space-4);
 }
 
@@ -182,7 +176,7 @@
 }
 
 @media (forced-colors: active) {
-  .tab.active[data-active][data-plume-tabs-tab] {
+  .tab[data-active][data-active][data-plume-tabs-tab] {
     background-color: Highlight;
     color: HighlightText;
     forced-color-adjust: none;
