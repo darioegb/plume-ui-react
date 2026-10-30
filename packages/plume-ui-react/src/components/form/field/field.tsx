@@ -129,6 +129,30 @@ function presentParts(
   }
 }
 
+function joinIds(...ids: (string | false | undefined)[]): string | undefined {
+  return ids.filter(Boolean).join(' ') || undefined
+}
+
+function defaultLayout({
+  control,
+  errorText,
+  helperText,
+  label,
+  wire,
+}: Pick<FieldOwnProps, 'errorText' | 'helperText' | 'label'> & {
+  control: ReactElement<FieldControlProps> | undefined
+  wire: (element: ReactElement<FieldControlProps>) => ReactElement
+}): ReactNode {
+  return (
+    <>
+      {label ? <FieldLabel>{label}</FieldLabel> : null}
+      {control ? wire(control) : null}
+      {helperText ? <FieldHelperText>{helperText}</FieldHelperText> : null}
+      {errorText ? <FieldErrorText>{errorText}</FieldErrorText> : null}
+    </>
+  )
+}
+
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
     {
@@ -165,10 +189,11 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
     const helperId = `${baseId}-helper`
     const errorId = `${baseId}-error`
 
-    const describedBy =
-      [controlProps['aria-describedby'], hasError ? errorId : null, hasHelper ? helperId : null]
-        .filter(Boolean)
-        .join(' ') || undefined
+    const describedBy = joinIds(
+      controlProps['aria-describedby'],
+      hasError && errorId,
+      hasHelper && helperId,
+    )
 
     const context = useMemo(
       () => ({
@@ -211,16 +236,9 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
           ref={ref}
           {...rest}
         >
-          {composed ? (
-            items.map((child) => (child === control ? wire(control) : child))
-          ) : (
-            <>
-              {label ? <FieldLabel>{label}</FieldLabel> : null}
-              {control ? wire(control) : null}
-              {helperText ? <FieldHelperText>{helperText}</FieldHelperText> : null}
-              {errorText ? <FieldErrorText>{errorText}</FieldErrorText> : null}
-            </>
-          )}
+          {composed
+            ? items.map((child) => (child === control ? wire(control) : child))
+            : defaultLayout({ control, errorText, helperText, label, wire })}
         </div>
       </FieldContext.Provider>
     )
