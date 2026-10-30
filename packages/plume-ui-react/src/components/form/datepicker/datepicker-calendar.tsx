@@ -24,9 +24,6 @@ const VARIANT_CLASS = {
   underline: 'variantUnderline',
 } as const
 
-/**
- * The popup that opens under the input, or the content of the page when the `DatePicker` is `panel`. Its accessible name is `labels.calendar`.
- */
 function calendarClasses(
   variant: DatePickerVariant,
   size: Size | undefined,
@@ -46,6 +43,9 @@ function calendarClasses(
   )
 }
 
+/**
+ * The popup that opens under the input, or the content of the page when the `DatePicker` is `panel`. Its accessible name is `labels.calendar`.
+ */
 export const DatePickerCalendar = forwardRef<HTMLDivElement, DatePickerCalendarProps>(
   (
     { 'aria-label': ariaLabel, children, className, style }: DatePickerCalendarProps,
