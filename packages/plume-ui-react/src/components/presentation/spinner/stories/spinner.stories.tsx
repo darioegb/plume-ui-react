@@ -28,7 +28,7 @@ export default {
     layout: 'centered',
   },
   argTypes: {
-    color: {
+    colorScheme: {
       control: 'select',
       options: allKeys,
     },
@@ -73,35 +73,43 @@ export const Default: Story = {}
 
 /**
  * This is a list of spinners with different border variant.
- * Just adding **variant** prop with dashed, dotted, double or solid.
+ * Just adding **variant** prop with solid, dashed, dotted, double or unstyled.
  */
 export const Variants: Story = {
   parameters: {
     docs: {
       source: {
         code: `<Spinner 
-  color="primary" 
+  colorScheme="primary" 
   variant='dashed' 
 />
 <Spinner 
-  color="primary" 
+  colorScheme="primary" 
   variant='dotted' 
 />
 <Spinner 
-  color="primary" 
+  colorScheme="primary" 
   variant='double' 
 />
-<Spinner color="primary" />
+<Spinner colorScheme="primary" />
+<Spinner
+  className="animate-spin inline-block h-8 w-8 rounded-full border-[3px] border-current border-t-transparent text-blue-600"
+  variant="unstyled"
+/>
             `,
       },
     },
   },
   render: () => (
     <>
-      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='dashed' />
-      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='dotted' />
-      <Spinner color='primary' style={{ marginRight: '.5rem' }} variant='double' />
-      <Spinner color='primary' />
+      <Spinner colorScheme='primary' style={{ marginRight: '.5rem' }} variant='dashed' />
+      <Spinner colorScheme='primary' style={{ marginRight: '.5rem' }} variant='dotted' />
+      <Spinner colorScheme='primary' style={{ marginRight: '.5rem' }} variant='double' />
+      <Spinner colorScheme='primary' style={{ marginRight: '.5rem' }} />
+      <Spinner
+        className='animate-spin inline-block h-8 w-8 rounded-full border-[3px] border-current border-t-transparent text-blue-600'
+        variant='unstyled'
+      />
     </>
   ),
 }
@@ -115,12 +123,12 @@ export const Sizes: Story = {
     docs: {
       source: {
         code: `<Spinner 
-  color="primary"
+  colorScheme="primary"
   size="sm" 
 />
-<Spinner color="primary" />
+<Spinner colorScheme="primary" />
 <Spinner 
-  color="primary" 
+  colorScheme="primary" 
   size="lg" 
 />
         `,
@@ -129,41 +137,33 @@ export const Sizes: Story = {
   },
   render: () => (
     <>
-      <Spinner color='primary' size='sm' style={{ marginRight: '.5rem' }} />
-      <Spinner color='primary' style={{ marginRight: '.5rem' }} />
-      <Spinner color='primary' size='lg' />
+      <Spinner colorScheme='primary' size='sm' style={{ marginRight: '.5rem' }} />
+      <Spinner colorScheme='primary' style={{ marginRight: '.5rem' }} />
+      <Spinner colorScheme='primary' size='lg' />
     </>
   ),
 }
 
 /**
- * This is a list o Spinner with different colors.
- * Just adding the **color** prop.
+ * Use the **colorScheme** prop to color the Spinner with any color of the theme, or with a shade (`primary.700`).
+ * Without it the Spinner takes the foreground color of the theme.
  */
 export const Colors: Story = {
   parameters: {
     docs: {
       source: {
-        code: `<Spinner />
-<Spinner color="primary" />
-<Spinner color="secondary" />
-<Spinner color="info" />
-<Spinner color="warning" />
-<Spinner color="error" />
-<Spinner color="success" />
+        code: `<Spinner colorScheme="primary" />
+<Spinner colorScheme="secondary" />
+<Spinner colorScheme="success" />
         `,
       },
     },
   },
   render: () => (
     <div className='grid gap-4 grid-cols-3'>
-      <Spinner />
-      <Spinner color='primary' />
-      <Spinner color='secondary' />
-      <Spinner color='info' />
-      <Spinner color='warning' />
-      <Spinner color='error' />
-      <Spinner color='success' />
+      {Object.keys(colors).map((colorScheme) => (
+        <Spinner colorScheme={colorScheme as ColorScheme} key={colorScheme} />
+      ))}
     </div>
   ),
 }
@@ -174,7 +174,7 @@ export const Colors: Story = {
  */
 export const CustomThickness: Story = {
   args: {
-    color: 'primary',
+    colorScheme: 'primary',
     thickness: 5,
   },
 }
@@ -186,7 +186,7 @@ export const CustomThickness: Story = {
  */
 export const CustomSpeed: Story = {
   args: {
-    color: 'primary',
+    colorScheme: 'primary',
     speed: '0.5s',
   },
 }
