@@ -151,6 +151,7 @@ describe('plume-ui-react', () => {
       'NumberInput',
       'NumberInputDecrement',
       'NumberInputField',
+      'NumberInputHidden',
       'NumberInputIncrement',
       'Paginator',
       'PaginatorEllipsis',

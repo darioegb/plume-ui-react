@@ -1,7 +1,7 @@
 'use client'
 
 import type { KeyboardEvent } from 'react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useControllableState } from '../../../overlay/use-controllable-state'
 import {
   clamp,
@@ -57,74 +57,77 @@ export function useNumberInput({
     value: valueProp,
   })
   const [draft, setDraft] = useState<string | null>(null)
-  const read = parse ?? defaultParse
-  const formatValue = (next: number): string => {
-    if (format) return format(next)
-    return precision === undefined ? String(next) : next.toFixed(precision)
-  }
 
-  const normalize = (next: number, digits: number | undefined): number => {
-    const bounded = clamp(next, min, max)
-    return digits === undefined ? bounded : roundTo(bounded, digits)
-  }
+  return useMemo(() => {
+    const read = parse ?? defaultParse
+    const formatValue = (next: number): string => {
+      if (format) return format(next)
+      return precision === undefined ? String(next) : next.toFixed(precision)
+    }
 
-  const stepBy = (direction: 1 | -1, large = false): void => {
-    if (readOnly) return
-    const amount = large ? (largeStep ?? step * 10) : step
-    const base = value ?? 0
-    const digits = precision ?? Math.max(decimalsOf(amount), decimalsOf(base))
-    setDraft(null)
-    setValue(normalize(base + direction * amount, digits))
-  }
+    const normalize = (next: number, digits: number | undefined): number => {
+      const bounded = clamp(next, min, max)
+      return digits === undefined ? bounded : roundTo(bounded, digits)
+    }
 
-  const onTextChange = (text: string): void => {
-    if (readOnly || (!parse && !isPartialNumber(text, precision))) return
-    setDraft(text)
-    setValue(read(text))
-  }
+    const stepBy = (direction: 1 | -1, large = false): void => {
+      if (readOnly) return
+      const amount = large ? (largeStep ?? step * 10) : step
+      const base = value ?? 0
+      const digits = precision ?? Math.max(decimalsOf(amount), decimalsOf(base))
+      setDraft(null)
+      setValue(normalize(base + direction * amount, digits))
+    }
 
-  const commit = (): void => {
-    if (draft === null) return
-    const parsed = read(draft)
-    setDraft(null)
-    setValue(parsed === null ? null : normalize(parsed, precision))
-  }
+    const onTextChange = (text: string): void => {
+      if (readOnly || (!parse && !isPartialNumber(text, precision))) return
+      setDraft(text)
+      setValue(read(text))
+    }
 
-  const jumpTo = (target: number): void => {
-    if (readOnly || !Number.isFinite(target)) return
-    setDraft(null)
-    setValue(target)
-  }
+    const commit = (): void => {
+      if (draft === null) return
+      const parsed = read(draft)
+      setDraft(null)
+      setValue(parsed === null ? null : normalize(parsed, precision))
+    }
 
-  const keyActions: Record<string, () => void> = {
-    ArrowDown: () => stepBy(-1),
-    ArrowUp: () => stepBy(1),
-    End: () => jumpTo(max),
-    Enter: commit,
-    Home: () => jumpTo(min),
-    PageDown: () => stepBy(-1, true),
-    PageUp: () => stepBy(1, true),
-  }
+    const jumpTo = (target: number): void => {
+      if (readOnly || !Number.isFinite(target)) return
+      setDraft(null)
+      setValue(target)
+    }
 
-  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-    const action = keyActions[event.key]
-    if (!action) return
-    if (event.key !== 'Enter') event.preventDefault()
-    action()
-  }
+    const keyActions: Record<string, () => void> = {
+      ArrowDown: () => stepBy(-1),
+      ArrowUp: () => stepBy(1),
+      End: () => jumpTo(max),
+      Enter: commit,
+      Home: () => jumpTo(min),
+      PageDown: () => stepBy(-1, true),
+      PageUp: () => stepBy(1, true),
+    }
 
-  const showsDraft = draft !== null && sameNumber(read(draft), value)
-  const formatted = value === null ? '' : formatValue(value)
+    const onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+      const action = keyActions[event.key]
+      if (!action) return
+      if (event.key !== 'Enter') event.preventDefault()
+      action()
+    }
 
-  return {
-    canDecrement: !readOnly && (value === null || value > min),
-    canIncrement: !readOnly && (value === null || value < max),
-    commit,
-    display: showsDraft ? draft : formatted,
-    onKeyDown,
-    onTextChange,
-    stepBy,
-    value,
-    valueText: format && value !== null ? formatted : undefined,
-  }
+    const showsDraft = draft !== null && sameNumber(read(draft), value)
+    const formatted = value === null ? '' : formatValue(value)
+
+    return {
+      canDecrement: !readOnly && (value === null || value > min),
+      canIncrement: !readOnly && (value === null || value < max),
+      commit,
+      display: showsDraft ? draft : formatted,
+      onKeyDown,
+      onTextChange,
+      stepBy,
+      value,
+      valueText: format && value !== null ? formatted : undefined,
+    }
+  }, [draft, format, largeStep, max, min, parse, precision, readOnly, setValue, step, value])
 }
