@@ -103,6 +103,10 @@ export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
           isStyled && isInvalid && styles.invalid,
           className,
         )}
+        data-disabled={disabled ? '' : undefined}
+        data-invalid={isInvalid ? '' : undefined}
+        data-plume-toggle=""
+        data-readonly={readOnly ? '' : undefined}
         disabled={disabled}
         onChange={onChange ? ignoreWhenReadOnly : undefined}
         onClick={preventWhenReadOnly}
