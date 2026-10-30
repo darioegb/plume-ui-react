@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import type { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 import {
   Avatar,
   AvatarGroup,
@@ -18,17 +20,29 @@ import {
   Tabs,
 } from "plume-ui-react";
 import type { Project } from "../lib/data";
-import { formatDue } from "../lib/format";
+import { formatAgo, formatDue } from "../lib/format";
 import { statusColor } from "../lib/status";
 import styles from "./projects.module.css";
 
-const activity = (project: Project): { text: string; when: string }[] => [
-  { text: `${project.owner} updated the plan`, when: "2 days ago" },
+const activity = (
+  project: Project,
+  t: TFunction,
+  language: string,
+): { text: string; when: string }[] => [
   {
-    text: `${project.team[1] ?? project.owner} commented on a task`,
-    when: "4 days ago",
+    text: t("projectDrawer.updatedPlan", { name: project.owner }),
+    when: formatAgo(2, "day", language),
   },
-  { text: `${project.owner} created the project`, when: "3 weeks ago" },
+  {
+    text: t("projectDrawer.commented", {
+      name: project.team[1] ?? project.owner,
+    }),
+    when: formatAgo(4, "day", language),
+  },
+  {
+    text: t("projectDrawer.createdProject", { name: project.owner }),
+    when: formatAgo(3, "week", language),
+  },
 ];
 
 export function ProjectDrawer({
@@ -44,6 +58,8 @@ export function ProjectDrawer({
   open: boolean;
   project: Project | null;
 }>): ReactNode {
+  const { i18n, t } = useTranslation();
+
   return (
     <Drawer onOpenChange={onOpenChange} open={open && project !== null}>
       <DrawerContent>
@@ -53,34 +69,34 @@ export function ProjectDrawer({
             <DrawerBody>
               <Tabs>
                 <TabList>
-                  <Tab label="Overview" />
-                  <Tab label="Activity" />
+                  <Tab label={t("projectDrawer.overview")} />
+                  <Tab label={t("projectDrawer.activity")} />
                 </TabList>
                 <TabPanels>
                   <TabPanel>
                     <div className={styles.detail}>
                       <p className={styles.description}>
-                        {project.description}
+                        {project.description || t("projectDrawer.noDescription")}
                       </p>
                       <dl className={styles.facts}>
-                        <dt>Status</dt>
+                        <dt>{t("projectDrawer.status")}</dt>
                         <dd>
                           <Badge
                             colorScheme={statusColor[project.status]}
                             dot
                             variant="subtle"
                           >
-                            {project.status}
+                            {t(`status.${project.status}`)}
                           </Badge>
                         </dd>
-                        <dt>Due</dt>
-                        <dd>{formatDue(project.due)}</dd>
-                        <dt>Owner</dt>
+                        <dt>{t("projectDrawer.due")}</dt>
+                        <dd>{formatDue(project.due, i18n.language)}</dd>
+                        <dt>{t("projectDrawer.owner")}</dt>
                         <dd className={styles.owner}>
                           <Avatar name={project.owner} size="sm" />
                           {project.owner}
                         </dd>
-                        <dt>Team</dt>
+                        <dt>{t("projectDrawer.team")}</dt>
                         <dd>
                           <AvatarGroup max={5} size="sm">
                             {project.team.map((member) => (
@@ -88,15 +104,15 @@ export function ProjectDrawer({
                             ))}
                           </AvatarGroup>
                         </dd>
-                        <dt>Visibility</dt>
+                        <dt>{t("projectDrawer.visibility")}</dt>
                         <dd>
                           <Badge colorScheme="salmon" variant="subtle">
-                            {project.visibility}
+                            {t(`visibility.${project.visibility}`)}
                           </Badge>
                         </dd>
                       </dl>
                       <ProgressBar
-                        aria-label="Progress"
+                        aria-label={t("projectDrawer.progress")}
                         colorScheme={statusColor[project.status]}
                         showValue
                         value={project.progress}
@@ -105,7 +121,7 @@ export function ProjectDrawer({
                   </TabPanel>
                   <TabPanel>
                     <ul className={styles.activity}>
-                      {activity(project).map((event) => (
+                      {activity(project, t, i18n.language).map((event) => (
                         <li key={event.text}>
                           {event.text}
                           <span className={styles.when}>{event.when}</span>
@@ -122,7 +138,7 @@ export function ProjectDrawer({
                 onClick={() => onRemove(project)}
                 variant="ghost"
               >
-                Delete
+                {t("projectDrawer.delete")}
               </Button>
               <DrawerClose>
                 <Button
@@ -130,7 +146,7 @@ export function ProjectDrawer({
                   onClick={() => onComplete(project)}
                   variant="outline"
                 >
-                  Mark as done
+                  {t("projectDrawer.markDone")}
                 </Button>
               </DrawerClose>
             </DrawerFooter>

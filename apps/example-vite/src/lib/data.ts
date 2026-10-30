@@ -27,11 +27,11 @@ export interface NewProjectInput {
 }
 
 export interface Metric {
-  change: string;
-  id: string;
-  label: string;
+  change: number;
+  id: "active" | "completed" | "overdue" | "team";
+  percent?: boolean;
   trend: "up" | "down";
-  value: string;
+  value: number;
 }
 
 const seed: Omit<Project, "visibility">[] = [
@@ -172,34 +172,10 @@ export const members = [
 ];
 
 const metrics: Metric[] = [
-  {
-    change: "+3 this month",
-    id: "active",
-    label: "Active projects",
-    trend: "up",
-    value: "12",
-  },
-  {
-    change: "+18%",
-    id: "completed",
-    label: "Tasks completed",
-    trend: "up",
-    value: "248",
-  },
-  {
-    change: "-2 since Monday",
-    id: "overdue",
-    label: "Overdue tasks",
-    trend: "down",
-    value: "7",
-  },
-  {
-    change: "+1 this week",
-    id: "team",
-    label: "Team members",
-    trend: "up",
-    value: "9",
-  },
+  { change: 3, id: "active", trend: "up", value: 12 },
+  { change: 0.18, id: "completed", percent: true, trend: "up", value: 248 },
+  { change: -2, id: "overdue", trend: "down", value: 7 },
+  { change: 1, id: "team", trend: "up", value: 9 },
 ];
 
 // The simulated back end: the browser's localStorage plays the database.
@@ -278,7 +254,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function createProject(input: NewProjectInput): Promise<Project> {
   await latency(500);
   const project: Project = {
-    description: input.description || "No description yet.",
+    description: input.description,
     due: input.due,
     id: `${input.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`,
     name: input.name,

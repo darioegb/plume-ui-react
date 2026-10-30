@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Avatar,
@@ -13,17 +14,22 @@ import {
 import { PageHeader } from "../components/page-header";
 import { SkeletonPage } from "../components/skeleton-page";
 import { getDashboard } from "../lib/data";
-import { formatDue } from "../lib/format";
+import {
+  formatChange,
+  formatDue,
+  formatNumber,
+} from "../lib/format";
 import { statusColor } from "../lib/status";
 import { useResource } from "../lib/use-resource";
 import styles from "./dashboard.module.css";
 
 export function DashboardPage(): ReactNode {
+  const { i18n, t } = useTranslation();
   const dashboard = useResource(getDashboard);
 
   if (dashboard.status === "loading") {
     return (
-      <SkeletonPage label="Loading the dashboard">
+      <SkeletonPage label={t("dashboard.loading")}>
         <section className={styles.metrics}>
           {[1, 2, 3, 4].map((item) => (
             <Card key={item} variant="outline">
@@ -54,7 +60,7 @@ export function DashboardPage(): ReactNode {
   }
 
   if (dashboard.status === "error") {
-    return <Alert status="error">Could not load the dashboard. Reload the page to try again.</Alert>;
+    return <Alert status="error">{t("dashboard.loadError")}</Alert>;
   }
 
   const { metrics, projects } = dashboard.value;
@@ -62,23 +68,33 @@ export function DashboardPage(): ReactNode {
   return (
     <>
       <PageHeader
-        description="Here is where your projects stand today."
-        title="Welcome back, Ana"
+        description={t("dashboard.description")}
+        title={t("dashboard.welcome", { name: "Ana" })}
       />
 
-      <section aria-label="Key numbers" className={styles.metrics}>
+      <section aria-label={t("dashboard.keyNumbers")} className={styles.metrics}>
         {metrics.map((metric) => (
           <Card key={metric.id} variant="outline">
             <CardBody>
               <div className={styles.metric}>
-                <span className={styles.label}>{metric.label}</span>
-                <span className={styles.value}>{metric.value}</span>
+                <span className={styles.label}>
+                  {t(`metrics.${metric.id}.label`)}
+                </span>
+                <span className={styles.value}>
+                  {formatNumber(metric.value, i18n.language)}
+                </span>
                 <Badge
                   colorScheme={metric.trend === "up" ? "success" : "warning"}
                   size="sm"
                   variant="subtle"
                 >
-                  {metric.change}
+                  {t(`metrics.${metric.id}.change`, {
+                    change: formatChange(
+                      metric.change,
+                      i18n.language,
+                      metric.percent,
+                    ),
+                  })}
                 </Badge>
               </div>
             </CardBody>
@@ -87,7 +103,7 @@ export function DashboardPage(): ReactNode {
       </section>
 
       <Card variant="outline">
-        <CardHeader>Active projects</CardHeader>
+        <CardHeader>{t("dashboard.activeProjects")}</CardHeader>
         <CardBody>
           <ul className={styles.projects}>
             {projects.map((project) => (
@@ -95,7 +111,9 @@ export function DashboardPage(): ReactNode {
                 <div className={styles.projectInfo}>
                   <span className={styles.projectName}>{project.name}</span>
                   <span className={styles.label}>
-                    Due {formatDue(project.due)}
+                    {t("dashboard.due", {
+                      date: formatDue(project.due, i18n.language),
+                    })}
                   </span>
                 </div>
                 <Badge
@@ -104,10 +122,10 @@ export function DashboardPage(): ReactNode {
                   dot
                   variant="subtle"
                 >
-                  {project.status}
+                  {t(`status.${project.status}`)}
                 </Badge>
                 <ProgressBar
-                  aria-label={`${project.name} progress`}
+                  aria-label={t("dashboard.progressOf", { name: project.name })}
                   className={styles.progress}
                   colorScheme={statusColor[project.status]}
                   showValue

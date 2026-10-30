@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   DatePicker,
@@ -13,7 +15,12 @@ import {
   Radio,
   RadioGroup,
   Select,
+  SelectChevron,
+  SelectChips,
+  SelectCombobox,
   SelectContent,
+  SelectField,
+  SelectHidden,
   SelectOption,
   SelectTrigger,
   Textarea,
@@ -28,7 +35,13 @@ import {
   type Visibility,
 } from "../lib/data";
 import { toIsoDate } from "../lib/format";
-import { validateNewProject, type NewProjectErrors } from "../lib/validation";
+import {
+  dueRules,
+  nameRules,
+  ownerRules,
+  teamRules,
+  useErrorText,
+} from "../lib/validation";
 import styles from "./projects.module.css";
 
 const empty: NewProjectInput = {
@@ -52,161 +65,222 @@ export function NewProjectDrawer({
   open: boolean;
   takenNames: string[];
 }>): ReactNode {
+  const { t } = useTranslation();
+  const errorText = useErrorText();
   const toast = useToast();
-  const [values, setValues] = useState(empty);
-  const [errors, setErrors] = useState<NewProjectErrors>({});
-  const [busy, setBusy] = useState(false);
+  const {
+    control,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    register,
+    reset,
+  } = useForm<NewProjectInput>({ defaultValues: empty });
 
-  const set = <Key extends keyof NewProjectInput>(
-    key: Key,
-    value: NewProjectInput[Key],
-  ): void => {
-    setValues((current) => ({ ...current, [key]: value }));
-    setErrors((current) => ({ ...current, [key]: undefined }));
-  };
+  // Resetting once the drawer is closed, after a submit has finished, keeps the next opening untouched.
+  useEffect(() => {
+    if (!open) reset(empty);
+  }, [open, reset]);
 
   const changeOpen = (next: boolean): void => {
-    if (busy) return;
-    if (!next) {
-      setValues(empty);
-      setErrors({});
-    }
+    if (isSubmitting) return;
     onOpenChange(next);
   };
 
-  const submit = async (): Promise<void> => {
-    const found = validateNewProject(values, takenNames, toIsoDate(new Date()));
-    setErrors(found);
-    if (Object.keys(found).length > 0) return;
-    setBusy(true);
+  const submit = async (values: NewProjectInput): Promise<void> => {
     try {
       const project = await createProject({
         ...values,
         name: values.name.trim(),
       });
       onCreated(project);
-      setValues(empty);
-      setErrors({});
       onOpenChange(false);
     } catch (error) {
       console.error("Could not create the project.", error);
-      toast.error({ title: "Could not create the project. Please try again." });
-    } finally {
-      setBusy(false);
+      toast.error({ title: t("newProject.createError") });
     }
   };
 
   return (
     <Drawer onOpenChange={changeOpen} open={open}>
       <DrawerContent>
-        <DrawerHeader>New project</DrawerHeader>
+        <DrawerHeader>{t("newProject.title")}</DrawerHeader>
         <form
           className={styles.drawerForm}
           noValidate
           onSubmit={(event) => {
-            event.preventDefault();
-            void submit();
+            void handleSubmit(submit)(event);
           }}
         >
           <DrawerBody>
             <div className={styles.form}>
-              <Field errorText={errors.name} label="Name" required>
+              <Field
+                errorText={errorText(errors.name)}
+                label={t("newProject.nameLabel")}
+                required
+              >
                 <Input
-                  onChange={(event) => set("name", event.target.value)}
-                  placeholder="Website redesign"
-                  value={values.name}
+                  placeholder={t("newProject.namePlaceholder")}
+                  {...register("name", nameRules(takenNames))}
                 />
               </Field>
               <Field
-                helperText="A line or two for the team."
-                label="Description"
-                optionalText="optional"
+                helperText={t("newProject.descriptionHelper")}
+                label={t("newProject.descriptionLabel")}
+                optionalText={t("newProject.descriptionOptional")}
               >
                 <Textarea
                   maxLength={160}
-                  onChange={(event) => set("description", event.target.value)}
                   rows={3}
-                  value={values.description}
+                  {...register("description")}
                 />
               </Field>
-              <Field errorText={errors.owner} label="Owner" required>
-                <Select
-                  onValueChange={(value) => set("owner", String(value))}
-                  value={values.owner}
-                >
-                  <SelectTrigger placeholder="Pick the person in charge" />
-                  <SelectContent>
-                    {members.map((member) => (
-                      <SelectOption key={member} value={member}>
-                        {member}
-                      </SelectOption>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field errorText={errors.team} label="Team" required>
-                <Select
-                  multiple
-                  onValueChange={(value) =>
-                    set("team", Array.isArray(value) ? value : [value])
-                  }
-                  value={values.team}
-                >
-                  <SelectTrigger placeholder="Add members" />
-                  <SelectContent>
-                    {members.map((member) => (
-                      <SelectOption key={member} value={member}>
-                        {member}
-                      </SelectOption>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field errorText={errors.due} label="Due date" required>
-                <DatePicker
-                  minDate={new Date()}
-                  onValueChange={(range: DateRange) =>
-                    set(
-                      "due",
-                      range.startDate ? toIsoDate(range.startDate) : "",
-                    )
-                  }
-                  placeholder="Pick a date"
-                  value={{
-                    endDate: null,
-                    startDate: values.due
-                      ? new Date(`${values.due}T00:00:00`)
-                      : null,
-                  }}
-                />
-              </Field>
-              <Field label="Who can see it">
-                <RadioGroup
-                  onValueChange={(value) =>
-                    set("visibility", value as Visibility)
-                  }
-                  value={values.visibility}
-                >
-                  <Field label="Workspace" orientation="inline">
-                    <Radio value="Workspace" />
+              <Controller
+                control={control}
+                name="owner"
+                render={({ field, fieldState }) => (
+                  <Field
+                    errorText={errorText(fieldState.error)}
+                    label={t("newProject.ownerLabel")}
+                    required
+                  >
+                    <Select
+                      name={field.name}
+                      onValueChange={(value) => field.onChange(String(value))}
+                      value={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectField>
+                          <SelectCombobox
+                            placeholder={t("newProject.ownerPlaceholder")}
+                            ref={field.ref}
+                          />
+                        </SelectField>
+                        <SelectChevron />
+                        <SelectHidden />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {members.map((member) => (
+                          <SelectOption key={member} value={member}>
+                            {member}
+                          </SelectOption>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </Field>
-                  <Field label="Private" orientation="inline">
-                    <Radio value="Private" />
+                )}
+                rules={ownerRules}
+              />
+              <Controller
+                control={control}
+                name="team"
+                render={({ field, fieldState }) => (
+                  <Field
+                    errorText={errorText(fieldState.error)}
+                    label={t("newProject.teamLabel")}
+                    required
+                  >
+                    <Select
+                      multiple
+                      name={field.name}
+                      onValueChange={(value) =>
+                        field.onChange(Array.isArray(value) ? value : [value])
+                      }
+                      value={field.value}
+                    >
+                      <SelectTrigger>
+                        <SelectField>
+                          <SelectChips />
+                          <SelectCombobox
+                            placeholder={t("newProject.teamPlaceholder")}
+                            ref={field.ref}
+                          />
+                        </SelectField>
+                        <SelectChevron />
+                        <SelectHidden />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {members.map((member) => (
+                          <SelectOption key={member} value={member}>
+                            {member}
+                          </SelectOption>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </Field>
-                </RadioGroup>
-              </Field>
+                )}
+                rules={teamRules}
+              />
+              <Controller
+                control={control}
+                name="due"
+                render={({ field, fieldState }) => (
+                  <Field
+                    errorText={errorText(fieldState.error)}
+                    label={t("newProject.dueLabel")}
+                    required
+                  >
+                    <DatePicker
+                      minDate={new Date()}
+                      name={field.name}
+                      onBlur={field.onBlur}
+                      onValueChange={(range: DateRange) =>
+                        field.onChange(
+                          range.startDate ? toIsoDate(range.startDate) : "",
+                        )
+                      }
+                      placeholder={t("newProject.duePlaceholder")}
+                      ref={field.ref}
+                      value={{
+                        endDate: null,
+                        startDate: field.value
+                          ? new Date(`${field.value}T00:00:00`)
+                          : null,
+                      }}
+                    />
+                  </Field>
+                )}
+                rules={dueRules}
+              />
+              <Controller
+                control={control}
+                name="visibility"
+                render={({ field }) => (
+                  <Field label={t("newProject.visibilityLabel")}>
+                    <RadioGroup
+                      name={field.name}
+                      onValueChange={(value) =>
+                        field.onChange(value as Visibility)
+                      }
+                      value={field.value}
+                    >
+                      <Field
+                        label={t("visibility.Workspace")}
+                        orientation="inline"
+                      >
+                        <Radio value="Workspace" />
+                      </Field>
+                      <Field
+                        label={t("visibility.Private")}
+                        orientation="inline"
+                      >
+                        <Radio value="Private" />
+                      </Field>
+                    </RadioGroup>
+                  </Field>
+                )}
+              />
             </div>
           </DrawerBody>
           <DrawerFooter>
             <Button
-              disabled={busy}
+              disabled={isSubmitting}
               onClick={() => changeOpen(false)}
               variant="ghost"
             >
-              Cancel
+              {t("newProject.cancel")}
             </Button>
-            <Button busy={busy} busyText="…" type="submit">
-              Create project
+            <Button busy={isSubmitting} busyText="…" type="submit">
+              {t("newProject.submit")}
             </Button>
           </DrawerFooter>
         </form>

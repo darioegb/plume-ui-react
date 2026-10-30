@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "plume-ui-react": "^0.41.1",
+    "i18next": "^26.5.12",
+    "plume-ui-react": "^0.47.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.91.0",
+    "react-i18next": "^17.1.9",
     "react-router": "^7.18.5"
   },
   "devDependencies": {

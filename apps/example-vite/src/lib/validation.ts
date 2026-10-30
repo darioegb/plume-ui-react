@@ -1,27 +1,46 @@
-import type { NewProjectInput } from "../lib/data";
+import type { FieldError, RegisterOptions } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import type { Translation } from "../i18n/en";
+import type { NewProjectInput } from "./data";
+import { toIsoDate } from "./format";
 
-export type NewProjectErrors = Partial<
-  Record<"due" | "name" | "owner" | "team", string>
->;
+export type ValidationKey = `validation.${keyof Translation["validation"]}`;
 
+const fail = (key: ValidationKey): ValidationKey => key;
+
+// The rules return keys, not texts, so the message follows the language when it is rendered.
 // The demo runs entirely in the browser; a real API must validate inputs too.
-export function validateNewProject(
-  input: NewProjectInput,
+export const nameRules = (
   takenNames: readonly string[],
-  earliestDue?: string,
-): NewProjectErrors {
-  const errors: NewProjectErrors = {};
-  const name = input.name.trim();
-  if (name.length < 3) errors.name = "Use at least 3 characters.";
-  else if (
-    takenNames.some((taken) => taken.toLowerCase() === name.toLowerCase())
-  ) {
-    errors.name = "A project with this name already exists.";
-  }
-  if (!input.owner) errors.owner = "Pick the person in charge.";
-  if (input.team.length === 0) errors.team = "Add at least one member.";
-  if (!input.due) errors.due = "Pick a due date.";
-  else if (earliestDue && input.due < earliestDue)
-    errors.due = "The due date cannot be in the past.";
-  return errors;
+): RegisterOptions<NewProjectInput, "name"> => ({
+  validate: {
+    length: (value) => value.trim().length >= 3 || fail("validation.nameMin"),
+    unique: (value) =>
+      !takenNames.some(
+        (taken) => taken.toLowerCase() === value.trim().toLowerCase(),
+      ) || fail("validation.nameTaken"),
+  },
+});
+
+export const ownerRules: RegisterOptions<NewProjectInput, "owner"> = {
+  required: fail("validation.ownerRequired"),
+};
+
+export const teamRules: RegisterOptions<NewProjectInput, "team"> = {
+  validate: (team) => team.length > 0 || fail("validation.teamRequired"),
+};
+
+export const dueRules: RegisterOptions<NewProjectInput, "due"> = {
+  validate: {
+    required: (due) => due !== "" || fail("validation.dueRequired"),
+    past: (due) => due >= toIsoDate(new Date()) || fail("validation.duePast"),
+  },
+};
+
+export function useErrorText(): (
+  error: FieldError | undefined,
+) => string | undefined {
+  const { t } = useTranslation();
+  return (error) =>
+    error?.message ? t(error.message as ValidationKey) : undefined;
 }

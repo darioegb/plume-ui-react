@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Avatar,
   AvatarGroup,
@@ -82,6 +83,7 @@ const sortFns = {
 export function ProjectsBoard({
   projects: initial,
 }: Readonly<{ projects: Project[] }>): ReactNode {
+  const { i18n, t } = useTranslation();
   const toast = useToast();
   const [projects, setProjects] = useState(initial);
   const [creating, setCreating] = useState(false);
@@ -119,9 +121,9 @@ export function ProjectsBoard({
   const complete = (project: Project): void => {
     replace({ ...project, progress: 100, status: "Done" });
     toast.success({
-      action: { label: "Undo", onClick: () => replace(project) },
+      action: { label: t("projects.undo"), onClick: () => replace(project) },
       description: project.name,
-      title: "Project completed",
+      title: t("projects.completed"),
     });
   };
 
@@ -129,18 +131,18 @@ export function ProjectsBoard({
     setProjects((current) => current.filter((item) => item.id !== project.id));
     void deleteProject(project.id);
     setDetailOpen(false);
-    toast.info({ description: project.name, title: "Project deleted" });
+    toast.info({ description: project.name, title: t("projects.deleted") });
   };
 
   return (
     <>
       <div className={styles.toolbar}>
         <Input
-          aria-label="Search projects"
+          aria-label={t("projects.search")}
           className={styles.search}
           elementBefore={<SearchIcon />}
           onChange={(event) => state.setFilter("name", event.target.value)}
-          placeholder="Search projects"
+          placeholder={t("projects.search")}
           value={String(state.filters.name ?? "")}
         />
         <div className={styles.status}>
@@ -148,11 +150,14 @@ export function ProjectsBoard({
             onValueChange={(value) => state.setFilter("status", value)}
             value={String(state.filters.status ?? "")}
           >
-            <SelectTrigger aria-label="Status" placeholder="All statuses" />
+            <SelectTrigger
+              aria-label={t("projects.status")}
+              placeholder={t("projects.allStatuses")}
+            />
             <SelectContent>
               {statuses.map((status) => (
                 <SelectOption key={status} value={status}>
-                  {status}
+                  {t(`status.${status}`)}
                 </SelectOption>
               ))}
             </SelectContent>
@@ -160,39 +165,49 @@ export function ProjectsBoard({
         </div>
         <div className={styles.due}>
           <DatePicker
-            aria-label="Due date"
+            aria-label={t("projects.dueFilter")}
             onValueChange={(range) =>
               state.setFilter(
                 "due",
                 range.startDate || range.endDate ? range : null,
               )
             }
-            placeholder="Due between"
+            placeholder={t("projects.dueBetween")}
             range
             value={dueRange}
           />
         </div>
         {state.hasFilters ? (
           <Button onClick={state.resetFilters} variant="ghost">
-            Clear filters
+            {t("projects.clearFilters")}
           </Button>
         ) : null}
         <Button className={styles.create} onClick={() => setCreating(true)}>
-          New project
+          {t("projects.newProject")}
         </Button>
       </div>
 
-      <Table aria-label="Projects" hoverable>
-        <TableCaption>{`${state.total} ${state.total === 1 ? "project" : "projects"}`}</TableCaption>
+      <Table aria-label={t("projects.table")} hoverable>
+        <TableCaption>{t("projects.count", { count: state.total })}</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead {...state.getSortProps("name")}>Project</TableHead>
-            <TableHead {...state.getSortProps("status")}>Status</TableHead>
-            <TableHead {...state.getSortProps("progress")}>Progress</TableHead>
-            <TableHead {...state.getSortProps("due")}>Due</TableHead>
-            <TableHead>Team</TableHead>
+            <TableHead {...state.getSortProps("name")}>
+              {t("projects.project")}
+            </TableHead>
+            <TableHead {...state.getSortProps("status")}>
+              {t("projects.status")}
+            </TableHead>
+            <TableHead {...state.getSortProps("progress")}>
+              {t("projects.progress")}
+            </TableHead>
+            <TableHead {...state.getSortProps("due")}>
+              {t("projects.due")}
+            </TableHead>
+            <TableHead>{t("projects.team")}</TableHead>
             <TableHead align="end">
-              <span className={styles.visuallyHidden}>Actions</span>
+              <span className={styles.visuallyHidden}>
+                {t("projects.actions")}
+              </span>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -205,12 +220,12 @@ export function ProjectsBoard({
                   size="sm"
                   variant="outline"
                 >
-                  Clear filters
+                  {t("projects.clearFilters")}
                 </Button>
               }
               colSpan={6}
-              description="No project matches the search and the filters."
-              title="No projects found"
+              description={t("projects.emptyDescription")}
+              title={t("projects.emptyTitle")}
             />
           ) : (
             state.rows.map((project) => (
@@ -234,18 +249,18 @@ export function ProjectsBoard({
                     dot
                     variant="subtle"
                   >
-                    {project.status}
+                    {t(`status.${project.status}`)}
                   </Badge>
                 </TableCell>
                 <TableCell>
                   <ProgressBar
-                    aria-label={`${project.name} progress`}
+                    aria-label={t("projects.progressOf", { name: project.name })}
                     colorScheme={statusColor[project.status]}
                     showValue
                     value={project.progress}
                   />
                 </TableCell>
-                <TableCell>{formatDue(project.due)}</TableCell>
+                <TableCell>{formatDue(project.due, i18n.language)}</TableCell>
                 <TableCell>
                   <AvatarGroup max={3} size="sm">
                     {project.team.map((member) => (
@@ -257,7 +272,7 @@ export function ProjectsBoard({
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                       <Button
-                        aria-label={`Actions for ${project.name}`}
+                        aria-label={t("projects.actionsFor", { name: project.name })}
                         size="sm"
                         variant="ghost"
                       >
@@ -269,21 +284,21 @@ export function ProjectsBoard({
                         icon={<EyeIcon />}
                         onSelect={() => open(project)}
                       >
-                        Open details
+                        {t("projects.openDetails")}
                       </DropdownItem>
                       <DropdownItem
                         disabled={project.status === "Done"}
                         icon={<CheckIcon />}
                         onSelect={() => complete(project)}
                       >
-                        Mark as done
+                        {t("projects.markDone")}
                       </DropdownItem>
                       <DropdownSeparator />
                       <DropdownItem
                         icon={<TrashIcon />}
                         onSelect={() => setRemoving(project)}
                       >
-                        Delete
+                        {t("projects.delete")}
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -295,7 +310,7 @@ export function ProjectsBoard({
       </Table>
 
       <Paginator
-        aria-label="Projects pages"
+        aria-label={t("projects.pages")}
         onPageChange={state.setPage}
         onPageSizeChange={state.setPageSize}
         page={state.page}
@@ -318,7 +333,7 @@ export function ProjectsBoard({
         onCreated={(project) => {
           setProjects((current) => [project, ...current]);
           state.resetFilters();
-          toast.success({ title: `${project.name} was created` });
+          toast.success({ title: t("projects.created", { name: project.name }) });
         }}
         onOpenChange={setCreating}
         open={creating}
@@ -338,22 +353,22 @@ export function ProjectsBoard({
         open={removing !== null}
       >
         <ModalContent>
-          <ModalHeader>Delete project</ModalHeader>
+          <ModalHeader>{t("projects.deleteTitle")}</ModalHeader>
           <ModalBody>
             {removing
-              ? `"${removing.name}" and its history will be removed. This cannot be undone.`
+              ? t("projects.deleteBody", { name: removing.name })
               : null}
           </ModalBody>
           <ModalFooter>
             <ModalClose>
-              <Button variant="ghost">Cancel</Button>
+              <Button variant="ghost">{t("projects.cancel")}</Button>
             </ModalClose>
             <ModalClose>
               <Button
                 colorScheme="error"
                 onClick={() => removing && remove(removing)}
               >
-                Delete
+                {t("projects.delete")}
               </Button>
             </ModalClose>
           </ModalFooter>

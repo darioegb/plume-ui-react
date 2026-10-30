@@ -1,10 +1,14 @@
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
+  LocaleProvider,
   ThemeProvider,
   ToastProvider,
   type ColorModeSetting,
 } from "plume-ui-react";
+import { plumeMessages } from "./i18n/plume-messages";
+import { read, write } from "./lib/storage";
 import { defaultBrand, isBrand, themeFor, type BrandId } from "./theme";
 
 const BRAND_KEY = "plume-projects:brand";
@@ -25,23 +29,6 @@ export function usePreferences(): PreferencesContextValue {
   return context;
 }
 
-function read(key: string): string | null {
-  try {
-    return localStorage.getItem(key);
-  } catch (error) {
-    console.warn("Could not read demo preferences.", error);
-    return null;
-  }
-}
-
-function write(key: string, value: string): void {
-  try {
-    localStorage.setItem(key, value);
-  } catch (error) {
-    console.warn("Could not save demo preferences; the choice is temporary.", error);
-  }
-}
-
 const isColorMode = (value: string | null): value is ColorModeSetting =>
   value === "light" || value === "dark" || value === "system";
 
@@ -57,7 +44,9 @@ export function Providers({
     const saved = read(COLOR_MODE_KEY);
     return isColorMode(saved) ? saved : "system";
   });
+  const { i18n, t } = useTranslation();
   const theme = useMemo(() => themeFor(brand), [brand]);
+  const messages = useMemo(() => plumeMessages(t), [t]);
   const value = useMemo(
     () => ({
       brand,
@@ -78,7 +67,9 @@ export function Providers({
         style={{ minHeight: "100vh" }}
         theme={theme}
       >
-        <ToastProvider>{children}</ToastProvider>
+        <LocaleProvider locale={i18n.language} messages={messages}>
+          <ToastProvider>{children}</ToastProvider>
+        </LocaleProvider>
       </ThemeProvider>
     </PreferencesContext.Provider>
   );

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "plume-ui-react";
 import { ArrowUpIcon } from "./icons";
 import styles from "./scroll-to-top.module.css";
@@ -7,6 +8,7 @@ import styles from "./scroll-to-top.module.css";
 const THRESHOLD = 400;
 
 export function ScrollToTop(): ReactNode {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export function ScrollToTop(): ReactNode {
 
   return (
     <Button
-      aria-label="Scroll to the top"
+      aria-label={t("preferences.scrollToTop")}
       className={styles.button}
       colorScheme="primary"
       onClick={scrollToTop}
