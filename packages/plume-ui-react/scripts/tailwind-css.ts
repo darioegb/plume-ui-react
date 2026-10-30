@@ -62,6 +62,9 @@ function utilities(): string[] {
  * (`bg-primary-solid` is `var(--plume-color-primary-solid)`), so they follow the theme and the color
  * mode. `inline` is what keeps the variable and not its value, which a nested provider needs. The
  * spacing, the breakpoints and the container widths of Tailwind v4 are already the ones of Plume.
+ *
+ * The package doesn't publish it: the docs use it for their stories and their StackBlitz projects,
+ * and show it in the Framework integration guide for the apps to copy.
  */
 export function buildTailwindCss(): string {
   const theme = [

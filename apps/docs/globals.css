@@ -1,7 +1,7 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
-@import 'plume-ui-react/tailwind.css';
+@import './tailwind-theme.generated.css';
 @import './bootstrap-scoped.generated.css';
 
 @source '../../packages/plume-ui-react/src';
