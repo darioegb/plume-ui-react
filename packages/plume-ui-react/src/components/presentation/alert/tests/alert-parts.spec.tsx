@@ -52,13 +52,11 @@ describe('Alert parts', () => {
           <b>!</b>
         </AlertIcon>
         <AlertContent>Text</AlertContent>
-        <AlertDismiss>
-          <i>x</i>
-        </AlertDismiss>
+        <AlertDismiss>x</AlertDismiss>
       </Alert>,
     )
     expect(screen.getByText('!')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Dismiss' })).toContainElement(screen.getByText('x'))
+    expect(screen.getByRole('button', { name: 'Dismiss' })).toHaveTextContent('x')
   })
 
   it('takes the status icon, or the one given to the Alert, and nothing when it is false', () => {
@@ -99,10 +97,25 @@ describe('Alert parts', () => {
   it('lets AlertDismiss take its own name', () => {
     render(
       <Alert>
-        <AlertDismiss aria-label="Close it" />
+        <AlertDismiss label="Close it" />
       </Alert>,
     )
     expect(screen.getByRole('button', { name: 'Close it' })).toBeInTheDocument()
+  })
+
+  it('turns an element given to AlertDismiss into the button', async () => {
+    const onDismiss = vi.fn()
+    render(
+      <Alert onDismiss={onDismiss}>
+        <AlertContent>Text</AlertContent>
+        <AlertDismiss>
+          <button type="button">Got it</button>
+        </AlertDismiss>
+      </Alert>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Got it' }))
+    expect(onDismiss).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText('Text')).toBeNull()
   })
 
   it('adds className and style to each part and forwards the refs', () => {

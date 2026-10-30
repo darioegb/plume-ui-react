@@ -1,10 +1,10 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useContext } from 'react'
+import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { SidebarStyleContext, useSidebarContext } from './sidebar-context'
+import { useSidebarContext, useSidebarStyle } from './sidebar-context'
 import styles from './sidebar.module.css'
 
 type SidebarBackdropRootAttributes = Pick<
@@ -25,7 +25,7 @@ export const SidebarBackdrop = forwardRef<HTMLDivElement, SidebarBackdropProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ): ReactNode => {
     const { breakpoint, open, setOpen } = useSidebarContext('SidebarBackdrop')
-    const { isStyled } = useContext(SidebarStyleContext)
+    const { isStyled } = useSidebarStyle('SidebarBackdrop')
 
     return (
       <div

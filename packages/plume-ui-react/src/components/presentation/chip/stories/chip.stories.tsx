@@ -132,6 +132,17 @@ export const Variants: Story = {
  * Use the **size** prop to change the text and the padding of the Chip.
  */
 export const Sizes: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center gap-3">
+  <Chip onRemove={() => undefined} size="sm">Size sm</Chip>
+  <Chip onRemove={() => undefined} size="md">Size md</Chip>
+  <Chip onRemove={() => undefined} size="lg">Size lg</Chip>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
       {(['sm', 'md', 'lg'] as const).map((size) => (
@@ -144,12 +155,24 @@ export const Sizes: Story = {
 }
 
 /**
- * Use the **colorScheme** prop to color the Chip with any color of the theme, including the ones you add.
+ * Use the **colorScheme** prop to color the Chip with any color of the theme, including the ones you add. They are
+ * shown in the `subtle` variant: `solid` fills the Chip with the color and `outline` draws its border with it.
  */
 export const Colors: Story = {
+  parameters: {
+    docs: {
+      source: {
+        code: `<div className="flex flex-wrap items-center gap-3">
+  <Chip colorScheme="primary">primary</Chip>
+  <Chip colorScheme="success">success</Chip>
+  <Chip colorScheme="error">error</Chip>
+</div>`,
+      },
+    },
+  },
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
-      {['primary', 'success', 'warning', 'error'].map((colorScheme) => (
+      {colorSchemes.map((colorScheme) => (
         <Chip colorScheme={colorScheme as keyof typeof defaultTheme.colors} key={colorScheme}>
           {colorScheme}
         </Chip>

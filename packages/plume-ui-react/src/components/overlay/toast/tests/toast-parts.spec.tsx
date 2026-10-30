@@ -123,13 +123,38 @@ describe('Toast parts', () => {
           <ToastTitle>Custom title</ToastTitle>
           <ToastActionButton>Go</ToastActionButton>
         </ToastBody>
-        <ToastDismiss aria-label="Close it" />
+        <ToastDismiss label="Close it" />
       </Toast>
     ))
     run(() => api.toast({ action: { label: 'Undo' }, title: 'Saved' }))
     expect(screen.getByText('Custom title')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Go' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Close it' })).toBeInTheDocument()
+  })
+
+  it('renders children that are not parts as written, instead of the default composition', () => {
+    renderWith((toast) => (
+      <Toast toast={toast}>
+        <p>Custom {toast.title}</p>
+      </Toast>
+    ))
+    run(() => api.toast({ title: 'Saved' }))
+    expect(screen.getByText('Custom Saved')).toBeInTheDocument()
+    expect(screen.queryByRole('button')).toBeNull()
+  })
+
+  it('turns an element given to ToastDismiss into the button', () => {
+    renderWith((toast) => (
+      <Toast toast={toast}>
+        <ToastTitle />
+        <ToastDismiss>
+          <button type="button">Got it</button>
+        </ToastDismiss>
+      </Toast>
+    ))
+    run(() => api.toast('Saved'))
+    fireEvent.click(screen.getByRole('button', { name: 'Got it' }))
+    expect(screen.queryByRole('status')).toBeNull()
   })
 
   it('renders nothing for the parts that have no content', () => {

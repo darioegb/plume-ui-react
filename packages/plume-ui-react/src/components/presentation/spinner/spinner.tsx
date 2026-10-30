@@ -2,6 +2,7 @@
 
 import { forwardRef } from 'react'
 import type { HtmlHTMLAttributes } from 'react'
+import { joinClasses } from '../../../overlay/class-names'
 import type { ColorShade, ComponentProps, Size } from '../../../theme'
 import { colorVar } from '../../../theme'
 import { useLabels } from '../../../locale/locale-provider'
@@ -14,7 +15,7 @@ export interface SpinnerOwnProps {
    * Color from the theme palette: a scheme (`primary`) or a specific shade (`primary.700`). Without
    * it the Spinner takes the foreground color of the theme, so it shows in light and dark mode.
    */
-  color?: ColorShade
+  colorScheme?: ColorShade
   /**
    * Accessible name of the Spinner, announced while it spins. Change it to translate it.
    *
@@ -47,7 +48,7 @@ export interface SpinnerOwnProps {
   variant?: SpinnerVariant
 }
 
-type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
+export type SpinnerVariant = 'solid' | 'dashed' | 'dotted' | 'double' | 'unstyled'
 type SpinnerRootAttributes = Pick<
   HtmlHTMLAttributes<HTMLSpanElement>,
   'hidden' | 'id' | 'tabIndex'
@@ -57,12 +58,12 @@ type SpinnerStylesOptions = Omit<SpinnerOwnProps, 'size' | 'variant'> &
 export type SpinnerProps = ComponentProps & SpinnerRootAttributes & SpinnerOwnProps
 
 const createSpinnerStyles = ({
-  color,
+  colorScheme,
   style,
   speed,
   thickness,
 }: SpinnerStylesOptions): Record<string, unknown> => ({
-  '--spinner-scheme': color ? colorVar(color) : 'var(--plume-foreground)',
+  '--spinner-scheme': colorScheme ? colorVar(colorScheme) : 'var(--plume-foreground)',
   ...(thickness && { '--spinner-border-width': `${thickness}px` }),
   '--spinner-animation-duration': speed?.length ? speed : '1s',
   ...style,
@@ -71,11 +72,11 @@ const createSpinnerStyles = ({
 export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
   (
     {
-      color,
+      className,
+      colorScheme,
       label,
       style,
       speed,
-      className = '',
       thickness = 3,
       variant = 'solid',
       size = variant !== 'unstyled' ? 'md' : undefined,
@@ -86,19 +87,15 @@ export const Spinner = forwardRef<HTMLOutputElement, SpinnerProps>(
     const text = useLabels('spinner', DEFAULT_LABELS, { label })
     const sizeClass = size && (size !== 'md' || variant === 'unstyled') ? styles[size] : ''
     const variantClass = variant !== 'unstyled' ? styles[variant] : ''
-    const spinnerClass = `
-      ${sizeClass} 
-      ${variantClass} 
-      ${className}
-    `.trim()
 
     return (
       <output
         aria-label={text.label}
-        className={spinnerClass}
+        className={joinClasses(sizeClass, variantClass, className)}
+        data-plume-spinner=""
         ref={ref}
         style={createSpinnerStyles({
-          color,
+          colorScheme,
           style,
           speed,
           thickness,

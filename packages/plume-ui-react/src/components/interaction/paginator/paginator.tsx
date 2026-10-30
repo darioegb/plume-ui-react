@@ -172,6 +172,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
     const current = clamp(page, 1, Math.max(pages, 1))
     const text = useLabels('paginator', DEFAULT_LABELS, labels)
     const [root, setRoot] = useState<HTMLElement | null>(null)
+    const rootRef = useMemo(() => mergeRefs(ref, setRoot), [ref])
     const shown = usePaginatorFit({ current, pages: Math.max(pages, 1), root })
     const entries = useMemo(
       () =>
@@ -250,7 +251,7 @@ export const Paginator = forwardRef<HTMLElement, PaginatorProps>(
             className,
           )}
           data-plume-paginator=""
-          ref={mergeRefs(ref, setRoot)}
+          ref={rootRef}
           {...rest}
         >
           {children ?? <PaginatorList />}

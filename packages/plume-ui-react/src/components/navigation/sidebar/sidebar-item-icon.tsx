@@ -1,10 +1,10 @@
 'use client'
 
 import type { ForwardedRef, HTMLAttributes, ReactNode } from 'react'
-import { forwardRef, useContext } from 'react'
+import { forwardRef } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import type { ComponentProps } from '../../../theme'
-import { SidebarStyleContext } from './sidebar-context'
+import { useSidebarStyle } from './sidebar-context'
 import styles from './sidebar.module.css'
 
 export type SidebarItemIconProps = Omit<ComponentProps, 'index'> &
@@ -16,7 +16,7 @@ export const SidebarItemIcon = forwardRef<HTMLSpanElement, SidebarItemIconProps>
     { children, className, style }: SidebarItemIconProps,
     ref: ForwardedRef<HTMLSpanElement>,
   ): ReactNode => {
-    const { isStyled } = useContext(SidebarStyleContext)
+    const { isStyled } = useSidebarStyle('SidebarItemIcon')
 
     return (
       <span

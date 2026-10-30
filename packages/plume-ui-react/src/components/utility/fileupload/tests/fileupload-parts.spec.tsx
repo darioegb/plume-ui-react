@@ -305,7 +305,7 @@ describe('FileUpload parts', () => {
             <FileUploadItem file={current}>
               <FileUploadName>Custom name</FileUploadName>
               <FileUploadSize>big</FileUploadSize>
-              <FileUploadRemove aria-label="Delete it">x</FileUploadRemove>
+              <FileUploadRemove label="Delete it">x</FileUploadRemove>
             </FileUploadItem>
           )}
         </FileUploadList>

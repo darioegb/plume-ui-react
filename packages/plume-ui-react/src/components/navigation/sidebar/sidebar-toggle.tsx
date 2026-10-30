@@ -1,7 +1,7 @@
 'use client'
 
 import type { ButtonHTMLAttributes, ForwardedRef, ReactNode } from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { joinClasses } from '../../../overlay/class-names'
 import { MenuIcon } from '../../../overlay/icons'
 import { mergeRefs } from '../../../overlay/trigger'
@@ -54,8 +54,9 @@ export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
     ref: ForwardedRef<HTMLButtonElement>,
   ): ReactNode => {
     const text = useLabels('sidebarToggle', DEFAULT_LABELS, { label })
-    const { collapsed, isMobile, open, panelId, setCollapsed, setOpen, toggleRef } =
+    const { collapsed, isMobile, open, panelId, setCollapsed, setOpen, setToggle } =
       useSidebarContext('SidebarToggle')
+    const toggleRef = useMemo(() => mergeRefs(ref, setToggle), [ref, setToggle])
     const expanded = isMobile ? open : !collapsed
 
     return (
@@ -71,9 +72,7 @@ export const SidebarToggle = forwardRef<HTMLButtonElement, SidebarToggleProps>(
           if (isMobile) setOpen(!open)
           else setCollapsed(!collapsed)
         }}
-        ref={mergeRefs(ref, (node: HTMLButtonElement | null) => {
-          toggleRef.current = node
-        })}
+        ref={toggleRef}
         style={style}
         type="button"
         {...rest}

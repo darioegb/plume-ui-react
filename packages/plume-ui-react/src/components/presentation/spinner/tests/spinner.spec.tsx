@@ -26,6 +26,17 @@ describe('Spinner component', () => {
     expect(container.firstChild).not.toHaveAttribute('size')
   })
 
+  it('marks the element and joins the classes of the user', () => {
+    const { container } = render(<Spinner className="mine" />)
+    expect(container.firstChild).toHaveAttribute('data-plume-spinner', '')
+    expect(container.firstChild).toHaveClass('solid', 'mine')
+  })
+
+  it('drops its classes when unstyled', () => {
+    const { container } = render(<Spinner className="mine" variant="unstyled" />)
+    expect(container.firstChild).toHaveAttribute('class', 'mine')
+  })
+
   it('renders spinner with custom thickness', () => {
     const { container } = render(<Spinner thickness={5} />)
     const spinnerElement = container.querySelector('.solid')
@@ -33,13 +44,13 @@ describe('Spinner component', () => {
   })
 
   it('renders spinner with custom color', () => {
-    const { container } = render(<Spinner color="primary" />)
+    const { container } = render(<Spinner colorScheme="primary" />)
     const spinnerElement = container.querySelector('.solid')
     expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-primary-500)')
   })
 
   it('renders spinner with a specific color shade', () => {
-    const { container } = render(<Spinner color="primary.700" />)
+    const { container } = render(<Spinner colorScheme="primary.700" />)
     const spinnerElement = container.querySelector('.solid')
     expect(spinnerElement).toHaveStyle('--spinner-scheme: var(--plume-color-primary-700)')
   })
