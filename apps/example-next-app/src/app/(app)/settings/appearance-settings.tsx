@@ -81,7 +81,7 @@ export function AppearanceSettings(): ReactNode {
 
       <div
         aria-label={t('preview')}
-        className="flex flex-wrap items-center gap-3 rounded-2 border border-border p-4"
+        className="flex flex-wrap items-center gap-3 rounded-(--plume-radius-2) border border-(--plume-border) p-4"
         role="group"
       >
         <Button colorScheme="primary">{t('primaryAction')}</Button>

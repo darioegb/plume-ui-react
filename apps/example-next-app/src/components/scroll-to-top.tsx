@@ -29,7 +29,7 @@ export function ScrollToTop(): ReactNode {
   return (
     <Button
       aria-label={t('scrollToTop')}
-      className="fixed end-5 bottom-5 z-10 size-12 animate-appear p-0 shadow-lg motion-reduce:animate-none dark:ring-1 dark:ring-border"
+      className="fixed end-5 bottom-5 z-10 size-12 animate-appear p-0 shadow-(--plume-shadow-lg) motion-reduce:animate-none dark:ring-1 dark:ring-(--plume-border)"
       colorScheme="primary"
       onClick={scrollToTop}
       shape="pill"

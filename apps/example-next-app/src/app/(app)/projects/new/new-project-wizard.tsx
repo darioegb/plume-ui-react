@@ -213,7 +213,7 @@ export function NewProjectWizard({
 
             {step === 2 ? (
               <>
-                <dl className="grid grid-cols-[max-content_1fr] items-start gap-x-4 gap-y-3 [&_dt]:text-muted">
+                <dl className="grid grid-cols-[max-content_1fr] items-start gap-x-4 gap-y-3 [&_dt]:text-(--plume-muted)">
                   <dt>{t('name')}</dt>
                   <dd>{values.name.trim()}</dd>
                   <dt>{t('projectDescription')}</dt>

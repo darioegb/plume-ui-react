@@ -81,11 +81,11 @@ export function AppShell({
       <div className="flex min-h-screen">
         <Sidebar aria-label={t('application')}>
           <div
-            className={`${styles.brand} flex items-center gap-2.5 px-4 pt-5 pb-3 text-lg font-bold whitespace-nowrap text-foreground`}
+            className={`${styles.brand} flex items-center gap-2.5 px-4 pt-5 pb-3 text-lg font-bold whitespace-nowrap text-(--plume-foreground)`}
           >
             <span
               aria-hidden="true"
-              className="inline-flex size-8 flex-none items-center justify-center rounded-2 bg-primary-solid text-primary-on-solid"
+              className="inline-flex size-8 flex-none items-center justify-center rounded-(--plume-radius-2) bg-(--plume-color-primary-solid) text-(--plume-color-primary-solid-contrast)"
             >
               P
             </span>
@@ -109,7 +109,7 @@ export function AppShell({
           <Navbar
             aria-label={t('topBar')}
             breakpoint="never"
-            className="z-5 flex items-center gap-3 bg-background px-5 py-2"
+            className="z-5 flex items-center gap-3 bg-(--plume-background) px-5 py-2"
             sticky
           >
             <SidebarToggle />

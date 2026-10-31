@@ -2,7 +2,6 @@
 
 @import 'tailwindcss';
 @import 'plume-ui-react/styles.css';
-@import './plume-theme.css';
 
 @custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
 

@@ -194,13 +194,13 @@ export function ProjectsBoard({ projects: initial }: Readonly<{ projects: Projec
               <TableRow key={project.id}>
                 <TableCell>
                   <button
-                    className="cursor-pointer text-start font-semibold text-foreground hover:underline"
+                    className="cursor-pointer text-start font-semibold text-(--plume-foreground) hover:underline"
                     onClick={() => open(project)}
                     type="button"
                   >
                     {project.name}
                   </button>
-                  <div className="mt-1 flex items-center gap-2 text-body-sm text-muted">
+                  <div className="mt-1 flex items-center gap-2 text-sm text-(--plume-muted)">
                     <Avatar name={project.owner} size="sm" />
                     {project.owner}
                   </div>

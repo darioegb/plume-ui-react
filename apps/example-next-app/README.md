@@ -19,20 +19,20 @@ Every Plume component keeps its own look (none uses `variant="unstyled"`); Tailw
 surfaces of the app itself. The Vite example shows the other case: it styles Plume with **Bootstrap 5** instead.
 
 - **Layer order.** `src/app/globals.css` starts with `@layer theme, base, plume, components, utilities;` and then
-  imports `tailwindcss`, `plume-ui-react/styles.css` and `./plume-theme.css`. Tailwind's preflight lives in `base`, which
+  imports `tailwindcss` and `plume-ui-react/styles.css`. Tailwind's preflight lives in `base`, which
   comes before `plume`, so it normalizes the page without stripping the buttons and inputs of Plume; the utilities
   come after `plume`, so `className="ms-auto mt-4 max-sm:w-full"` on a Plume component always wins.
-- **Theme file.** `src/app/plume-theme.css` is the Tailwind theme of Plume, copied from the
-  [Framework integration](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-framework-integration--docs)
-  guide. It turns the `--plume-*` tokens into utilities (`bg-surface`, `text-muted`, `border-border`,
-  `bg-primary-solid`, `text-primary-on-solid`, `rounded-2`, `shadow-lg`, `text-heading-*`, `text-body-sm`...) with
-  `@theme inline`, so they follow the brand color of Settings and the color mode.
+- **No theme file.** Tailwind 4 needs nothing else to work with Plume. The app reads the tokens straight from the
+  variables, `text-(--plume-muted)`, `bg-(--plume-color-primary-solid)`, `border-(--plume-border)`, so they follow the
+  brand color of Settings and the color mode. The optional
+  [Tailwind theme](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-framework-integration--docs) of Plume
+  would turn them into shorter names (`text-muted`).
 - **`dark:` variant.** The `@custom-variant dark` line of `globals.css` makes `dark:` follow the
   `data-plume-color-mode='dark'` attribute that `<ThemeProvider>` renders (the cookie, the toggle and Settings), not the
   system preference. The tokens already change with the mode, so `dark:` is only needed for what they don't cover, like
   the ring of the scroll to top button.
 - **Utilities for layout, a CSS module for the rest.** The pages use `flex`, `grid`, `gap-*`, `p-*`, responsive
-  prefixes (`md:`, `max-sm:`) and the text styles of the theme. The only `.module.css` left is
+  prefixes (`md:`, `max-sm:`) and the tokens of Plume. The only `.module.css` left is
   `src/components/app-shell.module.css`, which hides the name of the brand when the sidebar collapses to a rail: it
   depends on an attribute of a Plume part, and a CSS rule says that better than a utility. The `appear` animation of the
   scroll to top button is in `@theme` of `globals.css`.

@@ -68,7 +68,7 @@ export function ProjectDrawer({
                   <TabPanel>
                     <div className="flex flex-col gap-4 py-4">
                       <p>{project.description || t('noDescription')}</p>
-                      <dl className="grid grid-cols-[max-content_1fr] items-center gap-x-4 gap-y-3 [&_dt]:text-muted">
+                      <dl className="grid grid-cols-[max-content_1fr] items-center gap-x-4 gap-y-3 [&_dt]:text-(--plume-muted)">
                         <dt>{tDrawer('status')}</dt>
                         <dd>
                           <Badge colorScheme={statusColor[project.status]} dot variant="subtle">
@@ -78,7 +78,7 @@ export function ProjectDrawer({
                         <dt>{tDrawer('due')}</dt>
                         <dd>{formatDue(project.due, locale)}</dd>
                         <dt>{tDrawer('owner')}</dt>
-                        <dd className="flex items-center gap-2 text-body-sm text-muted">
+                        <dd className="flex items-center gap-2 text-sm text-(--plume-muted)">
                           <Avatar name={project.owner} size="sm" />
                           {project.owner}
                         </dd>
@@ -110,7 +110,7 @@ export function ProjectDrawer({
                       {activity(project).map((event) => (
                         <li key={event.text}>
                           {event.text}
-                          <span className="block text-body-sm text-muted">{event.when}</span>
+                          <span className="block text-sm text-(--plume-muted)">{event.when}</span>
                         </li>
                       ))}
                     </ul>
