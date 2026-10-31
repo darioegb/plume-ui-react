@@ -22,6 +22,30 @@ Search your code for these, one by one. The rest of the page explains each chang
 - `variant='unstyled'` anywhere: it now drops [every Plume class](#unstyled-drops-every-plume-class).
 - A `Badge`, an `Icon`, a `List` or a `Card` that you style: [presentation components](#badge-icon-list-and-card-are-made-of-parts).
 - Parts used outside their component: [they throw](#parts-outside-their-component-throw).
+- Imports from `@plume-ui-react/*`: [one package now](#from-the-plume-ui-react-packages).
+
+## From the `@plume-ui-react/*` packages
+
+If you installed the scoped packages (`@plume-ui-react/button`, `@plume-ui-react/input`, `@plume-ui-react/datepicker`,
+`@plume-ui-react/use-mask`...), they are replaced by a single package, `plume-ui-react`. Components, hooks and the
+theme are all imported from it, and each module keeps its own `'use client'`, so importing a few of them doesn't bring
+the rest.
+
+```sh
+npm uninstall @plume-ui-react/button @plume-ui-react/input @plume-ui-react/datepicker
+npm install plume-ui-react
+```
+
+```tsx
+// Before
+import { Button } from '@plume-ui-react/button'
+import { useMask } from '@plume-ui-react/use-mask'
+
+// After
+import { Button, useMask } from 'plume-ui-react'
+```
+
+The styles come from `plume-ui-react/styles.css`, imported once. The scoped packages are no longer updated.
 
 ## `Checkbox`, `Radio` and `Toggle` are bare controls
 

@@ -865,7 +865,7 @@ export const Compound: Story = {
   <CarouselNext />
   <CarouselDots appearance="numbers">
     {(position) => (
-      <CarouselDot aria-label={\`Go to \${titles[position]}\`} title={titles[position]}>
+      <CarouselDot aria-label={\`Slide \${position + 1}: \${titles[position]}\`} title={titles[position]}>
         {position + 1}
       </CarouselDot>
     )}
@@ -882,7 +882,7 @@ export const Compound: Story = {
       <CarouselDots appearance="numbers">
         {(position) => (
           <CarouselDot
-            aria-label={`Go to ${slides[position]?.title}`}
+            aria-label={`Slide ${position + 1}: ${slides[position]?.title}`}
             title={slides[position]?.title}
           >
             {position + 1}

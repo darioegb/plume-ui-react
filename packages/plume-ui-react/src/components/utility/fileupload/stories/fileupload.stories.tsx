@@ -452,7 +452,7 @@ export const Compound: Story = {
     {(file) => (
       <FileUploadItem file={file}>
         <FileUploadName className="font-medium" />
-        <FileUploadRemove aria-label={\`Discard \${file.name}\`}>Discard</FileUploadRemove>
+        <FileUploadRemove label={\`Discard \${file.name}\`}>Discard</FileUploadRemove>
         <FileUploadSize className="basis-full text-xs" />
         <FileUploadProgress />
       </FileUploadItem>
@@ -486,7 +486,7 @@ export const Compound: Story = {
         {(file) => (
           <FileUploadItem file={file}>
             <FileUploadName style={{ fontWeight: 600 }} />
-            <FileUploadRemove aria-label={`Discard ${file.name}`}>Discard</FileUploadRemove>
+            <FileUploadRemove label={`Discard ${file.name}`}>Discard</FileUploadRemove>
             <FileUploadSize style={{ flexBasis: '100%', fontSize: '0.75rem' }} />
             <FileUploadProgress />
           </FileUploadItem>
