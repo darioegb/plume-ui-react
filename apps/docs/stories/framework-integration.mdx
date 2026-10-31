@@ -93,26 +93,39 @@ single file with none.
 
 ## Tailwind CSS v4
 
-The components work as they are next to Tailwind, and with `variant='unstyled'` you style them with utilities. Plume
-doesn't ship a file for Tailwind: copy the theme below into a file of your app, `plume-theme.css`, and it turns the
-tokens of Plume into utilities: the colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`,
-`border-border`), the text styles (`text-heading-1`, `text-body`), the font families (`font-plume`), sizes, weights,
-line heights and letter spacings, the radii, the shadows, the container widths (`max-w-md`) and the easings, plus
-`z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`. Keep only the ones you use, or rename them: the
-theme is yours.
+The components work as they are next to Tailwind, and with `variant='unstyled'` you style them with utilities. This is
+all it takes:
 
 ```css
 @layer theme, base, plume, components, utilities;
 
 @import 'tailwindcss';
 @import 'plume-ui-react/styles.css';
-@import './plume-theme.css';
 
 @custom-variant dark (&:where([data-plume-color-mode='dark'], [data-plume-color-mode='dark'] *));
 ```
 
-The first line puts the layers in order (see [Customizing styles](?path=/docs/guides-customizing-styles--docs)), and the
-last one makes `dark:` follow the color mode of Plume instead of the system preference.
+The first line puts the layers in order, so the utilities win over the CSS of Plume (see
+[Customizing styles](?path=/docs/guides-customizing-styles--docs)). The last one is optional: it makes `dark:` follow
+the color mode of Plume instead of the system preference.
+
+The utilities of Tailwind can already read any variable of Plume, such as `bg-(--plume-color-primary-solid)`.
+
+### Optional: utilities with the tokens of Plume
+
+If you style with Tailwind and want it to match the components, copy the theme below into a file of your app,
+`plume-theme.css`, and import it after the CSS of Plume:
+
+```css
+@import 'plume-ui-react/styles.css';
+@import './plume-theme.css';
+```
+
+It turns the tokens of Plume into utilities: the colors (`bg-primary-solid`, `text-primary-on-solid`, `bg-surface`,
+`border-border`), the text styles (`text-heading-1`, `text-body`), the font families (`font-plume`), sizes, weights,
+line heights and letter spacings, the radii, the shadows, the container widths (`max-w-md`) and the easings, plus
+`z-modal`, `duration-fast`, `opacity-disabled` and `h-control-md`. Plume doesn't ship this file, so it stays independent
+of any CSS framework: keep only the utilities you use, or rename them.
 
 The utilities point to the variables of Plume (`@theme inline`), so they follow the theme, a nested provider and the
 color mode. The spacing and the breakpoints are the ones of Tailwind, which are also the default ones of Plume: a
