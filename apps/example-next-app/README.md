@@ -2,7 +2,7 @@
 
 A [Next.js](https://nextjs.org) **App Router** app that consumes the **published npm
 package** (`plume-ui-react` `^0.47.0`, the 1.0 contract: parts, `unstyled`, `@layer plume`,
-`labels` and `LocaleProvider`). It is a small project dashboard ("Plume Projects") with a
+`labels` and `LocaleProvider`) next to **Tailwind CSS 4**. It is a small project dashboard ("Plume Projects") with a
 simulated sign in, a sidebar, a top bar and a dashboard, and it shows that
 `<ThemeProvider>` is **SSR/RSC-safe**: the theme is serialized to CSS variables and
 server-rendered from a cookie, so dark mode has no flash and no per-request global state
@@ -13,12 +13,40 @@ with each step of the 1.0 plan.
 
 Sign in with any email and a password of 6 or more characters. The color mode follows the browser's color scheme until you pick light or dark (top bar or Settings); with `system` the server renders light and the client switches on hydration, so a dark browser can flash on the very first visit. The language follows the `Accept-Language` header of the browser until you pick one with the `EN`/`ES` switcher of the top bar (or of the sign in page), which saves it in a cookie.
 
+## Plume + Tailwind CSS 4
+
+Every Plume component keeps its own look (none uses `variant="unstyled"`); Tailwind styles the layout and the
+surfaces of the app itself. The Vite example shows the other case: it styles Plume with **Bootstrap 5** instead.
+
+- **Layer order.** `src/app/globals.css` starts with `@layer theme, base, plume, components, utilities;` and then
+  imports `tailwindcss` and `plume-ui-react/styles.css`. Tailwind's preflight lives in `base`, which
+  comes before `plume`, so it normalizes the page without stripping the buttons and inputs of Plume; the utilities
+  come after `plume`, so `className="ms-auto mt-4 max-sm:w-full"` on a Plume component always wins.
+- **No theme file.** Tailwind 4 needs nothing else to work with Plume. The app reads the tokens straight from the
+  variables, `text-(--plume-muted)`, `bg-(--plume-color-primary-solid)`, `border-(--plume-border)`, so they follow the
+  brand color of Settings and the color mode. The optional
+  [Tailwind theme](https://darioegb.github.io/plume-ui-react/?path=/docs/guides-framework-integration--docs) of Plume
+  would turn them into shorter names (`text-muted`).
+- **`dark:` variant.** The `@custom-variant dark` line of `globals.css` makes `dark:` follow the
+  `data-plume-color-mode='dark'` attribute that `<ThemeProvider>` renders (the cookie, the toggle and Settings), not the
+  system preference. The tokens already change with the mode, so `dark:` is only needed for what they don't cover, like
+  the ring of the scroll to top button.
+- **Utilities for layout, a CSS module for the rest.** The pages use `flex`, `grid`, `gap-*`, `p-*`, responsive
+  prefixes (`md:`, `max-sm:`) and the tokens of Plume. The only `.module.css` left is
+  `src/components/app-shell.module.css`, which hides the name of the brand when the sidebar collapses to a rail: it
+  depends on an attribute of a Plume part, and a CSS rule says that better than a utility. The `appear` animation of the
+  scroll to top button is in `@theme` of `globals.css`.
+- Server Components stay Server Components: the utilities are plain classes, and Tailwind reads them at build time.
+
+Preflight sets `line-height: 1.5` and makes buttons and inputs inherit the font, so the texts that Plume doesn't style
+(the placeholder of an `Input`, the label of a `Button`) take the font of the page.
+
 ## Structure
 
+- `postcss.config.mjs` — the `@tailwindcss/postcss` plugin, as in the Next.js guide.
 - `src/app/layout.tsx` — Server Component. Reads the color mode cookie and the locale, sets `<html lang>`, imports
-  `plume-ui-react/styles.css` (the Vite example loads one stylesheet per component
-  instead) and wraps the app in `<NextIntlClientProvider>` and `<Providers>`. With `@layer plume`
-  the `.module.css` of the app win over Plume without any specificity tricks.
+  `globals.css` (Tailwind and the whole `plume-ui-react/styles.css`; the Vite example loads one stylesheet per
+  component instead) and wraps the app in `<NextIntlClientProvider>` and `<Providers>`.
 - `src/app/providers.tsx` — `'use client'` boundary that renders `<ThemeProvider>`, `<PlumeLocale>` and
   `<ToastProvider>`.
 - `src/i18n` — `config.ts` has the locales, the cookie name and the `Accept-Language` negotiation, and

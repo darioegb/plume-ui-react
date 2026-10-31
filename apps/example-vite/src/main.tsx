@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
+import "./styles.css";
 import "plume-ui-react/tokens.css";
 import "plume-ui-react/css/alert.css";
 import "plume-ui-react/css/avatar.css";

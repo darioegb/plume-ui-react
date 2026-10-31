@@ -2,16 +2,15 @@ import type { ReactNode } from 'react'
 import { getTranslations } from 'next-intl/server'
 import { Card, CardBody, Skeleton } from 'plume-ui-react'
 import { SkeletonPage } from '@/components/skeleton-page'
-import styles from './new-project.module.css'
 
 export default async function Loading(): Promise<ReactNode> {
   const t = await getTranslations('newProject')
   return (
     <SkeletonPage label={t('loading')}>
-      <div className={styles.wizard}>
-        <div className={styles.steps}>
+      <div className="flex max-w-[40rem] flex-col gap-6">
+        <div className="flex gap-6">
           {[1, 2, 3].map((item) => (
-            <div className={styles.step} key={item}>
+            <div className="flex items-center gap-2" key={item}>
               <Skeleton height={32} shape="circle" width={32} />
               <Skeleton width="5rem" />
             </div>
@@ -19,7 +18,7 @@ export default async function Loading(): Promise<ReactNode> {
         </div>
         <Card variant="outline">
           <CardBody>
-            <div className={styles.form}>
+            <div className="flex flex-col gap-5">
               <Skeleton height={40} shape="rect" />
               <Skeleton height={88} shape="rect" />
               <Skeleton height={40} shape="rect" />

@@ -16,7 +16,6 @@ import {
 import { saveBrand, saveColorMode } from '@/app/actions'
 import { usePreferences } from '@/app/providers'
 import { brands, type BrandId } from '@/theme'
-import styles from './settings.module.css'
 
 const brandIds = Object.keys(brands) as BrandId[]
 
@@ -27,7 +26,7 @@ export function AppearanceSettings(): ReactNode {
   const [, startTransition] = useTransition()
 
   return (
-    <div className={styles.section}>
+    <div className="flex max-w-xl flex-col gap-5 py-2">
       <Field helperText={t('colorModeHelper')} label={t('colorMode')}>
         <RadioGroup
           onValueChange={(value) => {
@@ -63,10 +62,10 @@ export function AppearanceSettings(): ReactNode {
             <Field
               key={id}
               label={
-                <span className={styles.brand}>
+                <span className="inline-flex items-center gap-2">
                   <span
                     aria-hidden="true"
-                    className={styles.swatch}
+                    className="inline-block size-3.5 rounded-full"
                     style={{ background: brands[id].palette['500'] }}
                   />
                   {t(`brands.${id}`)}
@@ -80,13 +79,22 @@ export function AppearanceSettings(): ReactNode {
         </RadioGroup>
       </Field>
 
-      <div aria-label={t('preview')} className={styles.preview} role="group">
+      <div
+        aria-label={t('preview')}
+        className="flex flex-wrap items-center gap-3 rounded-(--plume-radius-2) border border-(--plume-border) p-4"
+        role="group"
+      >
         <Button colorScheme="primary">{t('primaryAction')}</Button>
         <Button colorScheme="primary" variant="outline">
           {t('outline')}
         </Button>
         <Badge colorScheme="primary">{t('badge')}</Badge>
-        <ProgressBar aria-label={t('previewProgress')} colorScheme="primary" value={64} />
+        <ProgressBar
+          aria-label={t('previewProgress')}
+          className="flex-[1_1_10rem]"
+          colorScheme="primary"
+          value={64}
+        />
       </div>
     </div>
   )

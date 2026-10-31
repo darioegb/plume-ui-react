@@ -95,10 +95,13 @@ export function AppShell({
 
   return (
     <SidebarProvider onOpenChange={setOpen} open={open}>
-      <div className={styles.layout}>
+      <div className="d-flex min-vh-100">
         <Sidebar aria-label={t("nav.application")}>
-          <div className={styles.brand}>
-            <span aria-hidden="true" className={styles.mark}>
+          <div className={`d-flex align-items-center fw-bold text-nowrap ${styles.brand}`}>
+            <span
+              aria-hidden="true"
+              className={`d-inline-flex align-items-center justify-content-center flex-shrink-0 ${styles.mark}`}
+            >
               P
             </span>
             <span className={styles.name}>{t("app.name")}</span>
@@ -117,11 +120,11 @@ export function AppShell({
             ))}
           </SidebarContent>
         </Sidebar>
-        <div className={styles.column}>
+        <div className={`d-flex flex-column flex-grow-1 ${styles.column}`}>
           <Navbar
             aria-label={t("nav.topBar")}
             breakpoint="never"
-            className={styles.topbar}
+            className={`d-flex align-items-center ${styles.topbar}`}
             sticky
           >
             <SidebarToggle />
@@ -209,7 +212,10 @@ export function AppShell({
               </Dropdown>
             </NavbarContent>
           </Navbar>
-          <main className={styles.content} id="main">
+          <main
+            className={`container-fluid d-flex flex-column gap-4 pt-4 pb-5 px-3 px-md-4 ${styles.content}`}
+            id="main"
+          >
             {children}
           </main>
         </div>

@@ -23,7 +23,6 @@ import {
 import type { Project } from '@/lib/data'
 import { formatDue } from '@/lib/format'
 import { statusColor } from '@/lib/status'
-import styles from './projects.module.css'
 
 export function ProjectDrawer({
   onComplete,
@@ -67,9 +66,9 @@ export function ProjectDrawer({
                 </TabList>
                 <TabPanels>
                   <TabPanel>
-                    <div className={styles.detail}>
-                      <p className={styles.description}>{project.description || t('noDescription')}</p>
-                      <dl className={styles.facts}>
+                    <div className="flex flex-col gap-4 py-4">
+                      <p>{project.description || t('noDescription')}</p>
+                      <dl className="grid grid-cols-[max-content_1fr] items-center gap-x-4 gap-y-3 [&_dt]:text-(--plume-muted)">
                         <dt>{tDrawer('status')}</dt>
                         <dd>
                           <Badge colorScheme={statusColor[project.status]} dot variant="subtle">
@@ -79,7 +78,7 @@ export function ProjectDrawer({
                         <dt>{tDrawer('due')}</dt>
                         <dd>{formatDue(project.due, locale)}</dd>
                         <dt>{tDrawer('owner')}</dt>
-                        <dd className={styles.owner}>
+                        <dd className="flex items-center gap-2 text-sm text-(--plume-muted)">
                           <Avatar name={project.owner} size="sm" />
                           {project.owner}
                         </dd>
@@ -107,11 +106,11 @@ export function ProjectDrawer({
                     </div>
                   </TabPanel>
                   <TabPanel>
-                    <ul className={styles.activity}>
+                    <ul className="flex flex-col gap-3 py-4">
                       {activity(project).map((event) => (
                         <li key={event.text}>
                           {event.text}
-                          <span className={styles.when}>{event.when}</span>
+                          <span className="block text-sm text-(--plume-muted)">{event.when}</span>
                         </li>
                       ))}
                     </ul>

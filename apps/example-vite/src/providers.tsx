@@ -7,6 +7,7 @@ import {
   ToastProvider,
   type ColorModeSetting,
 } from "plume-ui-react";
+import { BootstrapColorMode } from "./components/bootstrap-color-mode";
 import { plumeMessages } from "./i18n/plume-messages";
 import { read, write } from "./lib/storage";
 import { defaultBrand, isBrand, themeFor, type BrandId } from "./theme";
@@ -67,6 +68,7 @@ export function Providers({
         style={{ minHeight: "100vh" }}
         theme={theme}
       >
+        <BootstrapColorMode />
         <LocaleProvider locale={i18n.language} messages={messages}>
           <ToastProvider>{children}</ToastProvider>
         </LocaleProvider>

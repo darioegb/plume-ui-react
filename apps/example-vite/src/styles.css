@@ -1,0 +1,7 @@
+@layer reset, base, plume, components, utilities;
+
+@import "bootstrap/dist/css/bootstrap.min.css" layer(reset);
+
+body {
+  font-family: var(--plume-font-family);
+}
